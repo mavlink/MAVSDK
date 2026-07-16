@@ -61,6 +61,18 @@ extern ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
 class ConnectionStateResponse;
 struct ConnectionStateResponseDefaultTypeInternal;
 extern ConnectionStateResponseDefaultTypeInternal _ConnectionStateResponse_default_instance_;
+class FeedHeartbeatWatchdogRequest;
+struct FeedHeartbeatWatchdogRequestDefaultTypeInternal;
+extern FeedHeartbeatWatchdogRequestDefaultTypeInternal _FeedHeartbeatWatchdogRequest_default_instance_;
+class FeedHeartbeatWatchdogResponse;
+struct FeedHeartbeatWatchdogResponseDefaultTypeInternal;
+extern FeedHeartbeatWatchdogResponseDefaultTypeInternal _FeedHeartbeatWatchdogResponse_default_instance_;
+class SetHeartbeatWatchdogTimeoutRequest;
+struct SetHeartbeatWatchdogTimeoutRequestDefaultTypeInternal;
+extern SetHeartbeatWatchdogTimeoutRequestDefaultTypeInternal _SetHeartbeatWatchdogTimeoutRequest_default_instance_;
+class SetHeartbeatWatchdogTimeoutResponse;
+struct SetHeartbeatWatchdogTimeoutResponseDefaultTypeInternal;
+extern SetHeartbeatWatchdogTimeoutResponseDefaultTypeInternal _SetHeartbeatWatchdogTimeoutResponse_default_instance_;
 class SetMavlinkTimeoutRequest;
 struct SetMavlinkTimeoutRequestDefaultTypeInternal;
 extern SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
@@ -570,6 +582,635 @@ class SetMavlinkTimeoutRequest final
 };
 // -------------------------------------------------------------------
 
+class SetHeartbeatWatchdogTimeoutResponse final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutResponse) */ {
+ public:
+  inline SetHeartbeatWatchdogTimeoutResponse() : SetHeartbeatWatchdogTimeoutResponse(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SetHeartbeatWatchdogTimeoutResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetHeartbeatWatchdogTimeoutResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetHeartbeatWatchdogTimeoutResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SetHeartbeatWatchdogTimeoutResponse(const SetHeartbeatWatchdogTimeoutResponse& from) : SetHeartbeatWatchdogTimeoutResponse(nullptr, from) {}
+  inline SetHeartbeatWatchdogTimeoutResponse(SetHeartbeatWatchdogTimeoutResponse&& from) noexcept
+      : SetHeartbeatWatchdogTimeoutResponse(nullptr, std::move(from)) {}
+  inline SetHeartbeatWatchdogTimeoutResponse& operator=(const SetHeartbeatWatchdogTimeoutResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetHeartbeatWatchdogTimeoutResponse& operator=(SetHeartbeatWatchdogTimeoutResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetHeartbeatWatchdogTimeoutResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetHeartbeatWatchdogTimeoutResponse* internal_default_instance() {
+    return reinterpret_cast<const SetHeartbeatWatchdogTimeoutResponse*>(
+        &_SetHeartbeatWatchdogTimeoutResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(SetHeartbeatWatchdogTimeoutResponse& a, SetHeartbeatWatchdogTimeoutResponse& b) { a.Swap(&b); }
+  inline void Swap(SetHeartbeatWatchdogTimeoutResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetHeartbeatWatchdogTimeoutResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetHeartbeatWatchdogTimeoutResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SetHeartbeatWatchdogTimeoutResponse>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SetHeartbeatWatchdogTimeoutResponse& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SetHeartbeatWatchdogTimeoutResponse& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutResponse"; }
+
+ protected:
+  explicit SetHeartbeatWatchdogTimeoutResponse(::google::protobuf::Arena* arena);
+  SetHeartbeatWatchdogTimeoutResponse(::google::protobuf::Arena* arena, const SetHeartbeatWatchdogTimeoutResponse& from);
+  SetHeartbeatWatchdogTimeoutResponse(::google::protobuf::Arena* arena, SetHeartbeatWatchdogTimeoutResponse&& from) noexcept
+      : SetHeartbeatWatchdogTimeoutResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetHeartbeatWatchdogTimeoutResponse& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetHeartbeatWatchdogTimeoutRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest) */ {
+ public:
+  inline SetHeartbeatWatchdogTimeoutRequest() : SetHeartbeatWatchdogTimeoutRequest(nullptr) {}
+  ~SetHeartbeatWatchdogTimeoutRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SetHeartbeatWatchdogTimeoutRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetHeartbeatWatchdogTimeoutRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetHeartbeatWatchdogTimeoutRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SetHeartbeatWatchdogTimeoutRequest(const SetHeartbeatWatchdogTimeoutRequest& from) : SetHeartbeatWatchdogTimeoutRequest(nullptr, from) {}
+  inline SetHeartbeatWatchdogTimeoutRequest(SetHeartbeatWatchdogTimeoutRequest&& from) noexcept
+      : SetHeartbeatWatchdogTimeoutRequest(nullptr, std::move(from)) {}
+  inline SetHeartbeatWatchdogTimeoutRequest& operator=(const SetHeartbeatWatchdogTimeoutRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetHeartbeatWatchdogTimeoutRequest& operator=(SetHeartbeatWatchdogTimeoutRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetHeartbeatWatchdogTimeoutRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetHeartbeatWatchdogTimeoutRequest* internal_default_instance() {
+    return reinterpret_cast<const SetHeartbeatWatchdogTimeoutRequest*>(
+        &_SetHeartbeatWatchdogTimeoutRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(SetHeartbeatWatchdogTimeoutRequest& a, SetHeartbeatWatchdogTimeoutRequest& b) { a.Swap(&b); }
+  inline void Swap(SetHeartbeatWatchdogTimeoutRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetHeartbeatWatchdogTimeoutRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetHeartbeatWatchdogTimeoutRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetHeartbeatWatchdogTimeoutRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetHeartbeatWatchdogTimeoutRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetHeartbeatWatchdogTimeoutRequest& from) { SetHeartbeatWatchdogTimeoutRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetHeartbeatWatchdogTimeoutRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest"; }
+
+ protected:
+  explicit SetHeartbeatWatchdogTimeoutRequest(::google::protobuf::Arena* arena);
+  SetHeartbeatWatchdogTimeoutRequest(::google::protobuf::Arena* arena, const SetHeartbeatWatchdogTimeoutRequest& from);
+  SetHeartbeatWatchdogTimeoutRequest(::google::protobuf::Arena* arena, SetHeartbeatWatchdogTimeoutRequest&& from) noexcept
+      : SetHeartbeatWatchdogTimeoutRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTimeoutSFieldNumber = 1,
+  };
+  // double timeout_s = 1;
+  void clear_timeout_s() ;
+  double timeout_s() const;
+  void set_timeout_s(double value);
+
+  private:
+  double _internal_timeout_s() const;
+  void _internal_set_timeout_s(double value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetHeartbeatWatchdogTimeoutRequest& from_msg);
+    double timeout_s_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FeedHeartbeatWatchdogResponse final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.FeedHeartbeatWatchdogResponse) */ {
+ public:
+  inline FeedHeartbeatWatchdogResponse() : FeedHeartbeatWatchdogResponse(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FeedHeartbeatWatchdogResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FeedHeartbeatWatchdogResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FeedHeartbeatWatchdogResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FeedHeartbeatWatchdogResponse(const FeedHeartbeatWatchdogResponse& from) : FeedHeartbeatWatchdogResponse(nullptr, from) {}
+  inline FeedHeartbeatWatchdogResponse(FeedHeartbeatWatchdogResponse&& from) noexcept
+      : FeedHeartbeatWatchdogResponse(nullptr, std::move(from)) {}
+  inline FeedHeartbeatWatchdogResponse& operator=(const FeedHeartbeatWatchdogResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FeedHeartbeatWatchdogResponse& operator=(FeedHeartbeatWatchdogResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FeedHeartbeatWatchdogResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FeedHeartbeatWatchdogResponse* internal_default_instance() {
+    return reinterpret_cast<const FeedHeartbeatWatchdogResponse*>(
+        &_FeedHeartbeatWatchdogResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(FeedHeartbeatWatchdogResponse& a, FeedHeartbeatWatchdogResponse& b) { a.Swap(&b); }
+  inline void Swap(FeedHeartbeatWatchdogResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FeedHeartbeatWatchdogResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FeedHeartbeatWatchdogResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<FeedHeartbeatWatchdogResponse>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const FeedHeartbeatWatchdogResponse& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const FeedHeartbeatWatchdogResponse& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.core.FeedHeartbeatWatchdogResponse"; }
+
+ protected:
+  explicit FeedHeartbeatWatchdogResponse(::google::protobuf::Arena* arena);
+  FeedHeartbeatWatchdogResponse(::google::protobuf::Arena* arena, const FeedHeartbeatWatchdogResponse& from);
+  FeedHeartbeatWatchdogResponse(::google::protobuf::Arena* arena, FeedHeartbeatWatchdogResponse&& from) noexcept
+      : FeedHeartbeatWatchdogResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.FeedHeartbeatWatchdogResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FeedHeartbeatWatchdogResponse& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FeedHeartbeatWatchdogRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.FeedHeartbeatWatchdogRequest) */ {
+ public:
+  inline FeedHeartbeatWatchdogRequest() : FeedHeartbeatWatchdogRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FeedHeartbeatWatchdogRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FeedHeartbeatWatchdogRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FeedHeartbeatWatchdogRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FeedHeartbeatWatchdogRequest(const FeedHeartbeatWatchdogRequest& from) : FeedHeartbeatWatchdogRequest(nullptr, from) {}
+  inline FeedHeartbeatWatchdogRequest(FeedHeartbeatWatchdogRequest&& from) noexcept
+      : FeedHeartbeatWatchdogRequest(nullptr, std::move(from)) {}
+  inline FeedHeartbeatWatchdogRequest& operator=(const FeedHeartbeatWatchdogRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FeedHeartbeatWatchdogRequest& operator=(FeedHeartbeatWatchdogRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FeedHeartbeatWatchdogRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FeedHeartbeatWatchdogRequest* internal_default_instance() {
+    return reinterpret_cast<const FeedHeartbeatWatchdogRequest*>(
+        &_FeedHeartbeatWatchdogRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(FeedHeartbeatWatchdogRequest& a, FeedHeartbeatWatchdogRequest& b) { a.Swap(&b); }
+  inline void Swap(FeedHeartbeatWatchdogRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FeedHeartbeatWatchdogRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FeedHeartbeatWatchdogRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<FeedHeartbeatWatchdogRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const FeedHeartbeatWatchdogRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const FeedHeartbeatWatchdogRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.core.FeedHeartbeatWatchdogRequest"; }
+
+ protected:
+  explicit FeedHeartbeatWatchdogRequest(::google::protobuf::Arena* arena);
+  FeedHeartbeatWatchdogRequest(::google::protobuf::Arena* arena, const FeedHeartbeatWatchdogRequest& from);
+  FeedHeartbeatWatchdogRequest(::google::protobuf::Arena* arena, FeedHeartbeatWatchdogRequest&& from) noexcept
+      : FeedHeartbeatWatchdogRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.FeedHeartbeatWatchdogRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FeedHeartbeatWatchdogRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ConnectionState final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.ConnectionState) */ {
@@ -630,7 +1271,7 @@ class ConnectionState final
     return reinterpret_cast<const ConnectionState*>(
         &_ConnectionState_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(ConnectionState& a, ConnectionState& b) { a.Swap(&b); }
   inline void Swap(ConnectionState* other) {
     if (other == this) return;
@@ -1102,6 +1743,44 @@ inline void SetMavlinkTimeoutRequest::_internal_set_timeout_s(double value) {
 // -------------------------------------------------------------------
 
 // SetMavlinkTimeoutResponse
+
+// -------------------------------------------------------------------
+
+// FeedHeartbeatWatchdogRequest
+
+// -------------------------------------------------------------------
+
+// FeedHeartbeatWatchdogResponse
+
+// -------------------------------------------------------------------
+
+// SetHeartbeatWatchdogTimeoutRequest
+
+// double timeout_s = 1;
+inline void SetHeartbeatWatchdogTimeoutRequest::clear_timeout_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timeout_s_ = 0;
+}
+inline double SetHeartbeatWatchdogTimeoutRequest::timeout_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest.timeout_s)
+  return _internal_timeout_s();
+}
+inline void SetHeartbeatWatchdogTimeoutRequest::set_timeout_s(double value) {
+  _internal_set_timeout_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest.timeout_s)
+}
+inline double SetHeartbeatWatchdogTimeoutRequest::_internal_timeout_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.timeout_s_;
+}
+inline void SetHeartbeatWatchdogTimeoutRequest::_internal_set_timeout_s(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timeout_s_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SetHeartbeatWatchdogTimeoutResponse
 
 // -------------------------------------------------------------------
 

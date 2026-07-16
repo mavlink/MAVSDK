@@ -62,6 +62,65 @@ TEST_F(CoreServiceImplTest, subscribeConnectionStateSubscribesToChange)
     _core_service->stop();
 }
 
+TEST_F(CoreServiceImplTest, feedHeartbeatWatchdogFeeds)
+{
+    EXPECT_CALL(*_mavsdk, feed_heartbeat_watchdog()).Times(1);
+
+    grpc::ClientContext context;
+    mavsdk::rpc::core::FeedHeartbeatWatchdogRequest request;
+    mavsdk::rpc::core::FeedHeartbeatWatchdogResponse response;
+
+    const auto status = _stub->FeedHeartbeatWatchdog(&context, request, &response);
+
+    EXPECT_TRUE(status.ok());
+    _core_service->stop();
+}
+
+TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutSetsTimeout)
+{
+    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(2.5)).Times(1);
+
+    grpc::ClientContext context;
+    mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest request;
+    request.set_timeout_s(2.5);
+    mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse response;
+
+    const auto status = _stub->SetHeartbeatWatchdogTimeout(&context, request, &response);
+
+    EXPECT_TRUE(status.ok());
+    _core_service->stop();
+}
+
+TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutDisable)
+{
+    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(0.0)).Times(1);
+
+    grpc::ClientContext context;
+    mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest request;
+    request.set_timeout_s(0.0);
+    mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse response;
+
+    const auto status = _stub->SetHeartbeatWatchdogTimeout(&context, request, &response);
+
+    EXPECT_TRUE(status.ok());
+    _core_service->stop();
+}
+
+TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutRejectsSubSecond)
+{
+    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(_)).Times(0);
+
+    grpc::ClientContext context;
+    mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest request;
+    request.set_timeout_s(0.5);
+    mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse response;
+
+    const auto status = _stub->SetHeartbeatWatchdogTimeout(&context, request, &response);
+
+    EXPECT_EQ(grpc::StatusCode::INVALID_ARGUMENT, status.error_code());
+    _core_service->stop();
+}
+
 TEST_F(CoreServiceImplTest, connectionStateStreamEmptyIfCallbackNotCalled)
 {
     std::vector<bool> events;

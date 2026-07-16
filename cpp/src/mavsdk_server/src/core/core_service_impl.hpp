@@ -43,6 +43,33 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status FeedHeartbeatWatchdog(
+        grpc::ServerContext* /* context */,
+        const rpc::core::FeedHeartbeatWatchdogRequest* /* request */,
+        rpc::core::FeedHeartbeatWatchdogResponse* /* response */) override
+    {
+        _mavsdk.feed_heartbeat_watchdog();
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetHeartbeatWatchdogTimeout(
+        grpc::ServerContext* /* context */,
+        const rpc::core::SetHeartbeatWatchdogTimeoutRequest* request,
+        rpc::core::SetHeartbeatWatchdogTimeoutResponse* /* response */) override
+    {
+        const double timeout_s = request->timeout_s();
+        if (!is_valid_heartbeat_watchdog_timeout_s(timeout_s)) {
+            return grpc::Status(
+                grpc::StatusCode::INVALID_ARGUMENT,
+                "heartbeat watchdog timeout must be 0 or at least 1 second");
+        }
+
+        _mavsdk.set_heartbeat_watchdog_timeout_s(timeout_s);
+
+        return grpc::Status::OK;
+    }
+
     void stop() { _stop_promise.set_value(); }
 
 private:
