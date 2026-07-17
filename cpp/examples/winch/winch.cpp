@@ -1,5 +1,5 @@
 //
-// Example how to winch MAVSDK.
+// Example of how to control a winch with MAVSDK.
 //
 
 #include <cstdint>
