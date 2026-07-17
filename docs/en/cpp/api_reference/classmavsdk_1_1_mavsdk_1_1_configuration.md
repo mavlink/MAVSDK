@@ -22,6 +22,8 @@ uint8_t | [get_component_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1adfcae3d
 void | [set_component_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1aa590fbafa8ca104e1a004ca537f5798e) (uint8_t component_id) | Set the component id of this configuration.
 bool | [get_always_send_heartbeats](#classmavsdk_1_1_mavsdk_1_1_configuration_1a0aa9008fe5a7498f374dbd2adad5f137) () const | Get whether to send heartbeats by default.
 void | [set_always_send_heartbeats](#classmavsdk_1_1_mavsdk_1_1_configuration_1a0ad68b52763e205012b34faa5120a792) (bool always_send_heartbeats) | Set whether to send heartbeats by default.
+double | [get_heartbeat_watchdog_timeout_s](#classmavsdk_1_1_mavsdk_1_1_configuration_1ae438001c4f7aabe6ca220306297f6b8f) () const | Get the heartbeat watchdog timeout.
+bool | [set_heartbeat_watchdog_timeout_s](#classmavsdk_1_1_mavsdk_1_1_configuration_1a53bdc9285ca6687487c18fed28b30dd2) (double timeout_s) | Set the heartbeat watchdog (deadman timer) timeout.
 [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | [get_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a81d3645816f8a3072044498c3f539d12) () const | Component type of this configuration, used for automatic ID set.
 void | [set_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a06461b86734eaa9544e80a4a907c9754) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type) | Set the component type of this configuration.
 uint8_t | [get_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1aafe9e8fc11dd0b688a836c123357e9ba) () const | Get the mav type (vehicle type) of this configuration.
@@ -151,10 +153,57 @@ void mavsdk::Mavsdk::Configuration::set_always_send_heartbeats(bool always_send_
 
 Set whether to send heartbeats by default.
 
+Note: when a heartbeat watchdog is configured ([set_heartbeat_watchdog_timeout_s()](classmavsdk_1_1_mavsdk_1_1_configuration.md#classmavsdk_1_1_mavsdk_1_1_configuration_1a53bdc9285ca6687487c18fed28b30dd2)) and has expired, the watchdog latch takes precedence: heartbeats stay off until [Mavsdk::feed_heartbeat_watchdog()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) is called again, even if always_send_heartbeats is set.
 
 **Parameters**
 
 * bool **always_send_heartbeats** - 
+
+### get_heartbeat_watchdog_timeout_s() {#classmavsdk_1_1_mavsdk_1_1_configuration_1ae438001c4f7aabe6ca220306297f6b8f}
+```cpp
+double mavsdk::Mavsdk::Configuration::get_heartbeat_watchdog_timeout_s() const
+```
+
+
+Get the heartbeat watchdog timeout.
+
+
+**Returns**
+
+&emsp;double - Timeout in seconds, 0 if the watchdog is disabled.
+
+### set_heartbeat_watchdog_timeout_s() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a53bdc9285ca6687487c18fed28b30dd2}
+```cpp
+bool mavsdk::Mavsdk::Configuration::set_heartbeat_watchdog_timeout_s(double timeout_s)
+```
+
+
+Set the heartbeat watchdog (deadman timer) timeout.
+
+When set to a value greater than 0, the periodic heartbeats sent by MAVSDK are only sent as long as [Mavsdk::feed_heartbeat_watchdog()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) keeps being called at least once per timeout period. Heartbeats never start (and any already-running heartbeats are stopped) until the watchdog has been fed - including when the watchdog is first enabled or its timeout is changed. If the watchdog times out, heartbeats are latched off - including across reconnects and new system discovery - until the watchdog is fed again.
+
+
+Heartbeats are also latched off whenever they stop for any other reason while the watchdog is configured (e.g. when the connected system disconnects): after a reconnect, heartbeats only resume once the watchdog has been fed again.
+
+
+This is useful when MAVSDK's heartbeats should reflect the liveness of the application: if the application hangs or dies, heartbeats stop.
+
+
+While the watchdog is expired, the latch takes precedence over [set_always_send_heartbeats()](classmavsdk_1_1_mavsdk_1_1_configuration.md#classmavsdk_1_1_mavsdk_1_1_configuration_1a0ad68b52763e205012b34faa5120a792): heartbeats stay off until the watchdog is fed again.
+
+
+When set to 0, the watchdog is disabled and heartbeats follow the usual policy (always_send_heartbeats or a connected system).
+
+
+Default: 0 (disabled)
+
+**Parameters**
+
+* double **timeout_s** - Timeout in seconds: 0 (disabled) or at least 1.
+
+**Returns**
+
+&emsp;bool - true if the value was accepted, false if it was rejected (invalid values are ignored and the previous value kept).
 
 ### get_component_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a81d3645816f8a3072044498c3f539d12}
 ```cpp

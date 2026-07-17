@@ -182,8 +182,8 @@ TEST(HeartbeatWatchdog, ConfigurationStoresAndValidatesTimeout)
     // stored value unchanged.
     EXPECT_FALSE(configuration.set_heartbeat_watchdog_timeout_s(0.5));
     EXPECT_FALSE(configuration.set_heartbeat_watchdog_timeout_s(-1.0));
-    EXPECT_FALSE(configuration.set_heartbeat_watchdog_timeout_s(
-        std::numeric_limits<double>::infinity()));
+    EXPECT_FALSE(
+        configuration.set_heartbeat_watchdog_timeout_s(std::numeric_limits<double>::infinity()));
     EXPECT_FALSE(
         configuration.set_heartbeat_watchdog_timeout_s(std::numeric_limits<double>::quiet_NaN()));
     EXPECT_DOUBLE_EQ(configuration.get_heartbeat_watchdog_timeout_s(), 2.5);

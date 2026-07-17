@@ -54,9 +54,11 @@ void | [unsubscribe_connection_errors](#classmavsdk_1_1_mavsdk_1a377ec6517ee7598
 std::vector< std::shared_ptr< [System](classmavsdk_1_1_system.md) > > | [systems](#classmavsdk_1_1_mavsdk_1aca9c72b300d384341b00ff9ba2c6e5c5) () const | Get a vector of systems which have been discovered or set-up.
 std::optional< std::shared_ptr< [System](classmavsdk_1_1_system.md) > > | [first_autopilot](#classmavsdk_1_1_mavsdk_1aa1bcb865693dbd140478e75ce58699b7) (double timeout_s)const | Get the first autopilot that has been discovered.
 void | [set_configuration](#classmavsdk_1_1_mavsdk_1acaeea86253493dc15b6540d2100a1b86) ([Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) configuration) | Set [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) of SDK.
+bool | [set_heartbeat_watchdog_timeout_s](#classmavsdk_1_1_mavsdk_1a83a387c399355c2fa541e7992b591ca8) (double timeout_s) | Set the heartbeat watchdog timeout at runtime.
 void | [set_timeout_s](#classmavsdk_1_1_mavsdk_1a765f37b61462addcfd961e720585d2c6) (double timeout_s) | Set timeout of MAVLink transfers.
 void | [set_heartbeat_timeout_s](#classmavsdk_1_1_mavsdk_1afbab63cf2a795e4ca7262836d5fe4b46) (double timeout_s) | Set heartbeat timeout.
 double | [get_heartbeat_timeout_s](#classmavsdk_1_1_mavsdk_1a6179b858f74415251ef43da11bc6edbc) () const | Get heartbeat timeout.
+void | [feed_heartbeat_watchdog](#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) () | Feed the heartbeat watchdog.
 void | [set_callback_executor](#classmavsdk_1_1_mavsdk_1a5de0ff39a51efe3b235fe022e6b58034) (std::function< void(std::function< void()>)> executor) | Set a custom callback executor.
 [NewSystemHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) | [subscribe_on_new_system](#classmavsdk_1_1_mavsdk_1a5b7c958ad2e4529dc7b950ab26618575) (const [NewSystemCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a7a283c6a75e852a56be4c5862f8a3fab) & callback) | Get notification about a change in systems.
 void | [unsubscribe_on_new_system](#classmavsdk_1_1_mavsdk_1ad7f77f1295a700ee73cccc345019c1ff) ([NewSystemHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) handle) | unsubscribe from subscribe_on_new_system.
@@ -414,6 +416,30 @@ The default configuration is `Configuration::GroundStation` The configuration is
 
 * [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) **configuration** - [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) chosen.
 
+### set_heartbeat_watchdog_timeout_s() {#classmavsdk_1_1_mavsdk_1a83a387c399355c2fa541e7992b591ca8}
+```cpp
+bool mavsdk::Mavsdk::set_heartbeat_watchdog_timeout_s(double timeout_s)
+```
+
+
+Set the heartbeat watchdog timeout at runtime.
+
+When set to a value greater than 0, the periodic heartbeats sent by MAVSDK are only sent as long as [feed_heartbeat_watchdog()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) keeps being called at least once per timeout period. Enabling or changing the timeout stops any running heartbeats until the watchdog is fed.
+
+
+When set to 0, the watchdog is disabled and heartbeats follow the usual policy (always_send_heartbeats or a connected system).
+
+
+This is an alternative to configuring the watchdog via [Configuration::set_heartbeat_watchdog_timeout_s()](classmavsdk_1_1_mavsdk_1_1_configuration.md#classmavsdk_1_1_mavsdk_1_1_configuration_1a53bdc9285ca6687487c18fed28b30dd2) at startup.
+
+**Parameters**
+
+* double **timeout_s** - Timeout in seconds: 0 (disabled) or at least 1.
+
+**Returns**
+
+&emsp;bool - true if the value was accepted, false if it was rejected (invalid values are ignored and the previous value kept).
+
 ### set_timeout_s() {#classmavsdk_1_1_mavsdk_1a765f37b61462addcfd961e720585d2c6}
 ```cpp
 void mavsdk::Mavsdk::set_timeout_s(double timeout_s)
@@ -454,6 +480,19 @@ Get heartbeat timeout.
 **Returns**
 
 &emsp;double - Timeout in seconds.
+
+### feed_heartbeat_watchdog() {#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90}
+```cpp
+void mavsdk::Mavsdk::feed_heartbeat_watchdog()
+```
+
+
+Feed the heartbeat watchdog.
+
+Resets the watchdog timer configured with [Configuration::set_heartbeat_watchdog_timeout_s()](classmavsdk_1_1_mavsdk_1_1_configuration.md#classmavsdk_1_1_mavsdk_1_1_configuration_1a53bdc9285ca6687487c18fed28b30dd2), keeping the periodic heartbeats alive for another timeout period. If the watchdog had already expired, this restarts the heartbeats.
+
+
+Has no effect if no watchdog is configured. A feed only clears the watchdog latch (set on expiry or whenever heartbeats stop while the watchdog is configured), and only restarts heartbeats if they are supposed to be sent in the first place (always_send_heartbeats is set or a system is connected). It never starts heartbeats that are off for any other reason.
 
 ### set_callback_executor() {#classmavsdk_1_1_mavsdk_1a5de0ff39a51efe3b235fe022e6b58034}
 ```cpp
