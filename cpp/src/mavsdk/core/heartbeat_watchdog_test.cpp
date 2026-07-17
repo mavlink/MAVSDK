@@ -1,5 +1,6 @@
 #include "mavsdk_impl.hpp"
 #include "mavsdk_time.hpp"
+#include "mavlink_channels.hpp"
 #include "mavlink_include.hpp"
 
 #include <gtest/gtest.h>
@@ -12,6 +13,46 @@
 using namespace mavsdk;
 
 namespace {
+
+// Own a dedicated MAVLink pack channel for test-side packing. mavlink_msg_*_pack
+// (no _chan) always finalizes on channel 0, which races MAVSDK's outbound
+// packing on the same global channel status. Production code avoids that by
+// checking out a channel and using *_pack_chan under its pack mutex.
+class TestMavlinkPackChannel {
+public:
+    TestMavlinkPackChannel()
+    {
+        EXPECT_TRUE(MavlinkChannels::Instance().checkout_free_channel(_channel));
+    }
+
+    ~TestMavlinkPackChannel() { MavlinkChannels::Instance().checkin_used_channel(_channel); }
+
+    TestMavlinkPackChannel(const TestMavlinkPackChannel&) = delete;
+    TestMavlinkPackChannel& operator=(const TestMavlinkPackChannel&) = delete;
+
+    uint8_t channel() const { return _channel; }
+
+private:
+    uint8_t _channel{0};
+};
+
+void inject_autopilot_heartbeat(MavsdkImpl& mavsdk, uint8_t pack_channel, uint8_t sysid)
+{
+    mavlink_message_t message;
+    mavlink_msg_heartbeat_pack_chan(
+        sysid,
+        MAV_COMP_ID_AUTOPILOT1,
+        pack_channel,
+        &message,
+        MAV_TYPE_QUADROTOR,
+        MAV_AUTOPILOT_PX4,
+        0,
+        0,
+        MAV_STATE_ACTIVE);
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    const uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+    mavsdk.pass_received_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
+}
 
 // These tests run against MavsdkImpl with an injected FakeTime, so all
 // heartbeat and watchdog periods are simulated: fake_time.sleep_for()
@@ -107,26 +148,16 @@ TEST(Heartbeat, DisablingAlwaysSendDuringDiscoveryKeepsHeartbeatsRunning)
 
     FakeTime fake_time;
     MavsdkImpl mavsdk{configuration, fake_time};
+    // Checkout after MavsdkImpl so inject packing does not share MAVSDK's channel.
+    TestMavlinkPackChannel pack_channel;
     HeartbeatCounter heartbeats{mavsdk};
     // Note: adding the raw connection force-enables always_send_heartbeats.
     ASSERT_EQ(
         mavsdk.add_any_connection("raw://", ForwardingOption::ForwardingOff).first,
         ConnectionResult::Success);
 
-    auto inject_heartbeat = [&mavsdk](uint8_t sysid) {
-        mavlink_message_t message;
-        mavlink_msg_heartbeat_pack(
-            sysid,
-            MAV_COMP_ID_AUTOPILOT1,
-            &message,
-            MAV_TYPE_QUADROTOR,
-            MAV_AUTOPILOT_PX4,
-            0,
-            0,
-            MAV_STATE_ACTIVE);
-        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        const uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
-        mavsdk.pass_received_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
+    auto inject_heartbeat = [&mavsdk, &pack_channel](uint8_t sysid) {
+        inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), sysid);
     };
 
     auto on_configuration = configuration;
@@ -385,6 +416,8 @@ TEST(HeartbeatWatchdog, ConcurrentReconfigurationStress)
 
     FakeTime fake_time;
     MavsdkImpl mavsdk{configuration, fake_time};
+    // Checkout after MavsdkImpl so inject packing does not share MAVSDK's channel.
+    TestMavlinkPackChannel pack_channel;
     ASSERT_EQ(
         mavsdk.add_any_connection("raw://", ForwardingOption::ForwardingOff).first,
         ConnectionResult::Success);
@@ -412,19 +445,7 @@ TEST(HeartbeatWatchdog, ConcurrentReconfigurationStress)
     // deadlock with configuration updates, which held the server components
     // lock while taking the systems lock.
     for (int sysid = 1; sysid <= 150; ++sysid) {
-        mavlink_message_t message;
-        mavlink_msg_heartbeat_pack(
-            static_cast<uint8_t>(sysid),
-            MAV_COMP_ID_AUTOPILOT1,
-            &message,
-            MAV_TYPE_QUADROTOR,
-            MAV_AUTOPILOT_PX4,
-            0,
-            0,
-            MAV_STATE_ACTIVE);
-        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        const uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
-        mavsdk.pass_received_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
+        inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), static_cast<uint8_t>(sysid));
         std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 
