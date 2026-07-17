@@ -94,9 +94,9 @@ void Time::sleep_for(std::chrono::nanoseconds ns)
 FakeTime::FakeTime() : Time()
 {
     // Start with current time so we don't start from 0.
-    _current_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                      steady_clock::now().time_since_epoch())
-                      .count();
+    _current_ns =
+        std::chrono::duration_cast<std::chrono::nanoseconds>(steady_clock::now().time_since_epoch())
+            .count();
 }
 
 SteadyTimePoint FakeTime::steady_time()
