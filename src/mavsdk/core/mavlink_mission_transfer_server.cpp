@@ -279,6 +279,13 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::process_mission_item_
     mavlink_mission_item_int_t item_int;
     mavlink_msg_mission_item_int_decode(&message, &item_int);
 
+    // Ignore duplicate or out-of-order items. Without this, a peer streaming items
+    // (e.g. all with seq 0) would grow _items without bound while refreshing the
+    // timeout, so the transfer would never time out.
+    if (_next_sequence != item_int.seq) {
+        return;
+    }
+
     _items.push_back(ItemInt{
         item_int.seq,
         item_int.frame,

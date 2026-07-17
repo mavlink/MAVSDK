@@ -103,6 +103,13 @@ bool CurlWrapper::download_file_to_path(
         progress.progress_callback = progress_callback;
 
         fp = fopen(path.c_str(), "wb");
+        if (fp == nullptr) {
+            LogErr() << "Error: cannot open file for writing: " << path;
+            if (nullptr != progress_callback) {
+                progress_callback(0, HttpStatus::Error, CURLcode::CURLE_WRITE_ERROR);
+            }
+            return false;
+        }
         curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_XFERINFOFUNCTION, download_progress_update);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &progress);

@@ -64,10 +64,6 @@ ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t
         return ParamServer::Result::ParamNameTooLong;
     }
 
-    if (_server_component_impl->mavlink_parameter_server().params_locked_down()) {
-        return ParamServer::Result::ParamProvidedTooLate;
-    }
-
     const auto ret =
         _server_component_impl->mavlink_parameter_server().provide_server_param_int(name, value);
     if (ret == MavlinkParameterServer::Result::Ok) {
@@ -95,10 +91,6 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
 {
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
-    }
-
-    if (_server_component_impl->mavlink_parameter_server().params_locked_down()) {
-        return ParamServer::Result::ParamProvidedTooLate;
     }
 
     const auto ret =
@@ -216,6 +208,8 @@ ParamServerImpl::result_from_mavlink_parameter_server_result(MavlinkParameterSer
             return ParamServer::Result::WrongType;
         case MavlinkParameterServer::Result::ParamValueTooLong:
             return ParamServer::Result::ParamValueTooLong;
+        case MavlinkParameterServer::Result::ParamProvidedTooLate:
+            return ParamServer::Result::ParamProvidedTooLate;
         default:
             LogErr() << "Unknown param error";
             return ParamServer::Result::Unknown;

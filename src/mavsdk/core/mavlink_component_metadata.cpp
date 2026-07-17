@@ -5,6 +5,7 @@
 #include "unused.h"
 #include "system_impl.h"
 
+#include <cstdlib>
 #include <utility>
 #include <filesystem>
 #include <fstream>
@@ -136,7 +137,16 @@ bool MavlinkComponentMetadata::uri_is_mavlinkftp(
         std::regex compid_regex(R"(^(?:\[\;comp\=(\d+)\])(.*))");
         std::smatch match;
         if (std::regex_search(download_path, match, compid_regex)) {
-            target_compid = std::stoi(match[1]);
+            // Parse the component id without throwing (MAVSDK builds with -fno-exceptions,
+            // so std::stoi would terminate() on an out-of-range value from the wire).
+            const std::string compid_str = match[1].str();
+            char* end = nullptr;
+            const long parsed = std::strtol(compid_str.c_str(), &end, 10);
+            if (end == compid_str.c_str() || *end != '\0' || parsed < 0 || parsed > 255) {
+                LogWarn() << "Ignoring invalid component id in metadata uri: " << compid_str;
+                return false;
+            }
+            target_compid = static_cast<uint8_t>(parsed);
             download_path = match[2];
         }
         return true;

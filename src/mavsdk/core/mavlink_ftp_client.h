@@ -229,7 +229,7 @@ private:
         unsigned retries{RETRIES};
         bool started{false};
         Opcode last_opcode{};
-        uint16_t last_received_seq_number{0};
+        uint16_t last_received_seq_number{0}; // used for burst duplicate detection
         uint8_t target_compid{};
         Work(Item new_item, uint8_t target_compid_) :
             item(std::move(new_item)),

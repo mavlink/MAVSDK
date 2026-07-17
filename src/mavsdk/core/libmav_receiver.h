@@ -59,9 +59,16 @@ private:
     Mavsdk::MavlinkMessage _last_message;
     std::optional<mav::Message> _last_libmav_message; // Separate libmav message for integration
 
-    // Accumulation buffer for serial connections where messages can span multiple reads
-    // Buffer size is max message size (280 bytes: 255 payload + 10 header + 2 CRC + 13 signature)
-    static constexpr size_t ACCUMULATION_BUFFER_SIZE = mav::MessageDefinition::MAX_MESSAGE_SIZE;
+    // Accumulation buffer for connections where messages can span multiple reads.
+    //
+    // This bound is only a safety valve against unbounded growth; the parser normally
+    // drains the buffer (it consumes complete messages and skips garbage before the magic
+    // byte), so at most one partial message is ever pending. It must therefore be at least
+    // as large as a single read (the 2048-byte connection receive buffers) plus one full
+    // message, otherwise set_new_datagram() would drop the front of a large read *before*
+    // parsing and silently lose the messages in it.
+    static constexpr size_t ACCUMULATION_BUFFER_SIZE =
+        2048 + mav::MessageDefinition::MAX_MESSAGE_SIZE;
     std::vector<uint8_t> _accumulation_buffer;
 
     bool _debugging = false;

@@ -51,7 +51,7 @@ Offboard::Result OffboardImpl::start()
         if (_mode == Mode::NotActive) {
             return Offboard::Result::NoSetpointSet;
         }
-        _last_started = _time.steady_time();
+        _watchdog_grace_start = _time.steady_time();
     }
 
     return offboard_result_from_command_result(_system_impl->set_flight_mode(FlightMode::Offboard));
@@ -81,7 +81,7 @@ void OffboardImpl::start_async(Offboard::ResultCallback callback)
             }
             return;
         }
-        _last_started = _time.steady_time();
+        _watchdog_grace_start = _time.steady_time();
     }
 
     _system_impl->set_flight_mode_async(
@@ -134,6 +134,7 @@ Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw positio
             _call_every_cookie =
                 _system_impl->add_call_every([this]() { send_position_ned(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::PositionNed;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -159,6 +160,7 @@ Offboard::Result OffboardImpl::set_position_global(Offboard::PositionGlobalYaw p
             _call_every_cookie =
                 _system_impl->add_call_every([this]() { send_position_global(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::PositionGlobalAltRel;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -184,6 +186,7 @@ Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocit
             _call_every_cookie =
                 _system_impl->add_call_every([this]() { send_velocity_ned(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::VelocityNed;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -210,6 +213,7 @@ Offboard::Result OffboardImpl::set_position_velocity_ned(
             _call_every_cookie = _system_impl->add_call_every(
                 [this]() { send_position_velocity_ned(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::PositionVelocityNed;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -240,6 +244,7 @@ Offboard::Result OffboardImpl::set_position_velocity_acceleration_ned(
             _call_every_cookie = _system_impl->add_call_every(
                 [this]() { send_position_velocity_acceleration_ned(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::PositionVelocityAccelerationNed;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -265,6 +270,7 @@ Offboard::Result OffboardImpl::set_acceleration_ned(Offboard::AccelerationNed ac
             _call_every_cookie = _system_impl->add_call_every(
                 [this]() { send_acceleration_ned(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::AccelerationNed;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -291,6 +297,7 @@ OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yaw
             _call_every_cookie =
                 _system_impl->add_call_every([this]() { send_velocity_body(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::VelocityBody;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -316,6 +323,7 @@ Offboard::Result OffboardImpl::set_attitude(Offboard::Attitude attitude)
             _call_every_cookie =
                 _system_impl->add_call_every([this]() { send_attitude(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::Attitude;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -341,6 +349,7 @@ Offboard::Result OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude
             _call_every_cookie =
                 _system_impl->add_call_every([this]() { send_attitude_rate(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::AttitudeRate;
         } else {
             // We're already sending these kind of setpoints. Since the setpoint change, let's
@@ -366,6 +375,7 @@ Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl ac
             _call_every_cookie = _system_impl->add_call_every(
                 [this]() { send_actuator_control(); }, SEND_INTERVAL_S);
 
+            note_setpoints_started();
             _mode = Mode::ActuatorControl;
         } else {
             // We're already sending these kind of values. Since the value changes, let's
@@ -851,11 +861,20 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
         // possibly stale heartbeats for some time.
         std::lock_guard<std::mutex> lock(_mutex);
         if (!offboard_mode_active && _mode != Mode::NotActive &&
-            _time.elapsed_since_s(_last_started) > 3.0) {
+            _time.elapsed_since_s(_watchdog_grace_start) > 3.0) {
             // It seems that we are no longer in offboard mode but still trying to send
             // setpoints. Let's stop for now.
             stop_sending_setpoints();
         }
+    }
+}
+
+void OffboardImpl::note_setpoints_started()
+{
+    // We assume that we already acquired the mutex in this function.
+
+    if (_mode == Mode::NotActive) {
+        _watchdog_grace_start = _time.steady_time();
     }
 }
 

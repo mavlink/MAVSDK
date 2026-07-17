@@ -296,15 +296,19 @@ void SystemImpl::remove_call_every(CallEveryHandler::Cookie cookie)
 void SystemImpl::register_statustext_handler(
     std::function<void(const MavlinkStatustextHandler::Statustext&)> callback, void* cookie)
 {
+    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
     _statustext_handler_callbacks.push_back(StatustextCallback{std::move(callback), cookie});
 }
 
 void SystemImpl::unregister_statustext_handler(void* cookie)
 {
-    _statustext_handler_callbacks.erase(std::remove_if(
-        _statustext_handler_callbacks.begin(),
-        _statustext_handler_callbacks.end(),
-        [&](const auto& entry) { return entry.cookie == cookie; }));
+    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
+    _statustext_handler_callbacks.erase(
+        std::remove_if(
+            _statustext_handler_callbacks.begin(),
+            _statustext_handler_callbacks.end(),
+            [&](const auto& entry) { return entry.cookie == cookie; }),
+        _statustext_handler_callbacks.end());
 }
 
 void SystemImpl::process_heartbeat(const mavlink_message_t& message)
@@ -360,7 +364,14 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
                    << MavlinkStatustextHandler::severity_str(maybe_result.value().severity) << ": "
                    << maybe_result.value().text;
 
-        for (const auto& entry : _statustext_handler_callbacks) {
+        // Copy the callbacks out under the lock and invoke them afterwards, so a
+        // callback that (un)registers a handler can't deadlock or invalidate the vector.
+        std::vector<StatustextCallback> callbacks_copy;
+        {
+            std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
+            callbacks_copy = _statustext_handler_callbacks;
+        }
+        for (const auto& entry : callbacks_copy) {
             entry.callback(maybe_result.value());
         }
     }
@@ -1359,8 +1370,18 @@ void SystemImpl::call_user_callback_located(
 
 void SystemImpl::param_changed(const std::string& name)
 {
-    for (auto& callback : _param_changed_callbacks) {
-        callback.second(name);
+    // Copy the callbacks out under the lock and invoke them afterwards, so a callback
+    // that (un)registers a handler can't deadlock or invalidate the map.
+    std::vector<ParamChangedCallback> callbacks_copy;
+    {
+        std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
+        callbacks_copy.reserve(_param_changed_callbacks.size());
+        for (const auto& callback : _param_changed_callbacks) {
+            callbacks_copy.push_back(callback.second);
+        }
+    }
+    for (const auto& callback : callbacks_copy) {
+        callback(name);
     }
 }
 
@@ -1377,11 +1398,13 @@ void SystemImpl::register_param_changed_handler(
         return;
     }
 
+    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
     _param_changed_callbacks[cookie] = callback;
 }
 
 void SystemImpl::unregister_param_changed_handler(const void* cookie)
 {
+    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
     auto it = _param_changed_callbacks.find(cookie);
     if (it == _param_changed_callbacks.end()) {
         LogWarn() << "param_changed_handler for cookie not found";
