@@ -183,6 +183,23 @@ private:
         _size.store(_list.size() + _cond_cb_list.size(), std::memory_order_release);
     }
 
+    // INVARIANT: a CallbackList must be driven by a single dedicated io thread (the one that
+    // calls io_context::run(), as MavsdkImpl does). Do NOT attach one to an io_context that is
+    // polled from a foreign thread (e.g. a test thread calling io_context::poll()).
+    //
+    // This is why: running_in_this_thread() reads an asio thread-local that, because asio is
+    // header-only and MAVSDK builds with hidden visibility, is instantiated separately in each
+    // DSO. When the io_context is run() by a dedicated thread this is reliable, but when it is
+    // poll()ed from a thread whose asio call-stack lives in a different DSO than libmavsdk.so,
+    // this check can misreport. Every read_on_io()/queue()/drain()/unsubscribe path branches on
+    // on_io_thread() to decide between running inline and posting-and-waiting, so a wrong answer
+    // there either skips the synchronising round-trip (reintroducing a teardown use-after-free)
+    // or deadlocks waiting on a thread that only polls intermittently.
+    //
+    // With the dedicated-io-thread invariant this is correct. If a polled/foreign-thread
+    // CallbackList is ever actually needed, replace this with an explicit comparison of
+    // std::this_thread::get_id() against the id recorded for the io thread rather than relying
+    // on running_in_this_thread().
     bool on_io_thread() const { return _io_context.get_executor().running_in_this_thread(); }
 
     // Run a list read/iteration on the io thread: inline when already there, otherwise posted
