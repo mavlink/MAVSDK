@@ -1,5 +1,5 @@
 //
-// Example how to stream logs from PX4 or ArduPilot with MAVSDK.
+// Example of how to stream logs from PX4 or ArduPilot with MAVSDK.
 //
 
 #include <mavsdk/mavsdk.hpp>
