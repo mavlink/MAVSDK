@@ -1,5 +1,5 @@
 //
-// Example how to run the sensor calibrations.
+// Example of how to run sensor calibrations.
 //
 // Best tested against a real flight controller like a Pixhawk
 // and not against simulation.
