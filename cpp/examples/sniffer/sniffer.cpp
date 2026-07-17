@@ -1,5 +1,5 @@
 //
-// Example how to intercept and display MAVLink messages in JSON format.
+// Example of how to intercept and display MAVLink messages in JSON format.
 //
 
 #include <mavsdk/mavsdk.hpp>
