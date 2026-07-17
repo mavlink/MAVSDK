@@ -8,13 +8,11 @@ namespace mavsdk {
 
 class MAVSDK_TEST_EXPORT MavlinkChannels {
 public:
-    static MavlinkChannels& Instance()
-    {
-        // This should be thread-safe in C++11.
-        static MavlinkChannels instance;
-
-        return instance;
-    }
+    // Defined in the .cpp so shared-library builds have one allocator. An
+    // inline Meyers singleton in the header would give the library and each
+    // test binary their own channel map while still sharing
+    // mavlink_get_channel_status(), which races packing on channel 0.
+    static MavlinkChannels& Instance();
 
     // delete copy and move constructors and assign operators
     MavlinkChannels(MavlinkChannels const&) = delete; // Copy construct
