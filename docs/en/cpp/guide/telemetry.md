@@ -90,7 +90,7 @@ The telemetry update rate determines the frequency at which callbacks will be in
 You can set the rate for *each* type of telemetry, and both synchronous or asynchronous rate-setting methods are provided.
 
 ::: info
-For PX4 running on hardware the *default* rates are set on a per-mode basis in [mavlink_main.cpp](https://github.com/PX4/Firmware/blob/master/src/modules/mavlink/mavlink_main.cpp#L2025) (search on `configure_stream`).
+For PX4 running on hardware the *default* rates are set on a per-mode basis in [mavlink_main.cpp](https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/mavlink/mavlink_main.cpp) (search on `configure_stream`).
 For PX4 running on SITL, the default rates are defined in the [startup file](https://docs.px4.io/main/en/concept/system_startup).
 :::
 
