@@ -51,7 +51,7 @@ JMAVSim can only be used to simulate multicopters.
 Gazebo additionally supports a number of [other vehicles](https://docs.px4.io/main/en/sim_gazebo_gz/#running-the-simulation) (e.g. VTOL, Rovers, fixed-wing etc.).
 :::
 
-After running a standard installation, a simulation can be started from the PX4 **/Firmware** directory using the command:
+After running a standard installation, a simulation can be started from the PX4-Autopilot directory (historically named **Firmware**) using the command:
 * Multicopter (jMAVSim): `make px4_sitl jmavsim`
 * Multicopter (Gazebo): `make px4_sitl gz_x500`
 * VTOL (Gazebo):  `make px4_sitl gz_standard_vtol`
