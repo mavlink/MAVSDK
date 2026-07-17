@@ -58,7 +58,7 @@ int main(int argc, char** argv)
     // subscribe to distance sensor readings
     subscribe_distance_sensor(telemetry);
 
-    // endless loop so that the sensor readings will keep comming
+    // endless loop so that the sensor readings will keep coming
     // will close only with kill or Ctrl+C
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
