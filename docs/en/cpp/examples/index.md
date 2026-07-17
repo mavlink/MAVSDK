@@ -51,7 +51,7 @@ JMAVSim can only be used to simulate multicopters.
 Gazebo additionally supports a number of [other vehicles](https://docs.px4.io/main/en/sim_gazebo_gz/#running-the-simulation) (e.g. VTOL, Rovers, fixed-wing etc.).
 :::
 
-After running a standard installation, a simulation can be started from the PX4 **/Firmware** directory using the command:
+After running a standard installation, a simulation can be started from the PX4-Autopilot directory (historically named **Firmware**) using the command:
 * Multicopter (jMAVSim): `make px4_sitl jmavsim`
 * Multicopter (Gazebo): `make px4_sitl gz_x500`
 * VTOL (Gazebo):  `make px4_sitl gz_standard_vtol`
@@ -62,7 +62,7 @@ After running a standard installation, a simulation can be started from the PX4 
 You can use *QGroundControl* to connect to PX4 and observe vehicle movement and behaviour while the examples are running.
 *QGroundControl* will automatically connect to the PX4 simulation as soon as it is started.
 
-See [QGroundControl > Download and Install](https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html) for information about setting up *QGroundControl* on your platform.
+See [QGroundControl > Download and Install](https://docs.qgroundcontrol.com/en/getting_started/download_and_install.html) for information about setting up *QGroundControl* on your platform.
 
 
 ### Building the Examples {#build_examples}
