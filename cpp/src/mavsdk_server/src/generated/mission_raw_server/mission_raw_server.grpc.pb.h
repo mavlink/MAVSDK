@@ -29,7 +29,7 @@ namespace mavsdk {
 namespace rpc {
 namespace mission_raw_server {
 
-// Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format).
+// Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). 
 // Provides current mission item state, so the server can progress through missions.
 class MissionRawServerService final {
  public:
