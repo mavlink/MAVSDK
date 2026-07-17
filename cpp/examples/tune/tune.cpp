@@ -1,5 +1,5 @@
 //
-// Example how to play a tune using MAVSDK.
+// Example of how to play a tune using MAVSDK.
 //
 
 #include <cstdint>
