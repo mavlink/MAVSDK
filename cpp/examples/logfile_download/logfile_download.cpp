@@ -1,5 +1,5 @@
 //
-// Example how to download logfiles with MAVSDK.
+// Example of how to download logfiles with MAVSDK.
 //
 
 #include <mavsdk/mavsdk.hpp>
