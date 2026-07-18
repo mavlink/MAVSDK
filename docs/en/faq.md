@@ -45,7 +45,7 @@ Note that PX4 currently does not support missions using "local coordinates" (i.e
 MAVSDK, so far, is optimised for use with the PX4 flight stack and most testing is done against PX4.
 That being said, we are more and more trying to test MAVSDK against ArduPilot as well.
 
-While many features work for ArduPilot there are several implementation differences at the [MAVLink microservices level](https://mavlink.io/en/protocol/overview.html) which means that not every API will work.
+While many features work for ArduPilot there are several implementation differences at the [MAVLink microservices level](https://mavlink.io/en/services/) which means that not every API will work.
 For example, PX4 and ArduPilot implement the parameter protocol differently, and vary slightly in the mission upload/download protocol (e.g. ArduPilot uses the 0 entry as the home position).
 
 ::: info
