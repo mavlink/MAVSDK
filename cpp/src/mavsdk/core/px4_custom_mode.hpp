@@ -36,7 +36,7 @@
  * PX4 custom flight modes
  *
  * This file has been copied from
- * https://github.com/PX4/Firmware/blob/master/src/modules/commander/px4_custom_mode.h
+ * https://github.com/PX4/PX4-Autopilot/blob/main/src/modules/commander/px4_custom_mode.h
  *
  *
  */
