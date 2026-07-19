@@ -36,9 +36,9 @@ The following general guidelines should be used for all code:
 * The library is C++20; new contributions and examples should target C++20. The C++ STL is welcome when it improves clarity:
   Examples:
 
-  * [`std::function`](http://en.cppreference.com/w/cpp/utility/functional/function) and [lambda expressions](http://en.cppreference.com/w/cpp/language/lambda)
-  * [`std::vector`](http://en.cppreference.com/w/cpp/container/vector), [`std::map`](http://www.cplusplus.com/reference/map/map/)
-  * [`std::thread`](http://www.cplusplus.com/reference/thread/thread/), [`std::mutex`](http://en.cppreference.com/w/cpp/thread/mutex)
+  * [`std::function`](https://en.cppreference.com/w/cpp/utility/functional/function) and [lambda expressions](https://en.cppreference.com/w/cpp/language/lambda)
+  * [`std::vector`](https://en.cppreference.com/w/cpp/container/vector), [`std::map`](https://cplusplus.com/reference/map/map/)
+  * [`std::thread`](https://cplusplus.com/reference/thread/thread/), [`std::mutex`](https://en.cppreference.com/w/cpp/thread/mutex)
 
 * `using namespace std` is discouraged \([read why](https://stackoverflow.com/questions/1452721/why-is-using-namespace-std-considered-bad-practice)\).
   If needed specific declarations can be used in the source files such as `using std::this_thread::sleep_for` to reduce verbosity.
