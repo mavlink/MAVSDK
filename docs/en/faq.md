@@ -98,7 +98,7 @@ There are multiple ways to support multiple programming languages all with their
    `+` No non-native dependencies (often) in language wrappers.
    `-` Lots of implementation effort required, does not scale well with a small team.
    `-` Languages will not have consistency of feature parity.
-2. Direct language bindings based on [Swig](http://www.swig.org/).
+2. Direct language bindings based on [Swig](https://www.swig.org/).
    `+` Many languages "almost for free".
    `-` Not always optimal/super clean API, unless another layer is written manually.
    `-` Requires linking to non-native dependencies.
