@@ -11,7 +11,7 @@ namespace mavsdk::geometry {
  * coordinates are taken from:
  * http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html
  * and inspired by the implementations in:
- * https://github.com/PX4/PX4-Autopilot/blob/main/src/lib/geo/geo.cpp
+ * https://github.com/PX4/ecl/blob/master/geo/geo.cpp
  */
 class MAVSDK_PUBLIC CoordinateTransformation {
 public:
