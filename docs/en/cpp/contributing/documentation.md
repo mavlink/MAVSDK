@@ -47,7 +47,7 @@ This starts a local dev server at `http://localhost:5173`.
 
 ## API Reference
 
-The C++ public header files are annotated using docstrings using [Doxygen](http://doxygen.nl/manual/index.html) syntax.
+The C++ public header files are annotated using docstrings using [Doxygen](https://www.doxygen.nl/manual/index.html) syntax.
 You can extract the documentation to markdown files (one per class) on macOS or Linux using the instructions in [Build API Reference Documentation](../guide/build_docs.md).
 
 In order to include new API reference in the documentation:
