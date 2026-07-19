@@ -142,7 +142,7 @@ public:
      * MAVLink messages are actually sent.
      *
      * In PX4 v1.9.0 Only first four Control Groups are supported
-     * (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
+     * (https://github.com/PX4/PX4-Autopilot/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
      */
     struct ActuatorControl {
         
