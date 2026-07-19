@@ -62,4 +62,4 @@ The operation of most of this code is discussed in the guide: [Offboard Control]
 ## Source code {#source_code}
 
 - [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/offboard/CMakeLists.txt)
-- [offboard_velocity.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/offboard/offboard.cpp)
+- [offboard.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/offboard/offboard.cpp)
