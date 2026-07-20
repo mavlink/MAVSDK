@@ -48,3 +48,29 @@ TEST(Geometry, LocalToGlobalAndBack)
     EXPECT_NEAR(location.north_m, location_again.north_m, 1e-8);
     EXPECT_NEAR(location.east_m, location_again.east_m, 1e-8);
 }
+
+TEST(Geometry, IdentityAtReference)
+{
+    CoordinateTransformation::GlobalCoordinate ref{47.397742, 8.545594};
+    CoordinateTransformation ct(ref);
+    auto local = ct.local_from_global(ref);
+    EXPECT_NEAR(local.north_m, 0.0, 1e-9);
+    EXPECT_NEAR(local.east_m, 0.0, 1e-9);
+
+    auto back = ct.global_from_local({0.0, 0.0});
+    EXPECT_NEAR(back.latitude_deg, ref.latitude_deg, 1e-12);
+    EXPECT_NEAR(back.longitude_deg, ref.longitude_deg, 1e-12);
+}
+
+TEST(Geometry, PureNorthOffset)
+{
+    CoordinateTransformation ct({0.0, 0.0});
+    // ~111.32 km per degree latitude near equator with R=6371000
+    auto global = ct.global_from_local({111194.92664455874, 0.0});
+    EXPECT_NEAR(global.latitude_deg, 1.0, 1e-6);
+    EXPECT_NEAR(global.longitude_deg, 0.0, 1e-9);
+
+    auto local = ct.local_from_global({1.0, 0.0});
+    EXPECT_NEAR(local.north_m, 111194.92664455874, 1.0);
+    EXPECT_NEAR(local.east_m, 0.0, 1e-6);
+}
