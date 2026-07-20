@@ -93,13 +93,14 @@ TEST(Ringbuffer, EmptyStartsAtZero)
 
 TEST(Ringbuffer, SingleElementIndex)
 {
-    // Ringbuffer advances _index before store on the first push, so a lone
-    // entry is nested behind the default-constructed hole at logical [0].
-    // Document that quirk via operator[] while still covering size / end.
+    // Ringbuffer increments _index before storing, and operator[](i) reads
+    // _storage[(_index + i + 1) % N]. With N=4 a lone push lands at _index=1,
+    // so the value is addressable at logical index [3] (= N - 1). Document
+    // that quirk via operator[] while still covering size / end.
     auto buffer = Ringbuffer<int, 4>{};
     buffer.push(42);
     EXPECT_EQ(buffer.size(), 1u);
-    EXPECT_EQ(buffer[1], 42);
+    EXPECT_EQ(buffer[3], 42);
     auto it = buffer.begin();
     ++it;
     EXPECT_TRUE(it == buffer.end());
