@@ -2,6 +2,7 @@
 #include "mavlink_include.hpp"
 #include <gtest/gtest.h>
 #include <cmath>
+#include <limits>
 
 using namespace mavsdk;
 
@@ -191,4 +192,40 @@ TEST(MathUtils, RadDegFloat)
     ASSERT_FLOAT_EQ(180.0f, to_deg_from_rad(M_PI_F));
     ASSERT_FLOAT_EQ(-180.0f, to_deg_from_rad(-M_PI_F));
     ASSERT_FLOAT_EQ(360.0f, to_deg_from_rad(2.0f * M_PI_F));
+}
+
+TEST(MathUtils, QuaternionEqualityNaNAware)
+{
+    const float nan = std::numeric_limits<float>::quiet_NaN();
+    Quaternion a{1.f, 0.f, 0.f, 0.f};
+    Quaternion b{1.f, 0.f, 0.f, 0.f};
+    EXPECT_TRUE(a == b);
+
+    Quaternion c{1.f, nan, 0.f, 0.f};
+    Quaternion d{1.f, nan, 0.f, 0.f};
+    EXPECT_TRUE(c == d); // NaN components compare equal by design
+
+    Quaternion e{1.f, 0.f, 0.f, 0.f};
+    Quaternion f{0.f, 0.f, 0.f, 1.f};
+    EXPECT_FALSE(e == f);
+
+    Quaternion g{1.f, nan, 0.f, 0.f};
+    Quaternion h{1.f, 0.f, 0.f, 0.f};
+    EXPECT_FALSE(g == h);
+}
+
+TEST(MathUtils, EulerAngleEqualityNaNAware)
+{
+    const float nan = std::numeric_limits<float>::quiet_NaN();
+    EulerAngle a{0.f, 0.f, 0.f};
+    EulerAngle b{0.f, 0.f, 0.f};
+    EXPECT_TRUE(a == b);
+
+    EulerAngle c{nan, 10.f, -5.f};
+    EulerAngle d{nan, 10.f, -5.f};
+    EXPECT_TRUE(c == d);
+
+    EulerAngle e{0.f, 0.f, 0.f};
+    EulerAngle f{1.f, 0.f, 0.f};
+    EXPECT_FALSE(e == f);
 }
