@@ -34,3 +34,40 @@ TEST(Base64, Basic)
 
     EXPECT_EQ(vec, vec_back);
 }
+
+TEST(Base64, Empty)
+{
+    std::vector<uint8_t> empty{};
+    EXPECT_EQ(base64_encode(empty), "");
+    EXPECT_TRUE(base64_decode("").empty());
+}
+
+TEST(Base64, SingleBytePadding)
+{
+    std::vector<uint8_t> one{0x4d}; // 'M'
+    EXPECT_EQ(base64_encode(one), "TQ==");
+    EXPECT_EQ(base64_decode("TQ=="), one);
+}
+
+TEST(Base64, TwoBytePadding)
+{
+    std::vector<uint8_t> two{0x4d, 0x61}; // "Ma"
+    EXPECT_EQ(base64_encode(two), "TWE=");
+    EXPECT_EQ(base64_decode("TWE="), two);
+}
+
+TEST(Base64, ThreeBytesNoPad)
+{
+    std::vector<uint8_t> three{0x4d, 0x61, 0x6e}; // "Man"
+    EXPECT_EQ(base64_encode(three), "TWFu");
+    EXPECT_EQ(base64_decode("TWFu"), three);
+}
+
+TEST(Base64, InvalidAlphabetDoesNotCrash)
+{
+    // Decoder stops at first non-base64 character; must not throw or infinite-loop.
+    auto out = base64_decode("TWFu!!!!");
+    EXPECT_EQ(out, (std::vector<uint8_t>{0x4d, 0x61, 0x6e}));
+    auto junk = base64_decode("@@@@");
+    EXPECT_TRUE(junk.empty());
+}
