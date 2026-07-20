@@ -9,7 +9,9 @@ TEST(Crc32, EmptyIsZero)
 {
     Crc32 crc;
     EXPECT_EQ(crc.get(), 0u);
-    EXPECT_EQ(crc.add(nullptr, 0), 0u);
+    const uint8_t* empty = nullptr;
+    // Zero-length add must not read bytes even if src is null.
+    EXPECT_EQ(crc.add(empty, 0), 0u);
     EXPECT_EQ(crc.get(), 0u);
 }
 
