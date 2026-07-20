@@ -118,4 +118,4 @@ We do have a [number of examples](https://github.com/mavlink/MAVSDK-Python/tree/
 
 Once MAVSDK is installed we recommend you:
 - Try the [other examples](https://github.com/mavlink/MAVSDK-Python/tree/main/examples)
-- Browse the [API reference](http://mavsdk-python-docs.s3-website.eu-central-1.amazonaws.com/) to get an overview of the functionality.
+- Browse the [API reference](https://mavsdk-python-docs.s3-website.eu-central-1.amazonaws.com/) to get an overview of the functionality.
