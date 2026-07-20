@@ -82,3 +82,36 @@ TEST(Ringbuffer, PushAndMutate)
         EXPECT_EQ(buf, expected[i++]);
     }
 }
+
+TEST(Ringbuffer, EmptyStartsAtZero)
+{
+    auto buffer = Ringbuffer<int, 4>{};
+    EXPECT_EQ(buffer.size(), 0u);
+    EXPECT_TRUE(buffer.begin() == buffer.end());
+    EXPECT_TRUE(buffer.cbegin() == buffer.cend());
+}
+
+TEST(Ringbuffer, SingleElementIndex)
+{
+    auto buffer = Ringbuffer<int, 4>{};
+    buffer.push(42);
+    EXPECT_EQ(buffer.size(), 1u);
+    EXPECT_EQ(buffer[0], 42);
+    EXPECT_EQ(*buffer.begin(), 42);
+    auto it = buffer.begin();
+    ++it;
+    EXPECT_TRUE(it == buffer.end());
+}
+
+TEST(Ringbuffer, OperatorIndexAfterWrap)
+{
+    auto buffer = Ringbuffer<int, 3>{};
+    buffer.push(1);
+    buffer.push(2);
+    buffer.push(3);
+    buffer.push(4); // drops 1
+    EXPECT_EQ(buffer.size(), 3u);
+    EXPECT_EQ(buffer[0], 2);
+    EXPECT_EQ(buffer[1], 3);
+    EXPECT_EQ(buffer[2], 4);
+}
