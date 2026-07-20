@@ -124,3 +124,28 @@ TEST(MavlinkParameterCache, MissingIndicesNotSorted)
     std::vector<uint16_t> result = {0, 2};
     EXPECT_EQ(cache.next_missing_indices(3, 10), result);
 }
+
+TEST(ParamValue, FloatDoubleAndBoolBasics)
+{
+    ParamValue f1;
+    f1.set(static_cast<float>(1.5f));
+    ParamValue f2;
+    f2.set(static_cast<float>(1.5f));
+    EXPECT_EQ(f1, f2);
+    f2.set(static_cast<float>(2.5f));
+    EXPECT_NE(f1, f2);
+
+    ParamValue d1;
+    d1.set(static_cast<double>(3.25));
+    ParamValue d2;
+    d2.set(static_cast<double>(3.25));
+    EXPECT_EQ(d1, d2);
+
+    // Different numeric kinds should not compare equal even if values match textually.
+    ParamValue as_int;
+    as_int.set(static_cast<int32_t>(1));
+    ParamValue as_float;
+    as_float.set(static_cast<float>(1.0f));
+    EXPECT_FALSE(as_int.is_same_type(as_float));
+    EXPECT_NE(as_int, as_float);
+}
