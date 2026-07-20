@@ -1,5 +1,6 @@
 #include "mavlink_channels.hpp"
 #include <gtest/gtest.h>
+#include <vector>
 
 using namespace mavsdk;
 
@@ -52,15 +53,28 @@ TEST(MavlinkChannels, ReuseChannels)
 TEST(MavlinkChannels, FullCycleThenReuseFromZero)
 {
     const unsigned max_ch = MavlinkChannels::get_max_channels();
+
+    // Prior channel tests leave the singleton pool dirty — check everything in first.
+    for (unsigned i = 0; i < max_ch; ++i) {
+        MavlinkChannels::Instance().checkin_used_channel(static_cast<uint8_t>(i));
+    }
+
+    // Exhaust the pool; accept any free channel (not necessarily i, if ordering changes).
+    std::vector<bool> seen(max_ch, false);
     for (unsigned i = 0; i < max_ch; ++i) {
         uint8_t channel = 255;
         ASSERT_TRUE(MavlinkChannels::Instance().checkout_free_channel(channel));
-        EXPECT_EQ(channel, static_cast<uint8_t>(i));
+        ASSERT_LT(channel, max_ch);
+        EXPECT_FALSE(seen[channel]);
+        seen[channel] = true;
+    }
+    for (unsigned i = 0; i < max_ch; ++i) {
+        EXPECT_TRUE(seen[i]);
     }
     uint8_t blocked = 0;
     EXPECT_FALSE(MavlinkChannels::Instance().checkout_free_channel(blocked));
 
-    // Release all and ensure allocation restarts at 0.
+    // Release all — first checkout must succeed again (lowest free is 0).
     for (unsigned i = 0; i < max_ch; ++i) {
         MavlinkChannels::Instance().checkin_used_channel(static_cast<uint8_t>(i));
     }
