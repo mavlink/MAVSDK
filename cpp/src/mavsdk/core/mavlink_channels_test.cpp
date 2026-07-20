@@ -48,3 +48,24 @@ TEST(MavlinkChannels, ReuseChannels)
     ASSERT_TRUE(MavlinkChannels::Instance().checkout_free_channel(new_channel));
     ASSERT_EQ(new_channel, 3);
 }
+
+TEST(MavlinkChannels, FullCycleThenReuseFromZero)
+{
+    const unsigned max_ch = MavlinkChannels::get_max_channels();
+    for (unsigned i = 0; i < max_ch; ++i) {
+        uint8_t channel = 255;
+        ASSERT_TRUE(MavlinkChannels::Instance().checkout_free_channel(channel));
+        EXPECT_EQ(channel, static_cast<uint8_t>(i));
+    }
+    uint8_t blocked = 0;
+    EXPECT_FALSE(MavlinkChannels::Instance().checkout_free_channel(blocked));
+
+    // Release all and ensure allocation restarts at 0.
+    for (unsigned i = 0; i < max_ch; ++i) {
+        MavlinkChannels::Instance().checkin_used_channel(static_cast<uint8_t>(i));
+    }
+    uint8_t again = 255;
+    ASSERT_TRUE(MavlinkChannels::Instance().checkout_free_channel(again));
+    EXPECT_EQ(again, 0);
+    MavlinkChannels::Instance().checkin_used_channel(again);
+}
