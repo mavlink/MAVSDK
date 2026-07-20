@@ -82,3 +82,39 @@ TEST(Ringbuffer, PushAndMutate)
         EXPECT_EQ(buf, expected[i++]);
     }
 }
+
+TEST(Ringbuffer, EmptyStartsAtZero)
+{
+    auto buffer = Ringbuffer<int, 4>{};
+    EXPECT_EQ(buffer.size(), 0u);
+    EXPECT_TRUE(buffer.begin() == buffer.end());
+    EXPECT_TRUE(buffer.cbegin() == buffer.cend());
+}
+
+TEST(Ringbuffer, SingleElementIndex)
+{
+    // Ringbuffer increments _index before storing, and operator[](i) reads
+    // _storage[(_index + i + 1) % N]. With N=4 a lone push lands at _index=1,
+    // so the value is addressable at logical index [3] (= N - 1). Document
+    // that quirk via operator[] while still covering size / end.
+    auto buffer = Ringbuffer<int, 4>{};
+    buffer.push(42);
+    EXPECT_EQ(buffer.size(), 1u);
+    EXPECT_EQ(buffer[3], 42);
+    auto it = buffer.begin();
+    ++it;
+    EXPECT_TRUE(it == buffer.end());
+}
+
+TEST(Ringbuffer, OperatorIndexAfterWrap)
+{
+    auto buffer = Ringbuffer<int, 3>{};
+    buffer.push(1);
+    buffer.push(2);
+    buffer.push(3);
+    buffer.push(4); // drops 1
+    EXPECT_EQ(buffer.size(), 3u);
+    EXPECT_EQ(buffer[0], 2);
+    EXPECT_EQ(buffer[1], 3);
+    EXPECT_EQ(buffer[2], 4);
+}
