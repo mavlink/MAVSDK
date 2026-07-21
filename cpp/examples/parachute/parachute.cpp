@@ -20,13 +20,6 @@
 
 using namespace mavsdk;
 
-// MAVLink constants (from MAVLink common.xml)
-static constexpr uint8_t MAV_COMP_ID_PARACHUTE = 161;
-static constexpr uint16_t MAV_CMD_DO_PARACHUTE = 208;
-static constexpr int PARACHUTE_DISABLE = 0;
-static constexpr int PARACHUTE_ENABLE = 1;
-static constexpr int PARACHUTE_RELEASE = 2;
-
 static void usage(const std::string& bin_name)
 {
     std::cerr << "Usage : " << bin_name << " <connection_url>\n"
@@ -66,7 +59,7 @@ static std::optional<float> json_float(const std::string& json, const std::strin
 static void process_command_long(const MavlinkDirect::MavlinkMessage& message, uint8_t our_sysid)
 {
     const auto command = json_float(message.fields_json, "command");
-    if (!command || std::lround(*command) != MAV_CMD_DO_PARACHUTE) {
+    if (!command || std::lround(*command) != static_cast<long>(MAV_CMD_DO_PARACHUTE)) {
         return;
     }
 
