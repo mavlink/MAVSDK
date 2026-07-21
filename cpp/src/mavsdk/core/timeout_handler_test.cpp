@@ -145,3 +145,29 @@ TEST(TimeoutHandler, NextTimeoutRemovedDuringCallback)
 
     UNUSED(cookie1);
 }
+
+TEST(TimeoutHandler, AllTimeoutsRemovedDuringCallback)
+{
+    Time time{};
+    TimeoutHandler th(time);
+
+    TimeoutHandler::Cookie cookie1{};
+    TimeoutHandler::Cookie cookie2{};
+    TimeoutHandler::Cookie cookie3{};
+
+    cookie1 = th.add(
+        [&th, &cookie1, &cookie2, &cookie3]() {
+            // Mirror CallEveryHandler stress: remove every cookie including self
+            // while the first timeout fires.
+            th.remove(cookie1);
+            th.remove(cookie2);
+            th.remove(cookie3);
+        },
+        0.5);
+
+    cookie2 = th.add([]() {}, 0.5);
+    cookie3 = th.add([]() {}, 0.5);
+
+    time.sleep_for(std::chrono::milliseconds(1000));
+    th.run_once();
+}
