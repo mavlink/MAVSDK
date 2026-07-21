@@ -149,3 +149,42 @@ TEST(ParamValue, FloatDoubleAndBoolBasics)
     EXPECT_FALSE(as_int.is_same_type(as_float));
     EXPECT_NE(as_int, as_float);
 }
+
+TEST(ParamValue, TypestrAndNeedsExtended)
+{
+    ParamValue i32;
+    i32.set(static_cast<int32_t>(7));
+    EXPECT_EQ(i32.typestr(), "int32_t");
+    EXPECT_FALSE(i32.needs_extended());
+
+    ParamValue f;
+    f.set(1.5f);
+    EXPECT_EQ(f.typestr(), "float");
+    EXPECT_FALSE(f.needs_extended());
+
+    ParamValue d;
+    d.set(2.5);
+    EXPECT_EQ(d.typestr(), "double");
+    EXPECT_TRUE(d.needs_extended());
+
+    ParamValue s;
+    s.set(std::string("hi"));
+    EXPECT_EQ(s.typestr(), "custom");
+    EXPECT_TRUE(s.needs_extended());
+
+    ParamValue u64;
+    u64.set(static_cast<uint64_t>(9));
+    EXPECT_EQ(u64.typestr(), "uint64_t");
+    EXPECT_TRUE(u64.needs_extended());
+}
+
+TEST(ParamValue, GetStringForCommonTypes)
+{
+    ParamValue i;
+    i.set(static_cast<int32_t>(-3));
+    EXPECT_EQ(i.get_string(), "-3");
+
+    ParamValue s;
+    s.set(std::string("abc"));
+    EXPECT_EQ(s.get_string(), "abc");
+}
