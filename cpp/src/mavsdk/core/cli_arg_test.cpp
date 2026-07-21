@@ -426,3 +426,27 @@ TEST(CliArg, SerialBaudrateTrailingGarbageRejected)
     EXPECT_FALSE(ca.parse("serial://COM13:57600xyz"));
     EXPECT_FALSE(ca.parse("serial_flowcontrol:///dev/ttyS0:4000000nope"));
 }
+
+TEST(CliArg, PortMaxAccepted)
+{
+    CliArg ca;
+    EXPECT_TRUE(ca.parse("udp://127.0.0.1:65535"));
+    auto udp = std::get_if<CliArg::Udp>(&ca.protocol);
+    ASSERT_TRUE(udp);
+    EXPECT_EQ(udp->port, 65535);
+}
+
+TEST(CliArg, PortZeroRejected)
+{
+    CliArg ca;
+    // Port 0 is almost never a valid listen/connect target for our URL forms.
+    EXPECT_FALSE(ca.parse("udp://127.0.0.1:0"));
+    EXPECT_FALSE(ca.parse("tcpout://127.0.0.1:0"));
+}
+
+TEST(CliArg, TcpOutTrailingGarbageRejected)
+{
+    CliArg ca;
+    EXPECT_FALSE(ca.parse("tcpout://127.0.0.1:14550junk"));
+    EXPECT_FALSE(ca.parse("tcpin://0.0.0.0:5760x"));
+}
