@@ -45,12 +45,16 @@ static std::optional<float> json_float(const std::string& json, const std::strin
 {
     const std::string pattern = '"' + key + '"';
     auto pos = json.find(pattern);
-    if (pos == std::string::npos) return std::nullopt;
+    if (pos == std::string::npos)
+        return std::nullopt;
     pos = json.find(':', pos + pattern.size());
-    if (pos == std::string::npos) return std::nullopt;
+    if (pos == std::string::npos)
+        return std::nullopt;
     pos = json.find_first_not_of(" \t\n\r", pos + 1);
-    if (pos == std::string::npos) return std::nullopt;
-    if (json.compare(pos, 4, "null") == 0) return std::numeric_limits<float>::quiet_NaN();
+    if (pos == std::string::npos)
+        return std::nullopt;
+    if (json.compare(pos, 4, "null") == 0)
+        return std::numeric_limits<float>::quiet_NaN();
     try {
         std::size_t len;
         return std::stof(json.substr(pos), &len);
@@ -80,7 +84,8 @@ static void process_command_long(const MavlinkDirect::MavlinkMessage& message, u
     }
 
     const auto param1 = json_float(message.fields_json, "param1");
-    if (!param1) return;
+    if (!param1)
+        return;
 
     const int action = std::lround(*param1);
     switch (action) {
