@@ -5,19 +5,41 @@
 // Author: Julian Oes <julian@oes.ch>
 
 #include <mavsdk/mavsdk.hpp>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.hpp>
+#include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
 #include <chrono>
+#include <cmath>
 #include <cstdint>
 #include <future>
 #include <iostream>
+#include <limits>
 #include <mutex>
+#include <optional>
 #include <sstream>
+#include <string>
 #include <thread>
 
 using namespace mavsdk;
 
 static constexpr auto test_prefix = "[TEST] ";
 static constexpr uint8_t own_sysid = 33;
+
+// MAVLink constants (from MAVLink common.xml)
+static constexpr uint8_t MAV_COMP_ID_GIMBAL = 154;
+static constexpr uint8_t MAV_COMP_ID_GIMBAL2 = 171;
+static constexpr uint8_t MAV_COMP_ID_GIMBAL3 = 172;
+static constexpr uint8_t MAV_COMP_ID_GIMBAL4 = 173;
+static constexpr uint8_t MAV_COMP_ID_GIMBAL5 = 174;
+static constexpr uint8_t MAV_COMP_ID_GIMBAL6 = 175;
+static constexpr uint8_t MAV_TYPE_GIMBAL = 26;
+// ESTIMATOR_STATUS flags (sum of all standard fields)
+static constexpr uint16_t ESTIMATOR_STATUS_ALL = 895;
+static constexpr uint8_t MAV_LANDED_STATE_IN_AIR = 2;
+// GIMBAL_DEVICE_FLAGS
+static constexpr uint16_t GIMBAL_DEVICE_FLAGS_ROLL_LOCK = 4;
+static constexpr uint16_t GIMBAL_DEVICE_FLAGS_PITCH_LOCK = 8;
+static constexpr uint16_t GIMBAL_DEVICE_FLAGS_YAW_LOCK = 16;
+static constexpr uint16_t MAV_CMD_REQUEST_MESSAGE = 512;
+static constexpr uint32_t MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION = 283;
 
 float degrees(float radians)
 {
@@ -35,6 +57,91 @@ float radians(float degrees)
     } else {
         return degrees;
     }
+}
+
+// Hamilton convention, w first: q = {w, x, y, z}
+static void euler_to_quaternion(float roll, float pitch, float yaw, float q[4])
+{
+    const float cr = std::cos(roll * 0.5f);
+    const float sr = std::sin(roll * 0.5f);
+    const float cp = std::cos(pitch * 0.5f);
+    const float sp = std::sin(pitch * 0.5f);
+    const float cy = std::cos(yaw * 0.5f);
+    const float sy = std::sin(yaw * 0.5f);
+    q[0] = cr * cp * cy + sr * sp * sy;
+    q[1] = sr * cp * cy - cr * sp * sy;
+    q[2] = cr * sp * cy + sr * cp * sy;
+    q[3] = cr * cp * sy - sr * sp * cy;
+}
+
+static void quaternion_to_euler(const float q[4], float* roll, float* pitch, float* yaw)
+{
+    *roll = std::atan2(
+        2.0f * (q[0] * q[1] + q[2] * q[3]), 1.0f - 2.0f * (q[1] * q[1] + q[2] * q[2]));
+    const float sinp = 2.0f * (q[0] * q[2] - q[3] * q[1]);
+    *pitch = std::abs(sinp) >= 1.0f ? std::copysign(static_cast<float>(M_PI) / 2.0f, sinp)
+                                    : std::asin(sinp);
+    *yaw = std::atan2(
+        2.0f * (q[0] * q[3] + q[1] * q[2]), 1.0f - 2.0f * (q[2] * q[2] + q[3] * q[3]));
+}
+
+// Extract a float field from a flat JSON object string. Returns quiet_NaN for JSON null.
+static std::optional<float> json_float(const std::string& json, const std::string& key)
+{
+    const std::string pattern = '"' + key + '"';
+    auto pos = json.find(pattern);
+    if (pos == std::string::npos) return std::nullopt;
+    pos = json.find(':', pos + pattern.size());
+    if (pos == std::string::npos) return std::nullopt;
+    pos = json.find_first_not_of(" \t\n\r", pos + 1);
+    if (pos == std::string::npos) return std::nullopt;
+    if (json.compare(pos, 4, "null") == 0) return std::numeric_limits<float>::quiet_NaN();
+    try {
+        std::size_t len;
+        return std::stof(json.substr(pos), &len);
+    } catch (...) {
+        return std::nullopt;
+    }
+}
+
+// Extract a float array from a JSON object string into out[0..n-1]. Returns false on error.
+static bool json_float_array(const std::string& json, const std::string& key, float* out, int n)
+{
+    const std::string pattern = '"' + key + '"';
+    auto pos = json.find(pattern);
+    if (pos == std::string::npos) return false;
+    pos = json.find('[', pos + pattern.size());
+    if (pos == std::string::npos) return false;
+    ++pos;
+    for (int i = 0; i < n; ++i) {
+        pos = json.find_first_not_of(" \t\n\r,", pos);
+        if (pos == std::string::npos) return false;
+        if (json[pos] == ']') return false;
+        if (json.compare(pos, 4, "null") == 0) {
+            out[i] = std::numeric_limits<float>::quiet_NaN();
+            pos += 4;
+        } else {
+            try {
+                std::size_t len;
+                out[i] = std::stof(json.substr(pos), &len);
+                pos += len;
+            } catch (...) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+static std::string float_json(float v)
+{
+    return std::isfinite(v) ? std::to_string(v) : "null";
+}
+
+static std::string float_array_json(const float q[4])
+{
+    return "[" + float_json(q[0]) + "," + float_json(q[1]) + "," + float_json(q[2]) + "," +
+           float_json(q[3]) + "]";
 }
 
 struct ReceiverData {
@@ -148,8 +255,8 @@ private:
 
 class Sender {
 public:
-    explicit Sender(MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data) :
-        _mavlink_passthrough(mavlink_passthrough),
+    explicit Sender(MavlinkDirect& mavlink_direct, AttitudeData& attitude_data) :
+        _mavlink_direct(mavlink_direct),
         _attitude_data(attitude_data),
         _thread(&Sender::run, this)
     {}
@@ -175,39 +282,23 @@ private:
         const auto vehicle_attitude = _attitude_data.vehicle_attitude();
 
         float q[4];
-        mavlink_euler_to_quaternion(
+        euler_to_quaternion(
             radians(vehicle_attitude.roll_deg),
             radians(vehicle_attitude.pitch_deg),
             radians(vehicle_attitude.yaw_deg),
             q);
 
-        const uint16_t estimator_status =
-            ESTIMATOR_ATTITUDE | ESTIMATOR_VELOCITY_HORIZ | ESTIMATOR_VELOCITY_VERT |
-            ESTIMATOR_POS_HORIZ_REL | ESTIMATOR_POS_HORIZ_ABS | ESTIMATOR_POS_VERT_ABS |
-            ESTIMATOR_POS_VERT_AGL | ESTIMATOR_PRED_POS_HORIZ_REL | ESTIMATOR_PRED_POS_HORIZ_ABS;
-
-        _mavlink_passthrough.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
-            mavlink_message_t message;
-            mavlink_msg_autopilot_state_for_gimbal_device_pack_chan(
-                mavlink_address.system_id,
-                mavlink_address.component_id,
-                channel,
-                &message,
-                0, // broadcast
-                0, // broadcast
-                0, // FIXME: time us
-                q,
-                0, // q estimated delay
-                0.0f, // vx
-                0.0f, // vy
-                0.0f, // vz
-                0, // estimated delay
-                0.0f, // feed forward angular velocity z
-                estimator_status,
-                MAV_LANDED_STATE_IN_AIR,
-                NAN); // angular velocity z
-            return message;
-        });
+        MavlinkDirect::MavlinkMessage msg{};
+        msg.message_name = "AUTOPILOT_STATE_FOR_GIMBAL_DEVICE";
+        msg.fields_json =
+            R"({"target_system":0,"target_component":0,"time_boot_us":0,"q":)" +
+            float_array_json(q) +
+            R"(,"q_estimated_delay_us":0,"vx":0.0,"vy":0.0,"vz":0.0,"v_estimated_delay_us":0,)"
+            R"("feed_forward_angular_velocity_z":0.0,"estimator_status":)" +
+            std::to_string(ESTIMATOR_STATUS_ALL) +
+            R"(,"landed_state":)" + std::to_string(MAV_LANDED_STATE_IN_AIR) +
+            R"(,"angular_velocity_z":null})";
+        _mavlink_direct.send_message(msg);
     }
 
     void send_gimbal_device_set_attitude()
@@ -217,8 +308,7 @@ private:
         const auto attitude_setpoint = _attitude_data.attitude_setpoint();
 
         float q[4];
-
-        mavlink_euler_to_quaternion(
+        euler_to_quaternion(
             radians(attitude_setpoint.roll_deg),
             radians(attitude_setpoint.pitch_deg),
             radians(attitude_setpoint.yaw_deg),
@@ -228,25 +318,18 @@ private:
             flags |= GIMBAL_DEVICE_FLAGS_YAW_LOCK;
         }
 
-        _mavlink_passthrough.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
-            mavlink_message_t message;
-            mavlink_msg_gimbal_device_set_attitude_pack_chan(
-                mavlink_address.system_id,
-                mavlink_address.component_id,
-                channel,
-                &message,
-                0, // broadcast
-                0, // broadcast
-                flags,
-                q,
-                radians(attitude_setpoint.roll_rate_deg),
-                radians(attitude_setpoint.pitch_rate_deg),
-                radians(attitude_setpoint.yaw_rate_deg));
-            return message;
-        });
+        MavlinkDirect::MavlinkMessage msg{};
+        msg.message_name = "GIMBAL_DEVICE_SET_ATTITUDE";
+        msg.fields_json =
+            R"({"target_system":0,"target_component":0,"flags":)" + std::to_string(flags) +
+            R"(,"q":)" + float_array_json(q) +
+            R"(,"angular_velocity_x":)" + float_json(radians(attitude_setpoint.roll_rate_deg)) +
+            R"(,"angular_velocity_y":)" + float_json(radians(attitude_setpoint.pitch_rate_deg)) +
+            R"(,"angular_velocity_z":)" + float_json(radians(attitude_setpoint.yaw_rate_deg)) + "}";
+        _mavlink_direct.send_message(msg);
     }
 
-    MavlinkPassthrough& _mavlink_passthrough;
+    MavlinkDirect& _mavlink_direct;
     AttitudeData& _attitude_data;
     std::thread _thread;
     std::atomic<bool> _should_exit{false};
@@ -687,46 +770,52 @@ bool sysid_compid_correct()
     }
 }
 
-bool request_gimbal_device_information(MavlinkPassthrough& mavlink_passthrough)
+bool request_gimbal_device_information(
+    MavlinkDirect& mavlink_direct, std::shared_ptr<System> system)
 {
-    MavlinkPassthrough::CommandLong command{};
-    command.command = MAV_CMD_REQUEST_MESSAGE;
-    command.param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION);
-    command.target_sysid = mavlink_passthrough.get_target_sysid();
-    command.target_compid = mavlink_passthrough.get_target_compid();
-
-    return (mavlink_passthrough.send_command_long(command) == MavlinkPassthrough::Result::Success);
+    MavlinkDirect::MavlinkMessage msg{};
+    msg.message_name = "COMMAND_LONG";
+    msg.fields_json =
+        R"({"target_system":)" + std::to_string(system->get_system_id()) +
+        R"(,"target_component":0,"command":)" + std::to_string(MAV_CMD_REQUEST_MESSAGE) +
+        R"(,"confirmation":0,"param1":)" + std::to_string(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION) +
+        R"(,"param2":0.0,"param3":0.0,"param4":0.0,"param5":0.0,"param6":0.0,"param7":0.0})";
+    return mavlink_direct.send_message(msg) == MavlinkDirect::Result::Success;
 }
 
-bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data)
+bool test_device_information(
+    MavlinkDirect& mavlink_direct, AttitudeData& attitude_data, std::shared_ptr<System> system)
 {
     std::cout << test_prefix << "Requests gimbal device information... " << std::flush;
 
     std::promise<void> prom;
     std::future<void> fut = prom.get_future();
-    MavlinkPassthrough::MessageHandle handle = mavlink_passthrough.subscribe_message(
-        MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION,
-        [&prom, &mavlink_passthrough, &attitude_data, &handle](const mavlink_message_t& message) {
-            mavlink_gimbal_device_information_t information;
-            mavlink_msg_gimbal_device_information_decode(&message, &information);
-
+    MavlinkDirect::MessageHandle handle = mavlink_direct.subscribe_message(
+        "GIMBAL_DEVICE_INFORMATION",
+        [&prom, &mavlink_direct, &attitude_data, &handle](
+            const MavlinkDirect::MavlinkMessage& message) {
             attitude_data.change_gimbal_limits(
-                [&information](AttitudeData::GimbalLimits& gimbal_limits) {
-                    gimbal_limits.roll_min_deg = degrees(information.roll_min);
-                    gimbal_limits.roll_max_deg = degrees(information.roll_max);
-                    gimbal_limits.pitch_min_deg = degrees(information.pitch_min);
-                    gimbal_limits.pitch_max_deg = degrees(information.pitch_max);
-                    gimbal_limits.yaw_min_deg = degrees(information.yaw_min);
-                    gimbal_limits.yaw_max_deg = degrees(information.yaw_max);
+                [&message](AttitudeData::GimbalLimits& gimbal_limits) {
+                    const auto roll_min = json_float(message.fields_json, "roll_min");
+                    const auto roll_max = json_float(message.fields_json, "roll_max");
+                    const auto pitch_min = json_float(message.fields_json, "pitch_min");
+                    const auto pitch_max = json_float(message.fields_json, "pitch_max");
+                    const auto yaw_min = json_float(message.fields_json, "yaw_min");
+                    const auto yaw_max = json_float(message.fields_json, "yaw_max");
+                    if (roll_min) gimbal_limits.roll_min_deg = degrees(*roll_min);
+                    if (roll_max) gimbal_limits.roll_max_deg = degrees(*roll_max);
+                    if (pitch_min) gimbal_limits.pitch_min_deg = degrees(*pitch_min);
+                    if (pitch_max) gimbal_limits.pitch_max_deg = degrees(*pitch_max);
+                    if (yaw_min) gimbal_limits.yaw_min_deg = degrees(*yaw_min);
+                    if (yaw_max) gimbal_limits.yaw_max_deg = degrees(*yaw_max);
                 });
 
             // We only need it once.
-            mavlink_passthrough.unsubscribe_message(
-                MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, handle);
+            mavlink_direct.unsubscribe_message(handle);
             prom.set_value();
         });
 
-    if (!request_gimbal_device_information(mavlink_passthrough)) {
+    if (!request_gimbal_device_information(mavlink_direct, system)) {
         std::cout << "FAIL\n";
         std::cout << "-> could not request gimbal device information\n";
         return false;
@@ -742,23 +831,24 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
     return true;
 }
 
-void subscribe_to_heartbeat(MavlinkPassthrough& mavlink_passthrough)
+void subscribe_to_heartbeat(MavlinkDirect& mavlink_direct)
 {
-    mavlink_passthrough.subscribe_message(
-        MAVLINK_MSG_ID_HEARTBEAT, [](const mavlink_message_t& message) {
-            mavlink_heartbeat_t heartbeat;
-            mavlink_msg_heartbeat_decode(&message, &heartbeat);
+    mavlink_direct.subscribe_message(
+        "HEARTBEAT", [](const MavlinkDirect::MavlinkMessage& message) {
+            const auto type = json_float(message.fields_json, "type");
+            if (!type) return;
 
             {
                 std::lock_guard<std::mutex> lock(receiver_data.mutex);
-                switch (message.compid) {
+                const uint8_t compid = static_cast<uint8_t>(message.component_id);
+                switch (compid) {
                     case MAV_COMP_ID_GIMBAL:
                     case MAV_COMP_ID_GIMBAL2:
                     case MAV_COMP_ID_GIMBAL3:
                     case MAV_COMP_ID_GIMBAL4:
                     case MAV_COMP_ID_GIMBAL5:
                     case MAV_COMP_ID_GIMBAL6:
-                        receiver_data.mav_type = heartbeat.type;
+                        receiver_data.mav_type = static_cast<uint8_t>(std::lround(*type));
                         break;
                     default:
                         break;
@@ -768,24 +858,24 @@ void subscribe_to_heartbeat(MavlinkPassthrough& mavlink_passthrough)
 }
 
 void subscribe_to_gimbal_device_attitude_status(
-    MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data)
+    MavlinkDirect& mavlink_direct, AttitudeData& attitude_data)
 {
-    mavlink_passthrough.subscribe_message(
-        MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
-        [&attitude_data](const mavlink_message_t& message) {
-            mavlink_gimbal_device_attitude_status_t attitude_status;
-            mavlink_msg_gimbal_device_attitude_status_decode(&message, &attitude_status);
-
+    mavlink_direct.subscribe_message(
+        "GIMBAL_DEVICE_ATTITUDE_STATUS",
+        [&attitude_data](const MavlinkDirect::MavlinkMessage& message) {
             {
                 std::lock_guard<std::mutex> lock(receiver_data.mutex);
-                receiver_data.sysid = message.sysid;
-                receiver_data.compid = message.compid;
-                receiver_data.target_sysid = attitude_status.target_system;
-                receiver_data.target_compid = attitude_status.target_component;
+                receiver_data.sysid = static_cast<uint8_t>(message.system_id);
+                receiver_data.compid = static_cast<uint8_t>(message.component_id);
+                receiver_data.target_sysid = static_cast<uint8_t>(message.target_system_id);
+                receiver_data.target_compid = static_cast<uint8_t>(message.target_component_id);
             }
 
+            float q[4];
+            if (!json_float_array(message.fields_json, "q", q, 4)) return;
+
             float roll_rad, pitch_rad, yaw_rad;
-            mavlink_quaternion_to_euler(attitude_status.q, &roll_rad, &pitch_rad, &yaw_rad);
+            quaternion_to_euler(q, &roll_rad, &pitch_rad, &yaw_rad);
 
             attitude_data.change_gimbal_attitude(
                 [&](AttitudeData::GimbalAttitude& gimbal_attitude) {
@@ -849,9 +939,9 @@ int main(int argc, char** argv)
     }
 
     auto system = mavsdk.systems().at(0);
-    MavlinkPassthrough mavlink_passthrough(system);
+    MavlinkDirect mavlink_direct(system);
 
-    subscribe_to_heartbeat(mavlink_passthrough);
+    subscribe_to_heartbeat(mavlink_direct);
 
     AttitudeData attitude_data{};
 
@@ -862,13 +952,13 @@ int main(int argc, char** argv)
         attitude_setpoint.yaw_deg = 0.0f;
     });
 
-    if (!test_device_information(mavlink_passthrough, attitude_data)) {
+    if (!test_device_information(mavlink_direct, attitude_data, system)) {
         return 1;
     }
 
-    subscribe_to_gimbal_device_attitude_status(mavlink_passthrough, attitude_data);
+    subscribe_to_gimbal_device_attitude_status(mavlink_direct, attitude_data);
 
-    Sender sender(mavlink_passthrough, attitude_data);
+    Sender sender(mavlink_direct, attitude_data);
 
     if (!wait_for_yaw_estimator_to_converge(attitude_data)) {
         return 1;

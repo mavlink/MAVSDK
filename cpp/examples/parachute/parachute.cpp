@@ -8,15 +8,24 @@
 //
 
 #include <mavsdk/mavsdk.hpp>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.hpp>
+#include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>
 #include <future>
+#include <limits>
 #include <memory>
+#include <optional>
 #include <thread>
 
 using namespace mavsdk;
+
+// MAVLink constants (from MAVLink common.xml)
+static constexpr uint8_t MAV_COMP_ID_PARACHUTE = 161;
+static constexpr uint16_t MAV_CMD_DO_PARACHUTE = 208;
+static constexpr int PARACHUTE_DISABLE = 0;
+static constexpr int PARACHUTE_ENABLE = 1;
+static constexpr int PARACHUTE_RELEASE = 2;
 
 static void usage(const std::string& bin_name)
 {
@@ -30,29 +39,50 @@ static void usage(const std::string& bin_name)
               << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
-static void process_command_long(const mavlink_message_t& message, uint8_t our_sysid)
+// Extract a float value from a flat JSON object string by field name.
+// Returns quiet_NaN if the field value is JSON null.
+static std::optional<float> json_float(const std::string& json, const std::string& key)
 {
-    mavlink_command_long_t command_long;
-    mavlink_msg_command_long_decode(&message, &command_long);
+    const std::string pattern = '"' + key + '"';
+    auto pos = json.find(pattern);
+    if (pos == std::string::npos) return std::nullopt;
+    pos = json.find(':', pos + pattern.size());
+    if (pos == std::string::npos) return std::nullopt;
+    pos = json.find_first_not_of(" \t\n\r", pos + 1);
+    if (pos == std::string::npos) return std::nullopt;
+    if (json.compare(pos, 4, "null") == 0) return std::numeric_limits<float>::quiet_NaN();
+    try {
+        std::size_t len;
+        return std::stof(json.substr(pos), &len);
+    } catch (...) {
+        return std::nullopt;
+    }
+}
 
-    // Only listen to parachute commands.
-    if (command_long.command != MAV_CMD_DO_PARACHUTE) {
+static void process_command_long(const MavlinkDirect::MavlinkMessage& message, uint8_t our_sysid)
+{
+    const auto command = json_float(message.fields_json, "command");
+    if (!command || std::lround(*command) != MAV_CMD_DO_PARACHUTE) {
         return;
     }
 
-    // Check if it's meant for us.
-    if (command_long.target_system != 0 && command_long.target_system != our_sysid) {
+    // target_system_id and target_component_id are pre-parsed from the message fields.
+    if (message.target_system_id != 0 &&
+        static_cast<uint8_t>(message.target_system_id) != our_sysid) {
         std::cout << "Received parachute command_long, but not for us (wrong target_system).\n";
         return;
     }
 
-    if (command_long.target_component != 0 &&
-        command_long.target_component != MAV_COMP_ID_PARACHUTE) {
+    if (message.target_component_id != 0 &&
+        static_cast<uint8_t>(message.target_component_id) != MAV_COMP_ID_PARACHUTE) {
         std::cout << "Received parachute command_long, but not for us (wrong target_component).\n";
         return;
     }
 
-    const int action = std::lround(command_long.param1);
+    const auto param1 = json_float(message.fields_json, "param1");
+    if (!param1) return;
+
+    const int action = std::lround(*param1);
     switch (action) {
         case PARACHUTE_DISABLE:
             // Actual implementation would go here.
@@ -67,7 +97,7 @@ static void process_command_long(const mavlink_message_t& message, uint8_t our_s
             std::cout << "Parachute release!\n";
             break;
         default:
-            std::cerr << "Unknown parachute action (" << command_long.param1 << ")\n";
+            std::cerr << "Unknown parachute action (" << *param1 << ")\n";
             break;
     }
 }
@@ -129,10 +159,10 @@ int main(int argc, char* argv[])
     }
 
     // Instantiate plugins.
-    auto mavlink_passthrough = MavlinkPassthrough{system};
+    auto mavlink_direct = MavlinkDirect{system};
 
-    mavlink_passthrough.subscribe_message(
-        MAVLINK_MSG_ID_COMMAND_LONG, [&our_sysid](const mavlink_message_t& message) {
+    mavlink_direct.subscribe_message(
+        "COMMAND_LONG", [&our_sysid](const MavlinkDirect::MavlinkMessage& message) {
             process_command_long(message, our_sysid);
         });
 

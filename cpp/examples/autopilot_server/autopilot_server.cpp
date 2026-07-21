@@ -4,7 +4,6 @@
 #include <thread>
 
 #include <mavsdk/mavsdk.hpp>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.hpp>
 #include <mavsdk/plugins/telemetry/telemetry.hpp>
 #include <mavsdk/plugins/action/action.hpp>
 #include <mavsdk/plugins/param_server/param_server.hpp>
