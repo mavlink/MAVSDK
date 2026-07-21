@@ -47,3 +47,23 @@ TEST(Crc32, Single0xFF)
     Crc32 crc;
     EXPECT_EQ(crc.add(data, 1), 0x2d02ef8du);
 }
+
+TEST(Crc32, LongerVectorIncrementalMatches)
+{
+    std::vector<uint8_t> data(256);
+    for (size_t i = 0; i < data.size(); ++i) {
+        data[i] = static_cast<uint8_t>(i);
+    }
+
+    Crc32 oneshot;
+    oneshot.add(data.data(), static_cast<uint32_t>(data.size()));
+
+    Crc32 stepwise;
+    stepwise.add(data.data(), 50);
+    stepwise.add(data.data() + 50, 100);
+    stepwise.add(data.data() + 150, 106);
+
+    EXPECT_EQ(stepwise.get(), oneshot.get());
+    // Stable golden for MAVLink CRC32 of bytes 0..255.
+    EXPECT_EQ(oneshot.get(), 0x2493092bu);
+}
