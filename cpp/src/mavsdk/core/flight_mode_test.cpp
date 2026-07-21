@@ -73,13 +73,16 @@ TEST(FlightMode, Px4AutoSubModes)
 TEST(FlightMode, ArduCopter)
 {
     EXPECT_EQ(
-        to_flight_mode_from_ardupilot_copter_mode(static_cast<uint32_t>(ardupilot::CopterMode::Auto)),
+        to_flight_mode_from_ardupilot_copter_mode(
+            static_cast<uint32_t>(ardupilot::CopterMode::Auto)),
         FlightMode::Mission);
     EXPECT_EQ(
-        to_flight_mode_from_ardupilot_copter_mode(static_cast<uint32_t>(ardupilot::CopterMode::Land)),
+        to_flight_mode_from_ardupilot_copter_mode(
+            static_cast<uint32_t>(ardupilot::CopterMode::Land)),
         FlightMode::Land);
     EXPECT_EQ(
-        to_flight_mode_from_ardupilot_copter_mode(static_cast<uint32_t>(ardupilot::CopterMode::Rtl)),
+        to_flight_mode_from_ardupilot_copter_mode(
+            static_cast<uint32_t>(ardupilot::CopterMode::Rtl)),
         FlightMode::ReturnToLaunch);
     EXPECT_EQ(
         to_flight_mode_from_ardupilot_copter_mode(
@@ -100,7 +103,8 @@ TEST(FlightMode, ArduPlane)
         to_flight_mode_from_ardupilot_plane_mode(static_cast<uint32_t>(ardupilot::PlaneMode::Fbwb)),
         FlightMode::FBWB);
     EXPECT_EQ(
-        to_flight_mode_from_ardupilot_plane_mode(static_cast<uint32_t>(ardupilot::PlaneMode::Takeoff)),
+        to_flight_mode_from_ardupilot_plane_mode(
+            static_cast<uint32_t>(ardupilot::PlaneMode::Takeoff)),
         FlightMode::Takeoff);
     EXPECT_EQ(
         to_flight_mode_from_ardupilot_plane_mode(static_cast<uint32_t>(ardupilot::PlaneMode::Auto)),
@@ -116,7 +120,8 @@ TEST(FlightMode, ArduRover)
         to_flight_mode_from_ardupilot_rover_mode(static_cast<uint32_t>(ardupilot::RoverMode::RTL)),
         FlightMode::ReturnToLaunch);
     EXPECT_EQ(
-        to_flight_mode_from_ardupilot_rover_mode(static_cast<uint32_t>(ardupilot::RoverMode::Manual)),
+        to_flight_mode_from_ardupilot_rover_mode(
+            static_cast<uint32_t>(ardupilot::RoverMode::Manual)),
         FlightMode::Manual);
 }
 
