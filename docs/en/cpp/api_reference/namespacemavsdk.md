@@ -86,6 +86,7 @@ MAVSDK_PUBLIC [Quaternion](structmavsdk_1_1_quaternion.md) | [operator*](#namesp
 constexpr T | [to_rad_from_deg](#namespacemavsdk_1adca90fd4bd3af244bfde5561bc8d72d8) (T deg) | Convert degrees to radians.
 constexpr T | [to_deg_from_rad](#namespacemavsdk_1a43239ca183cfc12177d974821150f857) (T rad) | Convert radians to degrees.
 constexpr T | [constrain](#namespacemavsdk_1a37295e1b92021003968aa7f9b4f86d6e) (T input, T min, T max) | Clamp a value to a closed interval [min, max].
+MAVSDK_PUBLIC bool | [is_valid_heartbeat_watchdog_timeout_s](#namespacemavsdk_1a7be9f6b5e0a1cfdff8dcf242aa68d851) (double timeout_s) | Check whether a heartbeat watchdog timeout is valid.
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
 std::ostream & | [operator<<](#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
 [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a4dede924df915e32b4807aa87a98b5bb) (MAV_TYPE type) | Convert a 'MAV_TYPE' to a `Vehicle`.
@@ -567,6 +568,27 @@ Clamp a value to a closed interval [min, max].
 **Returns**
 
 &emsp;constexpr T - input clamped to [min, max].
+
+### is_valid_heartbeat_watchdog_timeout_s() {#namespacemavsdk_1a7be9f6b5e0a1cfdff8dcf242aa68d851}
+
+```
+#include: mavsdk.hpp
+```
+```cpp
+MAVSDK_PUBLIC bool mavsdk::is_valid_heartbeat_watchdog_timeout_s(double timeout_s)
+```
+
+
+Check whether a heartbeat watchdog timeout is valid.
+
+
+**Parameters**
+
+* double **timeout_s** - 
+
+**Returns**
+
+&emsp;MAVSDK_PUBLIC bool - true if timeout_s is 0 (disabled), or finite and at least heartbeat_watchdog_min_timeout_s.
 
 ### overloaded() {#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552}
 

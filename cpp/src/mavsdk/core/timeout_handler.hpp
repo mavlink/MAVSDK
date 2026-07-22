@@ -25,7 +25,9 @@ public:
     using Cookie = uint64_t;
 
     [[nodiscard]] Cookie add(std::function<void()> callback, double duration_s);
-    void refresh(Cookie cookie);
+    // Returns false if no timeout with this cookie exists (e.g. it already
+    // expired and was removed).
+    bool refresh(Cookie cookie);
     void remove(Cookie cookie);
 
     void run_once();

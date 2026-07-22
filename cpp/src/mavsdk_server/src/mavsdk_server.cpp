@@ -41,9 +41,12 @@ public:
 
     int getPort() { return _grpc_port; }
 
-    void setMavlinkIds(uint8_t system_id, uint8_t component_id)
+    void setMavlinkIds(
+        uint8_t system_id, uint8_t component_id, double heartbeat_watchdog_timeout_s = 0.0)
     {
-        _mavsdk.set_configuration(mavsdk::Mavsdk::Configuration{system_id, component_id, false});
+        auto config = mavsdk::Mavsdk::Configuration{system_id, component_id, false};
+        config.set_heartbeat_watchdog_timeout_s(heartbeat_watchdog_timeout_s);
+        _mavsdk.set_configuration(config);
     }
 
 private:
@@ -84,4 +87,10 @@ int MavsdkServer::getPort()
 void MavsdkServer::setMavlinkIds(uint8_t system_id, uint8_t component_id)
 {
     _impl->setMavlinkIds(system_id, component_id);
+}
+
+void MavsdkServer::setMavlinkIds(
+    uint8_t system_id, uint8_t component_id, double heartbeat_watchdog_timeout_s)
+{
+    _impl->setMavlinkIds(system_id, component_id, heartbeat_watchdog_timeout_s);
 }

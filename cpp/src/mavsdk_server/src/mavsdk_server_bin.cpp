@@ -1,6 +1,8 @@
 #include "mavsdk_server_api.h"
+#include "mavsdk.hpp"
 
 #include <cctype>
+#include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <string>
@@ -9,6 +11,7 @@ static auto constexpr default_connection = "udpin://0.0.0.0:14540";
 static auto constexpr default_mavsdk_server_port = 50051;
 static auto constexpr default_sysid = 245;
 static auto constexpr default_compid = 190;
+static auto constexpr default_heartbeat_watchdog_timeout_s = 0.0;
 
 static void usage(const char* bin_name);
 static bool is_integer(const std::string& tested_integer);
@@ -19,6 +22,7 @@ int main(int argc, char** argv)
     int mavsdk_server_port = default_mavsdk_server_port;
     int mavsdk_sysid = default_sysid;
     int mavsdk_compid = default_compid;
+    double heartbeat_watchdog_timeout_s = default_heartbeat_watchdog_timeout_s;
 
     for (int i = 1; i < argc; i++) {
         const std::string current_arg = argv[i];
@@ -81,6 +85,23 @@ int main(int argc, char** argv)
                 usage(argv[0]);
                 return 1;
             }
+        } else if (current_arg == "--heartbeat-watchdog-timeout") {
+            if (argc <= i + 1) {
+                usage(argv[0]);
+                return 1;
+            }
+
+            const std::string timeout(argv[i + 1]);
+            i++;
+
+            char* end = nullptr;
+            heartbeat_watchdog_timeout_s = std::strtod(timeout.c_str(), &end);
+
+            if (end == timeout.c_str() || *end != '\0' ||
+                !mavsdk::is_valid_heartbeat_watchdog_timeout_s(heartbeat_watchdog_timeout_s)) {
+                usage(argv[0]);
+                return 1;
+            }
         } else {
             connection_url = current_arg;
         }
@@ -88,12 +109,13 @@ int main(int argc, char** argv)
 
     MavsdkServer* mavsdk_server;
     mavsdk_server_init(&mavsdk_server);
-    const int ret = mavsdk_server_run_with_mavlink_ids(
+    const int ret = mavsdk_server_run_with_mavlink_ids_and_options(
         mavsdk_server,
         connection_url.c_str(),
         mavsdk_server_port,
         static_cast<uint8_t>(mavsdk_sysid),
-        static_cast<uint8_t>(mavsdk_compid));
+        static_cast<uint8_t>(mavsdk_compid),
+        heartbeat_watchdog_timeout_s);
 
     if (ret != 0) {
         std::cout << "Failed to start, exiting...\n";
@@ -128,7 +150,13 @@ void usage(const char* bin_name)
               << "  --sysid     : set the MAVLink system ID of the MAVSDK server itself,\n"
               << "                (default is " << default_sysid << ", range 1..255)\n"
               << "  --compid    : set the MAVLink component ID of the MAVSDK server itself,\n"
-              << "                (default is " << default_compid << ", range 1..255)\n";
+              << "                (default is " << default_compid << ", range 1..255)\n"
+              << "  --heartbeat-watchdog-timeout :\n"
+              << "                set the heartbeat watchdog timeout in seconds; when greater\n"
+              << "                than 0, heartbeats are only sent while the\n"
+              << "                FeedHeartbeatWatchdog RPC keeps being called within the\n"
+              << "                timeout period; must be 0 (disabled) or at least 1 second\n"
+              << "                (default is 0, watchdog disabled)\n";
 }
 
 bool is_integer(const std::string& tested_integer)

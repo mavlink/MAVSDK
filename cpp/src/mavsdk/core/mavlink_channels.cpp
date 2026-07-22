@@ -2,6 +2,13 @@
 
 namespace mavsdk {
 
+MavlinkChannels& MavlinkChannels::Instance()
+{
+    // Thread-safe in C++11.
+    static MavlinkChannels instance;
+    return instance;
+}
+
 MavlinkChannels::MavlinkChannels() : _channels_used{}, _channels_used_mutex() {}
 
 bool MavlinkChannels::checkout_free_channel(uint8_t& new_channel)
