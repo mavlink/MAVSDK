@@ -380,7 +380,7 @@ class Action:
     def return_to_launch_async(self, callback: Callable, user_data: Any = None):
         """Send command to return to the launch (takeoff) position and land.
 
-        This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
+        This switches the drone into [Return mode](https://docs.px4.io/main/en/flight_modes_mc/return.html) which
         generally means it will rise up to a certain altitude to clear any obstacles before heading
         back to the launch (takeoff) position and land there."""
 

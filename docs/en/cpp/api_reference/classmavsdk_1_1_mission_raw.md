@@ -545,7 +545,7 @@ void mavsdk::MissionRaw::pause_mission_async(const ResultCallback callback)
 
 Pause the mission.
 
-Pausing the mission puts the vehicle into [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html). A multicopter should just hover at the spot while a fixedwing vehicle should loiter around the location where it paused.
+Pausing the mission puts the vehicle into [HOLD mode](https://docs.px4.io/main/en/flight_modes_mc/hold.html). A multicopter should just hover at the spot while a fixedwing vehicle should loiter around the location where it paused.
 
 
 This function is non-blocking. See 'pause_mission' for the blocking counterpart.
@@ -562,7 +562,7 @@ Result mavsdk::MissionRaw::pause_mission() const
 
 Pause the mission.
 
-Pausing the mission puts the vehicle into [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html). A multicopter should just hover at the spot while a fixedwing vehicle should loiter around the location where it paused.
+Pausing the mission puts the vehicle into [HOLD mode](https://docs.px4.io/main/en/flight_modes_mc/hold.html). A multicopter should just hover at the spot while a fixedwing vehicle should loiter around the location where it paused.
 
 
 This function is blocking. See 'pause_mission_async' for the non-blocking counterpart.
