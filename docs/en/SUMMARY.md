@@ -258,4 +258,5 @@
 * [iOS/Swift](swift/index.md)
 * [Python](python/index.md)
     * [QuickStart](python/quickstart.md)
+    * [Migrating from MAVSDK-Python](python/migration.md)
 * [FAQ](faq.md)
