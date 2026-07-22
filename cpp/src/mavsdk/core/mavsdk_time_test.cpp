@@ -50,3 +50,57 @@ TEST(Time, ElapsedIncreasing)
     double now = time.elapsed_s();
     ASSERT_GT(now, before);
 }
+
+TEST(Time, ShiftSteadyTimeByPositiveAndNegative)
+{
+    Time time{};
+    SteadyTimePoint base = time.steady_time();
+
+    SteadyTimePoint shifted = base;
+    Time::shift_steady_time_by(shifted, 0.25);
+    auto forward_ms =
+        std::chrono::duration_cast<std::chrono::milliseconds>(shifted - base).count();
+    EXPECT_EQ(forward_ms, 250);
+
+    SteadyTimePoint back = shifted;
+    Time::shift_steady_time_by(back, -0.25);
+    auto back_ms = std::chrono::duration_cast<std::chrono::milliseconds>(back - base).count();
+    EXPECT_EQ(back_ms, 0);
+}
+
+TEST(Time, ElapsedMsAndUsMonotonic)
+{
+    Time time{};
+    const uint64_t ms1 = time.elapsed_ms();
+    const uint64_t us1 = time.elapsed_us();
+    time.sleep_for(std::chrono::milliseconds(5));
+    const uint64_t ms2 = time.elapsed_ms();
+    const uint64_t us2 = time.elapsed_us();
+    EXPECT_GE(ms2, ms1);
+    EXPECT_GT(us2, us1);
+}
+
+TEST(FakeTime, SleepAdvancesWithoutWallClock)
+{
+    FakeTime ft{};
+    SteadyTimePoint t0 = ft.steady_time();
+    ft.sleep_for(std::chrono::milliseconds(250));
+    SteadyTimePoint t1 = ft.steady_time();
+    // FakeTime adds ~50us overhead per sleep
+    auto advanced = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+    EXPECT_GE(advanced, 250);
+    EXPECT_LT(advanced, 260);
+}
+
+TEST(AutopilotTime, ShiftAndTimeIn)
+{
+    AutopilotTime at{};
+    SystemTimePoint local = SystemTimePoint(std::chrono::milliseconds(1000000));
+    AutopilotTimePoint before = at.time_in(local);
+
+    at.shift_time_by(std::chrono::milliseconds(500));
+    AutopilotTimePoint after = at.time_in(local);
+
+    auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
+    EXPECT_EQ(delta, 500);
+}
