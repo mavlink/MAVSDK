@@ -100,7 +100,7 @@ typedef enum {
  * @brief Flight modes.
  *
  * For more information about flight modes, check out
- * https://docs.px4.io/master/en/config/flight_mode.html.
+ * https://docs.px4.io/main/en/config/flight_mode.html.
  */
 typedef enum {
     /**  Mode not known. */

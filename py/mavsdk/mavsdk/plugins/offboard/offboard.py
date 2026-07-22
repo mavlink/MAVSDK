@@ -256,7 +256,7 @@ class ActuatorControl:
     MAVLink messages are actually sent.
 
     In PX4 v1.9.0 Only first four Control Groups are supported
-    (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
+    (https://github.com/PX4/PX4-Autopilot/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
     """
 
     def __init__(self, groups=None):
@@ -606,7 +606,7 @@ class Offboard:
     def stop_async(self, callback: Callable, user_data: Any = None):
         """Stop offboard control.
 
-        The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html"""
+        The vehicle will be put into Hold mode: https://docs.px4.io/main/en/flight_modes_mc/hold.html"""
 
         def c_callback(result, ud):
             try:

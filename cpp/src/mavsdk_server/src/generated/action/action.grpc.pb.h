@@ -151,7 +151,7 @@ class ActionService final {
     //
     // Send command to return to the launch (takeoff) position and land.
     //
-    // This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
+    // This switches the drone into [Return mode](https://docs.px4.io/main/en/flight_modes_mc/return.html) which
     // generally means it will rise up to a certain altitude to clear any obstacles before heading
     // back to the launch (takeoff) position and land there.
     virtual ::grpc::Status ReturnToLaunch(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest& request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response) = 0;
@@ -391,7 +391,7 @@ class ActionService final {
       //
       // Send command to return to the launch (takeoff) position and land.
       //
-      // This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
+      // This switches the drone into [Return mode](https://docs.px4.io/main/en/flight_modes_mc/return.html) which
       // generally means it will rise up to a certain altitude to clear any obstacles before heading
       // back to the launch (takeoff) position and land there.
       virtual void ReturnToLaunch(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -910,7 +910,7 @@ class ActionService final {
     //
     // Send command to return to the launch (takeoff) position and land.
     //
-    // This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
+    // This switches the drone into [Return mode](https://docs.px4.io/main/en/flight_modes_mc/return.html) which
     // generally means it will rise up to a certain altitude to clear any obstacles before heading
     // back to the launch (takeoff) position and land there.
     virtual ::grpc::Status ReturnToLaunch(::grpc::ServerContext* context, const ::mavsdk::rpc::action::ReturnToLaunchRequest* request, ::mavsdk::rpc::action::ReturnToLaunchResponse* response);
