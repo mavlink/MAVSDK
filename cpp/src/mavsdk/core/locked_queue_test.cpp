@@ -343,3 +343,60 @@ TEST(LockedQueue, WaitAndPopFrontMultipleWaiters)
     // The queue should now be empty
     EXPECT_EQ(locked_queue.size(), 0);
 }
+
+TEST(LockedQueue, StopUnblocksWaitAndPopFront)
+{
+    LockedQueue<int> q{};
+
+    auto fut = std::async(std::launch::async, [&q]() {
+        LockedQueue<int>::Guard guard(q);
+        return guard.wait_and_pop_front();
+    });
+
+    // Give the waiter time to block.
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    q.stop();
+
+    auto result = fut.get();
+    EXPECT_FALSE(static_cast<bool>(result));
+}
+
+TEST(LockedQueue, RestartAllowsPushAfterStop)
+{
+    LockedQueue<int> q{};
+    q.stop();
+
+    {
+        LockedQueue<int>::Guard guard(q);
+        // Still stopped: waiter would bail; restart then push.
+    }
+    q.restart();
+
+    q.push_back(std::make_shared<int>(7));
+    EXPECT_EQ(q.size(), 1u);
+
+    {
+        LockedQueue<int>::Guard guard(q);
+        auto item = guard.wait_and_pop_front();
+        ASSERT_TRUE(item);
+        EXPECT_EQ(*item, 7);
+    }
+    EXPECT_EQ(q.size(), 0u);
+}
+
+TEST(LockedQueue, WaitAndPopFrontReceivesPush)
+{
+    LockedQueue<int> q{};
+
+    auto fut = std::async(std::launch::async, [&q]() {
+        LockedQueue<int>::Guard guard(q);
+        return guard.wait_and_pop_front();
+    });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(30));
+    q.push_back(std::make_shared<int>(42));
+
+    auto item = fut.get();
+    ASSERT_TRUE(item);
+    EXPECT_EQ(*item, 42);
+}

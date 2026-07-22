@@ -87,8 +87,8 @@ constexpr T | [to_rad_from_deg](#namespacemavsdk_1adca90fd4bd3af244bfde5561bc8d7
 constexpr T | [to_deg_from_rad](#namespacemavsdk_1a43239ca183cfc12177d974821150f857) (T rad) | Convert radians to degrees.
 constexpr T | [constrain](#namespacemavsdk_1a37295e1b92021003968aa7f9b4f86d6e) (T input, T min, T max) | Clamp a value to a closed interval [min, max].
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
-std::ostream & | [operator<<](#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
-[Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a4dede924df915e32b4807aa87a98b5bb) (MAV_TYPE type) | Convert a 'MAV_TYPE' to a `Vehicle`.
+MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1a8cfa1330cee2ef5c82f295a04d98ec4a) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
+MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a1dc5c6283534037a928da210be121a3e) (MAV_TYPE type) | Convert a 'MAV_TYPE' to a `Vehicle`.
 
 ## Enumeration Type Documentation
 
@@ -585,13 +585,13 @@ Template deduction helper for `overloaded`
 
 * Ts...  - 
 
-### operator<<() {#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd}
+### operator<<() {#namespacemavsdk_1a8cfa1330cee2ef5c82f295a04d98ec4a}
 
 ```
 #include: vehicle.hpp
 ```
 ```cpp
-std::ostream & mavsdk::operator<<(std::ostream &os, const Vehicle &vehicle)
+MAVSDK_PUBLIC std::ostream & mavsdk::operator<<(std::ostream &os, const Vehicle &vehicle)
 ```
 
 
@@ -605,15 +605,15 @@ Stream operator to print information about a `Vehicle`.
 
 **Returns**
 
-&emsp;std::ostream & - A reference to the stream.
+&emsp;MAVSDK_PUBLIC std::ostream & - A reference to the stream.
 
-### to_vehicle_from_mav_type() {#namespacemavsdk_1a4dede924df915e32b4807aa87a98b5bb}
+### to_vehicle_from_mav_type() {#namespacemavsdk_1a1dc5c6283534037a928da210be121a3e}
 
 ```
 #include: vehicle.hpp
 ```
 ```cpp
-Vehicle mavsdk::to_vehicle_from_mav_type(MAV_TYPE type)
+MAVSDK_PUBLIC Vehicle mavsdk::to_vehicle_from_mav_type(MAV_TYPE type)
 ```
 
 
@@ -626,4 +626,4 @@ Convert a 'MAV_TYPE' to a `Vehicle`.
 
 **Returns**
 
-&emsp;[Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) - The corresponding `Vehicle`.
+&emsp;MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) - The corresponding `Vehicle`.
