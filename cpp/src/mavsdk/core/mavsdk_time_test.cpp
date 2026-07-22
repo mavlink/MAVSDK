@@ -50,3 +50,61 @@ TEST(Time, ElapsedIncreasing)
     double now = time.elapsed_s();
     ASSERT_GT(now, before);
 }
+
+TEST(Time, ShiftSteadyTimeByPositiveAndNegative)
+{
+    Time time{};
+    SteadyTimePoint base = time.steady_time();
+
+    SteadyTimePoint shifted = base;
+    Time::shift_steady_time_by(shifted, 0.25);
+    auto forward_ms =
+        std::chrono::duration_cast<std::chrono::milliseconds>(shifted - base).count();
+    EXPECT_EQ(forward_ms, 250);
+
+    SteadyTimePoint back = shifted;
+    Time::shift_steady_time_by(back, -0.25);
+    auto back_ms = std::chrono::duration_cast<std::chrono::milliseconds>(back - base).count();
+    EXPECT_EQ(back_ms, 0);
+}
+
+TEST(Time, SteadyTimeAdvancesWithSleep)
+{
+    // Use steady_time() so this is valid under FAKE_TIME (where Time is
+    // #define'd to FakeTime and sleep_for advances the fake clock only).
+    // elapsed_ms()/elapsed_us() always read the wall steady_clock and would
+    // not advance during FakeTime::sleep_for.
+    Time time{};
+    const SteadyTimePoint t1 = time.steady_time();
+    time.sleep_for(std::chrono::milliseconds(5));
+    const SteadyTimePoint t2 = time.steady_time();
+    EXPECT_GT(t2, t1);
+    const auto advanced_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+    EXPECT_GE(advanced_us, 5000);
+}
+
+TEST(FakeTime, SleepAdvancesWithoutWallClock)
+{
+    FakeTime ft{};
+    SteadyTimePoint t0 = ft.steady_time();
+    ft.sleep_for(std::chrono::milliseconds(250));
+    SteadyTimePoint t1 = ft.steady_time();
+    // FakeTime adds ~50us overhead per sleep
+    auto advanced = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+    EXPECT_GE(advanced, 250);
+    EXPECT_LT(advanced, 260);
+}
+
+TEST(AutopilotTime, ShiftAndTimeIn)
+{
+    AutopilotTime at{};
+    SystemTimePoint local = SystemTimePoint(std::chrono::milliseconds(1000000));
+    AutopilotTimePoint before = at.time_in(local);
+
+    at.shift_time_by(std::chrono::milliseconds(500));
+    AutopilotTimePoint after = at.time_in(local);
+
+    auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
+    EXPECT_EQ(delta, 500);
+}

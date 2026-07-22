@@ -259,3 +259,24 @@ TEST(MathUtils, EulerZeroRoundTrip)
     EXPECT_NEAR(back.pitch_deg, 0.f, 1e-4);
     EXPECT_NEAR(back.yaw_deg, 0.f, 1e-4);
 }
+
+TEST(MathUtils, ConstrainInsideAndOutside)
+{
+    EXPECT_EQ(constrain(5, 0, 10), 5);
+    EXPECT_EQ(constrain(-3, 0, 10), 0);
+    EXPECT_EQ(constrain(15, 0, 10), 10);
+    EXPECT_FLOAT_EQ(constrain(0.5f, 0.0f, 1.0f), 0.5f);
+    EXPECT_FLOAT_EQ(constrain(-1.0f, 0.0f, 1.0f), 0.0f);
+    EXPECT_FLOAT_EQ(constrain(2.0f, 0.0f, 1.0f), 1.0f);
+}
+
+TEST(MathUtils, ConstrainKeepsAsinDomain)
+{
+    // Euler pitch path clamps the asinf argument to [-1, 1].
+    const float over = constrain(1.5f, -1.0f, 1.0f);
+    const float under = constrain(-1.5f, -1.0f, 1.0f);
+    EXPECT_FLOAT_EQ(over, 1.0f);
+    EXPECT_FLOAT_EQ(under, -1.0f);
+    EXPECT_FALSE(std::isnan(asinf(over)));
+    EXPECT_FALSE(std::isnan(asinf(under)));
+}

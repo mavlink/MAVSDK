@@ -49,7 +49,7 @@ private:
     void add_overhead();
 };
 
-class AutopilotTime {
+class MAVSDK_TEST_EXPORT AutopilotTime {
 public:
     AutopilotTime() = default;
     virtual ~AutopilotTime() = default;
