@@ -136,6 +136,10 @@ void | [unsubscribe_tracking_off_command](#classmavsdk_1_1_camera_server_1a13d8e
 [Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_tracking_point_command](#classmavsdk_1_1_camera_server_1a8749824a1326cc0a7c441fb7c59b9507) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) stop_video_feedback)const | Respond to an incoming tracking point command.
 [Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_tracking_rectangle_command](#classmavsdk_1_1_camera_server_1a2de79ab19b5d51e6760eb3173e9c6f77) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) stop_video_feedback)const | Respond to an incoming tracking rectangle command.
 [Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_tracking_off_command](#classmavsdk_1_1_camera_server_1a31e8a3a8996ae48afbacbef38d31e209) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) stop_video_feedback)const | Respond to an incoming tracking off command.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [set_position](#classmavsdk_1_1_camera_server_1aee649f5b8fa7db7f74deebc18058cbc2) ([Position](structmavsdk_1_1_camera_server_1_1_position.md) position)const | Set the camera's GPS position.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [set_attitude_quaternion](#classmavsdk_1_1_camera_server_1aeeafba3a35282f6bb2060c1856d58210) ([Quaternion](structmavsdk_1_1_camera_server_1_1_quaternion.md) attitude_quaternion)const | Set the camera's attitude quaternion.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [set_zoom_factor](#classmavsdk_1_1_camera_server_1a7cf67492b8e3de09d0ada977bac5f72d) (float zoom_factor)const | Set the camera's zoom factor for CAMERA_FOV_STATUS reporting.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [set_field_of_view](#classmavsdk_1_1_camera_server_1ab2c068c98c0a215041f5115d2844852a) (float horizontal_fov_deg, float vertical_fov_deg)const | Set the field of view explicitly, for cameras that do not report a zoom factor.
 const [CameraServer](classmavsdk_1_1_camera_server.md) & | [operator=](#classmavsdk_1_1_camera_server_1a6b516bbddcbaa2867d1a11be8eda14bd) (const [CameraServer](classmavsdk_1_1_camera_server.md) &)=delete | Equality operator (object is not copyable).
 
 
@@ -1476,6 +1480,79 @@ This function is blocking.
 **Parameters**
 
 * [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **stop_video_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### set_position() {#classmavsdk_1_1_camera_server_1aee649f5b8fa7db7f74deebc18058cbc2}
+```cpp
+Result mavsdk::CameraServer::set_position(Position position) const
+```
+
+
+Set the camera's GPS position.
+
+This function is blocking.
+
+**Parameters**
+
+* [Position](structmavsdk_1_1_camera_server_1_1_position.md) **position** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### set_attitude_quaternion() {#classmavsdk_1_1_camera_server_1aeeafba3a35282f6bb2060c1856d58210}
+```cpp
+Result mavsdk::CameraServer::set_attitude_quaternion(Quaternion attitude_quaternion) const
+```
+
+
+Set the camera's attitude quaternion.
+
+This function is blocking.
+
+**Parameters**
+
+* [Quaternion](structmavsdk_1_1_camera_server_1_1_quaternion.md) **attitude_quaternion** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### set_zoom_factor() {#classmavsdk_1_1_camera_server_1a7cf67492b8e3de09d0ada977bac5f72d}
+```cpp
+Result mavsdk::CameraServer::set_zoom_factor(float zoom_factor) const
+```
+
+
+Set the camera's zoom factor for CAMERA_FOV_STATUS reporting.
+
+This function is blocking.
+
+**Parameters**
+
+* float **zoom_factor** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### set_field_of_view() {#classmavsdk_1_1_camera_server_1ab2c068c98c0a215041f5115d2844852a}
+```cpp
+Result mavsdk::CameraServer::set_field_of_view(float horizontal_fov_deg, float vertical_fov_deg) const
+```
+
+
+Set the field of view explicitly, for cameras that do not report a zoom factor.
+
+This function is blocking.
+
+**Parameters**
+
+* float **horizontal_fov_deg** - 
+* float **vertical_fov_deg** - 
 
 **Returns**
 
