@@ -74,3 +74,25 @@ TEST(Geometry, PureNorthOffset)
     EXPECT_NEAR(local.north_m, 111194.92664455874, 1.0);
     EXPECT_NEAR(local.east_m, 0.0, 1e-6);
 }
+
+TEST(Geometry, PureEastOffsetAtEquator)
+{
+    CoordinateTransformation ct({0.0, 0.0});
+    // longitude degrees ≈ east_m / (R * cos(lat)); at equator cos=1
+    auto global = ct.global_from_local({0.0, 111194.92664455874});
+    EXPECT_NEAR(global.latitude_deg, 0.0, 1e-6);
+    EXPECT_NEAR(global.longitude_deg, 1.0, 1e-6);
+
+    auto local = ct.local_from_global({0.0, 1.0});
+    EXPECT_NEAR(local.north_m, 0.0, 1.0);
+    EXPECT_NEAR(local.east_m, 111194.92664455874, 1.0);
+}
+
+TEST(Geometry, SmallSouthEastRoundtrip)
+{
+    CoordinateTransformation ct({47.397742, 8.545594});
+    CoordinateTransformation::LocalCoordinate loc{-25.5, 40.25};
+    auto again = ct.local_from_global(ct.global_from_local(loc));
+    EXPECT_NEAR(loc.north_m, again.north_m, 1e-6);
+    EXPECT_NEAR(loc.east_m, again.east_m, 1e-6);
+}
