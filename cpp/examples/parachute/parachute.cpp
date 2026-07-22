@@ -9,16 +9,16 @@
 
 #include <mavsdk/mavsdk.hpp>
 #include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
+#include <nlohmann/json.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>
 #include <future>
-#include <limits>
 #include <memory>
-#include <optional>
 #include <thread>
 
 using namespace mavsdk;
+using json = nlohmann::json;
 
 static void usage(const std::string& bin_name)
 {
@@ -32,34 +32,14 @@ static void usage(const std::string& bin_name)
               << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
-// Extract a float value from a flat JSON object string by field name.
-// Returns quiet_NaN if the field value is JSON null.
-static std::optional<float> json_float(const std::string& json, const std::string& key)
-{
-    const std::string pattern = '"' + key + '"';
-    auto pos = json.find(pattern);
-    if (pos == std::string::npos)
-        return std::nullopt;
-    pos = json.find(':', pos + pattern.size());
-    if (pos == std::string::npos)
-        return std::nullopt;
-    pos = json.find_first_not_of(" \t\n\r", pos + 1);
-    if (pos == std::string::npos)
-        return std::nullopt;
-    if (json.compare(pos, 4, "null") == 0)
-        return std::numeric_limits<float>::quiet_NaN();
-    try {
-        std::size_t len;
-        return std::stof(json.substr(pos), &len);
-    } catch (...) {
-        return std::nullopt;
-    }
-}
-
 static void process_command_long(const MavlinkDirect::MavlinkMessage& message, uint8_t our_sysid)
 {
-    const auto command = json_float(message.fields_json, "command");
-    if (!command || std::lround(*command) != static_cast<long>(MAV_CMD_DO_PARACHUTE)) {
+    const auto fields = json::parse(message.fields_json, nullptr, false);
+    if (fields.is_discarded())
+        return;
+
+    if (!fields.contains("command") || !fields["command"].is_number() ||
+        std::lround(fields["command"].get<float>()) != static_cast<long>(MAV_CMD_DO_PARACHUTE)) {
         return;
     }
 
@@ -76,11 +56,10 @@ static void process_command_long(const MavlinkDirect::MavlinkMessage& message, u
         return;
     }
 
-    const auto param1 = json_float(message.fields_json, "param1");
-    if (!param1)
+    if (!fields.contains("param1") || !fields["param1"].is_number())
         return;
 
-    const int action = std::lround(*param1);
+    const int action = std::lround(fields["param1"].get<float>());
     switch (action) {
         case PARACHUTE_DISABLE:
             // Actual implementation would go here.
@@ -95,7 +74,7 @@ static void process_command_long(const MavlinkDirect::MavlinkMessage& message, u
             std::cout << "Parachute release!\n";
             break;
         default:
-            std::cerr << "Unknown parachute action (" << *param1 << ")\n";
+            std::cerr << "Unknown parachute action (" << action << ")\n";
             break;
     }
 }

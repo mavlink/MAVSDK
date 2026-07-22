@@ -6,6 +6,7 @@
 #include <mavsdk/mavsdk.hpp>
 #include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
 #include <mavsdk/plugins/telemetry/telemetry.hpp>
+#include <nlohmann/json.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>
@@ -14,7 +15,7 @@
 #include <thread>
 
 using namespace mavsdk;
-using std::chrono::seconds;
+using json = nlohmann::json;
 
 static void subscribe_armed(Telemetry& telemetry);
 static void send_battery_status(MavlinkDirect& mavlink_direct);
@@ -81,24 +82,24 @@ void send_battery_status(MavlinkDirect& mavlink_direct)
     msg.message_name = "BATTERY_STATUS";
 
     // Two cells at 3700 mV and 3600 mV; remaining slots are 65535 (not used).
-    // Enum values: MAV_BATTERY_FUNCTION_ALL=1, MAV_BATTERY_TYPE_LION=3,
-    //              MAV_BATTERY_CHARGE_STATE_OK=1, MAV_BATTERY_MODE_UNKNOWN=0
-    msg.fields_json = R"({
-        "id": 0,
-        "battery_function": 1,
-        "type": 3,
-        "temperature": 2500,
-        "voltages": [3700, 3600, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535],
-        "current_battery": 4000,
-        "current_consumed": 1000,
-        "energy_consumed": -1,
-        "battery_remaining": 80,
-        "time_remaining": 3600,
-        "charge_state": 1,
-        "voltages_ext": [0, 0, 0, 0],
-        "mode": 0,
-        "fault_bitmask": 0
-    })";
+    msg.fields_json =
+        json{
+            {"id", 0},
+            {"battery_function", MAV_BATTERY_FUNCTION_ALL},
+            {"type", MAV_BATTERY_TYPE_LION},
+            {"temperature", 2500},
+            {"voltages", {3700, 3600, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535}},
+            {"current_battery", 4000},
+            {"current_consumed", 1000},
+            {"energy_consumed", -1},
+            {"battery_remaining", 80},
+            {"time_remaining", 3600},
+            {"charge_state", MAV_BATTERY_CHARGE_STATE_OK},
+            {"voltages_ext", {0, 0, 0, 0}},
+            {"mode", MAV_BATTERY_MODE_UNKNOWN},
+            {"fault_bitmask", 0},
+        }
+            .dump();
 
     mavlink_direct.send_message(msg);
 }
