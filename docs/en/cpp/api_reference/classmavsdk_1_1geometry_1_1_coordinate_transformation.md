@@ -7,7 +7,7 @@
 This is a utility class for coordinate transformations. 
 
 
-The projections used to transform from global (lat/lon) to local (meter) coordinates are taken from: [http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html](http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html) and inspired by the implementations in: [https://github.com/PX4/PX4-Autopilot/blob/main/src/lib/geo/geo.cpp](https://github.com/PX4/PX4-Autopilot/blob/main/src/lib/geo/geo.cpp) 
+The projections used to transform from global (lat/lon) to local (meter) coordinates are taken from: [http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html](http://mathworld.wolfram.com/AzimuthalEquidistantProjection.html) and inspired by the implementations in: [https://github.com/PX4/ecl/blob/master/geo/geo.cpp](https://github.com/PX4/ecl/blob/master/geo/geo.cpp) 
 
 
 ## Data Structures
