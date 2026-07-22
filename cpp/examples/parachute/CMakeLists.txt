@@ -10,9 +10,11 @@ add_executable(parachute
 )
 
 find_package(MAVSDK REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 target_link_libraries(parachute
     MAVSDK::mavsdk
+    nlohmann_json::nlohmann_json
 )
 
 if(NOT MSVC)

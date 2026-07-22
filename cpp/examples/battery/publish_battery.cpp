@@ -4,8 +4,9 @@
 // Author: Julian Oes <julian@oes.ch>
 
 #include <mavsdk/mavsdk.hpp>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.hpp>
+#include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
 #include <mavsdk/plugins/telemetry/telemetry.hpp>
+#include <nlohmann/json.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>
@@ -14,10 +15,10 @@
 #include <thread>
 
 using namespace mavsdk;
-using std::chrono::seconds;
+using json = nlohmann::json;
 
 static void subscribe_armed(Telemetry& telemetry);
-static void send_battery_status(MavlinkPassthrough& mavlink_passthrough);
+static void send_battery_status(MavlinkDirect& mavlink_direct);
 
 void usage(const std::string& bin_name)
 {
@@ -57,12 +58,12 @@ int main(int argc, char** argv)
 
     // Instantiate plugins.
     auto telemetry = Telemetry{system.value()};
-    auto mavlink_passthrough = MavlinkPassthrough{system.value()};
+    auto mavlink_direct = MavlinkDirect{system.value()};
 
     subscribe_armed(telemetry);
 
     while (true) {
-        send_battery_status(mavlink_passthrough);
+        send_battery_status(mavlink_direct);
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
@@ -75,43 +76,30 @@ void subscribe_armed(Telemetry& telemetry)
         [](bool is_armed) { std::cout << (is_armed ? "armed" : "disarmed") << '\n'; });
 }
 
-void send_battery_status(MavlinkPassthrough& mavlink_passthrough)
+void send_battery_status(MavlinkDirect& mavlink_direct)
 {
-    const uint16_t voltages[10]{
-        3700,
-        3600,
-        std::numeric_limits<uint16_t>::max(),
-        std::numeric_limits<uint16_t>::max(),
-        std::numeric_limits<uint16_t>::max(),
-        std::numeric_limits<uint16_t>::max(),
-        std::numeric_limits<uint16_t>::max(),
-        std::numeric_limits<uint16_t>::max(),
-        std::numeric_limits<uint16_t>::max(),
-        std::numeric_limits<uint16_t>::max()}; // mV
+    MavlinkDirect::MavlinkMessage msg{};
+    msg.message_name = "BATTERY_STATUS";
 
-    const uint16_t voltages_ext[4]{0, 0, 0, 0};
+    // Two cells at 3700 mV and 3600 mV; remaining slots are 65535 (not used).
+    msg.fields_json =
+        json{
+            {"id", 0},
+            {"battery_function", MAV_BATTERY_FUNCTION_ALL},
+            {"type", MAV_BATTERY_TYPE_LION},
+            {"temperature", 2500},
+            {"voltages", {3700, 3600, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535}},
+            {"current_battery", 4000},
+            {"current_consumed", 1000},
+            {"energy_consumed", -1},
+            {"battery_remaining", 80},
+            {"time_remaining", 3600},
+            {"charge_state", MAV_BATTERY_CHARGE_STATE_OK},
+            {"voltages_ext", {0, 0, 0, 0}},
+            {"mode", MAV_BATTERY_MODE_UNKNOWN},
+            {"fault_bitmask", 0},
+        }
+            .dump();
 
-    mavlink_passthrough.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
-        mavlink_message_t message;
-        mavlink_msg_battery_status_pack_chan(
-            mavlink_address.system_id,
-            mavlink_address.component_id,
-            channel,
-            &message,
-            0, // id
-            MAV_BATTERY_FUNCTION_ALL, // battery_function
-            MAV_BATTERY_TYPE_LION, // type
-            2500, // 100*temperature C
-            &voltages[0],
-            4000, // 100*current_battery A
-            1000, // current_consumed, mAh
-            -1, // energy consumed hJ
-            80, // battery_remaining %
-            3600, // time_remaining
-            MAV_BATTERY_CHARGE_STATE_OK,
-            voltages_ext,
-            MAV_BATTERY_MODE_UNKNOWN, // mode
-            0); // fault_bitmask
-        return message;
-    });
+    mavlink_direct.send_message(msg);
 }

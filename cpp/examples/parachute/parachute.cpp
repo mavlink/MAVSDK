@@ -8,7 +8,8 @@
 //
 
 #include <mavsdk/mavsdk.hpp>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.hpp>
+#include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
+#include <nlohmann/json.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>
@@ -17,6 +18,7 @@
 #include <thread>
 
 using namespace mavsdk;
+using json = nlohmann::json;
 
 static void usage(const std::string& bin_name)
 {
@@ -30,29 +32,34 @@ static void usage(const std::string& bin_name)
               << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
-static void process_command_long(const mavlink_message_t& message, uint8_t our_sysid)
+static void process_command_long(const MavlinkDirect::MavlinkMessage& message, uint8_t our_sysid)
 {
-    mavlink_command_long_t command_long;
-    mavlink_msg_command_long_decode(&message, &command_long);
+    const auto fields = json::parse(message.fields_json, nullptr, false);
+    if (fields.is_discarded())
+        return;
 
-    // Only listen to parachute commands.
-    if (command_long.command != MAV_CMD_DO_PARACHUTE) {
+    if (!fields.contains("command") || !fields["command"].is_number() ||
+        std::lround(fields["command"].get<float>()) != static_cast<long>(MAV_CMD_DO_PARACHUTE)) {
         return;
     }
 
-    // Check if it's meant for us.
-    if (command_long.target_system != 0 && command_long.target_system != our_sysid) {
+    // target_system_id and target_component_id are pre-parsed from the message fields.
+    if (message.target_system_id != 0 &&
+        static_cast<uint8_t>(message.target_system_id) != our_sysid) {
         std::cout << "Received parachute command_long, but not for us (wrong target_system).\n";
         return;
     }
 
-    if (command_long.target_component != 0 &&
-        command_long.target_component != MAV_COMP_ID_PARACHUTE) {
+    if (message.target_component_id != 0 &&
+        static_cast<uint8_t>(message.target_component_id) != MAV_COMP_ID_PARACHUTE) {
         std::cout << "Received parachute command_long, but not for us (wrong target_component).\n";
         return;
     }
 
-    const int action = std::lround(command_long.param1);
+    if (!fields.contains("param1") || !fields["param1"].is_number())
+        return;
+
+    const int action = std::lround(fields["param1"].get<float>());
     switch (action) {
         case PARACHUTE_DISABLE:
             // Actual implementation would go here.
@@ -67,7 +74,7 @@ static void process_command_long(const mavlink_message_t& message, uint8_t our_s
             std::cout << "Parachute release!\n";
             break;
         default:
-            std::cerr << "Unknown parachute action (" << command_long.param1 << ")\n";
+            std::cerr << "Unknown parachute action (" << action << ")\n";
             break;
     }
 }
@@ -129,10 +136,10 @@ int main(int argc, char* argv[])
     }
 
     // Instantiate plugins.
-    auto mavlink_passthrough = MavlinkPassthrough{system};
+    auto mavlink_direct = MavlinkDirect{system};
 
-    mavlink_passthrough.subscribe_message(
-        MAVLINK_MSG_ID_COMMAND_LONG, [&our_sysid](const mavlink_message_t& message) {
+    mavlink_direct.subscribe_message(
+        "COMMAND_LONG", [&our_sysid](const MavlinkDirect::MavlinkMessage& message) {
             process_command_long(message, our_sysid);
         });
 
