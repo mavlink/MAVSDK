@@ -58,8 +58,7 @@ TEST(Time, ShiftSteadyTimeByPositiveAndNegative)
 
     SteadyTimePoint shifted = base;
     Time::shift_steady_time_by(shifted, 0.25);
-    auto forward_ms =
-        std::chrono::duration_cast<std::chrono::milliseconds>(shifted - base).count();
+    auto forward_ms = std::chrono::duration_cast<std::chrono::milliseconds>(shifted - base).count();
     EXPECT_EQ(forward_ms, 250);
 
     SteadyTimePoint back = shifted;
@@ -79,8 +78,7 @@ TEST(Time, SteadyTimeAdvancesWithSleep)
     time.sleep_for(std::chrono::milliseconds(5));
     const SteadyTimePoint t2 = time.steady_time();
     EXPECT_GT(t2, t1);
-    const auto advanced_us =
-        std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+    const auto advanced_us = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
     EXPECT_GE(advanced_us, 5000);
 }
 
