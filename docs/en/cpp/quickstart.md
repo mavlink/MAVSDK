@@ -53,7 +53,7 @@ docker run --rm -it jonasvautherin/px4-gazebo-headless:1.15.3
 You can use *QGroundControl* to connect the simulator and observe vehicle movement and behaviour while the examples are running.
 *QGroundControl* will automatically connect to the PX4 simulation as soon as it is started.
 
-See [QGroundControl > Download and Install](https://docs.qgroundcontrol.com/en/getting_started/download_and_install.html) for information about setting up *QGroundControl* on your platform.
+See [QGroundControl > Download and Install](https://docs.qgroundcontrol.com/master/en/qgc-user-guide/getting_started/download_and_install.html) for information about setting up *QGroundControl* on your platform.
 
 
 ## Build and Try Example {#build_examples}

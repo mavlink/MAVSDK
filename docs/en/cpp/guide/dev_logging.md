@@ -15,12 +15,12 @@ It is not exported, or intended, for use in SDK apps (and we do not commit to ma
 
 ### Usage
 
-The API is defined in [src/core/log.h](https://github.com/mavlink/MAVSDK/blob/main/cpp/src/mavsdk/core/log.h).
+The API is defined in [cpp/src/mavsdk/core/log.hpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/src/mavsdk/core/log.hpp).
 
 The API methods are called as shown below for `LogDebug()`, with the insertion operator (`<<`) used to append the message-specific text.
 
 ```cpp
-#include "../path-to/core/log.h"
+#include "log.hpp"
 ...
 LogDebug() << "command unsupported (" << something.mavlink_command << ").";
 ```

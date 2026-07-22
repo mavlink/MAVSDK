@@ -28,7 +28,7 @@ Those parts are maintained manually:
 * New plugins need to be added to `mavsdk_server` (this may be automated in future)
 * The `System` wrapper in language bindings usually needs to be updated whenever a new plugin is added (this may be automated in future)
 
-The heart of the autogeneration system is the [MAVSDK-Proto](https://github.com/mavlink/mavsdk-proto) repository which is described [below](#mechanisms).
+The heart of the autogeneration system is the [MAVSDK-Proto](https://github.com/mavlink/MAVSDK-Proto) repository which is described [below](#mechanisms).
 
 ## Autogeneration Mechanisms {#mechanisms}
 

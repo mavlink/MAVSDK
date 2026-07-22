@@ -45,7 +45,7 @@ Note that PX4 currently does not support missions using "local coordinates" (i.e
 MAVSDK, so far, is optimised for use with the PX4 flight stack and most testing is done against PX4.
 That being said, we are more and more trying to test MAVSDK against ArduPilot as well.
 
-While many features work for ArduPilot there are several implementation differences at the [MAVLink microservices level](https://mavlink.io/en/protocol/overview.html) which means that not every API will work.
+While many features work for ArduPilot there are several implementation differences at the [MAVLink microservices level](https://mavlink.io/en/services/) which means that not every API will work.
 For example, PX4 and ArduPilot implement the parameter protocol differently, and vary slightly in the mission upload/download protocol (e.g. ArduPilot uses the 0 entry as the home position).
 
 ::: info
@@ -98,7 +98,7 @@ There are multiple ways to support multiple programming languages all with their
    `+` No non-native dependencies (often) in language wrappers.
    `-` Lots of implementation effort required, does not scale well with a small team.
    `-` Languages will not have consistency of feature parity.
-2. Direct language bindings based on [Swig](http://www.swig.org/).
+2. Direct language bindings based on [Swig](https://www.swig.org/).
    `+` Many languages "almost for free".
    `-` Not always optimal/super clean API, unless another layer is written manually.
    `-` Requires linking to non-native dependencies.
