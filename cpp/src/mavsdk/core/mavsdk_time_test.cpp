@@ -68,16 +68,20 @@ TEST(Time, ShiftSteadyTimeByPositiveAndNegative)
     EXPECT_EQ(back_ms, 0);
 }
 
-TEST(Time, ElapsedMsAndUsMonotonic)
+TEST(Time, SteadyTimeAdvancesWithSleep)
 {
+    // Use steady_time() so this is valid under FAKE_TIME (where Time is
+    // #define'd to FakeTime and sleep_for advances the fake clock only).
+    // elapsed_ms()/elapsed_us() always read the wall steady_clock and would
+    // not advance during FakeTime::sleep_for.
     Time time{};
-    const uint64_t ms1 = time.elapsed_ms();
-    const uint64_t us1 = time.elapsed_us();
+    const SteadyTimePoint t1 = time.steady_time();
     time.sleep_for(std::chrono::milliseconds(5));
-    const uint64_t ms2 = time.elapsed_ms();
-    const uint64_t us2 = time.elapsed_us();
-    EXPECT_GE(ms2, ms1);
-    EXPECT_GT(us2, us1);
+    const SteadyTimePoint t2 = time.steady_time();
+    EXPECT_GT(t2, t1);
+    const auto advanced_us =
+        std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+    EXPECT_GE(advanced_us, 5000);
 }
 
 TEST(FakeTime, SleepAdvancesWithoutWallClock)
