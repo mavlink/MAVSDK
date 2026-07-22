@@ -14,9 +14,11 @@ add_executable(subscribe_battery
 )
 
 find_package(MAVSDK REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 target_link_libraries(publish_battery
     MAVSDK::mavsdk
+    nlohmann_json::nlohmann_json
 )
 
 target_link_libraries(subscribe_battery

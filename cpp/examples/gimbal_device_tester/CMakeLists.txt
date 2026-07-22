@@ -10,10 +10,12 @@ add_executable(gimbal_device_tester
 )
 
 find_package(MAVSDK REQUIRED)
+find_package(nlohmann_json REQUIRED)
 find_package(Threads REQUIRED)
 
 target_link_libraries(gimbal_device_tester
     MAVSDK::mavsdk
+    nlohmann_json::nlohmann_json
     Threads::Threads
 )
 
