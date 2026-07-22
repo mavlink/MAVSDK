@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include "mavlink_include.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -44,13 +45,13 @@ enum class Vehicle {
  *
  * @return A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& os, const Vehicle& vehicle);
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& os, const Vehicle& vehicle);
 
 /**
  * @brief Convert a 'MAV_TYPE' to a `Vehicle`.
  *
  * @return The corresponding `Vehicle`.
  */
-Vehicle to_vehicle_from_mav_type(MAV_TYPE type);
+MAVSDK_PUBLIC Vehicle to_vehicle_from_mav_type(MAV_TYPE type);
 
 } // namespace mavsdk
