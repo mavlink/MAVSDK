@@ -229,3 +229,33 @@ TEST(MathUtils, EulerAngleEqualityNaNAware)
     EulerAngle f{1.f, 0.f, 0.f};
     EXPECT_FALSE(e == f);
 }
+
+TEST(MathUtils, QuaternionIdentityMultiply)
+{
+    Quaternion id{1.f, 0.f, 0.f, 0.f};
+    Quaternion q = to_quaternion_from_euler_angle(EulerAngle{10.f, -20.f, 30.f});
+    Quaternion left = id * q;
+    Quaternion right = q * id;
+    EXPECT_NEAR(left.w, q.w, 1e-5);
+    EXPECT_NEAR(left.x, q.x, 1e-5);
+    EXPECT_NEAR(left.y, q.y, 1e-5);
+    EXPECT_NEAR(left.z, q.z, 1e-5);
+    EXPECT_NEAR(right.w, q.w, 1e-5);
+    EXPECT_NEAR(right.x, q.x, 1e-5);
+    EXPECT_NEAR(right.y, q.y, 1e-5);
+    EXPECT_NEAR(right.z, q.z, 1e-5);
+}
+
+TEST(MathUtils, EulerZeroRoundTrip)
+{
+    EulerAngle z{0.f, 0.f, 0.f};
+    auto q = to_quaternion_from_euler_angle(z);
+    EXPECT_NEAR(q.w, 1.f, 1e-5);
+    EXPECT_NEAR(q.x, 0.f, 1e-5);
+    EXPECT_NEAR(q.y, 0.f, 1e-5);
+    EXPECT_NEAR(q.z, 0.f, 1e-5);
+    auto back = to_euler_angle_from_quaternion(q);
+    EXPECT_NEAR(back.roll_deg, 0.f, 1e-4);
+    EXPECT_NEAR(back.pitch_deg, 0.f, 1e-4);
+    EXPECT_NEAR(back.yaw_deg, 0.f, 1e-4);
+}
