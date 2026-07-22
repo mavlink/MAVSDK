@@ -286,7 +286,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/crc32_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/flight_mode_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/fs_utils_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/param_value_xml_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/connection_result_test.cpp
 )
 
 if (NOT BUILD_WITHOUT_CURL)
