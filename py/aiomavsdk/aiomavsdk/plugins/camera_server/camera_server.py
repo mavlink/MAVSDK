@@ -871,6 +871,78 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_tracking_off_command(stop_video_feedback)
         )
 
+    async def set_position(self, position):
+        """
+        Set the camera's GPS position.
+
+        Parameters
+        ----------
+        position : Position
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.set_position(position)
+        )
+
+    async def set_attitude_quaternion(self, attitude_quaternion):
+        """
+        Set the camera's attitude quaternion.
+
+        Parameters
+        ----------
+        attitude_quaternion : Quaternion
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.set_attitude_quaternion(attitude_quaternion)
+        )
+
+    async def set_zoom_factor(self, zoom_factor):
+        """
+        Set the camera's zoom factor for CAMERA_FOV_STATUS reporting.
+
+        Parameters
+        ----------
+        zoom_factor : float
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.set_zoom_factor(zoom_factor)
+        )
+
+    async def set_field_of_view(self, horizontal_fov_deg, vertical_fov_deg):
+        """
+        Set the field of view explicitly, for cameras that do not report a zoom factor.
+
+        Parameters
+        ----------
+        horizontal_fov_deg : float
+        vertical_fov_deg : float
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None,
+            lambda: self._plugin.set_field_of_view(
+                horizontal_fov_deg, vertical_fov_deg
+            ),
+        )
+
     def destroy(self):
         self._subscription_handles.clear()
         self._plugin.destroy()

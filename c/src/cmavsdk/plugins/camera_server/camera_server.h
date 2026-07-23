@@ -1466,6 +1466,67 @@ mavsdk_camera_server_respond_tracking_off_command(
     mavsdk_camera_server_camera_feedback_t stop_video_feedback);
 
 
+/**
+ * @brief Get the current set position (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_position_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_set_position(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_position_t position);
+
+
+/**
+ * @brief Get the current set attitude quaternion (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_attitude_quaternion_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_set_attitude_quaternion(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_quaternion_t attitude_quaternion);
+
+
+/**
+ * @brief Get the current set zoom factor (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_zoom_factor_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_set_zoom_factor(
+    mavsdk_camera_server_t camera_server,
+    float zoom_factor);
+
+
+/**
+ * @brief Get the current set field of view (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_field_of_view_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_set_field_of_view(
+    mavsdk_camera_server_t camera_server,
+    float horizontal_fov_deg,
+    float vertical_fov_deg);
+
+
 #ifdef __cplusplus
 }
 #endif

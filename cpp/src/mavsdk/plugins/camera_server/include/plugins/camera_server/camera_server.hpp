@@ -1355,6 +1355,70 @@ public:
 
 
 
+
+
+    /**
+     * @brief Set the camera's GPS position.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_position(Position position) const;
+
+
+
+
+
+
+    /**
+     * @brief Set the camera's attitude quaternion.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_attitude_quaternion(Quaternion attitude_quaternion) const;
+
+
+
+
+
+
+    /**
+     * @brief Set the camera's zoom factor for CAMERA_FOV_STATUS reporting.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_zoom_factor(float zoom_factor) const;
+
+
+
+
+
+
+    /**
+     * @brief Set the field of view explicitly, for cameras that do not report a zoom factor.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_field_of_view(float horizontal_fov_deg, float vertical_fov_deg) const;
+
+
+
+
     /**
      * @brief Copy constructor.
      */
