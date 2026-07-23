@@ -47,7 +47,7 @@ This keeps working indefinitely, but receives no further updates.
 
 Beyond the API itself:
 
-- **No `grpcio` dependency**, and no `mavsdk_server` subprocess. The package wraps the MAVSDK C library directly.
+- **No `grpcio` dependency**, and no `mavsdk_server` subprocess. The package wraps the MAVSDK C++ library via the C wrapper directly.
 - **Two interfaces.** `mavsdk` exposes a synchronous, callback-based API; `mavsdk.asyncio` exposes an asyncio API close in spirit to MAVSDK-Python. Both come from the same distribution — there is nothing extra to install.
 - **Explicit system discovery.** MAVSDK-Python hid connection and discovery behind `drone.connect()`. The native binding separates connecting from discovering systems, which matters once more than one vehicle is involved.
 - **Plugins are constructed, not attributes.** `drone.action.arm()` becomes `Action(drone).arm()`.
