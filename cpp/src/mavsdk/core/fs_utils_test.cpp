@@ -24,13 +24,13 @@ TEST(FsUtils, ReplaceNonAscii)
     EXPECT_EQ(replace_non_ascii_and_whitespace(input), "id-__-x");
 }
 
-
 TEST(FsUtils, GetCacheDirectoryHasMavsdkSegment)
 {
     auto path = get_cache_directory();
     ASSERT_TRUE(path.has_value());
     const auto s = path->string();
-    // Platform path contains a mavsdk-named leaf (Linux ~/.cache/mavsdk, macOS Library/Caches/mavsdk).
+    // Platform path contains a mavsdk-named leaf (Linux ~/.cache/mavsdk, macOS
+    // Library/Caches/mavsdk).
     EXPECT_NE(s.find("mavsdk"), std::string::npos);
     EXPECT_FALSE(s.empty());
 }
