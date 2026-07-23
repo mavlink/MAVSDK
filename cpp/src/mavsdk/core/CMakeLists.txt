@@ -290,6 +290,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_helper_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/vehicle_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/autopilot_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/handle_factory_test.cpp
 )
 
 if (NOT BUILD_WITHOUT_CURL)
