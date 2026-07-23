@@ -1,6 +1,6 @@
 import asyncio
-from aiomavsdk import Mavsdk, Configuration, ComponentType
-from aiomavsdk.plugins.camera_server import (
+from mavsdk.asyncio import Mavsdk, Configuration, ComponentType
+from mavsdk.asyncio.plugins.camera_server import (
     CameraServerAsync, CameraFeedback, CaptureInfo, Position, Quaternion,
     StorageInformation, CaptureStatus, Information
 )

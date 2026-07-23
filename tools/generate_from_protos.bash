@@ -83,16 +83,9 @@ main() {
     popd
 
     echo "------------------"
-    echo "Generating Python (sync)"
+    echo "Generating Python (sync and asyncio)"
     echo "------------------"
     pushd py/mavsdk
-    ./tools/generate_from_protos.bash
-    popd
-
-    echo "------------------"
-    echo "Generating Python (asyncio)"
-    echo "------------------"
-    pushd py/aiomavsdk
     ./tools/generate_from_protos.bash
     popd
 
