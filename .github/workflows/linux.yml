@@ -794,21 +794,6 @@ jobs:
           name: mavsdk_wheel_${{ matrix.arch_name }}
           path: py/mavsdk/wheelhouse/*.whl
           retention-days: 2
-      # aiomavsdk is pure Python (py3-none-any), only needs to be built once
-      - name: build aiomavsdk wheel
-        if: matrix.artifact_arch == 'x86_64'
-        working-directory: .
-        run: ./dockcross-${{ matrix.arch_name }} bash -c "
-          ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt &&
-          cd /work/py/aiomavsdk &&
-          ${{ matrix.python_exec }} setup.py bdist_wheel"
-      - name: upload aiomavsdk wheel
-        if: matrix.artifact_arch == 'x86_64'
-        uses: actions/upload-artifact@v7
-        with:
-          name: aiomavsdk_wheel
-          path: py/aiomavsdk/dist/*.whl
-          retention-days: 2
 
   dockcross-android:
     name: ${{ matrix.name }}
