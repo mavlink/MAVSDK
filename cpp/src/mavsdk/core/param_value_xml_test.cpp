@@ -1,6 +1,7 @@
 #include "param_value.hpp"
 #include <gtest/gtest.h>
 #include <cmath>
+#include <sstream>
 
 using namespace mavsdk;
 
@@ -74,4 +75,85 @@ TEST(ParamValue, UpdateValueTypesafe)
     b.set(static_cast<int32_t>(9));
     a.update_value_typesafe(b);
     EXPECT_EQ(a.get_int().value(), 9);
+}
+
+
+TEST(ParamValue, NeedsExtendedForStringAnd64Bit)
+{
+    ParamValue s;
+    s.set(std::string("hello"));
+    EXPECT_TRUE(s.needs_extended());
+
+    ParamValue i64;
+    i64.set(static_cast<int64_t>(1));
+    EXPECT_TRUE(i64.needs_extended());
+
+    ParamValue u64;
+    u64.set(static_cast<uint64_t>(1));
+    EXPECT_TRUE(u64.needs_extended());
+
+    ParamValue d;
+    d.set(1.0);
+    EXPECT_TRUE(d.needs_extended());
+
+    ParamValue f;
+    f.set(1.0f);
+    EXPECT_FALSE(f.needs_extended());
+
+    ParamValue i32;
+    i32.set(static_cast<int32_t>(3));
+    EXPECT_FALSE(i32.needs_extended());
+}
+
+TEST(ParamValue, IsSameTypeAndEquality)
+{
+    ParamValue a;
+    a.set(static_cast<int32_t>(3));
+    ParamValue b;
+    b.set(static_cast<int32_t>(3));
+    ParamValue c;
+    c.set(static_cast<int32_t>(4));
+    ParamValue f;
+    f.set(3.0f);
+
+    EXPECT_TRUE(a.is_same_type(b));
+    EXPECT_TRUE(a == b);
+    EXPECT_TRUE(a != c);
+    EXPECT_TRUE(a < c);
+    EXPECT_TRUE(c > a);
+    EXPECT_FALSE(a.is_same_type(f));
+    // Different types: equality returns false and logs.
+    EXPECT_FALSE(a == f);
+}
+
+TEST(ParamValue, StreamOperatorAndGetString)
+{
+    ParamValue i;
+    i.set(static_cast<int32_t>(9));
+    EXPECT_EQ(i.get_string(), "9");
+    std::ostringstream oss;
+    oss << i;
+    EXPECT_FALSE(oss.str().empty());
+    EXPECT_NE(oss.str().find('9'), std::string::npos);
+}
+
+TEST(ParamValue, InvalidXmlTypeRejected)
+{
+    ParamValue v;
+    EXPECT_FALSE(v.set_from_xml("not_a_real_type", "1"));
+    EXPECT_FALSE(v.set_empty_type_from_xml("not_a_real_type"));
+}
+
+TEST(ParamValue, SetIntAndFloatHelpers)
+{
+    ParamValue v;
+    v.set(static_cast<int32_t>(0));
+    ASSERT_TRUE(v.set_int(12));
+    EXPECT_EQ(v.get_int().value(), 12);
+    v.set_float(1.5f);
+    ASSERT_TRUE(v.get_float().has_value());
+    EXPECT_FLOAT_EQ(v.get_float().value(), 1.5f);
+    v.set_custom("z");
+    ASSERT_TRUE(v.get_custom().has_value());
+    EXPECT_EQ(v.get_custom().value(), "z");
 }
