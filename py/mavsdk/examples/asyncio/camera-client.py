@@ -1,6 +1,6 @@
 import asyncio
-from aiomavsdk import Mavsdk, Configuration, ComponentType
-from aiomavsdk.plugins.camera import CameraAsync, Mode
+from mavsdk.asyncio import Mavsdk, Configuration, ComponentType
+from mavsdk.asyncio.plugins.camera import CameraAsync, Mode
 
 
 async def print_storage_updates(camera_plugin: CameraAsync):

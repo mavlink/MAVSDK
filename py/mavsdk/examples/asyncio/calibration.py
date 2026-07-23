@@ -1,6 +1,6 @@
 import asyncio
-from aiomavsdk import Mavsdk, Configuration, ComponentType
-from aiomavsdk.plugins.calibration import CalibrationAsync, CalibrationResult
+from mavsdk.asyncio import Mavsdk, Configuration, ComponentType
+from mavsdk.asyncio.plugins.calibration import CalibrationAsync, CalibrationResult
 
 
 async def calibrate_accelerometer(calibration: CalibrationAsync):
