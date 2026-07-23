@@ -77,7 +77,6 @@ TEST(ParamValue, UpdateValueTypesafe)
     EXPECT_EQ(a.get_int().value(), 9);
 }
 
-
 TEST(ParamValue, NeedsExtendedForStringAnd64Bit)
 {
     ParamValue s;
