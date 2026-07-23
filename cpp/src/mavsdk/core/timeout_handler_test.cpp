@@ -172,7 +172,6 @@ TEST(TimeoutHandler, AllTimeoutsRemovedDuringCallback)
     th.run_once();
 }
 
-
 TEST(TimeoutHandler, RemoveUnknownCookieIsNoOp)
 {
     Time time{};
