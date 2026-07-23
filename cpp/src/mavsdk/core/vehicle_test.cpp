@@ -57,7 +57,6 @@ TEST(Vehicle, VtolAndExoticStream)
     EXPECT_EQ(oss.str(), "VtolTailsitter,Parachute,Dodecarotor");
 }
 
-
 TEST(Vehicle, ToVehicleFromMavTypeExotic)
 {
     EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_COAXIAL), Vehicle::Coaxial);
@@ -66,8 +65,12 @@ TEST(Vehicle, ToVehicleFromMavTypeExotic)
     EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_ROCKET), Vehicle::Rocket);
     EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_FLAPPING_WING), Vehicle::FlappingWing);
     EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_KITE), Vehicle::Kite);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_VTOL_TAILSITTER_DUOROTOR), Vehicle::VtolTailsitterDuorotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_VTOL_TAILSITTER_QUADROTOR), Vehicle::VtolTailsitterQuadrotor);
+    EXPECT_EQ(
+        to_vehicle_from_mav_type(MAV_TYPE_VTOL_TAILSITTER_DUOROTOR),
+        Vehicle::VtolTailsitterDuorotor);
+    EXPECT_EQ(
+        to_vehicle_from_mav_type(MAV_TYPE_VTOL_TAILSITTER_QUADROTOR),
+        Vehicle::VtolTailsitterQuadrotor);
     EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_VTOL_FIXEDROTOR), Vehicle::VtolFixedrotor);
     EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_VTOL_TILTWING), Vehicle::VtolTiltwing);
     EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_PARAFOIL), Vehicle::Parafoil);
