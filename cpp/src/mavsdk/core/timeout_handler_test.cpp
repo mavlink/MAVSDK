@@ -171,3 +171,33 @@ TEST(TimeoutHandler, AllTimeoutsRemovedDuringCallback)
     time.sleep_for(std::chrono::milliseconds(1000));
     th.run_once();
 }
+
+
+TEST(TimeoutHandler, RemoveUnknownCookieIsNoOp)
+{
+    Time time{};
+    TimeoutHandler th(time);
+    bool fired = false;
+    auto cookie = th.add([&fired]() { fired = true; }, 0.2);
+    th.remove(static_cast<TimeoutHandler::Cookie>(999999));
+    time.sleep_for(std::chrono::milliseconds(400));
+    th.run_once();
+    EXPECT_TRUE(fired);
+    UNUSED(cookie);
+}
+
+TEST(TimeoutHandler, RefreshAfterFireDoesNotResurrect)
+{
+    Time time{};
+    TimeoutHandler th(time);
+    int fires = 0;
+    auto cookie = th.add([&fires]() { ++fires; }, 0.2);
+    time.sleep_for(std::chrono::milliseconds(400));
+    th.run_once();
+    EXPECT_EQ(fires, 1);
+    // Cookie already consumed; refresh must not re-arm a timeout.
+    th.refresh(cookie);
+    time.sleep_for(std::chrono::milliseconds(400));
+    th.run_once();
+    EXPECT_EQ(fires, 1);
+}
