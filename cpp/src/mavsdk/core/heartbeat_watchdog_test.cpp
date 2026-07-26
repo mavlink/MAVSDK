@@ -83,6 +83,13 @@ void settle()
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
+// Advance past one heartbeat CallEvery period so the lifetime 1 Hz tick runs.
+void advance_heartbeat_period(FakeTime& fake_time)
+{
+    fake_time.sleep_for(std::chrono::milliseconds(1100));
+    settle();
+}
+
 class HeartbeatCounter {
 public:
     explicit HeartbeatCounter(MavsdkImpl& mavsdk)
@@ -110,8 +117,8 @@ TEST(Heartbeat, DisablingAlwaysSendStopsHeartbeatsWhenNoSystemConnected)
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
     // Confirm heartbeats are actually being sent (first one is immediate, the
@@ -134,20 +141,14 @@ TEST(Heartbeat, DisablingAlwaysSendStopsHeartbeatsWhenNoSystemConnected)
 
 TEST(Heartbeat, DisablingAlwaysSendDuringDiscoveryKeepsHeartbeatsRunning)
 {
-    // Regression test for a stale-snapshot race: set_configuration() turning
-    // always_send_heartbeats off evaluates is_any_system_connected() before
-    // stopping. A system finishing its connection in that window (its
-    // heartbeat start is posted to the io thread) could have its
-    // just-started heartbeats stopped, leaving them off although a system is
-    // connected. The interleaving cannot be forced deterministically, so
-    // each iteration opens the window once (a system only posts that start
-    // on the heartbeat that connects it) and then asserts the invariant:
-    // with a system connected, heartbeats keep ticking even with always_send
-    // off.
+    // With a system connected, heartbeats must keep ticking even when
+    // always_send_heartbeats is turned off: the lifetime CallEvery tick
+    // re-checks connectivity each period, so a concurrent connect during a
+    // configuration update cannot leave heartbeats stuck off.
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     // Checkout after MavsdkImpl so inject packing does not share MAVSDK's channel.
     TestMavlinkPackChannel pack_channel;
     HeartbeatCounter heartbeats{mavsdk};
@@ -185,8 +186,7 @@ TEST(Heartbeat, DisablingAlwaysSendDuringDiscoveryKeepsHeartbeatsRunning)
         ASSERT_TRUE(wait_for([&]() { return mavsdk.systems().size() >= sysid; }));
         settle();
 
-        // The second heartbeat connects the system: set_connected() posts a
-        // start_sending_heartbeats() to the io thread, racing the policy-off
+        // The second heartbeat connects the system, racing the policy-off
         // update below.
         inject_heartbeat(sysid);
         mavsdk.set_configuration(off_configuration);
@@ -230,21 +230,24 @@ TEST(HeartbeatWatchdog, RejectsSubSecondTimeout)
     configuration.set_always_send_heartbeats(true);
     configuration.set_heartbeat_watchdog_timeout_s(2.0);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
     mavsdk.feed_heartbeat_watchdog();
+    advance_heartbeat_period(fake_time);
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() >= 1; }));
 
     // Rejected: must not shorten the active 2 s watchdog to 0.5 s.
     EXPECT_FALSE(mavsdk.set_heartbeat_watchdog_timeout_s(0.5));
 
-    // 1.2 s after the feed: had the 0.5 s timeout been accepted, the watchdog
-    // would have expired before the 1 s heartbeat tick. With the 2 s timeout
-    // still active, the tick goes through.
+    // Refresh the deadline, then wait 1.2 s: had the 0.5 s timeout been
+    // accepted, the watchdog would have expired before the next 1 s heartbeat
+    // tick. With the 2 s timeout still active, the tick goes through.
+    mavsdk.feed_heartbeat_watchdog();
     const int count_before_tick = heartbeats.count();
     fake_time.sleep_for(std::chrono::milliseconds(1200));
+    settle();
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_before_tick; }));
 
     // After the 2 s watchdog expires, heartbeats stop.
@@ -261,8 +264,8 @@ TEST(HeartbeatWatchdog, FeedWithoutWatchdogConfiguredIsNoOp)
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
     // Without a watchdog configured, feeding is a no-op and heartbeats just
@@ -279,12 +282,14 @@ TEST(HeartbeatWatchdog, NoHeartbeatsOnStartupUntilFed)
     // With the watchdog configured, heartbeats must not start on their own at
     // startup (e.g. when a system is discovered or always_send_heartbeats is
     // set) until the watchdog has been fed at least once.
+    // Timeout must exceed one heartbeat period: the deadline starts at feed
+    // time, and the next send may be up to ~1 s later.
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
-    configuration.set_heartbeat_watchdog_timeout_s(1);
+    configuration.set_heartbeat_watchdog_timeout_s(2);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
     fake_time.sleep_for(std::chrono::seconds(5));
@@ -292,6 +297,7 @@ TEST(HeartbeatWatchdog, NoHeartbeatsOnStartupUntilFed)
     EXPECT_EQ(heartbeats.count(), 0);
 
     mavsdk.feed_heartbeat_watchdog();
+    advance_heartbeat_period(fake_time);
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() >= 1; }));
 }
 
@@ -302,8 +308,8 @@ TEST(HeartbeatWatchdog, FeedDoesNotStartHeartbeatsThatNeverRan)
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_heartbeat_watchdog_timeout_s(1);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
     // Feeding only resets the watchdog, it must not act as a start trigger.
@@ -320,13 +326,13 @@ TEST(HeartbeatWatchdog, FeedRespectsHeartbeatPolicy)
 {
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
-    configuration.set_heartbeat_watchdog_timeout_s(1);
+    configuration.set_heartbeat_watchdog_timeout_s(2);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
-    // Never feed: the watchdog expires and latches heartbeats off.
+    // Never feed: the watchdog expires and heartbeats stay off.
     fake_time.sleep_for(std::chrono::milliseconds(1200));
     settle();
 
@@ -337,15 +343,21 @@ TEST(HeartbeatWatchdog, FeedRespectsHeartbeatPolicy)
     const int count_with_policy_off = heartbeats.count();
 
     // Feeding now must not restart heartbeats: they are not supposed to be
-    // sent while the policy is off.
+    // sent while the policy is off. Waiting past the deadline expires the feed.
     mavsdk.feed_heartbeat_watchdog();
     fake_time.sleep_for(std::chrono::seconds(5));
     settle();
     EXPECT_EQ(heartbeats.count(), count_with_policy_off);
 
-    // The feed cleared the latch though: once the policy allows heartbeats
-    // again, they start without another feed.
+    // The unused feed has expired: turning the policy back on must not resume
+    // heartbeats without another feed.
     mavsdk.set_configuration(configuration);
+    fake_time.sleep_for(std::chrono::seconds(2));
+    settle();
+    EXPECT_EQ(heartbeats.count(), count_with_policy_off);
+
+    mavsdk.feed_heartbeat_watchdog();
+    advance_heartbeat_period(fake_time);
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_with_policy_off; }));
 }
 
@@ -353,33 +365,35 @@ TEST(HeartbeatWatchdog, RuntimeTimeoutReconfiguration)
 {
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
-    configuration.set_heartbeat_watchdog_timeout_s(1);
+    configuration.set_heartbeat_watchdog_timeout_s(2);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
-    // Never feed: the watchdog expires and latches heartbeats off.
+    // Never feed: heartbeats stay off.
     fake_time.sleep_for(std::chrono::milliseconds(1200));
     settle();
-    const int count_latched = heartbeats.count();
+    const int count_after_expiry = heartbeats.count();
 
-    // Disabling the watchdog (timeout 0) clears the latch: heartbeats resume
-    // without a feed and run unconditionally.
+    // Disabling the watchdog (timeout 0): heartbeats resume without a feed
+    // and run unconditionally.
     EXPECT_TRUE(mavsdk.set_heartbeat_watchdog_timeout_s(0));
-    EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_latched; }));
+    advance_heartbeat_period(fake_time);
+    EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_after_expiry; }));
 
     // Re-enabling the watchdog must stop heartbeats immediately and keep them
     // off until a feed - never grant a free timeout period without a feed.
     settle();
     const int count_before_reenable = heartbeats.count();
-    EXPECT_TRUE(mavsdk.set_heartbeat_watchdog_timeout_s(1));
+    EXPECT_TRUE(mavsdk.set_heartbeat_watchdog_timeout_s(2));
     fake_time.sleep_for(std::chrono::seconds(5));
     settle();
     EXPECT_EQ(heartbeats.count(), count_before_reenable);
 
     // The re-enabled watchdog still reacts to a feed.
     mavsdk.feed_heartbeat_watchdog();
+    advance_heartbeat_period(fake_time);
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_before_reenable; }));
 }
 
@@ -389,8 +403,8 @@ TEST(HeartbeatWatchdog, EnableViaGrpcStyleApiOnStartup)
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
     // Autonomous heartbeats while the watchdog is off.
@@ -400,12 +414,13 @@ TEST(HeartbeatWatchdog, EnableViaGrpcStyleApiOnStartup)
     // off until a feed.
     settle();
     const int count_before_enable = heartbeats.count();
-    EXPECT_TRUE(mavsdk.set_heartbeat_watchdog_timeout_s(1));
+    EXPECT_TRUE(mavsdk.set_heartbeat_watchdog_timeout_s(2));
     fake_time.sleep_for(std::chrono::seconds(5));
     settle();
     EXPECT_EQ(heartbeats.count(), count_before_enable);
 
     mavsdk.feed_heartbeat_watchdog();
+    advance_heartbeat_period(fake_time);
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_before_enable; }));
 }
 
@@ -414,8 +429,7 @@ TEST(HeartbeatWatchdog, ConcurrentReconfigurationStress)
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration};
     // Checkout after MavsdkImpl so inject packing does not share MAVSDK's channel.
     TestMavlinkPackChannel pack_channel;
     ASSERT_EQ(
@@ -440,10 +454,9 @@ TEST(HeartbeatWatchdog, ConcurrentReconfigurationStress)
     });
 
     // Meanwhile keep injecting heartbeats from new system IDs, so the io
-    // thread keeps discovering systems and calling start_sending_heartbeats()
-    // while holding the systems lock. This combination used to be an ABBA
-    // deadlock with configuration updates, which held the server components
-    // lock while taking the systems lock.
+    // thread keeps discovering systems while holding the systems lock. This
+    // combination used to be an ABBA deadlock with configuration updates,
+    // which held the server components lock while taking the systems lock.
     for (int sysid = 1; sysid <= 150; ++sysid) {
         inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), static_cast<uint8_t>(sysid));
         std::this_thread::sleep_for(std::chrono::milliseconds(2));
@@ -453,61 +466,98 @@ TEST(HeartbeatWatchdog, ConcurrentReconfigurationStress)
     configuration_thread.join();
 }
 
-TEST(HeartbeatWatchdog, StopLatchesHeartbeatsOffUntilFed)
+TEST(HeartbeatWatchdog, FeedRemainsValidAcrossPolicyOff)
 {
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
     configuration.set_heartbeat_watchdog_timeout_s(2);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
-    // Feed so heartbeats start.
+    // Feed so heartbeats start and arm the deadman.
     mavsdk.feed_heartbeat_watchdog();
+    advance_heartbeat_period(fake_time);
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() >= 1; }));
 
-    // Feed again so the watchdog is not expired, then stop heartbeats by
-    // turning the policy off (no system is connected).
+    // Refresh the deadline, then stop heartbeats by turning the policy off
+    // (no system is connected).
     mavsdk.feed_heartbeat_watchdog();
     auto policy_off_configuration = configuration;
     policy_off_configuration.set_always_send_heartbeats(false);
     mavsdk.set_configuration(policy_off_configuration);
 
-    // Give a possibly in-flight heartbeat tick time to drain, then snapshot.
     settle();
-    const int count_latched = heartbeats.count();
+    const int count_while_policy_off = heartbeats.count();
 
-    // Turning the policy back on must not restart heartbeats: the stop
-    // latched them off until the next feed, even though the watchdog had
-    // not expired. Otherwise a dead client would get a fresh watchdog
-    // period of heartbeats after a reconnect. The check window (1.5 s) is
-    // shorter than the watchdog timeout (2 s), so without the latch the
-    // restarted heartbeats would be observed here.
+    // Within the remaining watchdog deadline, turning the policy back on must
+    // resume heartbeats without another feed.
+    mavsdk.set_configuration(configuration);
+    advance_heartbeat_period(fake_time);
+    EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_while_policy_off; }));
+}
+
+TEST(HeartbeatWatchdog, FeedRemainsValidAcrossSystemDisconnect)
+{
+    // Heartbeats are gated by a connected system (always_send off). A feed
+    // must stay valid across disconnect/reconnect until the deadline.
+    Mavsdk::Configuration configuration{ComponentType::GroundStation};
+    configuration.set_always_send_heartbeats(false);
+    configuration.set_heartbeat_watchdog_timeout_s(5);
+
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
+    TestMavlinkPackChannel pack_channel;
+    HeartbeatCounter heartbeats{mavsdk};
+    // Note: adding the raw connection force-enables always_send_heartbeats.
+    ASSERT_EQ(
+        mavsdk.add_any_connection("raw://", ForwardingOption::ForwardingOff).first,
+        ConnectionResult::Success);
     mavsdk.set_configuration(configuration);
 
-    fake_time.sleep_for(std::chrono::milliseconds(1500));
+    // Discover and connect a system (first heartbeat creates it, second
+    // connects after the handler is registered).
+    inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), 1);
+    ASSERT_TRUE(wait_for([&]() { return mavsdk.systems().size() >= 1; }));
     settle();
-    EXPECT_EQ(heartbeats.count(), count_latched);
+    inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), 1);
+    ASSERT_TRUE(wait_for([&]() { return mavsdk.systems()[0]->is_connected(); }));
 
-    // Feeding clears the latch and restarts heartbeats.
     mavsdk.feed_heartbeat_watchdog();
-    EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_latched; }));
+    advance_heartbeat_period(fake_time);
+    EXPECT_TRUE(wait_for([&]() { return heartbeats.count() >= 1; }));
+
+    // Refresh the deadline, then let the system disconnect by advancing past
+    // the system heartbeat timeout without injecting further heartbeats.
+    mavsdk.feed_heartbeat_watchdog();
+    fake_time.sleep_for(std::chrono::milliseconds(3500));
+    settle();
+    ASSERT_TRUE(wait_for([&]() { return !mavsdk.systems()[0]->is_connected(); }));
+    const int count_while_disconnected = heartbeats.count();
+
+    // Reconnect well within the watchdog deadline: heartbeats must resume
+    // without another feed.
+    inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), 1);
+    ASSERT_TRUE(wait_for([&]() { return mavsdk.systems()[0]->is_connected(); }));
+    advance_heartbeat_period(fake_time);
+    EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_while_disconnected; }));
 }
 
 TEST(HeartbeatWatchdog, ExpiryStopsHeartbeatsAndFeedRestartsThem)
 {
     Mavsdk::Configuration configuration{ComponentType::GroundStation};
     configuration.set_always_send_heartbeats(true);
-    configuration.set_heartbeat_watchdog_timeout_s(1);
+    configuration.set_heartbeat_watchdog_timeout_s(2);
 
-    FakeTime fake_time;
-    MavsdkImpl mavsdk{configuration, fake_time};
+    MavsdkImpl mavsdk{configuration, std::make_unique<FakeTime>()};
+    auto& fake_time = static_cast<FakeTime&>(mavsdk.time);
     HeartbeatCounter heartbeats{mavsdk};
 
     // While the watchdog keeps being fed, periodic heartbeats keep coming
     // (they are sent every simulated second).
     mavsdk.feed_heartbeat_watchdog();
+    advance_heartbeat_period(fake_time);
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() >= 1; }));
     for (int i = 0; i < 4; ++i) {
         mavsdk.feed_heartbeat_watchdog();
@@ -517,12 +567,12 @@ TEST(HeartbeatWatchdog, ExpiryStopsHeartbeatsAndFeedRestartsThem)
     EXPECT_GE(heartbeats.count(), 2);
 
     // Once we stop feeding, the watchdog expires and heartbeats stop.
-    fake_time.sleep_for(std::chrono::milliseconds(1200));
+    fake_time.sleep_for(std::chrono::milliseconds(2500));
     settle();
     const int count_after_expiry = heartbeats.count();
 
-    // Expiry latches heartbeats off: even toggling always_send_heartbeats
-    // (which normally starts them) must not revive them.
+    // After expiry, even toggling always_send_heartbeats (which normally
+    // starts them) must not revive them until a feed.
     auto toggled_configuration = configuration;
     toggled_configuration.set_always_send_heartbeats(false);
     mavsdk.set_configuration(toggled_configuration);
@@ -532,7 +582,8 @@ TEST(HeartbeatWatchdog, ExpiryStopsHeartbeatsAndFeedRestartsThem)
     settle();
     EXPECT_EQ(heartbeats.count(), count_after_expiry);
 
-    // Feeding the watchdog clears the latch and restarts heartbeats.
+    // Feeding the watchdog allows heartbeats to resume.
     mavsdk.feed_heartbeat_watchdog();
+    advance_heartbeat_period(fake_time);
     EXPECT_TRUE(wait_for([&]() { return heartbeats.count() > count_after_expiry; }));
 }

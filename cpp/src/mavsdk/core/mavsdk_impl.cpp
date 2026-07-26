@@ -47,12 +47,10 @@ struct TlogFile {
 
 template class MAVSDK_TEMPL_INST CallbackList<>;
 
-MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
-    MavsdkImpl(configuration, _own_time)
-{}
-
-MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration, Time& time_override) :
-    time(time_override),
+MavsdkImpl::MavsdkImpl(
+    const Mavsdk::Configuration& configuration, std::unique_ptr<Time> time_owner) :
+    _time(std::move(time_owner)),
+    time(*_time),
     timeout_handler(time),
     call_every_handler(time)
 {
@@ -99,6 +97,15 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration, Time& time_ov
     _process_user_callbacks_thread =
         std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
 
+    // Register the lifetime 1 Hz heartbeat tick. maybe_send_heartbeats() gates
+    // actual emission on policy and watchdog state, so we never add/remove this
+    // cookie for connect/disconnect/config changes.
+    {
+        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
+        _heartbeat_send_cookie = call_every_handler.add(
+            [this]() { maybe_send_heartbeats(); }, HEARTBEAT_SEND_INTERVAL_S);
+    }
+
     // Start the recurring timer that drives TimeoutHandler and CallEveryHandler
     // on the io_context thread every 5 ms.
     schedule_timers_poll();
@@ -118,10 +125,7 @@ MavsdkImpl::~MavsdkImpl()
     {
         std::lock_guard<std::mutex> lock(_heartbeat_mutex);
         call_every_handler.remove(_heartbeat_send_cookie);
-        timeout_handler.remove(_heartbeat_watchdog_cookie);
-        // Invalidate any watchdog expiry callback already in flight on the io
-        // thread, so it doesn't log a spurious expiry during shutdown.
-        ++_heartbeat_watchdog_generation;
+        _heartbeat_send_cookie = 0;
     }
 
     // Stop the Asio io_context so _io_thread exits io_context::run().
@@ -595,9 +599,6 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                 LogWarn("Bytes: {}", bytes);
             }
             make_system_with_component(message.sysid, message.compid);
-
-            // We now better talk back.
-            start_sending_heartbeats();
         }
 
         if (_should_exit) {
@@ -762,9 +763,6 @@ void MavsdkImpl::process_libmav_message(
                     (int)message.component_id);
             }
             make_system_with_component(message.system_id, message.component_id);
-
-            // We now better talk back.
-            start_sending_heartbeats();
         }
 
         if (_should_exit) {
@@ -1203,27 +1201,24 @@ bool MavsdkImpl::set_heartbeat_watchdog_timeout_s(double timeout_s)
 
 void MavsdkImpl::update_configuration(const std::function<void(Mavsdk::Configuration&)>& modify)
 {
-    // _configuration_update_mutex serializes all configuration writers. It is
-    // recursive, so holding it across the read-modify-write is fine even
-    // though set_configuration() locks it again.
+    // _configuration_update_mutex serializes all configuration writers.
     std::lock_guard configuration_update_lock(_configuration_update_mutex);
 
     auto new_configuration = get_configuration();
     modify(new_configuration);
-    set_configuration(new_configuration);
+    set_configuration_locked(new_configuration);
 }
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 {
-    // Serializes configuration writers. Deliberately not _server_components_mutex:
-    // this function takes _mutex (via is_any_system_connected()) and the io
-    // thread takes the locks in the opposite order (process_message() holds
-    // _mutex and takes _server_components_mutex via
-    // start_sending_heartbeats()), so holding _server_components_mutex across
-    // this body would be an ABBA deadlock. _configuration_update_mutex is
-    // never taken by the io thread.
     std::lock_guard configuration_update_lock(_configuration_update_mutex);
+    set_configuration_locked(std::move(new_configuration));
+}
 
+void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuration)
+{
+    // Requires _configuration_update_mutex. Take _server_components_mutex only
+    // for the default-component update below; do not hold it across later work.
     {
         std::lock_guard server_components_lock(_server_components_mutex);
         // We just point the default to the newly created component. This means
@@ -1239,8 +1234,6 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
     // Configuration::set_heartbeat_watchdog_timeout_s() rejects invalid
     // values, so a Configuration always carries a valid timeout.
 
-    // Assign the new configuration first, so that start/stop_sending_heartbeats
-    // below act on the new values in _configuration.
     {
         std::lock_guard configuration_lock(_configuration_mutex);
         _configuration = new_configuration;
@@ -1251,67 +1244,24 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
     _our_mav_type = new_configuration.get_mav_type();
     _our_autopilot = new_configuration.get_autopilot();
     _our_compatibility_mode = new_configuration.get_compatibility_mode();
-    {
-        // Written under _heartbeat_mutex so that stop_sending_heartbeats()
-        // (which reads _always_send_heartbeats under the same mutex) cannot
-        // base its stop decision on a policy value that is concurrently
-        // being flipped: any stop then either runs before this write (and the
-        // start below wins) or observes the new value.
-        std::lock_guard<std::mutex> heartbeat_lock(_heartbeat_mutex);
-        _always_send_heartbeats = new_configuration.get_always_send_heartbeats();
-        _heartbeat_watchdog_timeout_s = new_configuration.get_heartbeat_watchdog_timeout_s();
-    }
 
-    // Process watchdog timeout changes before the always_send_heartbeats toggle
-    // so that enabling the watchdog latches heartbeats off before anything tries
-    // to start them.
     const double new_watchdog_timeout_s = new_configuration.get_heartbeat_watchdog_timeout_s();
-    if (new_watchdog_timeout_s != old_configuration.get_heartbeat_watchdog_timeout_s()) {
-        // Heartbeats may only be restarted if they are supposed to be sent
-        // according to the usual policy (see feed_heartbeat_watchdog()).
-        const bool policy_allows_heartbeats =
-            new_configuration.get_always_send_heartbeats() || is_any_system_connected();
+    const bool always_send = new_configuration.get_always_send_heartbeats();
+    {
+        std::lock_guard<std::mutex> heartbeat_lock(_heartbeat_mutex);
+        _always_send_heartbeats = always_send;
+        _heartbeat_watchdog_timeout_s = new_watchdog_timeout_s;
 
-        bool needs_start = false;
-        {
-            std::lock_guard<std::mutex> lock(_heartbeat_mutex);
-            timeout_handler.remove(_heartbeat_watchdog_cookie);
-            _heartbeat_watchdog_cookie = 0;
-            // Invalidate any expiry callback already in flight for the
-            // removed watchdog timeout.
-            ++_heartbeat_watchdog_generation;
-
+        if (new_watchdog_timeout_s != old_configuration.get_heartbeat_watchdog_timeout_s()) {
             if (new_watchdog_timeout_s > 0.0) {
-                // Whenever the watchdog is enabled or its timeout changes,
-                // heartbeats must not run until the watchdog has been fed.
-                // Stop any in-flight heartbeats so enabling the watchdog
-                // never grants a free timeout period without a feed.
-                call_every_handler.remove(_heartbeat_send_cookie);
-                _heartbeat_send_cookie = 0;
-                _heartbeat_watchdog_expired = true;
+                // Enabling or changing the timeout: do not send until fed.
+                _heartbeat_watchdog_state = HeartbeatWatchdogState::NeedsFeed;
             } else {
-                // Disabling the watchdog clears the latch: heartbeats follow
-                // the usual policy again, so start them if they are off but
-                // supposed to be running (see feed_heartbeat_watchdog() for
-                // why this is keyed off "not running" rather than the latch).
-                needs_start = policy_allows_heartbeats && _heartbeat_send_cookie == 0;
-                _heartbeat_watchdog_expired = false;
+                // Disabling the watchdog: heartbeats follow the usual policy.
+                _heartbeat_watchdog_state = HeartbeatWatchdogState::Disabled;
             }
+            _heartbeat_watchdog_deadline.reset();
         }
-        if (needs_start) {
-            start_sending_heartbeats();
-            stop_heartbeats_if_policy_disallows();
-        }
-    }
-
-    if (new_configuration.get_always_send_heartbeats() &&
-        !old_configuration.get_always_send_heartbeats()) {
-        start_sending_heartbeats();
-    } else if (
-        !new_configuration.get_always_send_heartbeats() &&
-        old_configuration.get_always_send_heartbeats() && !is_any_system_connected()) {
-        stop_sending_heartbeats();
-        start_heartbeats_if_policy_requires();
     }
 }
 
@@ -1629,203 +1579,65 @@ void MavsdkImpl::process_user_callbacks_thread()
     }
 }
 
-void MavsdkImpl::start_sending_heartbeats()
-{
-    // Check if we're in the process of shutting down
-    if (_should_exit) {
-        return;
-    }
-
-    // Before sending out first heartbeats we need to make sure we have a
-    // default server component.
-    default_server_component_impl();
-
-    {
-        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
-
-        // With a watchdog configured, heartbeats stay latched off until
-        // feed_heartbeat_watchdog() runs (on first enable, after expiry, and
-        // after any stop). Without a feed, start is a no-op.
-        if (_heartbeat_watchdog_expired) {
-            return;
-        }
-
-        call_every_handler.remove(_heartbeat_send_cookie);
-        _heartbeat_send_cookie =
-            call_every_handler.add([this]() { send_heartbeats(); }, HEARTBEAT_SEND_INTERVAL_S);
-
-        // If the watchdog is configured, arm it when heartbeats start. Only
-        // arm if it isn't already running, so that restarting heartbeats (e.g.
-        // on new system/component discovery) does not reset an in-flight
-        // deadman countdown - only feed_heartbeat_watchdog() extends it. When
-        // heartbeats are not running, _heartbeat_watchdog_cookie is always 0
-        // (cleared on stop/expiry), so a genuine start always arms it.
-        const double watchdog_timeout_s = _heartbeat_watchdog_timeout_s;
-        if (watchdog_timeout_s > 0.0 && _heartbeat_watchdog_cookie == 0) {
-            arm_heartbeat_watchdog_with_lock(watchdog_timeout_s);
-        }
-    }
-}
-
-void MavsdkImpl::stop_sending_heartbeats()
-{
-    std::lock_guard<std::mutex> lock(_heartbeat_mutex);
-
-    // Checked under _heartbeat_mutex: set_configuration() writes
-    // _always_send_heartbeats under the same mutex before it starts or stops
-    // heartbeats, so this check cannot race a concurrent policy change.
-    if (_always_send_heartbeats) {
-        return;
-    }
-
-    call_every_handler.remove(_heartbeat_send_cookie);
-    _heartbeat_send_cookie = 0;
-    timeout_handler.remove(_heartbeat_watchdog_cookie);
-    _heartbeat_watchdog_cookie = 0;
-    // Invalidate any expiry callback already in flight for the removed
-    // watchdog timeout: the latch below already records that heartbeats are
-    // off, and a subsequent feed's latch-clear must not be overridden by a
-    // stale expiry.
-    ++_heartbeat_watchdog_generation;
-    // With a watchdog configured, any stop latches heartbeats off until
-    // the watchdog is fed again. Otherwise a dead client would get a
-    // fresh watchdog period of heartbeats after a reconnect (the watchdog
-    // is re-armed on start), weakening the deadman guarantee across
-    // disconnects. This mirrors startup, where heartbeats also only start
-    // once the watchdog has been fed.
-    if (_heartbeat_watchdog_timeout_s > 0.0) {
-        _heartbeat_watchdog_expired = true;
-    }
-}
-
 void MavsdkImpl::feed_heartbeat_watchdog()
 {
     if (_should_exit) {
         return;
     }
 
-    const double watchdog_timeout_s = _heartbeat_watchdog_timeout_s;
-    if (watchdog_timeout_s <= 0.0) {
-        // No watchdog configured: nothing to feed.
+    std::lock_guard<std::mutex> lock(_heartbeat_mutex);
+
+    switch (_heartbeat_watchdog_state) {
+        case HeartbeatWatchdogState::Disabled:
+            return;
+        case HeartbeatWatchdogState::NeedsFeed:
+        case HeartbeatWatchdogState::Armed:
+            // A feed is valid only until this deadline.
+            _heartbeat_watchdog_state = HeartbeatWatchdogState::Armed;
+            _heartbeat_watchdog_deadline =
+                time.steady_time_in_future(_heartbeat_watchdog_timeout_s);
+            break;
+    }
+}
+
+void MavsdkImpl::maybe_send_heartbeats()
+{
+    if (_should_exit) {
         return;
     }
 
-    // Heartbeats may only be restarted if they are supposed to be sent
-    // according to the usual policy. Evaluated before taking _heartbeat_mutex
-    // because is_any_system_connected() locks _mutex (lock order: _mutex
-    // before _heartbeat_mutex). This snapshot can go stale if a system
-    // connects or disconnects concurrently; both directions are handled
-    // below.
-    const bool policy_allows_heartbeats = _always_send_heartbeats || is_any_system_connected();
-
-    bool needs_start = false;
+    // Evaluate the watchdog before the policy gate so an Armed deadline can
+    // expire (and log) even while heartbeats are not supposed to be sent.
+    // _heartbeat_mutex is released before is_any_system_connected() takes
+    // _mutex (lock order: _mutex before _heartbeat_mutex).
     {
         std::lock_guard<std::mutex> lock(_heartbeat_mutex);
 
-        // Re-read under _heartbeat_mutex (it is written under the same mutex
-        // in set_configuration()): the snapshot from above could have gone
-        // stale against a concurrent reconfiguration, and a re-arm below must
-        // use the current timeout.
-        const double current_watchdog_timeout_s = _heartbeat_watchdog_timeout_s;
-        if (current_watchdog_timeout_s <= 0.0) {
-            // The watchdog was disabled concurrently: nothing to feed.
-            return;
+        switch (_heartbeat_watchdog_state) {
+            case HeartbeatWatchdogState::Disabled:
+                break;
+            case HeartbeatWatchdogState::NeedsFeed:
+                return;
+            case HeartbeatWatchdogState::Armed:
+                if (time.steady_time() >= *_heartbeat_watchdog_deadline) {
+                    LogWarn("Heartbeat watchdog expired, stopping heartbeats");
+                    _heartbeat_watchdog_state = HeartbeatWatchdogState::NeedsFeed;
+                    _heartbeat_watchdog_deadline.reset();
+                    return;
+                }
+                break;
         }
-
-        if (_heartbeat_watchdog_cookie != 0 &&
-            !timeout_handler.refresh(_heartbeat_watchdog_cookie)) {
-            // The watchdog just expired: the timeout handler already removed
-            // the timeout, but on_heartbeat_watchdog_expired() has not run
-            // yet. This feed still arrived in time, so re-arm with a new
-            // generation, which turns the in-flight expiry into a no-op.
-            arm_heartbeat_watchdog_with_lock(current_watchdog_timeout_s);
-        }
-
-        // Restart heartbeats whenever they are off although they are supposed
-        // to be running. Keying this off "not running" rather than the expiry
-        // latch makes feeding self-healing: if a system connected just after
-        // the policy snapshot above was taken (so its start was blocked by
-        // the still-set latch while this feed saw the policy as off), the
-        // next feed catches up and restarts heartbeats. With the latch as
-        // condition, that state would persist because the latch is already
-        // cleared below.
-        needs_start = policy_allows_heartbeats && _heartbeat_send_cookie == 0;
-        // A feed always clears the latch, even if heartbeats may not be
-        // restarted right now: the client proved it is alive, so heartbeats
-        // may start again whenever the policy allows it (e.g. on discovery).
-        _heartbeat_watchdog_expired = false;
     }
 
-    // Only restart heartbeats if they are supposed to be running. If they are
-    // off for another reason (never started, disconnected, policy off), a
-    // feed must not start them. start_sending_heartbeats() re-arms the
-    // watchdog.
-    if (needs_start) {
-        start_sending_heartbeats();
-        stop_heartbeats_if_policy_disallows();
-    }
-}
-
-void MavsdkImpl::stop_heartbeats_if_policy_disallows()
-{
-    // Callers start heartbeats based on a policy snapshot taken before
-    // _heartbeat_mutex was acquired (lock order: _mutex before
-    // _heartbeat_mutex). If the last connected system disconnected in
-    // between, its stop_sending_heartbeats() ran before the start and the
-    // snapshot is stale: heartbeats are now running although the policy no
-    // longer allows it. Re-evaluate and stop them again if so.
-    // stop_sending_heartbeats() keeps heartbeats running while
-    // _always_send_heartbeats is set, so this can never stop heartbeats that
-    // are supposed to be on, and it re-latches while the watchdog is
-    // configured, so a later feed can cleanly restart them.
+    // Policy: send only when always_send is set or at least one system is
+    // connected. Checked live each tick, so connect/disconnect races do not
+    // need separate start/stop cookie juggling.
     if (!_always_send_heartbeats && !is_any_system_connected()) {
-        stop_sending_heartbeats();
-    }
-}
-
-void MavsdkImpl::start_heartbeats_if_policy_requires()
-{
-    // Mirror image of stop_heartbeats_if_policy_disallows(): a stop based on
-    // a policy snapshot taken before _heartbeat_mutex was acquired can go
-    // stale if a system finished connecting in between - the start it posted
-    // to the io thread ran before the stop, and heartbeats are now off
-    // although the policy requires them. Re-evaluate and start them again if
-    // so. This converges in all interleavings: a system flips its connected
-    // flag before it triggers its start, so if this re-check still sees no
-    // connected system, that system's own start runs after the stop and wins.
-    // With a watchdog configured, start_sending_heartbeats() respects the
-    // latch set by the stop, so heartbeats still stay off until the next
-    // feed.
-    if (_always_send_heartbeats || is_any_system_connected()) {
-        start_sending_heartbeats();
-    }
-}
-
-void MavsdkImpl::arm_heartbeat_watchdog_with_lock(double timeout_s)
-{
-    const uint64_t generation = ++_heartbeat_watchdog_generation;
-    _heartbeat_watchdog_cookie = timeout_handler.add(
-        [this, generation]() { on_heartbeat_watchdog_expired(generation); }, timeout_s);
-}
-
-void MavsdkImpl::on_heartbeat_watchdog_expired(uint64_t generation)
-{
-    std::lock_guard<std::mutex> lock(_heartbeat_mutex);
-
-    if (generation != _heartbeat_watchdog_generation) {
-        // Stale expiry: the watchdog was fed or reconfigured between this
-        // timeout firing and this callback running.
         return;
     }
 
-    LogWarn("Heartbeat watchdog expired, stopping heartbeats");
-
-    call_every_handler.remove(_heartbeat_send_cookie);
-    _heartbeat_send_cookie = 0;
-    // The expired timeout has already been removed by the timeout handler.
-    _heartbeat_watchdog_cookie = 0;
-    // Latch heartbeats off until the watchdog is fed again.
-    _heartbeat_watchdog_expired = true;
+    default_server_component_impl();
+    send_heartbeats();
 }
 
 ServerComponentImpl& MavsdkImpl::default_server_component_impl()

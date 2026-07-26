@@ -98,7 +98,8 @@ int main(int argc, char** argv)
             heartbeat_watchdog_timeout_s = std::strtod(timeout.c_str(), &end);
 
             if (end == timeout.c_str() || *end != '\0' ||
-                !mavsdk::is_valid_heartbeat_watchdog_timeout_s(heartbeat_watchdog_timeout_s)) {
+                !mavsdk::Mavsdk::is_valid_heartbeat_watchdog_timeout_s(
+                    heartbeat_watchdog_timeout_s)) {
                 usage(argv[0]);
                 return 1;
             }

@@ -7,7 +7,7 @@
 
 namespace mavsdk {
 
-bool is_valid_heartbeat_watchdog_timeout_s(double timeout_s)
+bool Mavsdk::is_valid_heartbeat_watchdog_timeout_s(double timeout_s)
 {
     return timeout_s == 0.0 ||
            (std::isfinite(timeout_s) && timeout_s >= heartbeat_watchdog_min_timeout_s);
@@ -224,11 +224,11 @@ double Mavsdk::Configuration::get_heartbeat_watchdog_timeout_s() const
 
 bool Mavsdk::Configuration::set_heartbeat_watchdog_timeout_s(double timeout_s)
 {
-    if (!is_valid_heartbeat_watchdog_timeout_s(timeout_s)) {
+    if (!Mavsdk::is_valid_heartbeat_watchdog_timeout_s(timeout_s)) {
         LogWarn(
             "Invalid heartbeat watchdog timeout: {} s (must be 0 or >= {} s)",
             timeout_s,
-            heartbeat_watchdog_min_timeout_s);
+            Mavsdk::heartbeat_watchdog_min_timeout_s);
         return false;
     }
 
