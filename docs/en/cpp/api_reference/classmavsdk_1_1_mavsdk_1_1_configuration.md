@@ -153,7 +153,7 @@ void mavsdk::Mavsdk::Configuration::set_always_send_heartbeats(bool always_send_
 
 Set whether to send heartbeats by default.
 
-Note: when a heartbeat watchdog is configured ([set_heartbeat_watchdog_timeout_s()](classmavsdk_1_1_mavsdk_1_1_configuration.md#classmavsdk_1_1_mavsdk_1_1_configuration_1a53bdc9285ca6687487c18fed28b30dd2)) and has expired, the watchdog latch takes precedence: heartbeats stay off until [Mavsdk::feed_heartbeat_watchdog()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) is called again, even if always_send_heartbeats is set.
+Note: when a heartbeat watchdog is configured ([set_heartbeat_watchdog_timeout_s()](classmavsdk_1_1_mavsdk_1_1_configuration.md#classmavsdk_1_1_mavsdk_1_1_configuration_1a53bdc9285ca6687487c18fed28b30dd2)) and has expired, heartbeats stay off until [Mavsdk::feed_heartbeat_watchdog()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) is called again, even if always_send_heartbeats is set.
 
 **Parameters**
 
@@ -180,16 +180,16 @@ bool mavsdk::Mavsdk::Configuration::set_heartbeat_watchdog_timeout_s(double time
 
 Set the heartbeat watchdog (deadman timer) timeout.
 
-When set to a value greater than 0, the periodic heartbeats sent by MAVSDK are only sent as long as [Mavsdk::feed_heartbeat_watchdog()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) keeps being called at least once per timeout period. Heartbeats never start (and any already-running heartbeats are stopped) until the watchdog has been fed - including when the watchdog is first enabled or its timeout is changed. If the watchdog times out, heartbeats are latched off - including across reconnects and new system discovery - until the watchdog is fed again.
+When set to a value greater than 0, the periodic heartbeats sent by MAVSDK are only sent as long as [Mavsdk::feed_heartbeat_watchdog()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) keeps being called at least once per timeout period. Heartbeats never start (and any already-running heartbeats are stopped) until the watchdog has been fed - including when the watchdog is first enabled or its timeout is changed. If the watchdog times out, heartbeats stay off until it is fed again.
 
 
-Heartbeats are also latched off whenever they stop for any other reason while the watchdog is configured (e.g. when the connected system disconnects): after a reconnect, heartbeats only resume once the watchdog has been fed again.
+A successful feed remains valid until the timeout elapses, including across system disconnect/reconnect and temporary periods where the heartbeat policy does not allow sending.
 
 
 This is useful when MAVSDK's heartbeats should reflect the liveness of the application: if the application hangs or dies, heartbeats stop.
 
 
-While the watchdog is expired, the latch takes precedence over [set_always_send_heartbeats()](classmavsdk_1_1_mavsdk_1_1_configuration.md#classmavsdk_1_1_mavsdk_1_1_configuration_1a0ad68b52763e205012b34faa5120a792): heartbeats stay off until the watchdog is fed again.
+While the watchdog is expired, heartbeats stay off until it is fed again, even if [set_always_send_heartbeats()](classmavsdk_1_1_mavsdk_1_1_configuration.md#classmavsdk_1_1_mavsdk_1_1_configuration_1a0ad68b52763e205012b34faa5120a792) would otherwise allow them.
 
 
 When set to 0, the watchdog is disabled and heartbeats follow the usual policy (always_send_heartbeats or a connected system).

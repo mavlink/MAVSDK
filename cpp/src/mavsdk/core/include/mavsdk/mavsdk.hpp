@@ -21,17 +21,6 @@ namespace mavsdk {
 
 class ServerPluginImplBase;
 
-/** @brief Minimum heartbeat watchdog timeout when enabled, in seconds. */
-constexpr double heartbeat_watchdog_min_timeout_s = 1.0;
-
-/**
- * @brief Check whether a heartbeat watchdog timeout is valid.
- *
- * @return true if timeout_s is 0 (disabled), or finite and at least
- *         heartbeat_watchdog_min_timeout_s.
- */
-MAVSDK_PUBLIC bool is_valid_heartbeat_watchdog_timeout_s(double timeout_s);
-
 /**
  * @brief ForwardingOption for Connection, used to set message forwarding option.
  */
@@ -52,6 +41,17 @@ class MavsdkImpl;
  */
 class MAVSDK_PUBLIC Mavsdk {
 public:
+    /** @brief Minimum heartbeat watchdog timeout when enabled, in seconds. */
+    static constexpr double heartbeat_watchdog_min_timeout_s = 1.0;
+
+    /**
+     * @brief Check whether a heartbeat watchdog timeout is valid.
+     *
+     * @return true if timeout_s is 0 (disabled), or finite and at least
+     *         heartbeat_watchdog_min_timeout_s.
+     */
+    static bool is_valid_heartbeat_watchdog_timeout_s(double timeout_s);
+
     /**
      * @brief Returns the version of MAVSDK.
      *
@@ -254,10 +254,9 @@ public:
          * @brief Set whether to send heartbeats by default.
          *
          * Note: when a heartbeat watchdog is configured
-         * (set_heartbeat_watchdog_timeout_s()) and has expired, the watchdog
-         * latch takes precedence: heartbeats stay off until
-         * Mavsdk::feed_heartbeat_watchdog() is called again, even if
-         * always_send_heartbeats is set.
+         * (set_heartbeat_watchdog_timeout_s()) and has expired, heartbeats
+         * stay off until Mavsdk::feed_heartbeat_watchdog() is called again,
+         * even if always_send_heartbeats is set.
          */
         void set_always_send_heartbeats(bool always_send_heartbeats);
 
@@ -276,21 +275,19 @@ public:
          * never start (and any already-running heartbeats are stopped) until
          * the watchdog has been fed - including when the watchdog is first
          * enabled or its timeout is changed. If the watchdog times out,
-         * heartbeats are latched off - including across reconnects and new
-         * system discovery - until the watchdog is fed again.
+         * heartbeats stay off until it is fed again.
          *
-         * Heartbeats are also latched off whenever they stop for any other
-         * reason while the watchdog is configured (e.g. when the connected
-         * system disconnects): after a reconnect, heartbeats only resume
-         * once the watchdog has been fed again.
+         * A successful feed remains valid until the timeout elapses, including
+         * across system disconnect/reconnect and temporary periods where the
+         * heartbeat policy does not allow sending.
          *
          * This is useful when MAVSDK's heartbeats should reflect the liveness
          * of the application: if the application hangs or dies, heartbeats
          * stop.
          *
-         * While the watchdog is expired, the latch takes precedence over
-         * set_always_send_heartbeats(): heartbeats stay off until the watchdog
-         * is fed again.
+         * While the watchdog is expired, heartbeats stay off until it is fed
+         * again, even if set_always_send_heartbeats() would otherwise allow
+         * them.
          *
          * When set to 0, the watchdog is disabled and heartbeats follow the
          * usual policy (always_send_heartbeats or a connected system).
@@ -460,14 +457,12 @@ public:
      * Resets the watchdog timer configured with
      * Configuration::set_heartbeat_watchdog_timeout_s(), keeping the periodic
      * heartbeats alive for another timeout period. If the watchdog had
-     * already expired, this restarts the heartbeats.
+     * already expired, this allows heartbeats to resume when the usual
+     * heartbeat policy allows them.
      *
-     * Has no effect if no watchdog is configured. A feed only clears the
-     * watchdog latch (set on expiry or whenever heartbeats stop while the
-     * watchdog is configured), and only restarts heartbeats if they are
-     * supposed to be sent in the first place (always_send_heartbeats is set
-     * or a system is connected). It never starts heartbeats that are off for
-     * any other reason.
+     * Has no effect if no watchdog is configured. A feed remains valid until
+     * the timeout elapses; it does not start heartbeats that are off because
+     * always_send_heartbeats is unset and no system is connected.
      */
     void feed_heartbeat_watchdog();
 

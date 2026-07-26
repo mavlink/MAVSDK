@@ -649,15 +649,6 @@ void SystemImpl::set_connected()
 
             _connected = true;
 
-            // Only send heartbeats if we're not shutting down
-            if (!_should_exit) {
-                // Post to the io_context thread to avoid deadlocks when creating server
-                // components. This is purely internal work, not a user callback.
-                asio::post(_mavsdk_impl.io_context(), [this]() {
-                    _mavsdk_impl.start_sending_heartbeats();
-                });
-            }
-
             _heartbeat_timeout_cookie = register_timeout_handler(
                 [this] { heartbeats_timed_out(); }, _mavsdk_impl.heartbeat_timeout_s());
 
@@ -707,8 +698,6 @@ void SystemImpl::set_disconnected()
             false, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
     }
     _mavsdk_impl.notify_on_timeout();
-
-    _mavsdk_impl.stop_sending_heartbeats();
 
     {
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
