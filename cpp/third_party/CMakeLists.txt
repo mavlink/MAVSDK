@@ -24,7 +24,6 @@ if(SUPERBUILD)
     build_target(mavlink)
     build_target(libevents)
     build_target(picosha2)
-    build_target(libmavlike)
 
     if(NOT MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES)
         build_target(fmt)
@@ -47,6 +46,11 @@ if(SUPERBUILD)
             build_target(curl)
         endif()
     endif()
+
+    # libmavlike depends on TinyXML2. In the self-contained superbuild it must
+    # be configured after the bundled TinyXML2 install; distribution builds
+    # reach the same point with TinyXML2 supplied by the system package.
+    build_target(libmavlike)
 
     if(BUILD_MAVSDK_SERVER)
         if(BUILD_WITHOUT_CURL AND NOT MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES)
