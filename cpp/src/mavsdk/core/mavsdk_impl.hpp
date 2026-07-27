@@ -20,6 +20,7 @@
 #include "cli_arg.hpp"
 #include "handle_factory.hpp"
 #include "handle.hpp"
+#include "heartbeat_watchdog.hpp"
 #include "mavsdk.hpp"
 #include "mavlink_include.hpp"
 #include "mavlink_message_handler.hpp"
@@ -343,27 +344,14 @@ private:
     // and left running; maybe_send_heartbeats() decides whether to send.
     CallEveryHandler::Cookie _heartbeat_send_cookie{0};
 
-    // Heartbeat watchdog (deadman) state machine.
-    // A feed is valid only until its deadline, including across system
-    // disconnect/reconnect and temporary policy-off periods.
-    // Disabled --(timeout > 0)--> NeedsFeed
-    // NeedsFeed --(feed)--> Armed (start deadline)
-    // Armed --(feed)--> Armed (extend deadline)
-    // Armed --(expired)--> NeedsFeed
-    // any --(timeout = 0)--> Disabled
-    enum class HeartbeatWatchdogState {
-        Disabled,
-        NeedsFeed,
-        Armed,
-    };
-    HeartbeatWatchdogState _heartbeat_watchdog_state{HeartbeatWatchdogState::Disabled};
-    std::optional<SteadyTimePoint> _heartbeat_watchdog_deadline{};
     // Cached from _configuration so that the heartbeat tick can evaluate the
-    // watchdog and the policy in one critical section. Like the state above,
-    // these are guarded by _heartbeat_mutex, so they must not be read from
-    // paths that cannot take it.
+    // policy and the watchdog in one critical section. Guarded by
+    // _heartbeat_mutex, so it must not be read from paths that cannot take it.
     bool _always_send_heartbeats{false};
-    double _heartbeat_watchdog_timeout_s{0.0};
+    // Always accessed with _heartbeat_mutex held, so that a configuration
+    // update cannot be seen half-applied by the heartbeat tick. Its own mutex
+    // is a leaf, so taking it under _heartbeat_mutex is safe.
+    HeartbeatWatchdog _heartbeat_watchdog{time};
 
     std::mutex _callback_executor_mutex{};
     std::function<void(std::function<void()>)> _callback_executor{};

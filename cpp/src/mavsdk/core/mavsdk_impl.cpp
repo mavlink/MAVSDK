@@ -1225,12 +1225,6 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
             new_configuration.get_component_id(), new_configuration.get_mav_type());
     }
 
-    const Mavsdk::Configuration old_configuration = get_configuration();
-
-    // No watchdog timeout validation needed here:
-    // Configuration::set_heartbeat_watchdog_timeout_s() rejects invalid
-    // values, so a Configuration always carries a valid timeout.
-
     {
         std::lock_guard configuration_lock(_configuration_mutex);
         _configuration = new_configuration;
@@ -1245,20 +1239,13 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
     const double new_watchdog_timeout_s = new_configuration.get_heartbeat_watchdog_timeout_s();
     const bool always_send = new_configuration.get_always_send_heartbeats();
     {
+        // Apply both under _heartbeat_mutex so maybe_send_heartbeats() cannot
+        // observe one without the other. HeartbeatWatchdog ignores a timeout
+        // that has not actually changed, so this does not re-arm on every
+        // unrelated configuration update.
         std::lock_guard<std::mutex> heartbeat_lock(_heartbeat_mutex);
         _always_send_heartbeats = always_send;
-        _heartbeat_watchdog_timeout_s = new_watchdog_timeout_s;
-
-        if (new_watchdog_timeout_s != old_configuration.get_heartbeat_watchdog_timeout_s()) {
-            if (new_watchdog_timeout_s > 0.0) {
-                // Enabling or changing the timeout: do not send until fed.
-                _heartbeat_watchdog_state = HeartbeatWatchdogState::NeedsFeed;
-            } else {
-                // Disabling the watchdog: heartbeats follow the usual policy.
-                _heartbeat_watchdog_state = HeartbeatWatchdogState::Disabled;
-            }
-            _heartbeat_watchdog_deadline.reset();
-        }
+        _heartbeat_watchdog.set_timeout_s(new_watchdog_timeout_s);
     }
 }
 
@@ -1583,18 +1570,7 @@ void MavsdkImpl::feed_heartbeat_watchdog()
     }
 
     std::lock_guard<std::mutex> lock(_heartbeat_mutex);
-
-    switch (_heartbeat_watchdog_state) {
-        case HeartbeatWatchdogState::Disabled:
-            return;
-        case HeartbeatWatchdogState::NeedsFeed:
-        case HeartbeatWatchdogState::Armed:
-            // A feed is valid only until this deadline.
-            _heartbeat_watchdog_state = HeartbeatWatchdogState::Armed;
-            _heartbeat_watchdog_deadline =
-                time.steady_time_in_future(_heartbeat_watchdog_timeout_s);
-            break;
-    }
+    _heartbeat_watchdog.feed();
 }
 
 void MavsdkImpl::maybe_send_heartbeats()
@@ -1603,30 +1579,19 @@ void MavsdkImpl::maybe_send_heartbeats()
         return;
     }
 
-    // Evaluate the watchdog before the policy gate so an Armed deadline can
-    // expire (and log) even while heartbeats are not supposed to be sent.
-    // always_send is read in the same critical section, so a configuration
-    // update cannot slip between the two gates and let a heartbeat out after
-    // it has enabled the watchdog.
+    // Ask the watchdog before the policy gate, so that an armed deadline can
+    // expire (and log) even while heartbeats are not supposed to be sent
+    // anyway. always_send is read in the same critical section, so a
+    // configuration update cannot slip between the two gates and let a
+    // heartbeat out after it has enabled the watchdog.
     // _heartbeat_mutex is released before is_any_system_connected() takes
     // _mutex (lock order: _mutex before _heartbeat_mutex).
     bool always_send = false;
     {
         std::lock_guard<std::mutex> lock(_heartbeat_mutex);
 
-        switch (_heartbeat_watchdog_state) {
-            case HeartbeatWatchdogState::Disabled:
-                break;
-            case HeartbeatWatchdogState::NeedsFeed:
-                return;
-            case HeartbeatWatchdogState::Armed:
-                if (time.steady_time() >= *_heartbeat_watchdog_deadline) {
-                    LogWarn("Heartbeat watchdog expired, stopping heartbeats");
-                    _heartbeat_watchdog_state = HeartbeatWatchdogState::NeedsFeed;
-                    _heartbeat_watchdog_deadline.reset();
-                    return;
-                }
-                break;
+        if (!_heartbeat_watchdog.allows_sending()) {
+            return;
         }
 
         always_send = _always_send_heartbeats;
