@@ -12,7 +12,7 @@ list(APPEND CMAKE_ARGS
 
 mavsdk_append_cross_compile_args(CMAKE_ARGS)
 
-if(MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES)
+if(MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES OR IOS)
     list(APPEND CMAKE_ARGS "-DMAVLINK_INSTALL_PYTHON_DEPENDENCIES=OFF")
 endif()
 
@@ -26,7 +26,6 @@ if(IOS)
         PREFIX mavlink
         PATCH_COMMAND git checkout .
         COMMAND git apply ${PROJECT_SOURCE_DIR}/mavlink.patch
-        COMMAND git apply ${PROJECT_SOURCE_DIR}/mavlink_ios.patch
         CMAKE_ARGS "${CMAKE_ARGS}"
         INSTALL_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target install
                 COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0
