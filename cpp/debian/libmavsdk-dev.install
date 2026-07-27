@@ -1,4 +1,4 @@
-usr/include/*
-usr/lib/*/lib*.so
-usr/lib/*/cmake/MAVSDK*
-usr/lib/*/pkgconfig/mavsdk*
+usr/include/mavsdk
+usr/lib/*/libmavsdk.so
+usr/lib/*/cmake/MAVSDK
+usr/lib/*/pkgconfig/mavsdk.pc

@@ -2,12 +2,19 @@ cmake_minimum_required(VERSION 3.13)
 
 project(external-mavlink)
 include(ExternalProject)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/cross_compile_args.cmake)
 
 list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DMAVLINK_DIALECT=${MAVLINK_DIALECT}"
     )
+
+mavsdk_append_cross_compile_args(CMAKE_ARGS)
+
+if(MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES)
+    list(APPEND CMAKE_ARGS "-DMAVLINK_INSTALL_PYTHON_DEPENDENCIES=OFF")
+endif()
 
 set(MAVLINK_GIT_HASH d6a7eeaf43319ce6da19a1973ca40180a4210643)
 

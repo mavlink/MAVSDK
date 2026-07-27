@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.22.1)
 
 option(SUPERBUILD "Build dependencies" ON)
+option(
+    MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES
+    "Use system packages for common dependencies while superbuilding MAVSDK-specific dependencies"
+    OFF)
 option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
 option(BUILD_WITH_PROTO_REFLECTION "Build mavsdk_server with proto reflection" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
@@ -15,17 +19,23 @@ if (NOT MAVLINK_DIALECT)
     set(MAVLINK_DIALECT "ardupilotmega")
 endif()
 
-execute_process(
-    COMMAND git describe --abbrev=8 --dirty --always --tags
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_VARIABLE VERSION_STR
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    RESULT_VARIABLE GITVER
-)
+set(MAVSDK_VERSION "" CACHE STRING "Override the MAVSDK version (for source-package builds without Git metadata)")
 
-if (NOT GITVER EQUAL "0")
-    message(STATUS "No git version found. Falling back to empty version no")
-    set(VERSION_STR "0.0.0")
+if(MAVSDK_VERSION)
+    set(VERSION_STR "v${MAVSDK_VERSION}")
+else()
+    execute_process(
+        COMMAND git describe --abbrev=8 --dirty --always --tags
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        OUTPUT_VARIABLE VERSION_STR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        RESULT_VARIABLE GITVER
+    )
+
+    if (NOT GITVER EQUAL "0")
+        message(STATUS "No git version found. Falling back to version 0.0.0")
+        set(VERSION_STR "0.0.0")
+    endif()
 endif()
 
 message(STATUS "Version: ${VERSION_STR}")

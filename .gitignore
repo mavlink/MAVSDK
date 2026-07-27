@@ -20,6 +20,11 @@ CMakeLists.txt.user*
 tools/docs
 venv/
 
+# Debian package build artifacts
+*.buildinfo
+*.changes
+*.deb
+
 # CLion build folder
 cmake-build-*
 # Clion IDE settings

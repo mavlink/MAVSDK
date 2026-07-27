@@ -44,7 +44,7 @@ message(STATUS "CMAKE_FIND_ROOT_PATHS: ${CMAKE_FIND_ROOT_PATH}")
 if(NOT BUILD_WITHOUT_CURL)
     find_package(CURL REQUIRED)
 endif()
-if (CMAKE_CROSSCOMPILING)
+if(CMAKE_CROSSCOMPILING AND NOT MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES)
     find_package(LibLZMA HINTS "${CMAKE_PREFIX_PATH}" REQUIRED)
 else()
     find_package(LibLZMA REQUIRED)
@@ -109,6 +109,21 @@ configure_file(MAVSDKConfig.cmake.in
     "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/MAVSDKConfig.cmake" @ONLY)
 
 # Pkg-config
+if(BUILD_SHARED_LIBS)
+    set(MAVSDK_PKGCONFIG_REQUIRES_PRIVATE "")
+    set(MAVSDK_PKGCONFIG_LIBS_PRIVATE "")
+else()
+    set(MAVSDK_PKGCONFIG_REQUIRES_PRIVATE
+        "Requires.private: libcurl fmt liblzma nlohmann_json tinyxml2")
+    set(MAVSDK_PKGCONFIG_LIBS_PRIVATE "Libs.private: -pthread")
+    foreach(dl_lib ${CMAKE_DL_LIBS})
+        string(APPEND MAVSDK_PKGCONFIG_LIBS_PRIVATE " -l${dl_lib}")
+    endforeach()
+    if((BUILD_STATIC_MAVSDK_SERVER AND CMAKE_C_COMPILER_ID STREQUAL "GNU") OR
+       CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "(armv6|armv7|aarch64)")
+        string(APPEND MAVSDK_PKGCONFIG_LIBS_PRIVATE " -latomic")
+    endif()
+endif()
 configure_file(mavsdk.pc.in
     "${PROJECT_BINARY_DIR}/mavsdk.pc" @ONLY)
 

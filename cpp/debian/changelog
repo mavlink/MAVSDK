@@ -1,0 +1,7 @@
+mavsdk (3.17.2-1) unstable; urgency=medium
+
+  * Build common dependencies from Debian packages.
+  * Split the runtime library from the development files.
+  * Generate runtime dependencies from shared-library metadata.
+
+ -- MAVSDK Development Team <julian@oes.ch>  Mon, 27 Jul 2026 00:00:00 +0000

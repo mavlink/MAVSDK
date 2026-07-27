@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(external-libmavlike)
 include(ExternalProject)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/cross_compile_args.cmake)
 
 list(APPEND CMAKE_ARGS
     "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
@@ -12,6 +13,8 @@ list(APPEND CMAKE_ARGS
     "-DBUILD_SHARED_LIBS=OFF"
     "-DBUILD_TESTING=OFF"
     )
+
+mavsdk_append_cross_compile_args(CMAKE_ARGS)
 
 if(IOS)
     list(APPEND CMAKE_ARGS
