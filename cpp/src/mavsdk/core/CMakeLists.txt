@@ -48,6 +48,7 @@ target_sources(mavsdk
     base64.cpp
     compatibility_mode.cpp
     call_every_handler.cpp
+    heartbeat_watchdog.cpp
     callback_tracker.cpp
     connection.cpp
     connection_result.cpp
