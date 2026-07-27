@@ -289,17 +289,14 @@ private:
     Mavsdk::Configuration _configuration{ComponentType::GroundStation};
     std::atomic<uint8_t> _our_system_id{0};
     std::atomic<uint8_t> _our_component_id{0};
-    // Cached as atomics so they can be read on lock-free paths (e.g.
-    // feed_heartbeat_watchdog() / maybe_send_heartbeats()) without racing
-    // against set_configuration() writing _configuration. This also keeps the
+    // Cached as atomics so they can be read without racing against
+    // set_configuration() writing _configuration. This also keeps the
     // getters free of _mutex: some of them are called while
     // _server_components_mutex is held (e.g. send_heartbeats() ->
     // ServerComponentImpl::send_heartbeat() -> get_mav_autopilot()), and
     // taking _mutex there would create a _server_components_mutex -> _mutex
     // ordering that conflicts with the io thread's _mutex ->
     // _server_components_mutex order.
-    std::atomic<bool> _always_send_heartbeats{false};
-    std::atomic<double> _heartbeat_watchdog_timeout_s{0.0};
     std::atomic<uint8_t> _our_mav_type{0};
     std::atomic<Autopilot> _our_autopilot{Autopilot::Unknown};
     std::atomic<CompatibilityMode> _our_compatibility_mode{CompatibilityMode::Auto};
@@ -371,6 +368,12 @@ private:
     };
     HeartbeatWatchdogState _heartbeat_watchdog_state{HeartbeatWatchdogState::Disabled};
     std::optional<SteadyTimePoint> _heartbeat_watchdog_deadline{};
+    // Cached from _configuration so that the heartbeat tick can evaluate the
+    // watchdog and the policy in one critical section. Like the state above,
+    // these are guarded by _heartbeat_mutex, so they must not be read from
+    // paths that cannot take it.
+    bool _always_send_heartbeats{false};
+    double _heartbeat_watchdog_timeout_s{0.0};
 
     std::mutex _callback_executor_mutex{};
     std::function<void(std::function<void()>)> _callback_executor{};
