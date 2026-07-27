@@ -1608,8 +1608,12 @@ void MavsdkImpl::maybe_send_heartbeats()
 
     // Evaluate the watchdog before the policy gate so an Armed deadline can
     // expire (and log) even while heartbeats are not supposed to be sent.
+    // always_send is read in the same critical section, so a configuration
+    // update cannot slip between the two gates and let a heartbeat out after
+    // it has enabled the watchdog.
     // _heartbeat_mutex is released before is_any_system_connected() takes
     // _mutex (lock order: _mutex before _heartbeat_mutex).
+    bool always_send = false;
     {
         std::lock_guard<std::mutex> lock(_heartbeat_mutex);
 
@@ -1627,12 +1631,15 @@ void MavsdkImpl::maybe_send_heartbeats()
                 }
                 break;
         }
+
+        always_send = _always_send_heartbeats;
     }
 
     // Policy: send only when always_send is set or at least one system is
-    // connected. Checked live each tick, so connect/disconnect races do not
-    // need separate start/stop cookie juggling.
-    if (!_always_send_heartbeats && !is_any_system_connected()) {
+    // connected. Connectivity is checked live each tick (and outside
+    // _heartbeat_mutex), so connect/disconnect races do not need separate
+    // start/stop cookie juggling.
+    if (!always_send && !is_any_system_connected()) {
         return;
     }
 
