@@ -47,10 +47,7 @@ struct TlogFile {
 
 template class MAVSDK_TEMPL_INST CallbackList<>;
 
-MavsdkImpl::MavsdkImpl(
-    const Mavsdk::Configuration& configuration, std::unique_ptr<Time> time_owner) :
-    _time(std::move(time_owner)),
-    time(*_time),
+MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     timeout_handler(time),
     call_every_handler(time)
 {
