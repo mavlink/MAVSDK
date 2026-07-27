@@ -2,7 +2,6 @@
 
 #include <atomic>
 #include <cstdint>
-#include <memory>
 #include <mutex>
 #include <optional>
 #include <sys/types.h>
@@ -45,7 +44,7 @@ class RawConnection;
 
 struct TlogFile;
 
-class MAVSDK_TEST_EXPORT MavsdkImpl {
+class MavsdkImpl {
     // The Asio io_context must outlive every member that posts onto it during teardown
     // (the message handler, parameter subscriptions, connections, systems, and server
     // components). Declaring it first means it is destroyed last, so those members'
@@ -57,11 +56,7 @@ class MAVSDK_TEST_EXPORT MavsdkImpl {
         _io_context.get_executor()};
 
 public:
-    // Owns a single Time. Pass a FakeTime (or other Time) for tests; otherwise
-    // a normal Time is created.
-    explicit MavsdkImpl(
-        const Mavsdk::Configuration& configuration,
-        std::unique_ptr<Time> time = std::make_unique<Time>());
+    MavsdkImpl(const Mavsdk::Configuration& configuration);
     ~MavsdkImpl();
     MavsdkImpl(const MavsdkImpl&) = delete;
     void operator=(const MavsdkImpl&) = delete;
@@ -147,12 +142,7 @@ public:
     server_component_by_type(ComponentType server_component_type, unsigned instance = 0);
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id, uint8_t mav_type);
 
-private:
-    // Declared before `time` / handlers that reference it.
-    std::unique_ptr<Time> _time;
-
-public:
-    Time& time;
+    Time time{};
     TimeoutHandler timeout_handler;
     CallEveryHandler call_every_handler;
 
