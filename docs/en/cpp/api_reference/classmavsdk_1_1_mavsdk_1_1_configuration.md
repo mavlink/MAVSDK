@@ -199,7 +199,7 @@ Default: 0 (disabled)
 
 **Parameters**
 
-* double **timeout_s** - Timeout in seconds: 0 (disabled) or at least 1.
+* double **timeout_s** - Timeout in seconds: 0 (disabled) or at least 2.
 
 **Returns**
 

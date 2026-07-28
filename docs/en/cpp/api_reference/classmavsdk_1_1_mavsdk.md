@@ -434,7 +434,7 @@ This is an alternative to configuring the watchdog via [Configuration::set_heart
 
 **Parameters**
 
-* double **timeout_s** - Timeout in seconds: 0 (disabled) or at least 1.
+* double **timeout_s** - Timeout in seconds: 0 (disabled) or at least 2.
 
 **Returns**
 

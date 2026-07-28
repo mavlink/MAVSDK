@@ -24,11 +24,12 @@ namespace {
 // MAVSDK sends heartbeats at 1 Hz, so anything observable costs about a second.
 constexpr auto flow_timeout = 2500ms;
 
-// Once this has elapsed since the last feed, a 1 s deadline has certainly
-// passed, so no further heartbeat can be sent.
-constexpr auto expiry_settled = 1500ms;
+// The smallest timeout the watchdog accepts.
+constexpr double watchdog_timeout_s = 2.0;
 
-constexpr double watchdog_timeout_s = 1.0;
+// Once this has elapsed since the last feed, the deadline has certainly
+// passed, so no further heartbeat can be sent.
+constexpr auto expiry_settled = 2500ms;
 
 template<typename Predicate>
 bool wait_for(Predicate predicate, std::chrono::milliseconds timeout = flow_timeout)
@@ -166,7 +167,8 @@ TEST(HeartbeatWatchdog, ConcurrentReconfigurationDoesNotDeadlock)
         while (!done) {
             always_send_heartbeats = !always_send_heartbeats;
             mavsdk.set_configuration(ground_station_configuration(always_send_heartbeats));
-            mavsdk.set_heartbeat_watchdog_timeout_s((iteration++ % 2 == 0) ? 0.0 : 1.0);
+            mavsdk.set_heartbeat_watchdog_timeout_s(
+                (iteration++ % 2 == 0) ? 0.0 : watchdog_timeout_s);
             mavsdk.feed_heartbeat_watchdog();
         }
     });
