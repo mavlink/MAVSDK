@@ -1,5 +1,4 @@
 #include "mavsdk_server_api.h"
-#include "mavsdk.hpp"
 
 #include <cctype>
 #include <cstdlib>
@@ -94,12 +93,12 @@ int main(int argc, char** argv)
             const std::string timeout(argv[i + 1]);
             i++;
 
+            // Only the syntax is checked here; the range is validated by
+            // mavsdk_server_set_heartbeat_watchdog_timeout() below.
             char* end = nullptr;
             heartbeat_watchdog_timeout_s = std::strtod(timeout.c_str(), &end);
 
-            if (end == timeout.c_str() || *end != '\0' ||
-                !mavsdk::Mavsdk::is_valid_heartbeat_watchdog_timeout_s(
-                    heartbeat_watchdog_timeout_s)) {
+            if (end == timeout.c_str() || *end != '\0') {
                 usage(argv[0]);
                 return 1;
             }
@@ -110,13 +109,20 @@ int main(int argc, char** argv)
 
     MavsdkServer* mavsdk_server;
     mavsdk_server_init(&mavsdk_server);
-    const int ret = mavsdk_server_run_with_mavlink_ids_and_options(
+
+    if (mavsdk_server_set_heartbeat_watchdog_timeout(mavsdk_server, heartbeat_watchdog_timeout_s) !=
+        0) {
+        usage(argv[0]);
+        mavsdk_server_destroy(mavsdk_server);
+        return 1;
+    }
+
+    const int ret = mavsdk_server_run_with_mavlink_ids(
         mavsdk_server,
         connection_url.c_str(),
         mavsdk_server_port,
         static_cast<uint8_t>(mavsdk_sysid),
-        static_cast<uint8_t>(mavsdk_compid),
-        heartbeat_watchdog_timeout_s);
+        static_cast<uint8_t>(mavsdk_compid));
 
     if (ret != 0) {
         std::cout << "Failed to start, exiting...\n";

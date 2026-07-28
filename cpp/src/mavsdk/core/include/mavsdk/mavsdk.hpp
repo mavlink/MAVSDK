@@ -41,17 +41,6 @@ class MavsdkImpl;
  */
 class MAVSDK_PUBLIC Mavsdk {
 public:
-    /** @brief Minimum heartbeat watchdog timeout when enabled, in seconds. */
-    static constexpr double heartbeat_watchdog_min_timeout_s = 1.0;
-
-    /**
-     * @brief Check whether a heartbeat watchdog timeout is valid.
-     *
-     * @return true if timeout_s is 0 (disabled), or finite and at least
-     *         heartbeat_watchdog_min_timeout_s.
-     */
-    static bool is_valid_heartbeat_watchdog_timeout_s(double timeout_s);
-
     /**
      * @brief Returns the version of MAVSDK.
      *

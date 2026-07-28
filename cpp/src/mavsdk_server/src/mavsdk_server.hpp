@@ -17,10 +17,9 @@ public:
     void stop();
     int getPort();
     void setMavlinkIds(uint8_t system_id, uint8_t component_id);
-    // Overload (rather than a default argument) so that the two-parameter
-    // symbol above stays unchanged for existing binaries.
-    void setMavlinkIds(
-        uint8_t system_id, uint8_t component_id, double heartbeat_watchdog_timeout_s);
+    // Call before run(). Returns false if the timeout is invalid, in which
+    // case the previous one is kept. 0 disables the watchdog.
+    bool setHeartbeatWatchdogTimeout(double timeout_s);
 
 private:
     class Impl;

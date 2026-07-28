@@ -41,12 +41,26 @@ public:
 
     int getPort() { return _grpc_port; }
 
-    void setMavlinkIds(
-        uint8_t system_id, uint8_t component_id, double heartbeat_watchdog_timeout_s = 0.0)
+    void setMavlinkIds(uint8_t system_id, uint8_t component_id)
     {
         auto config = mavsdk::Mavsdk::Configuration{system_id, component_id, false};
-        config.set_heartbeat_watchdog_timeout_s(heartbeat_watchdog_timeout_s);
+        // setMavlinkIds() replaces the whole configuration, so carry over a
+        // watchdog timeout that was already set. This makes the two setters
+        // independent of the order they are called in.
+        config.set_heartbeat_watchdog_timeout_s(_heartbeat_watchdog_timeout_s);
         _mavsdk.set_configuration(config);
+    }
+
+    bool setHeartbeatWatchdogTimeout(double timeout_s)
+    {
+        // Applies and validates in one go; an invalid value is rejected and
+        // leaves the previous timeout in place.
+        if (!_mavsdk.set_heartbeat_watchdog_timeout_s(timeout_s)) {
+            return false;
+        }
+
+        _heartbeat_watchdog_timeout_s = timeout_s;
+        return true;
     }
 
 private:
@@ -54,6 +68,7 @@ private:
     ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
     std::unique_ptr<GrpcServer> _server;
     int _grpc_port;
+    double _heartbeat_watchdog_timeout_s{0.0};
 };
 
 MavsdkServer::MavsdkServer() : _impl(std::make_unique<Impl>()) {}
@@ -89,8 +104,7 @@ void MavsdkServer::setMavlinkIds(uint8_t system_id, uint8_t component_id)
     _impl->setMavlinkIds(system_id, component_id);
 }
 
-void MavsdkServer::setMavlinkIds(
-    uint8_t system_id, uint8_t component_id, double heartbeat_watchdog_timeout_s)
+bool MavsdkServer::setHeartbeatWatchdogTimeout(double timeout_s)
 {
-    _impl->setMavlinkIds(system_id, component_id, heartbeat_watchdog_timeout_s);
+    return _impl->setHeartbeatWatchdogTimeout(timeout_s);
 }

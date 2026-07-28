@@ -6,16 +6,6 @@
 
 namespace mavsdk {
 
-// The public constant mirrors the watchdog's own, so keep them in step.
-static_assert(
-    Mavsdk::heartbeat_watchdog_min_timeout_s == HeartbeatWatchdog::min_timeout_s,
-    "Mavsdk::heartbeat_watchdog_min_timeout_s must match HeartbeatWatchdog::min_timeout_s");
-
-bool Mavsdk::is_valid_heartbeat_watchdog_timeout_s(double timeout_s)
-{
-    return HeartbeatWatchdog::is_valid_timeout_s(timeout_s);
-}
-
 Mavsdk::Mavsdk(Configuration configuration)
 {
     _impl = std::make_shared<MavsdkImpl>(configuration);
@@ -227,11 +217,11 @@ double Mavsdk::Configuration::get_heartbeat_watchdog_timeout_s() const
 
 bool Mavsdk::Configuration::set_heartbeat_watchdog_timeout_s(double timeout_s)
 {
-    if (!Mavsdk::is_valid_heartbeat_watchdog_timeout_s(timeout_s)) {
+    if (!HeartbeatWatchdog::is_valid_timeout_s(timeout_s)) {
         LogWarn(
             "Invalid heartbeat watchdog timeout: {} s (must be 0 or >= {} s)",
             timeout_s,
-            Mavsdk::heartbeat_watchdog_min_timeout_s);
+            HeartbeatWatchdog::min_timeout_s);
         return false;
     }
 

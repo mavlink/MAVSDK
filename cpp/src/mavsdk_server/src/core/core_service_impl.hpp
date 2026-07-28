@@ -58,16 +58,11 @@ public:
         const rpc::core::SetHeartbeatWatchdogTimeoutRequest* request,
         rpc::core::SetHeartbeatWatchdogTimeoutResponse* /* response */) override
     {
-        const double timeout_s = request->timeout_s();
-        // Use the real Mavsdk type (not the template parameter) so mocks need
-        // not implement this static validator.
-        if (!::mavsdk::Mavsdk::is_valid_heartbeat_watchdog_timeout_s(timeout_s)) {
+        if (!_mavsdk.set_heartbeat_watchdog_timeout_s(request->timeout_s())) {
             return grpc::Status(
                 grpc::StatusCode::INVALID_ARGUMENT,
                 "heartbeat watchdog timeout must be 0 or at least 1 second");
         }
-
-        _mavsdk.set_heartbeat_watchdog_timeout_s(timeout_s);
 
         return grpc::Status::OK;
     }
