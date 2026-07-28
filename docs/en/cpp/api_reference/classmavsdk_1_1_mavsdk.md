@@ -37,22 +37,6 @@ std::function< bool([MavlinkMessage](structmavsdk_1_1_mavsdk_1_1_mavlink_message
 std::function< void(const char *bytes, size_t length)> [RawBytesCallback](#classmavsdk_1_1_mavsdk_1acb5be9a1be97d251387ffe87ae8b9eb0) | Callback type for raw bytes subscriptions.
 [Handle](classmavsdk_1_1_handle.md)< const char *, size_t > [RawBytesHandle](#classmavsdk_1_1_mavsdk_1ac766258f137aa3e8b0dabb5a66435ea1) | [Handle](classmavsdk_1_1_handle.md) type for raw bytes subscriptions.
 
-## Static Public Attributes
-
-
-Type | Name | Description
----: | --- | ---
-static constexpr double | [heartbeat_watchdog_min_timeout_s](#classmavsdk_1_1_mavsdk_1aheartbeat_watchdog_min_timeout_s) | Minimum heartbeat watchdog timeout when enabled, in seconds.
-
-
-## Static Public Member Functions
-
-
-Type | Name | Description
----: | --- | ---
-static bool | [is_valid_heartbeat_watchdog_timeout_s](#classmavsdk_1_1_mavsdk_1ais_valid_heartbeat_watchdog_timeout_s) (double timeout_s) | Check whether a heartbeat watchdog timeout is valid.
-
-
 ## Public Member Functions
 
 
@@ -93,37 +77,6 @@ void | [pass_received_raw_bytes](#classmavsdk_1_1_mavsdk_1a65329315ac07bae110839
 [RawBytesHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac766258f137aa3e8b0dabb5a66435ea1) | [subscribe_raw_bytes_to_be_sent](#classmavsdk_1_1_mavsdk_1a116e9bab0efdf7ec90866107ef517b20) ([RawBytesCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1acb5be9a1be97d251387ffe87ae8b9eb0) callback) | Subscribe to raw bytes to be sent.
 void | [unsubscribe_raw_bytes_to_be_sent](#classmavsdk_1_1_mavsdk_1af6ec813a9728f4258056fa1f5d399eb1) ([RawBytesHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac766258f137aa3e8b0dabb5a66435ea1) handle) | Unsubscribe from raw bytes to be sent.
 
-
-## Member Data Documentation
-
-
-### heartbeat_watchdog_min_timeout_s {#classmavsdk_1_1_mavsdk_1aheartbeat_watchdog_min_timeout_s}
-```cpp
-static constexpr double mavsdk::Mavsdk::heartbeat_watchdog_min_timeout_s = 1.0
-```
-
-
-Minimum heartbeat watchdog timeout when enabled, in seconds.
-
-## Member Function Documentation
-
-
-### is_valid_heartbeat_watchdog_timeout_s() {#classmavsdk_1_1_mavsdk_1ais_valid_heartbeat_watchdog_timeout_s}
-```cpp
-static bool mavsdk::Mavsdk::is_valid_heartbeat_watchdog_timeout_s(double timeout_s)
-```
-
-
-Check whether a heartbeat watchdog timeout is valid.
-
-
-**Parameters**
-
-* double **timeout_s** - 
-
-**Returns**
-
-&emsp;bool - true if timeout_s is 0 (disabled), or finite and at least heartbeat_watchdog_min_timeout_s.
 
 ## Constructor & Destructor Documentation
 

@@ -13,6 +13,7 @@ namespace {
 
 using testing::_;
 using testing::NiceMock;
+using testing::Return;
 
 using MockMavsdk = NiceMock<mavsdk::testing::MockMavsdk>;
 using CoreServiceImpl = mavsdk::mavsdk_server::CoreServiceImpl<MockMavsdk>;
@@ -78,7 +79,7 @@ TEST_F(CoreServiceImplTest, feedHeartbeatWatchdogFeeds)
 
 TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutSetsTimeout)
 {
-    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(2.5)).Times(1);
+    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(2.5)).Times(1).WillOnce(Return(true));
 
     grpc::ClientContext context;
     mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest request;
@@ -93,7 +94,7 @@ TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutSetsTimeout)
 
 TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutDisable)
 {
-    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(0.0)).Times(1);
+    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(0.0)).Times(1).WillOnce(Return(true));
 
     grpc::ClientContext context;
     mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest request;
@@ -106,9 +107,12 @@ TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutDisable)
     _core_service->stop();
 }
 
-TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutRejectsSubSecond)
+TEST_F(CoreServiceImplTest, setHeartbeatWatchdogTimeoutReportsRejection)
 {
-    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(_)).Times(0);
+    // The validation rule itself lives in HeartbeatWatchdog and is covered by
+    // its unit test; here we only check that a rejection is reported back as
+    // INVALID_ARGUMENT rather than silently swallowed.
+    EXPECT_CALL(*_mavsdk, set_heartbeat_watchdog_timeout_s(0.5)).Times(1).WillOnce(Return(false));
 
     grpc::ClientContext context;
     mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest request;
