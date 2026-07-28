@@ -1,6 +1,5 @@
 #pragma once
 
-#include <atomic>
 #include <chrono>
 #include <mutex>
 #include "mavsdk_export.h"
@@ -46,11 +45,8 @@ public:
     void sleep_for(std::chrono::nanoseconds ns) override;
 
 private:
-    // Atomic so that one thread can advance the fake time (sleep_for) while
-    // other threads (e.g. the io thread polling TimeoutHandler and
-    // CallEveryHandler) concurrently read it via steady_time().
-    std::atomic<std::chrono::nanoseconds::rep> _current_ns{0};
-    void add_time(std::chrono::nanoseconds ns);
+    std::chrono::time_point<std::chrono::steady_clock, std::chrono::nanoseconds> _current{};
+    void add_overhead();
 };
 
 class MAVSDK_TEST_EXPORT AutopilotTime {

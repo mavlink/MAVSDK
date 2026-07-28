@@ -25,7 +25,7 @@ mavsdk.set_heartbeat_watchdog_timeout_s(2.0); // ... or at runtime
 mavsdk.feed_heartbeat_watchdog();
 ```
 
-Both setters return `false` and keep the previous value if the timeout is invalid — it must be either 0 (disabled) or at least 1 second.
+Both setters return `false` and keep the previous value if the timeout is invalid — it must be either 0 (disabled) or at least 2 seconds.
 
 Heartbeats do not start until the watchdog has been fed at least once, and enabling the watchdog or changing its timeout stops them again until the next feed.
 The watchdog never grants a free timeout period.
@@ -43,9 +43,9 @@ MAVSDK sends its periodic heartbeats at 1 Hz and checks the watchdog at each of 
 Feed at least *twice* per timeout period rather than exactly once.
 If a feed lands slightly later than usual the next heartbeat is skipped, which leaves a gap of 2 s or more in the outgoing stream, and sustained jitter can make the peer declare the connection lost when the application is in fact fine.
 
-::: warning
-The minimum timeout is 1 s, but 1 s leaves no headroom for an application feeding at 1 Hz — the feed and the heartbeat can end up almost in phase, so a single late feed already drops a heartbeat.
-If the application can only feed about once per second, use a timeout of 2 s or more.
+::: info
+This is why the minimum timeout is 2 s rather than 1 s: at 1 s an application feeding once per second would have the feed and the heartbeat almost in phase, and a single late feed would already drop one.
+So feed at 1 Hz or faster, and leave the timeout at 2 s or above.
 :::
 
 Feed from somewhere that genuinely stops if the application is unhealthy.

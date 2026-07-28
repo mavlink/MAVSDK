@@ -31,7 +31,13 @@ namespace mavsdk {
 class MAVSDK_TEST_EXPORT HeartbeatWatchdog {
 public:
     // Minimum timeout when enabled, in seconds.
-    static constexpr double min_timeout_s = 1.0;
+    //
+    // Two heartbeat periods rather than one: heartbeats are sent at 1 Hz and
+    // the deadline is only checked when one is due, so with a 1 s timeout a
+    // feed and the tick can land almost in phase and a single slightly late
+    // feed already drops a heartbeat. 1 s is therefore not usable as a
+    // deadman timeout, however well documented.
+    static constexpr double min_timeout_s = 2.0;
 
     // A timeout is valid if it is 0 (disabled), or finite and at least
     // min_timeout_s.

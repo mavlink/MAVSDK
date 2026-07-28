@@ -283,7 +283,7 @@ public:
          *
          * Default: 0 (disabled)
          *
-         * @param timeout_s Timeout in seconds: 0 (disabled) or at least 1.
+         * @param timeout_s Timeout in seconds: 0 (disabled) or at least 2.
          * @return true if the value was accepted, false if it was rejected
          *         (invalid values are ignored and the previous value kept).
          */
@@ -407,7 +407,7 @@ public:
      * This is an alternative to configuring the watchdog via
      * Configuration::set_heartbeat_watchdog_timeout_s() at startup.
      *
-     * @param timeout_s Timeout in seconds: 0 (disabled) or at least 1.
+     * @param timeout_s Timeout in seconds: 0 (disabled) or at least 2.
      * @return true if the value was accepted, false if it was rejected
      *         (invalid values are ignored and the previous value kept).
      */

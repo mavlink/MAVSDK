@@ -61,7 +61,7 @@ public:
         if (!_mavsdk.set_heartbeat_watchdog_timeout_s(request->timeout_s())) {
             return grpc::Status(
                 grpc::StatusCode::INVALID_ARGUMENT,
-                "heartbeat watchdog timeout must be 0 or at least 1 second");
+                "heartbeat watchdog timeout must be 0 or at least 2 seconds");
         }
 
         return grpc::Status::OK;

@@ -162,7 +162,7 @@ void usage(const char* bin_name)
               << "                set the heartbeat watchdog timeout in seconds; when greater\n"
               << "                than 0, heartbeats are only sent while the\n"
               << "                FeedHeartbeatWatchdog RPC keeps being called within the\n"
-              << "                timeout period; must be 0 (disabled) or at least 1 second\n"
+              << "                timeout period; must be 0 (disabled) or at least 2 seconds\n"
               << "                (default is 0, watchdog disabled)\n";
 }
 

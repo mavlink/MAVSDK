@@ -65,7 +65,7 @@ MAVSDK_PUBLIC int mavsdk_server_run_with_mavlink_ids(
  * SetHeartbeatWatchdogTimeout RPC.
  *
  * @param mavsdk_server Pointer to initialized MavsdkServer
- * @param timeout_s Timeout in seconds: 0 (disabled) or at least 1
+ * @param timeout_s Timeout in seconds: 0 (disabled) or at least 2
  * @return 0 if successful, 1 if the timeout was rejected as invalid
  */
 MAVSDK_PUBLIC int mavsdk_server_set_heartbeat_watchdog_timeout(

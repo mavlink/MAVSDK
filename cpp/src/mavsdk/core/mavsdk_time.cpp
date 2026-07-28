@@ -94,51 +94,53 @@ void Time::sleep_for(std::chrono::nanoseconds ns)
 FakeTime::FakeTime() : Time()
 {
     // Start with current time so we don't start from 0.
-    _current_ns =
-        std::chrono::duration_cast<std::chrono::nanoseconds>(steady_clock::now().time_since_epoch())
-            .count();
+    _current = steady_clock::now();
 }
 
 SteadyTimePoint FakeTime::steady_time()
 {
-    return SteadyTimePoint(std::chrono::duration_cast<SteadyTimePoint::duration>(
-        std::chrono::nanoseconds(_current_ns.load())));
+    return _current;
 }
 
 void FakeTime::sleep_for(std::chrono::hours h)
 {
-    add_time(h);
+    _current += h;
+    add_overhead();
 }
 
 void FakeTime::sleep_for(std::chrono::minutes m)
 {
-    add_time(m);
+    _current += m;
+    add_overhead();
 }
 
 void FakeTime::sleep_for(std::chrono::seconds s)
 {
-    add_time(s);
+    _current += s;
+    add_overhead();
 }
 
 void FakeTime::sleep_for(std::chrono::milliseconds ms)
 {
-    add_time(ms);
+    _current += ms;
+    add_overhead();
 }
 
 void FakeTime::sleep_for(std::chrono::microseconds us)
 {
-    add_time(us);
+    _current += us;
+    add_overhead();
 }
 
 void FakeTime::sleep_for(std::chrono::nanoseconds ns)
 {
-    add_time(ns);
+    _current += ns;
+    add_overhead();
 }
 
-void FakeTime::add_time(std::chrono::nanoseconds ns)
+void FakeTime::add_overhead()
 {
-    // The 50 us of overhead simulate the imperfection of a real sleep.
-    _current_ns += (ns + std::chrono::microseconds(50)).count();
+    _current += std::chrono::microseconds(50);
 }
 
 SystemTimePoint AutopilotTime::system_time()
