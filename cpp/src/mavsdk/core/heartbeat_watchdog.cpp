@@ -52,6 +52,10 @@ void HeartbeatWatchdog::feed()
         case State::Disabled:
             return;
         case State::NeedsFeed:
+            // Complements the expiry warning, so that it is visible when
+            // heartbeats are allowed again.
+            LogInfo("Heartbeat watchdog fed, allowing heartbeats");
+            [[fallthrough]];
         case State::Armed:
             // A feed is valid only until this deadline.
             _state = State::Armed;
