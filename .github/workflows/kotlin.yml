@@ -1,0 +1,325 @@
+name: Kotlin Build and Test
+
+on:
+  push:
+    branches:
+    - 'main'
+    tags:
+    - 'v*'
+    paths-ignore:
+    - 'cpp/docs/**'
+  pull_request:
+    branches:
+    - '*'
+    paths-ignore:
+    - 'cpp/docs/**'
+    - '.github/workflows/docs_deploy.yml'
+  workflow_dispatch:
+
+# Unlike linux.yml and macos.yml, this workflow does NOT set
+# `defaults.run.working-directory`, because it spans cpp/, c/, jni/ and kt/.
+# Every path below is relative to the repository root.
+
+jobs:
+  # Build the JNI library for each desktop platform. cmavsdk is linked
+  # statically, so libmavsdk_jni is self-contained and needs no companion
+  # libcmavsdk at runtime.
+  jni-desktop:
+    name: jni-${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux-x86_64
+            runner: ubuntu-24.04
+            library: libmavsdk_jni.so
+          - platform: darwin-aarch64
+            runner: macos-15
+            library: libmavsdk_jni.dylib
+          - platform: darwin-x86_64
+            runner: macos-15-intel
+            library: libmavsdk_jni.dylib
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      # Provides JAVA_HOME, which jni/CMakeLists.txt needs for find_package(JNI),
+      # and javac for the contract validation below.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./cpp/build/kotlin/third_party/install
+          key: kotlin-${{ matrix.platform }}-${{ hashFiles('./third_party/**') }}-1
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/cpp/build/kotlin/third_party/install" >> $GITHUB_ENV
+      - name: build MAVSDK C++
+        run: |
+          cmake $superbuild $cmake_prefix_path \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TESTING=OFF \
+            -DBUILD_MAVSDK_SERVER=OFF \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/cpp/build/kotlin/install \
+            -Scpp -Bcpp/build/kotlin
+          cmake --build cpp/build/kotlin -j$(getconf _NPROCESSORS_ONLN) --target install
+      # CMAKE_POSITION_INDEPENDENT_CODE is explicit here: c/CMakeLists.txt does
+      # not set it, and a non-PIC static archive cannot be linked into the
+      # shared libmavsdk_jni on Linux.
+      - name: build cmavsdk
+        run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_EXAMPLES=OFF \
+            -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+            -DCMAKE_PREFIX_PATH="$(pwd)/cpp/build/kotlin/install;$(pwd)/cpp/build/kotlin/third_party/install" \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/c/build/kotlin/install \
+            -Sc -Bc/build/kotlin
+          cmake --build c/build/kotlin -j$(getconf _NPROCESSORS_ONLN) --target install
+      - name: build mavsdk_jni
+        run: |
+          cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH="$(pwd)/c/build/kotlin/install;$(pwd)/cpp/build/kotlin/install;$(pwd)/cpp/build/kotlin/third_party/install" \
+            -Sjni -Bjni/build/kotlin
+          cmake --build jni/build/kotlin -j$(getconf _NPROCESSORS_ONLN)
+      # Compiles the generated Java contracts and cross-checks them against the
+      # symbols actually exported by the library we just built.
+      - name: validate JNI contracts
+        run: ./jni/jvm/validate.sh "$(pwd)/jni/build/kotlin/${{ matrix.library }}"
+      - name: upload native library
+        uses: actions/upload-artifact@v4
+        with:
+          name: jni-native-${{ matrix.platform }}
+          path: jni/build/kotlin/${{ matrix.library }}
+          retention-days: 7
+          if-no-files-found: error
+
+  # Cross-compile the JNI library for each Android ABI. jni/CMakeLists.txt
+  # branches on ANDROID, so it links liblog and skips find_package(JNI) -- the
+  # NDK inside the dockcross image supplies the headers.
+  jni-android:
+    name: jni-android-${{ matrix.abi }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: android-arm
+            abi: armeabi-v7a
+          - name: android-arm64
+            abi: arm64-v8a
+          - name: android-x86
+            abi: x86
+          - name: android-x86_64
+            abi: x86_64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        continue-on-error: true
+      # Generated from the repository root, so /work inside the container maps
+      # to the root and can reach cpp/, c/ and jni/ in one pass.
+      - name: setup dockcross
+        run: docker run --rm dockcross/${{ matrix.name }}:20250818-0a27819 > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./cpp/build/android/${{ matrix.name }}/third_party/install
+          key: kotlin-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-1
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/cpp/build/android/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
+      - name: configure MAVSDK C++
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DBUILD_MAVSDK_SERVER=OFF -DCMAKE_INSTALL_PREFIX=/work/cpp/build/android/${{ matrix.name }}/install -Scpp -Bcpp/build/android/${{ matrix.name }}"
+      - name: build MAVSDK C++
+        run: ./dockcross-${{ matrix.name }} cmake --build cpp/build/android/${{ matrix.name }} -j$(nproc) --target install
+      - name: configure cmavsdk
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_PREFIX_PATH='/work/cpp/build/android/${{ matrix.name }}/install;/work/cpp/build/android/${{ matrix.name }}/third_party/install' -DCMAKE_INSTALL_PREFIX=/work/c/build/android/${{ matrix.name }}/install -Sc -Bc/build/android/${{ matrix.name }}"
+      - name: build cmavsdk
+        run: ./dockcross-${{ matrix.name }} cmake --build c/build/android/${{ matrix.name }} -j$(nproc) --target install
+      - name: configure mavsdk_jni
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH='/work/c/build/android/${{ matrix.name }}/install;/work/cpp/build/android/${{ matrix.name }}/install;/work/cpp/build/android/${{ matrix.name }}/third_party/install' -Sjni -Bjni/build/android/${{ matrix.name }}"
+      - name: build mavsdk_jni
+        run: ./dockcross-${{ matrix.name }} cmake --build jni/build/android/${{ matrix.name }} -j$(nproc)
+      - name: upload native library
+        uses: actions/upload-artifact@v4
+        with:
+          name: jni-android-${{ matrix.abi }}
+          path: jni/build/android/${{ matrix.name }}/libmavsdk_jni.so
+          retention-days: 7
+          if-no-files-found: error
+
+  # Fan in the desktop natives, build the JVM target, and smoke-test that the
+  # library actually loads through NativeLibraryLoader.
+  kotlin-jvm:
+    name: kotlin-jvm
+    needs: jni-desktop
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: jni-native-*
+          path: native-staging
+      # download-artifact drops each artifact into <path>/<artifact-name>/, so
+      # strip the prefix to get the <os>-<arch> layout NativeLibraryLoader
+      # looks for.
+      - name: lay out natives
+        run: |
+          dest=kt/mavsdk-kotlin/src/jvmMain/resources/native
+          mkdir -p "$dest"
+          for dir in native-staging/jni-native-*; do
+            platform="$(basename "$dir")"
+            platform="${platform#jni-native-}"
+            mkdir -p "$dest/$platform"
+            cp "$dir"/* "$dest/$platform/"
+          done
+          find "$dest" -type f | sort
+      - name: build library and examples
+        run: |
+          cd kt/examples/cli-jvm
+          ./gradlew build
+      - name: build jvm jar
+        run: |
+          cd kt/mavsdk-kotlin
+          ./gradlew jvmJar
+      # Telemetry uses firstAutopilot(timeoutSeconds = 10.0), so it terminates
+      # on its own without a vehicle. This proves the native library loads and
+      # the JNI boundary works end to end.
+      - name: smoke-test native loading
+        run: |
+          cd kt/examples/cli-jvm
+          ./gradlew run --args="Telemetry" --console=plain 2>&1 | tee run.log
+          grep -q "Loaded libmavsdk_jni from resources: /native/linux-x86_64/" run.log
+      - name: upload jvm jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavsdk-kotlin-jvm-jar
+          path: kt/mavsdk-kotlin/build/libs/*.jar
+          retention-days: 14
+          if-no-files-found: error
+
+  # Fan in the four Android ABIs and assemble the AAR.
+  kotlin-android:
+    name: kotlin-android
+    needs: jni-android
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: jni-android-*
+          path: android-staging
+      - name: lay out jniLibs
+        run: |
+          dest=kt/mavsdk-kotlin/src/androidMain/jniLibs
+          mkdir -p "$dest"
+          for dir in android-staging/jni-android-*; do
+            abi="$(basename "$dir")"
+            abi="${abi#jni-android-}"
+            mkdir -p "$dest/$abi"
+            cp "$dir"/* "$dest/$abi/"
+          done
+          find "$dest" -type f | sort
+      - name: assemble AAR
+        run: |
+          cd kt/mavsdk-kotlin
+          ./gradlew assembleRelease
+      - name: upload AAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavsdk-kotlin-aar
+          path: kt/mavsdk-kotlin/build/outputs/aar/*.aar
+          retention-days: 14
+          if-no-files-found: error
+
+  # Publishes io.mavsdk:mavsdk-kotlin{,-jvm,-android} to a Maven Central
+  # staging repository on v* tags. Promotion to the public repository is left
+  # manual in the Central Portal; swap in publishAndReleaseToMavenCentral once
+  # you are happy to let a tag publish unattended.
+  publish:
+    name: publish to Maven Central
+    needs: [kotlin-jvm, kotlin-android]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      # The jvm jar embeds the desktop natives from its resources, and the AAR
+      # embeds the Android ones from jniLibs, so both sets have to be back in
+      # place before the publication is built.
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: jni-native-*
+          path: native-staging
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: jni-android-*
+          path: android-staging
+      - name: lay out natives
+        run: |
+          dest=kt/mavsdk-kotlin/src/jvmMain/resources/native
+          mkdir -p "$dest"
+          for dir in native-staging/jni-native-*; do
+            platform="$(basename "$dir")"
+            platform="${platform#jni-native-}"
+            mkdir -p "$dest/$platform"
+            cp "$dir"/* "$dest/$platform/"
+          done
+          dest=kt/mavsdk-kotlin/src/androidMain/jniLibs
+          mkdir -p "$dest"
+          for dir in android-staging/jni-android-*; do
+            abi="$(basename "$dir")"
+            abi="${abi#jni-android-}"
+            mkdir -p "$dest/$abi"
+            cp "$dir"/* "$dest/$abi/"
+          done
+      - name: derive version from tag
+        run: echo "VERSION_NAME=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+      - name: publish
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
+        run: |
+          cd kt/mavsdk-kotlin
+          ./gradlew publishToMavenCentral -PVERSION_NAME="$VERSION_NAME"
