@@ -6,403 +6,629 @@
 #include "cmavsdk/plugins/winch/winch.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct StatusFlagsFromJava;
+struct StatusFlagsArrayFromJava;
+struct StatusFromJava;
+struct StatusArrayFromJava;
 
+struct StatusFlagsFromJava {
+    mavsdk_winch_status_flags_t value{};
 
-// ===== Status Callback Wrapper =====
+    StatusFlagsFromJava(JNIEnv* env, jobject object);
+    ~StatusFlagsFromJava();
+};
+
+struct StatusFlagsArrayFromJava {
+    std::vector<std::unique_ptr<StatusFlagsFromJava>> holders;
+    std::vector<mavsdk_winch_status_flags_t> values;
+
+    StatusFlagsArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<StatusFlagsFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct StatusFromJava {
+    mavsdk_winch_status_t value{};
+    std::unique_ptr<StatusFlagsFromJava> status_flagsValue;
+
+    StatusFromJava(JNIEnv* env, jobject object);
+    ~StatusFromJava();
+};
+
+struct StatusArrayFromJava {
+    std::vector<std::unique_ptr<StatusFromJava>> holders;
+    std::vector<mavsdk_winch_status_t> values;
+
+    StatusArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<StatusFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+StatusFlagsFromJava::StatusFlagsFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID healthyField = env->GetFieldID(
+        clazz, "healthy", "Z");
+    value.healthy =
+        static_cast<bool>(env->GetBooleanField(object, healthyField));
+    jfieldID fully_retractedField = env->GetFieldID(
+        clazz, "fullyRetracted", "Z");
+    value.fully_retracted =
+        static_cast<bool>(env->GetBooleanField(object, fully_retractedField));
+    jfieldID movingField = env->GetFieldID(
+        clazz, "moving", "Z");
+    value.moving =
+        static_cast<bool>(env->GetBooleanField(object, movingField));
+    jfieldID clutch_engagedField = env->GetFieldID(
+        clazz, "clutchEngaged", "Z");
+    value.clutch_engaged =
+        static_cast<bool>(env->GetBooleanField(object, clutch_engagedField));
+    jfieldID lockedField = env->GetFieldID(
+        clazz, "locked", "Z");
+    value.locked =
+        static_cast<bool>(env->GetBooleanField(object, lockedField));
+    jfieldID droppingField = env->GetFieldID(
+        clazz, "dropping", "Z");
+    value.dropping =
+        static_cast<bool>(env->GetBooleanField(object, droppingField));
+    jfieldID arrestingField = env->GetFieldID(
+        clazz, "arresting", "Z");
+    value.arresting =
+        static_cast<bool>(env->GetBooleanField(object, arrestingField));
+    jfieldID ground_senseField = env->GetFieldID(
+        clazz, "groundSense", "Z");
+    value.ground_sense =
+        static_cast<bool>(env->GetBooleanField(object, ground_senseField));
+    jfieldID retractingField = env->GetFieldID(
+        clazz, "retracting", "Z");
+    value.retracting =
+        static_cast<bool>(env->GetBooleanField(object, retractingField));
+    jfieldID redeliverField = env->GetFieldID(
+        clazz, "redeliver", "Z");
+    value.redeliver =
+        static_cast<bool>(env->GetBooleanField(object, redeliverField));
+    jfieldID abandon_lineField = env->GetFieldID(
+        clazz, "abandonLine", "Z");
+    value.abandon_line =
+        static_cast<bool>(env->GetBooleanField(object, abandon_lineField));
+    jfieldID lockingField = env->GetFieldID(
+        clazz, "locking", "Z");
+    value.locking =
+        static_cast<bool>(env->GetBooleanField(object, lockingField));
+    jfieldID load_lineField = env->GetFieldID(
+        clazz, "loadLine", "Z");
+    value.load_line =
+        static_cast<bool>(env->GetBooleanField(object, load_lineField));
+    jfieldID load_payloadField = env->GetFieldID(
+        clazz, "loadPayload", "Z");
+    value.load_payload =
+        static_cast<bool>(env->GetBooleanField(object, load_payloadField));
+    env->DeleteLocalRef(clazz);
+}
+
+StatusFlagsFromJava::~StatusFlagsFromJava() = default;
+StatusFromJava::StatusFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID time_usecField = env->GetFieldID(
+        clazz, "timeUsec", "J");
+    value.time_usec =
+        static_cast<uint64_t>(env->GetLongField(object, time_usecField));
+    jfieldID line_length_mField = env->GetFieldID(
+        clazz, "lineLengthM", "F");
+    value.line_length_m =
+        static_cast<float>(env->GetFloatField(object, line_length_mField));
+    jfieldID speed_m_sField = env->GetFieldID(
+        clazz, "speedMS", "F");
+    value.speed_m_s =
+        static_cast<float>(env->GetFloatField(object, speed_m_sField));
+    jfieldID tension_kgField = env->GetFieldID(
+        clazz, "tensionKg", "F");
+    value.tension_kg =
+        static_cast<float>(env->GetFloatField(object, tension_kgField));
+    jfieldID voltage_vField = env->GetFieldID(
+        clazz, "voltageV", "F");
+    value.voltage_v =
+        static_cast<float>(env->GetFloatField(object, voltage_vField));
+    jfieldID current_aField = env->GetFieldID(
+        clazz, "currentA", "F");
+    value.current_a =
+        static_cast<float>(env->GetFloatField(object, current_aField));
+    jfieldID temperature_cField = env->GetFieldID(
+        clazz, "temperatureC", "I");
+    value.temperature_c =
+        static_cast<int32_t>(env->GetIntField(object, temperature_cField));
+    jfieldID status_flagsField = env->GetFieldID(
+        clazz, "statusFlags", "Lio/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags;");
+    jobject status_flagsObject =
+        env->GetObjectField(object, status_flagsField);
+    status_flagsValue =
+        std::make_unique<StatusFlagsFromJava>(
+            env, status_flagsObject);
+    value.status_flags = status_flagsValue->value;
+    env->DeleteLocalRef(status_flagsObject);
+    env->DeleteLocalRef(clazz);
+}
+
+StatusFromJava::~StatusFromJava() = default;
+
+jobject toJavaStatusFlags(
+    JNIEnv* env, const mavsdk_winch_status_flags_t& value);
+jobjectArray toJavaStatusFlagsArray(
+    JNIEnv* env,
+    const mavsdk_winch_status_flags_t* values,
+    size_t count);
+jobject toJavaStatus(
+    JNIEnv* env, const mavsdk_winch_status_t& value);
+jobjectArray toJavaStatusArray(
+    JNIEnv* env,
+    const mavsdk_winch_status_t* values,
+    size_t count);
+
+jobject toJavaStatusFlags(
+    JNIEnv* env, const mavsdk_winch_status_flags_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZZZZZZZZZZZZZZ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.healthy)
+        , static_cast<jboolean>(value.fully_retracted)
+        , static_cast<jboolean>(value.moving)
+        , static_cast<jboolean>(value.clutch_engaged)
+        , static_cast<jboolean>(value.locked)
+        , static_cast<jboolean>(value.dropping)
+        , static_cast<jboolean>(value.arresting)
+        , static_cast<jboolean>(value.ground_sense)
+        , static_cast<jboolean>(value.retracting)
+        , static_cast<jboolean>(value.redeliver)
+        , static_cast<jboolean>(value.abandon_line)
+        , static_cast<jboolean>(value.locking)
+        , static_cast<jboolean>(value.load_line)
+        , static_cast<jboolean>(value.load_payload)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaStatusFlagsArray(
+    JNIEnv* env,
+    const mavsdk_winch_status_flags_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaStatusFlags(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaStatus(
+    JNIEnv* env, const mavsdk_winch_status_t& value) {
+    jobject status_flagsValue =
+        toJavaStatusFlags(env, value.status_flags);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/winch/NativeWinch$Status");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JFFFFFILio/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jlong>(value.time_usec)
+        , static_cast<jfloat>(value.line_length_m)
+        , static_cast<jfloat>(value.speed_m_s)
+        , static_cast<jfloat>(value.tension_kg)
+        , static_cast<jfloat>(value.voltage_v)
+        , static_cast<jfloat>(value.current_a)
+        , static_cast<jint>(value.temperature_c)
+        , status_flagsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(status_flagsValue);
+    return result;
+}
+
+jobjectArray toJavaStatusArray(
+    JNIEnv* env,
+    const mavsdk_winch_status_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/winch/NativeWinch$Status");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaStatus(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct StatusCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StatusCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StatusCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/winch/Winch$Status;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/winch/NativeWinch$Status;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_status_t value) const {
+    void operator()(
+        const mavsdk_winch_status_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_status_flags = nullptr;
-        {            jclass nestedClass_status_flags = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$StatusFlags");
-            jmethodID nestedCtor_status_flags = env->GetMethodID(nestedClass_status_flags, "<init>", "(ZZZZZZZZZZZZZZ)V");
-            nestedObj_status_flags = env->NewObject(nestedClass_status_flags, nestedCtor_status_flags                , static_cast<jboolean>(value.status_flags.healthy)                , static_cast<jboolean>(value.status_flags.fully_retracted)                , static_cast<jboolean>(value.status_flags.moving)                , static_cast<jboolean>(value.status_flags.clutch_engaged)                , static_cast<jboolean>(value.status_flags.locked)                , static_cast<jboolean>(value.status_flags.dropping)                , static_cast<jboolean>(value.status_flags.arresting)                , static_cast<jboolean>(value.status_flags.ground_sense)                , static_cast<jboolean>(value.status_flags.retracting)                , static_cast<jboolean>(value.status_flags.redeliver)                , static_cast<jboolean>(value.status_flags.abandon_line)                , static_cast<jboolean>(value.status_flags.locking)                , static_cast<jboolean>(value.status_flags.load_line)                , static_cast<jboolean>(value.status_flags.load_payload)            );
-            env->DeleteLocalRef(nestedClass_status_flags);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$Status");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JFFFFFILio/mavsdk/kotlin/plugins/winch/Winch$StatusFlags;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.time_usec)            , static_cast<jfloat>(value.line_length_m)            , static_cast<jfloat>(value.speed_m_s)            , static_cast<jfloat>(value.tension_kg)            , static_cast<jfloat>(value.voltage_v)            , static_cast<jfloat>(value.current_a)            , static_cast<jint>(value.temperature_c)            , nestedObj_status_flags        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_status_flags);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaStatus(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Relax Callback Wrapper =====
 struct RelaxCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RelaxCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RelaxCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== RelativeLengthControl Callback Wrapper =====
 struct RelativeLengthControlCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RelativeLengthControlCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RelativeLengthControlCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== RateControl Callback Wrapper =====
 struct RateControlCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RateControlCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RateControlCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Lock Callback Wrapper =====
 struct LockCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    LockCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    LockCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Deliver Callback Wrapper =====
 struct DeliverCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    DeliverCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    DeliverCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Hold Callback Wrapper =====
 struct HoldCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    HoldCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    HoldCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Retract Callback Wrapper =====
 struct RetractCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RetractCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RetractCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== LoadLine Callback Wrapper =====
 struct LoadLineCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    LoadLineCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    LoadLineCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== AbandonLine Callback Wrapper =====
 struct AbandonLineCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    AbandonLineCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    AbandonLineCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== LoadPayload Callback Wrapper =====
 struct LoadPayloadCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    LoadPayloadCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    LoadPayloadCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_winch_result_t result) const {
+    void operator()(
+        const mavsdk_winch_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -410,567 +636,533 @@ struct LoadPayloadCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Winch.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_winch_t handle = mavsdk_winch_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Winch plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Winch.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return;
-
-    mavsdk_winch_destroy(reinterpret_cast<mavsdk_winch_t>(handle));
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return;
+    }
+    mavsdk_winch_destroy(
+        reinterpret_cast<mavsdk_winch_t>(handle));
 }
 
-
-// ===== Winch.statusBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_statusBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_status(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return {};
-
-
-    mavsdk_winch_status_t ret_val{};
-    mavsdk_winch_status(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        &ret_val
-    );
-
-        jobject nestedObj_status_flags = nullptr;
-        {            jclass nestedClass_status_flags = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$StatusFlags");
-            jmethodID nestedCtor_status_flags = env->GetMethodID(nestedClass_status_flags, "<init>", "(ZZZZZZZZZZZZZZ)V");
-            nestedObj_status_flags = env->NewObject(nestedClass_status_flags, nestedCtor_status_flags                , static_cast<jboolean>(ret_val.status_flags.healthy)                , static_cast<jboolean>(ret_val.status_flags.fully_retracted)                , static_cast<jboolean>(ret_val.status_flags.moving)                , static_cast<jboolean>(ret_val.status_flags.clutch_engaged)                , static_cast<jboolean>(ret_val.status_flags.locked)                , static_cast<jboolean>(ret_val.status_flags.dropping)                , static_cast<jboolean>(ret_val.status_flags.arresting)                , static_cast<jboolean>(ret_val.status_flags.ground_sense)                , static_cast<jboolean>(ret_val.status_flags.retracting)                , static_cast<jboolean>(ret_val.status_flags.redeliver)                , static_cast<jboolean>(ret_val.status_flags.abandon_line)                , static_cast<jboolean>(ret_val.status_flags.locking)                , static_cast<jboolean>(ret_val.status_flags.load_line)                , static_cast<jboolean>(ret_val.status_flags.load_payload)            );
-            env->DeleteLocalRef(nestedClass_status_flags);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$Status");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JFFFFFILio/mavsdk/kotlin/plugins/winch/Winch$StatusFlags;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.time_usec)            , static_cast<jfloat>(ret_val.line_length_m)            , static_cast<jfloat>(ret_val.speed_m_s)            , static_cast<jfloat>(ret_val.tension_kg)            , static_cast<jfloat>(ret_val.voltage_v)            , static_cast<jfloat>(ret_val.current_a)            , static_cast<jint>(ret_val.temperature_c)            , nestedObj_status_flags        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_status_flags);
-    mavsdk_winch_status_destroy(&ret_val);
-    return retObj;
+    mavsdk_winch_status_t returnValue{};
+        mavsdk_winch_status(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaStatus(env, returnValue);
+    mavsdk_winch_status_destroy(&returnValue);
+    return javaResult;
 }
 
-// ===== Winch.subscribeStatusNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_subscribeStatusNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_subscribeStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new StatusCallbackWrapper(env, callback);
-
-    mavsdk_winch_status_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_winch_subscribe_status(
-            reinterpret_cast<mavsdk_winch_t>(handle),            [](const mavsdk_winch_status_t value, void* user_data) {
-                auto* w = static_cast<StatusCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_winch_status_handle_t,
-        StatusCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Winch.unsubscribeStatus =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_unsubscribeStatus(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_winch_status_handle_t,
-                  StatusCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_winch_unsubscribe_status(
             reinterpret_cast<mavsdk_winch_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_winch_status_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<StatusCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_winch_status_handle_t,
+        StatusCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== Winch.relaxBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_relaxBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_unsubscribeStatus(
     JNIEnv* env,
-    jobject obj,
-    jint instance) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_relax(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Winch plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_winch_status_handle_t,
+        StatusCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_winch_unsubscribe_status(
         reinterpret_cast<mavsdk_winch_t>(handle),
-        instance    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_relax(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint instance) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
+
+    mavsdk_winch_result_t result =
+        mavsdk_winch_relax(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.relaxAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_relaxAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_relaxAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new RelaxCallbackWrapper(env, callback);
-
     mavsdk_winch_relax_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<RelaxCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<RelaxCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.relative_length_controlBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_relativeLengthControlBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_relativeLengthControl(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jfloat length_m,
     jfloat rate_m_s) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_relative_length_control(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance,
-        length_m,
-        rate_m_s    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_relative_length_control(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance),
+            static_cast<float>(length_m),
+            static_cast<float>(rate_m_s));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.relative_length_controlAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_relativeLengthControlAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_relativeLengthControlAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jfloat length_m,
     jfloat rate_m_s,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new RelativeLengthControlCallbackWrapper(env, callback);
-
     mavsdk_winch_relative_length_control_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        length_m,        rate_m_s,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<RelativeLengthControlCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        static_cast<float>(length_m),
+        static_cast<float>(rate_m_s),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<RelativeLengthControlCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.rate_controlBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_rateControlBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_rateControl(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jfloat rate_m_s) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_rate_control(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance,
-        rate_m_s    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_rate_control(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance),
+            static_cast<float>(rate_m_s));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.rate_controlAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_rateControlAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_rateControlAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jfloat rate_m_s,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new RateControlCallbackWrapper(env, callback);
-
     mavsdk_winch_rate_control_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        rate_m_s,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<RateControlCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        static_cast<float>(rate_m_s),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<RateControlCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.lockBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_lockBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_lock(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_lock(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_lock(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.lockAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_lockAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_lockAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new LockCallbackWrapper(env, callback);
-
     mavsdk_winch_lock_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<LockCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<LockCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.deliverBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_deliverBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_deliver(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_deliver(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_deliver(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.deliverAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_deliverAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_deliverAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new DeliverCallbackWrapper(env, callback);
-
     mavsdk_winch_deliver_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<DeliverCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<DeliverCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.holdBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_holdBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_hold(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_hold(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_hold(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.holdAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_holdAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_holdAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new HoldCallbackWrapper(env, callback);
-
     mavsdk_winch_hold_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<HoldCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<HoldCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.retractBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_retractBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_retract(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_retract(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_retract(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.retractAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_retractAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_retractAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new RetractCallbackWrapper(env, callback);
-
     mavsdk_winch_retract_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<RetractCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<RetractCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.load_lineBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_loadLineBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_loadLine(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_load_line(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_load_line(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.load_lineAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_loadLineAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_loadLineAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new LoadLineCallbackWrapper(env, callback);
-
     mavsdk_winch_load_line_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<LoadLineCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<LoadLineCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.abandon_lineBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_abandonLineBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_abandonLine(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_abandon_line(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_abandon_line(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.abandon_lineAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_abandonLineAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_abandonLineAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new AbandonLineCallbackWrapper(env, callback);
-
     mavsdk_winch_abandon_line_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<AbandonLineCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<AbandonLineCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Winch.load_payloadBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_loadPayloadBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_winch_NativeWinch_loadPayload(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Winch plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle) return MAVSDK_WINCH_RESULT_UNKNOWN;
-
-
-    mavsdk_winch_result_t result = mavsdk_winch_load_payload(
-        reinterpret_cast<mavsdk_winch_t>(handle),
-        instance    );
-
+    mavsdk_winch_result_t result =
+        mavsdk_winch_load_payload(
+            reinterpret_cast<mavsdk_winch_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Winch.load_payloadAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_winch_Winch_loadPayloadAsyncNative(
+Java_io_mavsdk_jni_plugins_winch_NativeWinch_loadPayloadAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/winch/Winch");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Winch plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new LoadPayloadCallbackWrapper(env, callback);
-
     mavsdk_winch_load_payload_async(
-        reinterpret_cast<mavsdk_winch_t>(handle),        instance,        [](const mavsdk_winch_result_t result, void* user_data) {
-            auto* w = static_cast<LoadPayloadCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_winch_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_winch_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<LoadPayloadCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
-
 
 } // extern "C"

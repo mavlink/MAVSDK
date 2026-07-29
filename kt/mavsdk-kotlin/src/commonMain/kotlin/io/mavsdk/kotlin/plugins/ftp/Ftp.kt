@@ -11,8 +11,10 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class Ftp internal constructor(private val handle: Long) : AutoCloseable {
+class Ftp internal constructor(
+    private val native: FtpNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -29,133 +31,164 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
         PROTOCOL_ERROR(11),
         NO_SYSTEM(12),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    class ListDirectoryData // TODO: all fields are repeated primitives
+    data class ListDirectoryData(
+        val dirs: List<String> = emptyList(),
+        val files: List<String> = emptyList(),
+    )
 
     data class ProgressData(
         val bytesTransferred: Int,
         val totalBytes: Int,
     )
 
-    fun download(remoteFilePath: String, localDir: String, useBurst: Boolean): Flow<kotlin.Result<ProgressData>> = callbackFlow {
-        val callback = DownloadCallback { result, value ->
-            val r = Result.fromValue(result)
-            when {
-                r == Result.NEXT -> trySend(kotlin.Result.success(value))
-                r == Result.SUCCESS -> close()
-                else -> { trySend(kotlin.Result.failure(FtpException(r, "download failed: ${r.name}"))); close() }
+    fun download(remoteFilePath: String, localDir: String, useBurst: Boolean): Flow<kotlin.Result<ProgressData>> =
+        callbackFlow {
+            native.downloadAsync(remoteFilePath, localDir, useBurst, ) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                when {
+                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                    parsedResult == Result.SUCCESS -> close()
+                    else -> {
+                        trySend(
+                            kotlin.Result.failure(
+                                FtpException(
+                                    parsedResult,
+                                    "download failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                        close()
+                    }
+                }
             }
+            awaitClose {}
         }
-        downloadAsyncNative(remoteFilePath, localDir, useBurst, callback)
-        awaitClose {}
-    }
 
-    fun upload(localFilePath: String, remoteDir: String): Flow<kotlin.Result<ProgressData>> = callbackFlow {
-        val callback = UploadCallback { result, value ->
-            val r = Result.fromValue(result)
-            when {
-                r == Result.NEXT -> trySend(kotlin.Result.success(value))
-                r == Result.SUCCESS -> close()
-                else -> { trySend(kotlin.Result.failure(FtpException(r, "upload failed: ${r.name}"))); close() }
+    fun upload(localFilePath: String, remoteDir: String): Flow<kotlin.Result<ProgressData>> =
+        callbackFlow {
+            native.uploadAsync(localFilePath, remoteDir, ) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                when {
+                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                    parsedResult == Result.SUCCESS -> close()
+                    else -> {
+                        trySend(
+                            kotlin.Result.failure(
+                                FtpException(
+                                    parsedResult,
+                                    "upload failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                        close()
+                    }
+                }
             }
+            awaitClose {}
         }
-        uploadAsyncNative(localFilePath, remoteDir, callback)
-        awaitClose {}
-    }
 
-    suspend fun listDirectory(remoteDir: String): kotlin.Result<ListDirectoryData> = suspendCancellableCoroutine { continuation ->
-        val callback = ListDirectoryCallback { result, value ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(kotlin.Result.success(value))
-            } else {
-                continuation.resume(kotlin.Result.failure(FtpException(r, "listDirectory failed: ${r.name}")))
+    suspend fun listDirectory(remoteDir: String): kotlin.Result<ListDirectoryData> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = FtpCallbackGuard()
+            native.listDirectoryAsync(remoteDir, ) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                FtpException(
+                                    parsedResult,
+                                    "listDirectory failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                    }
+                }
             }
         }
-        listDirectoryAsyncNative(remoteDir, callback)
-    }
 
-    suspend fun createDirectory(remoteDir: String): Result = suspendCancellableCoroutine { continuation ->
-        val callback = CreateDirectoryCallback { result ->
-            val r = Result.fromValue(result)
-            if (r != Result.NEXT) {
-                continuation.resume(r)
+    suspend fun createDirectory(remoteDir: String): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = FtpCallbackGuard()
+            native.createDirectoryAsync(remoteDir, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
             }
         }
-        createDirectoryAsyncNative(remoteDir, callback)
-    }
 
-    suspend fun removeDirectory(remoteDir: String): Result = suspendCancellableCoroutine { continuation ->
-        val callback = RemoveDirectoryCallback { result ->
-            val r = Result.fromValue(result)
-            if (r != Result.NEXT) {
-                continuation.resume(r)
+    suspend fun removeDirectory(remoteDir: String): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = FtpCallbackGuard()
+            native.removeDirectoryAsync(remoteDir, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
             }
         }
-        removeDirectoryAsyncNative(remoteDir, callback)
-    }
 
-    suspend fun removeFile(remoteFilePath: String): Result = suspendCancellableCoroutine { continuation ->
-        val callback = RemoveFileCallback { result ->
-            val r = Result.fromValue(result)
-            if (r != Result.NEXT) {
-                continuation.resume(r)
+    suspend fun removeFile(remoteFilePath: String): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = FtpCallbackGuard()
+            native.removeFileAsync(remoteFilePath, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
             }
         }
-        removeFileAsyncNative(remoteFilePath, callback)
-    }
 
-    suspend fun rename(remoteFromPath: String, remoteToPath: String): Result = suspendCancellableCoroutine { continuation ->
-        val callback = RenameCallback { result ->
-            val r = Result.fromValue(result)
-            if (r != Result.NEXT) {
-                continuation.resume(r)
+    suspend fun rename(remoteFromPath: String, remoteToPath: String): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = FtpCallbackGuard()
+            native.renameAsync(remoteFromPath, remoteToPath, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
             }
         }
-        renameAsyncNative(remoteFromPath, remoteToPath, callback)
-    }
 
-    suspend fun areFilesIdentical(localFilePath: String, remoteFilePath: String): kotlin.Result<Boolean> = suspendCancellableCoroutine { continuation ->
-        val callback = AreFilesIdenticalCallback { result, value ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(kotlin.Result.success(value))
-            } else {
-                continuation.resume(kotlin.Result.failure(FtpException(r, "areFilesIdentical failed: ${r.name}")))
+    suspend fun areFilesIdentical(localFilePath: String, remoteFilePath: String): kotlin.Result<Boolean> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = FtpCallbackGuard()
+            native.areFilesIdenticalAsync(localFilePath, remoteFilePath, ) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                FtpException(
+                                    parsedResult,
+                                    "areFilesIdentical failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                    }
+                }
             }
         }
-        areFilesIdenticalAsyncNative(localFilePath, remoteFilePath, callback)
-    }
 
     fun setTargetCompid(compid: Int): Result =
-        Result.fromValue(setTargetCompidBlocking(compid))
-
-    private fun interface DownloadCallback { fun invoke(result: Int, value: ProgressData) }
-    private fun interface UploadCallback { fun invoke(result: Int, value: ProgressData) }
-    private fun interface ListDirectoryCallback { fun invoke(result: Int, value: ListDirectoryData) }
-    private fun interface CreateDirectoryCallback { fun invoke(result: Int) }
-    private fun interface RemoveDirectoryCallback { fun invoke(result: Int) }
-    private fun interface RemoveFileCallback { fun invoke(result: Int) }
-    private fun interface RenameCallback { fun invoke(result: Int) }
-    private fun interface AreFilesIdenticalCallback { fun invoke(result: Int, value: Boolean) }
-
-    private external fun downloadAsyncNative(remoteFilePath: String, localDir: String, useBurst: Boolean, callback: DownloadCallback)
-    private external fun uploadAsyncNative(localFilePath: String, remoteDir: String, callback: UploadCallback)
-    private external fun listDirectoryAsyncNative(remoteDir: String, callback: ListDirectoryCallback)
-    private external fun createDirectoryAsyncNative(remoteDir: String, callback: CreateDirectoryCallback)
-    private external fun removeDirectoryAsyncNative(remoteDir: String, callback: RemoveDirectoryCallback)
-    private external fun removeFileAsyncNative(remoteFilePath: String, callback: RemoveFileCallback)
-    private external fun renameAsyncNative(remoteFromPath: String, remoteToPath: String, callback: RenameCallback)
-    private external fun areFilesIdenticalAsyncNative(localFilePath: String, remoteFilePath: String, callback: AreFilesIdenticalCallback)
-    private external fun setTargetCompidBlocking(compid: Int): Int
-    private external fun destroy()
+        Result.fromValue(native.setTargetCompid(compid))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class FtpException(
@@ -164,10 +197,28 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Ftp {
-            val handle = createNative(system.getHandle())
-            return Ftp(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Ftp =
+            Ftp(
+                createFtpNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
+}
+
+internal interface FtpNative {
+    fun downloadAsync(remoteFilePath: String, localDir: String, useBurst: Boolean, callback: (Int, Ftp.ProgressData) -> Unit)
+    fun uploadAsync(localFilePath: String, remoteDir: String, callback: (Int, Ftp.ProgressData) -> Unit)
+    fun listDirectoryAsync(remoteDir: String, callback: (Int, Ftp.ListDirectoryData) -> Unit)
+    fun createDirectoryAsync(remoteDir: String, callback: (Int) -> Unit)
+    fun removeDirectoryAsync(remoteDir: String, callback: (Int) -> Unit)
+    fun removeFileAsync(remoteFilePath: String, callback: (Int) -> Unit)
+    fun renameAsync(remoteFromPath: String, remoteToPath: String, callback: (Int) -> Unit)
+    fun areFilesIdenticalAsync(localFilePath: String, remoteFilePath: String, callback: (Int, Boolean) -> Unit)
+    fun setTargetCompid(compid: Int): Int
+    fun destroy()
+}
+
+internal expect fun createFtpNative(systemHandle: Long): FtpNative
+
+internal expect class FtpCallbackGuard() {
+    fun tryClaim(): Boolean
 }

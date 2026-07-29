@@ -8,8 +8,10 @@ import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-
-class Geofence internal constructor(private val handle: Long) : AutoCloseable {
+class Geofence internal constructor(
+    private val native: GeofenceNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -21,8 +23,10 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
         INVALID_ARGUMENT(6),
         NO_SYSTEM(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -30,8 +34,10 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
         INCLUSION(0),
         EXCLUSION(1),
         ;
+
         companion object {
-            fun fromValue(v: Int): FenceType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): FenceType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -42,13 +48,13 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
 
     data class Polygon(
         val points: List<Point> = emptyList(),
-        val fenceType: Int,
+        val fenceType: FenceType,
     )
 
     data class Circle(
         val point: Point,
         val radius: Float,
-        val fenceType: Int,
+        val fenceType: FenceType,
     )
 
     data class GeofenceData(
@@ -56,31 +62,32 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
         val circles: List<Circle> = emptyList(),
     )
 
-    suspend fun uploadGeofence(geofenceData: GeofenceData): Result = suspendCancellableCoroutine { continuation ->
-        val callback = UploadGeofenceCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun uploadGeofence(geofenceData: GeofenceData): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GeofenceCallbackGuard()
+            native.uploadGeofenceAsync(geofenceData, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        uploadGeofenceAsyncNative(geofenceData, callback)
-    }
 
-    suspend fun clearGeofence(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = ClearGeofenceCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun clearGeofence(): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GeofenceCallbackGuard()
+            native.clearGeofenceAsync() { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        clearGeofenceAsyncNative(callback)
-    }
-
-    private fun interface UploadGeofenceCallback { fun invoke(result: Int) }
-    private fun interface ClearGeofenceCallback { fun invoke(result: Int) }
-
-    private external fun uploadGeofenceAsyncNative(geofenceData: GeofenceData, callback: UploadGeofenceCallback)
-    private external fun clearGeofenceAsyncNative(callback: ClearGeofenceCallback)
-    private external fun destroy()
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class GeofenceException(
@@ -89,10 +96,21 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Geofence {
-            val handle = createNative(system.getHandle())
-            return Geofence(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Geofence =
+            Geofence(
+                createGeofenceNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
+}
+
+internal interface GeofenceNative {
+    fun uploadGeofenceAsync(geofenceData: Geofence.GeofenceData, callback: (Int) -> Unit)
+    fun clearGeofenceAsync(callback: (Int) -> Unit)
+    fun destroy()
+}
+
+internal expect fun createGeofenceNative(systemHandle: Long): GeofenceNative
+
+internal expect class GeofenceCallbackGuard() {
+    fun tryClaim(): Boolean
 }

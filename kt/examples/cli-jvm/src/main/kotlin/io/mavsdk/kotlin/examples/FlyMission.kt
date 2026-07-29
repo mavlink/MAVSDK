@@ -45,12 +45,12 @@ fun flyMission() = runBlocking {
 
         // Build mission items
         val items = listOf(
-            Mission.MissionItem(47.398170327054473, 8.5456490218639658, 10f, 5f, false,  20f,  60f, 0, 0f, 1.0, 1f, 0f, 0f, 0),
-            Mission.MissionItem(47.398241338125118, 8.5455360114574432, 10f, 2f, true,    0f, -60f, 1, 0f, 1.0, 1f, 0f, 0f, 0),
-            Mission.MissionItem(47.398139363821485, 8.5453846156597137, 10f, 5f, true,  -45f,   0f, 2, 0f, 1.0, 1f, 0f, 0f, 0),
-            Mission.MissionItem(47.398058617228855, 8.5454618036746979, 10f, 2f, false, -90f,  30f, 3, 0f, 1.0, 1f, 0f, 0f, 0),
-            Mission.MissionItem(47.398100366082858, 8.5456969141960144, 10f, 5f, false, -45f, -30f, 4, 0f, 1.0, 1f, 0f, 0f, 0),
-            Mission.MissionItem(47.398001890458097, 8.5455576181411743, 10f, 5f, false,   0f,   0f, 5, 0f, 1.0, 1f, 0f, 0f, 0),
+            Mission.MissionItem(47.398170327054473, 8.5456490218639658, 10f, 5f, false,  20f,  60f, Mission.CameraAction.NONE, 0f, 1.0, 1f, 0f, 0f, Mission.VehicleAction.NONE),
+            Mission.MissionItem(47.398241338125118, 8.5455360114574432, 10f, 2f, true,    0f, -60f, Mission.CameraAction.TAKE_PHOTO, 0f, 1.0, 1f, 0f, 0f, Mission.VehicleAction.NONE),
+            Mission.MissionItem(47.398139363821485, 8.5453846156597137, 10f, 5f, true,  -45f,   0f, Mission.CameraAction.START_PHOTO_INTERVAL, 0f, 1.0, 1f, 0f, 0f, Mission.VehicleAction.NONE),
+            Mission.MissionItem(47.398058617228855, 8.5454618036746979, 10f, 2f, false, -90f,  30f, Mission.CameraAction.STOP_PHOTO_INTERVAL, 0f, 1.0, 1f, 0f, 0f, Mission.VehicleAction.NONE),
+            Mission.MissionItem(47.398100366082858, 8.5456969141960144, 10f, 5f, false, -45f, -30f, Mission.CameraAction.START_VIDEO, 0f, 1.0, 1f, 0f, 0f, Mission.VehicleAction.NONE),
+            Mission.MissionItem(47.398001890458097, 8.5455576181411743, 10f, 5f, false,   0f,   0f, Mission.CameraAction.STOP_VIDEO, 0f, 1.0, 1f, 0f, 0f, Mission.VehicleAction.NONE),
         )
         println("Uploading ${items.size} mission items...")
         val uploadResult = mission.uploadMission(Mission.MissionPlan(items))

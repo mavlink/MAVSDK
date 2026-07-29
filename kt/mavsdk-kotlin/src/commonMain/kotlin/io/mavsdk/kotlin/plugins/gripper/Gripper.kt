@@ -8,8 +8,10 @@ import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-
-class Gripper internal constructor(private val handle: Long) : AutoCloseable {
+class Gripper internal constructor(
+    private val native: GripperNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -20,8 +22,10 @@ class Gripper internal constructor(private val handle: Long) : AutoCloseable {
         UNSUPPORTED(5),
         FAILED(6),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -29,36 +33,39 @@ class Gripper internal constructor(private val handle: Long) : AutoCloseable {
         RELEASE(0),
         GRAB(1),
         ;
+
         companion object {
-            fun fromValue(v: Int): GripperAction = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): GripperAction =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
-    suspend fun grab(instance: Int): Result = suspendCancellableCoroutine { continuation ->
-        val callback = GrabCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun grab(instance: Int): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GripperCallbackGuard()
+            native.grabAsync(instance, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        grabAsyncNative(instance, callback)
-    }
 
-    suspend fun release(instance: Int): Result = suspendCancellableCoroutine { continuation ->
-        val callback = ReleaseCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun release(instance: Int): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GripperCallbackGuard()
+            native.releaseAsync(instance, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        releaseAsyncNative(instance, callback)
-    }
-
-    private fun interface GrabCallback { fun invoke(result: Int) }
-    private fun interface ReleaseCallback { fun invoke(result: Int) }
-
-    private external fun grabAsyncNative(instance: Int, callback: GrabCallback)
-    private external fun releaseAsyncNative(instance: Int, callback: ReleaseCallback)
-    private external fun destroy()
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class GripperException(
@@ -67,10 +74,21 @@ class Gripper internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Gripper {
-            val handle = createNative(system.getHandle())
-            return Gripper(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Gripper =
+            Gripper(
+                createGripperNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
+}
+
+internal interface GripperNative {
+    fun grabAsync(instance: Int, callback: (Int) -> Unit)
+    fun releaseAsync(instance: Int, callback: (Int) -> Unit)
+    fun destroy()
+}
+
+internal expect fun createGripperNative(systemHandle: Long): GripperNative
+
+internal expect class GripperCallbackGuard() {
+    fun tryClaim(): Boolean
 }

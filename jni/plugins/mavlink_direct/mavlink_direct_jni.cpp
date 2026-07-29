@@ -6,49 +6,169 @@
 #include "cmavsdk/plugins/mavlink_direct/mavlink_direct.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct MavlinkMessageFromJava;
+struct MavlinkMessageArrayFromJava;
 
+struct MavlinkMessageFromJava {
+    mavsdk_mavlink_direct_mavlink_message_t value{};
+    std::string message_nameValue;
+    std::string fields_jsonValue;
 
-// ===== Message Callback Wrapper =====
+    MavlinkMessageFromJava(JNIEnv* env, jobject object);
+    ~MavlinkMessageFromJava();
+};
+
+struct MavlinkMessageArrayFromJava {
+    std::vector<std::unique_ptr<MavlinkMessageFromJava>> holders;
+    std::vector<mavsdk_mavlink_direct_mavlink_message_t> values;
+
+    MavlinkMessageArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MavlinkMessageFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+MavlinkMessageFromJava::MavlinkMessageFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID message_nameField = env->GetFieldID(
+        clazz, "messageName", "Ljava/lang/String;");
+    auto message_nameString =
+        static_cast<jstring>(env->GetObjectField(object, message_nameField));
+    JStringHolder message_nameHolder(env, message_nameString);
+    message_nameValue =
+        message_nameHolder.c_str() ? message_nameHolder.c_str() : "";
+    value.message_name = const_cast<char*>(message_nameValue.c_str());
+    env->DeleteLocalRef(message_nameString);
+    jfieldID system_idField = env->GetFieldID(
+        clazz, "systemId", "I");
+    value.system_id =
+        static_cast<uint32_t>(env->GetIntField(object, system_idField));
+    jfieldID component_idField = env->GetFieldID(
+        clazz, "componentId", "I");
+    value.component_id =
+        static_cast<uint32_t>(env->GetIntField(object, component_idField));
+    jfieldID target_system_idField = env->GetFieldID(
+        clazz, "targetSystemId", "I");
+    value.target_system_id =
+        static_cast<uint32_t>(env->GetIntField(object, target_system_idField));
+    jfieldID target_component_idField = env->GetFieldID(
+        clazz, "targetComponentId", "I");
+    value.target_component_id =
+        static_cast<uint32_t>(env->GetIntField(object, target_component_idField));
+    jfieldID fields_jsonField = env->GetFieldID(
+        clazz, "fieldsJson", "Ljava/lang/String;");
+    auto fields_jsonString =
+        static_cast<jstring>(env->GetObjectField(object, fields_jsonField));
+    JStringHolder fields_jsonHolder(env, fields_jsonString);
+    fields_jsonValue =
+        fields_jsonHolder.c_str() ? fields_jsonHolder.c_str() : "";
+    value.fields_json = const_cast<char*>(fields_jsonValue.c_str());
+    env->DeleteLocalRef(fields_jsonString);
+    env->DeleteLocalRef(clazz);
+}
+
+MavlinkMessageFromJava::~MavlinkMessageFromJava() = default;
+
+jobject toJavaMavlinkMessage(
+    JNIEnv* env, const mavsdk_mavlink_direct_mavlink_message_t& value);
+jobjectArray toJavaMavlinkMessageArray(
+    JNIEnv* env,
+    const mavsdk_mavlink_direct_mavlink_message_t* values,
+    size_t count);
+
+jobject toJavaMavlinkMessage(
+    JNIEnv* env, const mavsdk_mavlink_direct_mavlink_message_t& value) {
+    jstring message_nameValue =
+        toJavaString(env, value.message_name);
+    jstring fields_jsonValue =
+        toJavaString(env, value.fields_json);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mavlink_direct/NativeMavlinkDirect$MavlinkMessage");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;IIIILjava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , message_nameValue
+        , static_cast<jint>(value.system_id)
+        , static_cast<jint>(value.component_id)
+        , static_cast<jint>(value.target_system_id)
+        , static_cast<jint>(value.target_component_id)
+        , fields_jsonValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(message_nameValue);
+    env->DeleteLocalRef(fields_jsonValue);
+    return result;
+}
+
+jobjectArray toJavaMavlinkMessageArray(
+    JNIEnv* env,
+    const mavsdk_mavlink_direct_mavlink_message_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mavlink_direct/NativeMavlinkDirect$MavlinkMessage");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMavlinkMessage(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct MessageCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    MessageCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    MessageCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect$MavlinkMessage;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/mavlink_direct/NativeMavlinkDirect$MavlinkMessage;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mavlink_direct_mavlink_message_t value) const {
+    void operator()(
+        const mavsdk_mavlink_direct_mavlink_message_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect$MavlinkMessage");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;IIIILjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, value.message_name)            , static_cast<jint>(value.system_id)            , static_cast<jint>(value.component_id)            , static_cast<jint>(value.target_system_id)            , static_cast<jint>(value.target_component_id)            , toJavaString(env, value.fields_json)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaMavlinkMessage(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -56,140 +176,122 @@ struct MessageCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== MavlinkDirect.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_mavlink_1direct_MavlinkDirect_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_mavlink_direct_t handle = mavsdk_mavlink_direct_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create MavlinkDirect plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== MavlinkDirect.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mavlink_1direct_MavlinkDirect_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect");
-    if (!handle) return;
-
-    mavsdk_mavlink_direct_destroy(reinterpret_cast<mavsdk_mavlink_direct_t>(handle));
-}
-
-
-// ===== MavlinkDirect.send_messageBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mavlink_1direct_MavlinkDirect_sendMessageBlocking(
-    JNIEnv* env,
-    jobject obj,
-    jobject message) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect");
-    if (!handle) return MAVSDK_MAVLINK_DIRECT_RESULT_UNKNOWN;
-
-    mavsdk_mavlink_direct_mavlink_message_t message_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_mavlink_direct_result_t result = mavsdk_mavlink_direct_send_message(
-        reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
-        message_c    );
-
-    return static_cast<jint>(result);
-}
-
-
-// ===== MavlinkDirect.subscribeMessageNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_mavlink_1direct_MavlinkDirect_subscribeMessageNative(
-    JNIEnv* env,
-    jobject obj,
-    jstring message_name,
-    jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect");
-    if (!handle || !callback) return 0;
-
-    JStringHolder message_name_holder(env, message_name);
-
-    auto* wrapper = new MessageCallbackWrapper(env, callback);
-
-    mavsdk_mavlink_direct_message_handle_t subscription_handle =
-        mavsdk_mavlink_direct_subscribe_message(
-            reinterpret_cast<mavsdk_mavlink_direct_t>(handle),            const_cast<char*>(message_name_holder.c_str()),            [](const mavsdk_mavlink_direct_mavlink_message_t value, void* user_data) {
-                auto* w = static_cast<MessageCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_mavlink_direct_message_handle_t,
-        MessageCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== MavlinkDirect.unsubscribeMessage =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mavlink_1direct_MavlinkDirect_unsubscribeMessage(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_mavlink_direct_message_handle_t,
-                  MessageCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_mavlink_direct_unsubscribe_message(
-            reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "MavlinkDirect plugin")) {
+        return;
     }
+    mavsdk_mavlink_direct_destroy(
+        reinterpret_cast<mavsdk_mavlink_direct_t>(handle));
 }
 
-
-// ===== MavlinkDirect.load_custom_xmlBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mavlink_1direct_MavlinkDirect_loadCustomXmlBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_sendMessage(
     JNIEnv* env,
-    jobject obj,
-    jstring xml_content) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect");
-    if (!handle) return MAVSDK_MAVLINK_DIRECT_RESULT_UNKNOWN;
-
-    JStringHolder xml_content_holder(env, xml_content);
-
-    mavsdk_mavlink_direct_result_t result = mavsdk_mavlink_direct_load_custom_xml(
-        reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
-        const_cast<char*>(xml_content_holder.c_str())    );
-
+    jclass,
+    jlong handle,
+    jobject message) {
+    if (!requireHandle(env, handle, "MavlinkDirect plugin")) {
+        return {};
+    }
+    MavlinkMessageFromJava
+        messageValue(env, message);
+    mavsdk_mavlink_direct_result_t result =
+        mavsdk_mavlink_direct_send_message(
+            reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
+            messageValue.value);
     return static_cast<jint>(result);
 }
 
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_subscribeMessage(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject message_name,
+    jobject callback) {
+    if (!requireHandle(env, handle, "MavlinkDirect plugin") || !callback) {
+        return 0;
+    }
+    JStringHolder message_nameHolder(
+        env, static_cast<jstring>(message_name));
+    auto* wrapper = new MessageCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_mavlink_direct_subscribe_message(
+            reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
+            const_cast<char*>(message_nameHolder.c_str()),
+            [](
+               const mavsdk_mavlink_direct_mavlink_message_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<MessageCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_mavlink_direct_message_handle_t,
+        MessageCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_unsubscribeMessage(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "MavlinkDirect plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_mavlink_direct_message_handle_t,
+        MessageCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_mavlink_direct_unsubscribe_message(
+        reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_loadCustomXml(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject xml_content) {
+    if (!requireHandle(env, handle, "MavlinkDirect plugin")) {
+        return {};
+    }
+    JStringHolder xml_contentHolder(
+        env, static_cast<jstring>(xml_content));
+    mavsdk_mavlink_direct_result_t result =
+        mavsdk_mavlink_direct_load_custom_xml(
+            reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
+            const_cast<char*>(xml_contentHolder.c_str()));
+    return static_cast<jint>(result);
+}
 
 } // extern "C"

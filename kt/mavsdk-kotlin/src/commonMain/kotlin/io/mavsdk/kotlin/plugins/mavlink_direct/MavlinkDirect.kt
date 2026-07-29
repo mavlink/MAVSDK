@@ -5,16 +5,14 @@
 package io.mavsdk.kotlin.plugins.mavlink_direct
 
 import io.mavsdk.kotlin.System
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class MavlinkDirect internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class MavlinkDirect internal constructor(
+    private val native: MavlinkDirectNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -26,8 +24,10 @@ class MavlinkDirect internal constructor(private val handle: Long) : AutoCloseab
         NO_SYSTEM(6),
         TIMEOUT(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -41,31 +41,23 @@ class MavlinkDirect internal constructor(private val handle: Long) : AutoCloseab
     )
 
     fun sendMessage(message: MavlinkMessage): Result =
-        Result.fromValue(sendMessageBlocking(message))
+        Result.fromValue(native.sendMessage(message))
 
     fun subscribeMessage(messageName: String): Flow<MavlinkMessage> = callbackFlow {
-        val callback = MessageCallback { value ->
+        val subscriptionHandle = native.subscribeMessage(
+            messageName,         ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeMessageNative(messageName, callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeMessage(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeMessage(subscriptionHandle) }
     }
 
     fun loadCustomXml(xmlContent: String): Result =
-        Result.fromValue(loadCustomXmlBlocking(xmlContent))
-
-    private fun interface MessageCallback { fun invoke(value: MavlinkMessage) }
-
-    private external fun sendMessageBlocking(message: MavlinkMessage): Int
-    private external fun subscribeMessageNative(messageName: String, callback: MessageCallback): Long
-    private external fun unsubscribeMessage(handle: Long)
-    private external fun loadCustomXmlBlocking(xmlContent: String): Int
-    private external fun destroy()
+        Result.fromValue(native.loadCustomXml(xmlContent))
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class MavlinkDirectException(
@@ -74,10 +66,19 @@ class MavlinkDirect internal constructor(private val handle: Long) : AutoCloseab
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): MavlinkDirect {
-            val handle = createNative(system.getHandle())
-            return MavlinkDirect(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): MavlinkDirect =
+            MavlinkDirect(
+                createMavlinkDirectNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface MavlinkDirectNative {
+    fun sendMessage(message: MavlinkDirect.MavlinkMessage): Int
+    fun subscribeMessage(messageName: String, callback: (MavlinkDirect.MavlinkMessage) -> Unit): Long
+    fun unsubscribeMessage(subscriptionHandle: Long)
+    fun loadCustomXml(xmlContent: String): Int
+    fun destroy()
+}
+
+internal expect fun createMavlinkDirectNative(systemHandle: Long): MavlinkDirectNative

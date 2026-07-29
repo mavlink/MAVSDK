@@ -5,16 +5,14 @@
 package io.mavsdk.kotlin.plugins.camera_server
 
 import io.mavsdk.kotlin.Mavsdk
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class CameraServer internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class CameraServer internal constructor(
+    private val native: CameraServerNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -27,8 +25,10 @@ class CameraServer internal constructor(private val handle: Long) : AutoCloseabl
         WRONG_ARGUMENT(7),
         NO_SYSTEM(8),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -38,8 +38,10 @@ class CameraServer internal constructor(private val handle: Long) : AutoCloseabl
         BUSY(2),
         FAILED(3),
         ;
+
         companion object {
-            fun fromValue(v: Int): CameraFeedback = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): CameraFeedback =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -48,8 +50,62 @@ class CameraServer internal constructor(private val handle: Long) : AutoCloseabl
         PHOTO(1),
         VIDEO(2),
         ;
+
         companion object {
-            fun fromValue(v: Int): Mode = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Mode =
+                entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
+    enum class StorageStatus(val value: Int) {
+        NOT_AVAILABLE(0),
+        UNFORMATTED(1),
+        FORMATTED(2),
+        NOT_SUPPORTED(3),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): StorageStatus =
+                entries.find { it.value == value } ?: entries.first()
+        }
+    }
+
+    enum class StorageType(val value: Int) {
+        UNKNOWN(0),
+        USB_STICK(1),
+        SD(2),
+        MICROSD(3),
+        HD(4),
+        OTHER(5),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): StorageType =
+                entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
+    enum class ImageStatus(val value: Int) {
+        IDLE(0),
+        CAPTURE_IN_PROGRESS(1),
+        INTERVAL_IDLE(2),
+        INTERVAL_IN_PROGRESS(3),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): ImageStatus =
+                entries.find { it.value == value } ?: entries.first()
+        }
+    }
+
+    enum class VideoStatus(val value: Int) {
+        IDLE(0),
+        CAPTURE_IN_PROGRESS(1),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): VideoStatus =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -101,9 +157,9 @@ class CameraServer internal constructor(private val handle: Long) : AutoCloseabl
         val usedStorageMib: Float,
         val availableStorageMib: Float,
         val totalStorageMib: Float,
-        val storageStatus: Int,
+        val storageStatus: StorageStatus,
         val storageId: Int,
-        val storageType: Int,
+        val storageType: StorageType,
         val readSpeedMibS: Float,
         val writeSpeedMibS: Float,
     )
@@ -112,8 +168,8 @@ class CameraServer internal constructor(private val handle: Long) : AutoCloseabl
         val imageIntervalS: Float,
         val recordingTimeS: Float,
         val availableCapacityMib: Float,
-        val imageStatus: Int,
-        val videoStatus: Int,
+        val imageStatus: ImageStatus,
+        val videoStatus: VideoStatus,
         val imageCount: Int,
     )
 
@@ -131,305 +187,213 @@ class CameraServer internal constructor(private val handle: Long) : AutoCloseabl
     )
 
     fun setInformation(information: Information): Result =
-        Result.fromValue(setInformationBlocking(information))
+        Result.fromValue(native.setInformation(information))
 
     fun setVideoStreaming(videoStreaming: VideoStreaming): Result =
-        Result.fromValue(setVideoStreamingBlocking(videoStreaming))
+        Result.fromValue(native.setVideoStreaming(videoStreaming))
 
     fun setInProgress(inProgress: Boolean): Result =
-        Result.fromValue(setInProgressBlocking(inProgress))
+        Result.fromValue(native.setInProgress(inProgress))
 
     fun subscribeTakePhoto(): Flow<Int> = callbackFlow {
-        val callback = TakePhotoCallback { value ->
+        val subscriptionHandle = native.subscribeTakePhoto(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeTakePhotoNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeTakePhoto(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeTakePhoto(subscriptionHandle) }
     }
 
     fun respondTakePhoto(takePhotoFeedback: CameraFeedback, captureInfo: CaptureInfo): Result =
-        Result.fromValue(respondTakePhotoBlocking(takePhotoFeedback.value, captureInfo))
+        Result.fromValue(native.respondTakePhoto(takePhotoFeedback, captureInfo))
 
     fun subscribeStartVideo(): Flow<Int> = callbackFlow {
-        val callback = StartVideoCallback { value ->
+        val subscriptionHandle = native.subscribeStartVideo(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeStartVideoNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeStartVideo(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeStartVideo(subscriptionHandle) }
     }
 
     fun respondStartVideo(startVideoFeedback: CameraFeedback): Result =
-        Result.fromValue(respondStartVideoBlocking(startVideoFeedback.value))
+        Result.fromValue(native.respondStartVideo(startVideoFeedback))
 
     fun subscribeStopVideo(): Flow<Int> = callbackFlow {
-        val callback = StopVideoCallback { value ->
+        val subscriptionHandle = native.subscribeStopVideo(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeStopVideoNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeStopVideo(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeStopVideo(subscriptionHandle) }
     }
 
     fun respondStopVideo(stopVideoFeedback: CameraFeedback): Result =
-        Result.fromValue(respondStopVideoBlocking(stopVideoFeedback.value))
+        Result.fromValue(native.respondStopVideo(stopVideoFeedback))
 
     fun subscribeStartVideoStreaming(): Flow<Int> = callbackFlow {
-        val callback = StartVideoStreamingCallback { value ->
+        val subscriptionHandle = native.subscribeStartVideoStreaming(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeStartVideoStreamingNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeStartVideoStreaming(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeStartVideoStreaming(subscriptionHandle) }
     }
 
     fun respondStartVideoStreaming(startVideoStreamingFeedback: CameraFeedback): Result =
-        Result.fromValue(respondStartVideoStreamingBlocking(startVideoStreamingFeedback.value))
+        Result.fromValue(native.respondStartVideoStreaming(startVideoStreamingFeedback))
 
     fun subscribeStopVideoStreaming(): Flow<Int> = callbackFlow {
-        val callback = StopVideoStreamingCallback { value ->
+        val subscriptionHandle = native.subscribeStopVideoStreaming(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeStopVideoStreamingNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeStopVideoStreaming(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeStopVideoStreaming(subscriptionHandle) }
     }
 
     fun respondStopVideoStreaming(stopVideoStreamingFeedback: CameraFeedback): Result =
-        Result.fromValue(respondStopVideoStreamingBlocking(stopVideoStreamingFeedback.value))
+        Result.fromValue(native.respondStopVideoStreaming(stopVideoStreamingFeedback))
 
     fun subscribeSetMode(): Flow<Mode> = callbackFlow {
-        val callback = SetModeCallback { value ->
-            trySend(Mode.fromValue(value))
+        val subscriptionHandle = native.subscribeSetMode(
+                    ) { value ->
+            trySend(value)
         }
-        val subscriptionHandle = subscribeSetModeNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeSetMode(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeSetMode(subscriptionHandle) }
     }
 
     fun respondSetMode(setModeFeedback: CameraFeedback): Result =
-        Result.fromValue(respondSetModeBlocking(setModeFeedback.value))
+        Result.fromValue(native.respondSetMode(setModeFeedback))
 
     fun subscribeStorageInformation(): Flow<Int> = callbackFlow {
-        val callback = StorageInformationCallback { value ->
+        val subscriptionHandle = native.subscribeStorageInformation(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeStorageInformationNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeStorageInformation(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeStorageInformation(subscriptionHandle) }
     }
 
     fun respondStorageInformation(storageInformationFeedback: CameraFeedback, storageInformation: StorageInformation): Result =
-        Result.fromValue(respondStorageInformationBlocking(storageInformationFeedback.value, storageInformation))
+        Result.fromValue(native.respondStorageInformation(storageInformationFeedback, storageInformation))
 
     fun subscribeCaptureStatus(): Flow<Int> = callbackFlow {
-        val callback = CaptureStatusCallback { value ->
+        val subscriptionHandle = native.subscribeCaptureStatus(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeCaptureStatusNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeCaptureStatus(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeCaptureStatus(subscriptionHandle) }
     }
 
     fun respondCaptureStatus(captureStatusFeedback: CameraFeedback, captureStatus: CaptureStatus): Result =
-        Result.fromValue(respondCaptureStatusBlocking(captureStatusFeedback.value, captureStatus))
+        Result.fromValue(native.respondCaptureStatus(captureStatusFeedback, captureStatus))
 
     fun subscribeFormatStorage(): Flow<Int> = callbackFlow {
-        val callback = FormatStorageCallback { value ->
+        val subscriptionHandle = native.subscribeFormatStorage(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeFormatStorageNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeFormatStorage(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeFormatStorage(subscriptionHandle) }
     }
 
     fun respondFormatStorage(formatStorageFeedback: CameraFeedback): Result =
-        Result.fromValue(respondFormatStorageBlocking(formatStorageFeedback.value))
+        Result.fromValue(native.respondFormatStorage(formatStorageFeedback))
 
     fun subscribeResetSettings(): Flow<Int> = callbackFlow {
-        val callback = ResetSettingsCallback { value ->
+        val subscriptionHandle = native.subscribeResetSettings(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeResetSettingsNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeResetSettings(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeResetSettings(subscriptionHandle) }
     }
 
     fun respondResetSettings(resetSettingsFeedback: CameraFeedback): Result =
-        Result.fromValue(respondResetSettingsBlocking(resetSettingsFeedback.value))
+        Result.fromValue(native.respondResetSettings(resetSettingsFeedback))
 
     fun subscribeZoomInStart(): Flow<Int> = callbackFlow {
-        val callback = ZoomInStartCallback { value ->
+        val subscriptionHandle = native.subscribeZoomInStart(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeZoomInStartNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeZoomInStart(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeZoomInStart(subscriptionHandle) }
     }
 
     fun respondZoomInStart(zoomInStartFeedback: CameraFeedback): Result =
-        Result.fromValue(respondZoomInStartBlocking(zoomInStartFeedback.value))
+        Result.fromValue(native.respondZoomInStart(zoomInStartFeedback))
 
     fun subscribeZoomOutStart(): Flow<Int> = callbackFlow {
-        val callback = ZoomOutStartCallback { value ->
+        val subscriptionHandle = native.subscribeZoomOutStart(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeZoomOutStartNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeZoomOutStart(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeZoomOutStart(subscriptionHandle) }
     }
 
     fun respondZoomOutStart(zoomOutStartFeedback: CameraFeedback): Result =
-        Result.fromValue(respondZoomOutStartBlocking(zoomOutStartFeedback.value))
+        Result.fromValue(native.respondZoomOutStart(zoomOutStartFeedback))
 
     fun subscribeZoomStop(): Flow<Int> = callbackFlow {
-        val callback = ZoomStopCallback { value ->
+        val subscriptionHandle = native.subscribeZoomStop(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeZoomStopNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeZoomStop(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeZoomStop(subscriptionHandle) }
     }
 
     fun respondZoomStop(zoomStopFeedback: CameraFeedback): Result =
-        Result.fromValue(respondZoomStopBlocking(zoomStopFeedback.value))
+        Result.fromValue(native.respondZoomStop(zoomStopFeedback))
 
     fun subscribeZoomRange(): Flow<Float> = callbackFlow {
-        val callback = ZoomRangeCallback { value ->
+        val subscriptionHandle = native.subscribeZoomRange(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeZoomRangeNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeZoomRange(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeZoomRange(subscriptionHandle) }
     }
 
     fun respondZoomRange(zoomRangeFeedback: CameraFeedback): Result =
-        Result.fromValue(respondZoomRangeBlocking(zoomRangeFeedback.value))
+        Result.fromValue(native.respondZoomRange(zoomRangeFeedback))
 
     fun setTrackingRectangleStatus(trackedRectangle: TrackRectangle) {
-        setTrackingRectangleStatusBlocking(trackedRectangle)
+        native.setTrackingRectangleStatus(trackedRectangle)
     }
 
     fun setTrackingOffStatus() {
-        setTrackingOffStatusBlocking()
+        native.setTrackingOffStatus()
     }
 
     fun subscribeTrackingPointCommand(): Flow<TrackPoint> = callbackFlow {
-        val callback = TrackingPointCommandCallback { value ->
+        val subscriptionHandle = native.subscribeTrackingPointCommand(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeTrackingPointCommandNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeTrackingPointCommand(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeTrackingPointCommand(subscriptionHandle) }
     }
 
     fun subscribeTrackingRectangleCommand(): Flow<TrackRectangle> = callbackFlow {
-        val callback = TrackingRectangleCommandCallback { value ->
+        val subscriptionHandle = native.subscribeTrackingRectangleCommand(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeTrackingRectangleCommandNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeTrackingRectangleCommand(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeTrackingRectangleCommand(subscriptionHandle) }
     }
 
     fun subscribeTrackingOffCommand(): Flow<Int> = callbackFlow {
-        val callback = TrackingOffCommandCallback { value ->
+        val subscriptionHandle = native.subscribeTrackingOffCommand(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeTrackingOffCommandNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeTrackingOffCommand(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeTrackingOffCommand(subscriptionHandle) }
     }
 
     fun respondTrackingPointCommand(stopVideoFeedback: CameraFeedback): Result =
-        Result.fromValue(respondTrackingPointCommandBlocking(stopVideoFeedback.value))
+        Result.fromValue(native.respondTrackingPointCommand(stopVideoFeedback))
 
     fun respondTrackingRectangleCommand(stopVideoFeedback: CameraFeedback): Result =
-        Result.fromValue(respondTrackingRectangleCommandBlocking(stopVideoFeedback.value))
+        Result.fromValue(native.respondTrackingRectangleCommand(stopVideoFeedback))
 
     fun respondTrackingOffCommand(stopVideoFeedback: CameraFeedback): Result =
-        Result.fromValue(respondTrackingOffCommandBlocking(stopVideoFeedback.value))
-
-    private fun interface TakePhotoCallback { fun invoke(value: Int) }
-    private fun interface StartVideoCallback { fun invoke(value: Int) }
-    private fun interface StopVideoCallback { fun invoke(value: Int) }
-    private fun interface StartVideoStreamingCallback { fun invoke(value: Int) }
-    private fun interface StopVideoStreamingCallback { fun invoke(value: Int) }
-    private fun interface SetModeCallback { fun invoke(value: Int) }
-    private fun interface StorageInformationCallback { fun invoke(value: Int) }
-    private fun interface CaptureStatusCallback { fun invoke(value: Int) }
-    private fun interface FormatStorageCallback { fun invoke(value: Int) }
-    private fun interface ResetSettingsCallback { fun invoke(value: Int) }
-    private fun interface ZoomInStartCallback { fun invoke(value: Int) }
-    private fun interface ZoomOutStartCallback { fun invoke(value: Int) }
-    private fun interface ZoomStopCallback { fun invoke(value: Int) }
-    private fun interface ZoomRangeCallback { fun invoke(value: Float) }
-    private fun interface TrackingPointCommandCallback { fun invoke(value: TrackPoint) }
-    private fun interface TrackingRectangleCommandCallback { fun invoke(value: TrackRectangle) }
-    private fun interface TrackingOffCommandCallback { fun invoke(value: Int) }
-
-    private external fun setInformationBlocking(information: Information): Int
-    private external fun setVideoStreamingBlocking(videoStreaming: VideoStreaming): Int
-    private external fun setInProgressBlocking(inProgress: Boolean): Int
-    private external fun subscribeTakePhotoNative(callback: TakePhotoCallback): Long
-    private external fun unsubscribeTakePhoto(handle: Long)
-    private external fun respondTakePhotoBlocking(takePhotoFeedback: Int, captureInfo: CaptureInfo): Int
-    private external fun subscribeStartVideoNative(callback: StartVideoCallback): Long
-    private external fun unsubscribeStartVideo(handle: Long)
-    private external fun respondStartVideoBlocking(startVideoFeedback: Int): Int
-    private external fun subscribeStopVideoNative(callback: StopVideoCallback): Long
-    private external fun unsubscribeStopVideo(handle: Long)
-    private external fun respondStopVideoBlocking(stopVideoFeedback: Int): Int
-    private external fun subscribeStartVideoStreamingNative(callback: StartVideoStreamingCallback): Long
-    private external fun unsubscribeStartVideoStreaming(handle: Long)
-    private external fun respondStartVideoStreamingBlocking(startVideoStreamingFeedback: Int): Int
-    private external fun subscribeStopVideoStreamingNative(callback: StopVideoStreamingCallback): Long
-    private external fun unsubscribeStopVideoStreaming(handle: Long)
-    private external fun respondStopVideoStreamingBlocking(stopVideoStreamingFeedback: Int): Int
-    private external fun subscribeSetModeNative(callback: SetModeCallback): Long
-    private external fun unsubscribeSetMode(handle: Long)
-    private external fun respondSetModeBlocking(setModeFeedback: Int): Int
-    private external fun subscribeStorageInformationNative(callback: StorageInformationCallback): Long
-    private external fun unsubscribeStorageInformation(handle: Long)
-    private external fun respondStorageInformationBlocking(storageInformationFeedback: Int, storageInformation: StorageInformation): Int
-    private external fun subscribeCaptureStatusNative(callback: CaptureStatusCallback): Long
-    private external fun unsubscribeCaptureStatus(handle: Long)
-    private external fun respondCaptureStatusBlocking(captureStatusFeedback: Int, captureStatus: CaptureStatus): Int
-    private external fun subscribeFormatStorageNative(callback: FormatStorageCallback): Long
-    private external fun unsubscribeFormatStorage(handle: Long)
-    private external fun respondFormatStorageBlocking(formatStorageFeedback: Int): Int
-    private external fun subscribeResetSettingsNative(callback: ResetSettingsCallback): Long
-    private external fun unsubscribeResetSettings(handle: Long)
-    private external fun respondResetSettingsBlocking(resetSettingsFeedback: Int): Int
-    private external fun subscribeZoomInStartNative(callback: ZoomInStartCallback): Long
-    private external fun unsubscribeZoomInStart(handle: Long)
-    private external fun respondZoomInStartBlocking(zoomInStartFeedback: Int): Int
-    private external fun subscribeZoomOutStartNative(callback: ZoomOutStartCallback): Long
-    private external fun unsubscribeZoomOutStart(handle: Long)
-    private external fun respondZoomOutStartBlocking(zoomOutStartFeedback: Int): Int
-    private external fun subscribeZoomStopNative(callback: ZoomStopCallback): Long
-    private external fun unsubscribeZoomStop(handle: Long)
-    private external fun respondZoomStopBlocking(zoomStopFeedback: Int): Int
-    private external fun subscribeZoomRangeNative(callback: ZoomRangeCallback): Long
-    private external fun unsubscribeZoomRange(handle: Long)
-    private external fun respondZoomRangeBlocking(zoomRangeFeedback: Int): Int
-    private external fun setTrackingRectangleStatusBlocking(trackedRectangle: TrackRectangle)
-    private external fun setTrackingOffStatusBlocking()
-    private external fun subscribeTrackingPointCommandNative(callback: TrackingPointCommandCallback): Long
-    private external fun unsubscribeTrackingPointCommand(handle: Long)
-    private external fun subscribeTrackingRectangleCommandNative(callback: TrackingRectangleCommandCallback): Long
-    private external fun unsubscribeTrackingRectangleCommand(handle: Long)
-    private external fun subscribeTrackingOffCommandNative(callback: TrackingOffCommandCallback): Long
-    private external fun unsubscribeTrackingOffCommand(handle: Long)
-    private external fun respondTrackingPointCommandBlocking(stopVideoFeedback: Int): Int
-    private external fun respondTrackingRectangleCommandBlocking(stopVideoFeedback: Int): Int
-    private external fun respondTrackingOffCommandBlocking(stopVideoFeedback: Int): Int
-    private external fun destroy()
+        Result.fromValue(native.respondTrackingOffCommand(stopVideoFeedback))
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class CameraServerException(
@@ -438,10 +402,71 @@ class CameraServer internal constructor(private val handle: Long) : AutoCloseabl
     ) : Exception(message)
 
     companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): CameraServer {
-            val handle = createNative(mavsdk.serverComponentHandle(instance))
-            return CameraServer(handle)
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(mavsdk: Mavsdk, instance: Int = 1): CameraServer =
+            CameraServer(
+                createCameraServerNative(mavsdk.serverComponentHandle(instance))
+            )
     }
 }
+
+internal interface CameraServerNative {
+    fun setInformation(information: CameraServer.Information): Int
+    fun setVideoStreaming(videoStreaming: CameraServer.VideoStreaming): Int
+    fun setInProgress(inProgress: Boolean): Int
+    fun subscribeTakePhoto(callback: (Int) -> Unit): Long
+    fun unsubscribeTakePhoto(subscriptionHandle: Long)
+    fun respondTakePhoto(takePhotoFeedback: CameraServer.CameraFeedback, captureInfo: CameraServer.CaptureInfo): Int
+    fun subscribeStartVideo(callback: (Int) -> Unit): Long
+    fun unsubscribeStartVideo(subscriptionHandle: Long)
+    fun respondStartVideo(startVideoFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeStopVideo(callback: (Int) -> Unit): Long
+    fun unsubscribeStopVideo(subscriptionHandle: Long)
+    fun respondStopVideo(stopVideoFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeStartVideoStreaming(callback: (Int) -> Unit): Long
+    fun unsubscribeStartVideoStreaming(subscriptionHandle: Long)
+    fun respondStartVideoStreaming(startVideoStreamingFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeStopVideoStreaming(callback: (Int) -> Unit): Long
+    fun unsubscribeStopVideoStreaming(subscriptionHandle: Long)
+    fun respondStopVideoStreaming(stopVideoStreamingFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeSetMode(callback: (CameraServer.Mode) -> Unit): Long
+    fun unsubscribeSetMode(subscriptionHandle: Long)
+    fun respondSetMode(setModeFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeStorageInformation(callback: (Int) -> Unit): Long
+    fun unsubscribeStorageInformation(subscriptionHandle: Long)
+    fun respondStorageInformation(storageInformationFeedback: CameraServer.CameraFeedback, storageInformation: CameraServer.StorageInformation): Int
+    fun subscribeCaptureStatus(callback: (Int) -> Unit): Long
+    fun unsubscribeCaptureStatus(subscriptionHandle: Long)
+    fun respondCaptureStatus(captureStatusFeedback: CameraServer.CameraFeedback, captureStatus: CameraServer.CaptureStatus): Int
+    fun subscribeFormatStorage(callback: (Int) -> Unit): Long
+    fun unsubscribeFormatStorage(subscriptionHandle: Long)
+    fun respondFormatStorage(formatStorageFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeResetSettings(callback: (Int) -> Unit): Long
+    fun unsubscribeResetSettings(subscriptionHandle: Long)
+    fun respondResetSettings(resetSettingsFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeZoomInStart(callback: (Int) -> Unit): Long
+    fun unsubscribeZoomInStart(subscriptionHandle: Long)
+    fun respondZoomInStart(zoomInStartFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeZoomOutStart(callback: (Int) -> Unit): Long
+    fun unsubscribeZoomOutStart(subscriptionHandle: Long)
+    fun respondZoomOutStart(zoomOutStartFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeZoomStop(callback: (Int) -> Unit): Long
+    fun unsubscribeZoomStop(subscriptionHandle: Long)
+    fun respondZoomStop(zoomStopFeedback: CameraServer.CameraFeedback): Int
+    fun subscribeZoomRange(callback: (Float) -> Unit): Long
+    fun unsubscribeZoomRange(subscriptionHandle: Long)
+    fun respondZoomRange(zoomRangeFeedback: CameraServer.CameraFeedback): Int
+    fun setTrackingRectangleStatus(trackedRectangle: CameraServer.TrackRectangle)
+    fun setTrackingOffStatus()
+    fun subscribeTrackingPointCommand(callback: (CameraServer.TrackPoint) -> Unit): Long
+    fun unsubscribeTrackingPointCommand(subscriptionHandle: Long)
+    fun subscribeTrackingRectangleCommand(callback: (CameraServer.TrackRectangle) -> Unit): Long
+    fun unsubscribeTrackingRectangleCommand(subscriptionHandle: Long)
+    fun subscribeTrackingOffCommand(callback: (Int) -> Unit): Long
+    fun unsubscribeTrackingOffCommand(subscriptionHandle: Long)
+    fun respondTrackingPointCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
+    fun respondTrackingRectangleCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
+    fun respondTrackingOffCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
+    fun destroy()
+}
+
+internal expect fun createCameraServerNative(systemHandle: Long): CameraServerNative

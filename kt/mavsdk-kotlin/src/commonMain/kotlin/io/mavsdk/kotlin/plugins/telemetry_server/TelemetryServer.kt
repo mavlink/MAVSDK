@@ -6,8 +6,10 @@ package io.mavsdk.kotlin.plugins.telemetry_server
 
 import io.mavsdk.kotlin.Mavsdk
 
-
-class TelemetryServer internal constructor(private val handle: Long) : AutoCloseable {
+class TelemetryServer internal constructor(
+    private val native: TelemetryServerNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -19,8 +21,10 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
         TIMEOUT(6),
         UNSUPPORTED(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -33,8 +37,10 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
         RTK_FLOAT(5),
         RTK_FIXED(6),
         ;
+
         companion object {
-            fun fromValue(v: Int): FixType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): FixType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -45,8 +51,10 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
         MC(3),
         FW(4),
         ;
+
         companion object {
-            fun fromValue(v: Int): VtolState = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): VtolState =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -60,8 +68,10 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
         ALERT(6),
         EMERGENCY(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): StatusTextType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): StatusTextType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -72,8 +82,23 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
         TAKING_OFF(3),
         LANDING(4),
         ;
+
         companion object {
-            fun fromValue(v: Int): LandedState = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): LandedState =
+                entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
+    enum class MavFrame(val value: Int) {
+        UNDEF(0),
+        BODY_NED(1),
+        VISION_NED(2),
+        ESTIM_NED(3),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): MavFrame =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -111,7 +136,7 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
 
     data class GpsInfo(
         val numSatellites: Int,
-        val fixType: Int,
+        val fixType: FixType,
     )
 
     data class RawGps(
@@ -143,21 +168,23 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
     )
 
     data class StatusText(
-        val type: Int,
+        val type: StatusTextType,
         val text: String,
     )
 
     data class ActuatorControlTarget(
         val group: Int,
-        // TODO: repeated primitive field controls
+        val controls: List<Float> = emptyList(),
     )
 
     data class ActuatorOutputStatus(
         val active: Int,
-        // TODO: repeated primitive field actuator
+        val actuator: List<Float> = emptyList(),
     )
 
-    class Covariance // TODO: all fields are repeated primitives
+    data class Covariance(
+        val covarianceMatrix: List<Float> = emptyList(),
+    )
 
     data class VelocityBody(
         val xMS: Float,
@@ -173,8 +200,8 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
 
     data class Odometry(
         val timeUsec: Long,
-        val frameId: Int,
-        val childFrameId: Int,
+        val frameId: MavFrame,
+        val childFrameId: MavFrame,
         val positionBody: PositionBody,
         val q: Quaternion,
         val velocityBody: VelocityBody,
@@ -256,78 +283,60 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
     )
 
     fun publishPosition(position: Position, velocityNed: VelocityNed, heading: Heading): Result =
-        Result.fromValue(publishPositionBlocking(position, velocityNed, heading))
+        Result.fromValue(native.publishPosition(position, velocityNed, heading))
 
     fun publishHome(home: Position): Result =
-        Result.fromValue(publishHomeBlocking(home))
+        Result.fromValue(native.publishHome(home))
 
     fun publishSysStatus(battery: Battery, rcReceiverStatus: Boolean, gyroStatus: Boolean, accelStatus: Boolean, magStatus: Boolean, gpsStatus: Boolean): Result =
-        Result.fromValue(publishSysStatusBlocking(battery, rcReceiverStatus, gyroStatus, accelStatus, magStatus, gpsStatus))
+        Result.fromValue(native.publishSysStatus(battery, rcReceiverStatus, gyroStatus, accelStatus, magStatus, gpsStatus))
 
     fun publishExtendedSysState(vtolState: VtolState, landedState: LandedState): Result =
-        Result.fromValue(publishExtendedSysStateBlocking(vtolState.value, landedState.value))
+        Result.fromValue(native.publishExtendedSysState(vtolState, landedState))
 
     fun publishRawGps(rawGps: RawGps, gpsInfo: GpsInfo): Result =
-        Result.fromValue(publishRawGpsBlocking(rawGps, gpsInfo))
+        Result.fromValue(native.publishRawGps(rawGps, gpsInfo))
 
     fun publishBattery(battery: Battery): Result =
-        Result.fromValue(publishBatteryBlocking(battery))
+        Result.fromValue(native.publishBattery(battery))
 
     fun publishStatusText(statusText: StatusText): Result =
-        Result.fromValue(publishStatusTextBlocking(statusText))
+        Result.fromValue(native.publishStatusText(statusText))
 
     fun publishOdometry(odometry: Odometry): Result =
-        Result.fromValue(publishOdometryBlocking(odometry))
+        Result.fromValue(native.publishOdometry(odometry))
 
     fun publishPositionVelocityNed(positionVelocityNed: PositionVelocityNed): Result =
-        Result.fromValue(publishPositionVelocityNedBlocking(positionVelocityNed))
+        Result.fromValue(native.publishPositionVelocityNed(positionVelocityNed))
 
     fun publishGroundTruth(groundTruth: GroundTruth): Result =
-        Result.fromValue(publishGroundTruthBlocking(groundTruth))
+        Result.fromValue(native.publishGroundTruth(groundTruth))
 
     fun publishImu(imu: Imu): Result =
-        Result.fromValue(publishImuBlocking(imu))
+        Result.fromValue(native.publishImu(imu))
 
     fun publishScaledImu(imu: Imu): Result =
-        Result.fromValue(publishScaledImuBlocking(imu))
+        Result.fromValue(native.publishScaledImu(imu))
 
     fun publishRawImu(imu: Imu): Result =
-        Result.fromValue(publishRawImuBlocking(imu))
+        Result.fromValue(native.publishRawImu(imu))
 
     fun publishUnixEpochTime(timeUs: Long): Result =
-        Result.fromValue(publishUnixEpochTimeBlocking(timeUs))
+        Result.fromValue(native.publishUnixEpochTime(timeUs))
 
     fun publishDistanceSensor(distanceSensor: DistanceSensor): Result =
-        Result.fromValue(publishDistanceSensorBlocking(distanceSensor))
+        Result.fromValue(native.publishDistanceSensor(distanceSensor))
 
     fun publishAttitude(angle: EulerAngle, angularVelocity: AngularVelocityBody): Result =
-        Result.fromValue(publishAttitudeBlocking(angle, angularVelocity))
+        Result.fromValue(native.publishAttitude(angle, angularVelocity))
 
     fun publishVisualFlightRulesHud(fixedWingMetrics: FixedwingMetrics): Result =
-        Result.fromValue(publishVisualFlightRulesHudBlocking(fixedWingMetrics))
-
-
-    private external fun publishPositionBlocking(position: Position, velocityNed: VelocityNed, heading: Heading): Int
-    private external fun publishHomeBlocking(home: Position): Int
-    private external fun publishSysStatusBlocking(battery: Battery, rcReceiverStatus: Boolean, gyroStatus: Boolean, accelStatus: Boolean, magStatus: Boolean, gpsStatus: Boolean): Int
-    private external fun publishExtendedSysStateBlocking(vtolState: Int, landedState: Int): Int
-    private external fun publishRawGpsBlocking(rawGps: RawGps, gpsInfo: GpsInfo): Int
-    private external fun publishBatteryBlocking(battery: Battery): Int
-    private external fun publishStatusTextBlocking(statusText: StatusText): Int
-    private external fun publishOdometryBlocking(odometry: Odometry): Int
-    private external fun publishPositionVelocityNedBlocking(positionVelocityNed: PositionVelocityNed): Int
-    private external fun publishGroundTruthBlocking(groundTruth: GroundTruth): Int
-    private external fun publishImuBlocking(imu: Imu): Int
-    private external fun publishScaledImuBlocking(imu: Imu): Int
-    private external fun publishRawImuBlocking(imu: Imu): Int
-    private external fun publishUnixEpochTimeBlocking(timeUs: Long): Int
-    private external fun publishDistanceSensorBlocking(distanceSensor: DistanceSensor): Int
-    private external fun publishAttitudeBlocking(angle: EulerAngle, angularVelocity: AngularVelocityBody): Int
-    private external fun publishVisualFlightRulesHudBlocking(fixedWingMetrics: FixedwingMetrics): Int
-    private external fun destroy()
+        Result.fromValue(native.publishVisualFlightRulesHud(fixedWingMetrics))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class TelemetryServerException(
@@ -336,10 +345,32 @@ class TelemetryServer internal constructor(private val handle: Long) : AutoClose
     ) : Exception(message)
 
     companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): TelemetryServer {
-            val handle = createNative(mavsdk.serverComponentHandle(instance))
-            return TelemetryServer(handle)
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(mavsdk: Mavsdk, instance: Int = 1): TelemetryServer =
+            TelemetryServer(
+                createTelemetryServerNative(mavsdk.serverComponentHandle(instance))
+            )
     }
 }
+
+internal interface TelemetryServerNative {
+    fun publishPosition(position: TelemetryServer.Position, velocityNed: TelemetryServer.VelocityNed, heading: TelemetryServer.Heading): Int
+    fun publishHome(home: TelemetryServer.Position): Int
+    fun publishSysStatus(battery: TelemetryServer.Battery, rcReceiverStatus: Boolean, gyroStatus: Boolean, accelStatus: Boolean, magStatus: Boolean, gpsStatus: Boolean): Int
+    fun publishExtendedSysState(vtolState: TelemetryServer.VtolState, landedState: TelemetryServer.LandedState): Int
+    fun publishRawGps(rawGps: TelemetryServer.RawGps, gpsInfo: TelemetryServer.GpsInfo): Int
+    fun publishBattery(battery: TelemetryServer.Battery): Int
+    fun publishStatusText(statusText: TelemetryServer.StatusText): Int
+    fun publishOdometry(odometry: TelemetryServer.Odometry): Int
+    fun publishPositionVelocityNed(positionVelocityNed: TelemetryServer.PositionVelocityNed): Int
+    fun publishGroundTruth(groundTruth: TelemetryServer.GroundTruth): Int
+    fun publishImu(imu: TelemetryServer.Imu): Int
+    fun publishScaledImu(imu: TelemetryServer.Imu): Int
+    fun publishRawImu(imu: TelemetryServer.Imu): Int
+    fun publishUnixEpochTime(timeUs: Long): Int
+    fun publishDistanceSensor(distanceSensor: TelemetryServer.DistanceSensor): Int
+    fun publishAttitude(angle: TelemetryServer.EulerAngle, angularVelocity: TelemetryServer.AngularVelocityBody): Int
+    fun publishVisualFlightRulesHud(fixedWingMetrics: TelemetryServer.FixedwingMetrics): Int
+    fun destroy()
+}
+
+internal expect fun createTelemetryServerNative(systemHandle: Long): TelemetryServerNative

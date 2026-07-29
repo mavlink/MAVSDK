@@ -6,71 +6,152 @@
 #include "cmavsdk/plugins/rtk/rtk.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct RtcmDataFromJava;
+struct RtcmDataArrayFromJava;
 
+struct RtcmDataFromJava {
+    mavsdk_rtk_rtcm_data_t value{};
+    std::string data_base64Value;
+
+    RtcmDataFromJava(JNIEnv* env, jobject object);
+    ~RtcmDataFromJava();
+};
+
+struct RtcmDataArrayFromJava {
+    std::vector<std::unique_ptr<RtcmDataFromJava>> holders;
+    std::vector<mavsdk_rtk_rtcm_data_t> values;
+
+    RtcmDataArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<RtcmDataFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+RtcmDataFromJava::RtcmDataFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID data_base64Field = env->GetFieldID(
+        clazz, "dataBase64", "Ljava/lang/String;");
+    auto data_base64String =
+        static_cast<jstring>(env->GetObjectField(object, data_base64Field));
+    JStringHolder data_base64Holder(env, data_base64String);
+    data_base64Value =
+        data_base64Holder.c_str() ? data_base64Holder.c_str() : "";
+    value.data_base64 = const_cast<char*>(data_base64Value.c_str());
+    env->DeleteLocalRef(data_base64String);
+    env->DeleteLocalRef(clazz);
+}
+
+RtcmDataFromJava::~RtcmDataFromJava() = default;
+
+jobject toJavaRtcmData(
+    JNIEnv* env, const mavsdk_rtk_rtcm_data_t& value);
+jobjectArray toJavaRtcmDataArray(
+    JNIEnv* env,
+    const mavsdk_rtk_rtcm_data_t* values,
+    size_t count);
+
+jobject toJavaRtcmData(
+    JNIEnv* env, const mavsdk_rtk_rtcm_data_t& value) {
+    jstring data_base64Value =
+        toJavaString(env, value.data_base64);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/rtk/NativeRtk$RtcmData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , data_base64Value
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(data_base64Value);
+    return result;
+}
+
+jobjectArray toJavaRtcmDataArray(
+    JNIEnv* env,
+    const mavsdk_rtk_rtcm_data_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/rtk/NativeRtk$RtcmData");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaRtcmData(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
+
+} // namespace
 
 extern "C" {
 
-// ===== Rtk.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_rtk_Rtk_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_rtk_NativeRtk_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_rtk_t handle = mavsdk_rtk_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Rtk plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Rtk.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_rtk_Rtk_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/rtk/Rtk");
-    if (!handle) return;
-
-    mavsdk_rtk_destroy(reinterpret_cast<mavsdk_rtk_t>(handle));
+Java_io_mavsdk_jni_plugins_rtk_NativeRtk_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Rtk plugin")) {
+        return;
+    }
+    mavsdk_rtk_destroy(
+        reinterpret_cast<mavsdk_rtk_t>(handle));
 }
 
-
-// ===== Rtk.send_rtcm_dataBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_rtk_Rtk_sendRtcmDataBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_rtk_NativeRtk_sendRtcmData(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject rtcm_data) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/rtk/Rtk");
-    if (!handle) return MAVSDK_RTK_RESULT_UNKNOWN;
-
-    mavsdk_rtk_rtcm_data_t rtcm_data_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_rtk_result_t result = mavsdk_rtk_send_rtcm_data(
-        reinterpret_cast<mavsdk_rtk_t>(handle),
-        rtcm_data_c    );
-
+    if (!requireHandle(env, handle, "Rtk plugin")) {
+        return {};
+    }
+    RtcmDataFromJava
+        rtcm_dataValue(env, rtcm_data);
+    mavsdk_rtk_result_t result =
+        mavsdk_rtk_send_rtcm_data(
+            reinterpret_cast<mavsdk_rtk_t>(handle),
+            rtcm_dataValue.value);
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

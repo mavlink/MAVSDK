@@ -38,8 +38,11 @@ setup_venv() {
 # Function to run protoc commands for a plugin
 process_plugin() {
     local plugin=$1
+    local plugin_class
+    plugin_class=$(echo "$plugin" | awk -F_ '{ for (i = 1; i <= NF; i++) printf "%s", toupper(substr($i, 1, 1)) substr($i, 2) }')
     local proto_file="$proto_dir/${plugin}/${plugin}.proto"
-    local output_dir="$project_root/plugins"
+    local native_output_dir="$project_root/plugins"
+    local jvm_output_dir="$project_root/jvm/src/main/java/io/mavsdk/jni/plugins"
     local template_path="$project_root/templates"
 
     # Check if proto file exists
@@ -55,7 +58,7 @@ process_plugin() {
     fi
 
     # Create output directory if it doesn't exist
-    mkdir -p "$output_dir/${plugin}"
+    mkdir -p "$native_output_dir/${plugin}" "$jvm_output_dir/${plugin}"
 
     echo "Processing $plugin..."
 
@@ -65,10 +68,22 @@ process_plugin() {
         --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
         -I"$proto_dir/${plugin}" \
         -I"$proto_dir" \
-        --custom_out="$output_dir" \
+        --custom_out="$native_output_dir" \
         --custom_opt="output_file=${plugin}/${plugin}_jni.cpp" \
         --custom_opt="template_path=$template_path" \
         --custom_opt="template_file=file_jni.cpp.j2" \
+        --custom_opt="lstrip_blocks=True" \
+        --custom_opt="trim_blocks=True"
+
+    echo "  Generating Native${plugin_class}.java..."
+    protoc "$proto_file" \
+        --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
+        -I"$proto_dir/${plugin}" \
+        -I"$proto_dir" \
+        --custom_out="$jvm_output_dir" \
+        --custom_opt="output_file=${plugin}/Native${plugin_class}.java" \
+        --custom_opt="template_path=$template_path" \
+        --custom_opt="template_file=file_jni.java.j2" \
         --custom_opt="lstrip_blocks=True" \
         --custom_opt="trim_blocks=True"
 

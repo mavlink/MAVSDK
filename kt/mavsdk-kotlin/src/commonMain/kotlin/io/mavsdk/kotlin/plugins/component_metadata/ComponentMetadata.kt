@@ -5,16 +5,14 @@
 package io.mavsdk.kotlin.plugins.component_metadata
 
 import io.mavsdk.kotlin.System
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class ComponentMetadata internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class ComponentMetadata internal constructor(
+    private val native: ComponentMetadataNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         SUCCESS(0),
@@ -27,8 +25,10 @@ class ComponentMetadata internal constructor(private val handle: Long) : AutoClo
         NO_SYSTEM(7),
         NOT_REQUESTED(8),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -38,8 +38,10 @@ class ComponentMetadata internal constructor(private val handle: Long) : AutoClo
         EVENTS(2),
         ACTUATORS(3),
         ;
+
         companion object {
-            fun fromValue(v: Int): MetadataType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): MetadataType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -49,42 +51,33 @@ class ComponentMetadata internal constructor(private val handle: Long) : AutoClo
 
     data class MetadataUpdate(
         val compid: Int,
-        val type: Int,
+        val type: MetadataType,
         val jsonMetadata: String,
     )
 
     fun requestComponent(compid: Int) {
-        requestComponentBlocking(compid)
+        native.requestComponent(compid)
     }
 
     fun requestAutopilotComponent() {
-        requestAutopilotComponentBlocking()
+        native.requestAutopilotComponent()
     }
 
     fun subscribeMetadataAvailable(): Flow<MetadataUpdate> = callbackFlow {
-        val callback = MetadataAvailableCallback { value ->
+        val subscriptionHandle = native.subscribeMetadataAvailable(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeMetadataAvailableNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeMetadataAvailable(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeMetadataAvailable(subscriptionHandle) }
     }
 
     fun getMetadata(compid: Int, metadataType: MetadataType): MetadataData =
-        getMetadataBlocking(compid, metadataType.value)
-
-    private fun interface MetadataAvailableCallback { fun invoke(value: MetadataUpdate) }
-
-    private external fun requestComponentBlocking(compid: Int)
-    private external fun requestAutopilotComponentBlocking()
-    private external fun subscribeMetadataAvailableNative(callback: MetadataAvailableCallback): Long
-    private external fun unsubscribeMetadataAvailable(handle: Long)
-    private external fun getMetadataBlocking(compid: Int, metadataType: Int): MetadataData
-    private external fun destroy()
+        native.getMetadata(compid, metadataType)
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class ComponentMetadataException(
@@ -93,10 +86,20 @@ class ComponentMetadata internal constructor(private val handle: Long) : AutoClo
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): ComponentMetadata {
-            val handle = createNative(system.getHandle())
-            return ComponentMetadata(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): ComponentMetadata =
+            ComponentMetadata(
+                createComponentMetadataNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface ComponentMetadataNative {
+    fun requestComponent(compid: Int)
+    fun requestAutopilotComponent()
+    fun subscribeMetadataAvailable(callback: (ComponentMetadata.MetadataUpdate) -> Unit): Long
+    fun unsubscribeMetadataAvailable(subscriptionHandle: Long)
+    fun getMetadata(compid: Int, metadataType: ComponentMetadata.MetadataType): ComponentMetadata.MetadataData
+    fun destroy()
+}
+
+internal expect fun createComponentMetadataNative(systemHandle: Long): ComponentMetadataNative

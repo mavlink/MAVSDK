@@ -6,49 +6,228 @@
 #include "cmavsdk/plugins/component_metadata/component_metadata.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct MetadataDataFromJava;
+struct MetadataDataArrayFromJava;
+struct MetadataUpdateFromJava;
+struct MetadataUpdateArrayFromJava;
 
+struct MetadataDataFromJava {
+    mavsdk_component_metadata_metadata_data_t value{};
+    std::string json_metadataValue;
 
-// ===== MetadataAvailable Callback Wrapper =====
+    MetadataDataFromJava(JNIEnv* env, jobject object);
+    ~MetadataDataFromJava();
+};
+
+struct MetadataDataArrayFromJava {
+    std::vector<std::unique_ptr<MetadataDataFromJava>> holders;
+    std::vector<mavsdk_component_metadata_metadata_data_t> values;
+
+    MetadataDataArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MetadataDataFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct MetadataUpdateFromJava {
+    mavsdk_component_metadata_metadata_update_t value{};
+    std::string json_metadataValue;
+
+    MetadataUpdateFromJava(JNIEnv* env, jobject object);
+    ~MetadataUpdateFromJava();
+};
+
+struct MetadataUpdateArrayFromJava {
+    std::vector<std::unique_ptr<MetadataUpdateFromJava>> holders;
+    std::vector<mavsdk_component_metadata_metadata_update_t> values;
+
+    MetadataUpdateArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MetadataUpdateFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+MetadataDataFromJava::MetadataDataFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID json_metadataField = env->GetFieldID(
+        clazz, "jsonMetadata", "Ljava/lang/String;");
+    auto json_metadataString =
+        static_cast<jstring>(env->GetObjectField(object, json_metadataField));
+    JStringHolder json_metadataHolder(env, json_metadataString);
+    json_metadataValue =
+        json_metadataHolder.c_str() ? json_metadataHolder.c_str() : "";
+    value.json_metadata = const_cast<char*>(json_metadataValue.c_str());
+    env->DeleteLocalRef(json_metadataString);
+    env->DeleteLocalRef(clazz);
+}
+
+MetadataDataFromJava::~MetadataDataFromJava() = default;
+MetadataUpdateFromJava::MetadataUpdateFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID compidField = env->GetFieldID(
+        clazz, "compid", "I");
+    value.compid =
+        static_cast<uint32_t>(env->GetIntField(object, compidField));
+    jfieldID typeField = env->GetFieldID(
+        clazz, "type", "I");
+    value.type =
+        static_cast<mavsdk_component_metadata_metadata_type_t>(env->GetIntField(object, typeField));
+    jfieldID json_metadataField = env->GetFieldID(
+        clazz, "jsonMetadata", "Ljava/lang/String;");
+    auto json_metadataString =
+        static_cast<jstring>(env->GetObjectField(object, json_metadataField));
+    JStringHolder json_metadataHolder(env, json_metadataString);
+    json_metadataValue =
+        json_metadataHolder.c_str() ? json_metadataHolder.c_str() : "";
+    value.json_metadata = const_cast<char*>(json_metadataValue.c_str());
+    env->DeleteLocalRef(json_metadataString);
+    env->DeleteLocalRef(clazz);
+}
+
+MetadataUpdateFromJava::~MetadataUpdateFromJava() = default;
+
+jobject toJavaMetadataData(
+    JNIEnv* env, const mavsdk_component_metadata_metadata_data_t& value);
+jobjectArray toJavaMetadataDataArray(
+    JNIEnv* env,
+    const mavsdk_component_metadata_metadata_data_t* values,
+    size_t count);
+jobject toJavaMetadataUpdate(
+    JNIEnv* env, const mavsdk_component_metadata_metadata_update_t& value);
+jobjectArray toJavaMetadataUpdateArray(
+    JNIEnv* env,
+    const mavsdk_component_metadata_metadata_update_t* values,
+    size_t count);
+
+jobject toJavaMetadataData(
+    JNIEnv* env, const mavsdk_component_metadata_metadata_data_t& value) {
+    jstring json_metadataValue =
+        toJavaString(env, value.json_metadata);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , json_metadataValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(json_metadataValue);
+    return result;
+}
+
+jobjectArray toJavaMetadataDataArray(
+    JNIEnv* env,
+    const mavsdk_component_metadata_metadata_data_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataData");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMetadataData(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaMetadataUpdate(
+    JNIEnv* env, const mavsdk_component_metadata_metadata_update_t& value) {
+    jstring json_metadataValue =
+        toJavaString(env, value.json_metadata);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataUpdate");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(IILjava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.compid)
+        , static_cast<jint>(value.type)
+        , json_metadataValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(json_metadataValue);
+    return result;
+}
+
+jobjectArray toJavaMetadataUpdateArray(
+    JNIEnv* env,
+    const mavsdk_component_metadata_metadata_update_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataUpdate");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMetadataUpdate(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct MetadataAvailableCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    MetadataAvailableCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    MetadataAvailableCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata$MetadataUpdate;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataUpdate;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_component_metadata_metadata_update_t value) const {
+    void operator()(
+        const mavsdk_component_metadata_metadata_update_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata$MetadataUpdate");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IILjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.compid)            , static_cast<jint>(value.type)            , toJavaString(env, value.json_metadata)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaMetadataUpdate(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -56,166 +235,141 @@ struct MetadataAvailableCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== ComponentMetadata.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_component_1metadata_ComponentMetadata_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_component_1metadata_NativeComponentMetadata_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_component_metadata_t handle = mavsdk_component_metadata_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create ComponentMetadata plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== ComponentMetadata.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_component_1metadata_ComponentMetadata_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata");
-    if (!handle) return;
-
-    mavsdk_component_metadata_destroy(reinterpret_cast<mavsdk_component_metadata_t>(handle));
+Java_io_mavsdk_jni_plugins_component_1metadata_NativeComponentMetadata_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "ComponentMetadata plugin")) {
+        return;
+    }
+    mavsdk_component_metadata_destroy(
+        reinterpret_cast<mavsdk_component_metadata_t>(handle));
 }
 
-
-// ===== ComponentMetadata.request_componentBlocking =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_component_1metadata_ComponentMetadata_requestComponentBlocking(
+JNIEXPORT
+void
+JNICALL Java_io_mavsdk_jni_plugins_component_1metadata_NativeComponentMetadata_requestComponent(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint compid) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata");
-    if (!handle) return;
-
+    if (!requireHandle(env, handle, "ComponentMetadata plugin")) {
+        return;
+    }
 
     mavsdk_component_metadata_request_component(
         reinterpret_cast<mavsdk_component_metadata_t>(handle),
-        compid    );
+        static_cast<uint32_t>(compid));
 }
 
-
-// ===== ComponentMetadata.request_autopilot_componentBlocking =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_component_1metadata_ComponentMetadata_requestAutopilotComponentBlocking(
+JNIEXPORT
+void
+JNICALL Java_io_mavsdk_jni_plugins_component_1metadata_NativeComponentMetadata_requestAutopilotComponent(
     JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata");
-    if (!handle) return;
-
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "ComponentMetadata plugin")) {
+        return;
+    }
 
     mavsdk_component_metadata_request_autopilot_component(
-        reinterpret_cast<mavsdk_component_metadata_t>(handle)    );
+        reinterpret_cast<mavsdk_component_metadata_t>(handle));
 }
 
-
-// ===== ComponentMetadata.subscribeMetadataAvailableNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_component_1metadata_ComponentMetadata_subscribeMetadataAvailableNative(
+Java_io_mavsdk_jni_plugins_component_1metadata_NativeComponentMetadata_subscribeMetadataAvailable(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ComponentMetadata plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new MetadataAvailableCallbackWrapper(env, callback);
-
-    mavsdk_component_metadata_metadata_available_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_component_metadata_subscribe_metadata_available(
-            reinterpret_cast<mavsdk_component_metadata_t>(handle),            [](const mavsdk_component_metadata_metadata_update_t value, void* user_data) {
-                auto* w = static_cast<MetadataAvailableCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_component_metadata_metadata_available_handle_t,
-        MetadataAvailableCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ComponentMetadata.unsubscribeMetadataAvailable =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_component_1metadata_ComponentMetadata_unsubscribeMetadataAvailable(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_component_metadata_metadata_available_handle_t,
-                  MetadataAvailableCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_component_metadata_unsubscribe_metadata_available(
             reinterpret_cast<mavsdk_component_metadata_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_component_metadata_metadata_update_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<MetadataAvailableCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_component_metadata_metadata_available_handle_t,
+        MetadataAvailableCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ComponentMetadata.get_metadataBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_component_1metadata_ComponentMetadata_getMetadataBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_component_1metadata_NativeComponentMetadata_unsubscribeMetadataAvailable(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ComponentMetadata plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_component_metadata_metadata_available_handle_t,
+        MetadataAvailableCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_component_metadata_unsubscribe_metadata_available(
+        reinterpret_cast<mavsdk_component_metadata_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_component_1metadata_NativeComponentMetadata_getMetadata(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jint compid,
     jint metadata_type) {
+    if (!requireHandle(env, handle, "ComponentMetadata plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata");
-    if (!handle) return {};
-
-
-    mavsdk_component_metadata_metadata_data_t ret_val{};
-    mavsdk_component_metadata_result_t result = mavsdk_component_metadata_get_metadata(
-        reinterpret_cast<mavsdk_component_metadata_t>(handle),
-        compid,
-        static_cast<mavsdk_component_metadata_metadata_type_t>(metadata_type),
-        &ret_val
-    );
-
+    mavsdk_component_metadata_metadata_data_t returnValue{};
+    mavsdk_component_metadata_result_t result =
+        mavsdk_component_metadata_get_metadata(
+            reinterpret_cast<mavsdk_component_metadata_t>(handle),
+            static_cast<uint32_t>(compid),
+            static_cast<mavsdk_component_metadata_metadata_type_t>(metadata_type),
+            &returnValue);
     if (result != MAVSDK_COMPONENT_METADATA_RESULT_SUCCESS) {
+        mavsdk_component_metadata_metadata_data_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "get_metadata failed");
         return nullptr;
     }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata$MetadataData");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, ret_val.json_metadata)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_component_metadata_metadata_data_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaMetadataData(env, returnValue);
+    mavsdk_component_metadata_metadata_data_destroy(&returnValue);
+    return javaResult;
 }
-
 
 } // extern "C"

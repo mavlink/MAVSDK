@@ -1,23 +1,19 @@
 package io.mavsdk.kotlin
 
+import io.mavsdk.jni.NativeConfiguration
+
 actual class Configuration private constructor(private val handle: Long) : AutoCloseable {
 
     actual var systemId: Int
-        get() = getSystemIdNative()
-        set(value) = setSystemIdNative(value)
+        get() = NativeConfiguration.getSystemId(handle)
+        set(value) = NativeConfiguration.setSystemId(handle, value)
 
     actual var componentId: Int
-        get() = getComponentIdNative()
-        set(value) = setComponentIdNative(value)
-
-    private external fun getSystemIdNative(): Int
-    private external fun setSystemIdNative(value: Int)
-    private external fun getComponentIdNative(): Int
-    private external fun setComponentIdNative(value: Int)
-    private external fun destroy()
+        get() = NativeConfiguration.getComponentId(handle)
+        set(value) = NativeConfiguration.setComponentId(handle, value)
 
     actual override fun close() {
-        destroy()
+        NativeConfiguration.destroy(handle)
     }
 
     actual internal fun getHandle(): Long = handle
@@ -27,14 +23,15 @@ actual class Configuration private constructor(private val handle: Long) : AutoC
             NativeLibraryLoader.loadLibrary()
         }
 
-        @JvmStatic
-        actual external fun createWithComponentType(componentType: ComponentType): Configuration
+        actual fun createWithComponentType(componentType: ComponentType): Configuration =
+            Configuration(NativeConfiguration.createWithComponentType(componentType.value))
 
-        @JvmStatic
-        actual external fun createManual(
+        actual fun createManual(
             systemId: Int,
             componentId: Int,
             alwaysSendHeartbeats: Boolean
-        ): Configuration
+        ): Configuration = Configuration(
+            NativeConfiguration.createManual(systemId, componentId, alwaysSendHeartbeats)
+        )
     }
 }

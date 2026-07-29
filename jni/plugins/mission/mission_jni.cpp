@@ -6,363 +6,801 @@
 #include "cmavsdk/plugins/mission/mission.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct MissionItemFromJava;
+struct MissionItemArrayFromJava;
+struct MissionPlanFromJava;
+struct MissionPlanArrayFromJava;
+struct MissionProgressFromJava;
+struct MissionProgressArrayFromJava;
+struct ProgressDataFromJava;
+struct ProgressDataArrayFromJava;
+struct ProgressDataOrMissionFromJava;
+struct ProgressDataOrMissionArrayFromJava;
 
+struct MissionItemFromJava {
+    mavsdk_mission_mission_item_t value{};
 
-// ===== UploadMission Callback Wrapper =====
+    MissionItemFromJava(JNIEnv* env, jobject object);
+    ~MissionItemFromJava();
+};
+
+struct MissionItemArrayFromJava {
+    std::vector<std::unique_ptr<MissionItemFromJava>> holders;
+    std::vector<mavsdk_mission_mission_item_t> values;
+
+    MissionItemArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MissionItemFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct MissionPlanFromJava {
+    mavsdk_mission_mission_plan_t value{};
+    std::unique_ptr<MissionItemArrayFromJava> mission_itemsValues;
+
+    MissionPlanFromJava(JNIEnv* env, jobject object);
+    ~MissionPlanFromJava();
+};
+
+struct MissionPlanArrayFromJava {
+    std::vector<std::unique_ptr<MissionPlanFromJava>> holders;
+    std::vector<mavsdk_mission_mission_plan_t> values;
+
+    MissionPlanArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MissionPlanFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct MissionProgressFromJava {
+    mavsdk_mission_mission_progress_t value{};
+
+    MissionProgressFromJava(JNIEnv* env, jobject object);
+    ~MissionProgressFromJava();
+};
+
+struct MissionProgressArrayFromJava {
+    std::vector<std::unique_ptr<MissionProgressFromJava>> holders;
+    std::vector<mavsdk_mission_mission_progress_t> values;
+
+    MissionProgressArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MissionProgressFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ProgressDataFromJava {
+    mavsdk_mission_progress_data_t value{};
+
+    ProgressDataFromJava(JNIEnv* env, jobject object);
+    ~ProgressDataFromJava();
+};
+
+struct ProgressDataArrayFromJava {
+    std::vector<std::unique_ptr<ProgressDataFromJava>> holders;
+    std::vector<mavsdk_mission_progress_data_t> values;
+
+    ProgressDataArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ProgressDataFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ProgressDataOrMissionFromJava {
+    mavsdk_mission_progress_data_or_mission_t value{};
+    std::unique_ptr<MissionPlanFromJava> mission_planValue;
+
+    ProgressDataOrMissionFromJava(JNIEnv* env, jobject object);
+    ~ProgressDataOrMissionFromJava();
+};
+
+struct ProgressDataOrMissionArrayFromJava {
+    std::vector<std::unique_ptr<ProgressDataOrMissionFromJava>> holders;
+    std::vector<mavsdk_mission_progress_data_or_mission_t> values;
+
+    ProgressDataOrMissionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ProgressDataOrMissionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+MissionItemFromJava::MissionItemFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID relative_altitude_mField = env->GetFieldID(
+        clazz, "relativeAltitudeM", "F");
+    value.relative_altitude_m =
+        static_cast<float>(env->GetFloatField(object, relative_altitude_mField));
+    jfieldID speed_m_sField = env->GetFieldID(
+        clazz, "speedMS", "F");
+    value.speed_m_s =
+        static_cast<float>(env->GetFloatField(object, speed_m_sField));
+    jfieldID is_fly_throughField = env->GetFieldID(
+        clazz, "isFlyThrough", "Z");
+    value.is_fly_through =
+        static_cast<bool>(env->GetBooleanField(object, is_fly_throughField));
+    jfieldID gimbal_pitch_degField = env->GetFieldID(
+        clazz, "gimbalPitchDeg", "F");
+    value.gimbal_pitch_deg =
+        static_cast<float>(env->GetFloatField(object, gimbal_pitch_degField));
+    jfieldID gimbal_yaw_degField = env->GetFieldID(
+        clazz, "gimbalYawDeg", "F");
+    value.gimbal_yaw_deg =
+        static_cast<float>(env->GetFloatField(object, gimbal_yaw_degField));
+    jfieldID camera_actionField = env->GetFieldID(
+        clazz, "cameraAction", "I");
+    value.camera_action =
+        static_cast<mavsdk_mission_mission_item_camera_action_t>(env->GetIntField(object, camera_actionField));
+    jfieldID loiter_time_sField = env->GetFieldID(
+        clazz, "loiterTimeS", "F");
+    value.loiter_time_s =
+        static_cast<float>(env->GetFloatField(object, loiter_time_sField));
+    jfieldID camera_photo_interval_sField = env->GetFieldID(
+        clazz, "cameraPhotoIntervalS", "D");
+    value.camera_photo_interval_s =
+        static_cast<double>(env->GetDoubleField(object, camera_photo_interval_sField));
+    jfieldID acceptance_radius_mField = env->GetFieldID(
+        clazz, "acceptanceRadiusM", "F");
+    value.acceptance_radius_m =
+        static_cast<float>(env->GetFloatField(object, acceptance_radius_mField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    jfieldID camera_photo_distance_mField = env->GetFieldID(
+        clazz, "cameraPhotoDistanceM", "F");
+    value.camera_photo_distance_m =
+        static_cast<float>(env->GetFloatField(object, camera_photo_distance_mField));
+    jfieldID vehicle_actionField = env->GetFieldID(
+        clazz, "vehicleAction", "I");
+    value.vehicle_action =
+        static_cast<mavsdk_mission_mission_item_vehicle_action_t>(env->GetIntField(object, vehicle_actionField));
+    env->DeleteLocalRef(clazz);
+}
+
+MissionItemFromJava::~MissionItemFromJava() = default;
+MissionPlanFromJava::MissionPlanFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID mission_itemsField = env->GetFieldID(
+        clazz, "missionItems", "[Lio/mavsdk/jni/plugins/mission/NativeMission$MissionItem;");
+    auto mission_itemsArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, mission_itemsField));
+    const jsize mission_itemsCount =
+        mission_itemsArray ? env->GetArrayLength(mission_itemsArray) : 0;
+    mission_itemsValues =
+        std::make_unique<MissionItemArrayFromJava>(
+            env, mission_itemsArray);
+    value.mission_items = mission_itemsValues->values.data();
+    value.mission_items_size =
+        static_cast<size_t>(mission_itemsCount);
+    env->DeleteLocalRef(mission_itemsArray);
+    env->DeleteLocalRef(clazz);
+}
+
+MissionPlanFromJava::~MissionPlanFromJava() = default;
+MissionProgressFromJava::MissionProgressFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID currentField = env->GetFieldID(
+        clazz, "current", "I");
+    value.current =
+        static_cast<int32_t>(env->GetIntField(object, currentField));
+    jfieldID totalField = env->GetFieldID(
+        clazz, "total", "I");
+    value.total =
+        static_cast<int32_t>(env->GetIntField(object, totalField));
+    env->DeleteLocalRef(clazz);
+}
+
+MissionProgressFromJava::~MissionProgressFromJava() = default;
+ProgressDataFromJava::ProgressDataFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID progressField = env->GetFieldID(
+        clazz, "progress", "F");
+    value.progress =
+        static_cast<float>(env->GetFloatField(object, progressField));
+    env->DeleteLocalRef(clazz);
+}
+
+ProgressDataFromJava::~ProgressDataFromJava() = default;
+ProgressDataOrMissionFromJava::ProgressDataOrMissionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID has_progressField = env->GetFieldID(
+        clazz, "hasProgress", "Z");
+    value.has_progress =
+        static_cast<bool>(env->GetBooleanField(object, has_progressField));
+    jfieldID progressField = env->GetFieldID(
+        clazz, "progress", "F");
+    value.progress =
+        static_cast<float>(env->GetFloatField(object, progressField));
+    jfieldID has_missionField = env->GetFieldID(
+        clazz, "hasMission", "Z");
+    value.has_mission =
+        static_cast<bool>(env->GetBooleanField(object, has_missionField));
+    jfieldID mission_planField = env->GetFieldID(
+        clazz, "missionPlan", "Lio/mavsdk/jni/plugins/mission/NativeMission$MissionPlan;");
+    jobject mission_planObject =
+        env->GetObjectField(object, mission_planField);
+    mission_planValue =
+        std::make_unique<MissionPlanFromJava>(
+            env, mission_planObject);
+    value.mission_plan = mission_planValue->value;
+    env->DeleteLocalRef(mission_planObject);
+    env->DeleteLocalRef(clazz);
+}
+
+ProgressDataOrMissionFromJava::~ProgressDataOrMissionFromJava() = default;
+
+jobject toJavaMissionItem(
+    JNIEnv* env, const mavsdk_mission_mission_item_t& value);
+jobjectArray toJavaMissionItemArray(
+    JNIEnv* env,
+    const mavsdk_mission_mission_item_t* values,
+    size_t count);
+jobject toJavaMissionPlan(
+    JNIEnv* env, const mavsdk_mission_mission_plan_t& value);
+jobjectArray toJavaMissionPlanArray(
+    JNIEnv* env,
+    const mavsdk_mission_mission_plan_t* values,
+    size_t count);
+jobject toJavaMissionProgress(
+    JNIEnv* env, const mavsdk_mission_mission_progress_t& value);
+jobjectArray toJavaMissionProgressArray(
+    JNIEnv* env,
+    const mavsdk_mission_mission_progress_t* values,
+    size_t count);
+jobject toJavaProgressData(
+    JNIEnv* env, const mavsdk_mission_progress_data_t& value);
+jobjectArray toJavaProgressDataArray(
+    JNIEnv* env,
+    const mavsdk_mission_progress_data_t* values,
+    size_t count);
+jobject toJavaProgressDataOrMission(
+    JNIEnv* env, const mavsdk_mission_progress_data_or_mission_t& value);
+jobjectArray toJavaProgressDataOrMissionArray(
+    JNIEnv* env,
+    const mavsdk_mission_progress_data_or_mission_t* values,
+    size_t count);
+
+jobject toJavaMissionItem(
+    JNIEnv* env, const mavsdk_mission_mission_item_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$MissionItem");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDFFZFFIFDFFFI)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.relative_altitude_m)
+        , static_cast<jfloat>(value.speed_m_s)
+        , static_cast<jboolean>(value.is_fly_through)
+        , static_cast<jfloat>(value.gimbal_pitch_deg)
+        , static_cast<jfloat>(value.gimbal_yaw_deg)
+        , static_cast<jint>(value.camera_action)
+        , static_cast<jfloat>(value.loiter_time_s)
+        , static_cast<jdouble>(value.camera_photo_interval_s)
+        , static_cast<jfloat>(value.acceptance_radius_m)
+        , static_cast<jfloat>(value.yaw_deg)
+        , static_cast<jfloat>(value.camera_photo_distance_m)
+        , static_cast<jint>(value.vehicle_action)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaMissionItemArray(
+    JNIEnv* env,
+    const mavsdk_mission_mission_item_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$MissionItem");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMissionItem(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaMissionPlan(
+    JNIEnv* env, const mavsdk_mission_mission_plan_t& value) {
+    jobjectArray mission_itemsValue =
+        toJavaMissionItemArray(
+            env, value.mission_items, value.mission_items_size);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$MissionPlan");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/mission/NativeMission$MissionItem;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , mission_itemsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(mission_itemsValue);
+    return result;
+}
+
+jobjectArray toJavaMissionPlanArray(
+    JNIEnv* env,
+    const mavsdk_mission_mission_plan_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$MissionPlan");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMissionPlan(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaMissionProgress(
+    JNIEnv* env, const mavsdk_mission_mission_progress_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$MissionProgress");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(II)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.current)
+        , static_cast<jint>(value.total)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaMissionProgressArray(
+    JNIEnv* env,
+    const mavsdk_mission_mission_progress_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$MissionProgress");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMissionProgress(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaProgressData(
+    JNIEnv* env, const mavsdk_mission_progress_data_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$ProgressData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.progress)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaProgressDataArray(
+    JNIEnv* env,
+    const mavsdk_mission_progress_data_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$ProgressData");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaProgressData(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaProgressDataOrMission(
+    JNIEnv* env, const mavsdk_mission_progress_data_or_mission_t& value) {
+    jobject mission_planValue =
+        toJavaMissionPlan(env, value.mission_plan);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$ProgressDataOrMission");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZFZLio/mavsdk/jni/plugins/mission/NativeMission$MissionPlan;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.has_progress)
+        , static_cast<jfloat>(value.progress)
+        , static_cast<jboolean>(value.has_mission)
+        , mission_planValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(mission_planValue);
+    return result;
+}
+
+jobjectArray toJavaProgressDataOrMissionArray(
+    JNIEnv* env,
+    const mavsdk_mission_progress_data_or_mission_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission/NativeMission$ProgressDataOrMission");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaProgressDataOrMission(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct UploadMissionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    UploadMissionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    UploadMissionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_result_t result) const {
+    void operator()(
+        const mavsdk_mission_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== UploadMissionWithProgress Callback Wrapper =====
 struct UploadMissionWithProgressCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    UploadMissionWithProgressCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    UploadMissionWithProgressCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/mission/Mission$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/mission/NativeMission$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_result_t result, const mavsdk_mission_progress_data_t progress_data) const {
+    void operator()(
+        const mavsdk_mission_result_t result,        const mavsdk_mission_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(F)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(progress_data.progress)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== DownloadMission Callback Wrapper =====
 struct DownloadMissionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    DownloadMissionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    DownloadMissionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/mission/Mission$MissionPlan;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/mission/NativeMission$MissionPlan;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_result_t result, const mavsdk_mission_mission_plan_t mission_plan) const {
+    void operator()(
+        const mavsdk_mission_result_t result,        const mavsdk_mission_mission_plan_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass arrayListClass_MissionPlan = env->FindClass("java/util/ArrayList");
-        jmethodID arrayListCtor_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "<init>", "()V");
-        jmethodID arrayListAdd_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionPlan, arrayListCtor_MissionPlan);
-        {
-            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");
-            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(DDFFZFFIFDFFFI)V");
-            for (size_t i = 0; i < mission_plan.mission_items_size; i++) {
-                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jdouble>(mission_plan.mission_items[i].latitude_deg)                    , static_cast<jdouble>(mission_plan.mission_items[i].longitude_deg)                    , static_cast<jfloat>(mission_plan.mission_items[i].relative_altitude_m)                    , static_cast<jfloat>(mission_plan.mission_items[i].speed_m_s)                    , static_cast<jboolean>(mission_plan.mission_items[i].is_fly_through)                    , static_cast<jfloat>(mission_plan.mission_items[i].gimbal_pitch_deg)                    , static_cast<jfloat>(mission_plan.mission_items[i].gimbal_yaw_deg)                    , static_cast<jint>(mission_plan.mission_items[i].camera_action)                    , static_cast<jfloat>(mission_plan.mission_items[i].loiter_time_s)                    , static_cast<jdouble>(mission_plan.mission_items[i].camera_photo_interval_s)                    , static_cast<jfloat>(mission_plan.mission_items[i].acceptance_radius_m)                    , static_cast<jfloat>(mission_plan.mission_items[i].yaw_deg)                    , static_cast<jfloat>(mission_plan.mission_items[i].camera_photo_distance_m)                    , static_cast<jint>(mission_plan.mission_items[i].vehicle_action)                );
-                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionPlan, elem);
-                env->DeleteLocalRef(elem);
-            }
-            env->DeleteLocalRef(elemClass_mission_items);
-        }env->DeleteLocalRef(arrayListClass_MissionPlan);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionPlan");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaMissionPlan(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== DownloadMissionWithProgress Callback Wrapper =====
 struct DownloadMissionWithProgressCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    DownloadMissionWithProgressCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    DownloadMissionWithProgressCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/mission/Mission$ProgressDataOrMission;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/mission/NativeMission$ProgressDataOrMission;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_result_t result, const mavsdk_mission_progress_data_or_mission_t progress_data) const {
+    void operator()(
+        const mavsdk_mission_result_t result,        const mavsdk_mission_progress_data_or_mission_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_mission_plan = nullptr;
-        {            jclass nestedClass_mission_plan = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionPlan");
-            jmethodID nestedCtor_mission_plan = env->GetMethodID(nestedClass_mission_plan, "<init>", "(Ljava/util/List;)V");
-            nestedObj_mission_plan = env->NewObject(nestedClass_mission_plan, nestedCtor_mission_plan            );
-            env->DeleteLocalRef(nestedClass_mission_plan);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$ProgressDataOrMission");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZFZLio/mavsdk/kotlin/plugins/mission/Mission$MissionPlan;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(progress_data.has_progress)            , static_cast<jfloat>(progress_data.progress)            , static_cast<jboolean>(progress_data.has_mission)            , nestedObj_mission_plan        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_mission_plan);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressDataOrMission(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StartMission Callback Wrapper =====
 struct StartMissionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StartMissionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StartMissionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_result_t result) const {
+    void operator()(
+        const mavsdk_mission_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== PauseMission Callback Wrapper =====
 struct PauseMissionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    PauseMissionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    PauseMissionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_result_t result) const {
+    void operator()(
+        const mavsdk_mission_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ClearMission Callback Wrapper =====
 struct ClearMissionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ClearMissionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ClearMissionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_result_t result) const {
+    void operator()(
+        const mavsdk_mission_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetCurrentMissionItem Callback Wrapper =====
 struct SetCurrentMissionItemCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetCurrentMissionItemCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetCurrentMissionItemCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_result_t result) const {
+    void operator()(
+        const mavsdk_mission_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== MissionProgress Callback Wrapper =====
 struct MissionProgressCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    MissionProgressCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    MissionProgressCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/mission/Mission$MissionProgress;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/mission/NativeMission$MissionProgress;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_mission_progress_t value) const {
+    void operator()(
+        const mavsdk_mission_mission_progress_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionProgress");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.current)            , static_cast<jint>(value.total)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaMissionProgress(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -370,621 +808,512 @@ struct MissionProgressCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Mission.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_mission_NativeMission_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_mission_t handle = mavsdk_mission_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Mission plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Mission.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return;
-
-    mavsdk_mission_destroy(reinterpret_cast<mavsdk_mission_t>(handle));
+Java_io_mavsdk_jni_plugins_mission_NativeMission_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return;
+    }
+    mavsdk_mission_destroy(
+        reinterpret_cast<mavsdk_mission_t>(handle));
 }
 
-
-// ===== Mission.upload_missionBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_uploadMissionBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_uploadMission(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject mission_plan) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
-
-    mavsdk_mission_mission_plan_t mission_plan_c{};    std::vector<mavsdk_mission_mission_item_t> mission_items_vec;
-    {
-        jclass paramClass_mission_plan = env->GetObjectClass(mission_plan);
-        jfieldID mission_items_fid = env->GetFieldID(paramClass_mission_plan, "missionItems", "Ljava/util/List;");
-        jobject mission_items_list = env->GetObjectField(mission_plan, mission_items_fid);
-        if (mission_items_list) {
-            jclass listClass_mission_items = env->FindClass("java/util/List");
-            jmethodID listSize_mission_items = env->GetMethodID(listClass_mission_items, "size", "()I");
-            jmethodID listGet_mission_items = env->GetMethodID(listClass_mission_items, "get", "(I)Ljava/lang/Object;");
-            jint count_mission_items = env->CallIntMethod(mission_items_list, listSize_mission_items);
-            mission_items_vec.resize(count_mission_items);
-            if (count_mission_items > 0) {
-                jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");                jfieldID fid_mission_items_latitude_deg = env->GetFieldID(elemClass_mission_items, "latitudeDeg", "D");                jfieldID fid_mission_items_longitude_deg = env->GetFieldID(elemClass_mission_items, "longitudeDeg", "D");                jfieldID fid_mission_items_relative_altitude_m = env->GetFieldID(elemClass_mission_items, "relativeAltitudeM", "F");                jfieldID fid_mission_items_speed_m_s = env->GetFieldID(elemClass_mission_items, "speedMS", "F");                jfieldID fid_mission_items_is_fly_through = env->GetFieldID(elemClass_mission_items, "isFlyThrough", "Z");                jfieldID fid_mission_items_gimbal_pitch_deg = env->GetFieldID(elemClass_mission_items, "gimbalPitchDeg", "F");                jfieldID fid_mission_items_gimbal_yaw_deg = env->GetFieldID(elemClass_mission_items, "gimbalYawDeg", "F");                jfieldID fid_mission_items_camera_action = env->GetFieldID(elemClass_mission_items, "cameraAction", "I");                jfieldID fid_mission_items_loiter_time_s = env->GetFieldID(elemClass_mission_items, "loiterTimeS", "F");                jfieldID fid_mission_items_camera_photo_interval_s = env->GetFieldID(elemClass_mission_items, "cameraPhotoIntervalS", "D");                jfieldID fid_mission_items_acceptance_radius_m = env->GetFieldID(elemClass_mission_items, "acceptanceRadiusM", "F");                jfieldID fid_mission_items_yaw_deg = env->GetFieldID(elemClass_mission_items, "yawDeg", "F");                jfieldID fid_mission_items_camera_photo_distance_m = env->GetFieldID(elemClass_mission_items, "cameraPhotoDistanceM", "F");                jfieldID fid_mission_items_vehicle_action = env->GetFieldID(elemClass_mission_items, "vehicleAction", "I");                for (jint i = 0; i < count_mission_items; i++) {
-                    jobject elem = env->CallObjectMethod(mission_items_list, listGet_mission_items, i);                    mission_items_vec[i].latitude_deg = env->GetDoubleField(elem, fid_mission_items_latitude_deg);                    mission_items_vec[i].longitude_deg = env->GetDoubleField(elem, fid_mission_items_longitude_deg);                    mission_items_vec[i].relative_altitude_m = env->GetFloatField(elem, fid_mission_items_relative_altitude_m);                    mission_items_vec[i].speed_m_s = env->GetFloatField(elem, fid_mission_items_speed_m_s);                    mission_items_vec[i].is_fly_through = (bool)env->GetBooleanField(elem, fid_mission_items_is_fly_through);                    mission_items_vec[i].gimbal_pitch_deg = env->GetFloatField(elem, fid_mission_items_gimbal_pitch_deg);                    mission_items_vec[i].gimbal_yaw_deg = env->GetFloatField(elem, fid_mission_items_gimbal_yaw_deg);                    mission_items_vec[i].camera_action = static_cast<mavsdk_mission_mission_item_camera_action_t>(env->GetIntField(elem, fid_mission_items_camera_action));                    mission_items_vec[i].loiter_time_s = env->GetFloatField(elem, fid_mission_items_loiter_time_s);                    mission_items_vec[i].camera_photo_interval_s = env->GetDoubleField(elem, fid_mission_items_camera_photo_interval_s);                    mission_items_vec[i].acceptance_radius_m = env->GetFloatField(elem, fid_mission_items_acceptance_radius_m);                    mission_items_vec[i].yaw_deg = env->GetFloatField(elem, fid_mission_items_yaw_deg);                    mission_items_vec[i].camera_photo_distance_m = env->GetFloatField(elem, fid_mission_items_camera_photo_distance_m);                    mission_items_vec[i].vehicle_action = static_cast<mavsdk_mission_mission_item_vehicle_action_t>(env->GetIntField(elem, fid_mission_items_vehicle_action));                    env->DeleteLocalRef(elem);
-                }
-                mission_plan_c.mission_items = mission_items_vec.data();
-                env->DeleteLocalRef(elemClass_mission_items);
-            }
-            mission_plan_c.mission_items_size = (size_t)count_mission_items;
-            env->DeleteLocalRef(listClass_mission_items);
-            env->DeleteLocalRef(mission_items_list);
-        }
-        env->DeleteLocalRef(paramClass_mission_plan);
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
     }
-    mavsdk_mission_result_t result = mavsdk_mission_upload_mission(
-        reinterpret_cast<mavsdk_mission_t>(handle),
-        mission_plan_c    );
-
+    MissionPlanFromJava
+        mission_planValue(env, mission_plan);
+    mavsdk_mission_result_t result =
+        mavsdk_mission_upload_mission(
+            reinterpret_cast<mavsdk_mission_t>(handle),
+            mission_planValue.value);
     return static_cast<jint>(result);
 }
 
-// ===== Mission.upload_missionAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_uploadMissionAsyncNative(
+Java_io_mavsdk_jni_plugins_mission_NativeMission_uploadMissionAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject mission_plan,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return;
-
-    mavsdk_mission_mission_plan_t mission_plan_c{};    std::vector<mavsdk_mission_mission_item_t> mission_items_vec;
-    {
-        jclass paramClass_mission_plan = env->GetObjectClass(mission_plan);
-        jfieldID mission_items_fid = env->GetFieldID(paramClass_mission_plan, "missionItems", "Ljava/util/List;");
-        jobject mission_items_list = env->GetObjectField(mission_plan, mission_items_fid);
-        if (mission_items_list) {
-            jclass listClass_mission_items = env->FindClass("java/util/List");
-            jmethodID listSize_mission_items = env->GetMethodID(listClass_mission_items, "size", "()I");
-            jmethodID listGet_mission_items = env->GetMethodID(listClass_mission_items, "get", "(I)Ljava/lang/Object;");
-            jint count_mission_items = env->CallIntMethod(mission_items_list, listSize_mission_items);
-            mission_items_vec.resize(count_mission_items);
-            if (count_mission_items > 0) {
-                jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");                jfieldID fid_mission_items_latitude_deg = env->GetFieldID(elemClass_mission_items, "latitudeDeg", "D");                jfieldID fid_mission_items_longitude_deg = env->GetFieldID(elemClass_mission_items, "longitudeDeg", "D");                jfieldID fid_mission_items_relative_altitude_m = env->GetFieldID(elemClass_mission_items, "relativeAltitudeM", "F");                jfieldID fid_mission_items_speed_m_s = env->GetFieldID(elemClass_mission_items, "speedMS", "F");                jfieldID fid_mission_items_is_fly_through = env->GetFieldID(elemClass_mission_items, "isFlyThrough", "Z");                jfieldID fid_mission_items_gimbal_pitch_deg = env->GetFieldID(elemClass_mission_items, "gimbalPitchDeg", "F");                jfieldID fid_mission_items_gimbal_yaw_deg = env->GetFieldID(elemClass_mission_items, "gimbalYawDeg", "F");                jfieldID fid_mission_items_camera_action = env->GetFieldID(elemClass_mission_items, "cameraAction", "I");                jfieldID fid_mission_items_loiter_time_s = env->GetFieldID(elemClass_mission_items, "loiterTimeS", "F");                jfieldID fid_mission_items_camera_photo_interval_s = env->GetFieldID(elemClass_mission_items, "cameraPhotoIntervalS", "D");                jfieldID fid_mission_items_acceptance_radius_m = env->GetFieldID(elemClass_mission_items, "acceptanceRadiusM", "F");                jfieldID fid_mission_items_yaw_deg = env->GetFieldID(elemClass_mission_items, "yawDeg", "F");                jfieldID fid_mission_items_camera_photo_distance_m = env->GetFieldID(elemClass_mission_items, "cameraPhotoDistanceM", "F");                jfieldID fid_mission_items_vehicle_action = env->GetFieldID(elemClass_mission_items, "vehicleAction", "I");                for (jint i = 0; i < count_mission_items; i++) {
-                    jobject elem = env->CallObjectMethod(mission_items_list, listGet_mission_items, i);                    mission_items_vec[i].latitude_deg = env->GetDoubleField(elem, fid_mission_items_latitude_deg);                    mission_items_vec[i].longitude_deg = env->GetDoubleField(elem, fid_mission_items_longitude_deg);                    mission_items_vec[i].relative_altitude_m = env->GetFloatField(elem, fid_mission_items_relative_altitude_m);                    mission_items_vec[i].speed_m_s = env->GetFloatField(elem, fid_mission_items_speed_m_s);                    mission_items_vec[i].is_fly_through = (bool)env->GetBooleanField(elem, fid_mission_items_is_fly_through);                    mission_items_vec[i].gimbal_pitch_deg = env->GetFloatField(elem, fid_mission_items_gimbal_pitch_deg);                    mission_items_vec[i].gimbal_yaw_deg = env->GetFloatField(elem, fid_mission_items_gimbal_yaw_deg);                    mission_items_vec[i].camera_action = static_cast<mavsdk_mission_mission_item_camera_action_t>(env->GetIntField(elem, fid_mission_items_camera_action));                    mission_items_vec[i].loiter_time_s = env->GetFloatField(elem, fid_mission_items_loiter_time_s);                    mission_items_vec[i].camera_photo_interval_s = env->GetDoubleField(elem, fid_mission_items_camera_photo_interval_s);                    mission_items_vec[i].acceptance_radius_m = env->GetFloatField(elem, fid_mission_items_acceptance_radius_m);                    mission_items_vec[i].yaw_deg = env->GetFloatField(elem, fid_mission_items_yaw_deg);                    mission_items_vec[i].camera_photo_distance_m = env->GetFloatField(elem, fid_mission_items_camera_photo_distance_m);                    mission_items_vec[i].vehicle_action = static_cast<mavsdk_mission_mission_item_vehicle_action_t>(env->GetIntField(elem, fid_mission_items_vehicle_action));                    env->DeleteLocalRef(elem);
-                }
-                mission_plan_c.mission_items = mission_items_vec.data();
-                env->DeleteLocalRef(elemClass_mission_items);
-            }
-            mission_plan_c.mission_items_size = (size_t)count_mission_items;
-            env->DeleteLocalRef(listClass_mission_items);
-            env->DeleteLocalRef(mission_items_list);
-        }
-        env->DeleteLocalRef(paramClass_mission_plan);
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return;
     }
+    MissionPlanFromJava
+        mission_planValue(env, mission_plan);
     auto* wrapper = new UploadMissionCallbackWrapper(env, callback);
-
     mavsdk_mission_upload_mission_async(
-        reinterpret_cast<mavsdk_mission_t>(handle),        mission_plan_c,        [](const mavsdk_mission_result_t result, void* user_data) {
-            auto* w = static_cast<UploadMissionCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_mission_t>(handle),
+        mission_planValue.value,
+        [](const mavsdk_mission_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<UploadMissionCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_MISSION_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Mission.uploadMissionWithProgressAsyncNative (finite stream) =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_uploadMissionWithProgressAsyncNative(
+Java_io_mavsdk_jni_plugins_mission_NativeMission_uploadMissionWithProgressAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject mission_plan,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return;
-
-    mavsdk_mission_mission_plan_t mission_plan_c{};    std::vector<mavsdk_mission_mission_item_t> mission_items_vec;
-    {
-        jclass paramClass_mission_plan = env->GetObjectClass(mission_plan);
-        jfieldID mission_items_fid = env->GetFieldID(paramClass_mission_plan, "missionItems", "Ljava/util/List;");
-        jobject mission_items_list = env->GetObjectField(mission_plan, mission_items_fid);
-        if (mission_items_list) {
-            jclass listClass_mission_items = env->FindClass("java/util/List");
-            jmethodID listSize_mission_items = env->GetMethodID(listClass_mission_items, "size", "()I");
-            jmethodID listGet_mission_items = env->GetMethodID(listClass_mission_items, "get", "(I)Ljava/lang/Object;");
-            jint count_mission_items = env->CallIntMethod(mission_items_list, listSize_mission_items);
-            mission_items_vec.resize(count_mission_items);
-            if (count_mission_items > 0) {
-                jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");                jfieldID fid_mission_items_latitude_deg = env->GetFieldID(elemClass_mission_items, "latitudeDeg", "D");                jfieldID fid_mission_items_longitude_deg = env->GetFieldID(elemClass_mission_items, "longitudeDeg", "D");                jfieldID fid_mission_items_relative_altitude_m = env->GetFieldID(elemClass_mission_items, "relativeAltitudeM", "F");                jfieldID fid_mission_items_speed_m_s = env->GetFieldID(elemClass_mission_items, "speedMS", "F");                jfieldID fid_mission_items_is_fly_through = env->GetFieldID(elemClass_mission_items, "isFlyThrough", "Z");                jfieldID fid_mission_items_gimbal_pitch_deg = env->GetFieldID(elemClass_mission_items, "gimbalPitchDeg", "F");                jfieldID fid_mission_items_gimbal_yaw_deg = env->GetFieldID(elemClass_mission_items, "gimbalYawDeg", "F");                jfieldID fid_mission_items_camera_action = env->GetFieldID(elemClass_mission_items, "cameraAction", "I");                jfieldID fid_mission_items_loiter_time_s = env->GetFieldID(elemClass_mission_items, "loiterTimeS", "F");                jfieldID fid_mission_items_camera_photo_interval_s = env->GetFieldID(elemClass_mission_items, "cameraPhotoIntervalS", "D");                jfieldID fid_mission_items_acceptance_radius_m = env->GetFieldID(elemClass_mission_items, "acceptanceRadiusM", "F");                jfieldID fid_mission_items_yaw_deg = env->GetFieldID(elemClass_mission_items, "yawDeg", "F");                jfieldID fid_mission_items_camera_photo_distance_m = env->GetFieldID(elemClass_mission_items, "cameraPhotoDistanceM", "F");                jfieldID fid_mission_items_vehicle_action = env->GetFieldID(elemClass_mission_items, "vehicleAction", "I");                for (jint i = 0; i < count_mission_items; i++) {
-                    jobject elem = env->CallObjectMethod(mission_items_list, listGet_mission_items, i);                    mission_items_vec[i].latitude_deg = env->GetDoubleField(elem, fid_mission_items_latitude_deg);                    mission_items_vec[i].longitude_deg = env->GetDoubleField(elem, fid_mission_items_longitude_deg);                    mission_items_vec[i].relative_altitude_m = env->GetFloatField(elem, fid_mission_items_relative_altitude_m);                    mission_items_vec[i].speed_m_s = env->GetFloatField(elem, fid_mission_items_speed_m_s);                    mission_items_vec[i].is_fly_through = (bool)env->GetBooleanField(elem, fid_mission_items_is_fly_through);                    mission_items_vec[i].gimbal_pitch_deg = env->GetFloatField(elem, fid_mission_items_gimbal_pitch_deg);                    mission_items_vec[i].gimbal_yaw_deg = env->GetFloatField(elem, fid_mission_items_gimbal_yaw_deg);                    mission_items_vec[i].camera_action = static_cast<mavsdk_mission_mission_item_camera_action_t>(env->GetIntField(elem, fid_mission_items_camera_action));                    mission_items_vec[i].loiter_time_s = env->GetFloatField(elem, fid_mission_items_loiter_time_s);                    mission_items_vec[i].camera_photo_interval_s = env->GetDoubleField(elem, fid_mission_items_camera_photo_interval_s);                    mission_items_vec[i].acceptance_radius_m = env->GetFloatField(elem, fid_mission_items_acceptance_radius_m);                    mission_items_vec[i].yaw_deg = env->GetFloatField(elem, fid_mission_items_yaw_deg);                    mission_items_vec[i].camera_photo_distance_m = env->GetFloatField(elem, fid_mission_items_camera_photo_distance_m);                    mission_items_vec[i].vehicle_action = static_cast<mavsdk_mission_mission_item_vehicle_action_t>(env->GetIntField(elem, fid_mission_items_vehicle_action));                    env->DeleteLocalRef(elem);
-                }
-                mission_plan_c.mission_items = mission_items_vec.data();
-                env->DeleteLocalRef(elemClass_mission_items);
-            }
-            mission_plan_c.mission_items_size = (size_t)count_mission_items;
-            env->DeleteLocalRef(listClass_mission_items);
-            env->DeleteLocalRef(mission_items_list);
-        }
-        env->DeleteLocalRef(paramClass_mission_plan);
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return;
     }
+    MissionPlanFromJava
+        mission_planValue(env, mission_plan);
     auto* wrapper = new UploadMissionWithProgressCallbackWrapper(env, callback);
-
     mavsdk_mission_upload_mission_with_progress_async(
-        reinterpret_cast<mavsdk_mission_t>(handle),        mission_plan_c,        [](const mavsdk_mission_result_t result, const mavsdk_mission_progress_data_t value, void* user_data) {
-            auto* w = static_cast<UploadMissionWithProgressCallbackWrapper*>(user_data);
-            (*w)(result, value);
+        reinterpret_cast<mavsdk_mission_t>(handle),
+        mission_planValue.value,
+        [](const mavsdk_mission_result_t result,
+           const mavsdk_mission_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<UploadMissionWithProgressCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
             if (result != MAVSDK_MISSION_RESULT_NEXT) {
-                delete w;
+                delete callbackWrapper;
             }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Mission.cancel_mission_uploadBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_cancelMissionUploadBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_cancelMissionUpload(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
-
-
-    mavsdk_mission_result_t result = mavsdk_mission_cancel_mission_upload(
-        reinterpret_cast<mavsdk_mission_t>(handle)    );
-
+    mavsdk_mission_result_t result =
+        mavsdk_mission_cancel_mission_upload(
+            reinterpret_cast<mavsdk_mission_t>(handle));
     return static_cast<jint>(result);
 }
 
-
-// ===== Mission.download_missionBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_downloadMissionBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_downloadMission(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return {};
-
-
-    mavsdk_mission_mission_plan_t ret_val{};
-    mavsdk_mission_result_t result = mavsdk_mission_download_mission(
-        reinterpret_cast<mavsdk_mission_t>(handle),
-        &ret_val
-    );
-
+    mavsdk_mission_mission_plan_t returnValue{};
+    mavsdk_mission_result_t result =
+        mavsdk_mission_download_mission(
+            reinterpret_cast<mavsdk_mission_t>(handle),
+            &returnValue);
     if (result != MAVSDK_MISSION_RESULT_SUCCESS) {
+        mavsdk_mission_mission_plan_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "download_mission failed");
         return nullptr;
     }
-
-        jclass arrayListClass_MissionPlan = env->FindClass("java/util/ArrayList");
-        jmethodID arrayListCtor_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "<init>", "()V");
-        jmethodID arrayListAdd_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionPlan, arrayListCtor_MissionPlan);
-        {
-            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");
-            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(DDFFZFFIFDFFFI)V");
-            for (size_t i = 0; i < ret_val.mission_items_size; i++) {
-                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jdouble>(ret_val.mission_items[i].latitude_deg)                    , static_cast<jdouble>(ret_val.mission_items[i].longitude_deg)                    , static_cast<jfloat>(ret_val.mission_items[i].relative_altitude_m)                    , static_cast<jfloat>(ret_val.mission_items[i].speed_m_s)                    , static_cast<jboolean>(ret_val.mission_items[i].is_fly_through)                    , static_cast<jfloat>(ret_val.mission_items[i].gimbal_pitch_deg)                    , static_cast<jfloat>(ret_val.mission_items[i].gimbal_yaw_deg)                    , static_cast<jint>(ret_val.mission_items[i].camera_action)                    , static_cast<jfloat>(ret_val.mission_items[i].loiter_time_s)                    , static_cast<jdouble>(ret_val.mission_items[i].camera_photo_interval_s)                    , static_cast<jfloat>(ret_val.mission_items[i].acceptance_radius_m)                    , static_cast<jfloat>(ret_val.mission_items[i].yaw_deg)                    , static_cast<jfloat>(ret_val.mission_items[i].camera_photo_distance_m)                    , static_cast<jint>(ret_val.mission_items[i].vehicle_action)                );
-                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionPlan, elem);
-                env->DeleteLocalRef(elem);
-            }
-            env->DeleteLocalRef(elemClass_mission_items);
-        }env->DeleteLocalRef(arrayListClass_MissionPlan);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionPlan");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);
-    mavsdk_mission_mission_plan_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaMissionPlan(env, returnValue);
+    mavsdk_mission_mission_plan_destroy(&returnValue);
+    return javaResult;
 }
 
-// ===== Mission.download_missionAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_downloadMissionAsyncNative(
+Java_io_mavsdk_jni_plugins_mission_NativeMission_downloadMissionAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new DownloadMissionCallbackWrapper(env, callback);
-
     mavsdk_mission_download_mission_async(
-        reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, const mavsdk_mission_mission_plan_t value, void* user_data) {
-            auto* w = static_cast<DownloadMissionCallbackWrapper*>(user_data);
-            (*w)(result, value);
-            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
-        },
-        wrapper
-    );
-}
-
-
-// ===== Mission.downloadMissionWithProgressAsyncNative (finite stream) =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_downloadMissionWithProgressAsyncNative(
-    JNIEnv* env,
-    jobject obj,
-    jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return;
-
-
-    auto* wrapper = new DownloadMissionWithProgressCallbackWrapper(env, callback);
-
-    mavsdk_mission_download_mission_with_progress_async(
-        reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, const mavsdk_mission_progress_data_or_mission_t value, void* user_data) {
-            auto* w = static_cast<DownloadMissionWithProgressCallbackWrapper*>(user_data);
-            (*w)(result, value);
+        reinterpret_cast<mavsdk_mission_t>(handle),
+        [](const mavsdk_mission_result_t result,
+           const mavsdk_mission_mission_plan_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<DownloadMissionCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
             if (result != MAVSDK_MISSION_RESULT_NEXT) {
-                delete w;
+                delete callbackWrapper;
             }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Mission.cancel_mission_downloadBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_cancelMissionDownloadBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
-
-
-    mavsdk_mission_result_t result = mavsdk_mission_cancel_mission_download(
-        reinterpret_cast<mavsdk_mission_t>(handle)    );
-
-    return static_cast<jint>(result);
-}
-
-
-// ===== Mission.start_missionBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_startMissionBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
-
-
-    mavsdk_mission_result_t result = mavsdk_mission_start_mission(
-        reinterpret_cast<mavsdk_mission_t>(handle)    );
-
-    return static_cast<jint>(result);
-}
-
-// ===== Mission.start_missionAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_startMissionAsyncNative(
+Java_io_mavsdk_jni_plugins_mission_NativeMission_downloadMissionWithProgressAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return;
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return;
+    auto* wrapper = new DownloadMissionWithProgressCallbackWrapper(env, callback);
+    mavsdk_mission_download_mission_with_progress_async(
+        reinterpret_cast<mavsdk_mission_t>(handle),
+        [](const mavsdk_mission_result_t result,
+           const mavsdk_mission_progress_data_or_mission_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<DownloadMissionWithProgressCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            if (result != MAVSDK_MISSION_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
+        },
+        wrapper);
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_cancelMissionDownload(
+    JNIEnv* env,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
+
+    mavsdk_mission_result_t result =
+        mavsdk_mission_cancel_mission_download(
+            reinterpret_cast<mavsdk_mission_t>(handle));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_startMission(
+    JNIEnv* env,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
+
+    mavsdk_mission_result_t result =
+        mavsdk_mission_start_mission(
+            reinterpret_cast<mavsdk_mission_t>(handle));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_mission_NativeMission_startMissionAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new StartMissionCallbackWrapper(env, callback);
-
     mavsdk_mission_start_mission_async(
-        reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, void* user_data) {
-            auto* w = static_cast<StartMissionCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_mission_t>(handle),
+        [](const mavsdk_mission_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<StartMissionCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_MISSION_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Mission.pause_missionBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_pauseMissionBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_pauseMission(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
-
-
-    mavsdk_mission_result_t result = mavsdk_mission_pause_mission(
-        reinterpret_cast<mavsdk_mission_t>(handle)    );
-
+    mavsdk_mission_result_t result =
+        mavsdk_mission_pause_mission(
+            reinterpret_cast<mavsdk_mission_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Mission.pause_missionAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_pauseMissionAsyncNative(
+Java_io_mavsdk_jni_plugins_mission_NativeMission_pauseMissionAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new PauseMissionCallbackWrapper(env, callback);
-
     mavsdk_mission_pause_mission_async(
-        reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, void* user_data) {
-            auto* w = static_cast<PauseMissionCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_mission_t>(handle),
+        [](const mavsdk_mission_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<PauseMissionCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_MISSION_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Mission.clear_missionBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_clearMissionBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_clearMission(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
-
-
-    mavsdk_mission_result_t result = mavsdk_mission_clear_mission(
-        reinterpret_cast<mavsdk_mission_t>(handle)    );
-
+    mavsdk_mission_result_t result =
+        mavsdk_mission_clear_mission(
+            reinterpret_cast<mavsdk_mission_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Mission.clear_missionAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_clearMissionAsyncNative(
+Java_io_mavsdk_jni_plugins_mission_NativeMission_clearMissionAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new ClearMissionCallbackWrapper(env, callback);
-
     mavsdk_mission_clear_mission_async(
-        reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, void* user_data) {
-            auto* w = static_cast<ClearMissionCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_mission_t>(handle),
+        [](const mavsdk_mission_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<ClearMissionCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_MISSION_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Mission.set_current_mission_itemBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_setCurrentMissionItemBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_setCurrentMissionItem(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint index) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
-
-
-    mavsdk_mission_result_t result = mavsdk_mission_set_current_mission_item(
-        reinterpret_cast<mavsdk_mission_t>(handle),
-        index    );
-
+    mavsdk_mission_result_t result =
+        mavsdk_mission_set_current_mission_item(
+            reinterpret_cast<mavsdk_mission_t>(handle),
+            static_cast<int32_t>(index));
     return static_cast<jint>(result);
 }
 
-// ===== Mission.set_current_mission_itemAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_setCurrentMissionItemAsyncNative(
+Java_io_mavsdk_jni_plugins_mission_NativeMission_setCurrentMissionItemAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint index,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetCurrentMissionItemCallbackWrapper(env, callback);
-
     mavsdk_mission_set_current_mission_item_async(
-        reinterpret_cast<mavsdk_mission_t>(handle),        index,        [](const mavsdk_mission_result_t result, void* user_data) {
-            auto* w = static_cast<SetCurrentMissionItemCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_mission_t>(handle),
+        static_cast<int32_t>(index),
+        [](const mavsdk_mission_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetCurrentMissionItemCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_MISSION_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Mission.is_mission_finishedBlocking =====
-JNIEXPORT jboolean JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_isMissionFinishedBlocking(
+JNIEXPORT
+jboolean
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_isMissionFinished(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return {};
-
-
-    bool ret_val{};
-    mavsdk_mission_result_t result = mavsdk_mission_is_mission_finished(
-        reinterpret_cast<mavsdk_mission_t>(handle),
-        &ret_val
-    );
-
+    bool returnValue{};
+    mavsdk_mission_result_t result =
+        mavsdk_mission_is_mission_finished(
+            reinterpret_cast<mavsdk_mission_t>(handle),
+            &returnValue);
     if (result != MAVSDK_MISSION_RESULT_SUCCESS) {
         throwMavsdkError(env, "OperationError", "is_mission_finished failed");
         return {};
     }
-
-    return static_cast<jboolean>(ret_val);
+    return static_cast<jboolean>(returnValue);
 }
 
-
-// ===== Mission.mission_progressBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_missionProgressBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_missionProgress(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return {};
-
-
-    mavsdk_mission_mission_progress_t ret_val{};
-    mavsdk_mission_mission_progress(
-        reinterpret_cast<mavsdk_mission_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionProgress");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.current)            , static_cast<jint>(ret_val.total)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_mission_mission_progress_destroy(&ret_val);
-    return retObj;
+    mavsdk_mission_mission_progress_t returnValue{};
+        mavsdk_mission_mission_progress(
+            reinterpret_cast<mavsdk_mission_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaMissionProgress(env, returnValue);
+    mavsdk_mission_mission_progress_destroy(&returnValue);
+    return javaResult;
 }
 
-// ===== Mission.subscribeMissionProgressNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_subscribeMissionProgressNative(
+Java_io_mavsdk_jni_plugins_mission_NativeMission_subscribeMissionProgress(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Mission plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new MissionProgressCallbackWrapper(env, callback);
-
-    mavsdk_mission_mission_progress_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_mission_subscribe_mission_progress(
-            reinterpret_cast<mavsdk_mission_t>(handle),            [](const mavsdk_mission_mission_progress_t value, void* user_data) {
-                auto* w = static_cast<MissionProgressCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_mission_mission_progress_handle_t,
-        MissionProgressCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Mission.unsubscribeMissionProgress =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_unsubscribeMissionProgress(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_mission_mission_progress_handle_t,
-                  MissionProgressCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_mission_unsubscribe_mission_progress(
             reinterpret_cast<mavsdk_mission_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_mission_mission_progress_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<MissionProgressCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_mission_mission_progress_handle_t,
+        MissionProgressCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== Mission.get_return_to_launch_after_missionBlocking =====
-JNIEXPORT jboolean JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_getReturnToLaunchAfterMissionBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_mission_NativeMission_unsubscribeMissionProgress(
     JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return {};
-
-
-    bool ret_val{};
-    mavsdk_mission_result_t result = mavsdk_mission_get_return_to_launch_after_mission(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Mission plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_mission_mission_progress_handle_t,
+        MissionProgressCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_mission_unsubscribe_mission_progress(
         reinterpret_cast<mavsdk_mission_t>(handle),
-        &ret_val
-    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jboolean
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_getReturnToLaunchAfterMission(
+    JNIEnv* env,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
+
+    bool returnValue{};
+    mavsdk_mission_result_t result =
+        mavsdk_mission_get_return_to_launch_after_mission(
+            reinterpret_cast<mavsdk_mission_t>(handle),
+            &returnValue);
     if (result != MAVSDK_MISSION_RESULT_SUCCESS) {
         throwMavsdkError(env, "OperationError", "get_return_to_launch_after_mission failed");
         return {};
     }
-
-    return static_cast<jboolean>(ret_val);
+    return static_cast<jboolean>(returnValue);
 }
 
-
-// ===== Mission.set_return_to_launch_after_missionBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_Mission_setReturnToLaunchAfterMissionBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_mission_NativeMission_setReturnToLaunchAfterMission(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jboolean enable) {
+    if (!requireHandle(env, handle, "Mission plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
-    if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
-
-
-    mavsdk_mission_result_t result = mavsdk_mission_set_return_to_launch_after_mission(
-        reinterpret_cast<mavsdk_mission_t>(handle),
-        enable    );
-
+    mavsdk_mission_result_t result =
+        mavsdk_mission_set_return_to_launch_after_mission(
+            reinterpret_cast<mavsdk_mission_t>(handle),
+            static_cast<bool>(enable));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

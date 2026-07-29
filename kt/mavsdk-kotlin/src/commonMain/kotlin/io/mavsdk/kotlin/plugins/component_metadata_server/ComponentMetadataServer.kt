@@ -6,41 +6,49 @@ package io.mavsdk.kotlin.plugins.component_metadata_server
 
 import io.mavsdk.kotlin.Mavsdk
 
-
-class ComponentMetadataServer internal constructor(private val handle: Long) : AutoCloseable {
+class ComponentMetadataServer internal constructor(
+    private val native: ComponentMetadataServerNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class MetadataType(val value: Int) {
         PARAMETER(0),
         EVENTS(1),
         ACTUATORS(2),
         ;
+
         companion object {
-            fun fromValue(v: Int): MetadataType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): MetadataType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
     data class Metadata(
-        val type: Int,
+        val type: MetadataType,
         val jsonMetadata: String,
     )
 
-    fun setMetadata() {
-        setMetadataBlocking()
+    fun setMetadata(metadata: List<Metadata>) {
+        native.setMetadata(metadata)
     }
 
-
-    private external fun setMetadataBlocking()
-    private external fun destroy()
-
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): ComponentMetadataServer {
-            val handle = createNative(mavsdk.serverComponentHandle(instance))
-            return ComponentMetadataServer(handle)
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(mavsdk: Mavsdk, instance: Int = 1): ComponentMetadataServer =
+            ComponentMetadataServer(
+                createComponentMetadataServerNative(mavsdk.serverComponentHandle(instance))
+            )
     }
 }
+
+internal interface ComponentMetadataServerNative {
+    fun setMetadata(metadata: List<ComponentMetadataServer.Metadata>)
+    fun destroy()
+}
+
+internal expect fun createComponentMetadataServerNative(systemHandle: Long): ComponentMetadataServerNative

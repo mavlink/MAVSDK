@@ -6,8 +6,10 @@ package io.mavsdk.kotlin.plugins.ftp_server
 
 import io.mavsdk.kotlin.Mavsdk
 
-
-class FtpServer internal constructor(private val handle: Long) : AutoCloseable {
+class FtpServer internal constructor(
+    private val native: FtpServerNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -15,20 +17,20 @@ class FtpServer internal constructor(private val handle: Long) : AutoCloseable {
         DOES_NOT_EXIST(2),
         BUSY(3),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
     fun setRootDir(path: String): Result =
-        Result.fromValue(setRootDirBlocking(path))
-
-
-    private external fun setRootDirBlocking(path: String): Int
-    private external fun destroy()
+        Result.fromValue(native.setRootDir(path))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class FtpServerException(
@@ -37,10 +39,16 @@ class FtpServer internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): FtpServer {
-            val handle = createNative(mavsdk.serverComponentHandle(instance))
-            return FtpServer(handle)
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(mavsdk: Mavsdk, instance: Int = 1): FtpServer =
+            FtpServer(
+                createFtpServerNative(mavsdk.serverComponentHandle(instance))
+            )
     }
 }
+
+internal interface FtpServerNative {
+    fun setRootDir(path: String): Int
+    fun destroy()
+}
+
+internal expect fun createFtpServerNative(systemHandle: Long): FtpServerNative

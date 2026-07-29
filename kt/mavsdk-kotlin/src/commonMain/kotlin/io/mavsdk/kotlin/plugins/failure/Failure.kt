@@ -6,8 +6,10 @@ package io.mavsdk.kotlin.plugins.failure
 
 import io.mavsdk.kotlin.System
 
-
-class Failure internal constructor(private val handle: Long) : AutoCloseable {
+class Failure internal constructor(
+    private val native: FailureNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -19,8 +21,10 @@ class Failure internal constructor(private val handle: Long) : AutoCloseable {
         DISABLED(6),
         TIMEOUT(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -41,8 +45,10 @@ class Failure internal constructor(private val handle: Long) : AutoCloseable {
         SYSTEM_RC_SIGNAL(13),
         SYSTEM_MAVLINK_SIGNAL(14),
         ;
+
         companion object {
-            fun fromValue(v: Int): FailureUnit = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): FailureUnit =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -56,20 +62,20 @@ class Failure internal constructor(private val handle: Long) : AutoCloseable {
         DELAYED(6),
         INTERMITTENT(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): FailureType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): FailureType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
     fun inject(failureUnit: FailureUnit, failureType: FailureType, instance: Int): Result =
-        Result.fromValue(injectBlocking(failureUnit.value, failureType.value, instance))
-
-
-    private external fun injectBlocking(failureUnit: Int, failureType: Int, instance: Int): Int
-    private external fun destroy()
+        Result.fromValue(native.inject(failureUnit, failureType, instance))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class FailureException(
@@ -78,10 +84,16 @@ class Failure internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Failure {
-            val handle = createNative(system.getHandle())
-            return Failure(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Failure =
+            Failure(
+                createFailureNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface FailureNative {
+    fun inject(failureUnit: Failure.FailureUnit, failureType: Failure.FailureType, instance: Int): Int
+    fun destroy()
+}
+
+internal expect fun createFailureNative(systemHandle: Long): FailureNative

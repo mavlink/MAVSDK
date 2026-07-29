@@ -6,45 +6,51 @@
 #include "cmavsdk/plugins/shell/shell.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
 
 
-// ===== Receive Callback Wrapper =====
+
+
+
 struct ReceiveCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ReceiveCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ReceiveCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Ljava/lang/String;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const char* value) const {
+    void operator()(
+        const char* value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jstring jval = env->NewStringUTF(value ? value : "");
-        env->CallVoidMethod(callback.get(), invokeMethod, jval);
-        env->DeleteLocalRef(jval);
-
+        jstring javaValue = toJavaString(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -52,119 +58,100 @@ struct ReceiveCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Shell.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_shell_Shell_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_shell_NativeShell_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_shell_t handle = mavsdk_shell_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Shell plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Shell.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_shell_Shell_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/shell/Shell");
-    if (!handle) return;
-
-    mavsdk_shell_destroy(reinterpret_cast<mavsdk_shell_t>(handle));
+Java_io_mavsdk_jni_plugins_shell_NativeShell_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Shell plugin")) {
+        return;
+    }
+    mavsdk_shell_destroy(
+        reinterpret_cast<mavsdk_shell_t>(handle));
 }
 
-
-// ===== Shell.sendBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_shell_Shell_sendBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_shell_NativeShell_send(
     JNIEnv* env,
-    jobject obj,
-    jstring command) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/shell/Shell");
-    if (!handle) return MAVSDK_SHELL_RESULT_UNKNOWN;
-
-    JStringHolder command_holder(env, command);
-
-    mavsdk_shell_result_t result = mavsdk_shell_send(
-        reinterpret_cast<mavsdk_shell_t>(handle),
-        const_cast<char*>(command_holder.c_str())    );
-
+    jclass,
+    jlong handle,
+    jobject command) {
+    if (!requireHandle(env, handle, "Shell plugin")) {
+        return {};
+    }
+    JStringHolder commandHolder(
+        env, static_cast<jstring>(command));
+    mavsdk_shell_result_t result =
+        mavsdk_shell_send(
+            reinterpret_cast<mavsdk_shell_t>(handle),
+            const_cast<char*>(commandHolder.c_str()));
     return static_cast<jint>(result);
 }
 
-
-// ===== Shell.subscribeReceiveNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_shell_Shell_subscribeReceiveNative(
+Java_io_mavsdk_jni_plugins_shell_NativeShell_subscribeReceive(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/shell/Shell");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Shell plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ReceiveCallbackWrapper(env, callback);
-
-    mavsdk_shell_receive_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_shell_subscribe_receive(
-            reinterpret_cast<mavsdk_shell_t>(handle),            [](const char* value, void* user_data) {
-                auto* w = static_cast<ReceiveCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_shell_receive_handle_t,
-        ReceiveCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Shell.unsubscribeReceive =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_shell_Shell_unsubscribeReceive(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/shell/Shell");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_shell_receive_handle_t,
-                  ReceiveCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_shell_unsubscribe_receive(
             reinterpret_cast<mavsdk_shell_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const char* value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ReceiveCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_shell_receive_handle_t,
+        ReceiveCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_shell_NativeShell_unsubscribeReceive(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Shell plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_shell_receive_handle_t,
+        ReceiveCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_shell_unsubscribe_receive(
+        reinterpret_cast<mavsdk_shell_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
 } // extern "C"

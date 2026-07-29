@@ -6,78 +6,80 @@
 #include "cmavsdk/plugins/manual_control/manual_control.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
 
 
-// ===== StartPositionControl Callback Wrapper =====
+
+
+
 struct StartPositionControlCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StartPositionControlCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StartPositionControlCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_manual_control_result_t result) const {
+    void operator()(
+        const mavsdk_manual_control_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StartAltitudeControl Callback Wrapper =====
 struct StartAltitudeControlCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StartAltitudeControlCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StartAltitudeControlCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_manual_control_result_t result) const {
+    void operator()(
+        const mavsdk_manual_control_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -85,148 +87,133 @@ struct StartAltitudeControlCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== ManualControl.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_manual_1control_ManualControl_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_manual_1control_NativeManualControl_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_manual_control_t handle = mavsdk_manual_control_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create ManualControl plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== ManualControl.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_manual_1control_ManualControl_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/manual_control/ManualControl");
-    if (!handle) return;
-
-    mavsdk_manual_control_destroy(reinterpret_cast<mavsdk_manual_control_t>(handle));
+Java_io_mavsdk_jni_plugins_manual_1control_NativeManualControl_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "ManualControl plugin")) {
+        return;
+    }
+    mavsdk_manual_control_destroy(
+        reinterpret_cast<mavsdk_manual_control_t>(handle));
 }
 
-
-// ===== ManualControl.start_position_controlBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_manual_1control_ManualControl_startPositionControlBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_manual_1control_NativeManualControl_startPositionControl(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "ManualControl plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/manual_control/ManualControl");
-    if (!handle) return MAVSDK_MANUAL_CONTROL_RESULT_UNKNOWN;
-
-
-    mavsdk_manual_control_result_t result = mavsdk_manual_control_start_position_control(
-        reinterpret_cast<mavsdk_manual_control_t>(handle)    );
-
+    mavsdk_manual_control_result_t result =
+        mavsdk_manual_control_start_position_control(
+            reinterpret_cast<mavsdk_manual_control_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== ManualControl.start_position_controlAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_manual_1control_ManualControl_startPositionControlAsyncNative(
+Java_io_mavsdk_jni_plugins_manual_1control_NativeManualControl_startPositionControlAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/manual_control/ManualControl");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "ManualControl plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new StartPositionControlCallbackWrapper(env, callback);
-
     mavsdk_manual_control_start_position_control_async(
-        reinterpret_cast<mavsdk_manual_control_t>(handle),        [](const mavsdk_manual_control_result_t result, void* user_data) {
-            auto* w = static_cast<StartPositionControlCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_manual_control_t>(handle),
+        [](const mavsdk_manual_control_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<StartPositionControlCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== ManualControl.start_altitude_controlBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_manual_1control_ManualControl_startAltitudeControlBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_manual_1control_NativeManualControl_startAltitudeControl(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "ManualControl plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/manual_control/ManualControl");
-    if (!handle) return MAVSDK_MANUAL_CONTROL_RESULT_UNKNOWN;
-
-
-    mavsdk_manual_control_result_t result = mavsdk_manual_control_start_altitude_control(
-        reinterpret_cast<mavsdk_manual_control_t>(handle)    );
-
+    mavsdk_manual_control_result_t result =
+        mavsdk_manual_control_start_altitude_control(
+            reinterpret_cast<mavsdk_manual_control_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== ManualControl.start_altitude_controlAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_manual_1control_ManualControl_startAltitudeControlAsyncNative(
+Java_io_mavsdk_jni_plugins_manual_1control_NativeManualControl_startAltitudeControlAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/manual_control/ManualControl");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "ManualControl plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new StartAltitudeControlCallbackWrapper(env, callback);
-
     mavsdk_manual_control_start_altitude_control_async(
-        reinterpret_cast<mavsdk_manual_control_t>(handle),        [](const mavsdk_manual_control_result_t result, void* user_data) {
-            auto* w = static_cast<StartAltitudeControlCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_manual_control_t>(handle),
+        [](const mavsdk_manual_control_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<StartAltitudeControlCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== ManualControl.set_manual_control_inputBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_manual_1control_ManualControl_setManualControlInputBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_manual_1control_NativeManualControl_setManualControlInput(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat x,
     jfloat y,
     jfloat z,
     jfloat r) {
+    if (!requireHandle(env, handle, "ManualControl plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/manual_control/ManualControl");
-    if (!handle) return MAVSDK_MANUAL_CONTROL_RESULT_UNKNOWN;
-
-
-    mavsdk_manual_control_result_t result = mavsdk_manual_control_set_manual_control_input(
-        reinterpret_cast<mavsdk_manual_control_t>(handle),
-        x,
-        y,
-        z,
-        r    );
-
+    mavsdk_manual_control_result_t result =
+        mavsdk_manual_control_set_manual_control_input(
+            reinterpret_cast<mavsdk_manual_control_t>(handle),
+            static_cast<float>(x),
+            static_cast<float>(y),
+            static_cast<float>(z),
+            static_cast<float>(r));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

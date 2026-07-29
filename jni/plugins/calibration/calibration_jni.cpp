@@ -6,213 +6,299 @@
 #include "cmavsdk/plugins/calibration/calibration.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct ProgressDataFromJava;
+struct ProgressDataArrayFromJava;
 
+struct ProgressDataFromJava {
+    mavsdk_calibration_progress_data_t value{};
+    std::string status_textValue;
 
-// ===== CalibrateGyro Callback Wrapper =====
+    ProgressDataFromJava(JNIEnv* env, jobject object);
+    ~ProgressDataFromJava();
+};
+
+struct ProgressDataArrayFromJava {
+    std::vector<std::unique_ptr<ProgressDataFromJava>> holders;
+    std::vector<mavsdk_calibration_progress_data_t> values;
+
+    ProgressDataArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ProgressDataFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+ProgressDataFromJava::ProgressDataFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID has_progressField = env->GetFieldID(
+        clazz, "hasProgress", "Z");
+    value.has_progress =
+        static_cast<bool>(env->GetBooleanField(object, has_progressField));
+    jfieldID progressField = env->GetFieldID(
+        clazz, "progress", "F");
+    value.progress =
+        static_cast<float>(env->GetFloatField(object, progressField));
+    jfieldID has_status_textField = env->GetFieldID(
+        clazz, "hasStatusText", "Z");
+    value.has_status_text =
+        static_cast<bool>(env->GetBooleanField(object, has_status_textField));
+    jfieldID status_textField = env->GetFieldID(
+        clazz, "statusText", "Ljava/lang/String;");
+    auto status_textString =
+        static_cast<jstring>(env->GetObjectField(object, status_textField));
+    JStringHolder status_textHolder(env, status_textString);
+    status_textValue =
+        status_textHolder.c_str() ? status_textHolder.c_str() : "";
+    value.status_text = const_cast<char*>(status_textValue.c_str());
+    env->DeleteLocalRef(status_textString);
+    env->DeleteLocalRef(clazz);
+}
+
+ProgressDataFromJava::~ProgressDataFromJava() = default;
+
+jobject toJavaProgressData(
+    JNIEnv* env, const mavsdk_calibration_progress_data_t& value);
+jobjectArray toJavaProgressDataArray(
+    JNIEnv* env,
+    const mavsdk_calibration_progress_data_t* values,
+    size_t count);
+
+jobject toJavaProgressData(
+    JNIEnv* env, const mavsdk_calibration_progress_data_t& value) {
+    jstring status_textValue =
+        toJavaString(env, value.status_text);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZFZLjava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.has_progress)
+        , static_cast<jfloat>(value.progress)
+        , static_cast<jboolean>(value.has_status_text)
+        , status_textValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(status_textValue);
+    return result;
+}
+
+jobjectArray toJavaProgressDataArray(
+    JNIEnv* env,
+    const mavsdk_calibration_progress_data_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaProgressData(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct CalibrateGyroCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    CalibrateGyroCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    CalibrateGyroCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data) const {
+    void operator()(
+        const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZFZLjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(progress_data.has_progress)            , static_cast<jfloat>(progress_data.progress)            , static_cast<jboolean>(progress_data.has_status_text)            , toJavaString(env, progress_data.status_text)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== CalibrateAccelerometer Callback Wrapper =====
 struct CalibrateAccelerometerCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    CalibrateAccelerometerCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    CalibrateAccelerometerCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data) const {
+    void operator()(
+        const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZFZLjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(progress_data.has_progress)            , static_cast<jfloat>(progress_data.progress)            , static_cast<jboolean>(progress_data.has_status_text)            , toJavaString(env, progress_data.status_text)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== CalibrateMagnetometer Callback Wrapper =====
 struct CalibrateMagnetometerCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    CalibrateMagnetometerCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    CalibrateMagnetometerCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data) const {
+    void operator()(
+        const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZFZLjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(progress_data.has_progress)            , static_cast<jfloat>(progress_data.progress)            , static_cast<jboolean>(progress_data.has_status_text)            , toJavaString(env, progress_data.status_text)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== CalibrateLevelHorizon Callback Wrapper =====
 struct CalibrateLevelHorizonCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    CalibrateLevelHorizonCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    CalibrateLevelHorizonCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data) const {
+    void operator()(
+        const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZFZLjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(progress_data.has_progress)            , static_cast<jfloat>(progress_data.progress)            , static_cast<jboolean>(progress_data.has_status_text)            , toJavaString(env, progress_data.status_text)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== CalibrateGimbalAccelerometer Callback Wrapper =====
 struct CalibrateGimbalAccelerometerCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    CalibrateGimbalAccelerometerCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    CalibrateGimbalAccelerometerCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data) const {
+    void operator()(
+        const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/calibration/Calibration$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZFZLjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(progress_data.has_progress)            , static_cast<jfloat>(progress_data.progress)            , static_cast<jboolean>(progress_data.has_status_text)            , toJavaString(env, progress_data.status_text)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -220,190 +306,179 @@ struct CalibrateGimbalAccelerometerCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Calibration.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_calibration_Calibration_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_calibration_NativeCalibration_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_calibration_t handle = mavsdk_calibration_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Calibration plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Calibration.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_calibration_Calibration_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/calibration/Calibration");
-    if (!handle) return;
-
-    mavsdk_calibration_destroy(reinterpret_cast<mavsdk_calibration_t>(handle));
+Java_io_mavsdk_jni_plugins_calibration_NativeCalibration_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Calibration plugin")) {
+        return;
+    }
+    mavsdk_calibration_destroy(
+        reinterpret_cast<mavsdk_calibration_t>(handle));
 }
 
-
-// ===== Calibration.calibrateGyroAsyncNative (finite stream) =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_calibration_Calibration_calibrateGyroAsyncNative(
+Java_io_mavsdk_jni_plugins_calibration_NativeCalibration_calibrateGyroAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/calibration/Calibration");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Calibration plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new CalibrateGyroCallbackWrapper(env, callback);
-
     mavsdk_calibration_calibrate_gyro_async(
-        reinterpret_cast<mavsdk_calibration_t>(handle),        [](const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t value, void* user_data) {
-            auto* w = static_cast<CalibrateGyroCallbackWrapper*>(user_data);
-            (*w)(result, value);
+        reinterpret_cast<mavsdk_calibration_t>(handle),
+        [](const mavsdk_calibration_result_t result,
+           const mavsdk_calibration_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<CalibrateGyroCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
             if (result != MAVSDK_CALIBRATION_RESULT_NEXT) {
-                delete w;
+                delete callbackWrapper;
             }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Calibration.calibrateAccelerometerAsyncNative (finite stream) =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_calibration_Calibration_calibrateAccelerometerAsyncNative(
+Java_io_mavsdk_jni_plugins_calibration_NativeCalibration_calibrateAccelerometerAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/calibration/Calibration");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Calibration plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new CalibrateAccelerometerCallbackWrapper(env, callback);
-
     mavsdk_calibration_calibrate_accelerometer_async(
-        reinterpret_cast<mavsdk_calibration_t>(handle),        [](const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t value, void* user_data) {
-            auto* w = static_cast<CalibrateAccelerometerCallbackWrapper*>(user_data);
-            (*w)(result, value);
+        reinterpret_cast<mavsdk_calibration_t>(handle),
+        [](const mavsdk_calibration_result_t result,
+           const mavsdk_calibration_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<CalibrateAccelerometerCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
             if (result != MAVSDK_CALIBRATION_RESULT_NEXT) {
-                delete w;
+                delete callbackWrapper;
             }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Calibration.calibrateMagnetometerAsyncNative (finite stream) =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_calibration_Calibration_calibrateMagnetometerAsyncNative(
+Java_io_mavsdk_jni_plugins_calibration_NativeCalibration_calibrateMagnetometerAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/calibration/Calibration");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Calibration plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new CalibrateMagnetometerCallbackWrapper(env, callback);
-
     mavsdk_calibration_calibrate_magnetometer_async(
-        reinterpret_cast<mavsdk_calibration_t>(handle),        [](const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t value, void* user_data) {
-            auto* w = static_cast<CalibrateMagnetometerCallbackWrapper*>(user_data);
-            (*w)(result, value);
+        reinterpret_cast<mavsdk_calibration_t>(handle),
+        [](const mavsdk_calibration_result_t result,
+           const mavsdk_calibration_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<CalibrateMagnetometerCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
             if (result != MAVSDK_CALIBRATION_RESULT_NEXT) {
-                delete w;
+                delete callbackWrapper;
             }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Calibration.calibrateLevelHorizonAsyncNative (finite stream) =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_calibration_Calibration_calibrateLevelHorizonAsyncNative(
+Java_io_mavsdk_jni_plugins_calibration_NativeCalibration_calibrateLevelHorizonAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/calibration/Calibration");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Calibration plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new CalibrateLevelHorizonCallbackWrapper(env, callback);
-
     mavsdk_calibration_calibrate_level_horizon_async(
-        reinterpret_cast<mavsdk_calibration_t>(handle),        [](const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t value, void* user_data) {
-            auto* w = static_cast<CalibrateLevelHorizonCallbackWrapper*>(user_data);
-            (*w)(result, value);
+        reinterpret_cast<mavsdk_calibration_t>(handle),
+        [](const mavsdk_calibration_result_t result,
+           const mavsdk_calibration_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<CalibrateLevelHorizonCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
             if (result != MAVSDK_CALIBRATION_RESULT_NEXT) {
-                delete w;
+                delete callbackWrapper;
             }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Calibration.calibrateGimbalAccelerometerAsyncNative (finite stream) =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_calibration_Calibration_calibrateGimbalAccelerometerAsyncNative(
+Java_io_mavsdk_jni_plugins_calibration_NativeCalibration_calibrateGimbalAccelerometerAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/calibration/Calibration");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Calibration plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new CalibrateGimbalAccelerometerCallbackWrapper(env, callback);
-
     mavsdk_calibration_calibrate_gimbal_accelerometer_async(
-        reinterpret_cast<mavsdk_calibration_t>(handle),        [](const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t value, void* user_data) {
-            auto* w = static_cast<CalibrateGimbalAccelerometerCallbackWrapper*>(user_data);
-            (*w)(result, value);
+        reinterpret_cast<mavsdk_calibration_t>(handle),
+        [](const mavsdk_calibration_result_t result,
+           const mavsdk_calibration_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<CalibrateGimbalAccelerometerCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
             if (result != MAVSDK_CALIBRATION_RESULT_NEXT) {
-                delete w;
+                delete callbackWrapper;
             }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Calibration.cancelBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_calibration_Calibration_cancelBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_calibration_NativeCalibration_cancel(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Calibration plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/calibration/Calibration");
-    if (!handle) return MAVSDK_CALIBRATION_RESULT_UNKNOWN;
-
-
-    mavsdk_calibration_result_t result = mavsdk_calibration_cancel(
-        reinterpret_cast<mavsdk_calibration_t>(handle)    );
-
+    mavsdk_calibration_result_t result =
+        mavsdk_calibration_cancel(
+            reinterpret_cast<mavsdk_calibration_t>(handle));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

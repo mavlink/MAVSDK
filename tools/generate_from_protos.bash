@@ -64,6 +64,20 @@ main() {
     ./tools/generate_from_protos.bash
     popd
 
+    echo "------------------"
+    echo "Generating JNI"
+    echo "------------------"
+    pushd jni
+    ./tools/generate_from_protos.bash
+    popd
+
+    echo "------------------"
+    echo "Generating Kotlin"
+    echo "------------------"
+    pushd kt/mavsdk-kotlin
+    ./tools/generate_from_protos.bash
+    popd
+
     echo "All languages were generated successfully!"
 }
 

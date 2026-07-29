@@ -6,8 +6,10 @@ package io.mavsdk.kotlin.plugins.param
 
 import io.mavsdk.kotlin.System
 
-
-class Param internal constructor(private val handle: Long) : AutoCloseable {
+class Param internal constructor(
+    private val native: ParamNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -28,8 +30,10 @@ class Param internal constructor(private val handle: Long) : AutoCloseable {
         TYPE_MISMATCH(15),
         READ_FAIL(16),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -37,8 +41,10 @@ class Param internal constructor(private val handle: Long) : AutoCloseable {
         V1(0),
         EXT(1),
         ;
+
         companion object {
-            fun fromValue(v: Int): ProtocolVersion = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): ProtocolVersion =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -64,42 +70,33 @@ class Param internal constructor(private val handle: Long) : AutoCloseable {
     )
 
     fun getParamInt(name: String): Int =
-        getParamIntBlocking(name)
+        native.getParamInt(name)
 
     fun setParamInt(name: String, value: Int): Result =
-        Result.fromValue(setParamIntBlocking(name, value))
+        Result.fromValue(native.setParamInt(name, value))
 
     fun getParamFloat(name: String): Float =
-        getParamFloatBlocking(name)
+        native.getParamFloat(name)
 
     fun setParamFloat(name: String, value: Float): Result =
-        Result.fromValue(setParamFloatBlocking(name, value))
+        Result.fromValue(native.setParamFloat(name, value))
 
     fun getParamCustom(name: String): String =
-        getParamCustomBlocking(name)
+        native.getParamCustom(name)
 
     fun setParamCustom(name: String, value: String): Result =
-        Result.fromValue(setParamCustomBlocking(name, value))
+        Result.fromValue(native.setParamCustom(name, value))
 
     fun getAllParams(): AllParams =
-        getAllParamsBlocking()
+        native.getAllParams()
 
     fun selectComponent(componentId: Int, protocolVersion: ProtocolVersion): Result =
-        Result.fromValue(selectComponentBlocking(componentId, protocolVersion.value))
-
-
-    private external fun getParamIntBlocking(name: String): Int
-    private external fun setParamIntBlocking(name: String, value: Int): Int
-    private external fun getParamFloatBlocking(name: String): Float
-    private external fun setParamFloatBlocking(name: String, value: Float): Int
-    private external fun getParamCustomBlocking(name: String): String
-    private external fun setParamCustomBlocking(name: String, value: String): Int
-    private external fun getAllParamsBlocking(): AllParams
-    private external fun selectComponentBlocking(componentId: Int, protocolVersion: Int): Int
-    private external fun destroy()
+        Result.fromValue(native.selectComponent(componentId, protocolVersion))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class ParamException(
@@ -108,10 +105,23 @@ class Param internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Param {
-            val handle = createNative(system.getHandle())
-            return Param(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Param =
+            Param(
+                createParamNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface ParamNative {
+    fun getParamInt(name: String): Int
+    fun setParamInt(name: String, value: Int): Int
+    fun getParamFloat(name: String): Float
+    fun setParamFloat(name: String, value: Float): Int
+    fun getParamCustom(name: String): String
+    fun setParamCustom(name: String, value: String): Int
+    fun getAllParams(): Param.AllParams
+    fun selectComponent(componentId: Int, protocolVersion: Param.ProtocolVersion): Int
+    fun destroy()
+}
+
+internal expect fun createParamNative(systemHandle: Long): ParamNative

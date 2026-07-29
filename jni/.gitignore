@@ -1,2 +1,4 @@
 build
 libs
+__pycache__/
+*.pyc

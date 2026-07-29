@@ -6,395 +6,2963 @@
 #include "cmavsdk/plugins/telemetry_server/telemetry_server.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct PositionFromJava;
+struct PositionArrayFromJava;
+struct HeadingFromJava;
+struct HeadingArrayFromJava;
+struct QuaternionFromJava;
+struct QuaternionArrayFromJava;
+struct EulerAngleFromJava;
+struct EulerAngleArrayFromJava;
+struct AngularVelocityBodyFromJava;
+struct AngularVelocityBodyArrayFromJava;
+struct GpsInfoFromJava;
+struct GpsInfoArrayFromJava;
+struct RawGpsFromJava;
+struct RawGpsArrayFromJava;
+struct BatteryFromJava;
+struct BatteryArrayFromJava;
+struct RcStatusFromJava;
+struct RcStatusArrayFromJava;
+struct StatusTextFromJava;
+struct StatusTextArrayFromJava;
+struct ActuatorControlTargetFromJava;
+struct ActuatorControlTargetArrayFromJava;
+struct ActuatorOutputStatusFromJava;
+struct ActuatorOutputStatusArrayFromJava;
+struct CovarianceFromJava;
+struct CovarianceArrayFromJava;
+struct VelocityBodyFromJava;
+struct VelocityBodyArrayFromJava;
+struct PositionBodyFromJava;
+struct PositionBodyArrayFromJava;
+struct OdometryFromJava;
+struct OdometryArrayFromJava;
+struct DistanceSensorFromJava;
+struct DistanceSensorArrayFromJava;
+struct ScaledPressureFromJava;
+struct ScaledPressureArrayFromJava;
+struct PositionNedFromJava;
+struct PositionNedArrayFromJava;
+struct VelocityNedFromJava;
+struct VelocityNedArrayFromJava;
+struct PositionVelocityNedFromJava;
+struct PositionVelocityNedArrayFromJava;
+struct GroundTruthFromJava;
+struct GroundTruthArrayFromJava;
+struct FixedwingMetricsFromJava;
+struct FixedwingMetricsArrayFromJava;
+struct AccelerationFrdFromJava;
+struct AccelerationFrdArrayFromJava;
+struct AngularVelocityFrdFromJava;
+struct AngularVelocityFrdArrayFromJava;
+struct MagneticFieldFrdFromJava;
+struct MagneticFieldFrdArrayFromJava;
+struct ImuFromJava;
+struct ImuArrayFromJava;
 
+struct PositionFromJava {
+    mavsdk_telemetry_server_position_t value{};
+
+    PositionFromJava(JNIEnv* env, jobject object);
+    ~PositionFromJava();
+};
+
+struct PositionArrayFromJava {
+    std::vector<std::unique_ptr<PositionFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_position_t> values;
+
+    PositionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct HeadingFromJava {
+    mavsdk_telemetry_server_heading_t value{};
+
+    HeadingFromJava(JNIEnv* env, jobject object);
+    ~HeadingFromJava();
+};
+
+struct HeadingArrayFromJava {
+    std::vector<std::unique_ptr<HeadingFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_heading_t> values;
+
+    HeadingArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<HeadingFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct QuaternionFromJava {
+    mavsdk_telemetry_server_quaternion_t value{};
+
+    QuaternionFromJava(JNIEnv* env, jobject object);
+    ~QuaternionFromJava();
+};
+
+struct QuaternionArrayFromJava {
+    std::vector<std::unique_ptr<QuaternionFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_quaternion_t> values;
+
+    QuaternionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<QuaternionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct EulerAngleFromJava {
+    mavsdk_telemetry_server_euler_angle_t value{};
+
+    EulerAngleFromJava(JNIEnv* env, jobject object);
+    ~EulerAngleFromJava();
+};
+
+struct EulerAngleArrayFromJava {
+    std::vector<std::unique_ptr<EulerAngleFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_euler_angle_t> values;
+
+    EulerAngleArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<EulerAngleFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AngularVelocityBodyFromJava {
+    mavsdk_telemetry_server_angular_velocity_body_t value{};
+
+    AngularVelocityBodyFromJava(JNIEnv* env, jobject object);
+    ~AngularVelocityBodyFromJava();
+};
+
+struct AngularVelocityBodyArrayFromJava {
+    std::vector<std::unique_ptr<AngularVelocityBodyFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_angular_velocity_body_t> values;
+
+    AngularVelocityBodyArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AngularVelocityBodyFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct GpsInfoFromJava {
+    mavsdk_telemetry_server_gps_info_t value{};
+
+    GpsInfoFromJava(JNIEnv* env, jobject object);
+    ~GpsInfoFromJava();
+};
+
+struct GpsInfoArrayFromJava {
+    std::vector<std::unique_ptr<GpsInfoFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_gps_info_t> values;
+
+    GpsInfoArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<GpsInfoFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct RawGpsFromJava {
+    mavsdk_telemetry_server_raw_gps_t value{};
+
+    RawGpsFromJava(JNIEnv* env, jobject object);
+    ~RawGpsFromJava();
+};
+
+struct RawGpsArrayFromJava {
+    std::vector<std::unique_ptr<RawGpsFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_raw_gps_t> values;
+
+    RawGpsArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<RawGpsFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct BatteryFromJava {
+    mavsdk_telemetry_server_battery_t value{};
+
+    BatteryFromJava(JNIEnv* env, jobject object);
+    ~BatteryFromJava();
+};
+
+struct BatteryArrayFromJava {
+    std::vector<std::unique_ptr<BatteryFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_battery_t> values;
+
+    BatteryArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<BatteryFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct RcStatusFromJava {
+    mavsdk_telemetry_server_rc_status_t value{};
+
+    RcStatusFromJava(JNIEnv* env, jobject object);
+    ~RcStatusFromJava();
+};
+
+struct RcStatusArrayFromJava {
+    std::vector<std::unique_ptr<RcStatusFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_rc_status_t> values;
+
+    RcStatusArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<RcStatusFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct StatusTextFromJava {
+    mavsdk_telemetry_server_status_text_t value{};
+    std::string textValue;
+
+    StatusTextFromJava(JNIEnv* env, jobject object);
+    ~StatusTextFromJava();
+};
+
+struct StatusTextArrayFromJava {
+    std::vector<std::unique_ptr<StatusTextFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_status_text_t> values;
+
+    StatusTextArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<StatusTextFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ActuatorControlTargetFromJava {
+    mavsdk_telemetry_server_actuator_control_target_t value{};
+    std::vector<float> controlsValues;
+
+    ActuatorControlTargetFromJava(JNIEnv* env, jobject object);
+    ~ActuatorControlTargetFromJava();
+};
+
+struct ActuatorControlTargetArrayFromJava {
+    std::vector<std::unique_ptr<ActuatorControlTargetFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_actuator_control_target_t> values;
+
+    ActuatorControlTargetArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ActuatorControlTargetFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ActuatorOutputStatusFromJava {
+    mavsdk_telemetry_server_actuator_output_status_t value{};
+    std::vector<float> actuatorValues;
+
+    ActuatorOutputStatusFromJava(JNIEnv* env, jobject object);
+    ~ActuatorOutputStatusFromJava();
+};
+
+struct ActuatorOutputStatusArrayFromJava {
+    std::vector<std::unique_ptr<ActuatorOutputStatusFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_actuator_output_status_t> values;
+
+    ActuatorOutputStatusArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ActuatorOutputStatusFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct CovarianceFromJava {
+    mavsdk_telemetry_server_covariance_t value{};
+    std::vector<float> covariance_matrixValues;
+
+    CovarianceFromJava(JNIEnv* env, jobject object);
+    ~CovarianceFromJava();
+};
+
+struct CovarianceArrayFromJava {
+    std::vector<std::unique_ptr<CovarianceFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_covariance_t> values;
+
+    CovarianceArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<CovarianceFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct VelocityBodyFromJava {
+    mavsdk_telemetry_server_velocity_body_t value{};
+
+    VelocityBodyFromJava(JNIEnv* env, jobject object);
+    ~VelocityBodyFromJava();
+};
+
+struct VelocityBodyArrayFromJava {
+    std::vector<std::unique_ptr<VelocityBodyFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_velocity_body_t> values;
+
+    VelocityBodyArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<VelocityBodyFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionBodyFromJava {
+    mavsdk_telemetry_server_position_body_t value{};
+
+    PositionBodyFromJava(JNIEnv* env, jobject object);
+    ~PositionBodyFromJava();
+};
+
+struct PositionBodyArrayFromJava {
+    std::vector<std::unique_ptr<PositionBodyFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_position_body_t> values;
+
+    PositionBodyArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionBodyFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct OdometryFromJava {
+    mavsdk_telemetry_server_odometry_t value{};
+    std::unique_ptr<PositionBodyFromJava> position_bodyValue;
+    std::unique_ptr<QuaternionFromJava> qValue;
+    std::unique_ptr<VelocityBodyFromJava> velocity_bodyValue;
+    std::unique_ptr<AngularVelocityBodyFromJava> angular_velocity_bodyValue;
+    std::unique_ptr<CovarianceFromJava> pose_covarianceValue;
+    std::unique_ptr<CovarianceFromJava> velocity_covarianceValue;
+
+    OdometryFromJava(JNIEnv* env, jobject object);
+    ~OdometryFromJava();
+};
+
+struct OdometryArrayFromJava {
+    std::vector<std::unique_ptr<OdometryFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_odometry_t> values;
+
+    OdometryArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<OdometryFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct DistanceSensorFromJava {
+    mavsdk_telemetry_server_distance_sensor_t value{};
+
+    DistanceSensorFromJava(JNIEnv* env, jobject object);
+    ~DistanceSensorFromJava();
+};
+
+struct DistanceSensorArrayFromJava {
+    std::vector<std::unique_ptr<DistanceSensorFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_distance_sensor_t> values;
+
+    DistanceSensorArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<DistanceSensorFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ScaledPressureFromJava {
+    mavsdk_telemetry_server_scaled_pressure_t value{};
+
+    ScaledPressureFromJava(JNIEnv* env, jobject object);
+    ~ScaledPressureFromJava();
+};
+
+struct ScaledPressureArrayFromJava {
+    std::vector<std::unique_ptr<ScaledPressureFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_scaled_pressure_t> values;
+
+    ScaledPressureArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ScaledPressureFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionNedFromJava {
+    mavsdk_telemetry_server_position_ned_t value{};
+
+    PositionNedFromJava(JNIEnv* env, jobject object);
+    ~PositionNedFromJava();
+};
+
+struct PositionNedArrayFromJava {
+    std::vector<std::unique_ptr<PositionNedFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_position_ned_t> values;
+
+    PositionNedArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionNedFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct VelocityNedFromJava {
+    mavsdk_telemetry_server_velocity_ned_t value{};
+
+    VelocityNedFromJava(JNIEnv* env, jobject object);
+    ~VelocityNedFromJava();
+};
+
+struct VelocityNedArrayFromJava {
+    std::vector<std::unique_ptr<VelocityNedFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_velocity_ned_t> values;
+
+    VelocityNedArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<VelocityNedFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionVelocityNedFromJava {
+    mavsdk_telemetry_server_position_velocity_ned_t value{};
+    std::unique_ptr<PositionNedFromJava> positionValue;
+    std::unique_ptr<VelocityNedFromJava> velocityValue;
+
+    PositionVelocityNedFromJava(JNIEnv* env, jobject object);
+    ~PositionVelocityNedFromJava();
+};
+
+struct PositionVelocityNedArrayFromJava {
+    std::vector<std::unique_ptr<PositionVelocityNedFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_position_velocity_ned_t> values;
+
+    PositionVelocityNedArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionVelocityNedFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct GroundTruthFromJava {
+    mavsdk_telemetry_server_ground_truth_t value{};
+
+    GroundTruthFromJava(JNIEnv* env, jobject object);
+    ~GroundTruthFromJava();
+};
+
+struct GroundTruthArrayFromJava {
+    std::vector<std::unique_ptr<GroundTruthFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_ground_truth_t> values;
+
+    GroundTruthArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<GroundTruthFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct FixedwingMetricsFromJava {
+    mavsdk_telemetry_server_fixedwing_metrics_t value{};
+
+    FixedwingMetricsFromJava(JNIEnv* env, jobject object);
+    ~FixedwingMetricsFromJava();
+};
+
+struct FixedwingMetricsArrayFromJava {
+    std::vector<std::unique_ptr<FixedwingMetricsFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_fixedwing_metrics_t> values;
+
+    FixedwingMetricsArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<FixedwingMetricsFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AccelerationFrdFromJava {
+    mavsdk_telemetry_server_acceleration_frd_t value{};
+
+    AccelerationFrdFromJava(JNIEnv* env, jobject object);
+    ~AccelerationFrdFromJava();
+};
+
+struct AccelerationFrdArrayFromJava {
+    std::vector<std::unique_ptr<AccelerationFrdFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_acceleration_frd_t> values;
+
+    AccelerationFrdArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AccelerationFrdFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AngularVelocityFrdFromJava {
+    mavsdk_telemetry_server_angular_velocity_frd_t value{};
+
+    AngularVelocityFrdFromJava(JNIEnv* env, jobject object);
+    ~AngularVelocityFrdFromJava();
+};
+
+struct AngularVelocityFrdArrayFromJava {
+    std::vector<std::unique_ptr<AngularVelocityFrdFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_angular_velocity_frd_t> values;
+
+    AngularVelocityFrdArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AngularVelocityFrdFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct MagneticFieldFrdFromJava {
+    mavsdk_telemetry_server_magnetic_field_frd_t value{};
+
+    MagneticFieldFrdFromJava(JNIEnv* env, jobject object);
+    ~MagneticFieldFrdFromJava();
+};
+
+struct MagneticFieldFrdArrayFromJava {
+    std::vector<std::unique_ptr<MagneticFieldFrdFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_magnetic_field_frd_t> values;
+
+    MagneticFieldFrdArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MagneticFieldFrdFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ImuFromJava {
+    mavsdk_telemetry_server_imu_t value{};
+    std::unique_ptr<AccelerationFrdFromJava> acceleration_frdValue;
+    std::unique_ptr<AngularVelocityFrdFromJava> angular_velocity_frdValue;
+    std::unique_ptr<MagneticFieldFrdFromJava> magnetic_field_frdValue;
+
+    ImuFromJava(JNIEnv* env, jobject object);
+    ~ImuFromJava();
+};
+
+struct ImuArrayFromJava {
+    std::vector<std::unique_ptr<ImuFromJava>> holders;
+    std::vector<mavsdk_telemetry_server_imu_t> values;
+
+    ImuArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ImuFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+PositionFromJava::PositionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID relative_altitude_mField = env->GetFieldID(
+        clazz, "relativeAltitudeM", "F");
+    value.relative_altitude_m =
+        static_cast<float>(env->GetFloatField(object, relative_altitude_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionFromJava::~PositionFromJava() = default;
+HeadingFromJava::HeadingFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID heading_degField = env->GetFieldID(
+        clazz, "headingDeg", "D");
+    value.heading_deg =
+        static_cast<double>(env->GetDoubleField(object, heading_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+HeadingFromJava::~HeadingFromJava() = default;
+QuaternionFromJava::QuaternionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID wField = env->GetFieldID(
+        clazz, "w", "F");
+    value.w =
+        static_cast<float>(env->GetFloatField(object, wField));
+    jfieldID xField = env->GetFieldID(
+        clazz, "x", "F");
+    value.x =
+        static_cast<float>(env->GetFloatField(object, xField));
+    jfieldID yField = env->GetFieldID(
+        clazz, "y", "F");
+    value.y =
+        static_cast<float>(env->GetFloatField(object, yField));
+    jfieldID zField = env->GetFieldID(
+        clazz, "z", "F");
+    value.z =
+        static_cast<float>(env->GetFloatField(object, zField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    env->DeleteLocalRef(clazz);
+}
+
+QuaternionFromJava::~QuaternionFromJava() = default;
+EulerAngleFromJava::EulerAngleFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID roll_degField = env->GetFieldID(
+        clazz, "rollDeg", "F");
+    value.roll_deg =
+        static_cast<float>(env->GetFloatField(object, roll_degField));
+    jfieldID pitch_degField = env->GetFieldID(
+        clazz, "pitchDeg", "F");
+    value.pitch_deg =
+        static_cast<float>(env->GetFloatField(object, pitch_degField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    env->DeleteLocalRef(clazz);
+}
+
+EulerAngleFromJava::~EulerAngleFromJava() = default;
+AngularVelocityBodyFromJava::AngularVelocityBodyFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID roll_rad_sField = env->GetFieldID(
+        clazz, "rollRadS", "F");
+    value.roll_rad_s =
+        static_cast<float>(env->GetFloatField(object, roll_rad_sField));
+    jfieldID pitch_rad_sField = env->GetFieldID(
+        clazz, "pitchRadS", "F");
+    value.pitch_rad_s =
+        static_cast<float>(env->GetFloatField(object, pitch_rad_sField));
+    jfieldID yaw_rad_sField = env->GetFieldID(
+        clazz, "yawRadS", "F");
+    value.yaw_rad_s =
+        static_cast<float>(env->GetFloatField(object, yaw_rad_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+AngularVelocityBodyFromJava::~AngularVelocityBodyFromJava() = default;
+GpsInfoFromJava::GpsInfoFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID num_satellitesField = env->GetFieldID(
+        clazz, "numSatellites", "I");
+    value.num_satellites =
+        static_cast<int32_t>(env->GetIntField(object, num_satellitesField));
+    jfieldID fix_typeField = env->GetFieldID(
+        clazz, "fixType", "I");
+    value.fix_type =
+        static_cast<mavsdk_telemetry_server_fix_type_t>(env->GetIntField(object, fix_typeField));
+    env->DeleteLocalRef(clazz);
+}
+
+GpsInfoFromJava::~GpsInfoFromJava() = default;
+RawGpsFromJava::RawGpsFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID hdopField = env->GetFieldID(
+        clazz, "hdop", "F");
+    value.hdop =
+        static_cast<float>(env->GetFloatField(object, hdopField));
+    jfieldID vdopField = env->GetFieldID(
+        clazz, "vdop", "F");
+    value.vdop =
+        static_cast<float>(env->GetFloatField(object, vdopField));
+    jfieldID velocity_m_sField = env->GetFieldID(
+        clazz, "velocityMS", "F");
+    value.velocity_m_s =
+        static_cast<float>(env->GetFloatField(object, velocity_m_sField));
+    jfieldID cog_degField = env->GetFieldID(
+        clazz, "cogDeg", "F");
+    value.cog_deg =
+        static_cast<float>(env->GetFloatField(object, cog_degField));
+    jfieldID altitude_ellipsoid_mField = env->GetFieldID(
+        clazz, "altitudeEllipsoidM", "F");
+    value.altitude_ellipsoid_m =
+        static_cast<float>(env->GetFloatField(object, altitude_ellipsoid_mField));
+    jfieldID horizontal_uncertainty_mField = env->GetFieldID(
+        clazz, "horizontalUncertaintyM", "F");
+    value.horizontal_uncertainty_m =
+        static_cast<float>(env->GetFloatField(object, horizontal_uncertainty_mField));
+    jfieldID vertical_uncertainty_mField = env->GetFieldID(
+        clazz, "verticalUncertaintyM", "F");
+    value.vertical_uncertainty_m =
+        static_cast<float>(env->GetFloatField(object, vertical_uncertainty_mField));
+    jfieldID velocity_uncertainty_m_sField = env->GetFieldID(
+        clazz, "velocityUncertaintyMS", "F");
+    value.velocity_uncertainty_m_s =
+        static_cast<float>(env->GetFloatField(object, velocity_uncertainty_m_sField));
+    jfieldID heading_uncertainty_degField = env->GetFieldID(
+        clazz, "headingUncertaintyDeg", "F");
+    value.heading_uncertainty_deg =
+        static_cast<float>(env->GetFloatField(object, heading_uncertainty_degField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+RawGpsFromJava::~RawGpsFromJava() = default;
+BatteryFromJava::BatteryFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID voltage_vField = env->GetFieldID(
+        clazz, "voltageV", "F");
+    value.voltage_v =
+        static_cast<float>(env->GetFloatField(object, voltage_vField));
+    jfieldID remaining_percentField = env->GetFieldID(
+        clazz, "remainingPercent", "F");
+    value.remaining_percent =
+        static_cast<float>(env->GetFloatField(object, remaining_percentField));
+    env->DeleteLocalRef(clazz);
+}
+
+BatteryFromJava::~BatteryFromJava() = default;
+RcStatusFromJava::RcStatusFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID was_available_onceField = env->GetFieldID(
+        clazz, "wasAvailableOnce", "Z");
+    value.was_available_once =
+        static_cast<bool>(env->GetBooleanField(object, was_available_onceField));
+    jfieldID is_availableField = env->GetFieldID(
+        clazz, "isAvailable", "Z");
+    value.is_available =
+        static_cast<bool>(env->GetBooleanField(object, is_availableField));
+    jfieldID signal_strength_percentField = env->GetFieldID(
+        clazz, "signalStrengthPercent", "F");
+    value.signal_strength_percent =
+        static_cast<float>(env->GetFloatField(object, signal_strength_percentField));
+    env->DeleteLocalRef(clazz);
+}
+
+RcStatusFromJava::~RcStatusFromJava() = default;
+StatusTextFromJava::StatusTextFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID typeField = env->GetFieldID(
+        clazz, "type", "I");
+    value.type =
+        static_cast<mavsdk_telemetry_server_status_text_type_t>(env->GetIntField(object, typeField));
+    jfieldID textField = env->GetFieldID(
+        clazz, "text", "Ljava/lang/String;");
+    auto textString =
+        static_cast<jstring>(env->GetObjectField(object, textField));
+    JStringHolder textHolder(env, textString);
+    textValue =
+        textHolder.c_str() ? textHolder.c_str() : "";
+    value.text = const_cast<char*>(textValue.c_str());
+    env->DeleteLocalRef(textString);
+    env->DeleteLocalRef(clazz);
+}
+
+StatusTextFromJava::~StatusTextFromJava() = default;
+ActuatorControlTargetFromJava::ActuatorControlTargetFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID groupField = env->GetFieldID(
+        clazz, "group", "I");
+    value.group =
+        static_cast<int32_t>(env->GetIntField(object, groupField));
+    jfieldID controlsField = env->GetFieldID(
+        clazz, "controls", "[F");
+    auto controlsArray =
+        static_cast<jfloatArray>(env->GetObjectField(object, controlsField));
+    const jsize controlsCount =
+        controlsArray ? env->GetArrayLength(controlsArray) : 0;
+    std::vector<jfloat> controlsJavaValues(
+        static_cast<size_t>(controlsCount));
+    if (controlsCount > 0) {
+        env->GetFloatArrayRegion(
+            controlsArray, 0, controlsCount,
+            controlsJavaValues.data());
+        controlsValues.reserve(static_cast<size_t>(controlsCount));
+        for (auto item : controlsJavaValues) {
+            controlsValues.push_back(static_cast<float>(item));
+        }
+    }
+    value.controls = controlsValues.data();
+    value.controls_size =
+        static_cast<size_t>(controlsCount);
+    env->DeleteLocalRef(controlsArray);
+    env->DeleteLocalRef(clazz);
+}
+
+ActuatorControlTargetFromJava::~ActuatorControlTargetFromJava() = default;
+ActuatorOutputStatusFromJava::ActuatorOutputStatusFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID activeField = env->GetFieldID(
+        clazz, "active", "I");
+    value.active =
+        static_cast<uint32_t>(env->GetIntField(object, activeField));
+    jfieldID actuatorField = env->GetFieldID(
+        clazz, "actuator", "[F");
+    auto actuatorArray =
+        static_cast<jfloatArray>(env->GetObjectField(object, actuatorField));
+    const jsize actuatorCount =
+        actuatorArray ? env->GetArrayLength(actuatorArray) : 0;
+    std::vector<jfloat> actuatorJavaValues(
+        static_cast<size_t>(actuatorCount));
+    if (actuatorCount > 0) {
+        env->GetFloatArrayRegion(
+            actuatorArray, 0, actuatorCount,
+            actuatorJavaValues.data());
+        actuatorValues.reserve(static_cast<size_t>(actuatorCount));
+        for (auto item : actuatorJavaValues) {
+            actuatorValues.push_back(static_cast<float>(item));
+        }
+    }
+    value.actuator = actuatorValues.data();
+    value.actuator_size =
+        static_cast<size_t>(actuatorCount);
+    env->DeleteLocalRef(actuatorArray);
+    env->DeleteLocalRef(clazz);
+}
+
+ActuatorOutputStatusFromJava::~ActuatorOutputStatusFromJava() = default;
+CovarianceFromJava::CovarianceFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID covariance_matrixField = env->GetFieldID(
+        clazz, "covarianceMatrix", "[F");
+    auto covariance_matrixArray =
+        static_cast<jfloatArray>(env->GetObjectField(object, covariance_matrixField));
+    const jsize covariance_matrixCount =
+        covariance_matrixArray ? env->GetArrayLength(covariance_matrixArray) : 0;
+    std::vector<jfloat> covariance_matrixJavaValues(
+        static_cast<size_t>(covariance_matrixCount));
+    if (covariance_matrixCount > 0) {
+        env->GetFloatArrayRegion(
+            covariance_matrixArray, 0, covariance_matrixCount,
+            covariance_matrixJavaValues.data());
+        covariance_matrixValues.reserve(static_cast<size_t>(covariance_matrixCount));
+        for (auto item : covariance_matrixJavaValues) {
+            covariance_matrixValues.push_back(static_cast<float>(item));
+        }
+    }
+    value.covariance_matrix = covariance_matrixValues.data();
+    value.covariance_matrix_size =
+        static_cast<size_t>(covariance_matrixCount);
+    env->DeleteLocalRef(covariance_matrixArray);
+    env->DeleteLocalRef(clazz);
+}
+
+CovarianceFromJava::~CovarianceFromJava() = default;
+VelocityBodyFromJava::VelocityBodyFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID x_m_sField = env->GetFieldID(
+        clazz, "xMS", "F");
+    value.x_m_s =
+        static_cast<float>(env->GetFloatField(object, x_m_sField));
+    jfieldID y_m_sField = env->GetFieldID(
+        clazz, "yMS", "F");
+    value.y_m_s =
+        static_cast<float>(env->GetFloatField(object, y_m_sField));
+    jfieldID z_m_sField = env->GetFieldID(
+        clazz, "zMS", "F");
+    value.z_m_s =
+        static_cast<float>(env->GetFloatField(object, z_m_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+VelocityBodyFromJava::~VelocityBodyFromJava() = default;
+PositionBodyFromJava::PositionBodyFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID x_mField = env->GetFieldID(
+        clazz, "xM", "F");
+    value.x_m =
+        static_cast<float>(env->GetFloatField(object, x_mField));
+    jfieldID y_mField = env->GetFieldID(
+        clazz, "yM", "F");
+    value.y_m =
+        static_cast<float>(env->GetFloatField(object, y_mField));
+    jfieldID z_mField = env->GetFieldID(
+        clazz, "zM", "F");
+    value.z_m =
+        static_cast<float>(env->GetFloatField(object, z_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionBodyFromJava::~PositionBodyFromJava() = default;
+OdometryFromJava::OdometryFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID time_usecField = env->GetFieldID(
+        clazz, "timeUsec", "J");
+    value.time_usec =
+        static_cast<uint64_t>(env->GetLongField(object, time_usecField));
+    jfieldID frame_idField = env->GetFieldID(
+        clazz, "frameId", "I");
+    value.frame_id =
+        static_cast<mavsdk_telemetry_server_odometry_mav_frame_t>(env->GetIntField(object, frame_idField));
+    jfieldID child_frame_idField = env->GetFieldID(
+        clazz, "childFrameId", "I");
+    value.child_frame_id =
+        static_cast<mavsdk_telemetry_server_odometry_mav_frame_t>(env->GetIntField(object, child_frame_idField));
+    jfieldID position_bodyField = env->GetFieldID(
+        clazz, "positionBody", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody;");
+    jobject position_bodyObject =
+        env->GetObjectField(object, position_bodyField);
+    position_bodyValue =
+        std::make_unique<PositionBodyFromJava>(
+            env, position_bodyObject);
+    value.position_body = position_bodyValue->value;
+    env->DeleteLocalRef(position_bodyObject);
+    jfieldID qField = env->GetFieldID(
+        clazz, "q", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion;");
+    jobject qObject =
+        env->GetObjectField(object, qField);
+    qValue =
+        std::make_unique<QuaternionFromJava>(
+            env, qObject);
+    value.q = qValue->value;
+    env->DeleteLocalRef(qObject);
+    jfieldID velocity_bodyField = env->GetFieldID(
+        clazz, "velocityBody", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody;");
+    jobject velocity_bodyObject =
+        env->GetObjectField(object, velocity_bodyField);
+    velocity_bodyValue =
+        std::make_unique<VelocityBodyFromJava>(
+            env, velocity_bodyObject);
+    value.velocity_body = velocity_bodyValue->value;
+    env->DeleteLocalRef(velocity_bodyObject);
+    jfieldID angular_velocity_bodyField = env->GetFieldID(
+        clazz, "angularVelocityBody", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody;");
+    jobject angular_velocity_bodyObject =
+        env->GetObjectField(object, angular_velocity_bodyField);
+    angular_velocity_bodyValue =
+        std::make_unique<AngularVelocityBodyFromJava>(
+            env, angular_velocity_bodyObject);
+    value.angular_velocity_body = angular_velocity_bodyValue->value;
+    env->DeleteLocalRef(angular_velocity_bodyObject);
+    jfieldID pose_covarianceField = env->GetFieldID(
+        clazz, "poseCovariance", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance;");
+    jobject pose_covarianceObject =
+        env->GetObjectField(object, pose_covarianceField);
+    pose_covarianceValue =
+        std::make_unique<CovarianceFromJava>(
+            env, pose_covarianceObject);
+    value.pose_covariance = pose_covarianceValue->value;
+    env->DeleteLocalRef(pose_covarianceObject);
+    jfieldID velocity_covarianceField = env->GetFieldID(
+        clazz, "velocityCovariance", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance;");
+    jobject velocity_covarianceObject =
+        env->GetObjectField(object, velocity_covarianceField);
+    velocity_covarianceValue =
+        std::make_unique<CovarianceFromJava>(
+            env, velocity_covarianceObject);
+    value.velocity_covariance = velocity_covarianceValue->value;
+    env->DeleteLocalRef(velocity_covarianceObject);
+    env->DeleteLocalRef(clazz);
+}
+
+OdometryFromJava::~OdometryFromJava() = default;
+DistanceSensorFromJava::DistanceSensorFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID minimum_distance_mField = env->GetFieldID(
+        clazz, "minimumDistanceM", "F");
+    value.minimum_distance_m =
+        static_cast<float>(env->GetFloatField(object, minimum_distance_mField));
+    jfieldID maximum_distance_mField = env->GetFieldID(
+        clazz, "maximumDistanceM", "F");
+    value.maximum_distance_m =
+        static_cast<float>(env->GetFloatField(object, maximum_distance_mField));
+    jfieldID current_distance_mField = env->GetFieldID(
+        clazz, "currentDistanceM", "F");
+    value.current_distance_m =
+        static_cast<float>(env->GetFloatField(object, current_distance_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+DistanceSensorFromJava::~DistanceSensorFromJava() = default;
+ScaledPressureFromJava::ScaledPressureFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    jfieldID absolute_pressure_hpaField = env->GetFieldID(
+        clazz, "absolutePressureHpa", "F");
+    value.absolute_pressure_hpa =
+        static_cast<float>(env->GetFloatField(object, absolute_pressure_hpaField));
+    jfieldID differential_pressure_hpaField = env->GetFieldID(
+        clazz, "differentialPressureHpa", "F");
+    value.differential_pressure_hpa =
+        static_cast<float>(env->GetFloatField(object, differential_pressure_hpaField));
+    jfieldID temperature_degField = env->GetFieldID(
+        clazz, "temperatureDeg", "F");
+    value.temperature_deg =
+        static_cast<float>(env->GetFloatField(object, temperature_degField));
+    jfieldID differential_pressure_temperature_degField = env->GetFieldID(
+        clazz, "differentialPressureTemperatureDeg", "F");
+    value.differential_pressure_temperature_deg =
+        static_cast<float>(env->GetFloatField(object, differential_pressure_temperature_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+ScaledPressureFromJava::~ScaledPressureFromJava() = default;
+PositionNedFromJava::PositionNedFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID north_mField = env->GetFieldID(
+        clazz, "northM", "F");
+    value.north_m =
+        static_cast<float>(env->GetFloatField(object, north_mField));
+    jfieldID east_mField = env->GetFieldID(
+        clazz, "eastM", "F");
+    value.east_m =
+        static_cast<float>(env->GetFloatField(object, east_mField));
+    jfieldID down_mField = env->GetFieldID(
+        clazz, "downM", "F");
+    value.down_m =
+        static_cast<float>(env->GetFloatField(object, down_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionNedFromJava::~PositionNedFromJava() = default;
+VelocityNedFromJava::VelocityNedFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID north_m_sField = env->GetFieldID(
+        clazz, "northMS", "F");
+    value.north_m_s =
+        static_cast<float>(env->GetFloatField(object, north_m_sField));
+    jfieldID east_m_sField = env->GetFieldID(
+        clazz, "eastMS", "F");
+    value.east_m_s =
+        static_cast<float>(env->GetFloatField(object, east_m_sField));
+    jfieldID down_m_sField = env->GetFieldID(
+        clazz, "downMS", "F");
+    value.down_m_s =
+        static_cast<float>(env->GetFloatField(object, down_m_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+VelocityNedFromJava::~VelocityNedFromJava() = default;
+PositionVelocityNedFromJava::PositionVelocityNedFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID positionField = env->GetFieldID(
+        clazz, "position", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed;");
+    jobject positionObject =
+        env->GetObjectField(object, positionField);
+    positionValue =
+        std::make_unique<PositionNedFromJava>(
+            env, positionObject);
+    value.position = positionValue->value;
+    env->DeleteLocalRef(positionObject);
+    jfieldID velocityField = env->GetFieldID(
+        clazz, "velocity", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed;");
+    jobject velocityObject =
+        env->GetObjectField(object, velocityField);
+    velocityValue =
+        std::make_unique<VelocityNedFromJava>(
+            env, velocityObject);
+    value.velocity = velocityValue->value;
+    env->DeleteLocalRef(velocityObject);
+    env->DeleteLocalRef(clazz);
+}
+
+PositionVelocityNedFromJava::~PositionVelocityNedFromJava() = default;
+GroundTruthFromJava::GroundTruthFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+GroundTruthFromJava::~GroundTruthFromJava() = default;
+FixedwingMetricsFromJava::FixedwingMetricsFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID airspeed_m_sField = env->GetFieldID(
+        clazz, "airspeedMS", "F");
+    value.airspeed_m_s =
+        static_cast<float>(env->GetFloatField(object, airspeed_m_sField));
+    jfieldID throttle_percentageField = env->GetFieldID(
+        clazz, "throttlePercentage", "F");
+    value.throttle_percentage =
+        static_cast<float>(env->GetFloatField(object, throttle_percentageField));
+    jfieldID climb_rate_m_sField = env->GetFieldID(
+        clazz, "climbRateMS", "F");
+    value.climb_rate_m_s =
+        static_cast<float>(env->GetFloatField(object, climb_rate_m_sField));
+    jfieldID groundspeed_m_sField = env->GetFieldID(
+        clazz, "groundspeedMS", "F");
+    value.groundspeed_m_s =
+        static_cast<float>(env->GetFloatField(object, groundspeed_m_sField));
+    jfieldID heading_degField = env->GetFieldID(
+        clazz, "headingDeg", "F");
+    value.heading_deg =
+        static_cast<float>(env->GetFloatField(object, heading_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+FixedwingMetricsFromJava::~FixedwingMetricsFromJava() = default;
+AccelerationFrdFromJava::AccelerationFrdFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID forward_m_s2Field = env->GetFieldID(
+        clazz, "forwardMS2", "F");
+    value.forward_m_s2 =
+        static_cast<float>(env->GetFloatField(object, forward_m_s2Field));
+    jfieldID right_m_s2Field = env->GetFieldID(
+        clazz, "rightMS2", "F");
+    value.right_m_s2 =
+        static_cast<float>(env->GetFloatField(object, right_m_s2Field));
+    jfieldID down_m_s2Field = env->GetFieldID(
+        clazz, "downMS2", "F");
+    value.down_m_s2 =
+        static_cast<float>(env->GetFloatField(object, down_m_s2Field));
+    env->DeleteLocalRef(clazz);
+}
+
+AccelerationFrdFromJava::~AccelerationFrdFromJava() = default;
+AngularVelocityFrdFromJava::AngularVelocityFrdFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID forward_rad_sField = env->GetFieldID(
+        clazz, "forwardRadS", "F");
+    value.forward_rad_s =
+        static_cast<float>(env->GetFloatField(object, forward_rad_sField));
+    jfieldID right_rad_sField = env->GetFieldID(
+        clazz, "rightRadS", "F");
+    value.right_rad_s =
+        static_cast<float>(env->GetFloatField(object, right_rad_sField));
+    jfieldID down_rad_sField = env->GetFieldID(
+        clazz, "downRadS", "F");
+    value.down_rad_s =
+        static_cast<float>(env->GetFloatField(object, down_rad_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+AngularVelocityFrdFromJava::~AngularVelocityFrdFromJava() = default;
+MagneticFieldFrdFromJava::MagneticFieldFrdFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID forward_gaussField = env->GetFieldID(
+        clazz, "forwardGauss", "F");
+    value.forward_gauss =
+        static_cast<float>(env->GetFloatField(object, forward_gaussField));
+    jfieldID right_gaussField = env->GetFieldID(
+        clazz, "rightGauss", "F");
+    value.right_gauss =
+        static_cast<float>(env->GetFloatField(object, right_gaussField));
+    jfieldID down_gaussField = env->GetFieldID(
+        clazz, "downGauss", "F");
+    value.down_gauss =
+        static_cast<float>(env->GetFloatField(object, down_gaussField));
+    env->DeleteLocalRef(clazz);
+}
+
+MagneticFieldFrdFromJava::~MagneticFieldFrdFromJava() = default;
+ImuFromJava::ImuFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID acceleration_frdField = env->GetFieldID(
+        clazz, "accelerationFrd", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd;");
+    jobject acceleration_frdObject =
+        env->GetObjectField(object, acceleration_frdField);
+    acceleration_frdValue =
+        std::make_unique<AccelerationFrdFromJava>(
+            env, acceleration_frdObject);
+    value.acceleration_frd = acceleration_frdValue->value;
+    env->DeleteLocalRef(acceleration_frdObject);
+    jfieldID angular_velocity_frdField = env->GetFieldID(
+        clazz, "angularVelocityFrd", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd;");
+    jobject angular_velocity_frdObject =
+        env->GetObjectField(object, angular_velocity_frdField);
+    angular_velocity_frdValue =
+        std::make_unique<AngularVelocityFrdFromJava>(
+            env, angular_velocity_frdObject);
+    value.angular_velocity_frd = angular_velocity_frdValue->value;
+    env->DeleteLocalRef(angular_velocity_frdObject);
+    jfieldID magnetic_field_frdField = env->GetFieldID(
+        clazz, "magneticFieldFrd", "Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd;");
+    jobject magnetic_field_frdObject =
+        env->GetObjectField(object, magnetic_field_frdField);
+    magnetic_field_frdValue =
+        std::make_unique<MagneticFieldFrdFromJava>(
+            env, magnetic_field_frdObject);
+    value.magnetic_field_frd = magnetic_field_frdValue->value;
+    env->DeleteLocalRef(magnetic_field_frdObject);
+    jfieldID temperature_degcField = env->GetFieldID(
+        clazz, "temperatureDegc", "F");
+    value.temperature_degc =
+        static_cast<float>(env->GetFloatField(object, temperature_degcField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    env->DeleteLocalRef(clazz);
+}
+
+ImuFromJava::~ImuFromJava() = default;
+
+jobject toJavaPosition(
+    JNIEnv* env, const mavsdk_telemetry_server_position_t& value);
+jobjectArray toJavaPositionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_position_t* values,
+    size_t count);
+jobject toJavaHeading(
+    JNIEnv* env, const mavsdk_telemetry_server_heading_t& value);
+jobjectArray toJavaHeadingArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_heading_t* values,
+    size_t count);
+jobject toJavaQuaternion(
+    JNIEnv* env, const mavsdk_telemetry_server_quaternion_t& value);
+jobjectArray toJavaQuaternionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_quaternion_t* values,
+    size_t count);
+jobject toJavaEulerAngle(
+    JNIEnv* env, const mavsdk_telemetry_server_euler_angle_t& value);
+jobjectArray toJavaEulerAngleArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_euler_angle_t* values,
+    size_t count);
+jobject toJavaAngularVelocityBody(
+    JNIEnv* env, const mavsdk_telemetry_server_angular_velocity_body_t& value);
+jobjectArray toJavaAngularVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_angular_velocity_body_t* values,
+    size_t count);
+jobject toJavaGpsInfo(
+    JNIEnv* env, const mavsdk_telemetry_server_gps_info_t& value);
+jobjectArray toJavaGpsInfoArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_gps_info_t* values,
+    size_t count);
+jobject toJavaRawGps(
+    JNIEnv* env, const mavsdk_telemetry_server_raw_gps_t& value);
+jobjectArray toJavaRawGpsArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_raw_gps_t* values,
+    size_t count);
+jobject toJavaBattery(
+    JNIEnv* env, const mavsdk_telemetry_server_battery_t& value);
+jobjectArray toJavaBatteryArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_battery_t* values,
+    size_t count);
+jobject toJavaRcStatus(
+    JNIEnv* env, const mavsdk_telemetry_server_rc_status_t& value);
+jobjectArray toJavaRcStatusArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_rc_status_t* values,
+    size_t count);
+jobject toJavaStatusText(
+    JNIEnv* env, const mavsdk_telemetry_server_status_text_t& value);
+jobjectArray toJavaStatusTextArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_status_text_t* values,
+    size_t count);
+jobject toJavaActuatorControlTarget(
+    JNIEnv* env, const mavsdk_telemetry_server_actuator_control_target_t& value);
+jobjectArray toJavaActuatorControlTargetArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_actuator_control_target_t* values,
+    size_t count);
+jobject toJavaActuatorOutputStatus(
+    JNIEnv* env, const mavsdk_telemetry_server_actuator_output_status_t& value);
+jobjectArray toJavaActuatorOutputStatusArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_actuator_output_status_t* values,
+    size_t count);
+jobject toJavaCovariance(
+    JNIEnv* env, const mavsdk_telemetry_server_covariance_t& value);
+jobjectArray toJavaCovarianceArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_covariance_t* values,
+    size_t count);
+jobject toJavaVelocityBody(
+    JNIEnv* env, const mavsdk_telemetry_server_velocity_body_t& value);
+jobjectArray toJavaVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_velocity_body_t* values,
+    size_t count);
+jobject toJavaPositionBody(
+    JNIEnv* env, const mavsdk_telemetry_server_position_body_t& value);
+jobjectArray toJavaPositionBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_position_body_t* values,
+    size_t count);
+jobject toJavaOdometry(
+    JNIEnv* env, const mavsdk_telemetry_server_odometry_t& value);
+jobjectArray toJavaOdometryArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_odometry_t* values,
+    size_t count);
+jobject toJavaDistanceSensor(
+    JNIEnv* env, const mavsdk_telemetry_server_distance_sensor_t& value);
+jobjectArray toJavaDistanceSensorArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_distance_sensor_t* values,
+    size_t count);
+jobject toJavaScaledPressure(
+    JNIEnv* env, const mavsdk_telemetry_server_scaled_pressure_t& value);
+jobjectArray toJavaScaledPressureArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_scaled_pressure_t* values,
+    size_t count);
+jobject toJavaPositionNed(
+    JNIEnv* env, const mavsdk_telemetry_server_position_ned_t& value);
+jobjectArray toJavaPositionNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_position_ned_t* values,
+    size_t count);
+jobject toJavaVelocityNed(
+    JNIEnv* env, const mavsdk_telemetry_server_velocity_ned_t& value);
+jobjectArray toJavaVelocityNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_velocity_ned_t* values,
+    size_t count);
+jobject toJavaPositionVelocityNed(
+    JNIEnv* env, const mavsdk_telemetry_server_position_velocity_ned_t& value);
+jobjectArray toJavaPositionVelocityNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_position_velocity_ned_t* values,
+    size_t count);
+jobject toJavaGroundTruth(
+    JNIEnv* env, const mavsdk_telemetry_server_ground_truth_t& value);
+jobjectArray toJavaGroundTruthArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_ground_truth_t* values,
+    size_t count);
+jobject toJavaFixedwingMetrics(
+    JNIEnv* env, const mavsdk_telemetry_server_fixedwing_metrics_t& value);
+jobjectArray toJavaFixedwingMetricsArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_fixedwing_metrics_t* values,
+    size_t count);
+jobject toJavaAccelerationFrd(
+    JNIEnv* env, const mavsdk_telemetry_server_acceleration_frd_t& value);
+jobjectArray toJavaAccelerationFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_acceleration_frd_t* values,
+    size_t count);
+jobject toJavaAngularVelocityFrd(
+    JNIEnv* env, const mavsdk_telemetry_server_angular_velocity_frd_t& value);
+jobjectArray toJavaAngularVelocityFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_angular_velocity_frd_t* values,
+    size_t count);
+jobject toJavaMagneticFieldFrd(
+    JNIEnv* env, const mavsdk_telemetry_server_magnetic_field_frd_t& value);
+jobjectArray toJavaMagneticFieldFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_magnetic_field_frd_t* values,
+    size_t count);
+jobject toJavaImu(
+    JNIEnv* env, const mavsdk_telemetry_server_imu_t& value);
+jobjectArray toJavaImuArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_imu_t* values,
+    size_t count);
+
+jobject toJavaPosition(
+    JNIEnv* env, const mavsdk_telemetry_server_position_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Position");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jfloat>(value.relative_altitude_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_position_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Position");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPosition(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaHeading(
+    JNIEnv* env, const mavsdk_telemetry_server_heading_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Heading");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(D)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.heading_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaHeadingArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_heading_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Heading");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaHeading(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaQuaternion(
+    JNIEnv* env, const mavsdk_telemetry_server_quaternion_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFFJ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.w)
+        , static_cast<jfloat>(value.x)
+        , static_cast<jfloat>(value.y)
+        , static_cast<jfloat>(value.z)
+        , static_cast<jlong>(value.timestamp_us)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaQuaternionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_quaternion_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaQuaternion(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaEulerAngle(
+    JNIEnv* env, const mavsdk_telemetry_server_euler_angle_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$EulerAngle");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFJ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.roll_deg)
+        , static_cast<jfloat>(value.pitch_deg)
+        , static_cast<jfloat>(value.yaw_deg)
+        , static_cast<jlong>(value.timestamp_us)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaEulerAngleArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_euler_angle_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$EulerAngle");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaEulerAngle(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAngularVelocityBody(
+    JNIEnv* env, const mavsdk_telemetry_server_angular_velocity_body_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.roll_rad_s)
+        , static_cast<jfloat>(value.pitch_rad_s)
+        , static_cast<jfloat>(value.yaw_rad_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAngularVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_angular_velocity_body_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAngularVelocityBody(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaGpsInfo(
+    JNIEnv* env, const mavsdk_telemetry_server_gps_info_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GpsInfo");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(II)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.num_satellites)
+        , static_cast<jint>(value.fix_type)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaGpsInfoArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_gps_info_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GpsInfo");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaGpsInfo(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaRawGps(
+    JNIEnv* env, const mavsdk_telemetry_server_raw_gps_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RawGps");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JDDFFFFFFFFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jlong>(value.timestamp_us)
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jfloat>(value.hdop)
+        , static_cast<jfloat>(value.vdop)
+        , static_cast<jfloat>(value.velocity_m_s)
+        , static_cast<jfloat>(value.cog_deg)
+        , static_cast<jfloat>(value.altitude_ellipsoid_m)
+        , static_cast<jfloat>(value.horizontal_uncertainty_m)
+        , static_cast<jfloat>(value.vertical_uncertainty_m)
+        , static_cast<jfloat>(value.velocity_uncertainty_m_s)
+        , static_cast<jfloat>(value.heading_uncertainty_deg)
+        , static_cast<jfloat>(value.yaw_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaRawGpsArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_raw_gps_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RawGps");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaRawGps(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaBattery(
+    JNIEnv* env, const mavsdk_telemetry_server_battery_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Battery");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.voltage_v)
+        , static_cast<jfloat>(value.remaining_percent)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaBatteryArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_battery_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Battery");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaBattery(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaRcStatus(
+    JNIEnv* env, const mavsdk_telemetry_server_rc_status_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RcStatus");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZZF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.was_available_once)
+        , static_cast<jboolean>(value.is_available)
+        , static_cast<jfloat>(value.signal_strength_percent)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaRcStatusArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_rc_status_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RcStatus");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaRcStatus(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaStatusText(
+    JNIEnv* env, const mavsdk_telemetry_server_status_text_t& value) {
+    jstring textValue =
+        toJavaString(env, value.text);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$StatusText");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILjava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.type)
+        , textValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(textValue);
+    return result;
+}
+
+jobjectArray toJavaStatusTextArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_status_text_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$StatusText");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaStatusText(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaActuatorControlTarget(
+    JNIEnv* env, const mavsdk_telemetry_server_actuator_control_target_t& value) {
+    jfloatArray controlsValue =
+        env->NewFloatArray(
+            static_cast<jsize>(value.controls_size));
+    std::vector<jfloat> controlsJavaValues;
+    controlsJavaValues.reserve(value.controls_size);
+    for (size_t i = 0; i < value.controls_size; ++i) {
+        controlsJavaValues.push_back(
+            static_cast<jfloat>(value.controls[i]));
+    }
+    if (!controlsJavaValues.empty()) {
+        env->SetFloatArrayRegion(
+            controlsValue, 0,
+            static_cast<jsize>(controlsJavaValues.size()),
+            controlsJavaValues.data());
+    }
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorControlTarget");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(I[F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.group)
+        , controlsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(controlsValue);
+    return result;
+}
+
+jobjectArray toJavaActuatorControlTargetArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_actuator_control_target_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorControlTarget");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaActuatorControlTarget(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaActuatorOutputStatus(
+    JNIEnv* env, const mavsdk_telemetry_server_actuator_output_status_t& value) {
+    jfloatArray actuatorValue =
+        env->NewFloatArray(
+            static_cast<jsize>(value.actuator_size));
+    std::vector<jfloat> actuatorJavaValues;
+    actuatorJavaValues.reserve(value.actuator_size);
+    for (size_t i = 0; i < value.actuator_size; ++i) {
+        actuatorJavaValues.push_back(
+            static_cast<jfloat>(value.actuator[i]));
+    }
+    if (!actuatorJavaValues.empty()) {
+        env->SetFloatArrayRegion(
+            actuatorValue, 0,
+            static_cast<jsize>(actuatorJavaValues.size()),
+            actuatorJavaValues.data());
+    }
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorOutputStatus");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(I[F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.active)
+        , actuatorValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(actuatorValue);
+    return result;
+}
+
+jobjectArray toJavaActuatorOutputStatusArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_actuator_output_status_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorOutputStatus");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaActuatorOutputStatus(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaCovariance(
+    JNIEnv* env, const mavsdk_telemetry_server_covariance_t& value) {
+    jfloatArray covariance_matrixValue =
+        env->NewFloatArray(
+            static_cast<jsize>(value.covariance_matrix_size));
+    std::vector<jfloat> covariance_matrixJavaValues;
+    covariance_matrixJavaValues.reserve(value.covariance_matrix_size);
+    for (size_t i = 0; i < value.covariance_matrix_size; ++i) {
+        covariance_matrixJavaValues.push_back(
+            static_cast<jfloat>(value.covariance_matrix[i]));
+    }
+    if (!covariance_matrixJavaValues.empty()) {
+        env->SetFloatArrayRegion(
+            covariance_matrixValue, 0,
+            static_cast<jsize>(covariance_matrixJavaValues.size()),
+            covariance_matrixJavaValues.data());
+    }
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , covariance_matrixValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(covariance_matrixValue);
+    return result;
+}
+
+jobjectArray toJavaCovarianceArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_covariance_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaCovariance(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaVelocityBody(
+    JNIEnv* env, const mavsdk_telemetry_server_velocity_body_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.x_m_s)
+        , static_cast<jfloat>(value.y_m_s)
+        , static_cast<jfloat>(value.z_m_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_velocity_body_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaVelocityBody(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPositionBody(
+    JNIEnv* env, const mavsdk_telemetry_server_position_body_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.x_m)
+        , static_cast<jfloat>(value.y_m)
+        , static_cast<jfloat>(value.z_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_position_body_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPositionBody(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaOdometry(
+    JNIEnv* env, const mavsdk_telemetry_server_odometry_t& value) {
+    jobject position_bodyValue =
+        toJavaPositionBody(env, value.position_body);
+    jobject qValue =
+        toJavaQuaternion(env, value.q);
+    jobject velocity_bodyValue =
+        toJavaVelocityBody(env, value.velocity_body);
+    jobject angular_velocity_bodyValue =
+        toJavaAngularVelocityBody(env, value.angular_velocity_body);
+    jobject pose_covarianceValue =
+        toJavaCovariance(env, value.pose_covariance);
+    jobject velocity_covarianceValue =
+        toJavaCovariance(env, value.velocity_covariance);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Odometry");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JIILio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jlong>(value.time_usec)
+        , static_cast<jint>(value.frame_id)
+        , static_cast<jint>(value.child_frame_id)
+        , position_bodyValue
+        , qValue
+        , velocity_bodyValue
+        , angular_velocity_bodyValue
+        , pose_covarianceValue
+        , velocity_covarianceValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(position_bodyValue);
+    env->DeleteLocalRef(qValue);
+    env->DeleteLocalRef(velocity_bodyValue);
+    env->DeleteLocalRef(angular_velocity_bodyValue);
+    env->DeleteLocalRef(pose_covarianceValue);
+    env->DeleteLocalRef(velocity_covarianceValue);
+    return result;
+}
+
+jobjectArray toJavaOdometryArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_odometry_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Odometry");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaOdometry(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaDistanceSensor(
+    JNIEnv* env, const mavsdk_telemetry_server_distance_sensor_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$DistanceSensor");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.minimum_distance_m)
+        , static_cast<jfloat>(value.maximum_distance_m)
+        , static_cast<jfloat>(value.current_distance_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaDistanceSensorArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_distance_sensor_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$DistanceSensor");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaDistanceSensor(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaScaledPressure(
+    JNIEnv* env, const mavsdk_telemetry_server_scaled_pressure_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ScaledPressure");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jlong>(value.timestamp_us)
+        , static_cast<jfloat>(value.absolute_pressure_hpa)
+        , static_cast<jfloat>(value.differential_pressure_hpa)
+        , static_cast<jfloat>(value.temperature_deg)
+        , static_cast<jfloat>(value.differential_pressure_temperature_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaScaledPressureArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_scaled_pressure_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ScaledPressure");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaScaledPressure(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPositionNed(
+    JNIEnv* env, const mavsdk_telemetry_server_position_ned_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.north_m)
+        , static_cast<jfloat>(value.east_m)
+        , static_cast<jfloat>(value.down_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_position_ned_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPositionNed(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaVelocityNed(
+    JNIEnv* env, const mavsdk_telemetry_server_velocity_ned_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.north_m_s)
+        , static_cast<jfloat>(value.east_m_s)
+        , static_cast<jfloat>(value.down_m_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaVelocityNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_velocity_ned_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaVelocityNed(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPositionVelocityNed(
+    JNIEnv* env, const mavsdk_telemetry_server_position_velocity_ned_t& value) {
+    jobject positionValue =
+        toJavaPositionNed(env, value.position);
+    jobject velocityValue =
+        toJavaVelocityNed(env, value.velocity);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionVelocityNed");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , positionValue
+        , velocityValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(positionValue);
+    env->DeleteLocalRef(velocityValue);
+    return result;
+}
+
+jobjectArray toJavaPositionVelocityNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_position_velocity_ned_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionVelocityNed");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPositionVelocityNed(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaGroundTruth(
+    JNIEnv* env, const mavsdk_telemetry_server_ground_truth_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GroundTruth");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaGroundTruthArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_ground_truth_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GroundTruth");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaGroundTruth(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaFixedwingMetrics(
+    JNIEnv* env, const mavsdk_telemetry_server_fixedwing_metrics_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$FixedwingMetrics");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.airspeed_m_s)
+        , static_cast<jfloat>(value.throttle_percentage)
+        , static_cast<jfloat>(value.climb_rate_m_s)
+        , static_cast<jfloat>(value.groundspeed_m_s)
+        , static_cast<jfloat>(value.heading_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaFixedwingMetricsArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_fixedwing_metrics_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$FixedwingMetrics");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaFixedwingMetrics(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAccelerationFrd(
+    JNIEnv* env, const mavsdk_telemetry_server_acceleration_frd_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.forward_m_s2)
+        , static_cast<jfloat>(value.right_m_s2)
+        , static_cast<jfloat>(value.down_m_s2)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAccelerationFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_acceleration_frd_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAccelerationFrd(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAngularVelocityFrd(
+    JNIEnv* env, const mavsdk_telemetry_server_angular_velocity_frd_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.forward_rad_s)
+        , static_cast<jfloat>(value.right_rad_s)
+        , static_cast<jfloat>(value.down_rad_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAngularVelocityFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_angular_velocity_frd_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAngularVelocityFrd(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaMagneticFieldFrd(
+    JNIEnv* env, const mavsdk_telemetry_server_magnetic_field_frd_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.forward_gauss)
+        , static_cast<jfloat>(value.right_gauss)
+        , static_cast<jfloat>(value.down_gauss)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaMagneticFieldFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_magnetic_field_frd_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMagneticFieldFrd(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaImu(
+    JNIEnv* env, const mavsdk_telemetry_server_imu_t& value) {
+    jobject acceleration_frdValue =
+        toJavaAccelerationFrd(env, value.acceleration_frd);
+    jobject angular_velocity_frdValue =
+        toJavaAngularVelocityFrd(env, value.angular_velocity_frd);
+    jobject magnetic_field_frdValue =
+        toJavaMagneticFieldFrd(env, value.magnetic_field_frd);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Imu");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd;FJ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , acceleration_frdValue
+        , angular_velocity_frdValue
+        , magnetic_field_frdValue
+        , static_cast<jfloat>(value.temperature_degc)
+        , static_cast<jlong>(value.timestamp_us)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(acceleration_frdValue);
+    env->DeleteLocalRef(angular_velocity_frdValue);
+    env->DeleteLocalRef(magnetic_field_frdValue);
+    return result;
+}
+
+jobjectArray toJavaImuArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_server_imu_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Imu");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaImu(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
+
+} // namespace
 
 extern "C" {
 
-// ===== TelemetryServer.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_telemetry_server_t handle = mavsdk_telemetry_server_create(
         reinterpret_cast<mavsdk_server_component_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create TelemetryServer plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== TelemetryServer.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return;
-
-    mavsdk_telemetry_server_destroy(reinterpret_cast<mavsdk_telemetry_server_t>(handle));
+Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return;
+    }
+    mavsdk_telemetry_server_destroy(
+        reinterpret_cast<mavsdk_telemetry_server_t>(handle));
 }
 
-
-// ===== TelemetryServer.publish_positionBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishPositionBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishPosition(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject position,
     jobject velocity_ned,
     jobject heading) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_position_t position_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_telemetry_server_velocity_ned_t velocity_ned_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_telemetry_server_heading_t heading_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_position(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        position_c,
-        velocity_ned_c,
-        heading_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    PositionFromJava
+        positionValue(env, position);    VelocityNedFromJava
+        velocity_nedValue(env, velocity_ned);    HeadingFromJava
+        headingValue(env, heading);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_position(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            positionValue.value,
+            velocity_nedValue.value,
+            headingValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_homeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishHomeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishHome(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject home) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_position_t home_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_home(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        home_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    PositionFromJava
+        homeValue(env, home);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_home(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            homeValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_sys_statusBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishSysStatusBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishSysStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject battery,
     jboolean rc_receiver_status,
     jboolean gyro_status,
     jboolean accel_status,
     jboolean mag_status,
     jboolean gps_status) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_battery_t battery_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_sys_status(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        battery_c,
-        rc_receiver_status,
-        gyro_status,
-        accel_status,
-        mag_status,
-        gps_status    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    BatteryFromJava
+        batteryValue(env, battery);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_sys_status(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            batteryValue.value,
+            static_cast<bool>(rc_receiver_status),
+            static_cast<bool>(gyro_status),
+            static_cast<bool>(accel_status),
+            static_cast<bool>(mag_status),
+            static_cast<bool>(gps_status));
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_extended_sys_stateBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishExtendedSysStateBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishExtendedSysState(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint vtol_state,
     jint landed_state) {
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_extended_sys_state(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        static_cast<mavsdk_telemetry_server_vtol_state_t>(vtol_state),
-        static_cast<mavsdk_telemetry_server_landed_state_t>(landed_state)    );
-
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_extended_sys_state(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            static_cast<mavsdk_telemetry_server_vtol_state_t>(vtol_state),
+            static_cast<mavsdk_telemetry_server_landed_state_t>(landed_state));
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_raw_gpsBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishRawGpsBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishRawGps(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject raw_gps,
     jobject gps_info) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_raw_gps_t raw_gps_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_telemetry_server_gps_info_t gps_info_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_raw_gps(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        raw_gps_c,
-        gps_info_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    RawGpsFromJava
+        raw_gpsValue(env, raw_gps);    GpsInfoFromJava
+        gps_infoValue(env, gps_info);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_raw_gps(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            raw_gpsValue.value,
+            gps_infoValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_batteryBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishBatteryBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishBattery(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject battery) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_battery_t battery_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_battery(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        battery_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    BatteryFromJava
+        batteryValue(env, battery);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_battery(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            batteryValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_status_textBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishStatusTextBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishStatusText(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject status_text) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_status_text_t status_text_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_status_text(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        status_text_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    StatusTextFromJava
+        status_textValue(env, status_text);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_status_text(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            status_textValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_odometryBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishOdometryBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishOdometry(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject odometry) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_odometry_t odometry_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_odometry(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        odometry_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    OdometryFromJava
+        odometryValue(env, odometry);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_odometry(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            odometryValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_position_velocity_nedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishPositionVelocityNedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishPositionVelocityNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject position_velocity_ned) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_position_velocity_ned_t position_velocity_ned_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_position_velocity_ned(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        position_velocity_ned_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    PositionVelocityNedFromJava
+        position_velocity_nedValue(env, position_velocity_ned);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_position_velocity_ned(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            position_velocity_nedValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_ground_truthBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishGroundTruthBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishGroundTruth(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject ground_truth) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_ground_truth_t ground_truth_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_ground_truth(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        ground_truth_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    GroundTruthFromJava
+        ground_truthValue(env, ground_truth);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_ground_truth(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            ground_truthValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_imuBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishImuBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishImu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject imu) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_imu(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        imu_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    ImuFromJava
+        imuValue(env, imu);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_imu(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            imuValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_scaled_imuBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishScaledImuBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishScaledImu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject imu) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_scaled_imu(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        imu_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    ImuFromJava
+        imuValue(env, imu);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_scaled_imu(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            imuValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_raw_imuBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishRawImuBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishRawImu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject imu) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_raw_imu(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        imu_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    ImuFromJava
+        imuValue(env, imu);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_raw_imu(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            imuValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_unix_epoch_timeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishUnixEpochTimeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishUnixEpochTime(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jlong time_us) {
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_unix_epoch_time(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        time_us    );
-
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_unix_epoch_time(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            static_cast<uint64_t>(time_us));
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_distance_sensorBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishDistanceSensorBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishDistanceSensor(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject distance_sensor) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_distance_sensor_t distance_sensor_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_distance_sensor(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        distance_sensor_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    DistanceSensorFromJava
+        distance_sensorValue(env, distance_sensor);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_distance_sensor(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            distance_sensorValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_attitudeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishAttitudeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishAttitude(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject angle,
     jobject angular_velocity) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_euler_angle_t angle_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_telemetry_server_angular_velocity_body_t angular_velocity_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_attitude(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        angle_c,
-        angular_velocity_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    EulerAngleFromJava
+        angleValue(env, angle);    AngularVelocityBodyFromJava
+        angular_velocityValue(env, angular_velocity);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_attitude(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            angleValue.value,
+            angular_velocityValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== TelemetryServer.publish_visual_flight_rules_hudBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishVisualFlightRulesHudBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_1server_NativeTelemetryServer_publishVisualFlightRulesHud(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject fixed_wing_metrics) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
-    if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_telemetry_server_fixedwing_metrics_t fixed_wing_metrics_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_visual_flight_rules_hud(
-        reinterpret_cast<mavsdk_telemetry_server_t>(handle),
-        fixed_wing_metrics_c    );
-
+    if (!requireHandle(env, handle, "TelemetryServer plugin")) {
+        return {};
+    }
+    FixedwingMetricsFromJava
+        fixed_wing_metricsValue(env, fixed_wing_metrics);
+    mavsdk_telemetry_server_result_t result =
+        mavsdk_telemetry_server_publish_visual_flight_rules_hud(
+            reinterpret_cast<mavsdk_telemetry_server_t>(handle),
+            fixed_wing_metricsValue.value);
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

@@ -6,84 +6,257 @@
 #include "cmavsdk/plugins/log_files/log_files.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct ProgressDataFromJava;
+struct ProgressDataArrayFromJava;
+struct EntryFromJava;
+struct EntryArrayFromJava;
 
+struct ProgressDataFromJava {
+    mavsdk_log_files_progress_data_t value{};
 
-// ===== GetEntries Callback Wrapper =====
+    ProgressDataFromJava(JNIEnv* env, jobject object);
+    ~ProgressDataFromJava();
+};
+
+struct ProgressDataArrayFromJava {
+    std::vector<std::unique_ptr<ProgressDataFromJava>> holders;
+    std::vector<mavsdk_log_files_progress_data_t> values;
+
+    ProgressDataArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ProgressDataFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct EntryFromJava {
+    mavsdk_log_files_entry_t value{};
+    std::string dateValue;
+
+    EntryFromJava(JNIEnv* env, jobject object);
+    ~EntryFromJava();
+};
+
+struct EntryArrayFromJava {
+    std::vector<std::unique_ptr<EntryFromJava>> holders;
+    std::vector<mavsdk_log_files_entry_t> values;
+
+    EntryArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<EntryFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+ProgressDataFromJava::ProgressDataFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID progressField = env->GetFieldID(
+        clazz, "progress", "F");
+    value.progress =
+        static_cast<float>(env->GetFloatField(object, progressField));
+    env->DeleteLocalRef(clazz);
+}
+
+ProgressDataFromJava::~ProgressDataFromJava() = default;
+EntryFromJava::EntryFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID idField = env->GetFieldID(
+        clazz, "id", "I");
+    value.id =
+        static_cast<uint32_t>(env->GetIntField(object, idField));
+    jfieldID dateField = env->GetFieldID(
+        clazz, "date", "Ljava/lang/String;");
+    auto dateString =
+        static_cast<jstring>(env->GetObjectField(object, dateField));
+    JStringHolder dateHolder(env, dateString);
+    dateValue =
+        dateHolder.c_str() ? dateHolder.c_str() : "";
+    value.date = const_cast<char*>(dateValue.c_str());
+    env->DeleteLocalRef(dateString);
+    jfieldID size_bytesField = env->GetFieldID(
+        clazz, "sizeBytes", "I");
+    value.size_bytes =
+        static_cast<uint32_t>(env->GetIntField(object, size_bytesField));
+    env->DeleteLocalRef(clazz);
+}
+
+EntryFromJava::~EntryFromJava() = default;
+
+jobject toJavaProgressData(
+    JNIEnv* env, const mavsdk_log_files_progress_data_t& value);
+jobjectArray toJavaProgressDataArray(
+    JNIEnv* env,
+    const mavsdk_log_files_progress_data_t* values,
+    size_t count);
+jobject toJavaEntry(
+    JNIEnv* env, const mavsdk_log_files_entry_t& value);
+jobjectArray toJavaEntryArray(
+    JNIEnv* env,
+    const mavsdk_log_files_entry_t* values,
+    size_t count);
+
+jobject toJavaProgressData(
+    JNIEnv* env, const mavsdk_log_files_progress_data_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/log_files/NativeLogFiles$ProgressData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.progress)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaProgressDataArray(
+    JNIEnv* env,
+    const mavsdk_log_files_progress_data_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/log_files/NativeLogFiles$ProgressData");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaProgressData(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaEntry(
+    JNIEnv* env, const mavsdk_log_files_entry_t& value) {
+    jstring dateValue =
+        toJavaString(env, value.date);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/log_files/NativeLogFiles$Entry");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILjava/lang/String;I)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.id)
+        , dateValue
+        , static_cast<jint>(value.size_bytes)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(dateValue);
+    return result;
+}
+
+jobjectArray toJavaEntryArray(
+    JNIEnv* env,
+    const mavsdk_log_files_entry_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/log_files/NativeLogFiles$Entry");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaEntry(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct GetEntriesCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GetEntriesCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GetEntriesCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILjava/lang/Object;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I[Lio/mavsdk/jni/plugins/log_files/NativeLogFiles$Entry;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_log_files_result_t result) const {
+    void operator()(
+        const mavsdk_log_files_result_t result,        const mavsdk_log_files_entry_t* values, size_t count
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        jobjectArray javaValue =
+            toJavaEntryArray(env, values, count);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== DownloadLogFile Callback Wrapper =====
 struct DownloadLogFileCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    DownloadLogFileCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    DownloadLogFileCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/log_files/LogFiles$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/log_files/NativeLogFiles$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_log_files_result_t result, const mavsdk_log_files_progress_data_t progress) const {
+    void operator()(
+        const mavsdk_log_files_result_t result,        const mavsdk_log_files_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/log_files/LogFiles$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(F)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(progress.progress)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -91,130 +264,138 @@ struct DownloadLogFileCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== LogFiles.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_log_files_t handle = mavsdk_log_files_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create LogFiles plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== LogFiles.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_files/LogFiles");
-    if (!handle) return;
-
-    mavsdk_log_files_destroy(reinterpret_cast<mavsdk_log_files_t>(handle));
+Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "LogFiles plugin")) {
+        return;
+    }
+    mavsdk_log_files_destroy(
+        reinterpret_cast<mavsdk_log_files_t>(handle));
 }
 
-
-// ===== LogFiles.get_entriesBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_getEntriesBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_getEntries(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "LogFiles plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_files/LogFiles");
-    if (!handle) return {};
-
-
-    mavsdk_log_files_get_entries(
-        reinterpret_cast<mavsdk_log_files_t>(handle),
-        nullptr, nullptr
-    );
-    return nullptr;
+    mavsdk_log_files_entry_t* returnValues = nullptr;
+    size_t returnCount = 0;
+    mavsdk_log_files_result_t result =
+        mavsdk_log_files_get_entries(
+            reinterpret_cast<mavsdk_log_files_t>(handle),
+            &returnValues,
+            &returnCount);
+    if (result != MAVSDK_LOG_FILES_RESULT_SUCCESS) {
+        mavsdk_log_files_entry_array_destroy(
+        &returnValues, returnCount);
+        throwMavsdkError(env, "OperationError", "get_entries failed");
+        return nullptr;
+    }
+        jobjectArray javaResult =
+            toJavaEntryArray(env, returnValues, returnCount);
+    mavsdk_log_files_entry_array_destroy(
+        &returnValues, returnCount);
+    return javaResult;
 }
 
-// ===== LogFiles.get_entriesAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_getEntriesAsyncNative(
+Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_getEntriesAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_files/LogFiles");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "LogFiles plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new GetEntriesCallbackWrapper(env, callback);
-
     mavsdk_log_files_get_entries_async(
-        reinterpret_cast<mavsdk_log_files_t>(handle),        [](const mavsdk_log_files_result_t result, const mavsdk_log_files_entry_t* items, size_t count, void* user_data) {
-            auto* w = static_cast<GetEntriesCallbackWrapper*>(user_data);
-            (*w)(result); /* TODO: pass items/count to Java */
-            if (result != MAVSDK_LOG_FILES_RESULT_NEXT) { delete w; }
-        },
-        wrapper
-    );
-}
-
-
-// ===== LogFiles.downloadLogFileAsyncNative (finite stream) =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_downloadLogFileAsyncNative(
-    JNIEnv* env,
-    jobject obj,
-    jobject entry,
-    jstring path,
-    jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_files/LogFiles");
-    if (!handle || !callback) return;
-
-    JStringHolder path_holder(env, path);
-    mavsdk_log_files_entry_t entry_c{}; /* TODO: convert scalar-only struct from Java object */
-    auto* wrapper = new DownloadLogFileCallbackWrapper(env, callback);
-
-    mavsdk_log_files_download_log_file_async(
-        reinterpret_cast<mavsdk_log_files_t>(handle),        entry_c,        const_cast<char*>(path_holder.c_str()),        [](const mavsdk_log_files_result_t result, const mavsdk_log_files_progress_data_t value, void* user_data) {
-            auto* w = static_cast<DownloadLogFileCallbackWrapper*>(user_data);
-            (*w)(result, value);
+        reinterpret_cast<mavsdk_log_files_t>(handle),
+        [](const mavsdk_log_files_result_t result,
+           const mavsdk_log_files_entry_t* values,
+           size_t count,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<GetEntriesCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, values, count);
             if (result != MAVSDK_LOG_FILES_RESULT_NEXT) {
-                delete w;
+                delete callbackWrapper;
             }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== LogFiles.erase_all_log_filesBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_eraseAllLogFilesBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_downloadLogFileAsync(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle,
+    jobject entry,
+    jobject path,
+    jobject callback) {
+    if (!requireHandle(env, handle, "LogFiles plugin") || !callback) {
+        return;
+    }
+    EntryFromJava
+        entryValue(env, entry);    JStringHolder pathHolder(
+        env, static_cast<jstring>(path));
+    auto* wrapper = new DownloadLogFileCallbackWrapper(env, callback);
+    mavsdk_log_files_download_log_file_async(
+        reinterpret_cast<mavsdk_log_files_t>(handle),
+        entryValue.value,
+        const_cast<char*>(pathHolder.c_str()),
+        [](const mavsdk_log_files_result_t result,
+           const mavsdk_log_files_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<DownloadLogFileCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            if (result != MAVSDK_LOG_FILES_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
+        },
+        wrapper);
+}
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_files/LogFiles");
-    if (!handle) return MAVSDK_LOG_FILES_RESULT_UNKNOWN;
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_eraseAllLogFiles(
+    JNIEnv* env,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "LogFiles plugin")) {
+        return {};
+    }
 
-
-    mavsdk_log_files_result_t result = mavsdk_log_files_erase_all_log_files(
-        reinterpret_cast<mavsdk_log_files_t>(handle)    );
-
+    mavsdk_log_files_result_t result =
+        mavsdk_log_files_erase_all_log_files(
+            reinterpret_cast<mavsdk_log_files_t>(handle));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

@@ -144,9 +144,9 @@ private fun CoroutineScope.subscribeOperations(server: CameraServer) {
                     usedStorageMib      = 100f,
                     availableStorageMib = totalMib - 100f,
                     totalStorageMib     = totalMib,
-                    storageStatus       = 2, // FORMATTED
+                    storageStatus       = CameraServer.StorageStatus.FORMATTED,
                     storageId           = 1,
-                    storageType         = 3, // MICROSD
+                    storageType         = CameraServer.StorageType.MICROSD,
                     readSpeedMibS       = 0f,
                     writeSpeedMibS      = 0f,
                 )
@@ -164,8 +164,16 @@ private fun CoroutineScope.subscribeOperations(server: CameraServer) {
                     imageIntervalS       = 0f,
                     recordingTimeS       = recordingSecs,
                     availableCapacityMib = 0f,
-                    imageStatus          = if (isCaptureInProgress) 1 else 0,
-                    videoStatus          = if (isRecordingVideo) 1 else 0,
+                    imageStatus          = if (isCaptureInProgress) {
+                        CameraServer.ImageStatus.CAPTURE_IN_PROGRESS
+                    } else {
+                        CameraServer.ImageStatus.IDLE
+                    },
+                    videoStatus          = if (isRecordingVideo) {
+                        CameraServer.VideoStatus.CAPTURE_IN_PROGRESS
+                    } else {
+                        CameraServer.VideoStatus.IDLE
+                    },
                     imageCount           = imageCount,
                 )
             )

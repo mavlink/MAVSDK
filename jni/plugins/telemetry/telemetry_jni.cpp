@@ -6,2272 +6,4996 @@
 #include "cmavsdk/plugins/telemetry/telemetry.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct PositionFromJava;
+struct PositionArrayFromJava;
+struct HeadingFromJava;
+struct HeadingArrayFromJava;
+struct QuaternionFromJava;
+struct QuaternionArrayFromJava;
+struct EulerAngleFromJava;
+struct EulerAngleArrayFromJava;
+struct AngularVelocityBodyFromJava;
+struct AngularVelocityBodyArrayFromJava;
+struct GpsInfoFromJava;
+struct GpsInfoArrayFromJava;
+struct RawGpsFromJava;
+struct RawGpsArrayFromJava;
+struct BatteryFromJava;
+struct BatteryArrayFromJava;
+struct HealthFromJava;
+struct HealthArrayFromJava;
+struct RcStatusFromJava;
+struct RcStatusArrayFromJava;
+struct StatusTextFromJava;
+struct StatusTextArrayFromJava;
+struct ActuatorControlTargetFromJava;
+struct ActuatorControlTargetArrayFromJava;
+struct ActuatorOutputStatusFromJava;
+struct ActuatorOutputStatusArrayFromJava;
+struct CovarianceFromJava;
+struct CovarianceArrayFromJava;
+struct VelocityBodyFromJava;
+struct VelocityBodyArrayFromJava;
+struct PositionBodyFromJava;
+struct PositionBodyArrayFromJava;
+struct OdometryFromJava;
+struct OdometryArrayFromJava;
+struct DistanceSensorFromJava;
+struct DistanceSensorArrayFromJava;
+struct ScaledPressureFromJava;
+struct ScaledPressureArrayFromJava;
+struct PositionNedFromJava;
+struct PositionNedArrayFromJava;
+struct VelocityNedFromJava;
+struct VelocityNedArrayFromJava;
+struct PositionVelocityNedFromJava;
+struct PositionVelocityNedArrayFromJava;
+struct GroundTruthFromJava;
+struct GroundTruthArrayFromJava;
+struct FixedwingMetricsFromJava;
+struct FixedwingMetricsArrayFromJava;
+struct AccelerationFrdFromJava;
+struct AccelerationFrdArrayFromJava;
+struct AngularVelocityFrdFromJava;
+struct AngularVelocityFrdArrayFromJava;
+struct MagneticFieldFrdFromJava;
+struct MagneticFieldFrdArrayFromJava;
+struct ImuFromJava;
+struct ImuArrayFromJava;
+struct GpsGlobalOriginFromJava;
+struct GpsGlobalOriginArrayFromJava;
+struct AltitudeFromJava;
+struct AltitudeArrayFromJava;
+struct WindFromJava;
+struct WindArrayFromJava;
 
+struct PositionFromJava {
+    mavsdk_telemetry_position_t value{};
 
-// ===== Position Callback Wrapper =====
+    PositionFromJava(JNIEnv* env, jobject object);
+    ~PositionFromJava();
+};
+
+struct PositionArrayFromJava {
+    std::vector<std::unique_ptr<PositionFromJava>> holders;
+    std::vector<mavsdk_telemetry_position_t> values;
+
+    PositionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct HeadingFromJava {
+    mavsdk_telemetry_heading_t value{};
+
+    HeadingFromJava(JNIEnv* env, jobject object);
+    ~HeadingFromJava();
+};
+
+struct HeadingArrayFromJava {
+    std::vector<std::unique_ptr<HeadingFromJava>> holders;
+    std::vector<mavsdk_telemetry_heading_t> values;
+
+    HeadingArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<HeadingFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct QuaternionFromJava {
+    mavsdk_telemetry_quaternion_t value{};
+
+    QuaternionFromJava(JNIEnv* env, jobject object);
+    ~QuaternionFromJava();
+};
+
+struct QuaternionArrayFromJava {
+    std::vector<std::unique_ptr<QuaternionFromJava>> holders;
+    std::vector<mavsdk_telemetry_quaternion_t> values;
+
+    QuaternionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<QuaternionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct EulerAngleFromJava {
+    mavsdk_telemetry_euler_angle_t value{};
+
+    EulerAngleFromJava(JNIEnv* env, jobject object);
+    ~EulerAngleFromJava();
+};
+
+struct EulerAngleArrayFromJava {
+    std::vector<std::unique_ptr<EulerAngleFromJava>> holders;
+    std::vector<mavsdk_telemetry_euler_angle_t> values;
+
+    EulerAngleArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<EulerAngleFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AngularVelocityBodyFromJava {
+    mavsdk_telemetry_angular_velocity_body_t value{};
+
+    AngularVelocityBodyFromJava(JNIEnv* env, jobject object);
+    ~AngularVelocityBodyFromJava();
+};
+
+struct AngularVelocityBodyArrayFromJava {
+    std::vector<std::unique_ptr<AngularVelocityBodyFromJava>> holders;
+    std::vector<mavsdk_telemetry_angular_velocity_body_t> values;
+
+    AngularVelocityBodyArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AngularVelocityBodyFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct GpsInfoFromJava {
+    mavsdk_telemetry_gps_info_t value{};
+
+    GpsInfoFromJava(JNIEnv* env, jobject object);
+    ~GpsInfoFromJava();
+};
+
+struct GpsInfoArrayFromJava {
+    std::vector<std::unique_ptr<GpsInfoFromJava>> holders;
+    std::vector<mavsdk_telemetry_gps_info_t> values;
+
+    GpsInfoArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<GpsInfoFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct RawGpsFromJava {
+    mavsdk_telemetry_raw_gps_t value{};
+
+    RawGpsFromJava(JNIEnv* env, jobject object);
+    ~RawGpsFromJava();
+};
+
+struct RawGpsArrayFromJava {
+    std::vector<std::unique_ptr<RawGpsFromJava>> holders;
+    std::vector<mavsdk_telemetry_raw_gps_t> values;
+
+    RawGpsArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<RawGpsFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct BatteryFromJava {
+    mavsdk_telemetry_battery_t value{};
+
+    BatteryFromJava(JNIEnv* env, jobject object);
+    ~BatteryFromJava();
+};
+
+struct BatteryArrayFromJava {
+    std::vector<std::unique_ptr<BatteryFromJava>> holders;
+    std::vector<mavsdk_telemetry_battery_t> values;
+
+    BatteryArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<BatteryFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct HealthFromJava {
+    mavsdk_telemetry_health_t value{};
+
+    HealthFromJava(JNIEnv* env, jobject object);
+    ~HealthFromJava();
+};
+
+struct HealthArrayFromJava {
+    std::vector<std::unique_ptr<HealthFromJava>> holders;
+    std::vector<mavsdk_telemetry_health_t> values;
+
+    HealthArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<HealthFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct RcStatusFromJava {
+    mavsdk_telemetry_rc_status_t value{};
+
+    RcStatusFromJava(JNIEnv* env, jobject object);
+    ~RcStatusFromJava();
+};
+
+struct RcStatusArrayFromJava {
+    std::vector<std::unique_ptr<RcStatusFromJava>> holders;
+    std::vector<mavsdk_telemetry_rc_status_t> values;
+
+    RcStatusArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<RcStatusFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct StatusTextFromJava {
+    mavsdk_telemetry_status_text_t value{};
+    std::string textValue;
+
+    StatusTextFromJava(JNIEnv* env, jobject object);
+    ~StatusTextFromJava();
+};
+
+struct StatusTextArrayFromJava {
+    std::vector<std::unique_ptr<StatusTextFromJava>> holders;
+    std::vector<mavsdk_telemetry_status_text_t> values;
+
+    StatusTextArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<StatusTextFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ActuatorControlTargetFromJava {
+    mavsdk_telemetry_actuator_control_target_t value{};
+    std::vector<float> controlsValues;
+
+    ActuatorControlTargetFromJava(JNIEnv* env, jobject object);
+    ~ActuatorControlTargetFromJava();
+};
+
+struct ActuatorControlTargetArrayFromJava {
+    std::vector<std::unique_ptr<ActuatorControlTargetFromJava>> holders;
+    std::vector<mavsdk_telemetry_actuator_control_target_t> values;
+
+    ActuatorControlTargetArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ActuatorControlTargetFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ActuatorOutputStatusFromJava {
+    mavsdk_telemetry_actuator_output_status_t value{};
+    std::vector<float> actuatorValues;
+
+    ActuatorOutputStatusFromJava(JNIEnv* env, jobject object);
+    ~ActuatorOutputStatusFromJava();
+};
+
+struct ActuatorOutputStatusArrayFromJava {
+    std::vector<std::unique_ptr<ActuatorOutputStatusFromJava>> holders;
+    std::vector<mavsdk_telemetry_actuator_output_status_t> values;
+
+    ActuatorOutputStatusArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ActuatorOutputStatusFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct CovarianceFromJava {
+    mavsdk_telemetry_covariance_t value{};
+    std::vector<float> covariance_matrixValues;
+
+    CovarianceFromJava(JNIEnv* env, jobject object);
+    ~CovarianceFromJava();
+};
+
+struct CovarianceArrayFromJava {
+    std::vector<std::unique_ptr<CovarianceFromJava>> holders;
+    std::vector<mavsdk_telemetry_covariance_t> values;
+
+    CovarianceArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<CovarianceFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct VelocityBodyFromJava {
+    mavsdk_telemetry_velocity_body_t value{};
+
+    VelocityBodyFromJava(JNIEnv* env, jobject object);
+    ~VelocityBodyFromJava();
+};
+
+struct VelocityBodyArrayFromJava {
+    std::vector<std::unique_ptr<VelocityBodyFromJava>> holders;
+    std::vector<mavsdk_telemetry_velocity_body_t> values;
+
+    VelocityBodyArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<VelocityBodyFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionBodyFromJava {
+    mavsdk_telemetry_position_body_t value{};
+
+    PositionBodyFromJava(JNIEnv* env, jobject object);
+    ~PositionBodyFromJava();
+};
+
+struct PositionBodyArrayFromJava {
+    std::vector<std::unique_ptr<PositionBodyFromJava>> holders;
+    std::vector<mavsdk_telemetry_position_body_t> values;
+
+    PositionBodyArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionBodyFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct OdometryFromJava {
+    mavsdk_telemetry_odometry_t value{};
+    std::unique_ptr<PositionBodyFromJava> position_bodyValue;
+    std::unique_ptr<QuaternionFromJava> qValue;
+    std::unique_ptr<VelocityBodyFromJava> velocity_bodyValue;
+    std::unique_ptr<AngularVelocityBodyFromJava> angular_velocity_bodyValue;
+    std::unique_ptr<CovarianceFromJava> pose_covarianceValue;
+    std::unique_ptr<CovarianceFromJava> velocity_covarianceValue;
+
+    OdometryFromJava(JNIEnv* env, jobject object);
+    ~OdometryFromJava();
+};
+
+struct OdometryArrayFromJava {
+    std::vector<std::unique_ptr<OdometryFromJava>> holders;
+    std::vector<mavsdk_telemetry_odometry_t> values;
+
+    OdometryArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<OdometryFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct DistanceSensorFromJava {
+    mavsdk_telemetry_distance_sensor_t value{};
+    std::unique_ptr<EulerAngleFromJava> orientationValue;
+
+    DistanceSensorFromJava(JNIEnv* env, jobject object);
+    ~DistanceSensorFromJava();
+};
+
+struct DistanceSensorArrayFromJava {
+    std::vector<std::unique_ptr<DistanceSensorFromJava>> holders;
+    std::vector<mavsdk_telemetry_distance_sensor_t> values;
+
+    DistanceSensorArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<DistanceSensorFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ScaledPressureFromJava {
+    mavsdk_telemetry_scaled_pressure_t value{};
+
+    ScaledPressureFromJava(JNIEnv* env, jobject object);
+    ~ScaledPressureFromJava();
+};
+
+struct ScaledPressureArrayFromJava {
+    std::vector<std::unique_ptr<ScaledPressureFromJava>> holders;
+    std::vector<mavsdk_telemetry_scaled_pressure_t> values;
+
+    ScaledPressureArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ScaledPressureFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionNedFromJava {
+    mavsdk_telemetry_position_ned_t value{};
+
+    PositionNedFromJava(JNIEnv* env, jobject object);
+    ~PositionNedFromJava();
+};
+
+struct PositionNedArrayFromJava {
+    std::vector<std::unique_ptr<PositionNedFromJava>> holders;
+    std::vector<mavsdk_telemetry_position_ned_t> values;
+
+    PositionNedArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionNedFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct VelocityNedFromJava {
+    mavsdk_telemetry_velocity_ned_t value{};
+
+    VelocityNedFromJava(JNIEnv* env, jobject object);
+    ~VelocityNedFromJava();
+};
+
+struct VelocityNedArrayFromJava {
+    std::vector<std::unique_ptr<VelocityNedFromJava>> holders;
+    std::vector<mavsdk_telemetry_velocity_ned_t> values;
+
+    VelocityNedArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<VelocityNedFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionVelocityNedFromJava {
+    mavsdk_telemetry_position_velocity_ned_t value{};
+    std::unique_ptr<PositionNedFromJava> positionValue;
+    std::unique_ptr<VelocityNedFromJava> velocityValue;
+
+    PositionVelocityNedFromJava(JNIEnv* env, jobject object);
+    ~PositionVelocityNedFromJava();
+};
+
+struct PositionVelocityNedArrayFromJava {
+    std::vector<std::unique_ptr<PositionVelocityNedFromJava>> holders;
+    std::vector<mavsdk_telemetry_position_velocity_ned_t> values;
+
+    PositionVelocityNedArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionVelocityNedFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct GroundTruthFromJava {
+    mavsdk_telemetry_ground_truth_t value{};
+
+    GroundTruthFromJava(JNIEnv* env, jobject object);
+    ~GroundTruthFromJava();
+};
+
+struct GroundTruthArrayFromJava {
+    std::vector<std::unique_ptr<GroundTruthFromJava>> holders;
+    std::vector<mavsdk_telemetry_ground_truth_t> values;
+
+    GroundTruthArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<GroundTruthFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct FixedwingMetricsFromJava {
+    mavsdk_telemetry_fixedwing_metrics_t value{};
+
+    FixedwingMetricsFromJava(JNIEnv* env, jobject object);
+    ~FixedwingMetricsFromJava();
+};
+
+struct FixedwingMetricsArrayFromJava {
+    std::vector<std::unique_ptr<FixedwingMetricsFromJava>> holders;
+    std::vector<mavsdk_telemetry_fixedwing_metrics_t> values;
+
+    FixedwingMetricsArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<FixedwingMetricsFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AccelerationFrdFromJava {
+    mavsdk_telemetry_acceleration_frd_t value{};
+
+    AccelerationFrdFromJava(JNIEnv* env, jobject object);
+    ~AccelerationFrdFromJava();
+};
+
+struct AccelerationFrdArrayFromJava {
+    std::vector<std::unique_ptr<AccelerationFrdFromJava>> holders;
+    std::vector<mavsdk_telemetry_acceleration_frd_t> values;
+
+    AccelerationFrdArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AccelerationFrdFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AngularVelocityFrdFromJava {
+    mavsdk_telemetry_angular_velocity_frd_t value{};
+
+    AngularVelocityFrdFromJava(JNIEnv* env, jobject object);
+    ~AngularVelocityFrdFromJava();
+};
+
+struct AngularVelocityFrdArrayFromJava {
+    std::vector<std::unique_ptr<AngularVelocityFrdFromJava>> holders;
+    std::vector<mavsdk_telemetry_angular_velocity_frd_t> values;
+
+    AngularVelocityFrdArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AngularVelocityFrdFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct MagneticFieldFrdFromJava {
+    mavsdk_telemetry_magnetic_field_frd_t value{};
+
+    MagneticFieldFrdFromJava(JNIEnv* env, jobject object);
+    ~MagneticFieldFrdFromJava();
+};
+
+struct MagneticFieldFrdArrayFromJava {
+    std::vector<std::unique_ptr<MagneticFieldFrdFromJava>> holders;
+    std::vector<mavsdk_telemetry_magnetic_field_frd_t> values;
+
+    MagneticFieldFrdArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MagneticFieldFrdFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ImuFromJava {
+    mavsdk_telemetry_imu_t value{};
+    std::unique_ptr<AccelerationFrdFromJava> acceleration_frdValue;
+    std::unique_ptr<AngularVelocityFrdFromJava> angular_velocity_frdValue;
+    std::unique_ptr<MagneticFieldFrdFromJava> magnetic_field_frdValue;
+
+    ImuFromJava(JNIEnv* env, jobject object);
+    ~ImuFromJava();
+};
+
+struct ImuArrayFromJava {
+    std::vector<std::unique_ptr<ImuFromJava>> holders;
+    std::vector<mavsdk_telemetry_imu_t> values;
+
+    ImuArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ImuFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct GpsGlobalOriginFromJava {
+    mavsdk_telemetry_gps_global_origin_t value{};
+
+    GpsGlobalOriginFromJava(JNIEnv* env, jobject object);
+    ~GpsGlobalOriginFromJava();
+};
+
+struct GpsGlobalOriginArrayFromJava {
+    std::vector<std::unique_ptr<GpsGlobalOriginFromJava>> holders;
+    std::vector<mavsdk_telemetry_gps_global_origin_t> values;
+
+    GpsGlobalOriginArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<GpsGlobalOriginFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AltitudeFromJava {
+    mavsdk_telemetry_altitude_t value{};
+
+    AltitudeFromJava(JNIEnv* env, jobject object);
+    ~AltitudeFromJava();
+};
+
+struct AltitudeArrayFromJava {
+    std::vector<std::unique_ptr<AltitudeFromJava>> holders;
+    std::vector<mavsdk_telemetry_altitude_t> values;
+
+    AltitudeArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AltitudeFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct WindFromJava {
+    mavsdk_telemetry_wind_t value{};
+
+    WindFromJava(JNIEnv* env, jobject object);
+    ~WindFromJava();
+};
+
+struct WindArrayFromJava {
+    std::vector<std::unique_ptr<WindFromJava>> holders;
+    std::vector<mavsdk_telemetry_wind_t> values;
+
+    WindArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<WindFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+PositionFromJava::PositionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID relative_altitude_mField = env->GetFieldID(
+        clazz, "relativeAltitudeM", "F");
+    value.relative_altitude_m =
+        static_cast<float>(env->GetFloatField(object, relative_altitude_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionFromJava::~PositionFromJava() = default;
+HeadingFromJava::HeadingFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID heading_degField = env->GetFieldID(
+        clazz, "headingDeg", "D");
+    value.heading_deg =
+        static_cast<double>(env->GetDoubleField(object, heading_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+HeadingFromJava::~HeadingFromJava() = default;
+QuaternionFromJava::QuaternionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID wField = env->GetFieldID(
+        clazz, "w", "F");
+    value.w =
+        static_cast<float>(env->GetFloatField(object, wField));
+    jfieldID xField = env->GetFieldID(
+        clazz, "x", "F");
+    value.x =
+        static_cast<float>(env->GetFloatField(object, xField));
+    jfieldID yField = env->GetFieldID(
+        clazz, "y", "F");
+    value.y =
+        static_cast<float>(env->GetFloatField(object, yField));
+    jfieldID zField = env->GetFieldID(
+        clazz, "z", "F");
+    value.z =
+        static_cast<float>(env->GetFloatField(object, zField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    env->DeleteLocalRef(clazz);
+}
+
+QuaternionFromJava::~QuaternionFromJava() = default;
+EulerAngleFromJava::EulerAngleFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID roll_degField = env->GetFieldID(
+        clazz, "rollDeg", "F");
+    value.roll_deg =
+        static_cast<float>(env->GetFloatField(object, roll_degField));
+    jfieldID pitch_degField = env->GetFieldID(
+        clazz, "pitchDeg", "F");
+    value.pitch_deg =
+        static_cast<float>(env->GetFloatField(object, pitch_degField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    env->DeleteLocalRef(clazz);
+}
+
+EulerAngleFromJava::~EulerAngleFromJava() = default;
+AngularVelocityBodyFromJava::AngularVelocityBodyFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID roll_rad_sField = env->GetFieldID(
+        clazz, "rollRadS", "F");
+    value.roll_rad_s =
+        static_cast<float>(env->GetFloatField(object, roll_rad_sField));
+    jfieldID pitch_rad_sField = env->GetFieldID(
+        clazz, "pitchRadS", "F");
+    value.pitch_rad_s =
+        static_cast<float>(env->GetFloatField(object, pitch_rad_sField));
+    jfieldID yaw_rad_sField = env->GetFieldID(
+        clazz, "yawRadS", "F");
+    value.yaw_rad_s =
+        static_cast<float>(env->GetFloatField(object, yaw_rad_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+AngularVelocityBodyFromJava::~AngularVelocityBodyFromJava() = default;
+GpsInfoFromJava::GpsInfoFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID num_satellitesField = env->GetFieldID(
+        clazz, "numSatellites", "I");
+    value.num_satellites =
+        static_cast<int32_t>(env->GetIntField(object, num_satellitesField));
+    jfieldID fix_typeField = env->GetFieldID(
+        clazz, "fixType", "I");
+    value.fix_type =
+        static_cast<mavsdk_telemetry_fix_type_t>(env->GetIntField(object, fix_typeField));
+    env->DeleteLocalRef(clazz);
+}
+
+GpsInfoFromJava::~GpsInfoFromJava() = default;
+RawGpsFromJava::RawGpsFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID hdopField = env->GetFieldID(
+        clazz, "hdop", "F");
+    value.hdop =
+        static_cast<float>(env->GetFloatField(object, hdopField));
+    jfieldID vdopField = env->GetFieldID(
+        clazz, "vdop", "F");
+    value.vdop =
+        static_cast<float>(env->GetFloatField(object, vdopField));
+    jfieldID velocity_m_sField = env->GetFieldID(
+        clazz, "velocityMS", "F");
+    value.velocity_m_s =
+        static_cast<float>(env->GetFloatField(object, velocity_m_sField));
+    jfieldID cog_degField = env->GetFieldID(
+        clazz, "cogDeg", "F");
+    value.cog_deg =
+        static_cast<float>(env->GetFloatField(object, cog_degField));
+    jfieldID altitude_ellipsoid_mField = env->GetFieldID(
+        clazz, "altitudeEllipsoidM", "F");
+    value.altitude_ellipsoid_m =
+        static_cast<float>(env->GetFloatField(object, altitude_ellipsoid_mField));
+    jfieldID horizontal_uncertainty_mField = env->GetFieldID(
+        clazz, "horizontalUncertaintyM", "F");
+    value.horizontal_uncertainty_m =
+        static_cast<float>(env->GetFloatField(object, horizontal_uncertainty_mField));
+    jfieldID vertical_uncertainty_mField = env->GetFieldID(
+        clazz, "verticalUncertaintyM", "F");
+    value.vertical_uncertainty_m =
+        static_cast<float>(env->GetFloatField(object, vertical_uncertainty_mField));
+    jfieldID velocity_uncertainty_m_sField = env->GetFieldID(
+        clazz, "velocityUncertaintyMS", "F");
+    value.velocity_uncertainty_m_s =
+        static_cast<float>(env->GetFloatField(object, velocity_uncertainty_m_sField));
+    jfieldID heading_uncertainty_degField = env->GetFieldID(
+        clazz, "headingUncertaintyDeg", "F");
+    value.heading_uncertainty_deg =
+        static_cast<float>(env->GetFloatField(object, heading_uncertainty_degField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+RawGpsFromJava::~RawGpsFromJava() = default;
+BatteryFromJava::BatteryFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID idField = env->GetFieldID(
+        clazz, "id", "I");
+    value.id =
+        static_cast<uint32_t>(env->GetIntField(object, idField));
+    jfieldID temperature_degcField = env->GetFieldID(
+        clazz, "temperatureDegc", "F");
+    value.temperature_degc =
+        static_cast<float>(env->GetFloatField(object, temperature_degcField));
+    jfieldID voltage_vField = env->GetFieldID(
+        clazz, "voltageV", "F");
+    value.voltage_v =
+        static_cast<float>(env->GetFloatField(object, voltage_vField));
+    jfieldID current_battery_aField = env->GetFieldID(
+        clazz, "currentBatteryA", "F");
+    value.current_battery_a =
+        static_cast<float>(env->GetFloatField(object, current_battery_aField));
+    jfieldID capacity_consumed_ahField = env->GetFieldID(
+        clazz, "capacityConsumedAh", "F");
+    value.capacity_consumed_ah =
+        static_cast<float>(env->GetFloatField(object, capacity_consumed_ahField));
+    jfieldID remaining_percentField = env->GetFieldID(
+        clazz, "remainingPercent", "F");
+    value.remaining_percent =
+        static_cast<float>(env->GetFloatField(object, remaining_percentField));
+    jfieldID time_remaining_sField = env->GetFieldID(
+        clazz, "timeRemainingS", "F");
+    value.time_remaining_s =
+        static_cast<float>(env->GetFloatField(object, time_remaining_sField));
+    jfieldID battery_functionField = env->GetFieldID(
+        clazz, "batteryFunction", "I");
+    value.battery_function =
+        static_cast<mavsdk_telemetry_battery_function_t>(env->GetIntField(object, battery_functionField));
+    env->DeleteLocalRef(clazz);
+}
+
+BatteryFromJava::~BatteryFromJava() = default;
+HealthFromJava::HealthFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID is_gyrometer_calibration_okField = env->GetFieldID(
+        clazz, "isGyrometerCalibrationOk", "Z");
+    value.is_gyrometer_calibration_ok =
+        static_cast<bool>(env->GetBooleanField(object, is_gyrometer_calibration_okField));
+    jfieldID is_accelerometer_calibration_okField = env->GetFieldID(
+        clazz, "isAccelerometerCalibrationOk", "Z");
+    value.is_accelerometer_calibration_ok =
+        static_cast<bool>(env->GetBooleanField(object, is_accelerometer_calibration_okField));
+    jfieldID is_magnetometer_calibration_okField = env->GetFieldID(
+        clazz, "isMagnetometerCalibrationOk", "Z");
+    value.is_magnetometer_calibration_ok =
+        static_cast<bool>(env->GetBooleanField(object, is_magnetometer_calibration_okField));
+    jfieldID is_local_position_okField = env->GetFieldID(
+        clazz, "isLocalPositionOk", "Z");
+    value.is_local_position_ok =
+        static_cast<bool>(env->GetBooleanField(object, is_local_position_okField));
+    jfieldID is_global_position_okField = env->GetFieldID(
+        clazz, "isGlobalPositionOk", "Z");
+    value.is_global_position_ok =
+        static_cast<bool>(env->GetBooleanField(object, is_global_position_okField));
+    jfieldID is_home_position_okField = env->GetFieldID(
+        clazz, "isHomePositionOk", "Z");
+    value.is_home_position_ok =
+        static_cast<bool>(env->GetBooleanField(object, is_home_position_okField));
+    jfieldID is_armableField = env->GetFieldID(
+        clazz, "isArmable", "Z");
+    value.is_armable =
+        static_cast<bool>(env->GetBooleanField(object, is_armableField));
+    env->DeleteLocalRef(clazz);
+}
+
+HealthFromJava::~HealthFromJava() = default;
+RcStatusFromJava::RcStatusFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID was_available_onceField = env->GetFieldID(
+        clazz, "wasAvailableOnce", "Z");
+    value.was_available_once =
+        static_cast<bool>(env->GetBooleanField(object, was_available_onceField));
+    jfieldID is_availableField = env->GetFieldID(
+        clazz, "isAvailable", "Z");
+    value.is_available =
+        static_cast<bool>(env->GetBooleanField(object, is_availableField));
+    jfieldID signal_strength_percentField = env->GetFieldID(
+        clazz, "signalStrengthPercent", "F");
+    value.signal_strength_percent =
+        static_cast<float>(env->GetFloatField(object, signal_strength_percentField));
+    env->DeleteLocalRef(clazz);
+}
+
+RcStatusFromJava::~RcStatusFromJava() = default;
+StatusTextFromJava::StatusTextFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID typeField = env->GetFieldID(
+        clazz, "type", "I");
+    value.type =
+        static_cast<mavsdk_telemetry_status_text_type_t>(env->GetIntField(object, typeField));
+    jfieldID textField = env->GetFieldID(
+        clazz, "text", "Ljava/lang/String;");
+    auto textString =
+        static_cast<jstring>(env->GetObjectField(object, textField));
+    JStringHolder textHolder(env, textString);
+    textValue =
+        textHolder.c_str() ? textHolder.c_str() : "";
+    value.text = const_cast<char*>(textValue.c_str());
+    env->DeleteLocalRef(textString);
+    env->DeleteLocalRef(clazz);
+}
+
+StatusTextFromJava::~StatusTextFromJava() = default;
+ActuatorControlTargetFromJava::ActuatorControlTargetFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID groupField = env->GetFieldID(
+        clazz, "group", "I");
+    value.group =
+        static_cast<int32_t>(env->GetIntField(object, groupField));
+    jfieldID controlsField = env->GetFieldID(
+        clazz, "controls", "[F");
+    auto controlsArray =
+        static_cast<jfloatArray>(env->GetObjectField(object, controlsField));
+    const jsize controlsCount =
+        controlsArray ? env->GetArrayLength(controlsArray) : 0;
+    std::vector<jfloat> controlsJavaValues(
+        static_cast<size_t>(controlsCount));
+    if (controlsCount > 0) {
+        env->GetFloatArrayRegion(
+            controlsArray, 0, controlsCount,
+            controlsJavaValues.data());
+        controlsValues.reserve(static_cast<size_t>(controlsCount));
+        for (auto item : controlsJavaValues) {
+            controlsValues.push_back(static_cast<float>(item));
+        }
+    }
+    value.controls = controlsValues.data();
+    value.controls_size =
+        static_cast<size_t>(controlsCount);
+    env->DeleteLocalRef(controlsArray);
+    env->DeleteLocalRef(clazz);
+}
+
+ActuatorControlTargetFromJava::~ActuatorControlTargetFromJava() = default;
+ActuatorOutputStatusFromJava::ActuatorOutputStatusFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID activeField = env->GetFieldID(
+        clazz, "active", "I");
+    value.active =
+        static_cast<uint32_t>(env->GetIntField(object, activeField));
+    jfieldID actuatorField = env->GetFieldID(
+        clazz, "actuator", "[F");
+    auto actuatorArray =
+        static_cast<jfloatArray>(env->GetObjectField(object, actuatorField));
+    const jsize actuatorCount =
+        actuatorArray ? env->GetArrayLength(actuatorArray) : 0;
+    std::vector<jfloat> actuatorJavaValues(
+        static_cast<size_t>(actuatorCount));
+    if (actuatorCount > 0) {
+        env->GetFloatArrayRegion(
+            actuatorArray, 0, actuatorCount,
+            actuatorJavaValues.data());
+        actuatorValues.reserve(static_cast<size_t>(actuatorCount));
+        for (auto item : actuatorJavaValues) {
+            actuatorValues.push_back(static_cast<float>(item));
+        }
+    }
+    value.actuator = actuatorValues.data();
+    value.actuator_size =
+        static_cast<size_t>(actuatorCount);
+    env->DeleteLocalRef(actuatorArray);
+    env->DeleteLocalRef(clazz);
+}
+
+ActuatorOutputStatusFromJava::~ActuatorOutputStatusFromJava() = default;
+CovarianceFromJava::CovarianceFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID covariance_matrixField = env->GetFieldID(
+        clazz, "covarianceMatrix", "[F");
+    auto covariance_matrixArray =
+        static_cast<jfloatArray>(env->GetObjectField(object, covariance_matrixField));
+    const jsize covariance_matrixCount =
+        covariance_matrixArray ? env->GetArrayLength(covariance_matrixArray) : 0;
+    std::vector<jfloat> covariance_matrixJavaValues(
+        static_cast<size_t>(covariance_matrixCount));
+    if (covariance_matrixCount > 0) {
+        env->GetFloatArrayRegion(
+            covariance_matrixArray, 0, covariance_matrixCount,
+            covariance_matrixJavaValues.data());
+        covariance_matrixValues.reserve(static_cast<size_t>(covariance_matrixCount));
+        for (auto item : covariance_matrixJavaValues) {
+            covariance_matrixValues.push_back(static_cast<float>(item));
+        }
+    }
+    value.covariance_matrix = covariance_matrixValues.data();
+    value.covariance_matrix_size =
+        static_cast<size_t>(covariance_matrixCount);
+    env->DeleteLocalRef(covariance_matrixArray);
+    env->DeleteLocalRef(clazz);
+}
+
+CovarianceFromJava::~CovarianceFromJava() = default;
+VelocityBodyFromJava::VelocityBodyFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID x_m_sField = env->GetFieldID(
+        clazz, "xMS", "F");
+    value.x_m_s =
+        static_cast<float>(env->GetFloatField(object, x_m_sField));
+    jfieldID y_m_sField = env->GetFieldID(
+        clazz, "yMS", "F");
+    value.y_m_s =
+        static_cast<float>(env->GetFloatField(object, y_m_sField));
+    jfieldID z_m_sField = env->GetFieldID(
+        clazz, "zMS", "F");
+    value.z_m_s =
+        static_cast<float>(env->GetFloatField(object, z_m_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+VelocityBodyFromJava::~VelocityBodyFromJava() = default;
+PositionBodyFromJava::PositionBodyFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID x_mField = env->GetFieldID(
+        clazz, "xM", "F");
+    value.x_m =
+        static_cast<float>(env->GetFloatField(object, x_mField));
+    jfieldID y_mField = env->GetFieldID(
+        clazz, "yM", "F");
+    value.y_m =
+        static_cast<float>(env->GetFloatField(object, y_mField));
+    jfieldID z_mField = env->GetFieldID(
+        clazz, "zM", "F");
+    value.z_m =
+        static_cast<float>(env->GetFloatField(object, z_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionBodyFromJava::~PositionBodyFromJava() = default;
+OdometryFromJava::OdometryFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID time_usecField = env->GetFieldID(
+        clazz, "timeUsec", "J");
+    value.time_usec =
+        static_cast<uint64_t>(env->GetLongField(object, time_usecField));
+    jfieldID frame_idField = env->GetFieldID(
+        clazz, "frameId", "I");
+    value.frame_id =
+        static_cast<mavsdk_telemetry_odometry_mav_frame_t>(env->GetIntField(object, frame_idField));
+    jfieldID child_frame_idField = env->GetFieldID(
+        clazz, "childFrameId", "I");
+    value.child_frame_id =
+        static_cast<mavsdk_telemetry_odometry_mav_frame_t>(env->GetIntField(object, child_frame_idField));
+    jfieldID position_bodyField = env->GetFieldID(
+        clazz, "positionBody", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionBody;");
+    jobject position_bodyObject =
+        env->GetObjectField(object, position_bodyField);
+    position_bodyValue =
+        std::make_unique<PositionBodyFromJava>(
+            env, position_bodyObject);
+    value.position_body = position_bodyValue->value;
+    env->DeleteLocalRef(position_bodyObject);
+    jfieldID qField = env->GetFieldID(
+        clazz, "q", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Quaternion;");
+    jobject qObject =
+        env->GetObjectField(object, qField);
+    qValue =
+        std::make_unique<QuaternionFromJava>(
+            env, qObject);
+    value.q = qValue->value;
+    env->DeleteLocalRef(qObject);
+    jfieldID velocity_bodyField = env->GetFieldID(
+        clazz, "velocityBody", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityBody;");
+    jobject velocity_bodyObject =
+        env->GetObjectField(object, velocity_bodyField);
+    velocity_bodyValue =
+        std::make_unique<VelocityBodyFromJava>(
+            env, velocity_bodyObject);
+    value.velocity_body = velocity_bodyValue->value;
+    env->DeleteLocalRef(velocity_bodyObject);
+    jfieldID angular_velocity_bodyField = env->GetFieldID(
+        clazz, "angularVelocityBody", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityBody;");
+    jobject angular_velocity_bodyObject =
+        env->GetObjectField(object, angular_velocity_bodyField);
+    angular_velocity_bodyValue =
+        std::make_unique<AngularVelocityBodyFromJava>(
+            env, angular_velocity_bodyObject);
+    value.angular_velocity_body = angular_velocity_bodyValue->value;
+    env->DeleteLocalRef(angular_velocity_bodyObject);
+    jfieldID pose_covarianceField = env->GetFieldID(
+        clazz, "poseCovariance", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Covariance;");
+    jobject pose_covarianceObject =
+        env->GetObjectField(object, pose_covarianceField);
+    pose_covarianceValue =
+        std::make_unique<CovarianceFromJava>(
+            env, pose_covarianceObject);
+    value.pose_covariance = pose_covarianceValue->value;
+    env->DeleteLocalRef(pose_covarianceObject);
+    jfieldID velocity_covarianceField = env->GetFieldID(
+        clazz, "velocityCovariance", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Covariance;");
+    jobject velocity_covarianceObject =
+        env->GetObjectField(object, velocity_covarianceField);
+    velocity_covarianceValue =
+        std::make_unique<CovarianceFromJava>(
+            env, velocity_covarianceObject);
+    value.velocity_covariance = velocity_covarianceValue->value;
+    env->DeleteLocalRef(velocity_covarianceObject);
+    env->DeleteLocalRef(clazz);
+}
+
+OdometryFromJava::~OdometryFromJava() = default;
+DistanceSensorFromJava::DistanceSensorFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID minimum_distance_mField = env->GetFieldID(
+        clazz, "minimumDistanceM", "F");
+    value.minimum_distance_m =
+        static_cast<float>(env->GetFloatField(object, minimum_distance_mField));
+    jfieldID maximum_distance_mField = env->GetFieldID(
+        clazz, "maximumDistanceM", "F");
+    value.maximum_distance_m =
+        static_cast<float>(env->GetFloatField(object, maximum_distance_mField));
+    jfieldID current_distance_mField = env->GetFieldID(
+        clazz, "currentDistanceM", "F");
+    value.current_distance_m =
+        static_cast<float>(env->GetFloatField(object, current_distance_mField));
+    jfieldID orientationField = env->GetFieldID(
+        clazz, "orientation", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$EulerAngle;");
+    jobject orientationObject =
+        env->GetObjectField(object, orientationField);
+    orientationValue =
+        std::make_unique<EulerAngleFromJava>(
+            env, orientationObject);
+    value.orientation = orientationValue->value;
+    env->DeleteLocalRef(orientationObject);
+    env->DeleteLocalRef(clazz);
+}
+
+DistanceSensorFromJava::~DistanceSensorFromJava() = default;
+ScaledPressureFromJava::ScaledPressureFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    jfieldID absolute_pressure_hpaField = env->GetFieldID(
+        clazz, "absolutePressureHpa", "F");
+    value.absolute_pressure_hpa =
+        static_cast<float>(env->GetFloatField(object, absolute_pressure_hpaField));
+    jfieldID differential_pressure_hpaField = env->GetFieldID(
+        clazz, "differentialPressureHpa", "F");
+    value.differential_pressure_hpa =
+        static_cast<float>(env->GetFloatField(object, differential_pressure_hpaField));
+    jfieldID temperature_degField = env->GetFieldID(
+        clazz, "temperatureDeg", "F");
+    value.temperature_deg =
+        static_cast<float>(env->GetFloatField(object, temperature_degField));
+    jfieldID differential_pressure_temperature_degField = env->GetFieldID(
+        clazz, "differentialPressureTemperatureDeg", "F");
+    value.differential_pressure_temperature_deg =
+        static_cast<float>(env->GetFloatField(object, differential_pressure_temperature_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+ScaledPressureFromJava::~ScaledPressureFromJava() = default;
+PositionNedFromJava::PositionNedFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID north_mField = env->GetFieldID(
+        clazz, "northM", "F");
+    value.north_m =
+        static_cast<float>(env->GetFloatField(object, north_mField));
+    jfieldID east_mField = env->GetFieldID(
+        clazz, "eastM", "F");
+    value.east_m =
+        static_cast<float>(env->GetFloatField(object, east_mField));
+    jfieldID down_mField = env->GetFieldID(
+        clazz, "downM", "F");
+    value.down_m =
+        static_cast<float>(env->GetFloatField(object, down_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionNedFromJava::~PositionNedFromJava() = default;
+VelocityNedFromJava::VelocityNedFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID north_m_sField = env->GetFieldID(
+        clazz, "northMS", "F");
+    value.north_m_s =
+        static_cast<float>(env->GetFloatField(object, north_m_sField));
+    jfieldID east_m_sField = env->GetFieldID(
+        clazz, "eastMS", "F");
+    value.east_m_s =
+        static_cast<float>(env->GetFloatField(object, east_m_sField));
+    jfieldID down_m_sField = env->GetFieldID(
+        clazz, "downMS", "F");
+    value.down_m_s =
+        static_cast<float>(env->GetFloatField(object, down_m_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+VelocityNedFromJava::~VelocityNedFromJava() = default;
+PositionVelocityNedFromJava::PositionVelocityNedFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID positionField = env->GetFieldID(
+        clazz, "position", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionNed;");
+    jobject positionObject =
+        env->GetObjectField(object, positionField);
+    positionValue =
+        std::make_unique<PositionNedFromJava>(
+            env, positionObject);
+    value.position = positionValue->value;
+    env->DeleteLocalRef(positionObject);
+    jfieldID velocityField = env->GetFieldID(
+        clazz, "velocity", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityNed;");
+    jobject velocityObject =
+        env->GetObjectField(object, velocityField);
+    velocityValue =
+        std::make_unique<VelocityNedFromJava>(
+            env, velocityObject);
+    value.velocity = velocityValue->value;
+    env->DeleteLocalRef(velocityObject);
+    env->DeleteLocalRef(clazz);
+}
+
+PositionVelocityNedFromJava::~PositionVelocityNedFromJava() = default;
+GroundTruthFromJava::GroundTruthFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+GroundTruthFromJava::~GroundTruthFromJava() = default;
+FixedwingMetricsFromJava::FixedwingMetricsFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID airspeed_m_sField = env->GetFieldID(
+        clazz, "airspeedMS", "F");
+    value.airspeed_m_s =
+        static_cast<float>(env->GetFloatField(object, airspeed_m_sField));
+    jfieldID throttle_percentageField = env->GetFieldID(
+        clazz, "throttlePercentage", "F");
+    value.throttle_percentage =
+        static_cast<float>(env->GetFloatField(object, throttle_percentageField));
+    jfieldID climb_rate_m_sField = env->GetFieldID(
+        clazz, "climbRateMS", "F");
+    value.climb_rate_m_s =
+        static_cast<float>(env->GetFloatField(object, climb_rate_m_sField));
+    jfieldID groundspeed_m_sField = env->GetFieldID(
+        clazz, "groundspeedMS", "F");
+    value.groundspeed_m_s =
+        static_cast<float>(env->GetFloatField(object, groundspeed_m_sField));
+    jfieldID heading_degField = env->GetFieldID(
+        clazz, "headingDeg", "F");
+    value.heading_deg =
+        static_cast<float>(env->GetFloatField(object, heading_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+FixedwingMetricsFromJava::~FixedwingMetricsFromJava() = default;
+AccelerationFrdFromJava::AccelerationFrdFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID forward_m_s2Field = env->GetFieldID(
+        clazz, "forwardMS2", "F");
+    value.forward_m_s2 =
+        static_cast<float>(env->GetFloatField(object, forward_m_s2Field));
+    jfieldID right_m_s2Field = env->GetFieldID(
+        clazz, "rightMS2", "F");
+    value.right_m_s2 =
+        static_cast<float>(env->GetFloatField(object, right_m_s2Field));
+    jfieldID down_m_s2Field = env->GetFieldID(
+        clazz, "downMS2", "F");
+    value.down_m_s2 =
+        static_cast<float>(env->GetFloatField(object, down_m_s2Field));
+    env->DeleteLocalRef(clazz);
+}
+
+AccelerationFrdFromJava::~AccelerationFrdFromJava() = default;
+AngularVelocityFrdFromJava::AngularVelocityFrdFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID forward_rad_sField = env->GetFieldID(
+        clazz, "forwardRadS", "F");
+    value.forward_rad_s =
+        static_cast<float>(env->GetFloatField(object, forward_rad_sField));
+    jfieldID right_rad_sField = env->GetFieldID(
+        clazz, "rightRadS", "F");
+    value.right_rad_s =
+        static_cast<float>(env->GetFloatField(object, right_rad_sField));
+    jfieldID down_rad_sField = env->GetFieldID(
+        clazz, "downRadS", "F");
+    value.down_rad_s =
+        static_cast<float>(env->GetFloatField(object, down_rad_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+AngularVelocityFrdFromJava::~AngularVelocityFrdFromJava() = default;
+MagneticFieldFrdFromJava::MagneticFieldFrdFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID forward_gaussField = env->GetFieldID(
+        clazz, "forwardGauss", "F");
+    value.forward_gauss =
+        static_cast<float>(env->GetFloatField(object, forward_gaussField));
+    jfieldID right_gaussField = env->GetFieldID(
+        clazz, "rightGauss", "F");
+    value.right_gauss =
+        static_cast<float>(env->GetFloatField(object, right_gaussField));
+    jfieldID down_gaussField = env->GetFieldID(
+        clazz, "downGauss", "F");
+    value.down_gauss =
+        static_cast<float>(env->GetFloatField(object, down_gaussField));
+    env->DeleteLocalRef(clazz);
+}
+
+MagneticFieldFrdFromJava::~MagneticFieldFrdFromJava() = default;
+ImuFromJava::ImuFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID acceleration_frdField = env->GetFieldID(
+        clazz, "accelerationFrd", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$AccelerationFrd;");
+    jobject acceleration_frdObject =
+        env->GetObjectField(object, acceleration_frdField);
+    acceleration_frdValue =
+        std::make_unique<AccelerationFrdFromJava>(
+            env, acceleration_frdObject);
+    value.acceleration_frd = acceleration_frdValue->value;
+    env->DeleteLocalRef(acceleration_frdObject);
+    jfieldID angular_velocity_frdField = env->GetFieldID(
+        clazz, "angularVelocityFrd", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityFrd;");
+    jobject angular_velocity_frdObject =
+        env->GetObjectField(object, angular_velocity_frdField);
+    angular_velocity_frdValue =
+        std::make_unique<AngularVelocityFrdFromJava>(
+            env, angular_velocity_frdObject);
+    value.angular_velocity_frd = angular_velocity_frdValue->value;
+    env->DeleteLocalRef(angular_velocity_frdObject);
+    jfieldID magnetic_field_frdField = env->GetFieldID(
+        clazz, "magneticFieldFrd", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$MagneticFieldFrd;");
+    jobject magnetic_field_frdObject =
+        env->GetObjectField(object, magnetic_field_frdField);
+    magnetic_field_frdValue =
+        std::make_unique<MagneticFieldFrdFromJava>(
+            env, magnetic_field_frdObject);
+    value.magnetic_field_frd = magnetic_field_frdValue->value;
+    env->DeleteLocalRef(magnetic_field_frdObject);
+    jfieldID temperature_degcField = env->GetFieldID(
+        clazz, "temperatureDegc", "F");
+    value.temperature_degc =
+        static_cast<float>(env->GetFloatField(object, temperature_degcField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    env->DeleteLocalRef(clazz);
+}
+
+ImuFromJava::~ImuFromJava() = default;
+GpsGlobalOriginFromJava::GpsGlobalOriginFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID altitude_mField = env->GetFieldID(
+        clazz, "altitudeM", "F");
+    value.altitude_m =
+        static_cast<float>(env->GetFloatField(object, altitude_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+GpsGlobalOriginFromJava::~GpsGlobalOriginFromJava() = default;
+AltitudeFromJava::AltitudeFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID altitude_monotonic_mField = env->GetFieldID(
+        clazz, "altitudeMonotonicM", "F");
+    value.altitude_monotonic_m =
+        static_cast<float>(env->GetFloatField(object, altitude_monotonic_mField));
+    jfieldID altitude_amsl_mField = env->GetFieldID(
+        clazz, "altitudeAmslM", "F");
+    value.altitude_amsl_m =
+        static_cast<float>(env->GetFloatField(object, altitude_amsl_mField));
+    jfieldID altitude_local_mField = env->GetFieldID(
+        clazz, "altitudeLocalM", "F");
+    value.altitude_local_m =
+        static_cast<float>(env->GetFloatField(object, altitude_local_mField));
+    jfieldID altitude_relative_mField = env->GetFieldID(
+        clazz, "altitudeRelativeM", "F");
+    value.altitude_relative_m =
+        static_cast<float>(env->GetFloatField(object, altitude_relative_mField));
+    jfieldID altitude_terrain_mField = env->GetFieldID(
+        clazz, "altitudeTerrainM", "F");
+    value.altitude_terrain_m =
+        static_cast<float>(env->GetFloatField(object, altitude_terrain_mField));
+    jfieldID bottom_clearance_mField = env->GetFieldID(
+        clazz, "bottomClearanceM", "F");
+    value.bottom_clearance_m =
+        static_cast<float>(env->GetFloatField(object, bottom_clearance_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+AltitudeFromJava::~AltitudeFromJava() = default;
+WindFromJava::WindFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID wind_x_ned_m_sField = env->GetFieldID(
+        clazz, "windXNedMS", "F");
+    value.wind_x_ned_m_s =
+        static_cast<float>(env->GetFloatField(object, wind_x_ned_m_sField));
+    jfieldID wind_y_ned_m_sField = env->GetFieldID(
+        clazz, "windYNedMS", "F");
+    value.wind_y_ned_m_s =
+        static_cast<float>(env->GetFloatField(object, wind_y_ned_m_sField));
+    jfieldID wind_z_ned_m_sField = env->GetFieldID(
+        clazz, "windZNedMS", "F");
+    value.wind_z_ned_m_s =
+        static_cast<float>(env->GetFloatField(object, wind_z_ned_m_sField));
+    jfieldID horizontal_variability_stddev_m_sField = env->GetFieldID(
+        clazz, "horizontalVariabilityStddevMS", "F");
+    value.horizontal_variability_stddev_m_s =
+        static_cast<float>(env->GetFloatField(object, horizontal_variability_stddev_m_sField));
+    jfieldID vertical_variability_stddev_m_sField = env->GetFieldID(
+        clazz, "verticalVariabilityStddevMS", "F");
+    value.vertical_variability_stddev_m_s =
+        static_cast<float>(env->GetFloatField(object, vertical_variability_stddev_m_sField));
+    jfieldID wind_altitude_msl_mField = env->GetFieldID(
+        clazz, "windAltitudeMslM", "F");
+    value.wind_altitude_msl_m =
+        static_cast<float>(env->GetFloatField(object, wind_altitude_msl_mField));
+    jfieldID horizontal_wind_speed_accuracy_m_sField = env->GetFieldID(
+        clazz, "horizontalWindSpeedAccuracyMS", "F");
+    value.horizontal_wind_speed_accuracy_m_s =
+        static_cast<float>(env->GetFloatField(object, horizontal_wind_speed_accuracy_m_sField));
+    jfieldID vertical_wind_speed_accuracy_m_sField = env->GetFieldID(
+        clazz, "verticalWindSpeedAccuracyMS", "F");
+    value.vertical_wind_speed_accuracy_m_s =
+        static_cast<float>(env->GetFloatField(object, vertical_wind_speed_accuracy_m_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+WindFromJava::~WindFromJava() = default;
+
+jobject toJavaPosition(
+    JNIEnv* env, const mavsdk_telemetry_position_t& value);
+jobjectArray toJavaPositionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_position_t* values,
+    size_t count);
+jobject toJavaHeading(
+    JNIEnv* env, const mavsdk_telemetry_heading_t& value);
+jobjectArray toJavaHeadingArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_heading_t* values,
+    size_t count);
+jobject toJavaQuaternion(
+    JNIEnv* env, const mavsdk_telemetry_quaternion_t& value);
+jobjectArray toJavaQuaternionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_quaternion_t* values,
+    size_t count);
+jobject toJavaEulerAngle(
+    JNIEnv* env, const mavsdk_telemetry_euler_angle_t& value);
+jobjectArray toJavaEulerAngleArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_euler_angle_t* values,
+    size_t count);
+jobject toJavaAngularVelocityBody(
+    JNIEnv* env, const mavsdk_telemetry_angular_velocity_body_t& value);
+jobjectArray toJavaAngularVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_angular_velocity_body_t* values,
+    size_t count);
+jobject toJavaGpsInfo(
+    JNIEnv* env, const mavsdk_telemetry_gps_info_t& value);
+jobjectArray toJavaGpsInfoArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_gps_info_t* values,
+    size_t count);
+jobject toJavaRawGps(
+    JNIEnv* env, const mavsdk_telemetry_raw_gps_t& value);
+jobjectArray toJavaRawGpsArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_raw_gps_t* values,
+    size_t count);
+jobject toJavaBattery(
+    JNIEnv* env, const mavsdk_telemetry_battery_t& value);
+jobjectArray toJavaBatteryArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_battery_t* values,
+    size_t count);
+jobject toJavaHealth(
+    JNIEnv* env, const mavsdk_telemetry_health_t& value);
+jobjectArray toJavaHealthArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_health_t* values,
+    size_t count);
+jobject toJavaRcStatus(
+    JNIEnv* env, const mavsdk_telemetry_rc_status_t& value);
+jobjectArray toJavaRcStatusArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_rc_status_t* values,
+    size_t count);
+jobject toJavaStatusText(
+    JNIEnv* env, const mavsdk_telemetry_status_text_t& value);
+jobjectArray toJavaStatusTextArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_status_text_t* values,
+    size_t count);
+jobject toJavaActuatorControlTarget(
+    JNIEnv* env, const mavsdk_telemetry_actuator_control_target_t& value);
+jobjectArray toJavaActuatorControlTargetArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_actuator_control_target_t* values,
+    size_t count);
+jobject toJavaActuatorOutputStatus(
+    JNIEnv* env, const mavsdk_telemetry_actuator_output_status_t& value);
+jobjectArray toJavaActuatorOutputStatusArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_actuator_output_status_t* values,
+    size_t count);
+jobject toJavaCovariance(
+    JNIEnv* env, const mavsdk_telemetry_covariance_t& value);
+jobjectArray toJavaCovarianceArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_covariance_t* values,
+    size_t count);
+jobject toJavaVelocityBody(
+    JNIEnv* env, const mavsdk_telemetry_velocity_body_t& value);
+jobjectArray toJavaVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_velocity_body_t* values,
+    size_t count);
+jobject toJavaPositionBody(
+    JNIEnv* env, const mavsdk_telemetry_position_body_t& value);
+jobjectArray toJavaPositionBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_position_body_t* values,
+    size_t count);
+jobject toJavaOdometry(
+    JNIEnv* env, const mavsdk_telemetry_odometry_t& value);
+jobjectArray toJavaOdometryArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_odometry_t* values,
+    size_t count);
+jobject toJavaDistanceSensor(
+    JNIEnv* env, const mavsdk_telemetry_distance_sensor_t& value);
+jobjectArray toJavaDistanceSensorArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_distance_sensor_t* values,
+    size_t count);
+jobject toJavaScaledPressure(
+    JNIEnv* env, const mavsdk_telemetry_scaled_pressure_t& value);
+jobjectArray toJavaScaledPressureArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_scaled_pressure_t* values,
+    size_t count);
+jobject toJavaPositionNed(
+    JNIEnv* env, const mavsdk_telemetry_position_ned_t& value);
+jobjectArray toJavaPositionNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_position_ned_t* values,
+    size_t count);
+jobject toJavaVelocityNed(
+    JNIEnv* env, const mavsdk_telemetry_velocity_ned_t& value);
+jobjectArray toJavaVelocityNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_velocity_ned_t* values,
+    size_t count);
+jobject toJavaPositionVelocityNed(
+    JNIEnv* env, const mavsdk_telemetry_position_velocity_ned_t& value);
+jobjectArray toJavaPositionVelocityNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_position_velocity_ned_t* values,
+    size_t count);
+jobject toJavaGroundTruth(
+    JNIEnv* env, const mavsdk_telemetry_ground_truth_t& value);
+jobjectArray toJavaGroundTruthArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_ground_truth_t* values,
+    size_t count);
+jobject toJavaFixedwingMetrics(
+    JNIEnv* env, const mavsdk_telemetry_fixedwing_metrics_t& value);
+jobjectArray toJavaFixedwingMetricsArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_fixedwing_metrics_t* values,
+    size_t count);
+jobject toJavaAccelerationFrd(
+    JNIEnv* env, const mavsdk_telemetry_acceleration_frd_t& value);
+jobjectArray toJavaAccelerationFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_acceleration_frd_t* values,
+    size_t count);
+jobject toJavaAngularVelocityFrd(
+    JNIEnv* env, const mavsdk_telemetry_angular_velocity_frd_t& value);
+jobjectArray toJavaAngularVelocityFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_angular_velocity_frd_t* values,
+    size_t count);
+jobject toJavaMagneticFieldFrd(
+    JNIEnv* env, const mavsdk_telemetry_magnetic_field_frd_t& value);
+jobjectArray toJavaMagneticFieldFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_magnetic_field_frd_t* values,
+    size_t count);
+jobject toJavaImu(
+    JNIEnv* env, const mavsdk_telemetry_imu_t& value);
+jobjectArray toJavaImuArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_imu_t* values,
+    size_t count);
+jobject toJavaGpsGlobalOrigin(
+    JNIEnv* env, const mavsdk_telemetry_gps_global_origin_t& value);
+jobjectArray toJavaGpsGlobalOriginArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_gps_global_origin_t* values,
+    size_t count);
+jobject toJavaAltitude(
+    JNIEnv* env, const mavsdk_telemetry_altitude_t& value);
+jobjectArray toJavaAltitudeArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_altitude_t* values,
+    size_t count);
+jobject toJavaWind(
+    JNIEnv* env, const mavsdk_telemetry_wind_t& value);
+jobjectArray toJavaWindArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_wind_t* values,
+    size_t count);
+
+jobject toJavaPosition(
+    JNIEnv* env, const mavsdk_telemetry_position_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Position");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jfloat>(value.relative_altitude_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_position_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Position");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPosition(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaHeading(
+    JNIEnv* env, const mavsdk_telemetry_heading_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Heading");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(D)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.heading_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaHeadingArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_heading_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Heading");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaHeading(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaQuaternion(
+    JNIEnv* env, const mavsdk_telemetry_quaternion_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Quaternion");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFFJ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.w)
+        , static_cast<jfloat>(value.x)
+        , static_cast<jfloat>(value.y)
+        , static_cast<jfloat>(value.z)
+        , static_cast<jlong>(value.timestamp_us)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaQuaternionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_quaternion_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Quaternion");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaQuaternion(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaEulerAngle(
+    JNIEnv* env, const mavsdk_telemetry_euler_angle_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$EulerAngle");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFJ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.roll_deg)
+        , static_cast<jfloat>(value.pitch_deg)
+        , static_cast<jfloat>(value.yaw_deg)
+        , static_cast<jlong>(value.timestamp_us)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaEulerAngleArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_euler_angle_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$EulerAngle");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaEulerAngle(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAngularVelocityBody(
+    JNIEnv* env, const mavsdk_telemetry_angular_velocity_body_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityBody");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.roll_rad_s)
+        , static_cast<jfloat>(value.pitch_rad_s)
+        , static_cast<jfloat>(value.yaw_rad_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAngularVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_angular_velocity_body_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityBody");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAngularVelocityBody(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaGpsInfo(
+    JNIEnv* env, const mavsdk_telemetry_gps_info_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$GpsInfo");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(II)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.num_satellites)
+        , static_cast<jint>(value.fix_type)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaGpsInfoArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_gps_info_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$GpsInfo");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaGpsInfo(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaRawGps(
+    JNIEnv* env, const mavsdk_telemetry_raw_gps_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$RawGps");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JDDFFFFFFFFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jlong>(value.timestamp_us)
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jfloat>(value.hdop)
+        , static_cast<jfloat>(value.vdop)
+        , static_cast<jfloat>(value.velocity_m_s)
+        , static_cast<jfloat>(value.cog_deg)
+        , static_cast<jfloat>(value.altitude_ellipsoid_m)
+        , static_cast<jfloat>(value.horizontal_uncertainty_m)
+        , static_cast<jfloat>(value.vertical_uncertainty_m)
+        , static_cast<jfloat>(value.velocity_uncertainty_m_s)
+        , static_cast<jfloat>(value.heading_uncertainty_deg)
+        , static_cast<jfloat>(value.yaw_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaRawGpsArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_raw_gps_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$RawGps");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaRawGps(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaBattery(
+    JNIEnv* env, const mavsdk_telemetry_battery_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Battery");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(IFFFFFFI)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.id)
+        , static_cast<jfloat>(value.temperature_degc)
+        , static_cast<jfloat>(value.voltage_v)
+        , static_cast<jfloat>(value.current_battery_a)
+        , static_cast<jfloat>(value.capacity_consumed_ah)
+        , static_cast<jfloat>(value.remaining_percent)
+        , static_cast<jfloat>(value.time_remaining_s)
+        , static_cast<jint>(value.battery_function)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaBatteryArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_battery_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Battery");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaBattery(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaHealth(
+    JNIEnv* env, const mavsdk_telemetry_health_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Health");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZZZZZZZ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.is_gyrometer_calibration_ok)
+        , static_cast<jboolean>(value.is_accelerometer_calibration_ok)
+        , static_cast<jboolean>(value.is_magnetometer_calibration_ok)
+        , static_cast<jboolean>(value.is_local_position_ok)
+        , static_cast<jboolean>(value.is_global_position_ok)
+        , static_cast<jboolean>(value.is_home_position_ok)
+        , static_cast<jboolean>(value.is_armable)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaHealthArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_health_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Health");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaHealth(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaRcStatus(
+    JNIEnv* env, const mavsdk_telemetry_rc_status_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$RcStatus");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZZF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.was_available_once)
+        , static_cast<jboolean>(value.is_available)
+        , static_cast<jfloat>(value.signal_strength_percent)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaRcStatusArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_rc_status_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$RcStatus");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaRcStatus(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaStatusText(
+    JNIEnv* env, const mavsdk_telemetry_status_text_t& value) {
+    jstring textValue =
+        toJavaString(env, value.text);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$StatusText");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILjava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.type)
+        , textValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(textValue);
+    return result;
+}
+
+jobjectArray toJavaStatusTextArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_status_text_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$StatusText");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaStatusText(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaActuatorControlTarget(
+    JNIEnv* env, const mavsdk_telemetry_actuator_control_target_t& value) {
+    jfloatArray controlsValue =
+        env->NewFloatArray(
+            static_cast<jsize>(value.controls_size));
+    std::vector<jfloat> controlsJavaValues;
+    controlsJavaValues.reserve(value.controls_size);
+    for (size_t i = 0; i < value.controls_size; ++i) {
+        controlsJavaValues.push_back(
+            static_cast<jfloat>(value.controls[i]));
+    }
+    if (!controlsJavaValues.empty()) {
+        env->SetFloatArrayRegion(
+            controlsValue, 0,
+            static_cast<jsize>(controlsJavaValues.size()),
+            controlsJavaValues.data());
+    }
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$ActuatorControlTarget");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(I[F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.group)
+        , controlsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(controlsValue);
+    return result;
+}
+
+jobjectArray toJavaActuatorControlTargetArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_actuator_control_target_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$ActuatorControlTarget");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaActuatorControlTarget(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaActuatorOutputStatus(
+    JNIEnv* env, const mavsdk_telemetry_actuator_output_status_t& value) {
+    jfloatArray actuatorValue =
+        env->NewFloatArray(
+            static_cast<jsize>(value.actuator_size));
+    std::vector<jfloat> actuatorJavaValues;
+    actuatorJavaValues.reserve(value.actuator_size);
+    for (size_t i = 0; i < value.actuator_size; ++i) {
+        actuatorJavaValues.push_back(
+            static_cast<jfloat>(value.actuator[i]));
+    }
+    if (!actuatorJavaValues.empty()) {
+        env->SetFloatArrayRegion(
+            actuatorValue, 0,
+            static_cast<jsize>(actuatorJavaValues.size()),
+            actuatorJavaValues.data());
+    }
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$ActuatorOutputStatus");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(I[F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.active)
+        , actuatorValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(actuatorValue);
+    return result;
+}
+
+jobjectArray toJavaActuatorOutputStatusArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_actuator_output_status_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$ActuatorOutputStatus");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaActuatorOutputStatus(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaCovariance(
+    JNIEnv* env, const mavsdk_telemetry_covariance_t& value) {
+    jfloatArray covariance_matrixValue =
+        env->NewFloatArray(
+            static_cast<jsize>(value.covariance_matrix_size));
+    std::vector<jfloat> covariance_matrixJavaValues;
+    covariance_matrixJavaValues.reserve(value.covariance_matrix_size);
+    for (size_t i = 0; i < value.covariance_matrix_size; ++i) {
+        covariance_matrixJavaValues.push_back(
+            static_cast<jfloat>(value.covariance_matrix[i]));
+    }
+    if (!covariance_matrixJavaValues.empty()) {
+        env->SetFloatArrayRegion(
+            covariance_matrixValue, 0,
+            static_cast<jsize>(covariance_matrixJavaValues.size()),
+            covariance_matrixJavaValues.data());
+    }
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Covariance");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , covariance_matrixValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(covariance_matrixValue);
+    return result;
+}
+
+jobjectArray toJavaCovarianceArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_covariance_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Covariance");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaCovariance(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaVelocityBody(
+    JNIEnv* env, const mavsdk_telemetry_velocity_body_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityBody");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.x_m_s)
+        , static_cast<jfloat>(value.y_m_s)
+        , static_cast<jfloat>(value.z_m_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_velocity_body_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityBody");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaVelocityBody(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPositionBody(
+    JNIEnv* env, const mavsdk_telemetry_position_body_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionBody");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.x_m)
+        , static_cast<jfloat>(value.y_m)
+        , static_cast<jfloat>(value.z_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionBodyArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_position_body_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionBody");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPositionBody(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaOdometry(
+    JNIEnv* env, const mavsdk_telemetry_odometry_t& value) {
+    jobject position_bodyValue =
+        toJavaPositionBody(env, value.position_body);
+    jobject qValue =
+        toJavaQuaternion(env, value.q);
+    jobject velocity_bodyValue =
+        toJavaVelocityBody(env, value.velocity_body);
+    jobject angular_velocity_bodyValue =
+        toJavaAngularVelocityBody(env, value.angular_velocity_body);
+    jobject pose_covarianceValue =
+        toJavaCovariance(env, value.pose_covariance);
+    jobject velocity_covarianceValue =
+        toJavaCovariance(env, value.velocity_covariance);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Odometry");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JIILio/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionBody;Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Quaternion;Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityBody;Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityBody;Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Covariance;Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Covariance;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jlong>(value.time_usec)
+        , static_cast<jint>(value.frame_id)
+        , static_cast<jint>(value.child_frame_id)
+        , position_bodyValue
+        , qValue
+        , velocity_bodyValue
+        , angular_velocity_bodyValue
+        , pose_covarianceValue
+        , velocity_covarianceValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(position_bodyValue);
+    env->DeleteLocalRef(qValue);
+    env->DeleteLocalRef(velocity_bodyValue);
+    env->DeleteLocalRef(angular_velocity_bodyValue);
+    env->DeleteLocalRef(pose_covarianceValue);
+    env->DeleteLocalRef(velocity_covarianceValue);
+    return result;
+}
+
+jobjectArray toJavaOdometryArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_odometry_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Odometry");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaOdometry(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaDistanceSensor(
+    JNIEnv* env, const mavsdk_telemetry_distance_sensor_t& value) {
+    jobject orientationValue =
+        toJavaEulerAngle(env, value.orientation);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$DistanceSensor");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFLio/mavsdk/jni/plugins/telemetry/NativeTelemetry$EulerAngle;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.minimum_distance_m)
+        , static_cast<jfloat>(value.maximum_distance_m)
+        , static_cast<jfloat>(value.current_distance_m)
+        , orientationValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(orientationValue);
+    return result;
+}
+
+jobjectArray toJavaDistanceSensorArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_distance_sensor_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$DistanceSensor");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaDistanceSensor(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaScaledPressure(
+    JNIEnv* env, const mavsdk_telemetry_scaled_pressure_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$ScaledPressure");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jlong>(value.timestamp_us)
+        , static_cast<jfloat>(value.absolute_pressure_hpa)
+        , static_cast<jfloat>(value.differential_pressure_hpa)
+        , static_cast<jfloat>(value.temperature_deg)
+        , static_cast<jfloat>(value.differential_pressure_temperature_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaScaledPressureArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_scaled_pressure_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$ScaledPressure");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaScaledPressure(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPositionNed(
+    JNIEnv* env, const mavsdk_telemetry_position_ned_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionNed");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.north_m)
+        , static_cast<jfloat>(value.east_m)
+        , static_cast<jfloat>(value.down_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_position_ned_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionNed");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPositionNed(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaVelocityNed(
+    JNIEnv* env, const mavsdk_telemetry_velocity_ned_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityNed");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.north_m_s)
+        , static_cast<jfloat>(value.east_m_s)
+        , static_cast<jfloat>(value.down_m_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaVelocityNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_velocity_ned_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityNed");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaVelocityNed(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPositionVelocityNed(
+    JNIEnv* env, const mavsdk_telemetry_position_velocity_ned_t& value) {
+    jobject positionValue =
+        toJavaPositionNed(env, value.position);
+    jobject velocityValue =
+        toJavaVelocityNed(env, value.velocity);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionVelocityNed");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionNed;Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityNed;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , positionValue
+        , velocityValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(positionValue);
+    env->DeleteLocalRef(velocityValue);
+    return result;
+}
+
+jobjectArray toJavaPositionVelocityNedArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_position_velocity_ned_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionVelocityNed");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPositionVelocityNed(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaGroundTruth(
+    JNIEnv* env, const mavsdk_telemetry_ground_truth_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$GroundTruth");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaGroundTruthArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_ground_truth_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$GroundTruth");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaGroundTruth(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaFixedwingMetrics(
+    JNIEnv* env, const mavsdk_telemetry_fixedwing_metrics_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$FixedwingMetrics");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.airspeed_m_s)
+        , static_cast<jfloat>(value.throttle_percentage)
+        , static_cast<jfloat>(value.climb_rate_m_s)
+        , static_cast<jfloat>(value.groundspeed_m_s)
+        , static_cast<jfloat>(value.heading_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaFixedwingMetricsArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_fixedwing_metrics_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$FixedwingMetrics");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaFixedwingMetrics(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAccelerationFrd(
+    JNIEnv* env, const mavsdk_telemetry_acceleration_frd_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$AccelerationFrd");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.forward_m_s2)
+        , static_cast<jfloat>(value.right_m_s2)
+        , static_cast<jfloat>(value.down_m_s2)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAccelerationFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_acceleration_frd_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$AccelerationFrd");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAccelerationFrd(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAngularVelocityFrd(
+    JNIEnv* env, const mavsdk_telemetry_angular_velocity_frd_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityFrd");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.forward_rad_s)
+        , static_cast<jfloat>(value.right_rad_s)
+        , static_cast<jfloat>(value.down_rad_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAngularVelocityFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_angular_velocity_frd_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityFrd");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAngularVelocityFrd(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaMagneticFieldFrd(
+    JNIEnv* env, const mavsdk_telemetry_magnetic_field_frd_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$MagneticFieldFrd");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.forward_gauss)
+        , static_cast<jfloat>(value.right_gauss)
+        , static_cast<jfloat>(value.down_gauss)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaMagneticFieldFrdArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_magnetic_field_frd_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$MagneticFieldFrd");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMagneticFieldFrd(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaImu(
+    JNIEnv* env, const mavsdk_telemetry_imu_t& value) {
+    jobject acceleration_frdValue =
+        toJavaAccelerationFrd(env, value.acceleration_frd);
+    jobject angular_velocity_frdValue =
+        toJavaAngularVelocityFrd(env, value.angular_velocity_frd);
+    jobject magnetic_field_frdValue =
+        toJavaMagneticFieldFrd(env, value.magnetic_field_frd);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Imu");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$AccelerationFrd;Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityFrd;Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$MagneticFieldFrd;FJ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , acceleration_frdValue
+        , angular_velocity_frdValue
+        , magnetic_field_frdValue
+        , static_cast<jfloat>(value.temperature_degc)
+        , static_cast<jlong>(value.timestamp_us)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(acceleration_frdValue);
+    env->DeleteLocalRef(angular_velocity_frdValue);
+    env->DeleteLocalRef(magnetic_field_frdValue);
+    return result;
+}
+
+jobjectArray toJavaImuArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_imu_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Imu");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaImu(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaGpsGlobalOrigin(
+    JNIEnv* env, const mavsdk_telemetry_gps_global_origin_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$GpsGlobalOrigin");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.altitude_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaGpsGlobalOriginArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_gps_global_origin_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$GpsGlobalOrigin");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaGpsGlobalOrigin(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAltitude(
+    JNIEnv* env, const mavsdk_telemetry_altitude_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Altitude");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.altitude_monotonic_m)
+        , static_cast<jfloat>(value.altitude_amsl_m)
+        , static_cast<jfloat>(value.altitude_local_m)
+        , static_cast<jfloat>(value.altitude_relative_m)
+        , static_cast<jfloat>(value.altitude_terrain_m)
+        , static_cast<jfloat>(value.bottom_clearance_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAltitudeArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_altitude_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Altitude");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAltitude(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaWind(
+    JNIEnv* env, const mavsdk_telemetry_wind_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Wind");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFFFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.wind_x_ned_m_s)
+        , static_cast<jfloat>(value.wind_y_ned_m_s)
+        , static_cast<jfloat>(value.wind_z_ned_m_s)
+        , static_cast<jfloat>(value.horizontal_variability_stddev_m_s)
+        , static_cast<jfloat>(value.vertical_variability_stddev_m_s)
+        , static_cast<jfloat>(value.wind_altitude_msl_m)
+        , static_cast<jfloat>(value.horizontal_wind_speed_accuracy_m_s)
+        , static_cast<jfloat>(value.vertical_wind_speed_accuracy_m_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaWindArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_wind_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry/NativeTelemetry$Wind");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaWind(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct PositionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    PositionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    PositionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Position;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Position;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_position_t value) const {
+    void operator()(
+        const mavsdk_telemetry_position_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jfloat>(value.absolute_altitude_m)            , static_cast<jfloat>(value.relative_altitude_m)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaPosition(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Home Callback Wrapper =====
 struct HomeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    HomeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    HomeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Position;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Position;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_position_t value) const {
+    void operator()(
+        const mavsdk_telemetry_position_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jfloat>(value.absolute_altitude_m)            , static_cast<jfloat>(value.relative_altitude_m)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaPosition(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== InAir Callback Wrapper =====
 struct InAirCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    InAirCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    InAirCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Z)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const bool value) const {
+    void operator()(
+        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jboolean>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== LandedState Callback Wrapper =====
 struct LandedStateCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    LandedStateCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    LandedStateCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_landed_state_t value) const {
+    void operator()(
+        const mavsdk_telemetry_landed_state_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Armed Callback Wrapper =====
 struct ArmedCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ArmedCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ArmedCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Z)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const bool value) const {
+    void operator()(
+        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jboolean>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== VtolState Callback Wrapper =====
 struct VtolStateCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    VtolStateCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    VtolStateCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_vtol_state_t value) const {
+    void operator()(
+        const mavsdk_telemetry_vtol_state_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== AttitudeQuaternion Callback Wrapper =====
 struct AttitudeQuaternionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    AttitudeQuaternionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    AttitudeQuaternionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Quaternion;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_quaternion_t value) const {
+    void operator()(
+        const mavsdk_telemetry_quaternion_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.w)            , static_cast<jfloat>(value.x)            , static_cast<jfloat>(value.y)            , static_cast<jfloat>(value.z)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaQuaternion(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== AttitudeEuler Callback Wrapper =====
 struct AttitudeEulerCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    AttitudeEulerCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    AttitudeEulerCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$EulerAngle;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_euler_angle_t value) const {
+    void operator()(
+        const mavsdk_telemetry_euler_angle_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.roll_deg)            , static_cast<jfloat>(value.pitch_deg)            , static_cast<jfloat>(value.yaw_deg)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaEulerAngle(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== AttitudeAngularVelocityBody Callback Wrapper =====
 struct AttitudeAngularVelocityBodyCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    AttitudeAngularVelocityBodyCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    AttitudeAngularVelocityBodyCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$AngularVelocityBody;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_angular_velocity_body_t value) const {
+    void operator()(
+        const mavsdk_telemetry_angular_velocity_body_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.roll_rad_s)            , static_cast<jfloat>(value.pitch_rad_s)            , static_cast<jfloat>(value.yaw_rad_s)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaAngularVelocityBody(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== VelocityNed Callback Wrapper =====
 struct VelocityNedCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    VelocityNedCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    VelocityNedCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$VelocityNed;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_velocity_ned_t value) const {
+    void operator()(
+        const mavsdk_telemetry_velocity_ned_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.north_m_s)            , static_cast<jfloat>(value.east_m_s)            , static_cast<jfloat>(value.down_m_s)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaVelocityNed(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== GpsInfo Callback Wrapper =====
 struct GpsInfoCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GpsInfoCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GpsInfoCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsInfo;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$GpsInfo;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_gps_info_t value) const {
+    void operator()(
+        const mavsdk_telemetry_gps_info_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsInfo");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.num_satellites)            , static_cast<jint>(value.fix_type)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaGpsInfo(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== RawGps Callback Wrapper =====
 struct RawGpsCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RawGpsCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RawGpsCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$RawGps;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$RawGps;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_raw_gps_t value) const {
+    void operator()(
+        const mavsdk_telemetry_raw_gps_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RawGps");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JDDFFFFFFFFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.timestamp_us)            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jfloat>(value.absolute_altitude_m)            , static_cast<jfloat>(value.hdop)            , static_cast<jfloat>(value.vdop)            , static_cast<jfloat>(value.velocity_m_s)            , static_cast<jfloat>(value.cog_deg)            , static_cast<jfloat>(value.altitude_ellipsoid_m)            , static_cast<jfloat>(value.horizontal_uncertainty_m)            , static_cast<jfloat>(value.vertical_uncertainty_m)            , static_cast<jfloat>(value.velocity_uncertainty_m_s)            , static_cast<jfloat>(value.heading_uncertainty_deg)            , static_cast<jfloat>(value.yaw_deg)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaRawGps(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Battery Callback Wrapper =====
 struct BatteryCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    BatteryCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    BatteryCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Battery;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Battery;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_battery_t value) const {
+    void operator()(
+        const mavsdk_telemetry_battery_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Battery");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IFFFFFFI)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.id)            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jfloat>(value.voltage_v)            , static_cast<jfloat>(value.current_battery_a)            , static_cast<jfloat>(value.capacity_consumed_ah)            , static_cast<jfloat>(value.remaining_percent)            , static_cast<jfloat>(value.time_remaining_s)            , static_cast<jint>(value.battery_function)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaBattery(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== FlightMode Callback Wrapper =====
 struct FlightModeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    FlightModeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    FlightModeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_flight_mode_t value) const {
+    void operator()(
+        const mavsdk_telemetry_flight_mode_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Health Callback Wrapper =====
 struct HealthCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    HealthCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    HealthCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Health;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Health;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_health_t value) const {
+    void operator()(
+        const mavsdk_telemetry_health_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Health");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZZZZZZ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(value.is_gyrometer_calibration_ok)            , static_cast<jboolean>(value.is_accelerometer_calibration_ok)            , static_cast<jboolean>(value.is_magnetometer_calibration_ok)            , static_cast<jboolean>(value.is_local_position_ok)            , static_cast<jboolean>(value.is_global_position_ok)            , static_cast<jboolean>(value.is_home_position_ok)            , static_cast<jboolean>(value.is_armable)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaHealth(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== RcStatus Callback Wrapper =====
 struct RcStatusCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RcStatusCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RcStatusCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$RcStatus;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$RcStatus;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_rc_status_t value) const {
+    void operator()(
+        const mavsdk_telemetry_rc_status_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RcStatus");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(value.was_available_once)            , static_cast<jboolean>(value.is_available)            , static_cast<jfloat>(value.signal_strength_percent)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaRcStatus(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StatusText Callback Wrapper =====
 struct StatusTextCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StatusTextCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StatusTextCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$StatusText;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$StatusText;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_status_text_t value) const {
+    void operator()(
+        const mavsdk_telemetry_status_text_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$StatusText");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.type)            , toJavaString(env, value.text)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaStatusText(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ActuatorControlTarget Callback Wrapper =====
 struct ActuatorControlTargetCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ActuatorControlTargetCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ActuatorControlTargetCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorControlTarget;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$ActuatorControlTarget;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_actuator_control_target_t value) const {
+    void operator()(
+        const mavsdk_telemetry_actuator_control_target_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorControlTarget");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.group)            /* TODO: repeated primitive field controls */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaActuatorControlTarget(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ActuatorOutputStatus Callback Wrapper =====
 struct ActuatorOutputStatusCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ActuatorOutputStatusCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ActuatorOutputStatusCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorOutputStatus;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$ActuatorOutputStatus;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_actuator_output_status_t value) const {
+    void operator()(
+        const mavsdk_telemetry_actuator_output_status_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorOutputStatus");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.active)            /* TODO: repeated primitive field actuator */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaActuatorOutputStatus(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Odometry Callback Wrapper =====
 struct OdometryCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    OdometryCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    OdometryCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Odometry;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Odometry;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_odometry_t value) const {
+    void operator()(
+        const mavsdk_telemetry_odometry_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_position_body = nullptr;
-        {            jclass nestedClass_position_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionBody");
-            jmethodID nestedCtor_position_body = env->GetMethodID(nestedClass_position_body, "<init>", "(FFF)V");
-            nestedObj_position_body = env->NewObject(nestedClass_position_body, nestedCtor_position_body                , static_cast<jfloat>(value.position_body.x_m)                , static_cast<jfloat>(value.position_body.y_m)                , static_cast<jfloat>(value.position_body.z_m)            );
-            env->DeleteLocalRef(nestedClass_position_body);        }        jobject nestedObj_q = nullptr;
-        {            jclass nestedClass_q = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
-            jmethodID nestedCtor_q = env->GetMethodID(nestedClass_q, "<init>", "(FFFFJ)V");
-            nestedObj_q = env->NewObject(nestedClass_q, nestedCtor_q                , static_cast<jfloat>(value.q.w)                , static_cast<jfloat>(value.q.x)                , static_cast<jfloat>(value.q.y)                , static_cast<jfloat>(value.q.z)                , static_cast<jlong>(value.q.timestamp_us)            );
-            env->DeleteLocalRef(nestedClass_q);        }        jobject nestedObj_velocity_body = nullptr;
-        {            jclass nestedClass_velocity_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityBody");
-            jmethodID nestedCtor_velocity_body = env->GetMethodID(nestedClass_velocity_body, "<init>", "(FFF)V");
-            nestedObj_velocity_body = env->NewObject(nestedClass_velocity_body, nestedCtor_velocity_body                , static_cast<jfloat>(value.velocity_body.x_m_s)                , static_cast<jfloat>(value.velocity_body.y_m_s)                , static_cast<jfloat>(value.velocity_body.z_m_s)            );
-            env->DeleteLocalRef(nestedClass_velocity_body);        }        jobject nestedObj_angular_velocity_body = nullptr;
-        {            jclass nestedClass_angular_velocity_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
-            jmethodID nestedCtor_angular_velocity_body = env->GetMethodID(nestedClass_angular_velocity_body, "<init>", "(FFF)V");
-            nestedObj_angular_velocity_body = env->NewObject(nestedClass_angular_velocity_body, nestedCtor_angular_velocity_body                , static_cast<jfloat>(value.angular_velocity_body.roll_rad_s)                , static_cast<jfloat>(value.angular_velocity_body.pitch_rad_s)                , static_cast<jfloat>(value.angular_velocity_body.yaw_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity_body);        }        jobject nestedObj_pose_covariance = nullptr;
-        {            jclass nestedClass_pose_covariance = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance");
-            jmethodID nestedCtor_pose_covariance = env->GetMethodID(nestedClass_pose_covariance, "<init>", "()V");
-            nestedObj_pose_covariance = env->NewObject(nestedClass_pose_covariance, nestedCtor_pose_covariance            );
-            env->DeleteLocalRef(nestedClass_pose_covariance);        }        jobject nestedObj_velocity_covariance = nullptr;
-        {            jclass nestedClass_velocity_covariance = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance");
-            jmethodID nestedCtor_velocity_covariance = env->GetMethodID(nestedClass_velocity_covariance, "<init>", "()V");
-            nestedObj_velocity_covariance = env->NewObject(nestedClass_velocity_covariance, nestedCtor_velocity_covariance            );
-            env->DeleteLocalRef(nestedClass_velocity_covariance);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Odometry");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JIILio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.time_usec)            , static_cast<jint>(value.frame_id)            , static_cast<jint>(value.child_frame_id)            , nestedObj_position_body            , nestedObj_q            , nestedObj_velocity_body            , nestedObj_angular_velocity_body            , nestedObj_pose_covariance            , nestedObj_velocity_covariance        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position_body);        env->DeleteLocalRef(nestedObj_q);        env->DeleteLocalRef(nestedObj_velocity_body);        env->DeleteLocalRef(nestedObj_angular_velocity_body);        env->DeleteLocalRef(nestedObj_pose_covariance);        env->DeleteLocalRef(nestedObj_velocity_covariance);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaOdometry(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== PositionVelocityNed Callback Wrapper =====
 struct PositionVelocityNedCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    PositionVelocityNedCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    PositionVelocityNedCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionVelocityNed;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$PositionVelocityNed;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_position_velocity_ned_t value) const {
+    void operator()(
+        const mavsdk_telemetry_position_velocity_ned_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_position = nullptr;
-        {            jclass nestedClass_position = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionNed");
-            jmethodID nestedCtor_position = env->GetMethodID(nestedClass_position, "<init>", "(FFF)V");
-            nestedObj_position = env->NewObject(nestedClass_position, nestedCtor_position                , static_cast<jfloat>(value.position.north_m)                , static_cast<jfloat>(value.position.east_m)                , static_cast<jfloat>(value.position.down_m)            );
-            env->DeleteLocalRef(nestedClass_position);        }        jobject nestedObj_velocity = nullptr;
-        {            jclass nestedClass_velocity = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
-            jmethodID nestedCtor_velocity = env->GetMethodID(nestedClass_velocity, "<init>", "(FFF)V");
-            nestedObj_velocity = env->NewObject(nestedClass_velocity, nestedCtor_velocity                , static_cast<jfloat>(value.velocity.north_m_s)                , static_cast<jfloat>(value.velocity.east_m_s)                , static_cast<jfloat>(value.velocity.down_m_s)            );
-            env->DeleteLocalRef(nestedClass_velocity);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionVelocityNed");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionNed;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_position            , nestedObj_velocity        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position);        env->DeleteLocalRef(nestedObj_velocity);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaPositionVelocityNed(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== GroundTruth Callback Wrapper =====
 struct GroundTruthCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GroundTruthCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GroundTruthCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$GroundTruth;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$GroundTruth;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_ground_truth_t value) const {
+    void operator()(
+        const mavsdk_telemetry_ground_truth_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GroundTruth");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jfloat>(value.absolute_altitude_m)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaGroundTruth(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== FixedwingMetrics Callback Wrapper =====
 struct FixedwingMetricsCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    FixedwingMetricsCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    FixedwingMetricsCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$FixedwingMetrics;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$FixedwingMetrics;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_fixedwing_metrics_t value) const {
+    void operator()(
+        const mavsdk_telemetry_fixedwing_metrics_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$FixedwingMetrics");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.airspeed_m_s)            , static_cast<jfloat>(value.throttle_percentage)            , static_cast<jfloat>(value.climb_rate_m_s)            , static_cast<jfloat>(value.groundspeed_m_s)            , static_cast<jfloat>(value.heading_deg)            , static_cast<jfloat>(value.absolute_altitude_m)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaFixedwingMetrics(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Imu Callback Wrapper =====
 struct ImuCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ImuCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ImuCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Imu;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_imu_t value) const {
+    void operator()(
+        const mavsdk_telemetry_imu_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_acceleration_frd = nullptr;
-        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
-            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
-            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(value.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(value.acceleration_frd.right_m_s2)                , static_cast<jfloat>(value.acceleration_frd.down_m_s2)            );
-            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
-        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
-            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
-            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(value.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.down_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
-        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
-            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
-            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(value.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.down_gauss)            );
-            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaImu(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ScaledImu Callback Wrapper =====
 struct ScaledImuCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ScaledImuCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ScaledImuCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Imu;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_imu_t value) const {
+    void operator()(
+        const mavsdk_telemetry_imu_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_acceleration_frd = nullptr;
-        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
-            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
-            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(value.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(value.acceleration_frd.right_m_s2)                , static_cast<jfloat>(value.acceleration_frd.down_m_s2)            );
-            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
-        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
-            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
-            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(value.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.down_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
-        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
-            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
-            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(value.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.down_gauss)            );
-            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaImu(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== RawImu Callback Wrapper =====
 struct RawImuCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RawImuCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RawImuCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Imu;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_imu_t value) const {
+    void operator()(
+        const mavsdk_telemetry_imu_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_acceleration_frd = nullptr;
-        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
-            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
-            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(value.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(value.acceleration_frd.right_m_s2)                , static_cast<jfloat>(value.acceleration_frd.down_m_s2)            );
-            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
-        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
-            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
-            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(value.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.down_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
-        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
-            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
-            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(value.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.down_gauss)            );
-            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaImu(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== HealthAllOk Callback Wrapper =====
 struct HealthAllOkCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    HealthAllOkCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    HealthAllOkCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Z)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const bool value) const {
+    void operator()(
+        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jboolean>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== UnixEpochTime Callback Wrapper =====
 struct UnixEpochTimeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    UnixEpochTimeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    UnixEpochTimeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(J)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const uint64_t value) const {
+    void operator()(
+        const uint64_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jlong>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jlong>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== DistanceSensor Callback Wrapper =====
 struct DistanceSensorCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    DistanceSensorCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    DistanceSensorCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$DistanceSensor;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$DistanceSensor;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_distance_sensor_t value) const {
+    void operator()(
+        const mavsdk_telemetry_distance_sensor_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_orientation = nullptr;
-        {            jclass nestedClass_orientation = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
-            jmethodID nestedCtor_orientation = env->GetMethodID(nestedClass_orientation, "<init>", "(FFFJ)V");
-            nestedObj_orientation = env->NewObject(nestedClass_orientation, nestedCtor_orientation                , static_cast<jfloat>(value.orientation.roll_deg)                , static_cast<jfloat>(value.orientation.pitch_deg)                , static_cast<jfloat>(value.orientation.yaw_deg)                , static_cast<jlong>(value.orientation.timestamp_us)            );
-            env->DeleteLocalRef(nestedClass_orientation);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$DistanceSensor");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFLio/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.minimum_distance_m)            , static_cast<jfloat>(value.maximum_distance_m)            , static_cast<jfloat>(value.current_distance_m)            , nestedObj_orientation        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_orientation);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaDistanceSensor(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ScaledPressure Callback Wrapper =====
 struct ScaledPressureCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ScaledPressureCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ScaledPressureCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$ScaledPressure;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$ScaledPressure;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_scaled_pressure_t value) const {
+    void operator()(
+        const mavsdk_telemetry_scaled_pressure_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ScaledPressure");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.timestamp_us)            , static_cast<jfloat>(value.absolute_pressure_hpa)            , static_cast<jfloat>(value.differential_pressure_hpa)            , static_cast<jfloat>(value.temperature_deg)            , static_cast<jfloat>(value.differential_pressure_temperature_deg)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaScaledPressure(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Heading Callback Wrapper =====
 struct HeadingCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    HeadingCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    HeadingCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Heading;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Heading;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_heading_t value) const {
+    void operator()(
+        const mavsdk_telemetry_heading_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Heading");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(D)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(value.heading_deg)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaHeading(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Altitude Callback Wrapper =====
 struct AltitudeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    AltitudeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    AltitudeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Altitude;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Altitude;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_altitude_t value) const {
+    void operator()(
+        const mavsdk_telemetry_altitude_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Altitude");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.altitude_monotonic_m)            , static_cast<jfloat>(value.altitude_amsl_m)            , static_cast<jfloat>(value.altitude_local_m)            , static_cast<jfloat>(value.altitude_relative_m)            , static_cast<jfloat>(value.altitude_terrain_m)            , static_cast<jfloat>(value.bottom_clearance_m)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaAltitude(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Wind Callback Wrapper =====
 struct WindCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    WindCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    WindCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Wind;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Wind;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_wind_t value) const {
+    void operator()(
+        const mavsdk_telemetry_wind_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Wind");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.wind_x_ned_m_s)            , static_cast<jfloat>(value.wind_y_ned_m_s)            , static_cast<jfloat>(value.wind_z_ned_m_s)            , static_cast<jfloat>(value.horizontal_variability_stddev_m_s)            , static_cast<jfloat>(value.vertical_variability_stddev_m_s)            , static_cast<jfloat>(value.wind_altitude_msl_m)            , static_cast<jfloat>(value.horizontal_wind_speed_accuracy_m_s)            , static_cast<jfloat>(value.vertical_wind_speed_accuracy_m_s)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaWind(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRatePosition Callback Wrapper =====
 struct SetRatePositionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRatePositionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRatePositionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateHome Callback Wrapper =====
 struct SetRateHomeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateHomeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateHomeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateInAir Callback Wrapper =====
 struct SetRateInAirCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateInAirCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateInAirCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateLandedState Callback Wrapper =====
 struct SetRateLandedStateCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateLandedStateCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateLandedStateCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateVtolState Callback Wrapper =====
 struct SetRateVtolStateCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateVtolStateCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateVtolStateCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateAttitudeQuaternion Callback Wrapper =====
 struct SetRateAttitudeQuaternionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateAttitudeQuaternionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateAttitudeQuaternionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateAttitudeEuler Callback Wrapper =====
 struct SetRateAttitudeEulerCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateAttitudeEulerCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateAttitudeEulerCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateVelocityNed Callback Wrapper =====
 struct SetRateVelocityNedCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateVelocityNedCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateVelocityNedCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateGpsInfo Callback Wrapper =====
 struct SetRateGpsInfoCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateGpsInfoCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateGpsInfoCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateBattery Callback Wrapper =====
 struct SetRateBatteryCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateBatteryCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateBatteryCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateRcStatus Callback Wrapper =====
 struct SetRateRcStatusCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateRcStatusCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateRcStatusCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateActuatorControlTarget Callback Wrapper =====
 struct SetRateActuatorControlTargetCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateActuatorControlTargetCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateActuatorControlTargetCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateActuatorOutputStatus Callback Wrapper =====
 struct SetRateActuatorOutputStatusCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateActuatorOutputStatusCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateActuatorOutputStatusCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateOdometry Callback Wrapper =====
 struct SetRateOdometryCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateOdometryCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateOdometryCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRatePositionVelocityNed Callback Wrapper =====
 struct SetRatePositionVelocityNedCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRatePositionVelocityNedCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRatePositionVelocityNedCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateGroundTruth Callback Wrapper =====
 struct SetRateGroundTruthCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateGroundTruthCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateGroundTruthCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateFixedwingMetrics Callback Wrapper =====
 struct SetRateFixedwingMetricsCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateFixedwingMetricsCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateFixedwingMetricsCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateImu Callback Wrapper =====
 struct SetRateImuCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateImuCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateImuCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateScaledImu Callback Wrapper =====
 struct SetRateScaledImuCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateScaledImuCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateScaledImuCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateRawImu Callback Wrapper =====
 struct SetRateRawImuCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateRawImuCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateRawImuCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateUnixEpochTime Callback Wrapper =====
 struct SetRateUnixEpochTimeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateUnixEpochTimeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateUnixEpochTimeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateDistanceSensor Callback Wrapper =====
 struct SetRateDistanceSensorCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateDistanceSensorCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateDistanceSensorCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateAltitude Callback Wrapper =====
 struct SetRateAltitudeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateAltitudeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateAltitudeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateHealth Callback Wrapper =====
 struct SetRateHealthCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateHealthCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateHealthCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== GetGpsGlobalOrigin Callback Wrapper =====
 struct GetGpsGlobalOriginCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GetGpsGlobalOriginCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GetGpsGlobalOriginCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsGlobalOrigin;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/telemetry/NativeTelemetry$GpsGlobalOrigin;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_telemetry_result_t result, const mavsdk_telemetry_gps_global_origin_t gps_global_origin) const {
+    void operator()(
+        const mavsdk_telemetry_result_t result,        const mavsdk_telemetry_gps_global_origin_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsGlobalOrigin");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(gps_global_origin.latitude_deg)            , static_cast<jdouble>(gps_global_origin.longitude_deg)            , static_cast<jfloat>(gps_global_origin.altitude_m)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaGpsGlobalOrigin(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -2279,3832 +5003,3314 @@ struct GetGpsGlobalOriginCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Telemetry.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_telemetry_t handle = mavsdk_telemetry_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Telemetry plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Telemetry.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return;
-
-    mavsdk_telemetry_destroy(reinterpret_cast<mavsdk_telemetry_t>(handle));
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return;
+    }
+    mavsdk_telemetry_destroy(
+        reinterpret_cast<mavsdk_telemetry_t>(handle));
 }
 
-
-// ===== Telemetry.positionBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_positionBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_position(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_position_t ret_val{};
-    mavsdk_telemetry_position(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.relative_altitude_m)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_position_destroy(&ret_val);
-    return retObj;
+    mavsdk_telemetry_position_t returnValue{};
+        mavsdk_telemetry_position(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaPosition(env, returnValue);
+    mavsdk_telemetry_position_destroy(&returnValue);
+    return javaResult;
 }
 
-// ===== Telemetry.subscribePositionNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribePositionNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribePosition(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new PositionCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_position_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_position(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_position_t value, void* user_data) {
-                auto* w = static_cast<PositionCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_position_handle_t,
-        PositionCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribePosition =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribePosition(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_position_handle_t,
-                  PositionCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_position(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_position_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<PositionCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_position_handle_t,
+        PositionCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribePosition(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.homeBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_homeBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_position_t ret_val{};
-    mavsdk_telemetry_home(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_position_handle_t,
+        PositionCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_position(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.relative_altitude_m)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_position_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeHomeNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeHomeNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_home(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_position_t returnValue{};
+        mavsdk_telemetry_home(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaPosition(env, returnValue);
+    mavsdk_telemetry_position_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeHome(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new HomeCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_home_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_home(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_position_t value, void* user_data) {
-                auto* w = static_cast<HomeCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_home_handle_t,
-        HomeCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeHome =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeHome(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_home_handle_t,
-                  HomeCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_home(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_position_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<HomeCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_home_handle_t,
+        HomeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeHome(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.in_airBlocking =====
-JNIEXPORT jboolean JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_inAirBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    bool ret_val{};
-    mavsdk_telemetry_in_air(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_home_handle_t,
+        HomeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_home(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jboolean>(ret_val);
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeInAirNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeInAirNative(
+JNIEXPORT
+jboolean
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_inAir(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    bool returnValue{};
+        mavsdk_telemetry_in_air(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    return static_cast<jboolean>(returnValue);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeInAir(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new InAirCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_in_air_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_in_air(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const bool value, void* user_data) {
-                auto* w = static_cast<InAirCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_in_air_handle_t,
-        InAirCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeInAir =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeInAir(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_in_air_handle_t,
-                  InAirCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_in_air(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const bool value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<InAirCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_in_air_handle_t,
+        InAirCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeInAir(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.landed_stateBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_landedStateBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_landed_state_t ret_val{};
-    mavsdk_telemetry_landed_state(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_in_air_handle_t,
+        InAirCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_in_air(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jint>(ret_val);
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeLandedStateNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeLandedStateNative(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_landedState(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_landed_state_t returnValue{};
+        mavsdk_telemetry_landed_state(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    return static_cast<jint>(returnValue);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeLandedState(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new LandedStateCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_landed_state_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_landed_state(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_landed_state_t value, void* user_data) {
-                auto* w = static_cast<LandedStateCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_landed_state_handle_t,
-        LandedStateCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeLandedState =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeLandedState(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_landed_state_handle_t,
-                  LandedStateCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_landed_state(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_landed_state_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<LandedStateCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_landed_state_handle_t,
+        LandedStateCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeLandedState(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.armedBlocking =====
-JNIEXPORT jboolean JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_armedBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    bool ret_val{};
-    mavsdk_telemetry_armed(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_landed_state_handle_t,
+        LandedStateCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_landed_state(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jboolean>(ret_val);
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeArmedNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeArmedNative(
+JNIEXPORT
+jboolean
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_armed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    bool returnValue{};
+        mavsdk_telemetry_armed(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    return static_cast<jboolean>(returnValue);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeArmed(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ArmedCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_armed_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_armed(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const bool value, void* user_data) {
-                auto* w = static_cast<ArmedCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_armed_handle_t,
-        ArmedCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeArmed =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeArmed(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_armed_handle_t,
-                  ArmedCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_armed(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const bool value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ArmedCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_armed_handle_t,
+        ArmedCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeArmed(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.vtol_stateBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_vtolStateBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_vtol_state_t ret_val{};
-    mavsdk_telemetry_vtol_state(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_armed_handle_t,
+        ArmedCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_armed(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jint>(ret_val);
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeVtolStateNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeVtolStateNative(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_vtolState(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_vtol_state_t returnValue{};
+        mavsdk_telemetry_vtol_state(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    return static_cast<jint>(returnValue);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeVtolState(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new VtolStateCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_vtol_state_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_vtol_state(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_vtol_state_t value, void* user_data) {
-                auto* w = static_cast<VtolStateCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_vtol_state_handle_t,
-        VtolStateCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeVtolState =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeVtolState(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_vtol_state_handle_t,
-                  VtolStateCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_vtol_state(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_vtol_state_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<VtolStateCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_vtol_state_handle_t,
+        VtolStateCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeVtolState(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.attitude_quaternionBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_attitudeQuaternionBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_quaternion_t ret_val{};
-    mavsdk_telemetry_attitude_quaternion(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_vtol_state_handle_t,
+        VtolStateCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_vtol_state(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.w)            , static_cast<jfloat>(ret_val.x)            , static_cast<jfloat>(ret_val.y)            , static_cast<jfloat>(ret_val.z)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_quaternion_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeAttitudeQuaternionNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeAttitudeQuaternionNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_attitudeQuaternion(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_quaternion_t returnValue{};
+        mavsdk_telemetry_attitude_quaternion(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaQuaternion(env, returnValue);
+    mavsdk_telemetry_quaternion_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeAttitudeQuaternion(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new AttitudeQuaternionCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_attitude_quaternion_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_attitude_quaternion(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_quaternion_t value, void* user_data) {
-                auto* w = static_cast<AttitudeQuaternionCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_attitude_quaternion_handle_t,
-        AttitudeQuaternionCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeAttitudeQuaternion =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeAttitudeQuaternion(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_attitude_quaternion_handle_t,
-                  AttitudeQuaternionCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_attitude_quaternion(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_quaternion_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<AttitudeQuaternionCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_attitude_quaternion_handle_t,
+        AttitudeQuaternionCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeAttitudeQuaternion(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.attitude_eulerBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_attitudeEulerBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_euler_angle_t ret_val{};
-    mavsdk_telemetry_attitude_euler(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_attitude_quaternion_handle_t,
+        AttitudeQuaternionCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_attitude_quaternion(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.roll_deg)            , static_cast<jfloat>(ret_val.pitch_deg)            , static_cast<jfloat>(ret_val.yaw_deg)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_euler_angle_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeAttitudeEulerNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeAttitudeEulerNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_attitudeEuler(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_euler_angle_t returnValue{};
+        mavsdk_telemetry_attitude_euler(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaEulerAngle(env, returnValue);
+    mavsdk_telemetry_euler_angle_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeAttitudeEuler(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new AttitudeEulerCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_attitude_euler_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_attitude_euler(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_euler_angle_t value, void* user_data) {
-                auto* w = static_cast<AttitudeEulerCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_attitude_euler_handle_t,
-        AttitudeEulerCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeAttitudeEuler =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeAttitudeEuler(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_attitude_euler_handle_t,
-                  AttitudeEulerCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_attitude_euler(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_euler_angle_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<AttitudeEulerCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_attitude_euler_handle_t,
+        AttitudeEulerCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeAttitudeEuler(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.attitude_angular_velocity_bodyBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_attitudeAngularVelocityBodyBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_angular_velocity_body_t ret_val{};
-    mavsdk_telemetry_attitude_angular_velocity_body(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_attitude_euler_handle_t,
+        AttitudeEulerCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_attitude_euler(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.roll_rad_s)            , static_cast<jfloat>(ret_val.pitch_rad_s)            , static_cast<jfloat>(ret_val.yaw_rad_s)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_angular_velocity_body_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeAttitudeAngularVelocityBodyNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeAttitudeAngularVelocityBodyNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_attitudeAngularVelocityBody(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_angular_velocity_body_t returnValue{};
+        mavsdk_telemetry_attitude_angular_velocity_body(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaAngularVelocityBody(env, returnValue);
+    mavsdk_telemetry_angular_velocity_body_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeAttitudeAngularVelocityBody(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new AttitudeAngularVelocityBodyCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_attitude_angular_velocity_body_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_attitude_angular_velocity_body(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_angular_velocity_body_t value, void* user_data) {
-                auto* w = static_cast<AttitudeAngularVelocityBodyCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_attitude_angular_velocity_body_handle_t,
-        AttitudeAngularVelocityBodyCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeAttitudeAngularVelocityBody =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeAttitudeAngularVelocityBody(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_attitude_angular_velocity_body_handle_t,
-                  AttitudeAngularVelocityBodyCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_angular_velocity_body_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<AttitudeAngularVelocityBodyCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_attitude_angular_velocity_body_handle_t,
+        AttitudeAngularVelocityBodyCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeAttitudeAngularVelocityBody(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.velocity_nedBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_velocityNedBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_velocity_ned_t ret_val{};
-    mavsdk_telemetry_velocity_ned(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_attitude_angular_velocity_body_handle_t,
+        AttitudeAngularVelocityBodyCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.north_m_s)            , static_cast<jfloat>(ret_val.east_m_s)            , static_cast<jfloat>(ret_val.down_m_s)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_velocity_ned_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeVelocityNedNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeVelocityNedNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_velocityNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_velocity_ned_t returnValue{};
+        mavsdk_telemetry_velocity_ned(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaVelocityNed(env, returnValue);
+    mavsdk_telemetry_velocity_ned_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeVelocityNed(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new VelocityNedCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_velocity_ned_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_velocity_ned(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_velocity_ned_t value, void* user_data) {
-                auto* w = static_cast<VelocityNedCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_velocity_ned_handle_t,
-        VelocityNedCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeVelocityNed =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeVelocityNed(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_velocity_ned_handle_t,
-                  VelocityNedCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_velocity_ned(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_velocity_ned_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<VelocityNedCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_velocity_ned_handle_t,
+        VelocityNedCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeVelocityNed(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.gps_infoBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_gpsInfoBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_gps_info_t ret_val{};
-    mavsdk_telemetry_gps_info(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_velocity_ned_handle_t,
+        VelocityNedCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_velocity_ned(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsInfo");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.num_satellites)            , static_cast<jint>(ret_val.fix_type)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_gps_info_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeGpsInfoNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeGpsInfoNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_gpsInfo(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_gps_info_t returnValue{};
+        mavsdk_telemetry_gps_info(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaGpsInfo(env, returnValue);
+    mavsdk_telemetry_gps_info_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeGpsInfo(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new GpsInfoCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_gps_info_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_gps_info(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_gps_info_t value, void* user_data) {
-                auto* w = static_cast<GpsInfoCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_gps_info_handle_t,
-        GpsInfoCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeGpsInfo =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeGpsInfo(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_gps_info_handle_t,
-                  GpsInfoCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_gps_info(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_gps_info_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<GpsInfoCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_gps_info_handle_t,
+        GpsInfoCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeGpsInfo(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.raw_gpsBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_rawGpsBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_raw_gps_t ret_val{};
-    mavsdk_telemetry_raw_gps(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_gps_info_handle_t,
+        GpsInfoCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_gps_info(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RawGps");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JDDFFFFFFFFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.timestamp_us)            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.hdop)            , static_cast<jfloat>(ret_val.vdop)            , static_cast<jfloat>(ret_val.velocity_m_s)            , static_cast<jfloat>(ret_val.cog_deg)            , static_cast<jfloat>(ret_val.altitude_ellipsoid_m)            , static_cast<jfloat>(ret_val.horizontal_uncertainty_m)            , static_cast<jfloat>(ret_val.vertical_uncertainty_m)            , static_cast<jfloat>(ret_val.velocity_uncertainty_m_s)            , static_cast<jfloat>(ret_val.heading_uncertainty_deg)            , static_cast<jfloat>(ret_val.yaw_deg)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_raw_gps_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeRawGpsNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeRawGpsNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_rawGps(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_raw_gps_t returnValue{};
+        mavsdk_telemetry_raw_gps(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaRawGps(env, returnValue);
+    mavsdk_telemetry_raw_gps_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeRawGps(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new RawGpsCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_raw_gps_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_raw_gps(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_raw_gps_t value, void* user_data) {
-                auto* w = static_cast<RawGpsCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_raw_gps_handle_t,
-        RawGpsCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeRawGps =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeRawGps(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_raw_gps_handle_t,
-                  RawGpsCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_raw_gps(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_raw_gps_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<RawGpsCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_raw_gps_handle_t,
+        RawGpsCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeRawGps(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.batteryBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_batteryBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_battery_t ret_val{};
-    mavsdk_telemetry_battery(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_raw_gps_handle_t,
+        RawGpsCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_raw_gps(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Battery");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IFFFFFFI)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.id)            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jfloat>(ret_val.voltage_v)            , static_cast<jfloat>(ret_val.current_battery_a)            , static_cast<jfloat>(ret_val.capacity_consumed_ah)            , static_cast<jfloat>(ret_val.remaining_percent)            , static_cast<jfloat>(ret_val.time_remaining_s)            , static_cast<jint>(ret_val.battery_function)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_battery_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeBatteryNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeBatteryNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_battery(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_battery_t returnValue{};
+        mavsdk_telemetry_battery(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaBattery(env, returnValue);
+    mavsdk_telemetry_battery_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeBattery(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new BatteryCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_battery_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_battery(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_battery_t value, void* user_data) {
-                auto* w = static_cast<BatteryCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_battery_handle_t,
-        BatteryCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeBattery =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeBattery(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_battery_handle_t,
-                  BatteryCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_battery(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_battery_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<BatteryCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_battery_handle_t,
+        BatteryCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeBattery(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.flight_modeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_flightModeBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_flight_mode_t ret_val{};
-    mavsdk_telemetry_flight_mode(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_battery_handle_t,
+        BatteryCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_battery(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jint>(ret_val);
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeFlightModeNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeFlightModeNative(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_flightMode(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_flight_mode_t returnValue{};
+        mavsdk_telemetry_flight_mode(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    return static_cast<jint>(returnValue);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeFlightMode(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new FlightModeCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_flight_mode_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_flight_mode(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_flight_mode_t value, void* user_data) {
-                auto* w = static_cast<FlightModeCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_flight_mode_handle_t,
-        FlightModeCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeFlightMode =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeFlightMode(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_flight_mode_handle_t,
-                  FlightModeCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_flight_mode(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_flight_mode_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FlightModeCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_flight_mode_handle_t,
+        FlightModeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeFlightMode(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.healthBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_healthBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_health_t ret_val{};
-    mavsdk_telemetry_health(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_flight_mode_handle_t,
+        FlightModeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_flight_mode(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Health");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZZZZZZ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(ret_val.is_gyrometer_calibration_ok)            , static_cast<jboolean>(ret_val.is_accelerometer_calibration_ok)            , static_cast<jboolean>(ret_val.is_magnetometer_calibration_ok)            , static_cast<jboolean>(ret_val.is_local_position_ok)            , static_cast<jboolean>(ret_val.is_global_position_ok)            , static_cast<jboolean>(ret_val.is_home_position_ok)            , static_cast<jboolean>(ret_val.is_armable)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_health_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeHealthNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeHealthNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_health(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_health_t returnValue{};
+        mavsdk_telemetry_health(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaHealth(env, returnValue);
+    mavsdk_telemetry_health_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeHealth(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new HealthCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_health_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_health(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_health_t value, void* user_data) {
-                auto* w = static_cast<HealthCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_health_handle_t,
-        HealthCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeHealth =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeHealth(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_health_handle_t,
-                  HealthCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_health(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_health_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<HealthCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_health_handle_t,
+        HealthCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeHealth(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.rc_statusBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_rcStatusBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_rc_status_t ret_val{};
-    mavsdk_telemetry_rc_status(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_health_handle_t,
+        HealthCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_health(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RcStatus");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(ret_val.was_available_once)            , static_cast<jboolean>(ret_val.is_available)            , static_cast<jfloat>(ret_val.signal_strength_percent)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_rc_status_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeRcStatusNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeRcStatusNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_rcStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_rc_status_t returnValue{};
+        mavsdk_telemetry_rc_status(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaRcStatus(env, returnValue);
+    mavsdk_telemetry_rc_status_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeRcStatus(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new RcStatusCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_rc_status_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_rc_status(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_rc_status_t value, void* user_data) {
-                auto* w = static_cast<RcStatusCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_rc_status_handle_t,
-        RcStatusCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeRcStatus =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeRcStatus(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_rc_status_handle_t,
-                  RcStatusCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_rc_status(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_rc_status_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<RcStatusCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_rc_status_handle_t,
+        RcStatusCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeRcStatus(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.status_textBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_statusTextBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_status_text_t ret_val{};
-    mavsdk_telemetry_status_text(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_rc_status_handle_t,
+        RcStatusCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_rc_status(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$StatusText");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.type)            , toJavaString(env, ret_val.text)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_status_text_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeStatusTextNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeStatusTextNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_statusText(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_status_text_t returnValue{};
+        mavsdk_telemetry_status_text(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaStatusText(env, returnValue);
+    mavsdk_telemetry_status_text_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeStatusText(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new StatusTextCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_status_text_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_status_text(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_status_text_t value, void* user_data) {
-                auto* w = static_cast<StatusTextCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_status_text_handle_t,
-        StatusTextCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeStatusText =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeStatusText(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_status_text_handle_t,
-                  StatusTextCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_status_text(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_status_text_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<StatusTextCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_status_text_handle_t,
+        StatusTextCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeStatusText(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.actuator_control_targetBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_actuatorControlTargetBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_actuator_control_target_t ret_val{};
-    mavsdk_telemetry_actuator_control_target(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_status_text_handle_t,
+        StatusTextCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_status_text(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorControlTarget");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.group)            /* TODO: repeated primitive field controls */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_actuator_control_target_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeActuatorControlTargetNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeActuatorControlTargetNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_actuatorControlTarget(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_actuator_control_target_t returnValue{};
+        mavsdk_telemetry_actuator_control_target(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaActuatorControlTarget(env, returnValue);
+    mavsdk_telemetry_actuator_control_target_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeActuatorControlTarget(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ActuatorControlTargetCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_actuator_control_target_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_actuator_control_target(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_actuator_control_target_t value, void* user_data) {
-                auto* w = static_cast<ActuatorControlTargetCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_actuator_control_target_handle_t,
-        ActuatorControlTargetCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeActuatorControlTarget =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeActuatorControlTarget(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_actuator_control_target_handle_t,
-                  ActuatorControlTargetCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_actuator_control_target(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_actuator_control_target_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ActuatorControlTargetCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_actuator_control_target_handle_t,
+        ActuatorControlTargetCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeActuatorControlTarget(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.actuator_output_statusBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_actuatorOutputStatusBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_actuator_output_status_t ret_val{};
-    mavsdk_telemetry_actuator_output_status(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_actuator_control_target_handle_t,
+        ActuatorControlTargetCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_actuator_control_target(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorOutputStatus");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.active)            /* TODO: repeated primitive field actuator */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_actuator_output_status_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeActuatorOutputStatusNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeActuatorOutputStatusNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_actuatorOutputStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_actuator_output_status_t returnValue{};
+        mavsdk_telemetry_actuator_output_status(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaActuatorOutputStatus(env, returnValue);
+    mavsdk_telemetry_actuator_output_status_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeActuatorOutputStatus(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ActuatorOutputStatusCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_actuator_output_status_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_actuator_output_status(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_actuator_output_status_t value, void* user_data) {
-                auto* w = static_cast<ActuatorOutputStatusCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_actuator_output_status_handle_t,
-        ActuatorOutputStatusCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeActuatorOutputStatus =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeActuatorOutputStatus(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_actuator_output_status_handle_t,
-                  ActuatorOutputStatusCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_actuator_output_status(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_actuator_output_status_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ActuatorOutputStatusCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_actuator_output_status_handle_t,
+        ActuatorOutputStatusCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeActuatorOutputStatus(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.odometryBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_odometryBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_odometry_t ret_val{};
-    mavsdk_telemetry_odometry(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_actuator_output_status_handle_t,
+        ActuatorOutputStatusCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_actuator_output_status(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jobject nestedObj_position_body = nullptr;
-        {            jclass nestedClass_position_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionBody");
-            jmethodID nestedCtor_position_body = env->GetMethodID(nestedClass_position_body, "<init>", "(FFF)V");
-            nestedObj_position_body = env->NewObject(nestedClass_position_body, nestedCtor_position_body                , static_cast<jfloat>(ret_val.position_body.x_m)                , static_cast<jfloat>(ret_val.position_body.y_m)                , static_cast<jfloat>(ret_val.position_body.z_m)            );
-            env->DeleteLocalRef(nestedClass_position_body);        }        jobject nestedObj_q = nullptr;
-        {            jclass nestedClass_q = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
-            jmethodID nestedCtor_q = env->GetMethodID(nestedClass_q, "<init>", "(FFFFJ)V");
-            nestedObj_q = env->NewObject(nestedClass_q, nestedCtor_q                , static_cast<jfloat>(ret_val.q.w)                , static_cast<jfloat>(ret_val.q.x)                , static_cast<jfloat>(ret_val.q.y)                , static_cast<jfloat>(ret_val.q.z)                , static_cast<jlong>(ret_val.q.timestamp_us)            );
-            env->DeleteLocalRef(nestedClass_q);        }        jobject nestedObj_velocity_body = nullptr;
-        {            jclass nestedClass_velocity_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityBody");
-            jmethodID nestedCtor_velocity_body = env->GetMethodID(nestedClass_velocity_body, "<init>", "(FFF)V");
-            nestedObj_velocity_body = env->NewObject(nestedClass_velocity_body, nestedCtor_velocity_body                , static_cast<jfloat>(ret_val.velocity_body.x_m_s)                , static_cast<jfloat>(ret_val.velocity_body.y_m_s)                , static_cast<jfloat>(ret_val.velocity_body.z_m_s)            );
-            env->DeleteLocalRef(nestedClass_velocity_body);        }        jobject nestedObj_angular_velocity_body = nullptr;
-        {            jclass nestedClass_angular_velocity_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
-            jmethodID nestedCtor_angular_velocity_body = env->GetMethodID(nestedClass_angular_velocity_body, "<init>", "(FFF)V");
-            nestedObj_angular_velocity_body = env->NewObject(nestedClass_angular_velocity_body, nestedCtor_angular_velocity_body                , static_cast<jfloat>(ret_val.angular_velocity_body.roll_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_body.pitch_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_body.yaw_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity_body);        }        jobject nestedObj_pose_covariance = nullptr;
-        {            jclass nestedClass_pose_covariance = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance");
-            jmethodID nestedCtor_pose_covariance = env->GetMethodID(nestedClass_pose_covariance, "<init>", "()V");
-            nestedObj_pose_covariance = env->NewObject(nestedClass_pose_covariance, nestedCtor_pose_covariance            );
-            env->DeleteLocalRef(nestedClass_pose_covariance);        }        jobject nestedObj_velocity_covariance = nullptr;
-        {            jclass nestedClass_velocity_covariance = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance");
-            jmethodID nestedCtor_velocity_covariance = env->GetMethodID(nestedClass_velocity_covariance, "<init>", "()V");
-            nestedObj_velocity_covariance = env->NewObject(nestedClass_velocity_covariance, nestedCtor_velocity_covariance            );
-            env->DeleteLocalRef(nestedClass_velocity_covariance);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Odometry");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JIILio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.time_usec)            , static_cast<jint>(ret_val.frame_id)            , static_cast<jint>(ret_val.child_frame_id)            , nestedObj_position_body            , nestedObj_q            , nestedObj_velocity_body            , nestedObj_angular_velocity_body            , nestedObj_pose_covariance            , nestedObj_velocity_covariance        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position_body);        env->DeleteLocalRef(nestedObj_q);        env->DeleteLocalRef(nestedObj_velocity_body);        env->DeleteLocalRef(nestedObj_angular_velocity_body);        env->DeleteLocalRef(nestedObj_pose_covariance);        env->DeleteLocalRef(nestedObj_velocity_covariance);
-    mavsdk_telemetry_odometry_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeOdometryNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeOdometryNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_odometry(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_odometry_t returnValue{};
+        mavsdk_telemetry_odometry(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaOdometry(env, returnValue);
+    mavsdk_telemetry_odometry_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeOdometry(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new OdometryCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_odometry_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_odometry(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_odometry_t value, void* user_data) {
-                auto* w = static_cast<OdometryCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_odometry_handle_t,
-        OdometryCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeOdometry =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeOdometry(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_odometry_handle_t,
-                  OdometryCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_odometry(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_odometry_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<OdometryCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_odometry_handle_t,
+        OdometryCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeOdometry(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.position_velocity_nedBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_positionVelocityNedBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_position_velocity_ned_t ret_val{};
-    mavsdk_telemetry_position_velocity_ned(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_odometry_handle_t,
+        OdometryCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_odometry(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jobject nestedObj_position = nullptr;
-        {            jclass nestedClass_position = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionNed");
-            jmethodID nestedCtor_position = env->GetMethodID(nestedClass_position, "<init>", "(FFF)V");
-            nestedObj_position = env->NewObject(nestedClass_position, nestedCtor_position                , static_cast<jfloat>(ret_val.position.north_m)                , static_cast<jfloat>(ret_val.position.east_m)                , static_cast<jfloat>(ret_val.position.down_m)            );
-            env->DeleteLocalRef(nestedClass_position);        }        jobject nestedObj_velocity = nullptr;
-        {            jclass nestedClass_velocity = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
-            jmethodID nestedCtor_velocity = env->GetMethodID(nestedClass_velocity, "<init>", "(FFF)V");
-            nestedObj_velocity = env->NewObject(nestedClass_velocity, nestedCtor_velocity                , static_cast<jfloat>(ret_val.velocity.north_m_s)                , static_cast<jfloat>(ret_val.velocity.east_m_s)                , static_cast<jfloat>(ret_val.velocity.down_m_s)            );
-            env->DeleteLocalRef(nestedClass_velocity);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionVelocityNed");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionNed;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_position            , nestedObj_velocity        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position);        env->DeleteLocalRef(nestedObj_velocity);
-    mavsdk_telemetry_position_velocity_ned_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribePositionVelocityNedNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribePositionVelocityNedNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_positionVelocityNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_position_velocity_ned_t returnValue{};
+        mavsdk_telemetry_position_velocity_ned(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaPositionVelocityNed(env, returnValue);
+    mavsdk_telemetry_position_velocity_ned_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribePositionVelocityNed(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new PositionVelocityNedCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_position_velocity_ned_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_position_velocity_ned(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_position_velocity_ned_t value, void* user_data) {
-                auto* w = static_cast<PositionVelocityNedCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_position_velocity_ned_handle_t,
-        PositionVelocityNedCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribePositionVelocityNed =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribePositionVelocityNed(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_position_velocity_ned_handle_t,
-                  PositionVelocityNedCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_position_velocity_ned(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_position_velocity_ned_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<PositionVelocityNedCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_position_velocity_ned_handle_t,
+        PositionVelocityNedCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribePositionVelocityNed(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.ground_truthBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_groundTruthBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_ground_truth_t ret_val{};
-    mavsdk_telemetry_ground_truth(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_position_velocity_ned_handle_t,
+        PositionVelocityNedCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_position_velocity_ned(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GroundTruth");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_ground_truth_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeGroundTruthNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeGroundTruthNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_groundTruth(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_ground_truth_t returnValue{};
+        mavsdk_telemetry_ground_truth(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaGroundTruth(env, returnValue);
+    mavsdk_telemetry_ground_truth_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeGroundTruth(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new GroundTruthCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_ground_truth_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_ground_truth(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_ground_truth_t value, void* user_data) {
-                auto* w = static_cast<GroundTruthCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_ground_truth_handle_t,
-        GroundTruthCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeGroundTruth =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeGroundTruth(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_ground_truth_handle_t,
-                  GroundTruthCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_ground_truth(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_ground_truth_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<GroundTruthCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_ground_truth_handle_t,
+        GroundTruthCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeGroundTruth(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.fixedwing_metricsBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_fixedwingMetricsBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_fixedwing_metrics_t ret_val{};
-    mavsdk_telemetry_fixedwing_metrics(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_ground_truth_handle_t,
+        GroundTruthCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_ground_truth(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$FixedwingMetrics");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.airspeed_m_s)            , static_cast<jfloat>(ret_val.throttle_percentage)            , static_cast<jfloat>(ret_val.climb_rate_m_s)            , static_cast<jfloat>(ret_val.groundspeed_m_s)            , static_cast<jfloat>(ret_val.heading_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_fixedwing_metrics_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeFixedwingMetricsNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeFixedwingMetricsNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_fixedwingMetrics(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_fixedwing_metrics_t returnValue{};
+        mavsdk_telemetry_fixedwing_metrics(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaFixedwingMetrics(env, returnValue);
+    mavsdk_telemetry_fixedwing_metrics_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeFixedwingMetrics(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new FixedwingMetricsCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_fixedwing_metrics_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_fixedwing_metrics(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_fixedwing_metrics_t value, void* user_data) {
-                auto* w = static_cast<FixedwingMetricsCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_fixedwing_metrics_handle_t,
-        FixedwingMetricsCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeFixedwingMetrics =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeFixedwingMetrics(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_fixedwing_metrics_handle_t,
-                  FixedwingMetricsCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_fixedwing_metrics(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_fixedwing_metrics_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FixedwingMetricsCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_fixedwing_metrics_handle_t,
+        FixedwingMetricsCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeFixedwingMetrics(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.imuBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_imuBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_imu_t ret_val{};
-    mavsdk_telemetry_imu(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_fixedwing_metrics_handle_t,
+        FixedwingMetricsCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_fixedwing_metrics(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jobject nestedObj_acceleration_frd = nullptr;
-        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
-            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
-            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(ret_val.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.right_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.down_m_s2)            );
-            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
-        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
-            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
-            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(ret_val.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.down_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
-        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
-            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
-            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(ret_val.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.down_gauss)            );
-            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
-    mavsdk_telemetry_imu_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeImuNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeImuNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_imu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_imu_t returnValue{};
+        mavsdk_telemetry_imu(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaImu(env, returnValue);
+    mavsdk_telemetry_imu_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeImu(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ImuCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_imu_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_imu(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_imu_t value, void* user_data) {
-                auto* w = static_cast<ImuCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_imu_handle_t,
-        ImuCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeImu =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeImu(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_imu_handle_t,
-                  ImuCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_imu(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_imu_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ImuCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_imu_handle_t,
+        ImuCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeImu(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.scaled_imuBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_scaledImuBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_imu_t ret_val{};
-    mavsdk_telemetry_scaled_imu(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_imu_handle_t,
+        ImuCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_imu(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jobject nestedObj_acceleration_frd = nullptr;
-        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
-            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
-            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(ret_val.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.right_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.down_m_s2)            );
-            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
-        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
-            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
-            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(ret_val.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.down_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
-        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
-            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
-            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(ret_val.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.down_gauss)            );
-            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
-    mavsdk_telemetry_imu_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeScaledImuNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeScaledImuNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_scaledImu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_imu_t returnValue{};
+        mavsdk_telemetry_scaled_imu(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaImu(env, returnValue);
+    mavsdk_telemetry_imu_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeScaledImu(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ScaledImuCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_scaled_imu_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_scaled_imu(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_imu_t value, void* user_data) {
-                auto* w = static_cast<ScaledImuCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_scaled_imu_handle_t,
-        ScaledImuCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeScaledImu =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeScaledImu(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_scaled_imu_handle_t,
-                  ScaledImuCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_scaled_imu(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_imu_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ScaledImuCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_scaled_imu_handle_t,
+        ScaledImuCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeScaledImu(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.raw_imuBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_rawImuBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_imu_t ret_val{};
-    mavsdk_telemetry_raw_imu(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_scaled_imu_handle_t,
+        ScaledImuCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_scaled_imu(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jobject nestedObj_acceleration_frd = nullptr;
-        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
-            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
-            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(ret_val.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.right_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.down_m_s2)            );
-            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
-        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
-            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
-            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(ret_val.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.down_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
-        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
-            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
-            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(ret_val.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.down_gauss)            );
-            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
-    mavsdk_telemetry_imu_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeRawImuNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeRawImuNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_rawImu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_imu_t returnValue{};
+        mavsdk_telemetry_raw_imu(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaImu(env, returnValue);
+    mavsdk_telemetry_imu_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeRawImu(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new RawImuCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_raw_imu_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_raw_imu(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_imu_t value, void* user_data) {
-                auto* w = static_cast<RawImuCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_raw_imu_handle_t,
-        RawImuCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeRawImu =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeRawImu(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_raw_imu_handle_t,
-                  RawImuCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_raw_imu(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_imu_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<RawImuCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_raw_imu_handle_t,
+        RawImuCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeRawImu(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.health_all_okBlocking =====
-JNIEXPORT jboolean JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_healthAllOkBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    bool ret_val{};
-    mavsdk_telemetry_health_all_ok(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_raw_imu_handle_t,
+        RawImuCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_raw_imu(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jboolean>(ret_val);
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeHealthAllOkNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeHealthAllOkNative(
+JNIEXPORT
+jboolean
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_healthAllOk(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    bool returnValue{};
+        mavsdk_telemetry_health_all_ok(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    return static_cast<jboolean>(returnValue);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeHealthAllOk(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new HealthAllOkCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_health_all_ok_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_health_all_ok(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const bool value, void* user_data) {
-                auto* w = static_cast<HealthAllOkCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_health_all_ok_handle_t,
-        HealthAllOkCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeHealthAllOk =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeHealthAllOk(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_health_all_ok_handle_t,
-                  HealthAllOkCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_health_all_ok(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const bool value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<HealthAllOkCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_health_all_ok_handle_t,
+        HealthAllOkCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeHealthAllOk(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.unix_epoch_timeBlocking =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unixEpochTimeBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    uint64_t ret_val{};
-    mavsdk_telemetry_unix_epoch_time(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_health_all_ok_handle_t,
+        HealthAllOkCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_health_all_ok(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jlong>(ret_val);
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeUnixEpochTimeNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeUnixEpochTimeNative(
+JNIEXPORT
+jlong
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unixEpochTime(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    uint64_t returnValue{};
+        mavsdk_telemetry_unix_epoch_time(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    return static_cast<jlong>(returnValue);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeUnixEpochTime(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new UnixEpochTimeCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_unix_epoch_time_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_unix_epoch_time(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const uint64_t value, void* user_data) {
-                auto* w = static_cast<UnixEpochTimeCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_unix_epoch_time_handle_t,
-        UnixEpochTimeCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeUnixEpochTime =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeUnixEpochTime(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_unix_epoch_time_handle_t,
-                  UnixEpochTimeCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_unix_epoch_time(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const uint64_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<UnixEpochTimeCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_unix_epoch_time_handle_t,
+        UnixEpochTimeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeUnixEpochTime(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.distance_sensorBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_distanceSensorBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_distance_sensor_t ret_val{};
-    mavsdk_telemetry_distance_sensor(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_unix_epoch_time_handle_t,
+        UnixEpochTimeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_unix_epoch_time(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jobject nestedObj_orientation = nullptr;
-        {            jclass nestedClass_orientation = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
-            jmethodID nestedCtor_orientation = env->GetMethodID(nestedClass_orientation, "<init>", "(FFFJ)V");
-            nestedObj_orientation = env->NewObject(nestedClass_orientation, nestedCtor_orientation                , static_cast<jfloat>(ret_val.orientation.roll_deg)                , static_cast<jfloat>(ret_val.orientation.pitch_deg)                , static_cast<jfloat>(ret_val.orientation.yaw_deg)                , static_cast<jlong>(ret_val.orientation.timestamp_us)            );
-            env->DeleteLocalRef(nestedClass_orientation);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$DistanceSensor");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFLio/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.minimum_distance_m)            , static_cast<jfloat>(ret_val.maximum_distance_m)            , static_cast<jfloat>(ret_val.current_distance_m)            , nestedObj_orientation        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_orientation);
-    mavsdk_telemetry_distance_sensor_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeDistanceSensorNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeDistanceSensorNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_distanceSensor(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_distance_sensor_t returnValue{};
+        mavsdk_telemetry_distance_sensor(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaDistanceSensor(env, returnValue);
+    mavsdk_telemetry_distance_sensor_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeDistanceSensor(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new DistanceSensorCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_distance_sensor_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_distance_sensor(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_distance_sensor_t value, void* user_data) {
-                auto* w = static_cast<DistanceSensorCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_distance_sensor_handle_t,
-        DistanceSensorCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeDistanceSensor =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeDistanceSensor(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_distance_sensor_handle_t,
-                  DistanceSensorCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_distance_sensor(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_distance_sensor_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<DistanceSensorCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_distance_sensor_handle_t,
+        DistanceSensorCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeDistanceSensor(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.scaled_pressureBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_scaledPressureBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_scaled_pressure_t ret_val{};
-    mavsdk_telemetry_scaled_pressure(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_distance_sensor_handle_t,
+        DistanceSensorCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_distance_sensor(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ScaledPressure");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.timestamp_us)            , static_cast<jfloat>(ret_val.absolute_pressure_hpa)            , static_cast<jfloat>(ret_val.differential_pressure_hpa)            , static_cast<jfloat>(ret_val.temperature_deg)            , static_cast<jfloat>(ret_val.differential_pressure_temperature_deg)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_scaled_pressure_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeScaledPressureNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeScaledPressureNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_scaledPressure(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_scaled_pressure_t returnValue{};
+        mavsdk_telemetry_scaled_pressure(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaScaledPressure(env, returnValue);
+    mavsdk_telemetry_scaled_pressure_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeScaledPressure(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ScaledPressureCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_scaled_pressure_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_scaled_pressure(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_scaled_pressure_t value, void* user_data) {
-                auto* w = static_cast<ScaledPressureCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_scaled_pressure_handle_t,
-        ScaledPressureCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeScaledPressure =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeScaledPressure(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_scaled_pressure_handle_t,
-                  ScaledPressureCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_scaled_pressure(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_scaled_pressure_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ScaledPressureCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_scaled_pressure_handle_t,
+        ScaledPressureCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeScaledPressure(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.headingBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_headingBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_heading_t ret_val{};
-    mavsdk_telemetry_heading(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_scaled_pressure_handle_t,
+        ScaledPressureCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_scaled_pressure(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Heading");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(D)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.heading_deg)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_heading_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeHeadingNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeHeadingNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_heading(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_heading_t returnValue{};
+        mavsdk_telemetry_heading(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaHeading(env, returnValue);
+    mavsdk_telemetry_heading_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeHeading(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new HeadingCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_heading_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_heading(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_heading_t value, void* user_data) {
-                auto* w = static_cast<HeadingCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_heading_handle_t,
-        HeadingCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeHeading =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeHeading(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_heading_handle_t,
-                  HeadingCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_heading(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_heading_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<HeadingCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_heading_handle_t,
+        HeadingCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeHeading(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.altitudeBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_altitudeBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_altitude_t ret_val{};
-    mavsdk_telemetry_altitude(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_heading_handle_t,
+        HeadingCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_heading(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Altitude");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.altitude_monotonic_m)            , static_cast<jfloat>(ret_val.altitude_amsl_m)            , static_cast<jfloat>(ret_val.altitude_local_m)            , static_cast<jfloat>(ret_val.altitude_relative_m)            , static_cast<jfloat>(ret_val.altitude_terrain_m)            , static_cast<jfloat>(ret_val.bottom_clearance_m)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_altitude_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeAltitudeNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeAltitudeNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_altitude(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_altitude_t returnValue{};
+        mavsdk_telemetry_altitude(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaAltitude(env, returnValue);
+    mavsdk_telemetry_altitude_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeAltitude(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new AltitudeCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_altitude_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_altitude(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_altitude_t value, void* user_data) {
-                auto* w = static_cast<AltitudeCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_altitude_handle_t,
-        AltitudeCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeAltitude =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeAltitude(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_altitude_handle_t,
-                  AltitudeCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_altitude(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const mavsdk_telemetry_altitude_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<AltitudeCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_altitude_handle_t,
+        AltitudeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeAltitude(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
     }
-}
-
-
-// ===== Telemetry.windBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_windBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_wind_t ret_val{};
-    mavsdk_telemetry_wind(
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_altitude_handle_t,
+        AltitudeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_altitude(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Wind");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.wind_x_ned_m_s)            , static_cast<jfloat>(ret_val.wind_y_ned_m_s)            , static_cast<jfloat>(ret_val.wind_z_ned_m_s)            , static_cast<jfloat>(ret_val.horizontal_variability_stddev_m_s)            , static_cast<jfloat>(ret_val.vertical_variability_stddev_m_s)            , static_cast<jfloat>(ret_val.wind_altitude_msl_m)            , static_cast<jfloat>(ret_val.horizontal_wind_speed_accuracy_m_s)            , static_cast<jfloat>(ret_val.vertical_wind_speed_accuracy_m_s)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_wind_destroy(&ret_val);
-    return retObj;
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-// ===== Telemetry.subscribeWindNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribeWindNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_wind(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_wind_t returnValue{};
+        mavsdk_telemetry_wind(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaWind(env, returnValue);
+    mavsdk_telemetry_wind_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeWind(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new WindCallbackWrapper(env, callback);
-
-    mavsdk_telemetry_wind_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_telemetry_subscribe_wind(
-            reinterpret_cast<mavsdk_telemetry_t>(handle),            [](const mavsdk_telemetry_wind_t value, void* user_data) {
-                auto* w = static_cast<WindCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_telemetry_wind_handle_t,
-        WindCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Telemetry.unsubscribeWind =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribeWind(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_telemetry_wind_handle_t,
-                  WindCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_telemetry_unsubscribe_wind(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_telemetry_wind_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<WindCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_telemetry_wind_handle_t,
+        WindCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== Telemetry.set_rate_positionBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRatePositionBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_unsubscribeWind(
     JNIEnv* env,
-    jobject obj,
-    jdouble rate_hz) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_position(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Telemetry plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_telemetry_wind_handle_t,
+        WindCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_telemetry_unsubscribe_wind(
         reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRatePosition(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_position(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_positionAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRatePositionAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRatePositionAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRatePositionCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_position_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRatePositionCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRatePositionCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_homeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateHomeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateHome(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_home(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_home(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_homeAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateHomeAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateHomeAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateHomeCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_home_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateHomeCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateHomeCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_in_airBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateInAirBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateInAir(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_in_air(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_in_air(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_in_airAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateInAirAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateInAirAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateInAirCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_in_air_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateInAirCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateInAirCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_landed_stateBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateLandedStateBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateLandedState(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_landed_state(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_landed_state(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_landed_stateAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateLandedStateAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateLandedStateAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateLandedStateCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_landed_state_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateLandedStateCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateLandedStateCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_vtol_stateBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateVtolStateBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateVtolState(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_vtol_state(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_vtol_state(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_vtol_stateAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateVtolStateAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateVtolStateAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateVtolStateCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_vtol_state_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateVtolStateCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateVtolStateCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_attitude_quaternionBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateAttitudeQuaternionBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateAttitudeQuaternion(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_attitude_quaternion(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_attitude_quaternion(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_attitude_quaternionAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateAttitudeQuaternionAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateAttitudeQuaternionAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateAttitudeQuaternionCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_attitude_quaternion_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateAttitudeQuaternionCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateAttitudeQuaternionCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_attitude_eulerBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateAttitudeEulerBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateAttitudeEuler(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_attitude_euler(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_attitude_euler(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_attitude_eulerAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateAttitudeEulerAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateAttitudeEulerAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateAttitudeEulerCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_attitude_euler_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateAttitudeEulerCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateAttitudeEulerCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_velocity_nedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateVelocityNedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateVelocityNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_velocity_ned(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_velocity_ned(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_velocity_nedAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateVelocityNedAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateVelocityNedAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateVelocityNedCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_velocity_ned_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateVelocityNedCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateVelocityNedCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_gps_infoBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateGpsInfoBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateGpsInfo(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_gps_info(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_gps_info(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_gps_infoAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateGpsInfoAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateGpsInfoAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateGpsInfoCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_gps_info_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateGpsInfoCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateGpsInfoCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_batteryBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateBatteryBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateBattery(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_battery(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_battery(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_batteryAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateBatteryAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateBatteryAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateBatteryCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_battery_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateBatteryCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateBatteryCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_rc_statusBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateRcStatusBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateRcStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_rc_status(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_rc_status(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_rc_statusAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateRcStatusAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateRcStatusAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateRcStatusCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_rc_status_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateRcStatusCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateRcStatusCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_actuator_control_targetBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateActuatorControlTargetBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateActuatorControlTarget(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_actuator_control_target(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_actuator_control_target(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_actuator_control_targetAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateActuatorControlTargetAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateActuatorControlTargetAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateActuatorControlTargetCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_actuator_control_target_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateActuatorControlTargetCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateActuatorControlTargetCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_actuator_output_statusBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateActuatorOutputStatusBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateActuatorOutputStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_actuator_output_status(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_actuator_output_status(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_actuator_output_statusAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateActuatorOutputStatusAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateActuatorOutputStatusAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateActuatorOutputStatusCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_actuator_output_status_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateActuatorOutputStatusCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateActuatorOutputStatusCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_odometryBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateOdometryBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateOdometry(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_odometry(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_odometry(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_odometryAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateOdometryAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateOdometryAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateOdometryCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_odometry_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateOdometryCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateOdometryCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_position_velocity_nedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRatePositionVelocityNedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRatePositionVelocityNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_position_velocity_ned(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_position_velocity_ned(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_position_velocity_nedAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRatePositionVelocityNedAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRatePositionVelocityNedAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRatePositionVelocityNedCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_position_velocity_ned_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRatePositionVelocityNedCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRatePositionVelocityNedCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_ground_truthBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateGroundTruthBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateGroundTruth(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_ground_truth(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_ground_truth(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_ground_truthAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateGroundTruthAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateGroundTruthAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateGroundTruthCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_ground_truth_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateGroundTruthCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateGroundTruthCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_fixedwing_metricsBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateFixedwingMetricsBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateFixedwingMetrics(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_fixedwing_metrics(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_fixedwing_metrics(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_fixedwing_metricsAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateFixedwingMetricsAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateFixedwingMetricsAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateFixedwingMetricsCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_fixedwing_metrics_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateFixedwingMetricsCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateFixedwingMetricsCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_imuBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateImuBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateImu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_imu(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_imu(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_imuAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateImuAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateImuAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateImuCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_imu_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateImuCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateImuCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_scaled_imuBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateScaledImuBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateScaledImu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_scaled_imu(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_scaled_imu(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_scaled_imuAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateScaledImuAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateScaledImuAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateScaledImuCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_scaled_imu_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateScaledImuCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateScaledImuCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_raw_imuBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateRawImuBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateRawImu(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_raw_imu(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_raw_imu(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_raw_imuAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateRawImuAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateRawImuAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateRawImuCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_raw_imu_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateRawImuCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateRawImuCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_unix_epoch_timeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateUnixEpochTimeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateUnixEpochTime(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_unix_epoch_time(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_unix_epoch_time(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_unix_epoch_timeAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateUnixEpochTimeAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateUnixEpochTimeAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateUnixEpochTimeCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_unix_epoch_time_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateUnixEpochTimeCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateUnixEpochTimeCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_distance_sensorBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateDistanceSensorBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateDistanceSensor(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_distance_sensor(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_distance_sensor(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_distance_sensorAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateDistanceSensorAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateDistanceSensorAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateDistanceSensorCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_distance_sensor_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateDistanceSensorCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateDistanceSensorCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_altitudeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateAltitudeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateAltitude(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_altitude(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_altitude(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_altitudeAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateAltitudeAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateAltitudeAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateAltitudeCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_altitude_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateAltitudeCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateAltitudeCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.set_rate_healthBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateHealthBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateHealth(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
-
-
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_set_rate_health(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        rate_hz    );
-
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_health(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Telemetry.set_rate_healthAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_setRateHealthAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateHealthAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateHealthCallbackWrapper(env, callback);
-
     mavsdk_telemetry_set_rate_health_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        rate_hz,        [](const mavsdk_telemetry_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateHealthCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateHealthCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Telemetry.get_gps_global_originBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_getGpsGlobalOriginBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_getGpsGlobalOrigin(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle) return {};
-
-
-    mavsdk_telemetry_gps_global_origin_t ret_val{};
-    mavsdk_telemetry_result_t result = mavsdk_telemetry_get_gps_global_origin(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),
-        &ret_val
-    );
-
+    mavsdk_telemetry_gps_global_origin_t returnValue{};
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_get_gps_global_origin(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            &returnValue);
     if (result != MAVSDK_TELEMETRY_RESULT_SUCCESS) {
+        mavsdk_telemetry_gps_global_origin_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "get_gps_global_origin failed");
         return nullptr;
     }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsGlobalOrigin");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.altitude_m)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_telemetry_gps_global_origin_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaGpsGlobalOrigin(env, returnValue);
+    mavsdk_telemetry_gps_global_origin_destroy(&returnValue);
+    return javaResult;
 }
 
-// ===== Telemetry.get_gps_global_originAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_getGpsGlobalOriginAsyncNative(
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_getGpsGlobalOriginAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new GetGpsGlobalOriginCallbackWrapper(env, callback);
-
     mavsdk_telemetry_get_gps_global_origin_async(
-        reinterpret_cast<mavsdk_telemetry_t>(handle),        [](const mavsdk_telemetry_result_t result, const mavsdk_telemetry_gps_global_origin_t value, void* user_data) {
-            auto* w = static_cast<GetGpsGlobalOriginCallbackWrapper*>(user_data);
-            (*w)(result, value);
-            delete w;
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        [](const mavsdk_telemetry_result_t result,
+           const mavsdk_telemetry_gps_global_origin_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<GetGpsGlobalOriginCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
-
 
 } // extern "C"

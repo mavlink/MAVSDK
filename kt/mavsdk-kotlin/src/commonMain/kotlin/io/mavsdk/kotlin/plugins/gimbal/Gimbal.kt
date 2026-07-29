@@ -7,16 +7,14 @@ package io.mavsdk.kotlin.plugins.gimbal
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class Gimbal internal constructor(
+    private val native: GimbalNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -27,8 +25,10 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         NO_SYSTEM(5),
         INVALID_ARGUMENT(6),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -36,8 +36,10 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         YAW_FOLLOW(0),
         YAW_LOCK(1),
         ;
+
         companion object {
-            fun fromValue(v: Int): GimbalMode = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): GimbalMode =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -46,8 +48,10 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         PRIMARY(1),
         SECONDARY(2),
         ;
+
         companion object {
-            fun fromValue(v: Int): ControlMode = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): ControlMode =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -55,8 +59,10 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         ONCE(0),
         STREAM(1),
         ;
+
         companion object {
-            fun fromValue(v: Int): SendMode = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): SendMode =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -104,117 +110,105 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
 
     data class ControlStatus(
         val gimbalId: Int,
-        val controlMode: Int,
+        val controlMode: ControlMode,
         val sysidPrimaryControl: Int,
         val compidPrimaryControl: Int,
         val sysidSecondaryControl: Int,
         val compidSecondaryControl: Int,
     )
 
-    suspend fun setAngles(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
-        val callback = SetAnglesCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun setAngles(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GimbalCallbackGuard()
+            native.setAnglesAsync(gimbalId, rollDeg, pitchDeg, yawDeg, gimbalMode, sendMode, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        setAnglesAsyncNative(gimbalId, rollDeg, pitchDeg, yawDeg, gimbalMode.value, sendMode.value, callback)
-    }
 
-    suspend fun setAngularRates(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
-        val callback = SetAngularRatesCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun setAngularRates(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GimbalCallbackGuard()
+            native.setAngularRatesAsync(gimbalId, rollRateDegS, pitchRateDegS, yawRateDegS, gimbalMode, sendMode, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        setAngularRatesAsyncNative(gimbalId, rollRateDegS, pitchRateDegS, yawRateDegS, gimbalMode.value, sendMode.value, callback)
-    }
 
-    suspend fun setRoiLocation(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float): Result = suspendCancellableCoroutine { continuation ->
-        val callback = SetRoiLocationCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun setRoiLocation(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GimbalCallbackGuard()
+            native.setRoiLocationAsync(gimbalId, latitudeDeg, longitudeDeg, altitudeM, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        setRoiLocationAsyncNative(gimbalId, latitudeDeg, longitudeDeg, altitudeM, callback)
-    }
 
-    suspend fun takeControl(gimbalId: Int, controlMode: ControlMode): Result = suspendCancellableCoroutine { continuation ->
-        val callback = TakeControlCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun takeControl(gimbalId: Int, controlMode: ControlMode): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GimbalCallbackGuard()
+            native.takeControlAsync(gimbalId, controlMode, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        takeControlAsyncNative(gimbalId, controlMode.value, callback)
-    }
 
-    suspend fun releaseControl(gimbalId: Int): Result = suspendCancellableCoroutine { continuation ->
-        val callback = ReleaseControlCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun releaseControl(gimbalId: Int): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GimbalCallbackGuard()
+            native.releaseControlAsync(gimbalId, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        releaseControlAsyncNative(gimbalId, callback)
-    }
 
     fun gimbalList(): GimbalList =
-        gimbalListBlocking()
+        native.gimbalList()
 
     fun subscribeGimbalList(): Flow<GimbalList> = callbackFlow {
-        val callback = GimbalListCallback { value ->
+        val subscriptionHandle = native.subscribeGimbalList(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeGimbalListNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeGimbalList(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeGimbalList(subscriptionHandle) }
     }
 
     fun subscribeControlStatus(): Flow<ControlStatus> = callbackFlow {
-        val callback = ControlStatusCallback { value ->
+        val subscriptionHandle = native.subscribeControlStatus(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeControlStatusNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeControlStatus(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeControlStatus(subscriptionHandle) }
     }
 
     fun getControlStatus(gimbalId: Int): ControlStatus =
-        getControlStatusBlocking(gimbalId)
+        native.getControlStatus(gimbalId)
 
     fun subscribeAttitude(): Flow<Attitude> = callbackFlow {
-        val callback = AttitudeCallback { value ->
+        val subscriptionHandle = native.subscribeAttitude(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeAttitudeNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeAttitude(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeAttitude(subscriptionHandle) }
     }
 
     fun getAttitude(gimbalId: Int): Attitude =
-        getAttitudeBlocking(gimbalId)
-
-    private fun interface SetAnglesCallback { fun invoke(result: Int) }
-    private fun interface SetAngularRatesCallback { fun invoke(result: Int) }
-    private fun interface SetRoiLocationCallback { fun invoke(result: Int) }
-    private fun interface TakeControlCallback { fun invoke(result: Int) }
-    private fun interface ReleaseControlCallback { fun invoke(result: Int) }
-    private fun interface GimbalListCallback { fun invoke(value: GimbalList) }
-    private fun interface ControlStatusCallback { fun invoke(value: ControlStatus) }
-    private fun interface AttitudeCallback { fun invoke(value: Attitude) }
-
-    private external fun setAnglesAsyncNative(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: Int, sendMode: Int, callback: SetAnglesCallback)
-    private external fun setAngularRatesAsyncNative(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: Int, sendMode: Int, callback: SetAngularRatesCallback)
-    private external fun setRoiLocationAsyncNative(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float, callback: SetRoiLocationCallback)
-    private external fun takeControlAsyncNative(gimbalId: Int, controlMode: Int, callback: TakeControlCallback)
-    private external fun releaseControlAsyncNative(gimbalId: Int, callback: ReleaseControlCallback)
-    private external fun gimbalListBlocking(): GimbalList
-    private external fun subscribeGimbalListNative(callback: GimbalListCallback): Long
-    private external fun unsubscribeGimbalList(handle: Long)
-    private external fun subscribeControlStatusNative(callback: ControlStatusCallback): Long
-    private external fun unsubscribeControlStatus(handle: Long)
-    private external fun getControlStatusBlocking(gimbalId: Int): ControlStatus
-    private external fun subscribeAttitudeNative(callback: AttitudeCallback): Long
-    private external fun unsubscribeAttitude(handle: Long)
-    private external fun getAttitudeBlocking(gimbalId: Int): Attitude
-    private external fun destroy()
+        native.getAttitude(gimbalId)
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class GimbalException(
@@ -223,10 +217,33 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Gimbal {
-            val handle = createNative(system.getHandle())
-            return Gimbal(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Gimbal =
+            Gimbal(
+                createGimbalNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
+}
+
+internal interface GimbalNative {
+    fun setAnglesAsync(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: Gimbal.GimbalMode, sendMode: Gimbal.SendMode, callback: (Int) -> Unit)
+    fun setAngularRatesAsync(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: Gimbal.GimbalMode, sendMode: Gimbal.SendMode, callback: (Int) -> Unit)
+    fun setRoiLocationAsync(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float, callback: (Int) -> Unit)
+    fun takeControlAsync(gimbalId: Int, controlMode: Gimbal.ControlMode, callback: (Int) -> Unit)
+    fun releaseControlAsync(gimbalId: Int, callback: (Int) -> Unit)
+    fun gimbalList(): Gimbal.GimbalList
+    fun subscribeGimbalList(callback: (Gimbal.GimbalList) -> Unit): Long
+    fun unsubscribeGimbalList(subscriptionHandle: Long)
+    fun subscribeControlStatus(callback: (Gimbal.ControlStatus) -> Unit): Long
+    fun unsubscribeControlStatus(subscriptionHandle: Long)
+    fun getControlStatus(gimbalId: Int): Gimbal.ControlStatus
+    fun subscribeAttitude(callback: (Gimbal.Attitude) -> Unit): Long
+    fun unsubscribeAttitude(subscriptionHandle: Long)
+    fun getAttitude(gimbalId: Int): Gimbal.Attitude
+    fun destroy()
+}
+
+internal expect fun createGimbalNative(systemHandle: Long): GimbalNative
+
+internal expect class GimbalCallbackGuard() {
+    fun tryClaim(): Boolean
 }

@@ -7,16 +7,14 @@ package io.mavsdk.kotlin.plugins.mission_raw
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class MissionRaw internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class MissionRaw internal constructor(
+    private val native: MissionRawNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -41,8 +39,10 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         FAILED_TO_OPEN_MISSION_PLANNER_PLAN(19),
         FAILED_TO_PARSE_MISSION_PLANNER_PLAN(20),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -73,168 +73,193 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         val rallyItems: List<MissionItem> = emptyList(),
     )
 
-    suspend fun uploadMission(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = UploadMissionCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun uploadMission(missionItems: List<MissionItem>): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.uploadMissionAsync(missionItems, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        uploadMissionAsyncNative(callback)
-    }
 
-    suspend fun uploadGeofence(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = UploadGeofenceCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun uploadGeofence(missionItems: List<MissionItem>): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.uploadGeofenceAsync(missionItems, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        uploadGeofenceAsyncNative(callback)
-    }
 
-    suspend fun uploadRallyPoints(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = UploadRallyPointsCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun uploadRallyPoints(missionItems: List<MissionItem>): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.uploadRallyPointsAsync(missionItems, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        uploadRallyPointsAsyncNative(callback)
-    }
 
     fun cancelMissionUpload(): Result =
-        Result.fromValue(cancelMissionUploadBlocking())
+        Result.fromValue(native.cancelMissionUpload())
 
-    suspend fun downloadMission(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = DownloadMissionCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun downloadMission(): kotlin.Result<List<MissionItem>> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.downloadMissionAsync() { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                MissionRawException(
+                                    parsedResult,
+                                    "downloadMission failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                    }
+                }
+            }
         }
-        downloadMissionAsyncNative(callback)
-    }
 
-    suspend fun downloadGeofence(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = DownloadGeofenceCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun downloadGeofence(): kotlin.Result<List<MissionItem>> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.downloadGeofenceAsync() { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                MissionRawException(
+                                    parsedResult,
+                                    "downloadGeofence failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                    }
+                }
+            }
         }
-        downloadGeofenceAsyncNative(callback)
-    }
 
-    suspend fun downloadRallypoints(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = DownloadRallypointsCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun downloadRallypoints(): kotlin.Result<List<MissionItem>> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.downloadRallypointsAsync() { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                MissionRawException(
+                                    parsedResult,
+                                    "downloadRallypoints failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                    }
+                }
+            }
         }
-        downloadRallypointsAsyncNative(callback)
-    }
 
     fun cancelMissionDownload(): Result =
-        Result.fromValue(cancelMissionDownloadBlocking())
+        Result.fromValue(native.cancelMissionDownload())
 
-    suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = StartMissionCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun startMission(): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.startMissionAsync() { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        startMissionAsyncNative(callback)
-    }
 
-    suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = PauseMissionCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun pauseMission(): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.pauseMissionAsync() { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        pauseMissionAsyncNative(callback)
-    }
 
-    suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = ClearMissionCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun clearMission(): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.clearMissionAsync() { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        clearMissionAsyncNative(callback)
-    }
 
-    suspend fun setCurrentMissionItem(index: Int): Result = suspendCancellableCoroutine { continuation ->
-        val callback = SetCurrentMissionItemCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun setCurrentMissionItem(index: Int): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MissionRawCallbackGuard()
+            native.setCurrentMissionItemAsync(index, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        setCurrentMissionItemAsyncNative(index, callback)
-    }
 
     fun missionProgress(): MissionProgress =
-        missionProgressBlocking()
+        native.missionProgress()
 
     fun subscribeMissionProgress(): Flow<MissionProgress> = callbackFlow {
-        val callback = MissionProgressCallback { value ->
+        val subscriptionHandle = native.subscribeMissionProgress(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeMissionProgressNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeMissionProgress(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeMissionProgress(subscriptionHandle) }
     }
 
     fun subscribeMissionChanged(): Flow<Boolean> = callbackFlow {
-        val callback = MissionChangedCallback { value ->
+        val subscriptionHandle = native.subscribeMissionChanged(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeMissionChangedNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeMissionChanged(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeMissionChanged(subscriptionHandle) }
     }
 
     fun importQgroundcontrolMission(qgcPlanPath: String): MissionImportData =
-        importQgroundcontrolMissionBlocking(qgcPlanPath)
+        native.importQgroundcontrolMission(qgcPlanPath)
 
     fun importQgroundcontrolMissionFromString(qgcPlan: String): MissionImportData =
-        importQgroundcontrolMissionFromStringBlocking(qgcPlan)
+        native.importQgroundcontrolMissionFromString(qgcPlan)
 
     fun importMissionPlannerMission(missionPlannerPath: String): MissionImportData =
-        importMissionPlannerMissionBlocking(missionPlannerPath)
+        native.importMissionPlannerMission(missionPlannerPath)
 
     fun importMissionPlannerMissionFromString(missionPlannerMission: String): MissionImportData =
-        importMissionPlannerMissionFromStringBlocking(missionPlannerMission)
+        native.importMissionPlannerMissionFromString(missionPlannerMission)
 
     fun isMissionFinished(): Boolean =
-        isMissionFinishedBlocking()
-
-    private fun interface UploadMissionCallback { fun invoke(result: Int) }
-    private fun interface UploadGeofenceCallback { fun invoke(result: Int) }
-    private fun interface UploadRallyPointsCallback { fun invoke(result: Int) }
-    private fun interface DownloadMissionCallback { fun invoke(result: Int) }
-    private fun interface DownloadGeofenceCallback { fun invoke(result: Int) }
-    private fun interface DownloadRallypointsCallback { fun invoke(result: Int) }
-    private fun interface StartMissionCallback { fun invoke(result: Int) }
-    private fun interface PauseMissionCallback { fun invoke(result: Int) }
-    private fun interface ClearMissionCallback { fun invoke(result: Int) }
-    private fun interface SetCurrentMissionItemCallback { fun invoke(result: Int) }
-    private fun interface MissionProgressCallback { fun invoke(value: MissionProgress) }
-    private fun interface MissionChangedCallback { fun invoke(value: Boolean) }
-
-    private external fun uploadMissionAsyncNative(callback: UploadMissionCallback)
-    private external fun uploadGeofenceAsyncNative(callback: UploadGeofenceCallback)
-    private external fun uploadRallyPointsAsyncNative(callback: UploadRallyPointsCallback)
-    private external fun cancelMissionUploadBlocking(): Int
-    private external fun downloadMissionAsyncNative(callback: DownloadMissionCallback)
-    private external fun downloadGeofenceAsyncNative(callback: DownloadGeofenceCallback)
-    private external fun downloadRallypointsAsyncNative(callback: DownloadRallypointsCallback)
-    private external fun cancelMissionDownloadBlocking(): Int
-    private external fun startMissionAsyncNative(callback: StartMissionCallback)
-    private external fun pauseMissionAsyncNative(callback: PauseMissionCallback)
-    private external fun clearMissionAsyncNative(callback: ClearMissionCallback)
-    private external fun setCurrentMissionItemAsyncNative(index: Int, callback: SetCurrentMissionItemCallback)
-    private external fun missionProgressBlocking(): MissionProgress
-    private external fun subscribeMissionProgressNative(callback: MissionProgressCallback): Long
-    private external fun unsubscribeMissionProgress(handle: Long)
-    private external fun subscribeMissionChangedNative(callback: MissionChangedCallback): Long
-    private external fun unsubscribeMissionChanged(handle: Long)
-    private external fun importQgroundcontrolMissionBlocking(qgcPlanPath: String): MissionImportData
-    private external fun importQgroundcontrolMissionFromStringBlocking(qgcPlan: String): MissionImportData
-    private external fun importMissionPlannerMissionBlocking(missionPlannerPath: String): MissionImportData
-    private external fun importMissionPlannerMissionFromStringBlocking(missionPlannerMission: String): MissionImportData
-    private external fun isMissionFinishedBlocking(): Boolean
-    private external fun destroy()
+        native.isMissionFinished()
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class MissionRawException(
@@ -243,10 +268,41 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): MissionRaw {
-            val handle = createNative(system.getHandle())
-            return MissionRaw(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): MissionRaw =
+            MissionRaw(
+                createMissionRawNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
+}
+
+internal interface MissionRawNative {
+    fun uploadMissionAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
+    fun uploadGeofenceAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
+    fun uploadRallyPointsAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
+    fun cancelMissionUpload(): Int
+    fun downloadMissionAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit)
+    fun downloadGeofenceAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit)
+    fun downloadRallypointsAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit)
+    fun cancelMissionDownload(): Int
+    fun startMissionAsync(callback: (Int) -> Unit)
+    fun pauseMissionAsync(callback: (Int) -> Unit)
+    fun clearMissionAsync(callback: (Int) -> Unit)
+    fun setCurrentMissionItemAsync(index: Int, callback: (Int) -> Unit)
+    fun missionProgress(): MissionRaw.MissionProgress
+    fun subscribeMissionProgress(callback: (MissionRaw.MissionProgress) -> Unit): Long
+    fun unsubscribeMissionProgress(subscriptionHandle: Long)
+    fun subscribeMissionChanged(callback: (Boolean) -> Unit): Long
+    fun unsubscribeMissionChanged(subscriptionHandle: Long)
+    fun importQgroundcontrolMission(qgcPlanPath: String): MissionRaw.MissionImportData
+    fun importQgroundcontrolMissionFromString(qgcPlan: String): MissionRaw.MissionImportData
+    fun importMissionPlannerMission(missionPlannerPath: String): MissionRaw.MissionImportData
+    fun importMissionPlannerMissionFromString(missionPlannerMission: String): MissionRaw.MissionImportData
+    fun isMissionFinished(): Boolean
+    fun destroy()
+}
+
+internal expect fun createMissionRawNative(systemHandle: Long): MissionRawNative
+
+internal expect class MissionRawCallbackGuard() {
+    fun tryClaim(): Boolean
 }

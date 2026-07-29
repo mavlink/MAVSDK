@@ -5,16 +5,14 @@
 package io.mavsdk.kotlin.plugins.mission_raw_server
 
 import io.mavsdk.kotlin.Mavsdk
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class MissionRawServer internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class MissionRawServer internal constructor(
+    private val native: MissionRawServerNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -31,8 +29,10 @@ class MissionRawServer internal constructor(private val handle: Long) : AutoClos
         NO_SYSTEM(11),
         NEXT(12),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -62,52 +62,37 @@ class MissionRawServer internal constructor(private val handle: Long) : AutoClos
     )
 
     fun subscribeIncomingMission(): Flow<MissionPlan> = callbackFlow {
-        val callback = IncomingMissionCallback { _, value ->
+        val subscriptionHandle = native.subscribeIncomingMission(
+                    ) { _, value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeIncomingMissionNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeIncomingMission(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeIncomingMission(subscriptionHandle) }
     }
 
     fun subscribeCurrentItemChanged(): Flow<MissionItem> = callbackFlow {
-        val callback = CurrentItemChangedCallback { value ->
+        val subscriptionHandle = native.subscribeCurrentItemChanged(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeCurrentItemChangedNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeCurrentItemChanged(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeCurrentItemChanged(subscriptionHandle) }
     }
 
     fun setCurrentItemComplete() {
-        setCurrentItemCompleteBlocking()
+        native.setCurrentItemComplete()
     }
 
     fun subscribeClearAll(): Flow<Int> = callbackFlow {
-        val callback = ClearAllCallback { value ->
+        val subscriptionHandle = native.subscribeClearAll(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeClearAllNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeClearAll(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeClearAll(subscriptionHandle) }
     }
 
-    private fun interface IncomingMissionCallback { fun invoke(result: Int, value: MissionPlan) }
-    private fun interface CurrentItemChangedCallback { fun invoke(value: MissionItem) }
-    private fun interface ClearAllCallback { fun invoke(value: Int) }
-
-    private external fun subscribeIncomingMissionNative(callback: IncomingMissionCallback): Long
-    private external fun unsubscribeIncomingMission(handle: Long)
-    private external fun subscribeCurrentItemChangedNative(callback: CurrentItemChangedCallback): Long
-    private external fun unsubscribeCurrentItemChanged(handle: Long)
-    private external fun setCurrentItemCompleteBlocking()
-    private external fun subscribeClearAllNative(callback: ClearAllCallback): Long
-    private external fun unsubscribeClearAll(handle: Long)
-    private external fun destroy()
-
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class MissionRawServerException(
@@ -116,10 +101,22 @@ class MissionRawServer internal constructor(private val handle: Long) : AutoClos
     ) : Exception(message)
 
     companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): MissionRawServer {
-            val handle = createNative(mavsdk.serverComponentHandle(instance))
-            return MissionRawServer(handle)
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(mavsdk: Mavsdk, instance: Int = 1): MissionRawServer =
+            MissionRawServer(
+                createMissionRawServerNative(mavsdk.serverComponentHandle(instance))
+            )
     }
 }
+
+internal interface MissionRawServerNative {
+    fun subscribeIncomingMission(callback: (Int, MissionRawServer.MissionPlan) -> Unit): Long
+    fun unsubscribeIncomingMission(subscriptionHandle: Long)
+    fun subscribeCurrentItemChanged(callback: (MissionRawServer.MissionItem) -> Unit): Long
+    fun unsubscribeCurrentItemChanged(subscriptionHandle: Long)
+    fun setCurrentItemComplete()
+    fun subscribeClearAll(callback: (Int) -> Unit): Long
+    fun unsubscribeClearAll(subscriptionHandle: Long)
+    fun destroy()
+}
+
+internal expect fun createMissionRawServerNative(systemHandle: Long): MissionRawServerNative

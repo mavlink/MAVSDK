@@ -82,7 +82,7 @@ extern "C" {
 
 // Log.subscribeNative
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Log_subscribeNative(
+Java_io_mavsdk_jni_NativeLog_subscribe(
     JNIEnv* env,
     jclass clazz,
     jobject callback) {
@@ -107,7 +107,7 @@ Java_io_mavsdk_kotlin_Log_subscribeNative(
 
 // Log.unsubscribe
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Log_unsubscribe(
+Java_io_mavsdk_jni_NativeLog_unsubscribe(
     JNIEnv* env,
     jclass clazz) {
 

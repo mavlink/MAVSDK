@@ -7,16 +7,14 @@ package io.mavsdk.kotlin.plugins.transponder
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class Transponder internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class Transponder internal constructor(
+    private val native: TransponderNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -27,8 +25,10 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
         COMMAND_DENIED(5),
         TIMEOUT(6),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -54,8 +54,10 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
         SERVICE_SURFACE(18),
         POINT_OBSTACLE(19),
         ;
+
         companion object {
-            fun fromValue(v: Int): AdsbEmitterType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): AdsbEmitterType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -63,8 +65,10 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
         PRESSURE_QNH(0),
         GEOMETRIC(1),
         ;
+
         companion object {
-            fun fromValue(v: Int): AdsbAltitudeType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): AdsbAltitudeType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -72,49 +76,43 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
         val icaoAddress: Int,
         val latitudeDeg: Double,
         val longitudeDeg: Double,
-        val altitudeType: Int,
+        val altitudeType: AdsbAltitudeType,
         val absoluteAltitudeM: Float,
         val headingDeg: Float,
         val horizontalVelocityMS: Float,
         val verticalVelocityMS: Float,
         val callsign: String,
-        val emitterType: Int,
+        val emitterType: AdsbEmitterType,
         val squawk: Int,
         val tslcS: Int,
     )
 
     fun transponder(): AdsbVehicle =
-        transponderBlocking()
+        native.transponder()
 
     fun subscribeTransponder(): Flow<AdsbVehicle> = callbackFlow {
-        val callback = TransponderCallback { value ->
+        val subscriptionHandle = native.subscribeTransponder(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeTransponderNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeTransponder(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeTransponder(subscriptionHandle) }
     }
 
-    suspend fun setRateTransponder(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
-        val callback = SetRateTransponderCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun setRateTransponder(rateHz: Double): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = TransponderCallbackGuard()
+            native.setRateTransponderAsync(rateHz, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        setRateTransponderAsyncNative(rateHz, callback)
-    }
-
-    private fun interface TransponderCallback { fun invoke(value: AdsbVehicle) }
-    private fun interface SetRateTransponderCallback { fun invoke(result: Int) }
-
-    private external fun transponderBlocking(): AdsbVehicle
-    private external fun subscribeTransponderNative(callback: TransponderCallback): Long
-    private external fun unsubscribeTransponder(handle: Long)
-    private external fun setRateTransponderAsyncNative(rateHz: Double, callback: SetRateTransponderCallback)
-    private external fun destroy()
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class TransponderException(
@@ -123,10 +121,23 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Transponder {
-            val handle = createNative(system.getHandle())
-            return Transponder(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Transponder =
+            Transponder(
+                createTransponderNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
+}
+
+internal interface TransponderNative {
+    fun transponder(): Transponder.AdsbVehicle
+    fun subscribeTransponder(callback: (Transponder.AdsbVehicle) -> Unit): Long
+    fun unsubscribeTransponder(subscriptionHandle: Long)
+    fun setRateTransponderAsync(rateHz: Double, callback: (Int) -> Unit)
+    fun destroy()
+}
+
+internal expect fun createTransponderNative(systemHandle: Long): TransponderNative
+
+internal expect class TransponderCallbackGuard() {
+    fun tryClaim(): Boolean
 }

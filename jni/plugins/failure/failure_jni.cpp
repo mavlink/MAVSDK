@@ -6,75 +6,72 @@
 #include "cmavsdk/plugins/failure/failure.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
 
+
+
+
+
+
+} // namespace
 
 extern "C" {
 
-// ===== Failure.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_failure_Failure_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_failure_NativeFailure_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_failure_t handle = mavsdk_failure_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Failure plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Failure.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_failure_Failure_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/failure/Failure");
-    if (!handle) return;
-
-    mavsdk_failure_destroy(reinterpret_cast<mavsdk_failure_t>(handle));
+Java_io_mavsdk_jni_plugins_failure_NativeFailure_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Failure plugin")) {
+        return;
+    }
+    mavsdk_failure_destroy(
+        reinterpret_cast<mavsdk_failure_t>(handle));
 }
 
-
-// ===== Failure.injectBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_failure_Failure_injectBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_failure_NativeFailure_inject(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint failure_unit,
     jint failure_type,
     jint instance) {
+    if (!requireHandle(env, handle, "Failure plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/failure/Failure");
-    if (!handle) return MAVSDK_FAILURE_RESULT_UNKNOWN;
-
-
-    mavsdk_failure_result_t result = mavsdk_failure_inject(
-        reinterpret_cast<mavsdk_failure_t>(handle),
-        static_cast<mavsdk_failure_failure_unit_t>(failure_unit),
-        static_cast<mavsdk_failure_failure_type_t>(failure_type),
-        instance    );
-
+    mavsdk_failure_result_t result =
+        mavsdk_failure_inject(
+            reinterpret_cast<mavsdk_failure_t>(handle),
+            static_cast<mavsdk_failure_failure_unit_t>(failure_unit),
+            static_cast<mavsdk_failure_failure_type_t>(failure_type),
+            static_cast<int32_t>(instance));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

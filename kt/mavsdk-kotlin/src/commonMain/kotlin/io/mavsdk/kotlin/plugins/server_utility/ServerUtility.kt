@@ -6,8 +6,10 @@ package io.mavsdk.kotlin.plugins.server_utility
 
 import io.mavsdk.kotlin.System
 
-
-class ServerUtility internal constructor(private val handle: Long) : AutoCloseable {
+class ServerUtility internal constructor(
+    private val native: ServerUtilityNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -16,8 +18,10 @@ class ServerUtility internal constructor(private val handle: Long) : AutoCloseab
         CONNECTION_ERROR(3),
         INVALID_ARGUMENT(4),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -31,20 +35,20 @@ class ServerUtility internal constructor(private val handle: Long) : AutoCloseab
         ALERT(6),
         EMERGENCY(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): StatusTextType = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): StatusTextType =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
     fun sendStatusText(type: StatusTextType, text: String): Result =
-        Result.fromValue(sendStatusTextBlocking(type.value, text))
-
-
-    private external fun sendStatusTextBlocking(type: Int, text: String): Int
-    private external fun destroy()
+        Result.fromValue(native.sendStatusText(type, text))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class ServerUtilityException(
@@ -53,10 +57,16 @@ class ServerUtility internal constructor(private val handle: Long) : AutoCloseab
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): ServerUtility {
-            val handle = createNative(system.getHandle())
-            return ServerUtility(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): ServerUtility =
+            ServerUtility(
+                createServerUtilityNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface ServerUtilityNative {
+    fun sendStatusText(type: ServerUtility.StatusTextType, text: String): Int
+    fun destroy()
+}
+
+internal expect fun createServerUtilityNative(systemHandle: Long): ServerUtilityNative

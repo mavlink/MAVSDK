@@ -6,307 +6,507 @@
 #include "cmavsdk/plugins/ftp/ftp.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct ListDirectoryDataFromJava;
+struct ListDirectoryDataArrayFromJava;
+struct ProgressDataFromJava;
+struct ProgressDataArrayFromJava;
 
+struct ListDirectoryDataFromJava {
+    mavsdk_ftp_list_directory_data_t value{};
+    std::vector<std::string> dirsStrings;
+    std::vector<char*> dirsValues;
+    std::vector<std::string> filesStrings;
+    std::vector<char*> filesValues;
 
-// ===== Download Callback Wrapper =====
+    ListDirectoryDataFromJava(JNIEnv* env, jobject object);
+    ~ListDirectoryDataFromJava();
+};
+
+struct ListDirectoryDataArrayFromJava {
+    std::vector<std::unique_ptr<ListDirectoryDataFromJava>> holders;
+    std::vector<mavsdk_ftp_list_directory_data_t> values;
+
+    ListDirectoryDataArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ListDirectoryDataFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ProgressDataFromJava {
+    mavsdk_ftp_progress_data_t value{};
+
+    ProgressDataFromJava(JNIEnv* env, jobject object);
+    ~ProgressDataFromJava();
+};
+
+struct ProgressDataArrayFromJava {
+    std::vector<std::unique_ptr<ProgressDataFromJava>> holders;
+    std::vector<mavsdk_ftp_progress_data_t> values;
+
+    ProgressDataArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ProgressDataFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+ListDirectoryDataFromJava::ListDirectoryDataFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID dirsField = env->GetFieldID(
+        clazz, "dirs", "[Ljava/lang/String;");
+    auto dirsArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, dirsField));
+    const jsize dirsCount =
+        dirsArray ? env->GetArrayLength(dirsArray) : 0;
+    dirsStrings.reserve(static_cast<size_t>(dirsCount));
+    dirsValues.reserve(static_cast<size_t>(dirsCount));
+    for (jsize i = 0; i < dirsCount; ++i) {
+        auto item = static_cast<jstring>(env->GetObjectArrayElement(dirsArray, i));
+        JStringHolder holder(env, item);
+        dirsStrings.emplace_back(holder.c_str() ? holder.c_str() : "");
+        env->DeleteLocalRef(item);
+    }
+    for (auto& item : dirsStrings) {
+        dirsValues.push_back(const_cast<char*>(item.c_str()));
+    }
+    value.dirs = dirsValues.data();
+    value.dirs_size =
+        static_cast<size_t>(dirsCount);
+    env->DeleteLocalRef(dirsArray);
+    jfieldID filesField = env->GetFieldID(
+        clazz, "files", "[Ljava/lang/String;");
+    auto filesArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, filesField));
+    const jsize filesCount =
+        filesArray ? env->GetArrayLength(filesArray) : 0;
+    filesStrings.reserve(static_cast<size_t>(filesCount));
+    filesValues.reserve(static_cast<size_t>(filesCount));
+    for (jsize i = 0; i < filesCount; ++i) {
+        auto item = static_cast<jstring>(env->GetObjectArrayElement(filesArray, i));
+        JStringHolder holder(env, item);
+        filesStrings.emplace_back(holder.c_str() ? holder.c_str() : "");
+        env->DeleteLocalRef(item);
+    }
+    for (auto& item : filesStrings) {
+        filesValues.push_back(const_cast<char*>(item.c_str()));
+    }
+    value.files = filesValues.data();
+    value.files_size =
+        static_cast<size_t>(filesCount);
+    env->DeleteLocalRef(filesArray);
+    env->DeleteLocalRef(clazz);
+}
+
+ListDirectoryDataFromJava::~ListDirectoryDataFromJava() = default;
+ProgressDataFromJava::ProgressDataFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID bytes_transferredField = env->GetFieldID(
+        clazz, "bytesTransferred", "I");
+    value.bytes_transferred =
+        static_cast<uint32_t>(env->GetIntField(object, bytes_transferredField));
+    jfieldID total_bytesField = env->GetFieldID(
+        clazz, "totalBytes", "I");
+    value.total_bytes =
+        static_cast<uint32_t>(env->GetIntField(object, total_bytesField));
+    env->DeleteLocalRef(clazz);
+}
+
+ProgressDataFromJava::~ProgressDataFromJava() = default;
+
+jobject toJavaListDirectoryData(
+    JNIEnv* env, const mavsdk_ftp_list_directory_data_t& value);
+jobjectArray toJavaListDirectoryDataArray(
+    JNIEnv* env,
+    const mavsdk_ftp_list_directory_data_t* values,
+    size_t count);
+jobject toJavaProgressData(
+    JNIEnv* env, const mavsdk_ftp_progress_data_t& value);
+jobjectArray toJavaProgressDataArray(
+    JNIEnv* env,
+    const mavsdk_ftp_progress_data_t* values,
+    size_t count);
+
+jobject toJavaListDirectoryData(
+    JNIEnv* env, const mavsdk_ftp_list_directory_data_t& value) {
+    jclass dirsElementClass = env->FindClass("java/lang/String");
+    jobjectArray dirsValue = env->NewObjectArray(
+        static_cast<jsize>(value.dirs_size),
+        dirsElementClass, nullptr);
+    for (size_t i = 0; i < value.dirs_size; ++i) {
+        jstring item = toJavaString(env, value.dirs[i]);
+        env->SetObjectArrayElement(dirsValue, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(dirsElementClass);
+    jclass filesElementClass = env->FindClass("java/lang/String");
+    jobjectArray filesValue = env->NewObjectArray(
+        static_cast<jsize>(value.files_size),
+        filesElementClass, nullptr);
+    for (size_t i = 0; i < value.files_size; ++i) {
+        jstring item = toJavaString(env, value.files[i]);
+        env->SetObjectArrayElement(filesValue, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(filesElementClass);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/ftp/NativeFtp$ListDirectoryData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Ljava/lang/String;[Ljava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , dirsValue
+        , filesValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(dirsValue);
+    env->DeleteLocalRef(filesValue);
+    return result;
+}
+
+jobjectArray toJavaListDirectoryDataArray(
+    JNIEnv* env,
+    const mavsdk_ftp_list_directory_data_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/ftp/NativeFtp$ListDirectoryData");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaListDirectoryData(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaProgressData(
+    JNIEnv* env, const mavsdk_ftp_progress_data_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/ftp/NativeFtp$ProgressData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(II)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.bytes_transferred)
+        , static_cast<jint>(value.total_bytes)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaProgressDataArray(
+    JNIEnv* env,
+    const mavsdk_ftp_progress_data_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/ftp/NativeFtp$ProgressData");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaProgressData(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct DownloadCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    DownloadCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    DownloadCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/ftp/Ftp$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/ftp/NativeFtp$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_ftp_result_t result, const mavsdk_ftp_progress_data_t progress_data) const {
+    void operator()(
+        const mavsdk_ftp_result_t result,        const mavsdk_ftp_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(progress_data.bytes_transferred)            , static_cast<jint>(progress_data.total_bytes)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Upload Callback Wrapper =====
 struct UploadCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    UploadCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    UploadCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/ftp/Ftp$ProgressData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/ftp/NativeFtp$ProgressData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_ftp_result_t result, const mavsdk_ftp_progress_data_t progress_data) const {
+    void operator()(
+        const mavsdk_ftp_result_t result,        const mavsdk_ftp_progress_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ProgressData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(progress_data.bytes_transferred)            , static_cast<jint>(progress_data.total_bytes)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaProgressData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ListDirectory Callback Wrapper =====
 struct ListDirectoryCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ListDirectoryCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ListDirectoryCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/ftp/Ftp$ListDirectoryData;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/ftp/NativeFtp$ListDirectoryData;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_ftp_result_t result, const mavsdk_ftp_list_directory_data_t data) const {
+    void operator()(
+        const mavsdk_ftp_result_t result,        const mavsdk_ftp_list_directory_data_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ListDirectoryData");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated primitive field dirs */ , static_cast<jobject>(nullptr)            /* TODO: repeated primitive field files */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaListDirectoryData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== CreateDirectory Callback Wrapper =====
 struct CreateDirectoryCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    CreateDirectoryCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    CreateDirectoryCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_ftp_result_t result) const {
+    void operator()(
+        const mavsdk_ftp_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== RemoveDirectory Callback Wrapper =====
 struct RemoveDirectoryCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RemoveDirectoryCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RemoveDirectoryCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_ftp_result_t result) const {
+    void operator()(
+        const mavsdk_ftp_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== RemoveFile Callback Wrapper =====
 struct RemoveFileCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RemoveFileCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RemoveFileCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_ftp_result_t result) const {
+    void operator()(
+        const mavsdk_ftp_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Rename Callback Wrapper =====
 struct RenameCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RenameCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RenameCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_ftp_result_t result) const {
+    void operator()(
+        const mavsdk_ftp_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== AreFilesIdentical Callback Wrapper =====
 struct AreFilesIdenticalCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    AreFilesIdenticalCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    AreFilesIdenticalCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(IZ)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_ftp_result_t result, const bool are_identical) const {
+    void operator()(
+        const mavsdk_ftp_result_t result,        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result),
-            static_cast<jboolean>(are_identical));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -314,425 +514,425 @@ struct AreFilesIdenticalCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Ftp.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_ftp_t handle = mavsdk_ftp_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Ftp plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Ftp.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle) return;
-
-    mavsdk_ftp_destroy(reinterpret_cast<mavsdk_ftp_t>(handle));
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Ftp plugin")) {
+        return;
+    }
+    mavsdk_ftp_destroy(
+        reinterpret_cast<mavsdk_ftp_t>(handle));
 }
 
-
-// ===== Ftp.downloadAsyncNative (finite stream) =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_downloadAsyncNative(
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_downloadAsync(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_file_path,
-    jstring local_dir,
+    jclass,
+    jlong handle,
+    jobject remote_file_path,
+    jobject local_dir,
     jboolean use_burst,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle || !callback) return;
-
-    JStringHolder remote_file_path_holder(env, remote_file_path);
-    JStringHolder local_dir_holder(env, local_dir);
-
+    if (!requireHandle(env, handle, "Ftp plugin") || !callback) {
+        return;
+    }
+    JStringHolder remote_file_pathHolder(
+        env, static_cast<jstring>(remote_file_path));    JStringHolder local_dirHolder(
+        env, static_cast<jstring>(local_dir));
     auto* wrapper = new DownloadCallbackWrapper(env, callback);
-
     mavsdk_ftp_download_async(
-        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_file_path_holder.c_str()),        const_cast<char*>(local_dir_holder.c_str()),        use_burst,        [](const mavsdk_ftp_result_t result, const mavsdk_ftp_progress_data_t value, void* user_data) {
-            auto* w = static_cast<DownloadCallbackWrapper*>(user_data);
-            (*w)(result, value);
-            if (result != MAVSDK_FTP_RESULT_NEXT) {
-                delete w;
-            }
-        },
-        wrapper
-    );
-}
-
-
-// ===== Ftp.uploadAsyncNative (finite stream) =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_uploadAsyncNative(
-    JNIEnv* env,
-    jobject obj,
-    jstring local_file_path,
-    jstring remote_dir,
-    jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle || !callback) return;
-
-    JStringHolder local_file_path_holder(env, local_file_path);
-    JStringHolder remote_dir_holder(env, remote_dir);
-
-    auto* wrapper = new UploadCallbackWrapper(env, callback);
-
-    mavsdk_ftp_upload_async(
-        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(local_file_path_holder.c_str()),        const_cast<char*>(remote_dir_holder.c_str()),        [](const mavsdk_ftp_result_t result, const mavsdk_ftp_progress_data_t value, void* user_data) {
-            auto* w = static_cast<UploadCallbackWrapper*>(user_data);
-            (*w)(result, value);
-            if (result != MAVSDK_FTP_RESULT_NEXT) {
-                delete w;
-            }
-        },
-        wrapper
-    );
-}
-
-
-// ===== Ftp.list_directoryBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_listDirectoryBlocking(
-    JNIEnv* env,
-    jobject obj,
-    jstring remote_dir) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle) return {};
-
-    JStringHolder remote_dir_holder(env, remote_dir);
-
-    mavsdk_ftp_list_directory_data_t ret_val{};
-    mavsdk_ftp_result_t result = mavsdk_ftp_list_directory(
         reinterpret_cast<mavsdk_ftp_t>(handle),
-        const_cast<char*>(remote_dir_holder.c_str()),
-        &ret_val
-    );
+        const_cast<char*>(remote_file_pathHolder.c_str()),
+        const_cast<char*>(local_dirHolder.c_str()),
+        static_cast<bool>(use_burst),
+        [](const mavsdk_ftp_result_t result,
+           const mavsdk_ftp_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<DownloadCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
+        },
+        wrapper);
+}
 
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_uploadAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject local_file_path,
+    jobject remote_dir,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Ftp plugin") || !callback) {
+        return;
+    }
+    JStringHolder local_file_pathHolder(
+        env, static_cast<jstring>(local_file_path));    JStringHolder remote_dirHolder(
+        env, static_cast<jstring>(remote_dir));
+    auto* wrapper = new UploadCallbackWrapper(env, callback);
+    mavsdk_ftp_upload_async(
+        reinterpret_cast<mavsdk_ftp_t>(handle),
+        const_cast<char*>(local_file_pathHolder.c_str()),
+        const_cast<char*>(remote_dirHolder.c_str()),
+        [](const mavsdk_ftp_result_t result,
+           const mavsdk_ftp_progress_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<UploadCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
+        },
+        wrapper);
+}
+
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_ftp_NativeFtp_listDirectory(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject remote_dir) {
+    if (!requireHandle(env, handle, "Ftp plugin")) {
+        return {};
+    }
+    JStringHolder remote_dirHolder(
+        env, static_cast<jstring>(remote_dir));
+    mavsdk_ftp_list_directory_data_t returnValue{};
+    mavsdk_ftp_result_t result =
+        mavsdk_ftp_list_directory(
+            reinterpret_cast<mavsdk_ftp_t>(handle),
+            const_cast<char*>(remote_dirHolder.c_str()),
+            &returnValue);
     if (result != MAVSDK_FTP_RESULT_SUCCESS) {
+        mavsdk_ftp_list_directory_data_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "list_directory failed");
         return nullptr;
     }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ListDirectoryData");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated primitive field dirs */ , static_cast<jobject>(nullptr)            /* TODO: repeated primitive field files */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_ftp_list_directory_data_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaListDirectoryData(env, returnValue);
+    mavsdk_ftp_list_directory_data_destroy(&returnValue);
+    return javaResult;
 }
 
-// ===== Ftp.list_directoryAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_listDirectoryAsyncNative(
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_listDirectoryAsync(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_dir,
+    jclass,
+    jlong handle,
+    jobject remote_dir,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle || !callback) return;
-
-    JStringHolder remote_dir_holder(env, remote_dir);
-
+    if (!requireHandle(env, handle, "Ftp plugin") || !callback) {
+        return;
+    }
+    JStringHolder remote_dirHolder(
+        env, static_cast<jstring>(remote_dir));
     auto* wrapper = new ListDirectoryCallbackWrapper(env, callback);
-
     mavsdk_ftp_list_directory_async(
-        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_dir_holder.c_str()),        [](const mavsdk_ftp_result_t result, const mavsdk_ftp_list_directory_data_t value, void* user_data) {
-            auto* w = static_cast<ListDirectoryCallbackWrapper*>(user_data);
-            (*w)(result, value);
-            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_ftp_t>(handle),
+        const_cast<char*>(remote_dirHolder.c_str()),
+        [](const mavsdk_ftp_result_t result,
+           const mavsdk_ftp_list_directory_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<ListDirectoryCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Ftp.create_directoryBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_createDirectoryBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_ftp_NativeFtp_createDirectory(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_dir) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle) return MAVSDK_FTP_RESULT_UNKNOWN;
-
-    JStringHolder remote_dir_holder(env, remote_dir);
-
-    mavsdk_ftp_result_t result = mavsdk_ftp_create_directory(
-        reinterpret_cast<mavsdk_ftp_t>(handle),
-        const_cast<char*>(remote_dir_holder.c_str())    );
-
+    jclass,
+    jlong handle,
+    jobject remote_dir) {
+    if (!requireHandle(env, handle, "Ftp plugin")) {
+        return {};
+    }
+    JStringHolder remote_dirHolder(
+        env, static_cast<jstring>(remote_dir));
+    mavsdk_ftp_result_t result =
+        mavsdk_ftp_create_directory(
+            reinterpret_cast<mavsdk_ftp_t>(handle),
+            const_cast<char*>(remote_dirHolder.c_str()));
     return static_cast<jint>(result);
 }
 
-// ===== Ftp.create_directoryAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_createDirectoryAsyncNative(
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_createDirectoryAsync(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_dir,
+    jclass,
+    jlong handle,
+    jobject remote_dir,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle || !callback) return;
-
-    JStringHolder remote_dir_holder(env, remote_dir);
-
+    if (!requireHandle(env, handle, "Ftp plugin") || !callback) {
+        return;
+    }
+    JStringHolder remote_dirHolder(
+        env, static_cast<jstring>(remote_dir));
     auto* wrapper = new CreateDirectoryCallbackWrapper(env, callback);
-
     mavsdk_ftp_create_directory_async(
-        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_dir_holder.c_str()),        [](const mavsdk_ftp_result_t result, void* user_data) {
-            auto* w = static_cast<CreateDirectoryCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_ftp_t>(handle),
+        const_cast<char*>(remote_dirHolder.c_str()),
+        [](const mavsdk_ftp_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<CreateDirectoryCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Ftp.remove_directoryBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_removeDirectoryBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_ftp_NativeFtp_removeDirectory(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_dir) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle) return MAVSDK_FTP_RESULT_UNKNOWN;
-
-    JStringHolder remote_dir_holder(env, remote_dir);
-
-    mavsdk_ftp_result_t result = mavsdk_ftp_remove_directory(
-        reinterpret_cast<mavsdk_ftp_t>(handle),
-        const_cast<char*>(remote_dir_holder.c_str())    );
-
+    jclass,
+    jlong handle,
+    jobject remote_dir) {
+    if (!requireHandle(env, handle, "Ftp plugin")) {
+        return {};
+    }
+    JStringHolder remote_dirHolder(
+        env, static_cast<jstring>(remote_dir));
+    mavsdk_ftp_result_t result =
+        mavsdk_ftp_remove_directory(
+            reinterpret_cast<mavsdk_ftp_t>(handle),
+            const_cast<char*>(remote_dirHolder.c_str()));
     return static_cast<jint>(result);
 }
 
-// ===== Ftp.remove_directoryAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_removeDirectoryAsyncNative(
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_removeDirectoryAsync(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_dir,
+    jclass,
+    jlong handle,
+    jobject remote_dir,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle || !callback) return;
-
-    JStringHolder remote_dir_holder(env, remote_dir);
-
+    if (!requireHandle(env, handle, "Ftp plugin") || !callback) {
+        return;
+    }
+    JStringHolder remote_dirHolder(
+        env, static_cast<jstring>(remote_dir));
     auto* wrapper = new RemoveDirectoryCallbackWrapper(env, callback);
-
     mavsdk_ftp_remove_directory_async(
-        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_dir_holder.c_str()),        [](const mavsdk_ftp_result_t result, void* user_data) {
-            auto* w = static_cast<RemoveDirectoryCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_ftp_t>(handle),
+        const_cast<char*>(remote_dirHolder.c_str()),
+        [](const mavsdk_ftp_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<RemoveDirectoryCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Ftp.remove_fileBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_removeFileBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_ftp_NativeFtp_removeFile(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_file_path) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle) return MAVSDK_FTP_RESULT_UNKNOWN;
-
-    JStringHolder remote_file_path_holder(env, remote_file_path);
-
-    mavsdk_ftp_result_t result = mavsdk_ftp_remove_file(
-        reinterpret_cast<mavsdk_ftp_t>(handle),
-        const_cast<char*>(remote_file_path_holder.c_str())    );
-
+    jclass,
+    jlong handle,
+    jobject remote_file_path) {
+    if (!requireHandle(env, handle, "Ftp plugin")) {
+        return {};
+    }
+    JStringHolder remote_file_pathHolder(
+        env, static_cast<jstring>(remote_file_path));
+    mavsdk_ftp_result_t result =
+        mavsdk_ftp_remove_file(
+            reinterpret_cast<mavsdk_ftp_t>(handle),
+            const_cast<char*>(remote_file_pathHolder.c_str()));
     return static_cast<jint>(result);
 }
 
-// ===== Ftp.remove_fileAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_removeFileAsyncNative(
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_removeFileAsync(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_file_path,
+    jclass,
+    jlong handle,
+    jobject remote_file_path,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle || !callback) return;
-
-    JStringHolder remote_file_path_holder(env, remote_file_path);
-
+    if (!requireHandle(env, handle, "Ftp plugin") || !callback) {
+        return;
+    }
+    JStringHolder remote_file_pathHolder(
+        env, static_cast<jstring>(remote_file_path));
     auto* wrapper = new RemoveFileCallbackWrapper(env, callback);
-
     mavsdk_ftp_remove_file_async(
-        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_file_path_holder.c_str()),        [](const mavsdk_ftp_result_t result, void* user_data) {
-            auto* w = static_cast<RemoveFileCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_ftp_t>(handle),
+        const_cast<char*>(remote_file_pathHolder.c_str()),
+        [](const mavsdk_ftp_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<RemoveFileCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Ftp.renameBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_renameBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_ftp_NativeFtp_rename(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_from_path,
-    jstring remote_to_path) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle) return MAVSDK_FTP_RESULT_UNKNOWN;
-
-    JStringHolder remote_from_path_holder(env, remote_from_path);
-    JStringHolder remote_to_path_holder(env, remote_to_path);
-
-    mavsdk_ftp_result_t result = mavsdk_ftp_rename(
-        reinterpret_cast<mavsdk_ftp_t>(handle),
-        const_cast<char*>(remote_from_path_holder.c_str()),
-        const_cast<char*>(remote_to_path_holder.c_str())    );
-
+    jclass,
+    jlong handle,
+    jobject remote_from_path,
+    jobject remote_to_path) {
+    if (!requireHandle(env, handle, "Ftp plugin")) {
+        return {};
+    }
+    JStringHolder remote_from_pathHolder(
+        env, static_cast<jstring>(remote_from_path));    JStringHolder remote_to_pathHolder(
+        env, static_cast<jstring>(remote_to_path));
+    mavsdk_ftp_result_t result =
+        mavsdk_ftp_rename(
+            reinterpret_cast<mavsdk_ftp_t>(handle),
+            const_cast<char*>(remote_from_pathHolder.c_str()),
+            const_cast<char*>(remote_to_pathHolder.c_str()));
     return static_cast<jint>(result);
 }
 
-// ===== Ftp.renameAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_renameAsyncNative(
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_renameAsync(
     JNIEnv* env,
-    jobject obj,
-    jstring remote_from_path,
-    jstring remote_to_path,
+    jclass,
+    jlong handle,
+    jobject remote_from_path,
+    jobject remote_to_path,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle || !callback) return;
-
-    JStringHolder remote_from_path_holder(env, remote_from_path);
-    JStringHolder remote_to_path_holder(env, remote_to_path);
-
+    if (!requireHandle(env, handle, "Ftp plugin") || !callback) {
+        return;
+    }
+    JStringHolder remote_from_pathHolder(
+        env, static_cast<jstring>(remote_from_path));    JStringHolder remote_to_pathHolder(
+        env, static_cast<jstring>(remote_to_path));
     auto* wrapper = new RenameCallbackWrapper(env, callback);
-
     mavsdk_ftp_rename_async(
-        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_from_path_holder.c_str()),        const_cast<char*>(remote_to_path_holder.c_str()),        [](const mavsdk_ftp_result_t result, void* user_data) {
-            auto* w = static_cast<RenameCallbackWrapper*>(user_data);
-            (*w)(result);
-            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_ftp_t>(handle),
+        const_cast<char*>(remote_from_pathHolder.c_str()),
+        const_cast<char*>(remote_to_pathHolder.c_str()),
+        [](const mavsdk_ftp_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<RenameCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Ftp.are_files_identicalBlocking =====
-JNIEXPORT jboolean JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_areFilesIdenticalBlocking(
+JNIEXPORT
+jboolean
+JNICALL Java_io_mavsdk_jni_plugins_ftp_NativeFtp_areFilesIdentical(
     JNIEnv* env,
-    jobject obj,
-    jstring local_file_path,
-    jstring remote_file_path) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle) return {};
-
-    JStringHolder local_file_path_holder(env, local_file_path);
-    JStringHolder remote_file_path_holder(env, remote_file_path);
-
-    bool ret_val{};
-    mavsdk_ftp_result_t result = mavsdk_ftp_are_files_identical(
-        reinterpret_cast<mavsdk_ftp_t>(handle),
-        const_cast<char*>(local_file_path_holder.c_str()),
-        const_cast<char*>(remote_file_path_holder.c_str()),
-        &ret_val
-    );
-
+    jclass,
+    jlong handle,
+    jobject local_file_path,
+    jobject remote_file_path) {
+    if (!requireHandle(env, handle, "Ftp plugin")) {
+        return {};
+    }
+    JStringHolder local_file_pathHolder(
+        env, static_cast<jstring>(local_file_path));    JStringHolder remote_file_pathHolder(
+        env, static_cast<jstring>(remote_file_path));
+    bool returnValue{};
+    mavsdk_ftp_result_t result =
+        mavsdk_ftp_are_files_identical(
+            reinterpret_cast<mavsdk_ftp_t>(handle),
+            const_cast<char*>(local_file_pathHolder.c_str()),
+            const_cast<char*>(remote_file_pathHolder.c_str()),
+            &returnValue);
     if (result != MAVSDK_FTP_RESULT_SUCCESS) {
         throwMavsdkError(env, "OperationError", "are_files_identical failed");
         return {};
     }
-
-    return static_cast<jboolean>(ret_val);
+    return static_cast<jboolean>(returnValue);
 }
 
-// ===== Ftp.are_files_identicalAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_areFilesIdenticalAsyncNative(
+Java_io_mavsdk_jni_plugins_ftp_NativeFtp_areFilesIdenticalAsync(
     JNIEnv* env,
-    jobject obj,
-    jstring local_file_path,
-    jstring remote_file_path,
+    jclass,
+    jlong handle,
+    jobject local_file_path,
+    jobject remote_file_path,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle || !callback) return;
-
-    JStringHolder local_file_path_holder(env, local_file_path);
-    JStringHolder remote_file_path_holder(env, remote_file_path);
-
+    if (!requireHandle(env, handle, "Ftp plugin") || !callback) {
+        return;
+    }
+    JStringHolder local_file_pathHolder(
+        env, static_cast<jstring>(local_file_path));    JStringHolder remote_file_pathHolder(
+        env, static_cast<jstring>(remote_file_path));
     auto* wrapper = new AreFilesIdenticalCallbackWrapper(env, callback);
-
     mavsdk_ftp_are_files_identical_async(
-        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(local_file_path_holder.c_str()),        const_cast<char*>(remote_file_path_holder.c_str()),        [](const mavsdk_ftp_result_t result, const bool value, void* user_data) {
-            auto* w = static_cast<AreFilesIdenticalCallbackWrapper*>(user_data);
-            (*w)(result, value);
-            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
+        reinterpret_cast<mavsdk_ftp_t>(handle),
+        const_cast<char*>(local_file_pathHolder.c_str()),
+        const_cast<char*>(remote_file_pathHolder.c_str()),
+        [](const mavsdk_ftp_result_t result,
+           const bool value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<AreFilesIdenticalCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete callbackWrapper;
+            }
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Ftp.set_target_compidBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_Ftp_setTargetCompidBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_ftp_NativeFtp_setTargetCompid(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint compid) {
+    if (!requireHandle(env, handle, "Ftp plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
-    if (!handle) return MAVSDK_FTP_RESULT_UNKNOWN;
-
-
-    mavsdk_ftp_result_t result = mavsdk_ftp_set_target_compid(
-        reinterpret_cast<mavsdk_ftp_t>(handle),
-        compid    );
-
+    mavsdk_ftp_result_t result =
+        mavsdk_ftp_set_target_compid(
+            reinterpret_cast<mavsdk_ftp_t>(handle),
+            static_cast<uint32_t>(compid));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

@@ -6,615 +6,1526 @@
 #include "cmavsdk/plugins/camera_server/camera_server.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct InformationFromJava;
+struct InformationArrayFromJava;
+struct VideoStreamingFromJava;
+struct VideoStreamingArrayFromJava;
+struct PositionFromJava;
+struct PositionArrayFromJava;
+struct QuaternionFromJava;
+struct QuaternionArrayFromJava;
+struct CaptureInfoFromJava;
+struct CaptureInfoArrayFromJava;
+struct StorageInformationFromJava;
+struct StorageInformationArrayFromJava;
+struct CaptureStatusFromJava;
+struct CaptureStatusArrayFromJava;
+struct TrackPointFromJava;
+struct TrackPointArrayFromJava;
+struct TrackRectangleFromJava;
+struct TrackRectangleArrayFromJava;
 
+struct InformationFromJava {
+    mavsdk_camera_server_information_t value{};
+    std::string vendor_nameValue;
+    std::string model_nameValue;
+    std::string firmware_versionValue;
+    std::string definition_file_uriValue;
 
-// ===== TakePhoto Callback Wrapper =====
+    InformationFromJava(JNIEnv* env, jobject object);
+    ~InformationFromJava();
+};
+
+struct InformationArrayFromJava {
+    std::vector<std::unique_ptr<InformationFromJava>> holders;
+    std::vector<mavsdk_camera_server_information_t> values;
+
+    InformationArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<InformationFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct VideoStreamingFromJava {
+    mavsdk_camera_server_video_streaming_t value{};
+    std::string rtsp_uriValue;
+
+    VideoStreamingFromJava(JNIEnv* env, jobject object);
+    ~VideoStreamingFromJava();
+};
+
+struct VideoStreamingArrayFromJava {
+    std::vector<std::unique_ptr<VideoStreamingFromJava>> holders;
+    std::vector<mavsdk_camera_server_video_streaming_t> values;
+
+    VideoStreamingArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<VideoStreamingFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionFromJava {
+    mavsdk_camera_server_position_t value{};
+
+    PositionFromJava(JNIEnv* env, jobject object);
+    ~PositionFromJava();
+};
+
+struct PositionArrayFromJava {
+    std::vector<std::unique_ptr<PositionFromJava>> holders;
+    std::vector<mavsdk_camera_server_position_t> values;
+
+    PositionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct QuaternionFromJava {
+    mavsdk_camera_server_quaternion_t value{};
+
+    QuaternionFromJava(JNIEnv* env, jobject object);
+    ~QuaternionFromJava();
+};
+
+struct QuaternionArrayFromJava {
+    std::vector<std::unique_ptr<QuaternionFromJava>> holders;
+    std::vector<mavsdk_camera_server_quaternion_t> values;
+
+    QuaternionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<QuaternionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct CaptureInfoFromJava {
+    mavsdk_camera_server_capture_info_t value{};
+    std::unique_ptr<PositionFromJava> positionValue;
+    std::unique_ptr<QuaternionFromJava> attitude_quaternionValue;
+    std::string file_urlValue;
+
+    CaptureInfoFromJava(JNIEnv* env, jobject object);
+    ~CaptureInfoFromJava();
+};
+
+struct CaptureInfoArrayFromJava {
+    std::vector<std::unique_ptr<CaptureInfoFromJava>> holders;
+    std::vector<mavsdk_camera_server_capture_info_t> values;
+
+    CaptureInfoArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<CaptureInfoFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct StorageInformationFromJava {
+    mavsdk_camera_server_storage_information_t value{};
+
+    StorageInformationFromJava(JNIEnv* env, jobject object);
+    ~StorageInformationFromJava();
+};
+
+struct StorageInformationArrayFromJava {
+    std::vector<std::unique_ptr<StorageInformationFromJava>> holders;
+    std::vector<mavsdk_camera_server_storage_information_t> values;
+
+    StorageInformationArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<StorageInformationFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct CaptureStatusFromJava {
+    mavsdk_camera_server_capture_status_t value{};
+
+    CaptureStatusFromJava(JNIEnv* env, jobject object);
+    ~CaptureStatusFromJava();
+};
+
+struct CaptureStatusArrayFromJava {
+    std::vector<std::unique_ptr<CaptureStatusFromJava>> holders;
+    std::vector<mavsdk_camera_server_capture_status_t> values;
+
+    CaptureStatusArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<CaptureStatusFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct TrackPointFromJava {
+    mavsdk_camera_server_track_point_t value{};
+
+    TrackPointFromJava(JNIEnv* env, jobject object);
+    ~TrackPointFromJava();
+};
+
+struct TrackPointArrayFromJava {
+    std::vector<std::unique_ptr<TrackPointFromJava>> holders;
+    std::vector<mavsdk_camera_server_track_point_t> values;
+
+    TrackPointArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<TrackPointFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct TrackRectangleFromJava {
+    mavsdk_camera_server_track_rectangle_t value{};
+
+    TrackRectangleFromJava(JNIEnv* env, jobject object);
+    ~TrackRectangleFromJava();
+};
+
+struct TrackRectangleArrayFromJava {
+    std::vector<std::unique_ptr<TrackRectangleFromJava>> holders;
+    std::vector<mavsdk_camera_server_track_rectangle_t> values;
+
+    TrackRectangleArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<TrackRectangleFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+InformationFromJava::InformationFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID vendor_nameField = env->GetFieldID(
+        clazz, "vendorName", "Ljava/lang/String;");
+    auto vendor_nameString =
+        static_cast<jstring>(env->GetObjectField(object, vendor_nameField));
+    JStringHolder vendor_nameHolder(env, vendor_nameString);
+    vendor_nameValue =
+        vendor_nameHolder.c_str() ? vendor_nameHolder.c_str() : "";
+    value.vendor_name = const_cast<char*>(vendor_nameValue.c_str());
+    env->DeleteLocalRef(vendor_nameString);
+    jfieldID model_nameField = env->GetFieldID(
+        clazz, "modelName", "Ljava/lang/String;");
+    auto model_nameString =
+        static_cast<jstring>(env->GetObjectField(object, model_nameField));
+    JStringHolder model_nameHolder(env, model_nameString);
+    model_nameValue =
+        model_nameHolder.c_str() ? model_nameHolder.c_str() : "";
+    value.model_name = const_cast<char*>(model_nameValue.c_str());
+    env->DeleteLocalRef(model_nameString);
+    jfieldID firmware_versionField = env->GetFieldID(
+        clazz, "firmwareVersion", "Ljava/lang/String;");
+    auto firmware_versionString =
+        static_cast<jstring>(env->GetObjectField(object, firmware_versionField));
+    JStringHolder firmware_versionHolder(env, firmware_versionString);
+    firmware_versionValue =
+        firmware_versionHolder.c_str() ? firmware_versionHolder.c_str() : "";
+    value.firmware_version = const_cast<char*>(firmware_versionValue.c_str());
+    env->DeleteLocalRef(firmware_versionString);
+    jfieldID focal_length_mmField = env->GetFieldID(
+        clazz, "focalLengthMm", "F");
+    value.focal_length_mm =
+        static_cast<float>(env->GetFloatField(object, focal_length_mmField));
+    jfieldID horizontal_sensor_size_mmField = env->GetFieldID(
+        clazz, "horizontalSensorSizeMm", "F");
+    value.horizontal_sensor_size_mm =
+        static_cast<float>(env->GetFloatField(object, horizontal_sensor_size_mmField));
+    jfieldID vertical_sensor_size_mmField = env->GetFieldID(
+        clazz, "verticalSensorSizeMm", "F");
+    value.vertical_sensor_size_mm =
+        static_cast<float>(env->GetFloatField(object, vertical_sensor_size_mmField));
+    jfieldID horizontal_resolution_pxField = env->GetFieldID(
+        clazz, "horizontalResolutionPx", "I");
+    value.horizontal_resolution_px =
+        static_cast<uint32_t>(env->GetIntField(object, horizontal_resolution_pxField));
+    jfieldID vertical_resolution_pxField = env->GetFieldID(
+        clazz, "verticalResolutionPx", "I");
+    value.vertical_resolution_px =
+        static_cast<uint32_t>(env->GetIntField(object, vertical_resolution_pxField));
+    jfieldID lens_idField = env->GetFieldID(
+        clazz, "lensId", "I");
+    value.lens_id =
+        static_cast<uint32_t>(env->GetIntField(object, lens_idField));
+    jfieldID definition_file_versionField = env->GetFieldID(
+        clazz, "definitionFileVersion", "I");
+    value.definition_file_version =
+        static_cast<uint32_t>(env->GetIntField(object, definition_file_versionField));
+    jfieldID definition_file_uriField = env->GetFieldID(
+        clazz, "definitionFileUri", "Ljava/lang/String;");
+    auto definition_file_uriString =
+        static_cast<jstring>(env->GetObjectField(object, definition_file_uriField));
+    JStringHolder definition_file_uriHolder(env, definition_file_uriString);
+    definition_file_uriValue =
+        definition_file_uriHolder.c_str() ? definition_file_uriHolder.c_str() : "";
+    value.definition_file_uri = const_cast<char*>(definition_file_uriValue.c_str());
+    env->DeleteLocalRef(definition_file_uriString);
+    jfieldID image_in_video_mode_supportedField = env->GetFieldID(
+        clazz, "imageInVideoModeSupported", "Z");
+    value.image_in_video_mode_supported =
+        static_cast<bool>(env->GetBooleanField(object, image_in_video_mode_supportedField));
+    jfieldID video_in_image_mode_supportedField = env->GetFieldID(
+        clazz, "videoInImageModeSupported", "Z");
+    value.video_in_image_mode_supported =
+        static_cast<bool>(env->GetBooleanField(object, video_in_image_mode_supportedField));
+    env->DeleteLocalRef(clazz);
+}
+
+InformationFromJava::~InformationFromJava() = default;
+VideoStreamingFromJava::VideoStreamingFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID has_rtsp_serverField = env->GetFieldID(
+        clazz, "hasRtspServer", "Z");
+    value.has_rtsp_server =
+        static_cast<bool>(env->GetBooleanField(object, has_rtsp_serverField));
+    jfieldID rtsp_uriField = env->GetFieldID(
+        clazz, "rtspUri", "Ljava/lang/String;");
+    auto rtsp_uriString =
+        static_cast<jstring>(env->GetObjectField(object, rtsp_uriField));
+    JStringHolder rtsp_uriHolder(env, rtsp_uriString);
+    rtsp_uriValue =
+        rtsp_uriHolder.c_str() ? rtsp_uriHolder.c_str() : "";
+    value.rtsp_uri = const_cast<char*>(rtsp_uriValue.c_str());
+    env->DeleteLocalRef(rtsp_uriString);
+    env->DeleteLocalRef(clazz);
+}
+
+VideoStreamingFromJava::~VideoStreamingFromJava() = default;
+PositionFromJava::PositionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID relative_altitude_mField = env->GetFieldID(
+        clazz, "relativeAltitudeM", "F");
+    value.relative_altitude_m =
+        static_cast<float>(env->GetFloatField(object, relative_altitude_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionFromJava::~PositionFromJava() = default;
+QuaternionFromJava::QuaternionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID wField = env->GetFieldID(
+        clazz, "w", "F");
+    value.w =
+        static_cast<float>(env->GetFloatField(object, wField));
+    jfieldID xField = env->GetFieldID(
+        clazz, "x", "F");
+    value.x =
+        static_cast<float>(env->GetFloatField(object, xField));
+    jfieldID yField = env->GetFieldID(
+        clazz, "y", "F");
+    value.y =
+        static_cast<float>(env->GetFloatField(object, yField));
+    jfieldID zField = env->GetFieldID(
+        clazz, "z", "F");
+    value.z =
+        static_cast<float>(env->GetFloatField(object, zField));
+    env->DeleteLocalRef(clazz);
+}
+
+QuaternionFromJava::~QuaternionFromJava() = default;
+CaptureInfoFromJava::CaptureInfoFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID positionField = env->GetFieldID(
+        clazz, "position", "Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position;");
+    jobject positionObject =
+        env->GetObjectField(object, positionField);
+    positionValue =
+        std::make_unique<PositionFromJava>(
+            env, positionObject);
+    value.position = positionValue->value;
+    env->DeleteLocalRef(positionObject);
+    jfieldID attitude_quaternionField = env->GetFieldID(
+        clazz, "attitudeQuaternion", "Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion;");
+    jobject attitude_quaternionObject =
+        env->GetObjectField(object, attitude_quaternionField);
+    attitude_quaternionValue =
+        std::make_unique<QuaternionFromJava>(
+            env, attitude_quaternionObject);
+    value.attitude_quaternion = attitude_quaternionValue->value;
+    env->DeleteLocalRef(attitude_quaternionObject);
+    jfieldID time_utc_usField = env->GetFieldID(
+        clazz, "timeUtcUs", "J");
+    value.time_utc_us =
+        static_cast<uint64_t>(env->GetLongField(object, time_utc_usField));
+    jfieldID is_successField = env->GetFieldID(
+        clazz, "isSuccess", "Z");
+    value.is_success =
+        static_cast<bool>(env->GetBooleanField(object, is_successField));
+    jfieldID indexField = env->GetFieldID(
+        clazz, "index", "I");
+    value.index =
+        static_cast<int32_t>(env->GetIntField(object, indexField));
+    jfieldID file_urlField = env->GetFieldID(
+        clazz, "fileUrl", "Ljava/lang/String;");
+    auto file_urlString =
+        static_cast<jstring>(env->GetObjectField(object, file_urlField));
+    JStringHolder file_urlHolder(env, file_urlString);
+    file_urlValue =
+        file_urlHolder.c_str() ? file_urlHolder.c_str() : "";
+    value.file_url = const_cast<char*>(file_urlValue.c_str());
+    env->DeleteLocalRef(file_urlString);
+    env->DeleteLocalRef(clazz);
+}
+
+CaptureInfoFromJava::~CaptureInfoFromJava() = default;
+StorageInformationFromJava::StorageInformationFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID used_storage_mibField = env->GetFieldID(
+        clazz, "usedStorageMib", "F");
+    value.used_storage_mib =
+        static_cast<float>(env->GetFloatField(object, used_storage_mibField));
+    jfieldID available_storage_mibField = env->GetFieldID(
+        clazz, "availableStorageMib", "F");
+    value.available_storage_mib =
+        static_cast<float>(env->GetFloatField(object, available_storage_mibField));
+    jfieldID total_storage_mibField = env->GetFieldID(
+        clazz, "totalStorageMib", "F");
+    value.total_storage_mib =
+        static_cast<float>(env->GetFloatField(object, total_storage_mibField));
+    jfieldID storage_statusField = env->GetFieldID(
+        clazz, "storageStatus", "I");
+    value.storage_status =
+        static_cast<mavsdk_camera_server_storage_information_storage_status_t>(env->GetIntField(object, storage_statusField));
+    jfieldID storage_idField = env->GetFieldID(
+        clazz, "storageId", "I");
+    value.storage_id =
+        static_cast<uint32_t>(env->GetIntField(object, storage_idField));
+    jfieldID storage_typeField = env->GetFieldID(
+        clazz, "storageType", "I");
+    value.storage_type =
+        static_cast<mavsdk_camera_server_storage_information_storage_type_t>(env->GetIntField(object, storage_typeField));
+    jfieldID read_speed_mib_sField = env->GetFieldID(
+        clazz, "readSpeedMibS", "F");
+    value.read_speed_mib_s =
+        static_cast<float>(env->GetFloatField(object, read_speed_mib_sField));
+    jfieldID write_speed_mib_sField = env->GetFieldID(
+        clazz, "writeSpeedMibS", "F");
+    value.write_speed_mib_s =
+        static_cast<float>(env->GetFloatField(object, write_speed_mib_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+StorageInformationFromJava::~StorageInformationFromJava() = default;
+CaptureStatusFromJava::CaptureStatusFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID image_interval_sField = env->GetFieldID(
+        clazz, "imageIntervalS", "F");
+    value.image_interval_s =
+        static_cast<float>(env->GetFloatField(object, image_interval_sField));
+    jfieldID recording_time_sField = env->GetFieldID(
+        clazz, "recordingTimeS", "F");
+    value.recording_time_s =
+        static_cast<float>(env->GetFloatField(object, recording_time_sField));
+    jfieldID available_capacity_mibField = env->GetFieldID(
+        clazz, "availableCapacityMib", "F");
+    value.available_capacity_mib =
+        static_cast<float>(env->GetFloatField(object, available_capacity_mibField));
+    jfieldID image_statusField = env->GetFieldID(
+        clazz, "imageStatus", "I");
+    value.image_status =
+        static_cast<mavsdk_camera_server_capture_status_image_status_t>(env->GetIntField(object, image_statusField));
+    jfieldID video_statusField = env->GetFieldID(
+        clazz, "videoStatus", "I");
+    value.video_status =
+        static_cast<mavsdk_camera_server_capture_status_video_status_t>(env->GetIntField(object, video_statusField));
+    jfieldID image_countField = env->GetFieldID(
+        clazz, "imageCount", "I");
+    value.image_count =
+        static_cast<int32_t>(env->GetIntField(object, image_countField));
+    env->DeleteLocalRef(clazz);
+}
+
+CaptureStatusFromJava::~CaptureStatusFromJava() = default;
+TrackPointFromJava::TrackPointFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID point_xField = env->GetFieldID(
+        clazz, "pointX", "F");
+    value.point_x =
+        static_cast<float>(env->GetFloatField(object, point_xField));
+    jfieldID point_yField = env->GetFieldID(
+        clazz, "pointY", "F");
+    value.point_y =
+        static_cast<float>(env->GetFloatField(object, point_yField));
+    jfieldID radiusField = env->GetFieldID(
+        clazz, "radius", "F");
+    value.radius =
+        static_cast<float>(env->GetFloatField(object, radiusField));
+    env->DeleteLocalRef(clazz);
+}
+
+TrackPointFromJava::~TrackPointFromJava() = default;
+TrackRectangleFromJava::TrackRectangleFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID top_left_corner_xField = env->GetFieldID(
+        clazz, "topLeftCornerX", "F");
+    value.top_left_corner_x =
+        static_cast<float>(env->GetFloatField(object, top_left_corner_xField));
+    jfieldID top_left_corner_yField = env->GetFieldID(
+        clazz, "topLeftCornerY", "F");
+    value.top_left_corner_y =
+        static_cast<float>(env->GetFloatField(object, top_left_corner_yField));
+    jfieldID bottom_right_corner_xField = env->GetFieldID(
+        clazz, "bottomRightCornerX", "F");
+    value.bottom_right_corner_x =
+        static_cast<float>(env->GetFloatField(object, bottom_right_corner_xField));
+    jfieldID bottom_right_corner_yField = env->GetFieldID(
+        clazz, "bottomRightCornerY", "F");
+    value.bottom_right_corner_y =
+        static_cast<float>(env->GetFloatField(object, bottom_right_corner_yField));
+    env->DeleteLocalRef(clazz);
+}
+
+TrackRectangleFromJava::~TrackRectangleFromJava() = default;
+
+jobject toJavaInformation(
+    JNIEnv* env, const mavsdk_camera_server_information_t& value);
+jobjectArray toJavaInformationArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_information_t* values,
+    size_t count);
+jobject toJavaVideoStreaming(
+    JNIEnv* env, const mavsdk_camera_server_video_streaming_t& value);
+jobjectArray toJavaVideoStreamingArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_video_streaming_t* values,
+    size_t count);
+jobject toJavaPosition(
+    JNIEnv* env, const mavsdk_camera_server_position_t& value);
+jobjectArray toJavaPositionArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_position_t* values,
+    size_t count);
+jobject toJavaQuaternion(
+    JNIEnv* env, const mavsdk_camera_server_quaternion_t& value);
+jobjectArray toJavaQuaternionArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_quaternion_t* values,
+    size_t count);
+jobject toJavaCaptureInfo(
+    JNIEnv* env, const mavsdk_camera_server_capture_info_t& value);
+jobjectArray toJavaCaptureInfoArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_capture_info_t* values,
+    size_t count);
+jobject toJavaStorageInformation(
+    JNIEnv* env, const mavsdk_camera_server_storage_information_t& value);
+jobjectArray toJavaStorageInformationArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_storage_information_t* values,
+    size_t count);
+jobject toJavaCaptureStatus(
+    JNIEnv* env, const mavsdk_camera_server_capture_status_t& value);
+jobjectArray toJavaCaptureStatusArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_capture_status_t* values,
+    size_t count);
+jobject toJavaTrackPoint(
+    JNIEnv* env, const mavsdk_camera_server_track_point_t& value);
+jobjectArray toJavaTrackPointArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_track_point_t* values,
+    size_t count);
+jobject toJavaTrackRectangle(
+    JNIEnv* env, const mavsdk_camera_server_track_rectangle_t& value);
+jobjectArray toJavaTrackRectangleArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_track_rectangle_t* values,
+    size_t count);
+
+jobject toJavaInformation(
+    JNIEnv* env, const mavsdk_camera_server_information_t& value) {
+    jstring vendor_nameValue =
+        toJavaString(env, value.vendor_name);
+    jstring model_nameValue =
+        toJavaString(env, value.model_name);
+    jstring firmware_versionValue =
+        toJavaString(env, value.firmware_version);
+    jstring definition_file_uriValue =
+        toJavaString(env, value.definition_file_uri);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Information");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;FFFIIIILjava/lang/String;ZZ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , vendor_nameValue
+        , model_nameValue
+        , firmware_versionValue
+        , static_cast<jfloat>(value.focal_length_mm)
+        , static_cast<jfloat>(value.horizontal_sensor_size_mm)
+        , static_cast<jfloat>(value.vertical_sensor_size_mm)
+        , static_cast<jint>(value.horizontal_resolution_px)
+        , static_cast<jint>(value.vertical_resolution_px)
+        , static_cast<jint>(value.lens_id)
+        , static_cast<jint>(value.definition_file_version)
+        , definition_file_uriValue
+        , static_cast<jboolean>(value.image_in_video_mode_supported)
+        , static_cast<jboolean>(value.video_in_image_mode_supported)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(vendor_nameValue);
+    env->DeleteLocalRef(model_nameValue);
+    env->DeleteLocalRef(firmware_versionValue);
+    env->DeleteLocalRef(definition_file_uriValue);
+    return result;
+}
+
+jobjectArray toJavaInformationArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_information_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Information");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaInformation(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaVideoStreaming(
+    JNIEnv* env, const mavsdk_camera_server_video_streaming_t& value) {
+    jstring rtsp_uriValue =
+        toJavaString(env, value.rtsp_uri);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$VideoStreaming");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZLjava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.has_rtsp_server)
+        , rtsp_uriValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(rtsp_uriValue);
+    return result;
+}
+
+jobjectArray toJavaVideoStreamingArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_video_streaming_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$VideoStreaming");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaVideoStreaming(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPosition(
+    JNIEnv* env, const mavsdk_camera_server_position_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jfloat>(value.relative_altitude_m)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_position_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPosition(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaQuaternion(
+    JNIEnv* env, const mavsdk_camera_server_quaternion_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.w)
+        , static_cast<jfloat>(value.x)
+        , static_cast<jfloat>(value.y)
+        , static_cast<jfloat>(value.z)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaQuaternionArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_quaternion_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaQuaternion(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaCaptureInfo(
+    JNIEnv* env, const mavsdk_camera_server_capture_info_t& value) {
+    jobject positionValue =
+        toJavaPosition(env, value.position);
+    jobject attitude_quaternionValue =
+        toJavaQuaternion(env, value.attitude_quaternion);
+    jstring file_urlValue =
+        toJavaString(env, value.file_url);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureInfo");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position;Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion;JZILjava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , positionValue
+        , attitude_quaternionValue
+        , static_cast<jlong>(value.time_utc_us)
+        , static_cast<jboolean>(value.is_success)
+        , static_cast<jint>(value.index)
+        , file_urlValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(positionValue);
+    env->DeleteLocalRef(attitude_quaternionValue);
+    env->DeleteLocalRef(file_urlValue);
+    return result;
+}
+
+jobjectArray toJavaCaptureInfoArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_capture_info_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureInfo");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaCaptureInfo(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaStorageInformation(
+    JNIEnv* env, const mavsdk_camera_server_storage_information_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$StorageInformation");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFIIIFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.used_storage_mib)
+        , static_cast<jfloat>(value.available_storage_mib)
+        , static_cast<jfloat>(value.total_storage_mib)
+        , static_cast<jint>(value.storage_status)
+        , static_cast<jint>(value.storage_id)
+        , static_cast<jint>(value.storage_type)
+        , static_cast<jfloat>(value.read_speed_mib_s)
+        , static_cast<jfloat>(value.write_speed_mib_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaStorageInformationArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_storage_information_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$StorageInformation");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaStorageInformation(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaCaptureStatus(
+    JNIEnv* env, const mavsdk_camera_server_capture_status_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureStatus");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFIII)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.image_interval_s)
+        , static_cast<jfloat>(value.recording_time_s)
+        , static_cast<jfloat>(value.available_capacity_mib)
+        , static_cast<jint>(value.image_status)
+        , static_cast<jint>(value.video_status)
+        , static_cast<jint>(value.image_count)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaCaptureStatusArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_capture_status_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureStatus");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaCaptureStatus(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaTrackPoint(
+    JNIEnv* env, const mavsdk_camera_server_track_point_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackPoint");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.point_x)
+        , static_cast<jfloat>(value.point_y)
+        , static_cast<jfloat>(value.radius)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaTrackPointArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_track_point_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackPoint");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaTrackPoint(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaTrackRectangle(
+    JNIEnv* env, const mavsdk_camera_server_track_rectangle_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackRectangle");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.top_left_corner_x)
+        , static_cast<jfloat>(value.top_left_corner_y)
+        , static_cast<jfloat>(value.bottom_right_corner_x)
+        , static_cast<jfloat>(value.bottom_right_corner_y)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaTrackRectangleArray(
+    JNIEnv* env,
+    const mavsdk_camera_server_track_rectangle_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackRectangle");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaTrackRectangle(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct TakePhotoCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TakePhotoCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TakePhotoCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StartVideo Callback Wrapper =====
 struct StartVideoCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StartVideoCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StartVideoCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StopVideo Callback Wrapper =====
 struct StopVideoCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StopVideoCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StopVideoCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StartVideoStreaming Callback Wrapper =====
 struct StartVideoStreamingCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StartVideoStreamingCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StartVideoStreamingCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StopVideoStreaming Callback Wrapper =====
 struct StopVideoStreamingCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StopVideoStreamingCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StopVideoStreamingCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetMode Callback Wrapper =====
 struct SetModeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetModeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetModeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_camera_server_mode_t value) const {
+    void operator()(
+        const mavsdk_camera_server_mode_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StorageInformation Callback Wrapper =====
 struct StorageInformationCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StorageInformationCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StorageInformationCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== CaptureStatus Callback Wrapper =====
 struct CaptureStatusCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    CaptureStatusCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    CaptureStatusCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== FormatStorage Callback Wrapper =====
 struct FormatStorageCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    FormatStorageCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    FormatStorageCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ResetSettings Callback Wrapper =====
 struct ResetSettingsCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ResetSettingsCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ResetSettingsCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ZoomInStart Callback Wrapper =====
 struct ZoomInStartCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ZoomInStartCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ZoomInStartCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ZoomOutStart Callback Wrapper =====
 struct ZoomOutStartCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ZoomOutStartCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ZoomOutStartCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ZoomStop Callback Wrapper =====
 struct ZoomStopCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ZoomStopCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ZoomStopCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ZoomRange Callback Wrapper =====
 struct ZoomRangeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ZoomRangeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ZoomRangeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(F)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const float value) const {
+    void operator()(
+        const float value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jfloat>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jfloat>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== TrackingPointCommand Callback Wrapper =====
 struct TrackingPointCommandCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TrackingPointCommandCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TrackingPointCommandCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/camera_server/CameraServer$TrackPoint;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackPoint;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_camera_server_track_point_t value) const {
+    void operator()(
+        const mavsdk_camera_server_track_point_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera_server/CameraServer$TrackPoint");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.point_x)            , static_cast<jfloat>(value.point_y)            , static_cast<jfloat>(value.radius)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaTrackPoint(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== TrackingRectangleCommand Callback Wrapper =====
 struct TrackingRectangleCommandCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TrackingRectangleCommandCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TrackingRectangleCommandCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/camera_server/CameraServer$TrackRectangle;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackRectangle;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_camera_server_track_rectangle_t value) const {
+    void operator()(
+        const mavsdk_camera_server_track_rectangle_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera_server/CameraServer$TrackRectangle");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.top_left_corner_x)            , static_cast<jfloat>(value.top_left_corner_y)            , static_cast<jfloat>(value.bottom_right_corner_x)            , static_cast<jfloat>(value.bottom_right_corner_y)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaTrackRectangle(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== TrackingOffCommand Callback Wrapper =====
 struct TrackingOffCommandCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TrackingOffCommandCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TrackingOffCommandCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const int32_t value) const {
+    void operator()(
+        const int32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -622,1413 +1533,1251 @@ struct TrackingOffCommandCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== CameraServer.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_camera_server_t handle = mavsdk_camera_server_create(
         reinterpret_cast<mavsdk_server_component_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create CameraServer plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== CameraServer.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return;
-
-    mavsdk_camera_server_destroy(reinterpret_cast<mavsdk_camera_server_t>(handle));
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return;
+    }
+    mavsdk_camera_server_destroy(
+        reinterpret_cast<mavsdk_camera_server_t>(handle));
 }
 
-
-// ===== CameraServer.set_informationBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_setInformationBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setInformation(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject information) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_camera_server_information_t information_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_set_information(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        information_c    );
-
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+    InformationFromJava
+        informationValue(env, information);
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_set_information(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            informationValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.set_video_streamingBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_setVideoStreamingBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setVideoStreaming(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject video_streaming) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_camera_server_video_streaming_t video_streaming_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_set_video_streaming(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        video_streaming_c    );
-
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+    VideoStreamingFromJava
+        video_streamingValue(env, video_streaming);
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_set_video_streaming(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            video_streamingValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.set_in_progressBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_setInProgressBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setInProgress(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jboolean in_progress) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_set_in_progress(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        in_progress    );
-
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_set_in_progress(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<bool>(in_progress));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeTakePhotoNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeTakePhotoNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeTakePhoto(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new TakePhotoCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_take_photo_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_take_photo(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<TakePhotoCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_take_photo_handle_t,
-        TakePhotoCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeTakePhoto =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeTakePhoto(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_take_photo_handle_t,
-                  TakePhotoCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_take_photo(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<TakePhotoCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_take_photo_handle_t,
+        TakePhotoCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_take_photoBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondTakePhotoBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeTakePhoto(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_take_photo_handle_t,
+        TakePhotoCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_take_photo(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondTakePhoto(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jint take_photo_feedback,
     jobject capture_info) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_camera_server_capture_info_t capture_info_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_take_photo(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(take_photo_feedback),
-        capture_info_c    );
-
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+    CaptureInfoFromJava
+        capture_infoValue(env, capture_info);
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_take_photo(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(take_photo_feedback),
+            capture_infoValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeStartVideoNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeStartVideoNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeStartVideo(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new StartVideoCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_start_video_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_start_video(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<StartVideoCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_start_video_handle_t,
-        StartVideoCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeStartVideo =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeStartVideo(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_start_video_handle_t,
-                  StartVideoCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_start_video(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<StartVideoCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_start_video_handle_t,
+        StartVideoCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_start_videoBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondStartVideoBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeStartVideo(
     JNIEnv* env,
-    jobject obj,
-    jint start_video_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_start_video(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_start_video_handle_t,
+        StartVideoCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_start_video(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(start_video_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondStartVideo(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint start_video_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_start_video(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(start_video_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeStopVideoNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeStopVideoNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeStopVideo(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new StopVideoCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_stop_video_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_stop_video(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<StopVideoCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_stop_video_handle_t,
-        StopVideoCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeStopVideo =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeStopVideo(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_stop_video_handle_t,
-                  StopVideoCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_stop_video(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<StopVideoCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_stop_video_handle_t,
+        StopVideoCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_stop_videoBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondStopVideoBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeStopVideo(
     JNIEnv* env,
-    jobject obj,
-    jint stop_video_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_stop_video(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_stop_video_handle_t,
+        StopVideoCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_stop_video(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondStopVideo(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint stop_video_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_stop_video(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeStartVideoStreamingNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeStartVideoStreamingNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeStartVideoStreaming(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new StartVideoStreamingCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_start_video_streaming_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_start_video_streaming(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<StartVideoStreamingCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_start_video_streaming_handle_t,
-        StartVideoStreamingCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeStartVideoStreaming =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeStartVideoStreaming(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_start_video_streaming_handle_t,
-                  StartVideoStreamingCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_start_video_streaming(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<StartVideoStreamingCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_start_video_streaming_handle_t,
+        StartVideoStreamingCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_start_video_streamingBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondStartVideoStreamingBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeStartVideoStreaming(
     JNIEnv* env,
-    jobject obj,
-    jint start_video_streaming_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_start_video_streaming(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_start_video_streaming_handle_t,
+        StartVideoStreamingCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_start_video_streaming(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(start_video_streaming_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondStartVideoStreaming(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint start_video_streaming_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_start_video_streaming(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(start_video_streaming_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeStopVideoStreamingNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeStopVideoStreamingNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeStopVideoStreaming(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new StopVideoStreamingCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_stop_video_streaming_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_stop_video_streaming(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<StopVideoStreamingCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_stop_video_streaming_handle_t,
-        StopVideoStreamingCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeStopVideoStreaming =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeStopVideoStreaming(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_stop_video_streaming_handle_t,
-                  StopVideoStreamingCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_stop_video_streaming(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<StopVideoStreamingCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_stop_video_streaming_handle_t,
+        StopVideoStreamingCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_stop_video_streamingBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondStopVideoStreamingBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeStopVideoStreaming(
     JNIEnv* env,
-    jobject obj,
-    jint stop_video_streaming_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_stop_video_streaming(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_stop_video_streaming_handle_t,
+        StopVideoStreamingCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_stop_video_streaming(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_streaming_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondStopVideoStreaming(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint stop_video_streaming_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_stop_video_streaming(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_streaming_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeSetModeNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeSetModeNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeSetMode(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new SetModeCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_set_mode_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_set_mode(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const mavsdk_camera_server_mode_t value, void* user_data) {
-                auto* w = static_cast<SetModeCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_set_mode_handle_t,
-        SetModeCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeSetMode =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeSetMode(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_set_mode_handle_t,
-                  SetModeCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_set_mode(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_camera_server_mode_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<SetModeCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_set_mode_handle_t,
+        SetModeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_set_modeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondSetModeBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeSetMode(
     JNIEnv* env,
-    jobject obj,
-    jint set_mode_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_set_mode(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_set_mode_handle_t,
+        SetModeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_set_mode(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(set_mode_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondSetMode(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint set_mode_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_set_mode(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(set_mode_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeStorageInformationNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeStorageInformationNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeStorageInformation(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new StorageInformationCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_storage_information_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_storage_information(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<StorageInformationCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_storage_information_handle_t,
-        StorageInformationCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeStorageInformation =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeStorageInformation(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_storage_information_handle_t,
-                  StorageInformationCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_storage_information(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<StorageInformationCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_storage_information_handle_t,
+        StorageInformationCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_storage_informationBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondStorageInformationBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeStorageInformation(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_storage_information_handle_t,
+        StorageInformationCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_storage_information(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondStorageInformation(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jint storage_information_feedback,
     jobject storage_information) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_camera_server_storage_information_t storage_information_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_storage_information(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(storage_information_feedback),
-        storage_information_c    );
-
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+    StorageInformationFromJava
+        storage_informationValue(env, storage_information);
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_storage_information(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(storage_information_feedback),
+            storage_informationValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeCaptureStatusNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeCaptureStatusNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeCaptureStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new CaptureStatusCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_capture_status_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_capture_status(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<CaptureStatusCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_capture_status_handle_t,
-        CaptureStatusCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeCaptureStatus =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeCaptureStatus(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_capture_status_handle_t,
-                  CaptureStatusCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_capture_status(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<CaptureStatusCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_capture_status_handle_t,
+        CaptureStatusCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_capture_statusBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondCaptureStatusBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeCaptureStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_capture_status_handle_t,
+        CaptureStatusCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_capture_status(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondCaptureStatus(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jint capture_status_feedback,
     jobject capture_status) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_camera_server_capture_status_t capture_status_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_capture_status(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(capture_status_feedback),
-        capture_status_c    );
-
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+    CaptureStatusFromJava
+        capture_statusValue(env, capture_status);
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_capture_status(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(capture_status_feedback),
+            capture_statusValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeFormatStorageNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeFormatStorageNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFormatStorage(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new FormatStorageCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_format_storage_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_format_storage(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<FormatStorageCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_format_storage_handle_t,
-        FormatStorageCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeFormatStorage =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeFormatStorage(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_format_storage_handle_t,
-                  FormatStorageCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_format_storage(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FormatStorageCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_format_storage_handle_t,
+        FormatStorageCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_format_storageBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondFormatStorageBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFormatStorage(
     JNIEnv* env,
-    jobject obj,
-    jint format_storage_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_format_storage(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_format_storage_handle_t,
+        FormatStorageCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_format_storage(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(format_storage_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFormatStorage(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint format_storage_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_format_storage(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(format_storage_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeResetSettingsNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeResetSettingsNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeResetSettings(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ResetSettingsCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_reset_settings_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_reset_settings(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<ResetSettingsCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_reset_settings_handle_t,
-        ResetSettingsCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeResetSettings =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeResetSettings(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_reset_settings_handle_t,
-                  ResetSettingsCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_reset_settings(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ResetSettingsCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_reset_settings_handle_t,
+        ResetSettingsCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_reset_settingsBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondResetSettingsBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeResetSettings(
     JNIEnv* env,
-    jobject obj,
-    jint reset_settings_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_reset_settings(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_reset_settings_handle_t,
+        ResetSettingsCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_reset_settings(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(reset_settings_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondResetSettings(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint reset_settings_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_reset_settings(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(reset_settings_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeZoomInStartNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeZoomInStartNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeZoomInStart(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ZoomInStartCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_zoom_in_start_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_zoom_in_start(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<ZoomInStartCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_zoom_in_start_handle_t,
-        ZoomInStartCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeZoomInStart =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeZoomInStart(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_zoom_in_start_handle_t,
-                  ZoomInStartCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_zoom_in_start(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ZoomInStartCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_zoom_in_start_handle_t,
+        ZoomInStartCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_zoom_in_startBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondZoomInStartBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeZoomInStart(
     JNIEnv* env,
-    jobject obj,
-    jint zoom_in_start_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_zoom_in_start(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_zoom_in_start_handle_t,
+        ZoomInStartCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_zoom_in_start(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_in_start_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondZoomInStart(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint zoom_in_start_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_zoom_in_start(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_in_start_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeZoomOutStartNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeZoomOutStartNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeZoomOutStart(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ZoomOutStartCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_zoom_out_start_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_zoom_out_start(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<ZoomOutStartCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_zoom_out_start_handle_t,
-        ZoomOutStartCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeZoomOutStart =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeZoomOutStart(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_zoom_out_start_handle_t,
-                  ZoomOutStartCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_zoom_out_start(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ZoomOutStartCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_zoom_out_start_handle_t,
+        ZoomOutStartCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_zoom_out_startBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondZoomOutStartBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeZoomOutStart(
     JNIEnv* env,
-    jobject obj,
-    jint zoom_out_start_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_zoom_out_start(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_zoom_out_start_handle_t,
+        ZoomOutStartCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_zoom_out_start(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_out_start_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondZoomOutStart(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint zoom_out_start_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_zoom_out_start(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_out_start_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeZoomStopNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeZoomStopNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeZoomStop(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ZoomStopCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_zoom_stop_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_zoom_stop(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<ZoomStopCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_zoom_stop_handle_t,
-        ZoomStopCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeZoomStop =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeZoomStop(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_zoom_stop_handle_t,
-                  ZoomStopCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_zoom_stop(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ZoomStopCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_zoom_stop_handle_t,
+        ZoomStopCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_zoom_stopBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondZoomStopBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeZoomStop(
     JNIEnv* env,
-    jobject obj,
-    jint zoom_stop_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_zoom_stop(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_zoom_stop_handle_t,
+        ZoomStopCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_zoom_stop(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_stop_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondZoomStop(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint zoom_stop_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_zoom_stop(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_stop_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.subscribeZoomRangeNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeZoomRangeNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeZoomRange(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ZoomRangeCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_zoom_range_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_zoom_range(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const float value, void* user_data) {
-                auto* w = static_cast<ZoomRangeCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_zoom_range_handle_t,
-        ZoomRangeCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeZoomRange =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeZoomRange(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_zoom_range_handle_t,
-                  ZoomRangeCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_zoom_range(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const float value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ZoomRangeCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_zoom_range_handle_t,
+        ZoomRangeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.respond_zoom_rangeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondZoomRangeBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeZoomRange(
     JNIEnv* env,
-    jobject obj,
-    jint zoom_range_feedback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_zoom_range(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_zoom_range_handle_t,
+        ZoomRangeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_zoom_range(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_range_feedback)    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondZoomRange(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint zoom_range_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_zoom_range(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_range_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.set_tracking_rectangle_statusBlocking =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_setTrackingRectangleStatusBlocking(
+JNIEXPORT
+void
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setTrackingRectangleStatus(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject tracked_rectangle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return;
-
-    mavsdk_camera_server_track_rectangle_t tracked_rectangle_c{}; /* TODO: convert scalar-only struct from Java object */
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return;
+    }
+    TrackRectangleFromJava
+        tracked_rectangleValue(env, tracked_rectangle);
     mavsdk_camera_server_set_tracking_rectangle_status(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
-        tracked_rectangle_c    );
+        tracked_rectangleValue.value);
 }
 
-
-// ===== CameraServer.set_tracking_off_statusBlocking =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_setTrackingOffStatusBlocking(
+JNIEXPORT
+void
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setTrackingOffStatus(
     JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return;
-
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return;
+    }
 
     mavsdk_camera_server_set_tracking_off_status(
-        reinterpret_cast<mavsdk_camera_server_t>(handle)    );
+        reinterpret_cast<mavsdk_camera_server_t>(handle));
 }
 
-
-// ===== CameraServer.subscribeTrackingPointCommandNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeTrackingPointCommandNative(
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeTrackingPointCommand(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new TrackingPointCommandCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_tracking_point_command_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_tracking_point_command(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const mavsdk_camera_server_track_point_t value, void* user_data) {
-                auto* w = static_cast<TrackingPointCommandCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_tracking_point_command_handle_t,
-        TrackingPointCommandCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeTrackingPointCommand =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeTrackingPointCommand(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_tracking_point_command_handle_t,
-                  TrackingPointCommandCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_tracking_point_command(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_camera_server_track_point_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<TrackingPointCommandCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_tracking_point_command_handle_t,
+        TrackingPointCommandCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.subscribeTrackingRectangleCommandNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeTrackingRectangleCommandNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeTrackingPointCommand(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_tracking_point_command_handle_t,
+        TrackingPointCommandCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_tracking_point_command(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeTrackingRectangleCommand(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new TrackingRectangleCommandCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_tracking_rectangle_command_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_tracking_rectangle_command(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const mavsdk_camera_server_track_rectangle_t value, void* user_data) {
-                auto* w = static_cast<TrackingRectangleCommandCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_tracking_rectangle_command_handle_t,
-        TrackingRectangleCommandCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeTrackingRectangleCommand =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeTrackingRectangleCommand(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_tracking_rectangle_command_handle_t,
-                  TrackingRectangleCommandCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_camera_server_track_rectangle_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<TrackingRectangleCommandCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_tracking_rectangle_command_handle_t,
+        TrackingRectangleCommandCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== CameraServer.subscribeTrackingOffCommandNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_subscribeTrackingOffCommandNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeTrackingRectangleCommand(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_tracking_rectangle_command_handle_t,
+        TrackingRectangleCommandCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeTrackingOffCommand(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new TrackingOffCommandCallbackWrapper(env, callback);
-
-    mavsdk_camera_server_tracking_off_command_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_camera_server_subscribe_tracking_off_command(
-            reinterpret_cast<mavsdk_camera_server_t>(handle),            [](const int32_t value, void* user_data) {
-                auto* w = static_cast<TrackingOffCommandCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_camera_server_tracking_off_command_handle_t,
-        TrackingOffCommandCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== CameraServer.unsubscribeTrackingOffCommand =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_unsubscribeTrackingOffCommand(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_camera_server_tracking_off_command_handle_t,
-                  TrackingOffCommandCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_camera_server_unsubscribe_tracking_off_command(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<TrackingOffCommandCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_tracking_off_command_handle_t,
+        TrackingOffCommandCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeTrackingOffCommand(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
     }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_tracking_off_command_handle_t,
+        TrackingOffCommandCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_tracking_off_command(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
 }
 
-
-// ===== CameraServer.respond_tracking_point_commandBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondTrackingPointCommandBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondTrackingPointCommand(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint stop_video_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_tracking_point_command(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_feedback)    );
-
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_tracking_point_command(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.respond_tracking_rectangle_commandBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondTrackingRectangleCommandBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondTrackingRectangleCommand(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint stop_video_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_tracking_rectangle_command(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_feedback)    );
-
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_tracking_rectangle_command(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_feedback));
     return static_cast<jint>(result);
 }
 
-
-// ===== CameraServer.respond_tracking_off_commandBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondTrackingOffCommandBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondTrackingOffCommand(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint stop_video_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
-    if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_tracking_off_command(
-        reinterpret_cast<mavsdk_camera_server_t>(handle),
-        static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_feedback)    );
-
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_tracking_off_command(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(stop_video_feedback));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

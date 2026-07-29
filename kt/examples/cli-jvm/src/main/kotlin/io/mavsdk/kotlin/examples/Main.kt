@@ -8,6 +8,7 @@ val examples = mapOf(
     "Params" to ::paramsGetSet,
     "CameraClient" to ::cameraClient,
     "CameraServer" to ::cameraServer,
+    "Telemetry" to ::telemetry,
 )
 
 fun main(args: Array<String>) {

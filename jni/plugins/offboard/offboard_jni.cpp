@@ -6,78 +6,899 @@
 #include "cmavsdk/plugins/offboard/offboard.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct AttitudeFromJava;
+struct AttitudeArrayFromJava;
+struct ActuatorControlGroupFromJava;
+struct ActuatorControlGroupArrayFromJava;
+struct ActuatorControlFromJava;
+struct ActuatorControlArrayFromJava;
+struct AttitudeRateFromJava;
+struct AttitudeRateArrayFromJava;
+struct PositionNedYawFromJava;
+struct PositionNedYawArrayFromJava;
+struct PositionGlobalYawFromJava;
+struct PositionGlobalYawArrayFromJava;
+struct VelocityBodyYawspeedFromJava;
+struct VelocityBodyYawspeedArrayFromJava;
+struct VelocityNedYawFromJava;
+struct VelocityNedYawArrayFromJava;
+struct AccelerationNedFromJava;
+struct AccelerationNedArrayFromJava;
 
+struct AttitudeFromJava {
+    mavsdk_offboard_attitude_t value{};
 
-// ===== Start Callback Wrapper =====
+    AttitudeFromJava(JNIEnv* env, jobject object);
+    ~AttitudeFromJava();
+};
+
+struct AttitudeArrayFromJava {
+    std::vector<std::unique_ptr<AttitudeFromJava>> holders;
+    std::vector<mavsdk_offboard_attitude_t> values;
+
+    AttitudeArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AttitudeFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ActuatorControlGroupFromJava {
+    mavsdk_offboard_actuator_control_group_t value{};
+    std::vector<float> controlsValues;
+
+    ActuatorControlGroupFromJava(JNIEnv* env, jobject object);
+    ~ActuatorControlGroupFromJava();
+};
+
+struct ActuatorControlGroupArrayFromJava {
+    std::vector<std::unique_ptr<ActuatorControlGroupFromJava>> holders;
+    std::vector<mavsdk_offboard_actuator_control_group_t> values;
+
+    ActuatorControlGroupArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ActuatorControlGroupFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ActuatorControlFromJava {
+    mavsdk_offboard_actuator_control_t value{};
+    std::unique_ptr<ActuatorControlGroupArrayFromJava> groupsValues;
+
+    ActuatorControlFromJava(JNIEnv* env, jobject object);
+    ~ActuatorControlFromJava();
+};
+
+struct ActuatorControlArrayFromJava {
+    std::vector<std::unique_ptr<ActuatorControlFromJava>> holders;
+    std::vector<mavsdk_offboard_actuator_control_t> values;
+
+    ActuatorControlArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ActuatorControlFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AttitudeRateFromJava {
+    mavsdk_offboard_attitude_rate_t value{};
+
+    AttitudeRateFromJava(JNIEnv* env, jobject object);
+    ~AttitudeRateFromJava();
+};
+
+struct AttitudeRateArrayFromJava {
+    std::vector<std::unique_ptr<AttitudeRateFromJava>> holders;
+    std::vector<mavsdk_offboard_attitude_rate_t> values;
+
+    AttitudeRateArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AttitudeRateFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionNedYawFromJava {
+    mavsdk_offboard_position_ned_yaw_t value{};
+
+    PositionNedYawFromJava(JNIEnv* env, jobject object);
+    ~PositionNedYawFromJava();
+};
+
+struct PositionNedYawArrayFromJava {
+    std::vector<std::unique_ptr<PositionNedYawFromJava>> holders;
+    std::vector<mavsdk_offboard_position_ned_yaw_t> values;
+
+    PositionNedYawArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionNedYawFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct PositionGlobalYawFromJava {
+    mavsdk_offboard_position_global_yaw_t value{};
+
+    PositionGlobalYawFromJava(JNIEnv* env, jobject object);
+    ~PositionGlobalYawFromJava();
+};
+
+struct PositionGlobalYawArrayFromJava {
+    std::vector<std::unique_ptr<PositionGlobalYawFromJava>> holders;
+    std::vector<mavsdk_offboard_position_global_yaw_t> values;
+
+    PositionGlobalYawArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<PositionGlobalYawFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct VelocityBodyYawspeedFromJava {
+    mavsdk_offboard_velocity_body_yawspeed_t value{};
+
+    VelocityBodyYawspeedFromJava(JNIEnv* env, jobject object);
+    ~VelocityBodyYawspeedFromJava();
+};
+
+struct VelocityBodyYawspeedArrayFromJava {
+    std::vector<std::unique_ptr<VelocityBodyYawspeedFromJava>> holders;
+    std::vector<mavsdk_offboard_velocity_body_yawspeed_t> values;
+
+    VelocityBodyYawspeedArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<VelocityBodyYawspeedFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct VelocityNedYawFromJava {
+    mavsdk_offboard_velocity_ned_yaw_t value{};
+
+    VelocityNedYawFromJava(JNIEnv* env, jobject object);
+    ~VelocityNedYawFromJava();
+};
+
+struct VelocityNedYawArrayFromJava {
+    std::vector<std::unique_ptr<VelocityNedYawFromJava>> holders;
+    std::vector<mavsdk_offboard_velocity_ned_yaw_t> values;
+
+    VelocityNedYawArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<VelocityNedYawFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AccelerationNedFromJava {
+    mavsdk_offboard_acceleration_ned_t value{};
+
+    AccelerationNedFromJava(JNIEnv* env, jobject object);
+    ~AccelerationNedFromJava();
+};
+
+struct AccelerationNedArrayFromJava {
+    std::vector<std::unique_ptr<AccelerationNedFromJava>> holders;
+    std::vector<mavsdk_offboard_acceleration_ned_t> values;
+
+    AccelerationNedArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AccelerationNedFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+AttitudeFromJava::AttitudeFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID roll_degField = env->GetFieldID(
+        clazz, "rollDeg", "F");
+    value.roll_deg =
+        static_cast<float>(env->GetFloatField(object, roll_degField));
+    jfieldID pitch_degField = env->GetFieldID(
+        clazz, "pitchDeg", "F");
+    value.pitch_deg =
+        static_cast<float>(env->GetFloatField(object, pitch_degField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    jfieldID thrust_valueField = env->GetFieldID(
+        clazz, "thrustValue", "F");
+    value.thrust_value =
+        static_cast<float>(env->GetFloatField(object, thrust_valueField));
+    env->DeleteLocalRef(clazz);
+}
+
+AttitudeFromJava::~AttitudeFromJava() = default;
+ActuatorControlGroupFromJava::ActuatorControlGroupFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID controlsField = env->GetFieldID(
+        clazz, "controls", "[F");
+    auto controlsArray =
+        static_cast<jfloatArray>(env->GetObjectField(object, controlsField));
+    const jsize controlsCount =
+        controlsArray ? env->GetArrayLength(controlsArray) : 0;
+    std::vector<jfloat> controlsJavaValues(
+        static_cast<size_t>(controlsCount));
+    if (controlsCount > 0) {
+        env->GetFloatArrayRegion(
+            controlsArray, 0, controlsCount,
+            controlsJavaValues.data());
+        controlsValues.reserve(static_cast<size_t>(controlsCount));
+        for (auto item : controlsJavaValues) {
+            controlsValues.push_back(static_cast<float>(item));
+        }
+    }
+    value.controls = controlsValues.data();
+    value.controls_size =
+        static_cast<size_t>(controlsCount);
+    env->DeleteLocalRef(controlsArray);
+    env->DeleteLocalRef(clazz);
+}
+
+ActuatorControlGroupFromJava::~ActuatorControlGroupFromJava() = default;
+ActuatorControlFromJava::ActuatorControlFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID groupsField = env->GetFieldID(
+        clazz, "groups", "[Lio/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup;");
+    auto groupsArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, groupsField));
+    const jsize groupsCount =
+        groupsArray ? env->GetArrayLength(groupsArray) : 0;
+    groupsValues =
+        std::make_unique<ActuatorControlGroupArrayFromJava>(
+            env, groupsArray);
+    value.groups = groupsValues->values.data();
+    value.groups_size =
+        static_cast<size_t>(groupsCount);
+    env->DeleteLocalRef(groupsArray);
+    env->DeleteLocalRef(clazz);
+}
+
+ActuatorControlFromJava::~ActuatorControlFromJava() = default;
+AttitudeRateFromJava::AttitudeRateFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID roll_deg_sField = env->GetFieldID(
+        clazz, "rollDegS", "F");
+    value.roll_deg_s =
+        static_cast<float>(env->GetFloatField(object, roll_deg_sField));
+    jfieldID pitch_deg_sField = env->GetFieldID(
+        clazz, "pitchDegS", "F");
+    value.pitch_deg_s =
+        static_cast<float>(env->GetFloatField(object, pitch_deg_sField));
+    jfieldID yaw_deg_sField = env->GetFieldID(
+        clazz, "yawDegS", "F");
+    value.yaw_deg_s =
+        static_cast<float>(env->GetFloatField(object, yaw_deg_sField));
+    jfieldID thrust_valueField = env->GetFieldID(
+        clazz, "thrustValue", "F");
+    value.thrust_value =
+        static_cast<float>(env->GetFloatField(object, thrust_valueField));
+    env->DeleteLocalRef(clazz);
+}
+
+AttitudeRateFromJava::~AttitudeRateFromJava() = default;
+PositionNedYawFromJava::PositionNedYawFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID north_mField = env->GetFieldID(
+        clazz, "northM", "F");
+    value.north_m =
+        static_cast<float>(env->GetFloatField(object, north_mField));
+    jfieldID east_mField = env->GetFieldID(
+        clazz, "eastM", "F");
+    value.east_m =
+        static_cast<float>(env->GetFloatField(object, east_mField));
+    jfieldID down_mField = env->GetFieldID(
+        clazz, "downM", "F");
+    value.down_m =
+        static_cast<float>(env->GetFloatField(object, down_mField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionNedYawFromJava::~PositionNedYawFromJava() = default;
+PositionGlobalYawFromJava::PositionGlobalYawFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID lat_degField = env->GetFieldID(
+        clazz, "latDeg", "D");
+    value.lat_deg =
+        static_cast<double>(env->GetDoubleField(object, lat_degField));
+    jfieldID lon_degField = env->GetFieldID(
+        clazz, "lonDeg", "D");
+    value.lon_deg =
+        static_cast<double>(env->GetDoubleField(object, lon_degField));
+    jfieldID alt_mField = env->GetFieldID(
+        clazz, "altM", "F");
+    value.alt_m =
+        static_cast<float>(env->GetFloatField(object, alt_mField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    jfieldID altitude_typeField = env->GetFieldID(
+        clazz, "altitudeType", "I");
+    value.altitude_type =
+        static_cast<mavsdk_offboard_position_global_yaw_altitude_type_t>(env->GetIntField(object, altitude_typeField));
+    env->DeleteLocalRef(clazz);
+}
+
+PositionGlobalYawFromJava::~PositionGlobalYawFromJava() = default;
+VelocityBodyYawspeedFromJava::VelocityBodyYawspeedFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID forward_m_sField = env->GetFieldID(
+        clazz, "forwardMS", "F");
+    value.forward_m_s =
+        static_cast<float>(env->GetFloatField(object, forward_m_sField));
+    jfieldID right_m_sField = env->GetFieldID(
+        clazz, "rightMS", "F");
+    value.right_m_s =
+        static_cast<float>(env->GetFloatField(object, right_m_sField));
+    jfieldID down_m_sField = env->GetFieldID(
+        clazz, "downMS", "F");
+    value.down_m_s =
+        static_cast<float>(env->GetFloatField(object, down_m_sField));
+    jfieldID yawspeed_deg_sField = env->GetFieldID(
+        clazz, "yawspeedDegS", "F");
+    value.yawspeed_deg_s =
+        static_cast<float>(env->GetFloatField(object, yawspeed_deg_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+VelocityBodyYawspeedFromJava::~VelocityBodyYawspeedFromJava() = default;
+VelocityNedYawFromJava::VelocityNedYawFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID north_m_sField = env->GetFieldID(
+        clazz, "northMS", "F");
+    value.north_m_s =
+        static_cast<float>(env->GetFloatField(object, north_m_sField));
+    jfieldID east_m_sField = env->GetFieldID(
+        clazz, "eastMS", "F");
+    value.east_m_s =
+        static_cast<float>(env->GetFloatField(object, east_m_sField));
+    jfieldID down_m_sField = env->GetFieldID(
+        clazz, "downMS", "F");
+    value.down_m_s =
+        static_cast<float>(env->GetFloatField(object, down_m_sField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+VelocityNedYawFromJava::~VelocityNedYawFromJava() = default;
+AccelerationNedFromJava::AccelerationNedFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID north_m_s2Field = env->GetFieldID(
+        clazz, "northMS2", "F");
+    value.north_m_s2 =
+        static_cast<float>(env->GetFloatField(object, north_m_s2Field));
+    jfieldID east_m_s2Field = env->GetFieldID(
+        clazz, "eastMS2", "F");
+    value.east_m_s2 =
+        static_cast<float>(env->GetFloatField(object, east_m_s2Field));
+    jfieldID down_m_s2Field = env->GetFieldID(
+        clazz, "downMS2", "F");
+    value.down_m_s2 =
+        static_cast<float>(env->GetFloatField(object, down_m_s2Field));
+    env->DeleteLocalRef(clazz);
+}
+
+AccelerationNedFromJava::~AccelerationNedFromJava() = default;
+
+jobject toJavaAttitude(
+    JNIEnv* env, const mavsdk_offboard_attitude_t& value);
+jobjectArray toJavaAttitudeArray(
+    JNIEnv* env,
+    const mavsdk_offboard_attitude_t* values,
+    size_t count);
+jobject toJavaActuatorControlGroup(
+    JNIEnv* env, const mavsdk_offboard_actuator_control_group_t& value);
+jobjectArray toJavaActuatorControlGroupArray(
+    JNIEnv* env,
+    const mavsdk_offboard_actuator_control_group_t* values,
+    size_t count);
+jobject toJavaActuatorControl(
+    JNIEnv* env, const mavsdk_offboard_actuator_control_t& value);
+jobjectArray toJavaActuatorControlArray(
+    JNIEnv* env,
+    const mavsdk_offboard_actuator_control_t* values,
+    size_t count);
+jobject toJavaAttitudeRate(
+    JNIEnv* env, const mavsdk_offboard_attitude_rate_t& value);
+jobjectArray toJavaAttitudeRateArray(
+    JNIEnv* env,
+    const mavsdk_offboard_attitude_rate_t* values,
+    size_t count);
+jobject toJavaPositionNedYaw(
+    JNIEnv* env, const mavsdk_offboard_position_ned_yaw_t& value);
+jobjectArray toJavaPositionNedYawArray(
+    JNIEnv* env,
+    const mavsdk_offboard_position_ned_yaw_t* values,
+    size_t count);
+jobject toJavaPositionGlobalYaw(
+    JNIEnv* env, const mavsdk_offboard_position_global_yaw_t& value);
+jobjectArray toJavaPositionGlobalYawArray(
+    JNIEnv* env,
+    const mavsdk_offboard_position_global_yaw_t* values,
+    size_t count);
+jobject toJavaVelocityBodyYawspeed(
+    JNIEnv* env, const mavsdk_offboard_velocity_body_yawspeed_t& value);
+jobjectArray toJavaVelocityBodyYawspeedArray(
+    JNIEnv* env,
+    const mavsdk_offboard_velocity_body_yawspeed_t* values,
+    size_t count);
+jobject toJavaVelocityNedYaw(
+    JNIEnv* env, const mavsdk_offboard_velocity_ned_yaw_t& value);
+jobjectArray toJavaVelocityNedYawArray(
+    JNIEnv* env,
+    const mavsdk_offboard_velocity_ned_yaw_t* values,
+    size_t count);
+jobject toJavaAccelerationNed(
+    JNIEnv* env, const mavsdk_offboard_acceleration_ned_t& value);
+jobjectArray toJavaAccelerationNedArray(
+    JNIEnv* env,
+    const mavsdk_offboard_acceleration_ned_t* values,
+    size_t count);
+
+jobject toJavaAttitude(
+    JNIEnv* env, const mavsdk_offboard_attitude_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$Attitude");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.roll_deg)
+        , static_cast<jfloat>(value.pitch_deg)
+        , static_cast<jfloat>(value.yaw_deg)
+        , static_cast<jfloat>(value.thrust_value)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAttitudeArray(
+    JNIEnv* env,
+    const mavsdk_offboard_attitude_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$Attitude");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAttitude(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaActuatorControlGroup(
+    JNIEnv* env, const mavsdk_offboard_actuator_control_group_t& value) {
+    jfloatArray controlsValue =
+        env->NewFloatArray(
+            static_cast<jsize>(value.controls_size));
+    std::vector<jfloat> controlsJavaValues;
+    controlsJavaValues.reserve(value.controls_size);
+    for (size_t i = 0; i < value.controls_size; ++i) {
+        controlsJavaValues.push_back(
+            static_cast<jfloat>(value.controls[i]));
+    }
+    if (!controlsJavaValues.empty()) {
+        env->SetFloatArrayRegion(
+            controlsValue, 0,
+            static_cast<jsize>(controlsJavaValues.size()),
+            controlsJavaValues.data());
+    }
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , controlsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(controlsValue);
+    return result;
+}
+
+jobjectArray toJavaActuatorControlGroupArray(
+    JNIEnv* env,
+    const mavsdk_offboard_actuator_control_group_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaActuatorControlGroup(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaActuatorControl(
+    JNIEnv* env, const mavsdk_offboard_actuator_control_t& value) {
+    jobjectArray groupsValue =
+        toJavaActuatorControlGroupArray(
+            env, value.groups, value.groups_size);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControl");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , groupsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(groupsValue);
+    return result;
+}
+
+jobjectArray toJavaActuatorControlArray(
+    JNIEnv* env,
+    const mavsdk_offboard_actuator_control_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControl");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaActuatorControl(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAttitudeRate(
+    JNIEnv* env, const mavsdk_offboard_attitude_rate_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$AttitudeRate");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.roll_deg_s)
+        , static_cast<jfloat>(value.pitch_deg_s)
+        , static_cast<jfloat>(value.yaw_deg_s)
+        , static_cast<jfloat>(value.thrust_value)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAttitudeRateArray(
+    JNIEnv* env,
+    const mavsdk_offboard_attitude_rate_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$AttitudeRate");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAttitudeRate(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPositionNedYaw(
+    JNIEnv* env, const mavsdk_offboard_position_ned_yaw_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionNedYaw");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.north_m)
+        , static_cast<jfloat>(value.east_m)
+        , static_cast<jfloat>(value.down_m)
+        , static_cast<jfloat>(value.yaw_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionNedYawArray(
+    JNIEnv* env,
+    const mavsdk_offboard_position_ned_yaw_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionNedYaw");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPositionNedYaw(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaPositionGlobalYaw(
+    JNIEnv* env, const mavsdk_offboard_position_global_yaw_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionGlobalYaw");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDFFI)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.lat_deg)
+        , static_cast<jdouble>(value.lon_deg)
+        , static_cast<jfloat>(value.alt_m)
+        , static_cast<jfloat>(value.yaw_deg)
+        , static_cast<jint>(value.altitude_type)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaPositionGlobalYawArray(
+    JNIEnv* env,
+    const mavsdk_offboard_position_global_yaw_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionGlobalYaw");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaPositionGlobalYaw(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaVelocityBodyYawspeed(
+    JNIEnv* env, const mavsdk_offboard_velocity_body_yawspeed_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityBodyYawspeed");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.forward_m_s)
+        , static_cast<jfloat>(value.right_m_s)
+        , static_cast<jfloat>(value.down_m_s)
+        , static_cast<jfloat>(value.yawspeed_deg_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaVelocityBodyYawspeedArray(
+    JNIEnv* env,
+    const mavsdk_offboard_velocity_body_yawspeed_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityBodyYawspeed");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaVelocityBodyYawspeed(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaVelocityNedYaw(
+    JNIEnv* env, const mavsdk_offboard_velocity_ned_yaw_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityNedYaw");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.north_m_s)
+        , static_cast<jfloat>(value.east_m_s)
+        , static_cast<jfloat>(value.down_m_s)
+        , static_cast<jfloat>(value.yaw_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaVelocityNedYawArray(
+    JNIEnv* env,
+    const mavsdk_offboard_velocity_ned_yaw_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityNedYaw");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaVelocityNedYaw(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAccelerationNed(
+    JNIEnv* env, const mavsdk_offboard_acceleration_ned_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$AccelerationNed");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.north_m_s2)
+        , static_cast<jfloat>(value.east_m_s2)
+        , static_cast<jfloat>(value.down_m_s2)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAccelerationNedArray(
+    JNIEnv* env,
+    const mavsdk_offboard_acceleration_ned_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$AccelerationNed");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAccelerationNed(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct StartCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StartCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StartCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_offboard_result_t result) const {
+    void operator()(
+        const mavsdk_offboard_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Stop Callback Wrapper =====
 struct StopCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StopCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StopCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_offboard_result_t result) const {
+    void operator()(
+        const mavsdk_offboard_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -85,362 +906,325 @@ struct StopCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Offboard.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_offboard_t handle = mavsdk_offboard_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Offboard plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Offboard.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return;
-
-    mavsdk_offboard_destroy(reinterpret_cast<mavsdk_offboard_t>(handle));
+Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return;
+    }
+    mavsdk_offboard_destroy(
+        reinterpret_cast<mavsdk_offboard_t>(handle));
 }
 
-
-// ===== Offboard.startBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_startBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_start(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-
-    mavsdk_offboard_result_t result = mavsdk_offboard_start(
-        reinterpret_cast<mavsdk_offboard_t>(handle)    );
-
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_start(
+            reinterpret_cast<mavsdk_offboard_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Offboard.startAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_startAsyncNative(
+Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_startAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Offboard plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new StartCallbackWrapper(env, callback);
-
     mavsdk_offboard_start_async(
-        reinterpret_cast<mavsdk_offboard_t>(handle),        [](const mavsdk_offboard_result_t result, void* user_data) {
-            auto* w = static_cast<StartCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_offboard_t>(handle),
+        [](const mavsdk_offboard_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<StartCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Offboard.stopBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_stopBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_stop(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-
-    mavsdk_offboard_result_t result = mavsdk_offboard_stop(
-        reinterpret_cast<mavsdk_offboard_t>(handle)    );
-
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_stop(
+            reinterpret_cast<mavsdk_offboard_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Offboard.stopAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_stopAsyncNative(
+Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_stopAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Offboard plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new StopCallbackWrapper(env, callback);
-
     mavsdk_offboard_stop_async(
-        reinterpret_cast<mavsdk_offboard_t>(handle),        [](const mavsdk_offboard_result_t result, void* user_data) {
-            auto* w = static_cast<StopCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_offboard_t>(handle),
+        [](const mavsdk_offboard_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<StopCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Offboard.is_activeBlocking =====
-JNIEXPORT jboolean JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_isActiveBlocking(
+JNIEXPORT
+jboolean
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_isActive(
     JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return {};
-
-
-    bool ret_val{};
-    mavsdk_offboard_is_active(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jboolean>(ret_val);
-}
-
-
-// ===== Offboard.set_attitudeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setAttitudeBlocking(
-    JNIEnv* env,
-    jobject obj,
-    jobject attitude) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_attitude_t attitude_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_attitude(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        attitude_c    );
-
-    return static_cast<jint>(result);
-}
-
-
-// ===== Offboard.set_actuator_controlBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setActuatorControlBlocking(
-    JNIEnv* env,
-    jobject obj,
-    jobject actuator_control) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_actuator_control_t actuator_control_c{};    std::vector<mavsdk_offboard_actuator_control_group_t> groups_vec;
-    {
-        jclass paramClass_actuator_control = env->GetObjectClass(actuator_control);
-        jfieldID groups_fid = env->GetFieldID(paramClass_actuator_control, "groups", "Ljava/util/List;");
-        jobject groups_list = env->GetObjectField(actuator_control, groups_fid);
-        if (groups_list) {
-            jclass listClass_groups = env->FindClass("java/util/List");
-            jmethodID listSize_groups = env->GetMethodID(listClass_groups, "size", "()I");
-            jmethodID listGet_groups = env->GetMethodID(listClass_groups, "get", "(I)Ljava/lang/Object;");
-            jint count_groups = env->CallIntMethod(groups_list, listSize_groups);
-            groups_vec.resize(count_groups);
-            if (count_groups > 0) {
-                jclass elemClass_groups = env->FindClass("io/mavsdk/kotlin/plugins/offboard/Offboard$ActuatorControlGroup");                for (jint i = 0; i < count_groups; i++) {
-                    jobject elem = env->CallObjectMethod(groups_list, listGet_groups, i);                    env->DeleteLocalRef(elem);
-                }
-                actuator_control_c.groups = groups_vec.data();
-                env->DeleteLocalRef(elemClass_groups);
-            }
-            actuator_control_c.groups_size = (size_t)count_groups;
-            env->DeleteLocalRef(listClass_groups);
-            env->DeleteLocalRef(groups_list);
-        }
-        env->DeleteLocalRef(paramClass_actuator_control);
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
     }
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_actuator_control(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        actuator_control_c    );
 
+    bool returnValue{};
+        mavsdk_offboard_is_active(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            &returnValue);
+    return static_cast<jboolean>(returnValue);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setAttitude(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject attitude) {
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    AttitudeFromJava
+        attitudeValue(env, attitude);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_attitude(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            attitudeValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== Offboard.set_attitude_rateBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setAttitudeRateBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setActuatorControl(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jobject actuator_control) {
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    ActuatorControlFromJava
+        actuator_controlValue(env, actuator_control);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_actuator_control(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            actuator_controlValue.value);
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setAttitudeRate(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject attitude_rate) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_attitude_rate_t attitude_rate_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_attitude_rate(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        attitude_rate_c    );
-
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    AttitudeRateFromJava
+        attitude_rateValue(env, attitude_rate);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_attitude_rate(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            attitude_rateValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== Offboard.set_position_nedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setPositionNedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setPositionNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject position_ned_yaw) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_position_ned(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        position_ned_yaw_c    );
-
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    PositionNedYawFromJava
+        position_ned_yawValue(env, position_ned_yaw);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_position_ned(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            position_ned_yawValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== Offboard.set_position_globalBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setPositionGlobalBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setPositionGlobal(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject position_global_yaw) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_position_global_yaw_t position_global_yaw_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_position_global(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        position_global_yaw_c    );
-
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    PositionGlobalYawFromJava
+        position_global_yawValue(env, position_global_yaw);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_position_global(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            position_global_yawValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== Offboard.set_velocity_bodyBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setVelocityBodyBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setVelocityBody(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject velocity_body_yawspeed) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_velocity_body_yawspeed_t velocity_body_yawspeed_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_velocity_body(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        velocity_body_yawspeed_c    );
-
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    VelocityBodyYawspeedFromJava
+        velocity_body_yawspeedValue(env, velocity_body_yawspeed);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_velocity_body(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            velocity_body_yawspeedValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== Offboard.set_velocity_nedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setVelocityNedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setVelocityNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject velocity_ned_yaw) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_velocity_ned(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        velocity_ned_yaw_c    );
-
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    VelocityNedYawFromJava
+        velocity_ned_yawValue(env, velocity_ned_yaw);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_velocity_ned(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            velocity_ned_yawValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== Offboard.set_position_velocity_nedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setPositionVelocityNedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setPositionVelocityNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject position_ned_yaw,
     jobject velocity_ned_yaw) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_position_velocity_ned(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        position_ned_yaw_c,
-        velocity_ned_yaw_c    );
-
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    PositionNedYawFromJava
+        position_ned_yawValue(env, position_ned_yaw);    VelocityNedYawFromJava
+        velocity_ned_yawValue(env, velocity_ned_yaw);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_position_velocity_ned(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            position_ned_yawValue.value,
+            velocity_ned_yawValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== Offboard.set_position_velocity_acceleration_nedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setPositionVelocityAccelerationNedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setPositionVelocityAccelerationNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject position_ned_yaw,
     jobject velocity_ned_yaw,
     jobject acceleration_ned) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_offboard_acceleration_ned_t acceleration_ned_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_position_velocity_acceleration_ned(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        position_ned_yaw_c,
-        velocity_ned_yaw_c,
-        acceleration_ned_c    );
-
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    PositionNedYawFromJava
+        position_ned_yawValue(env, position_ned_yaw);    VelocityNedYawFromJava
+        velocity_ned_yawValue(env, velocity_ned_yaw);    AccelerationNedFromJava
+        acceleration_nedValue(env, acceleration_ned);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_position_velocity_acceleration_ned(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            position_ned_yawValue.value,
+            velocity_ned_yawValue.value,
+            acceleration_nedValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== Offboard.set_acceleration_nedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setAccelerationNedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_offboard_NativeOffboard_setAccelerationNed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject acceleration_ned) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
-    if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
-
-    mavsdk_offboard_acceleration_ned_t acceleration_ned_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_offboard_result_t result = mavsdk_offboard_set_acceleration_ned(
-        reinterpret_cast<mavsdk_offboard_t>(handle),
-        acceleration_ned_c    );
-
+    if (!requireHandle(env, handle, "Offboard plugin")) {
+        return {};
+    }
+    AccelerationNedFromJava
+        acceleration_nedValue(env, acceleration_ned);
+    mavsdk_offboard_result_t result =
+        mavsdk_offboard_set_acceleration_ned(
+            reinterpret_cast<mavsdk_offboard_t>(handle),
+            acceleration_nedValue.value);
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

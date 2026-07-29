@@ -6,78 +6,80 @@
 #include "cmavsdk/plugins/gripper/gripper.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
 
 
-// ===== Grab Callback Wrapper =====
+
+
+
 struct GrabCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GrabCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GrabCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gripper_result_t result) const {
+    void operator()(
+        const mavsdk_gripper_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Release Callback Wrapper =====
 struct ReleaseCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ReleaseCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ReleaseCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gripper_result_t result) const {
+    void operator()(
+        const mavsdk_gripper_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -85,129 +87,117 @@ struct ReleaseCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Gripper.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_gripper_Gripper_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_gripper_NativeGripper_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_gripper_t handle = mavsdk_gripper_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Gripper plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Gripper.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gripper_Gripper_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gripper/Gripper");
-    if (!handle) return;
-
-    mavsdk_gripper_destroy(reinterpret_cast<mavsdk_gripper_t>(handle));
+Java_io_mavsdk_jni_plugins_gripper_NativeGripper_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Gripper plugin")) {
+        return;
+    }
+    mavsdk_gripper_destroy(
+        reinterpret_cast<mavsdk_gripper_t>(handle));
 }
 
-
-// ===== Gripper.grabBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_gripper_Gripper_grabBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_gripper_NativeGripper_grab(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Gripper plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gripper/Gripper");
-    if (!handle) return MAVSDK_GRIPPER_RESULT_UNKNOWN;
-
-
-    mavsdk_gripper_result_t result = mavsdk_gripper_grab(
-        reinterpret_cast<mavsdk_gripper_t>(handle),
-        instance    );
-
+    mavsdk_gripper_result_t result =
+        mavsdk_gripper_grab(
+            reinterpret_cast<mavsdk_gripper_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Gripper.grabAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gripper_Gripper_grabAsyncNative(
+Java_io_mavsdk_jni_plugins_gripper_NativeGripper_grabAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gripper/Gripper");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Gripper plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new GrabCallbackWrapper(env, callback);
-
     mavsdk_gripper_grab_async(
-        reinterpret_cast<mavsdk_gripper_t>(handle),        instance,        [](const mavsdk_gripper_result_t result, void* user_data) {
-            auto* w = static_cast<GrabCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_gripper_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_gripper_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<GrabCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Gripper.releaseBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_gripper_Gripper_releaseBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_gripper_NativeGripper_release(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance) {
+    if (!requireHandle(env, handle, "Gripper plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gripper/Gripper");
-    if (!handle) return MAVSDK_GRIPPER_RESULT_UNKNOWN;
-
-
-    mavsdk_gripper_result_t result = mavsdk_gripper_release(
-        reinterpret_cast<mavsdk_gripper_t>(handle),
-        instance    );
-
+    mavsdk_gripper_result_t result =
+        mavsdk_gripper_release(
+            reinterpret_cast<mavsdk_gripper_t>(handle),
+            static_cast<uint32_t>(instance));
     return static_cast<jint>(result);
 }
 
-// ===== Gripper.releaseAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gripper_Gripper_releaseAsyncNative(
+Java_io_mavsdk_jni_plugins_gripper_NativeGripper_releaseAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint instance,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gripper/Gripper");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Gripper plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new ReleaseCallbackWrapper(env, callback);
-
     mavsdk_gripper_release_async(
-        reinterpret_cast<mavsdk_gripper_t>(handle),        instance,        [](const mavsdk_gripper_result_t result, void* user_data) {
-            auto* w = static_cast<ReleaseCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_gripper_t>(handle),
+        static_cast<uint32_t>(instance),
+        [](const mavsdk_gripper_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<ReleaseCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
-
 
 } // extern "C"

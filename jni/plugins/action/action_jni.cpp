@@ -6,780 +6,724 @@
 #include "cmavsdk/plugins/action/action.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
 
 
-// ===== Arm Callback Wrapper =====
+
+
+
 struct ArmCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ArmCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ArmCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ArmForce Callback Wrapper =====
 struct ArmForceCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ArmForceCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ArmForceCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Disarm Callback Wrapper =====
 struct DisarmCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    DisarmCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    DisarmCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Takeoff Callback Wrapper =====
 struct TakeoffCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TakeoffCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TakeoffCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Land Callback Wrapper =====
 struct LandCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    LandCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    LandCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Reboot Callback Wrapper =====
 struct RebootCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RebootCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RebootCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Shutdown Callback Wrapper =====
 struct ShutdownCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ShutdownCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ShutdownCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Terminate Callback Wrapper =====
 struct TerminateCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TerminateCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TerminateCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Kill Callback Wrapper =====
 struct KillCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    KillCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    KillCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ReturnToLaunch Callback Wrapper =====
 struct ReturnToLaunchCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ReturnToLaunchCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ReturnToLaunchCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== GotoLocation Callback Wrapper =====
 struct GotoLocationCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GotoLocationCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GotoLocationCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== DoOrbit Callback Wrapper =====
 struct DoOrbitCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    DoOrbitCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    DoOrbitCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Hold Callback Wrapper =====
 struct HoldCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    HoldCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    HoldCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetActuator Callback Wrapper =====
 struct SetActuatorCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetActuatorCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetActuatorCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRelay Callback Wrapper =====
 struct SetRelayCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRelayCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRelayCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== TransitionToFixedwing Callback Wrapper =====
 struct TransitionToFixedwingCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TransitionToFixedwingCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TransitionToFixedwingCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== TransitionToMulticopter Callback Wrapper =====
 struct TransitionToMulticopterCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TransitionToMulticopterCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TransitionToMulticopterCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== GetTakeoffAltitude Callback Wrapper =====
 struct GetTakeoffAltitudeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GetTakeoffAltitudeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GetTakeoffAltitudeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(IF)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result, const float altitude) const {
+    void operator()(
+        const mavsdk_action_result_t result,        const float value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result),
-            static_cast<jfloat>(altitude));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jfloat>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetTakeoffAltitude Callback Wrapper =====
 struct SetTakeoffAltitudeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetTakeoffAltitudeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetTakeoffAltitudeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== GetReturnToLaunchAltitude Callback Wrapper =====
 struct GetReturnToLaunchAltitudeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GetReturnToLaunchAltitudeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GetReturnToLaunchAltitudeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(IF)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result, const float relative_altitude_m) const {
+    void operator()(
+        const mavsdk_action_result_t result,        const float value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result),
-            static_cast<jfloat>(relative_altitude_m));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jfloat>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetReturnToLaunchAltitude Callback Wrapper =====
 struct SetReturnToLaunchAltitudeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetReturnToLaunchAltitudeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetReturnToLaunchAltitudeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetCurrentSpeed Callback Wrapper =====
 struct SetCurrentSpeedCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetCurrentSpeedCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetCurrentSpeedCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_result_t result) const {
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -787,530 +731,502 @@ struct SetCurrentSpeedCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Action.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_action_NativeAction_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_action_t handle = mavsdk_action_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Action plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Action.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return;
-
-    mavsdk_action_destroy(reinterpret_cast<mavsdk_action_t>(handle));
+Java_io_mavsdk_jni_plugins_action_NativeAction_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return;
+    }
+    mavsdk_action_destroy(
+        reinterpret_cast<mavsdk_action_t>(handle));
 }
 
-
-// ===== Action.armBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_armBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_arm(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_arm(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_arm(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.armAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_armAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_armAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new ArmCallbackWrapper(env, callback);
-
     mavsdk_action_arm_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<ArmCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<ArmCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.arm_forceBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_armForceBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_armForce(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_arm_force(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_arm_force(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.arm_forceAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_armForceAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_armForceAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new ArmForceCallbackWrapper(env, callback);
-
     mavsdk_action_arm_force_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<ArmForceCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<ArmForceCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.disarmBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_disarmBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_disarm(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_disarm(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_disarm(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.disarmAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_disarmAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_disarmAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new DisarmCallbackWrapper(env, callback);
-
     mavsdk_action_disarm_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<DisarmCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<DisarmCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.takeoffBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_takeoffBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_takeoff(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_takeoff(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_takeoff(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.takeoffAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_takeoffAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_takeoffAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new TakeoffCallbackWrapper(env, callback);
-
     mavsdk_action_takeoff_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<TakeoffCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<TakeoffCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.landBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_landBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_land(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_land(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_land(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.landAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_landAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_landAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new LandCallbackWrapper(env, callback);
-
     mavsdk_action_land_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<LandCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<LandCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.rebootBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_rebootBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_reboot(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_reboot(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_reboot(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.rebootAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_rebootAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_rebootAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new RebootCallbackWrapper(env, callback);
-
     mavsdk_action_reboot_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<RebootCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<RebootCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.shutdownBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_shutdownBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_shutdown(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_shutdown(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_shutdown(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.shutdownAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_shutdownAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_shutdownAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new ShutdownCallbackWrapper(env, callback);
-
     mavsdk_action_shutdown_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<ShutdownCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<ShutdownCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.terminateBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_terminateBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_terminate(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_terminate(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_terminate(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.terminateAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_terminateAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_terminateAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new TerminateCallbackWrapper(env, callback);
-
     mavsdk_action_terminate_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<TerminateCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<TerminateCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.killBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_killBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_kill(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_kill(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_kill(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.killAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_killAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_killAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new KillCallbackWrapper(env, callback);
-
     mavsdk_action_kill_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<KillCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<KillCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.return_to_launchBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_returnToLaunchBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_returnToLaunch(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_return_to_launch(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_return_to_launch(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.return_to_launchAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_returnToLaunchAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_returnToLaunchAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new ReturnToLaunchCallbackWrapper(env, callback);
-
     mavsdk_action_return_to_launch_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<ReturnToLaunchCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<ReturnToLaunchCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.goto_locationBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_gotoLocationBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_gotoLocation(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble latitude_deg,
     jdouble longitude_deg,
     jfloat absolute_altitude_m,
     jfloat yaw_deg) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_goto_location(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        latitude_deg,
-        longitude_deg,
-        absolute_altitude_m,
-        yaw_deg    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_goto_location(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<double>(latitude_deg),
+            static_cast<double>(longitude_deg),
+            static_cast<float>(absolute_altitude_m),
+            static_cast<float>(yaw_deg));
     return static_cast<jint>(result);
 }
 
-// ===== Action.goto_locationAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_gotoLocationAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_gotoLocationAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble latitude_deg,
     jdouble longitude_deg,
     jfloat absolute_altitude_m,
     jfloat yaw_deg,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new GotoLocationCallbackWrapper(env, callback);
-
     mavsdk_action_goto_location_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        latitude_deg,        longitude_deg,        absolute_altitude_m,        yaw_deg,        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<GotoLocationCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        static_cast<double>(latitude_deg),
+        static_cast<double>(longitude_deg),
+        static_cast<float>(absolute_altitude_m),
+        static_cast<float>(yaw_deg),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<GotoLocationCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.do_orbitBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_doOrbitBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_doOrbit(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat radius_m,
     jfloat velocity_ms,
     jint yaw_behavior,
     jdouble latitude_deg,
     jdouble longitude_deg,
     jdouble absolute_altitude_m) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_do_orbit(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        radius_m,
-        velocity_ms,
-        static_cast<mavsdk_action_orbit_yaw_behavior_t>(yaw_behavior),
-        latitude_deg,
-        longitude_deg,
-        absolute_altitude_m    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_do_orbit(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<float>(radius_m),
+            static_cast<float>(velocity_ms),
+            static_cast<mavsdk_action_orbit_yaw_behavior_t>(yaw_behavior),
+            static_cast<double>(latitude_deg),
+            static_cast<double>(longitude_deg),
+            static_cast<double>(absolute_altitude_m));
     return static_cast<jint>(result);
 }
 
-// ===== Action.do_orbitAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_doOrbitAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_doOrbitAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat radius_m,
     jfloat velocity_ms,
     jint yaw_behavior,
@@ -1318,482 +1234,472 @@ Java_io_mavsdk_kotlin_plugins_action_Action_doOrbitAsyncNative(
     jdouble longitude_deg,
     jdouble absolute_altitude_m,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new DoOrbitCallbackWrapper(env, callback);
-
     mavsdk_action_do_orbit_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        radius_m,        velocity_ms,        static_cast<mavsdk_action_orbit_yaw_behavior_t>(yaw_behavior),        latitude_deg,        longitude_deg,        absolute_altitude_m,        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<DoOrbitCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        static_cast<float>(radius_m),
+        static_cast<float>(velocity_ms),
+        static_cast<mavsdk_action_orbit_yaw_behavior_t>(yaw_behavior),
+        static_cast<double>(latitude_deg),
+        static_cast<double>(longitude_deg),
+        static_cast<double>(absolute_altitude_m),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<DoOrbitCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.holdBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_holdBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_hold(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_hold(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_hold(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.holdAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_holdAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_holdAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new HoldCallbackWrapper(env, callback);
-
     mavsdk_action_hold_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<HoldCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<HoldCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.set_actuatorBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setActuatorBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_setActuator(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint index,
     jfloat value) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_set_actuator(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        index,
-        value    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_set_actuator(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<int32_t>(index),
+            static_cast<float>(value));
     return static_cast<jint>(result);
 }
 
-// ===== Action.set_actuatorAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setActuatorAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_setActuatorAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint index,
     jfloat value,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetActuatorCallbackWrapper(env, callback);
-
     mavsdk_action_set_actuator_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        index,        value,        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<SetActuatorCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        static_cast<int32_t>(index),
+        static_cast<float>(value),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetActuatorCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.set_relayBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setRelayBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_setRelay(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint index,
     jint setting) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_set_relay(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        index,
-        static_cast<mavsdk_action_relay_command_t>(setting)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_set_relay(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<int32_t>(index),
+            static_cast<mavsdk_action_relay_command_t>(setting));
     return static_cast<jint>(result);
 }
 
-// ===== Action.set_relayAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setRelayAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_setRelayAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint index,
     jint setting,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRelayCallbackWrapper(env, callback);
-
     mavsdk_action_set_relay_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        index,        static_cast<mavsdk_action_relay_command_t>(setting),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<SetRelayCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        static_cast<int32_t>(index),
+        static_cast<mavsdk_action_relay_command_t>(setting),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRelayCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.transition_to_fixedwingBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_transitionToFixedwingBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_transitionToFixedwing(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_transition_to_fixedwing(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_transition_to_fixedwing(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.transition_to_fixedwingAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_transitionToFixedwingAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_transitionToFixedwingAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new TransitionToFixedwingCallbackWrapper(env, callback);
-
     mavsdk_action_transition_to_fixedwing_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<TransitionToFixedwingCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<TransitionToFixedwingCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.transition_to_multicopterBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_transitionToMulticopterBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_transitionToMulticopter(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_transition_to_multicopter(
-        reinterpret_cast<mavsdk_action_t>(handle)    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_transition_to_multicopter(
+            reinterpret_cast<mavsdk_action_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== Action.transition_to_multicopterAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_transitionToMulticopterAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_transitionToMulticopterAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new TransitionToMulticopterCallbackWrapper(env, callback);
-
     mavsdk_action_transition_to_multicopter_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<TransitionToMulticopterCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<TransitionToMulticopterCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.get_takeoff_altitudeBlocking =====
-JNIEXPORT jfloat JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_getTakeoffAltitudeBlocking(
+JNIEXPORT
+jfloat
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_getTakeoffAltitude(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return {};
-
-
-    float ret_val{};
-    mavsdk_action_result_t result = mavsdk_action_get_takeoff_altitude(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        &ret_val
-    );
-
+    float returnValue{};
+    mavsdk_action_result_t result =
+        mavsdk_action_get_takeoff_altitude(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            &returnValue);
     if (result != MAVSDK_ACTION_RESULT_SUCCESS) {
         throwMavsdkError(env, "OperationError", "get_takeoff_altitude failed");
         return {};
     }
-
-    return static_cast<jfloat>(ret_val);
+    return static_cast<jfloat>(returnValue);
 }
 
-// ===== Action.get_takeoff_altitudeAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_getTakeoffAltitudeAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_getTakeoffAltitudeAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new GetTakeoffAltitudeCallbackWrapper(env, callback);
-
     mavsdk_action_get_takeoff_altitude_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, const float value, void* user_data) {
-            auto* w = static_cast<GetTakeoffAltitudeCallbackWrapper*>(user_data);
-            (*w)(result, value);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result,
+           const float value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<GetTakeoffAltitudeCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.set_takeoff_altitudeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setTakeoffAltitudeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_setTakeoffAltitude(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat altitude) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_set_takeoff_altitude(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        altitude    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_set_takeoff_altitude(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<float>(altitude));
     return static_cast<jint>(result);
 }
 
-// ===== Action.set_takeoff_altitudeAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setTakeoffAltitudeAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_setTakeoffAltitudeAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat altitude,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetTakeoffAltitudeCallbackWrapper(env, callback);
-
     mavsdk_action_set_takeoff_altitude_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        altitude,        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<SetTakeoffAltitudeCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        static_cast<float>(altitude),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetTakeoffAltitudeCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.get_return_to_launch_altitudeBlocking =====
-JNIEXPORT jfloat JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_getReturnToLaunchAltitudeBlocking(
+JNIEXPORT
+jfloat
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_getReturnToLaunchAltitude(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return {};
-
-
-    float ret_val{};
-    mavsdk_action_result_t result = mavsdk_action_get_return_to_launch_altitude(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        &ret_val
-    );
-
+    float returnValue{};
+    mavsdk_action_result_t result =
+        mavsdk_action_get_return_to_launch_altitude(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            &returnValue);
     if (result != MAVSDK_ACTION_RESULT_SUCCESS) {
         throwMavsdkError(env, "OperationError", "get_return_to_launch_altitude failed");
         return {};
     }
-
-    return static_cast<jfloat>(ret_val);
+    return static_cast<jfloat>(returnValue);
 }
 
-// ===== Action.get_return_to_launch_altitudeAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_getReturnToLaunchAltitudeAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_getReturnToLaunchAltitudeAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new GetReturnToLaunchAltitudeCallbackWrapper(env, callback);
-
     mavsdk_action_get_return_to_launch_altitude_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        [](const mavsdk_action_result_t result, const float value, void* user_data) {
-            auto* w = static_cast<GetReturnToLaunchAltitudeCallbackWrapper*>(user_data);
-            (*w)(result, value);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        [](const mavsdk_action_result_t result,
+           const float value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<GetReturnToLaunchAltitudeCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.set_return_to_launch_altitudeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setReturnToLaunchAltitudeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_setReturnToLaunchAltitude(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat relative_altitude_m) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_set_return_to_launch_altitude(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        relative_altitude_m    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_set_return_to_launch_altitude(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<float>(relative_altitude_m));
     return static_cast<jint>(result);
 }
 
-// ===== Action.set_return_to_launch_altitudeAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setReturnToLaunchAltitudeAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_setReturnToLaunchAltitudeAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat relative_altitude_m,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetReturnToLaunchAltitudeCallbackWrapper(env, callback);
-
     mavsdk_action_set_return_to_launch_altitude_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        relative_altitude_m,        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<SetReturnToLaunchAltitudeCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        static_cast<float>(relative_altitude_m),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetReturnToLaunchAltitudeCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.set_current_speedBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setCurrentSpeedBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_setCurrentSpeed(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat speed_m_s) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_set_current_speed(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        speed_m_s    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_set_current_speed(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<float>(speed_m_s));
     return static_cast<jint>(result);
 }
 
-// ===== Action.set_current_speedAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setCurrentSpeedAsyncNative(
+Java_io_mavsdk_jni_plugins_action_NativeAction_setCurrentSpeedAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jfloat speed_m_s,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetCurrentSpeedCallbackWrapper(env, callback);
-
     mavsdk_action_set_current_speed_async(
-        reinterpret_cast<mavsdk_action_t>(handle),        speed_m_s,        [](const mavsdk_action_result_t result, void* user_data) {
-            auto* w = static_cast<SetCurrentSpeedCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_action_t>(handle),
+        static_cast<float>(speed_m_s),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetCurrentSpeedCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Action.set_gps_global_originBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_Action_setGpsGlobalOriginBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_setGpsGlobalOrigin(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble latitude_deg,
     jdouble longitude_deg,
     jfloat absolute_altitude_m) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
-    if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
-
-
-    mavsdk_action_result_t result = mavsdk_action_set_gps_global_origin(
-        reinterpret_cast<mavsdk_action_t>(handle),
-        latitude_deg,
-        longitude_deg,
-        absolute_altitude_m    );
-
+    mavsdk_action_result_t result =
+        mavsdk_action_set_gps_global_origin(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<double>(latitude_deg),
+            static_cast<double>(longitude_deg),
+            static_cast<float>(absolute_altitude_m));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

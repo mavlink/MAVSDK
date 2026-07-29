@@ -6,43 +6,49 @@
 #include "cmavsdk/plugins/arm_authorizer_server/arm_authorizer_server.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
 
 
-// ===== ArmAuthorization Callback Wrapper =====
+
+
+
 struct ArmAuthorizationCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ArmAuthorizationCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ArmAuthorizationCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const uint32_t value) const {
+    void operator()(
+        const uint32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -50,141 +56,121 @@ struct ArmAuthorizationCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== ArmAuthorizerServer.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_arm_1authorizer_1server_ArmAuthorizerServer_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_arm_1authorizer_1server_NativeArmAuthorizerServer_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_arm_authorizer_server_t handle = mavsdk_arm_authorizer_server_create(
         reinterpret_cast<mavsdk_server_component_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create ArmAuthorizerServer plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== ArmAuthorizerServer.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_arm_1authorizer_1server_ArmAuthorizerServer_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/arm_authorizer_server/ArmAuthorizerServer");
-    if (!handle) return;
-
-    mavsdk_arm_authorizer_server_destroy(reinterpret_cast<mavsdk_arm_authorizer_server_t>(handle));
+Java_io_mavsdk_jni_plugins_arm_1authorizer_1server_NativeArmAuthorizerServer_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "ArmAuthorizerServer plugin")) {
+        return;
+    }
+    mavsdk_arm_authorizer_server_destroy(
+        reinterpret_cast<mavsdk_arm_authorizer_server_t>(handle));
 }
 
-
-// ===== ArmAuthorizerServer.subscribeArmAuthorizationNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_arm_1authorizer_1server_ArmAuthorizerServer_subscribeArmAuthorizationNative(
+Java_io_mavsdk_jni_plugins_arm_1authorizer_1server_NativeArmAuthorizerServer_subscribeArmAuthorization(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/arm_authorizer_server/ArmAuthorizerServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ArmAuthorizerServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ArmAuthorizationCallbackWrapper(env, callback);
-
-    mavsdk_arm_authorizer_server_arm_authorization_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_arm_authorizer_server_subscribe_arm_authorization(
-            reinterpret_cast<mavsdk_arm_authorizer_server_t>(handle),            [](const uint32_t value, void* user_data) {
-                auto* w = static_cast<ArmAuthorizationCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_arm_authorizer_server_arm_authorization_handle_t,
-        ArmAuthorizationCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ArmAuthorizerServer.unsubscribeArmAuthorization =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_arm_1authorizer_1server_ArmAuthorizerServer_unsubscribeArmAuthorization(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/arm_authorizer_server/ArmAuthorizerServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_arm_authorizer_server_arm_authorization_handle_t,
-                  ArmAuthorizationCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_arm_authorizer_server_unsubscribe_arm_authorization(
             reinterpret_cast<mavsdk_arm_authorizer_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const uint32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ArmAuthorizationCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_arm_authorizer_server_arm_authorization_handle_t,
+        ArmAuthorizationCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ArmAuthorizerServer.accept_arm_authorizationBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_arm_1authorizer_1server_ArmAuthorizerServer_acceptArmAuthorizationBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_arm_1authorizer_1server_NativeArmAuthorizerServer_unsubscribeArmAuthorization(
     JNIEnv* env,
-    jobject obj,
-    jint valid_time_s) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/arm_authorizer_server/ArmAuthorizerServer");
-    if (!handle) return MAVSDK_ARM_AUTHORIZER_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_arm_authorizer_server_result_t result = mavsdk_arm_authorizer_server_accept_arm_authorization(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ArmAuthorizerServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_arm_authorizer_server_arm_authorization_handle_t,
+        ArmAuthorizationCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_arm_authorizer_server_unsubscribe_arm_authorization(
         reinterpret_cast<mavsdk_arm_authorizer_server_t>(handle),
-        valid_time_s    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_arm_1authorizer_1server_NativeArmAuthorizerServer_acceptArmAuthorization(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint valid_time_s) {
+    if (!requireHandle(env, handle, "ArmAuthorizerServer plugin")) {
+        return {};
+    }
+
+    mavsdk_arm_authorizer_server_result_t result =
+        mavsdk_arm_authorizer_server_accept_arm_authorization(
+            reinterpret_cast<mavsdk_arm_authorizer_server_t>(handle),
+            static_cast<int32_t>(valid_time_s));
     return static_cast<jint>(result);
 }
 
-
-// ===== ArmAuthorizerServer.reject_arm_authorizationBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_arm_1authorizer_1server_ArmAuthorizerServer_rejectArmAuthorizationBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_arm_1authorizer_1server_NativeArmAuthorizerServer_rejectArmAuthorization(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jboolean temporarily,
     jint reason,
     jint extra_info) {
+    if (!requireHandle(env, handle, "ArmAuthorizerServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/arm_authorizer_server/ArmAuthorizerServer");
-    if (!handle) return MAVSDK_ARM_AUTHORIZER_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_arm_authorizer_server_result_t result = mavsdk_arm_authorizer_server_reject_arm_authorization(
-        reinterpret_cast<mavsdk_arm_authorizer_server_t>(handle),
-        temporarily,
-        static_cast<mavsdk_arm_authorizer_server_rejection_reason_t>(reason),
-        extra_info    );
-
+    mavsdk_arm_authorizer_server_result_t result =
+        mavsdk_arm_authorizer_server_reject_arm_authorization(
+            reinterpret_cast<mavsdk_arm_authorizer_server_t>(handle),
+            static_cast<bool>(temporarily),
+            static_cast<mavsdk_arm_authorizer_server_rejection_reason_t>(reason),
+            static_cast<int32_t>(extra_info));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

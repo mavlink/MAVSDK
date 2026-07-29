@@ -22,7 +22,7 @@ mavsdk-kotlin/          # The library
     ├── commonMain/     # Shared Kotlin code (platform-agnostic)
     ├── jvmMain/        # Desktop JVM implementation
     ├── androidMain/    # Android implementation
-    │   └── cpp/        # JNI C++ code (shared by both platforms)
+    │   └── jniLibs/    # Packaged Android JNI libraries
     └── ...
 
 examples/
@@ -60,14 +60,10 @@ cd mavsdk-kotlin
 ./gradlew build
 ```
 
-For Android, the CMake build is automatic via `externalNativeBuild`.
-
-For desktop, you need to build the JNI wrapper manually first:
+Build the shared JNI wrapper from the repository-level `jni/` project:
 ```bash
-cd mavsdk-kotlin
-mkdir -p build && cd build
-cmake ../src/androidMain/cpp
-make
+cmake -S ../jni -B ../jni/build
+cmake --build ../jni/build
 ```
 
 3. **Run the example:**
@@ -147,19 +143,8 @@ mavsdk.addAnyConnection("tcp://192.168.1.100:5760")
 
 ## Building for Android
 
-The library uses Android's `externalNativeBuild` with CMake:
-
-```kotlin
-android {
-    externalNativeBuild {
-        cmake {
-            path = File("src/androidMain/cpp/CMakeLists.txt")
-        }
-    }
-}
-```
-
-Place your `libcmavsdk.so` files in:
+Build `cmavsdk` and `mavsdk-jni` for each Android ABI, then place the resulting
+libraries in:
 ```
 src/androidMain/jniLibs/
 ├── arm64-v8a/libcmavsdk.so
@@ -218,8 +203,8 @@ cd mavsdk-kotlin/examples/cli-jvm
         └────────┬────────┘
                  │ JNI
 ┌────────────────┴────────────────────┐
-│   C++ JNI Wrapper                   │
-│   (androidMain/cpp - shared)        │
+│   Neutral JVM/JNI transport         │
+│   (repository jni/ project)         │
 └────────────────┬────────────────────┘
                  │
 ┌────────────────┴────────────────────┐
@@ -244,11 +229,13 @@ Contributions welcome! Please ensure:
 - [x] Kotlin Multiplatform structure
 - [x] Core MAVSDK functionality
 - [x] Android and JVM support
-- [ ] Async operations with Flows
-- [ ] Generated plugin support
-- [ ] Action plugin
-- [ ] Telemetry plugin
-- [ ] Mission plugin
+- [x] Async operations with Flows
+- [x] Generated plugin support
+- [x] Action plugin
+- [x] Telemetry plugin
+- [x] Mission plugin
+- [ ] Automated Android native-library builds
+- [ ] Kotlin/Native iOS backend
 
 ## See Also
 

@@ -7,18 +7,15 @@ package io.mavsdk.kotlin.plugins.{{ plugin_name.lower_snake_case }}
 {% if is_server %}import io.mavsdk.kotlin.Mavsdk
 {% else %}import io.mavsdk.kotlin.System
 {% endif %}
-{% set ns = namespace(has_async=false, has_stream=false, has_infinite_stream=false, has_result_enum=false, has_in_progress=false, has_next=false) %}
+{% set ns = namespace(has_suspend=false, has_stream=false, has_infinite_stream=false, has_result_enum=false, has_in_progress=false, has_next=false) %}
 {% for method in methods %}
-{% if method.is_async and not method.is_stream %}{% set ns.has_async = true %}{% endif %}
-{% if method.is_async and method.is_stream and not method.is_finite %}{% set ns.has_infinite_stream = true %}{% set ns.has_stream = true %}{% endif %}
-{% if method.is_async and method.is_stream and method.is_finite %}{% set ns.has_stream = true %}{% endif %}
+{% if method.is_async and not method.is_stream %}{% set ns.has_suspend = true %}{% endif %}
+{% if method.is_async and method.is_stream %}{% set ns.has_stream = true %}{% endif %}
+{% if method.is_async and method.is_stream and not method.is_finite %}{% set ns.has_infinite_stream = true %}{% endif %}
 {% endfor %}
-{% if ns.has_async %}
+{% if ns.has_suspend %}
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-{% endif %}
-{% if ns.has_infinite_stream %}
-import java.util.concurrent.ConcurrentHashMap
 {% endif %}
 {% if ns.has_stream %}
 import kotlinx.coroutines.channels.awaitClose
@@ -27,93 +24,80 @@ import kotlinx.coroutines.flow.callbackFlow
 {% endif %}
 
 {# ======================================================================== #}
-{# Type mapping macros                                                        #}
+{# Common Kotlin type mapping                                                #}
 {# ======================================================================== #}
+{%- macro inner_pub_type(type_info) -%}
+{%- if type_info.is_primitive or type_info.is_string -%}{{ type_info.inner_name }}
+{%- else -%}{{ type_info.inner_name.upper_camel_case }}
+{%- endif -%}
+{%- endmacro -%}
 
-{# Kotlin type for an external fun param/return (enums → Int, structs → ClassName) #}
-{%- macro kt_ext_type(type_info) -%}
-{%- if type_info.is_enum -%}Int
+{%- macro pub_type(type_info) -%}
+{%- if type_info.is_repeated -%}List<{{ inner_pub_type(type_info) }}>
 {%- elif type_info.is_primitive or type_info.is_string -%}{{ type_info.name }}
 {%- else -%}{{ type_info.name.upper_camel_case }}
 {%- endif -%}
 {%- endmacro -%}
 
-{# Kotlin type for a public-facing param (enums → EnumType, structs → ClassName) #}
-{%- macro kt_pub_type(type_info) -%}
-{%- if type_info.is_primitive or type_info.is_string -%}{{ type_info.name }}
-{%- else -%}{{ type_info.name.upper_camel_case }}
+{%- macro native_type(type_info) -%}
+{%- if type_info.is_repeated -%}List<{% if type_info.is_primitive or type_info.is_string %}{{ type_info.inner_name }}{% else %}{{ plugin_name.upper_camel_case }}.{{ type_info.inner_name.upper_camel_case }}{% endif %}>
+{%- elif type_info.is_primitive or type_info.is_string -%}{{ type_info.name }}
+{%- else -%}{{ plugin_name.upper_camel_case }}.{{ type_info.name.upper_camel_case }}
 {%- endif -%}
 {%- endmacro -%}
 
-{# Convert a public param to what the external fun expects (enum → .value, else pass-through) #}
-{%- macro to_ext_arg(param) -%}
-{%- if param.type_info.is_enum -%}{{ param.name.lower_camel_case }}.value
-{%- else -%}{{ param.name.lower_camel_case }}
-{%- endif -%}
-{%- endmacro -%}
-
-{# Build param list for public-facing methods (repeated params emitted as comments) #}
-{%- macro pub_params(params) -%}
+{%- macro params(params, qualified=false) -%}
 {%- for param in params -%}
-{%- if not param.type_info.is_repeated -%}
-{{ param.name.lower_camel_case }}: {{ kt_pub_type(param.type_info) }}
-{%- if not loop.last %}, {% endif -%}
-{%- endif -%}
+{{ param.name.lower_camel_case }}: {% if qualified %}{{ native_type(param.type_info) }}{% else %}{{ pub_type(param.type_info) }}{% endif %}{{ ", " if not loop.last else "" }}
 {%- endfor -%}
 {%- endmacro -%}
 
-{# Build arg list for calling external fun from public method (repeated args skipped) #}
-{%- macro ext_args(params) -%}
-{%- set ns_a = namespace(first=true) -%}
+{%- macro args(params) -%}
 {%- for param in params -%}
-{%- if not param.type_info.is_repeated -%}
-{%- if not ns_a.first %}, {% endif -%}
-{{ to_ext_arg(param) }}
-{%- set ns_a.first = false -%}
-{%- endif -%}
+{{ param.name.lower_camel_case }}{{ ", " if not loop.last else "" }}
 {%- endfor -%}
 {%- endmacro -%}
 
-{# Build param list for external fun declarations (enums as Int, repeated skipped) #}
-{%- macro ext_params(params) -%}
-{%- set ns_p = namespace(first=true) -%}
-{%- for param in params -%}
-{%- if not param.type_info.is_repeated -%}
-{%- if not ns_p.first %}, {% endif -%}
-{{ param.name.lower_camel_case }}: {{ kt_ext_type(param.type_info) }}
-{%- set ns_p.first = false -%}
-{%- endif -%}
-{%- endfor -%}
+{%- macro callback_type(method, qualified=false) -%}
+({%- set cb = namespace(first=true) -%}
+{%- if method.has_result -%}Int{%- set cb.first = false -%}{%- endif -%}
+{%- if method.return_type -%}{%- if not cb.first -%}, {% endif -%}{% if qualified %}{{ native_type(method.return_type) }}{% else %}{{ pub_type(method.return_type) }}{% endif %}{%- endif -%}
+) -> Unit
 {%- endmacro -%}
 
-{# Returns true (non-empty string) if params has at least one non-repeated param #}
-{%- macro has_scalar_params(params) -%}
-{%- for param in params -%}{%- if not param.type_info.is_repeated -%}true{%- endif -%}{%- endfor -%}
-{%- endmacro -%}
-
-class {{ plugin_name.upper_camel_case }} internal constructor(private val handle: Long) : AutoCloseable {
-{% if ns.has_infinite_stream %}
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
-{% endif %}
+class {{ plugin_name.upper_camel_case }} internal constructor(
+    private val native: {{ plugin_name.upper_camel_case }}Native
+) : AutoCloseable {
+    private var closed = false
 
 {# ======================================================================== #}
-{# Result enum (extracted from the *Result struct's nested 'Result' enum)    #}
+{# Result enum                                                              #}
 {# ======================================================================== #}
 {% for struct in structs %}
 {% if struct.name.upper_camel_case.endswith('Result') %}
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
 {% if nested_enum_name == 'Result' %}
 {% set ns.has_result_enum = true %}
-{% for value in nested_enum.values %}{% if value.name.uppercase == 'IN_PROGRESS' %}{% set ns.has_in_progress = true %}{% endif %}{% if value.name.uppercase == 'NEXT' %}{% set ns.has_next = true %}{% endif %}{% endfor %}
+{% set result_enum = namespace(has_unknown=false) %}
+{% for value in nested_enum.values %}
+{% if value.name.uppercase == 'UNKNOWN' %}{% set result_enum.has_unknown = true %}{% endif %}
+{% if value.name.uppercase == 'IN_PROGRESS' %}{% set ns.has_in_progress = true %}{% endif %}
+{% if value.name.uppercase == 'NEXT' %}{% set ns.has_next = true %}{% endif %}
+{% endfor %}
     enum class Result(val value: Int) {
 {% for value in nested_enum.values %}
         {{ value.name.uppercase }}({{ loop.index0 }}),
 {% endfor %}
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+{% if result_enum.has_unknown %}
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
+{% else %}
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: entries.first()
+{% endif %}
         }
     }
 
@@ -122,317 +106,230 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {% endif %}
 {% endfor %}
 {# ======================================================================== #}
-{# Standalone enums                                                           #}
+{# Public enums                                                             #}
 {# ======================================================================== #}
 {% for enum in enums %}
+{% set enum_state = namespace(has_unknown=false) %}
+{% for value in enum.values %}{% if value.name.uppercase == 'UNKNOWN' %}{% set enum_state.has_unknown = true %}{% endif %}{% endfor %}
     enum class {{ enum.name.upper_camel_case }}(val value: Int) {
 {% for value in enum.values %}
         {{ value.name.uppercase }}({{ loop.index0 }}),
 {% endfor %}
         ;
+
         companion object {
-            fun fromValue(v: Int): {{ enum.name.upper_camel_case }} = entries.find { it.value == v } ?: values()[0]
+{% if enum_state.has_unknown %}
+            fun fromValue(value: Int): {{ enum.name.upper_camel_case }} =
+                entries.find { it.value == value } ?: UNKNOWN
+{% else %}
+            fun fromValue(value: Int): {{ enum.name.upper_camel_case }} =
+                entries.find { it.value == value } ?: entries.first()
+{% endif %}
         }
     }
 
 {% endfor %}
+{% for struct in structs %}
+{% if not struct.name.upper_camel_case.endswith('Result') %}
+{% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+{% set enum_state = namespace(has_unknown=false) %}
+{% for value in nested_enum.values %}{% if value.name.uppercase == 'UNKNOWN' %}{% set enum_state.has_unknown = true %}{% endif %}{% endfor %}
+    enum class {{ nested_enum.name.upper_camel_case }}(val value: Int) {
+{% for value in nested_enum.values %}
+        {{ value.name.uppercase }}({{ loop.index0 }}),
+{% endfor %}
+        ;
+
+        companion object {
+{% if enum_state.has_unknown %}
+            fun fromValue(value: Int): {{ nested_enum.name.upper_camel_case }} =
+                entries.find { it.value == value } ?: UNKNOWN
+{% else %}
+            fun fromValue(value: Int): {{ nested_enum.name.upper_camel_case }} =
+                entries.find { it.value == value } ?: entries.first()
+{% endif %}
+        }
+    }
+
+{% endfor %}
+{% endif %}
+{% endfor %}
 {# ======================================================================== #}
-{# Data classes (non-Result structs)                                          #}
+{# Public data classes                                                      #}
 {# ======================================================================== #}
 {% for struct in structs %}
 {% if not struct.name.upper_camel_case.endswith('Result') %}
-{% set ns_s = namespace(has_scalar=false, has_struct_list=false) %}
-{% for field in struct.fields %}
-{% if not field.type_info.is_repeated %}{% set ns_s.has_scalar = true %}{% endif %}
-{% if field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum %}{% set ns_s.has_struct_list = true %}{% endif %}
-{% endfor %}
-{% if ns_s.has_scalar or ns_s.has_struct_list %}
     data class {{ struct.name.upper_camel_case }}(
 {% for field in struct.fields %}
-{% if not field.type_info.is_repeated %}
-        val {{ field.name.lower_camel_case }}: {{ kt_ext_type(field.type_info) }},
-{% elif not field.type_info.is_primitive and not field.type_info.is_enum %}
-        val {{ field.name.lower_camel_case }}: List<{{ field.type_info.inner_name.upper_camel_case }}> = emptyList(),
-{% else %}
-        // TODO: repeated primitive field {{ field.name.lower_camel_case }}
-{% endif %}
+        val {{ field.name.lower_camel_case }}: {{ pub_type(field.type_info) }}{% if field.type_info.is_repeated %} = emptyList(){% endif %},
 {% endfor %}
     )
-{% else %}
-    class {{ struct.name.upper_camel_case }} // TODO: all fields are repeated primitives
-{% endif %}
 
 {% endif %}
 {% endfor %}
 {# ======================================================================== #}
-{# Methods                                                                    #}
+{# Public methods                                                           #}
 {# ======================================================================== #}
 {% for method in methods %}
-{% set ns_m = namespace(ret_is_enum=false) %}
-{% if method.return_type and not method.return_type.is_primitive and not method.return_type.is_string and not method.return_type.is_repeated %}
-{% for enum in enums %}
-{% if enum.name.upper_camel_case == method.return_type.name.upper_camel_case %}
-{% set ns_m.ret_is_enum = true %}
-{% endif %}
-{% endfor %}
-{% if method.return_type.is_enum %}
-{% set ns_m.ret_is_enum = true %}
-{% endif %}
-{% endif %}
 {% if method.is_sync and not (method.is_async and not method.is_stream) %}
-{# ---- Sync method ---- #}
 {% if method.has_result and method.return_name %}
-{# Getter with result check: JNI throws on failure, returns value #}
-{% if ns_m.ret_is_enum %}
-    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): {{ method.return_type.name.upper_camel_case }} =
-        {{ method.return_type.name.upper_camel_case }}.fromValue({{ method.name.lower_camel_case }}Blocking({{ ext_args(method.params) }}))
-{% elif method.return_type and not method.return_type.is_repeated %}
-    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): {{ kt_pub_type(method.return_type) }} =
-        {{ method.name.lower_camel_case }}Blocking({{ ext_args(method.params) }})
-{% else %}
-    // TODO: getter with repeated return: {{ method.name.lower_camel_case }}
-{% endif %}
+    fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): {{ pub_type(method.return_type) }} =
+        native.{{ method.name.lower_camel_case }}({{ args(method.params) }})
 {% elif method.has_result %}
-{# Action-style: returns Result #}
-    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): Result =
-        Result.fromValue({{ method.name.lower_camel_case }}Blocking({{ ext_args(method.params) }}))
+    fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): Result =
+        Result.fromValue(native.{{ method.name.lower_camel_case }}({{ args(method.params) }}))
 {% elif method.return_name %}
-{# Pure getter (no result code) #}
-{% if ns_m.ret_is_enum %}
-    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): {{ method.return_type.name.upper_camel_case }} =
-        {{ method.return_type.name.upper_camel_case }}.fromValue({{ method.name.lower_camel_case }}Blocking({{ ext_args(method.params) }}))
-{% elif method.return_type and not method.return_type.is_repeated %}
-    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): {{ kt_pub_type(method.return_type) }} =
-        {{ method.name.lower_camel_case }}Blocking({{ ext_args(method.params) }})
+    fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): {{ pub_type(method.return_type) }} =
+        native.{{ method.name.lower_camel_case }}({{ args(method.params) }})
 {% else %}
-    // TODO: getter with repeated return: {{ method.name.lower_camel_case }}
-{% endif %}
-{% else %}
-{# Void method #}
-    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}) {
-        {{ method.name.lower_camel_case }}Blocking({{ ext_args(method.params) }})
+    fun {{ method.name.lower_camel_case }}({{ params(method.params) }}) {
+        native.{{ method.name.lower_camel_case }}({{ args(method.params) }})
     }
 {% endif %}
 
 {% endif %}
 {% if method.is_async and not method.is_stream %}
-{# ---- Async suspend method ---- #}
-{% set ns_sep = namespace(sep=has_scalar_params(method.params)) %}
-{% if method.has_result and method.return_name and not method.return_type.is_repeated %}
-{# Async getter: suspends and returns kotlin.Result wrapping the value #}
-    suspend fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): kotlin.Result<{% if ns_m.ret_is_enum %}{{ method.return_type.name.upper_camel_case }}{% else %}{{ kt_pub_type(method.return_type) }}{% endif %}> = suspendCancellableCoroutine { continuation ->
-        val callback = {{ method.name.upper_camel_case }}Callback { result, value ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(kotlin.Result.success({% if ns_m.ret_is_enum %}{{ method.return_type.name.upper_camel_case }}.fromValue(value as Int){% else %}value{% endif %}))
-            } else {
-                continuation.resume(kotlin.Result.failure({{ plugin_name.upper_camel_case }}Exception(r, "{{ method.name.lower_camel_case }} failed: ${r.name}")))
+{% if method.has_result and method.return_name %}
+    suspend fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): kotlin.Result<{{ pub_type(method.return_type) }}> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = {{ plugin_name.upper_camel_case }}CallbackGuard()
+            native.{{ method.name.lower_camel_case }}Async({{ args(method.params) }}{% if method.params %}, {% endif %}) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                {{ plugin_name.upper_camel_case }}Exception(
+                                    parsedResult,
+                                    "{{ method.name.lower_camel_case }} failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                    }
+                }
             }
         }
-        {{ method.name.lower_camel_case }}AsyncNative({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
-    }
 {% elif method.has_result %}
-{# Action-style async: suspends and returns Result (caller checks for SUCCESS) #}
-    suspend fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): Result = suspendCancellableCoroutine { continuation ->
-        val callback = {{ method.name.upper_camel_case }}Callback { result ->
-            val r = Result.fromValue(result)
-{% if ns.has_in_progress or ns.has_next %}
-            if (r != Result.{{ 'IN_PROGRESS' if ns.has_in_progress else 'NEXT' }}) {
-                continuation.resume(r)
+    suspend fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = {{ plugin_name.upper_camel_case }}CallbackGuard()
+            native.{{ method.name.lower_camel_case }}Async({{ args(method.params) }}{% if method.params %}, {% endif %}) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && {% if ns.has_in_progress %}parsedResult != Result.IN_PROGRESS{% elif ns.has_next %}parsedResult != Result.NEXT{% else %}true{% endif %} && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
             }
-{% else %}
-            continuation.resume(r)
-{% endif %}
         }
-        {{ method.name.lower_camel_case }}AsyncNative({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
+{% elif method.return_name %}
+    suspend fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): {{ pub_type(method.return_type) }} =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = {{ plugin_name.upper_camel_case }}CallbackGuard()
+            native.{{ method.name.lower_camel_case }}Async({{ args(method.params) }}{% if method.params %}, {% endif %}) { value ->
+                if (continuation.isActive && callbackGuard.tryClaim()) continuation.resume(value)
+            }
+        }
+{% else %}
+    suspend fun {{ method.name.lower_camel_case }}({{ params(method.params) }}) {
+        suspendCancellableCoroutine<Unit> { continuation ->
+            val callbackGuard = {{ plugin_name.upper_camel_case }}CallbackGuard()
+            native.{{ method.name.lower_camel_case }}Async({{ args(method.params) }}{% if method.params %}, {% endif %}) {
+                if (continuation.isActive && callbackGuard.tryClaim()) continuation.resume(Unit)
+            }
+        }
     }
 {% endif %}
 
 {% endif %}
 {% if method.is_async and method.is_stream and not method.is_finite %}
-{# ---- Stream method (infinite) ---- #}
-{% set ns_sep = namespace(sep=has_scalar_params(method.params)) %}
-{% if method.has_result %}
-{# Server stream: callback receives (result, [value]) #}
-{% if not method.return_type %}
-    fun subscribe{{ method.name.upper_camel_case }}({{ pub_params(method.params) }}): Flow<Result> = callbackFlow {
-        val callback = {{ method.name.upper_camel_case }}Callback { result ->
+{% if method.has_result and not method.return_type %}
+    fun subscribe{{ method.name.upper_camel_case }}({{ params(method.params) }}): Flow<Result> = callbackFlow {
+        val subscriptionHandle = native.subscribe{{ method.name.upper_camel_case }}(
+            {{ args(method.params) }}{% if method.params %}, {% endif %}
+        ) { result ->
             trySend(Result.fromValue(result))
         }
-        val subscriptionHandle = subscribe{{ method.name.upper_camel_case }}Native({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
     }
-{% elif ns_m.ret_is_enum %}
-    fun subscribe{{ method.name.upper_camel_case }}({{ pub_params(method.params) }}): Flow<{{ method.return_type.name.upper_camel_case }}> = callbackFlow {
-        val callback = {{ method.name.upper_camel_case }}Callback { _, value ->
-            trySend({{ method.return_type.name.upper_camel_case }}.fromValue(value))
-        }
-        val subscriptionHandle = subscribe{{ method.name.upper_camel_case }}Native({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
-    }
-{% else %}
-    fun subscribe{{ method.name.upper_camel_case }}({{ pub_params(method.params) }}): Flow<{{ kt_pub_type(method.return_type) }}> = callbackFlow {
-        val callback = {{ method.name.upper_camel_case }}Callback { _, value ->
+{% elif method.has_result %}
+    fun subscribe{{ method.name.upper_camel_case }}({{ params(method.params) }}): Flow<{{ pub_type(method.return_type) }}> = callbackFlow {
+        val subscriptionHandle = native.subscribe{{ method.name.upper_camel_case }}(
+            {{ args(method.params) }}{% if method.params %}, {% endif %}
+        ) { _, value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribe{{ method.name.upper_camel_case }}Native({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
     }
-{% endif %}
 {% elif not method.return_type %}
-    // TODO: void stream {{ method.name.lower_camel_case }}
-{% elif ns_m.ret_is_enum %}
-    fun subscribe{{ method.name.upper_camel_case }}({{ pub_params(method.params) }}): Flow<{{ method.return_type.name.upper_camel_case }}> = callbackFlow {
-        val callback = {{ method.name.upper_camel_case }}Callback { value ->
-            trySend({{ method.return_type.name.upper_camel_case }}.fromValue(value))
+    fun subscribe{{ method.name.upper_camel_case }}({{ params(method.params) }}): Flow<Unit> = callbackFlow {
+        val subscriptionHandle = native.subscribe{{ method.name.upper_camel_case }}(
+            {{ args(method.params) }}{% if method.params %}, {% endif %}
+        ) {
+            trySend(Unit)
         }
-        val subscriptionHandle = subscribe{{ method.name.upper_camel_case }}Native({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
     }
-{% elif method.return_type.is_repeated %}
-    // TODO: repeated stream {{ method.name.lower_camel_case }}
 {% else %}
-    fun subscribe{{ method.name.upper_camel_case }}({{ pub_params(method.params) }}): Flow<{{ kt_pub_type(method.return_type) }}> = callbackFlow {
-        val callback = {{ method.name.upper_camel_case }}Callback { value ->
+    fun subscribe{{ method.name.upper_camel_case }}({{ params(method.params) }}): Flow<{{ pub_type(method.return_type) }}> = callbackFlow {
+        val subscriptionHandle = native.subscribe{{ method.name.upper_camel_case }}(
+            {{ args(method.params) }}{% if method.params %}, {% endif %}
+        ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribe{{ method.name.upper_camel_case }}Native({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle) }
     }
 {% endif %}
 
 {% endif %}
 {% if method.is_async and method.is_stream and method.is_finite %}
-{# ---- Finite stream method (e.g. calibration progress) ---- #}
-{# Callbacks fire repeatedly with Result.NEXT + progress, then once with SUCCESS or error. #}
-{% set ns_sep = namespace(sep=has_scalar_params(method.params)) %}
-{% if method.has_result and method.return_type and not method.return_type.is_repeated %}
-    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): Flow<kotlin.Result<{{ kt_pub_type(method.return_type) }}>> = callbackFlow {
-        val callback = {{ method.name.upper_camel_case }}Callback { result, value ->
-            val r = Result.fromValue(result)
-            when {
-                r == Result.NEXT -> trySend(kotlin.Result.success(value))
-                r == Result.SUCCESS -> close()
-                else -> { trySend(kotlin.Result.failure({{ plugin_name.upper_camel_case }}Exception(r, "{{ method.name.lower_camel_case }} failed: ${r.name}"))); close() }
+{% if method.has_result and method.return_type %}
+    fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): Flow<kotlin.Result<{{ pub_type(method.return_type) }}>> =
+        callbackFlow {
+            native.{{ method.name.lower_camel_case }}Async({{ args(method.params) }}{% if method.params %}, {% endif %}) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                when {
+{% if ns.has_next %}                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+{% elif ns.has_in_progress %}                    parsedResult == Result.IN_PROGRESS -> trySend(kotlin.Result.success(value))
+{% endif %}                    parsedResult == Result.SUCCESS -> close()
+                    else -> {
+                        trySend(
+                            kotlin.Result.failure(
+                                {{ plugin_name.upper_camel_case }}Exception(
+                                    parsedResult,
+                                    "{{ method.name.lower_camel_case }} failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                        close()
+                    }
+                }
             }
+            awaitClose {}
         }
-        {{ method.name.lower_camel_case }}AsyncNative({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
+{% elif method.has_result %}
+    fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): Flow<Result> = callbackFlow {
+        native.{{ method.name.lower_camel_case }}Async({{ args(method.params) }}{% if method.params %}, {% endif %}) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (parsedResult == Result.SUCCESS) close() else trySend(parsedResult)
+        }
+        awaitClose {}
+    }
+{% elif method.return_type %}
+    fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): Flow<{{ pub_type(method.return_type) }}> = callbackFlow {
+        native.{{ method.name.lower_camel_case }}Async({{ args(method.params) }}{% if method.params %}, {% endif %}) { value ->
+            trySend(value)
+        }
         awaitClose {}
     }
 {% endif %}
 
 {% endif %}
 {% endfor %}
-{# ======================================================================== #}
-{# Callback fun interfaces                                                    #}
-{# ======================================================================== #}
-{% for method in methods %}
-{% set ns_cb = namespace(ret_is_enum=false) %}
-{% if method.return_type and not method.return_type.is_primitive and not method.return_type.is_string and not method.return_type.is_repeated %}
-{% for enum in enums %}
-{% if enum.name.upper_camel_case == method.return_type.name.upper_camel_case %}
-{% set ns_cb.ret_is_enum = true %}
-{% endif %}
-{% endfor %}
-{% if method.return_type.is_enum %}
-{% set ns_cb.ret_is_enum = true %}
-{% endif %}
-{% endif %}
-{% if method.is_async %}
-{% if method.is_stream and not method.is_finite %}
-{# Stream callback #}
-{% if method.has_result %}
-{% if not method.return_type %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(result: Int) }
-{% elif ns_cb.ret_is_enum %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(result: Int, value: Int) }
-{% elif method.return_type.is_primitive %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(result: Int, value: {{ kt_ext_type(method.return_type) }}) }
-{% else %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(result: Int, value: {{ kt_pub_type(method.return_type) }}) }
-{% endif %}
-{% elif not method.return_type %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke() }
-{% elif ns_cb.ret_is_enum %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(value: Int) }
-{% elif method.return_type.is_primitive or method.return_type.is_string %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(value: {{ kt_ext_type(method.return_type) }}) }
-{% elif method.return_type.is_repeated %}
-    // TODO: repeated stream callback {{ method.name.upper_camel_case }}Callback
-{% else %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(value: {{ kt_pub_type(method.return_type) }}) }
-{% endif %}
-{% else %}
-{# Async one-time callback #}
-{% if not method.return_type or method.return_type.is_repeated %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(result: Int) }
-{% elif ns_cb.ret_is_enum %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(result: Int, value: Int) }
-{% elif method.return_type.is_primitive %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(result: Int, value: {{ kt_ext_type(method.return_type) }}) }
-{% else %}
-    private fun interface {{ method.name.upper_camel_case }}Callback { fun invoke(result: Int, value: {{ kt_pub_type(method.return_type) }}) }
-{% endif %}
-{% endif %}
-{% endif %}
-{% endfor %}
-
-{# ======================================================================== #}
-{# External fun declarations                                                  #}
-{# ======================================================================== #}
-{% for method in methods %}
-{% set ns_e = namespace(ret_is_enum=false) %}
-{% if method.return_type and not method.return_type.is_primitive and not method.return_type.is_string and not method.return_type.is_repeated %}
-{% for enum in enums %}
-{% if enum.name.upper_camel_case == method.return_type.name.upper_camel_case %}
-{% set ns_e.ret_is_enum = true %}
-{% endif %}
-{% endfor %}
-{% if method.return_type.is_enum %}
-{% set ns_e.ret_is_enum = true %}
-{% endif %}
-{% endif %}
-{% set ns_sep = namespace(sep=has_scalar_params(method.params)) %}
-{% if method.is_sync and not (method.is_async and not method.is_stream) %}
-{% if method.has_result and method.return_name and not method.return_type.is_repeated %}
-{% if ns_e.ret_is_enum %}
-    private external fun {{ method.name.lower_camel_case }}Blocking({{ ext_params(method.params) }}): Int
-{% else %}
-    private external fun {{ method.name.lower_camel_case }}Blocking({{ ext_params(method.params) }}): {{ kt_ext_type(method.return_type) }}
-{% endif %}
-{% elif method.has_result %}
-    private external fun {{ method.name.lower_camel_case }}Blocking({{ ext_params(method.params) }}): Int
-{% elif method.return_name and not method.return_type.is_repeated %}
-{% if ns_e.ret_is_enum %}
-    private external fun {{ method.name.lower_camel_case }}Blocking({{ ext_params(method.params) }}): Int
-{% else %}
-    private external fun {{ method.name.lower_camel_case }}Blocking({{ ext_params(method.params) }}): {{ kt_ext_type(method.return_type) }}
-{% endif %}
-{% else %}
-    private external fun {{ method.name.lower_camel_case }}Blocking({{ ext_params(method.params) }})
-{% endif %}
-{% endif %}
-{% if method.is_async and not method.is_stream %}
-    private external fun {{ method.name.lower_camel_case }}AsyncNative({{ ext_params(method.params) }}{% if ns_sep.sep %}, {% endif %}callback: {{ method.name.upper_camel_case }}Callback)
-{% endif %}
-{% if method.is_async and method.is_stream and not method.is_finite %}
-    private external fun subscribe{{ method.name.upper_camel_case }}Native({{ ext_params(method.params) }}{% if ns_sep.sep %}, {% endif %}callback: {{ method.name.upper_camel_case }}Callback): Long
-    private external fun unsubscribe{{ method.name.upper_camel_case }}(handle: Long)
-{% endif %}
-{% if method.is_async and method.is_stream and method.is_finite %}
-    private external fun {{ method.name.lower_camel_case }}AsyncNative({{ ext_params(method.params) }}{% if ns_sep.sep %}, {% endif %}callback: {{ method.name.upper_camel_case }}Callback)
-{% endif %}
-{% endfor %}
-    private external fun destroy()
-
     override fun close() {
-{% if ns.has_infinite_stream %}        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-{% endif %}        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
 {% if ns.has_result_enum %}
@@ -444,16 +341,51 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {% endif %}
     companion object {
 {% if is_server %}
-        fun create(mavsdk: Mavsdk, instance: Int = 1): {{ plugin_name.upper_camel_case }} {
-            val handle = createNative(mavsdk.serverComponentHandle(instance))
-            return {{ plugin_name.upper_camel_case }}(handle)
-        }
+        fun create(mavsdk: Mavsdk, instance: Int = 1): {{ plugin_name.upper_camel_case }} =
+            {{ plugin_name.upper_camel_case }}(
+                create{{ plugin_name.upper_camel_case }}Native(mavsdk.serverComponentHandle(instance))
+            )
 {% else %}
-        fun create(system: System): {{ plugin_name.upper_camel_case }} {
-            val handle = createNative(system.getHandle())
-            return {{ plugin_name.upper_camel_case }}(handle).also { system.registerPlugin(it) }
-        }
+        fun create(system: System): {{ plugin_name.upper_camel_case }} =
+            {{ plugin_name.upper_camel_case }}(
+                create{{ plugin_name.upper_camel_case }}Native(system.getHandle())
+            ).also { system.registerPlugin(it) }
 {% endif %}
-        private external fun createNative(systemHandle: Long): Long
     }
 }
+
+{# ======================================================================== #}
+{# Platform-neutral transport used by the common public API                 #}
+{# ======================================================================== #}
+internal interface {{ plugin_name.upper_camel_case }}Native {
+{% for method in methods %}
+{% if method.is_sync and not (method.is_async and not method.is_stream) %}
+{% if method.return_type %}
+    fun {{ method.name.lower_camel_case }}({{ params(method.params, true) }}): {{ native_type(method.return_type) }}
+{% elif method.has_result %}
+    fun {{ method.name.lower_camel_case }}({{ params(method.params, true) }}): Int
+{% else %}
+    fun {{ method.name.lower_camel_case }}({{ params(method.params, true) }})
+{% endif %}
+{% endif %}
+{% if method.is_async and not method.is_stream %}
+    fun {{ method.name.lower_camel_case }}Async({{ params(method.params, true) }}{% if method.params %}, {% endif %}callback: {{ callback_type(method, true) }})
+{% endif %}
+{% if method.is_async and method.is_stream and method.is_finite %}
+    fun {{ method.name.lower_camel_case }}Async({{ params(method.params, true) }}{% if method.params %}, {% endif %}callback: {{ callback_type(method, true) }})
+{% endif %}
+{% if method.is_async and method.is_stream and not method.is_finite %}
+    fun subscribe{{ method.name.upper_camel_case }}({{ params(method.params, true) }}{% if method.params %}, {% endif %}callback: {{ callback_type(method, true) }}): Long
+    fun unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle: Long)
+{% endif %}
+{% endfor %}
+    fun destroy()
+}
+
+internal expect fun create{{ plugin_name.upper_camel_case }}Native(systemHandle: Long): {{ plugin_name.upper_camel_case }}Native
+{% if ns.has_suspend %}
+
+internal expect class {{ plugin_name.upper_camel_case }}CallbackGuard() {
+    fun tryClaim(): Boolean
+}
+{% endif %}

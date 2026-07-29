@@ -1,7 +1,9 @@
 package io.mavsdk.kotlin
 
+import io.mavsdk.jni.NativeSystem
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.callbackFlow
 
 actual class System internal constructor(private val handle: Long) {
 
@@ -17,35 +19,33 @@ actual class System internal constructor(private val handle: Long) {
     }
 
 
-    actual external fun hasAutopilot(): Boolean
-    actual external fun isStandalone(): Boolean
-    actual external fun hasCamera(cameraId: Int): Boolean
-    actual external fun hasGimbal(): Boolean
-    actual external fun isConnected(): Boolean
-    actual external fun getSystemId(): Int
-    actual external fun getComponentIds(): IntArray
+    actual fun hasAutopilot(): Boolean = NativeSystem.hasAutopilot(handle)
+    actual fun isStandalone(): Boolean = NativeSystem.isStandalone(handle)
+    actual fun hasCamera(cameraId: Int): Boolean = NativeSystem.hasCamera(handle, cameraId)
+    actual fun hasGimbal(): Boolean = NativeSystem.hasGimbal(handle)
+    actual fun isConnected(): Boolean = NativeSystem.isConnected(handle)
+    actual fun getSystemId(): Int = NativeSystem.getSystemId(handle)
+    actual fun getComponentIds(): IntArray = NativeSystem.getComponentIds(handle)
 
     actual fun getAutopilotType(): Autopilot {
-        val value = getAutopilotTypeNative()
+        val value = NativeSystem.getAutopilotType(handle)
         return Autopilot.fromValue(value)
     }
 
     actual fun getVehicleType(): Vehicle {
-        val value = getVehicleTypeNative()
+        val value = NativeSystem.getVehicleType(handle)
         return Vehicle.fromValue(value)
     }
 
-    actual fun subscribeIsConnected(): Flow<Boolean> {
-        // TODO: Implement with proper callback handling
-        return flow {
-            // Placeholder
-        }
+    actual fun subscribeIsConnected(): Flow<Boolean> = callbackFlow {
+        val subscriptionHandle = NativeSystem.subscribeIsConnected(
+            handle,
+            NativeSystem.BooleanCallback { trySend(it) }
+        )
+        awaitClose { NativeSystem.unsubscribeIsConnected(handle, subscriptionHandle) }
     }
 
-    actual external fun enableTimesync()
-
-    private external fun getAutopilotTypeNative(): Int
-    private external fun getVehicleTypeNative(): Int
+    actual fun enableTimesync() = NativeSystem.enableTimesync(handle)
 
     actual internal fun getHandle(): Long = handle
 

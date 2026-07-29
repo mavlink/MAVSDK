@@ -63,10 +63,21 @@ inline void throwException(JNIEnv* env, const char* className, const char* messa
 /**
  * Throw MavsdkError
  */
-inline void throwMavsdkError(JNIEnv* env, const char* errorType, const char* message) {
-    std::string className = "io/mavsdk/kotlin/MavsdkError$";
-    className += errorType;
-    throwException(env, className.c_str(), message);
+inline void throwMavsdkError(JNIEnv* env, const char* message) {
+    throwException(env, "java/lang/IllegalStateException", message);
+}
+
+inline void throwMavsdkError(JNIEnv* env, const char*, const char* message) {
+    throwMavsdkError(env, message);
+}
+
+inline bool requireHandle(JNIEnv* env, jlong handle, const char* type) {
+    if (handle) return true;
+    std::string message = "Invalid ";
+    message += type;
+    message += " handle";
+    throwMavsdkError(env, message.c_str());
+    return false;
 }
 
 /**

@@ -6,8 +6,10 @@ package io.mavsdk.kotlin.plugins.follow_me
 
 import io.mavsdk.kotlin.System
 
-
-class FollowMe internal constructor(private val handle: Long) : AutoCloseable {
+class FollowMe internal constructor(
+    private val native: FollowMeNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -20,8 +22,22 @@ class FollowMe internal constructor(private val handle: Long) : AutoCloseable {
         NOT_ACTIVE(7),
         SET_CONFIG_FAILED(8),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
+    enum class FollowAltitudeMode(val value: Int) {
+        CONSTANT(0),
+        TERRAIN(1),
+        TARGET_GPS(2),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): FollowAltitudeMode =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -29,7 +45,7 @@ class FollowMe internal constructor(private val handle: Long) : AutoCloseable {
         val followHeightM: Float,
         val followDistanceM: Float,
         val responsiveness: Float,
-        val altitudeMode: Int,
+        val altitudeMode: FollowAltitudeMode,
         val maxTangentialVelMS: Float,
         val followAngleDeg: Float,
     )
@@ -44,38 +60,30 @@ class FollowMe internal constructor(private val handle: Long) : AutoCloseable {
     )
 
     fun getConfig(): Config =
-        getConfigBlocking()
+        native.getConfig()
 
     fun setConfig(config: Config): Result =
-        Result.fromValue(setConfigBlocking(config))
+        Result.fromValue(native.setConfig(config))
 
     fun isActive(): Boolean =
-        isActiveBlocking()
+        native.isActive()
 
     fun setTargetLocation(location: TargetLocation): Result =
-        Result.fromValue(setTargetLocationBlocking(location))
+        Result.fromValue(native.setTargetLocation(location))
 
     fun getLastLocation(): TargetLocation =
-        getLastLocationBlocking()
+        native.getLastLocation()
 
     fun start(): Result =
-        Result.fromValue(startBlocking())
+        Result.fromValue(native.start())
 
     fun stop(): Result =
-        Result.fromValue(stopBlocking())
-
-
-    private external fun getConfigBlocking(): Config
-    private external fun setConfigBlocking(config: Config): Int
-    private external fun isActiveBlocking(): Boolean
-    private external fun setTargetLocationBlocking(location: TargetLocation): Int
-    private external fun getLastLocationBlocking(): TargetLocation
-    private external fun startBlocking(): Int
-    private external fun stopBlocking(): Int
-    private external fun destroy()
+        Result.fromValue(native.stop())
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class FollowMeException(
@@ -84,10 +92,22 @@ class FollowMe internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): FollowMe {
-            val handle = createNative(system.getHandle())
-            return FollowMe(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): FollowMe =
+            FollowMe(
+                createFollowMeNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface FollowMeNative {
+    fun getConfig(): FollowMe.Config
+    fun setConfig(config: FollowMe.Config): Int
+    fun isActive(): Boolean
+    fun setTargetLocation(location: FollowMe.TargetLocation): Int
+    fun getLastLocation(): FollowMe.TargetLocation
+    fun start(): Int
+    fun stop(): Int
+    fun destroy()
+}
+
+internal expect fun createFollowMeNative(systemHandle: Long): FollowMeNative

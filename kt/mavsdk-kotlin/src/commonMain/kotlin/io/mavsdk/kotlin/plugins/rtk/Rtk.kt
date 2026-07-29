@@ -6,8 +6,10 @@ package io.mavsdk.kotlin.plugins.rtk
 
 import io.mavsdk.kotlin.System
 
-
-class Rtk internal constructor(private val handle: Long) : AutoCloseable {
+class Rtk internal constructor(
+    private val native: RtkNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -16,8 +18,10 @@ class Rtk internal constructor(private val handle: Long) : AutoCloseable {
         NO_SYSTEM(3),
         CONNECTION_ERROR(4),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -26,14 +30,12 @@ class Rtk internal constructor(private val handle: Long) : AutoCloseable {
     )
 
     fun sendRtcmData(rtcmData: RtcmData): Result =
-        Result.fromValue(sendRtcmDataBlocking(rtcmData))
-
-
-    private external fun sendRtcmDataBlocking(rtcmData: RtcmData): Int
-    private external fun destroy()
+        Result.fromValue(native.sendRtcmData(rtcmData))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class RtkException(
@@ -42,10 +44,16 @@ class Rtk internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Rtk {
-            val handle = createNative(system.getHandle())
-            return Rtk(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Rtk =
+            Rtk(
+                createRtkNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface RtkNative {
+    fun sendRtcmData(rtcmData: Rtk.RtcmData): Int
+    fun destroy()
+}
+
+internal expect fun createRtkNative(systemHandle: Long): RtkNative

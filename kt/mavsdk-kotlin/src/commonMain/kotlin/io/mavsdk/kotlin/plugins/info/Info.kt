@@ -5,16 +5,14 @@
 package io.mavsdk.kotlin.plugins.info
 
 import io.mavsdk.kotlin.System
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class Info internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class Info internal constructor(
+    private val native: InfoNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -22,8 +20,25 @@ class Info internal constructor(private val handle: Long) : AutoCloseable {
         INFORMATION_NOT_RECEIVED_YET(2),
         NO_SYSTEM(3),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
+    enum class FlightSoftwareVersionType(val value: Int) {
+        UNKNOWN(0),
+        DEV(1),
+        ALPHA(2),
+        BETA(3),
+        RC(4),
+        RELEASE(5),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): FlightSoftwareVersionType =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -58,47 +73,36 @@ class Info internal constructor(private val handle: Long) : AutoCloseable {
         val osSwPatch: Int,
         val flightSwGitHash: String,
         val osSwGitHash: String,
-        val flightSwVersionType: Int,
+        val flightSwVersionType: FlightSoftwareVersionType,
     )
 
     fun getFlightInformation(): FlightInfo =
-        getFlightInformationBlocking()
+        native.getFlightInformation()
 
     fun getIdentification(): Identification =
-        getIdentificationBlocking()
+        native.getIdentification()
 
     fun getProduct(): Product =
-        getProductBlocking()
+        native.getProduct()
 
     fun getVersion(): Version =
-        getVersionBlocking()
+        native.getVersion()
 
     fun getSpeedFactor(): Double =
-        getSpeedFactorBlocking()
+        native.getSpeedFactor()
 
     fun subscribeFlightInformation(): Flow<FlightInfo> = callbackFlow {
-        val callback = FlightInformationCallback { value ->
+        val subscriptionHandle = native.subscribeFlightInformation(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeFlightInformationNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeFlightInformation(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeFlightInformation(subscriptionHandle) }
     }
 
-    private fun interface FlightInformationCallback { fun invoke(value: FlightInfo) }
-
-    private external fun getFlightInformationBlocking(): FlightInfo
-    private external fun getIdentificationBlocking(): Identification
-    private external fun getProductBlocking(): Product
-    private external fun getVersionBlocking(): Version
-    private external fun getSpeedFactorBlocking(): Double
-    private external fun subscribeFlightInformationNative(callback: FlightInformationCallback): Long
-    private external fun unsubscribeFlightInformation(handle: Long)
-    private external fun destroy()
-
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class InfoException(
@@ -107,10 +111,22 @@ class Info internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Info {
-            val handle = createNative(system.getHandle())
-            return Info(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Info =
+            Info(
+                createInfoNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface InfoNative {
+    fun getFlightInformation(): Info.FlightInfo
+    fun getIdentification(): Info.Identification
+    fun getProduct(): Info.Product
+    fun getVersion(): Info.Version
+    fun getSpeedFactor(): Double
+    fun subscribeFlightInformation(callback: (Info.FlightInfo) -> Unit): Long
+    fun unsubscribeFlightInformation(subscriptionHandle: Long)
+    fun destroy()
+}
+
+internal expect fun createInfoNative(systemHandle: Long): InfoNative

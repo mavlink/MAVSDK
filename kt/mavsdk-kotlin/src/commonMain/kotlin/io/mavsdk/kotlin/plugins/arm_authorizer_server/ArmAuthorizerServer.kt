@@ -5,24 +5,24 @@
 package io.mavsdk.kotlin.plugins.arm_authorizer_server
 
 import io.mavsdk.kotlin.Mavsdk
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class ArmAuthorizerServer internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class ArmAuthorizerServer internal constructor(
+    private val native: ArmAuthorizerServerNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
         SUCCESS(1),
         FAILED(2),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -34,37 +34,31 @@ class ArmAuthorizerServer internal constructor(private val handle: Long) : AutoC
         AIRSPACE_IN_USE(4),
         BAD_WEATHER(5),
         ;
+
         companion object {
-            fun fromValue(v: Int): RejectionReason = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): RejectionReason =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
     fun subscribeArmAuthorization(): Flow<Int> = callbackFlow {
-        val callback = ArmAuthorizationCallback { value ->
+        val subscriptionHandle = native.subscribeArmAuthorization(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeArmAuthorizationNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeArmAuthorization(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeArmAuthorization(subscriptionHandle) }
     }
 
     fun acceptArmAuthorization(validTimeS: Int): Result =
-        Result.fromValue(acceptArmAuthorizationBlocking(validTimeS))
+        Result.fromValue(native.acceptArmAuthorization(validTimeS))
 
     fun rejectArmAuthorization(temporarily: Boolean, reason: RejectionReason, extraInfo: Int): Result =
-        Result.fromValue(rejectArmAuthorizationBlocking(temporarily, reason.value, extraInfo))
-
-    private fun interface ArmAuthorizationCallback { fun invoke(value: Int) }
-
-    private external fun subscribeArmAuthorizationNative(callback: ArmAuthorizationCallback): Long
-    private external fun unsubscribeArmAuthorization(handle: Long)
-    private external fun acceptArmAuthorizationBlocking(validTimeS: Int): Int
-    private external fun rejectArmAuthorizationBlocking(temporarily: Boolean, reason: Int, extraInfo: Int): Int
-    private external fun destroy()
+        Result.fromValue(native.rejectArmAuthorization(temporarily, reason, extraInfo))
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class ArmAuthorizerServerException(
@@ -73,10 +67,19 @@ class ArmAuthorizerServer internal constructor(private val handle: Long) : AutoC
     ) : Exception(message)
 
     companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): ArmAuthorizerServer {
-            val handle = createNative(mavsdk.serverComponentHandle(instance))
-            return ArmAuthorizerServer(handle)
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(mavsdk: Mavsdk, instance: Int = 1): ArmAuthorizerServer =
+            ArmAuthorizerServer(
+                createArmAuthorizerServerNative(mavsdk.serverComponentHandle(instance))
+            )
     }
 }
+
+internal interface ArmAuthorizerServerNative {
+    fun subscribeArmAuthorization(callback: (Int) -> Unit): Long
+    fun unsubscribeArmAuthorization(subscriptionHandle: Long)
+    fun acceptArmAuthorization(validTimeS: Int): Int
+    fun rejectArmAuthorization(temporarily: Boolean, reason: ArmAuthorizerServer.RejectionReason, extraInfo: Int): Int
+    fun destroy()
+}
+
+internal expect fun createArmAuthorizerServerNative(systemHandle: Long): ArmAuthorizerServerNative

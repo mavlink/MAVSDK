@@ -46,7 +46,8 @@ process_plugin() {
     local plugin_class
     plugin_class=$(to_class_name "$plugin")
     local proto_file="$proto_dir/${plugin}/${plugin}.proto"
-    local output_dir="$project_root/src/commonMain/kotlin/io/mavsdk/kotlin/plugins"
+    local common_output_dir="$project_root/src/commonMain/kotlin/io/mavsdk/kotlin/plugins"
+    local actual_output_dir="$project_root/src/jvmAndroidMain/kotlin/io/mavsdk/kotlin/plugins"
     local template_path="$project_root/templates"
 
     # Check if proto file exists
@@ -62,22 +63,33 @@ process_plugin() {
     fi
 
     # Create output directory if it doesn't exist
-    mkdir -p "$output_dir/$plugin"
+    mkdir -p "$common_output_dir/$plugin" "$actual_output_dir/$plugin"
 
-    echo "Processing $plugin -> ${plugin_class}.kt..."
+    echo "Processing $plugin -> ${plugin_class}.kt and ${plugin_class}Native.kt..."
 
     protoc "$proto_file" \
         --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
         -I"$proto_dir/${plugin}" \
         -I"$proto_dir" \
-        --custom_out="$output_dir" \
+        --custom_out="$common_output_dir" \
         --custom_opt="output_file=${plugin}/${plugin_class}.kt" \
         --custom_opt="template_path=$template_path" \
         --custom_opt="template_file=file_kt.j2" \
         --custom_opt="lstrip_blocks=True" \
         --custom_opt="trim_blocks=True"
 
-    echo "  ${plugin_class}.kt generated."
+    protoc "$proto_file" \
+        --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
+        -I"$proto_dir/${plugin}" \
+        -I"$proto_dir" \
+        --custom_out="$actual_output_dir" \
+        --custom_opt="output_file=${plugin}/${plugin_class}Native.kt" \
+        --custom_opt="template_path=$template_path" \
+        --custom_opt="template_file=file_kt_actual.j2" \
+        --custom_opt="lstrip_blocks=True" \
+        --custom_opt="trim_blocks=True"
+
+    echo "  ${plugin_class}.kt and ${plugin_class}Native.kt generated."
 }
 
 # Main execution
@@ -92,6 +104,10 @@ main() {
     for plugin in "${plugins[@]}"; do
         process_plugin "$plugin"
     done
+
+    if [ "${#plugins[@]}" -eq "${#default_plugins[@]}" ]; then
+        python3 "${script_dir}/validate_generated.py"
+    fi
 
     echo "All plugins processed successfully!"
 }

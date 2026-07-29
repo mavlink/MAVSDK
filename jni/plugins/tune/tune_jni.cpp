@@ -6,43 +6,161 @@
 #include "cmavsdk/plugins/tune/tune.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct TuneDescriptionFromJava;
+struct TuneDescriptionArrayFromJava;
 
+struct TuneDescriptionFromJava {
+    mavsdk_tune_tune_description_t value{};
+    std::vector<mavsdk_tune_song_element_t> song_elementsValues;
 
-// ===== PlayTune Callback Wrapper =====
+    TuneDescriptionFromJava(JNIEnv* env, jobject object);
+    ~TuneDescriptionFromJava();
+};
+
+struct TuneDescriptionArrayFromJava {
+    std::vector<std::unique_ptr<TuneDescriptionFromJava>> holders;
+    std::vector<mavsdk_tune_tune_description_t> values;
+
+    TuneDescriptionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<TuneDescriptionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+TuneDescriptionFromJava::TuneDescriptionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID song_elementsField = env->GetFieldID(
+        clazz, "songElements", "[I");
+    auto song_elementsArray =
+        static_cast<jintArray>(env->GetObjectField(object, song_elementsField));
+    const jsize song_elementsCount =
+        song_elementsArray ? env->GetArrayLength(song_elementsArray) : 0;
+    std::vector<jint> song_elementsJavaValues(
+        static_cast<size_t>(song_elementsCount));
+    if (song_elementsCount > 0) {
+        env->GetIntArrayRegion(
+            song_elementsArray, 0, song_elementsCount,
+            song_elementsJavaValues.data());
+    }
+    song_elementsValues.reserve(static_cast<size_t>(song_elementsCount));
+    for (auto item : song_elementsJavaValues) {
+        song_elementsValues.push_back(static_cast<mavsdk_tune_song_element_t>(item));
+    }
+    value.song_elements = song_elementsValues.data();
+    value.song_elements_size =
+        static_cast<size_t>(song_elementsCount);
+    env->DeleteLocalRef(song_elementsArray);
+    jfieldID tempoField = env->GetFieldID(
+        clazz, "tempo", "I");
+    value.tempo =
+        static_cast<int32_t>(env->GetIntField(object, tempoField));
+    env->DeleteLocalRef(clazz);
+}
+
+TuneDescriptionFromJava::~TuneDescriptionFromJava() = default;
+
+jobject toJavaTuneDescription(
+    JNIEnv* env, const mavsdk_tune_tune_description_t& value);
+jobjectArray toJavaTuneDescriptionArray(
+    JNIEnv* env,
+    const mavsdk_tune_tune_description_t* values,
+    size_t count);
+
+jobject toJavaTuneDescription(
+    JNIEnv* env, const mavsdk_tune_tune_description_t& value) {
+    jintArray song_elementsValue =
+        env->NewIntArray(
+            static_cast<jsize>(value.song_elements_size));
+    std::vector<jint> song_elementsJavaValues;
+    song_elementsJavaValues.reserve(value.song_elements_size);
+    for (size_t i = 0; i < value.song_elements_size; ++i) {
+        song_elementsJavaValues.push_back(
+            static_cast<jint>(value.song_elements[i]));
+    }
+    if (!song_elementsJavaValues.empty()) {
+        env->SetIntArrayRegion(
+            song_elementsValue, 0,
+            static_cast<jsize>(song_elementsJavaValues.size()),
+            song_elementsJavaValues.data());
+    }
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/tune/NativeTune$TuneDescription");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([II)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , song_elementsValue
+        , static_cast<jint>(value.tempo)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(song_elementsValue);
+    return result;
+}
+
+jobjectArray toJavaTuneDescriptionArray(
+    JNIEnv* env,
+    const mavsdk_tune_tune_description_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/tune/NativeTune$TuneDescription");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaTuneDescription(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct PlayTuneCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    PlayTuneCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    PlayTuneCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_tune_result_t result) const {
+    void operator()(
+        const mavsdk_tune_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -50,86 +168,77 @@ struct PlayTuneCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Tune.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_tune_Tune_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_tune_NativeTune_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_tune_t handle = mavsdk_tune_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Tune plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Tune.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_tune_Tune_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/tune/Tune");
-    if (!handle) return;
-
-    mavsdk_tune_destroy(reinterpret_cast<mavsdk_tune_t>(handle));
+Java_io_mavsdk_jni_plugins_tune_NativeTune_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Tune plugin")) {
+        return;
+    }
+    mavsdk_tune_destroy(
+        reinterpret_cast<mavsdk_tune_t>(handle));
 }
 
-
-// ===== Tune.play_tuneBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_tune_Tune_playTuneBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_tune_NativeTune_playTune(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject tune_description) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/tune/Tune");
-    if (!handle) return MAVSDK_TUNE_RESULT_UNKNOWN;
-
-    mavsdk_tune_tune_description_t tune_description_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_tune_result_t result = mavsdk_tune_play_tune(
-        reinterpret_cast<mavsdk_tune_t>(handle),
-        tune_description_c    );
-
+    if (!requireHandle(env, handle, "Tune plugin")) {
+        return {};
+    }
+    TuneDescriptionFromJava
+        tune_descriptionValue(env, tune_description);
+    mavsdk_tune_result_t result =
+        mavsdk_tune_play_tune(
+            reinterpret_cast<mavsdk_tune_t>(handle),
+            tune_descriptionValue.value);
     return static_cast<jint>(result);
 }
 
-// ===== Tune.play_tuneAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_tune_Tune_playTuneAsyncNative(
+Java_io_mavsdk_jni_plugins_tune_NativeTune_playTuneAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject tune_description,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/tune/Tune");
-    if (!handle || !callback) return;
-
-    mavsdk_tune_tune_description_t tune_description_c{}; /* TODO: convert scalar-only struct from Java object */
+    if (!requireHandle(env, handle, "Tune plugin") || !callback) {
+        return;
+    }
+    TuneDescriptionFromJava
+        tune_descriptionValue(env, tune_description);
     auto* wrapper = new PlayTuneCallbackWrapper(env, callback);
-
     mavsdk_tune_play_tune_async(
-        reinterpret_cast<mavsdk_tune_t>(handle),        tune_description_c,        [](const mavsdk_tune_result_t result, void* user_data) {
-            auto* w = static_cast<PlayTuneCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_tune_t>(handle),
+        tune_descriptionValue.value,
+        [](const mavsdk_tune_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<PlayTuneCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
-
 
 } // extern "C"

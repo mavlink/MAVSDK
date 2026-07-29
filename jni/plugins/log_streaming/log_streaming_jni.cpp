@@ -6,119 +6,199 @@
 #include "cmavsdk/plugins/log_streaming/log_streaming.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct LogStreamingRawFromJava;
+struct LogStreamingRawArrayFromJava;
 
+struct LogStreamingRawFromJava {
+    mavsdk_log_streaming_log_streaming_raw_t value{};
+    std::string data_base64Value;
 
-// ===== StartLogStreaming Callback Wrapper =====
+    LogStreamingRawFromJava(JNIEnv* env, jobject object);
+    ~LogStreamingRawFromJava();
+};
+
+struct LogStreamingRawArrayFromJava {
+    std::vector<std::unique_ptr<LogStreamingRawFromJava>> holders;
+    std::vector<mavsdk_log_streaming_log_streaming_raw_t> values;
+
+    LogStreamingRawArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<LogStreamingRawFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+LogStreamingRawFromJava::LogStreamingRawFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID data_base64Field = env->GetFieldID(
+        clazz, "dataBase64", "Ljava/lang/String;");
+    auto data_base64String =
+        static_cast<jstring>(env->GetObjectField(object, data_base64Field));
+    JStringHolder data_base64Holder(env, data_base64String);
+    data_base64Value =
+        data_base64Holder.c_str() ? data_base64Holder.c_str() : "";
+    value.data_base64 = const_cast<char*>(data_base64Value.c_str());
+    env->DeleteLocalRef(data_base64String);
+    env->DeleteLocalRef(clazz);
+}
+
+LogStreamingRawFromJava::~LogStreamingRawFromJava() = default;
+
+jobject toJavaLogStreamingRaw(
+    JNIEnv* env, const mavsdk_log_streaming_log_streaming_raw_t& value);
+jobjectArray toJavaLogStreamingRawArray(
+    JNIEnv* env,
+    const mavsdk_log_streaming_log_streaming_raw_t* values,
+    size_t count);
+
+jobject toJavaLogStreamingRaw(
+    JNIEnv* env, const mavsdk_log_streaming_log_streaming_raw_t& value) {
+    jstring data_base64Value =
+        toJavaString(env, value.data_base64);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/log_streaming/NativeLogStreaming$LogStreamingRaw");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , data_base64Value
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(data_base64Value);
+    return result;
+}
+
+jobjectArray toJavaLogStreamingRawArray(
+    JNIEnv* env,
+    const mavsdk_log_streaming_log_streaming_raw_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/log_streaming/NativeLogStreaming$LogStreamingRaw");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaLogStreamingRaw(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct StartLogStreamingCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StartLogStreamingCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StartLogStreamingCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_log_streaming_result_t result) const {
+    void operator()(
+        const mavsdk_log_streaming_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== StopLogStreaming Callback Wrapper =====
 struct StopLogStreamingCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    StopLogStreamingCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    StopLogStreamingCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_log_streaming_result_t result) const {
+    void operator()(
+        const mavsdk_log_streaming_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== LogStreamingRaw Callback Wrapper =====
 struct LogStreamingRawCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    LogStreamingRawCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    LogStreamingRawCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/log_streaming/LogStreaming$LogStreamingRaw;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/log_streaming/NativeLogStreaming$LogStreamingRaw;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_log_streaming_log_streaming_raw_t value) const {
+    void operator()(
+        const mavsdk_log_streaming_log_streaming_raw_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/log_streaming/LogStreaming$LogStreamingRaw");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, value.data_base64)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaLogStreamingRaw(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -126,179 +206,157 @@ struct LogStreamingRawCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== LogStreaming.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1streaming_LogStreaming_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_log_1streaming_NativeLogStreaming_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_log_streaming_t handle = mavsdk_log_streaming_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create LogStreaming plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== LogStreaming.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1streaming_LogStreaming_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_streaming/LogStreaming");
-    if (!handle) return;
-
-    mavsdk_log_streaming_destroy(reinterpret_cast<mavsdk_log_streaming_t>(handle));
+Java_io_mavsdk_jni_plugins_log_1streaming_NativeLogStreaming_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "LogStreaming plugin")) {
+        return;
+    }
+    mavsdk_log_streaming_destroy(
+        reinterpret_cast<mavsdk_log_streaming_t>(handle));
 }
 
-
-// ===== LogStreaming.start_log_streamingBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1streaming_LogStreaming_startLogStreamingBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_log_1streaming_NativeLogStreaming_startLogStreaming(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "LogStreaming plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_streaming/LogStreaming");
-    if (!handle) return MAVSDK_LOG_STREAMING_RESULT_UNKNOWN;
-
-
-    mavsdk_log_streaming_result_t result = mavsdk_log_streaming_start_log_streaming(
-        reinterpret_cast<mavsdk_log_streaming_t>(handle)    );
-
+    mavsdk_log_streaming_result_t result =
+        mavsdk_log_streaming_start_log_streaming(
+            reinterpret_cast<mavsdk_log_streaming_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== LogStreaming.start_log_streamingAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1streaming_LogStreaming_startLogStreamingAsyncNative(
+Java_io_mavsdk_jni_plugins_log_1streaming_NativeLogStreaming_startLogStreamingAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_streaming/LogStreaming");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "LogStreaming plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new StartLogStreamingCallbackWrapper(env, callback);
-
     mavsdk_log_streaming_start_log_streaming_async(
-        reinterpret_cast<mavsdk_log_streaming_t>(handle),        [](const mavsdk_log_streaming_result_t result, void* user_data) {
-            auto* w = static_cast<StartLogStreamingCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_log_streaming_t>(handle),
+        [](const mavsdk_log_streaming_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<StartLogStreamingCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== LogStreaming.stop_log_streamingBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1streaming_LogStreaming_stopLogStreamingBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_log_1streaming_NativeLogStreaming_stopLogStreaming(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "LogStreaming plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_streaming/LogStreaming");
-    if (!handle) return MAVSDK_LOG_STREAMING_RESULT_UNKNOWN;
-
-
-    mavsdk_log_streaming_result_t result = mavsdk_log_streaming_stop_log_streaming(
-        reinterpret_cast<mavsdk_log_streaming_t>(handle)    );
-
+    mavsdk_log_streaming_result_t result =
+        mavsdk_log_streaming_stop_log_streaming(
+            reinterpret_cast<mavsdk_log_streaming_t>(handle));
     return static_cast<jint>(result);
 }
 
-// ===== LogStreaming.stop_log_streamingAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1streaming_LogStreaming_stopLogStreamingAsyncNative(
+Java_io_mavsdk_jni_plugins_log_1streaming_NativeLogStreaming_stopLogStreamingAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_streaming/LogStreaming");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "LogStreaming plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new StopLogStreamingCallbackWrapper(env, callback);
-
     mavsdk_log_streaming_stop_log_streaming_async(
-        reinterpret_cast<mavsdk_log_streaming_t>(handle),        [](const mavsdk_log_streaming_result_t result, void* user_data) {
-            auto* w = static_cast<StopLogStreamingCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_log_streaming_t>(handle),
+        [](const mavsdk_log_streaming_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<StopLogStreamingCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== LogStreaming.subscribeLogStreamingRawNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1streaming_LogStreaming_subscribeLogStreamingRawNative(
+Java_io_mavsdk_jni_plugins_log_1streaming_NativeLogStreaming_subscribeLogStreamingRaw(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_streaming/LogStreaming");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "LogStreaming plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new LogStreamingRawCallbackWrapper(env, callback);
-
-    mavsdk_log_streaming_log_streaming_raw_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_log_streaming_subscribe_log_streaming_raw(
-            reinterpret_cast<mavsdk_log_streaming_t>(handle),            [](const mavsdk_log_streaming_log_streaming_raw_t value, void* user_data) {
-                auto* w = static_cast<LogStreamingRawCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_log_streaming_log_streaming_raw_handle_t,
-        LogStreamingRawCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== LogStreaming.unsubscribeLogStreamingRaw =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_log_1streaming_LogStreaming_unsubscribeLogStreamingRaw(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_streaming/LogStreaming");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_log_streaming_log_streaming_raw_handle_t,
-                  LogStreamingRawCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_log_streaming_unsubscribe_log_streaming_raw(
             reinterpret_cast<mavsdk_log_streaming_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_log_streaming_log_streaming_raw_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<LogStreamingRawCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_log_streaming_log_streaming_raw_handle_t,
+        LogStreamingRawCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_log_1streaming_NativeLogStreaming_unsubscribeLogStreamingRaw(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "LogStreaming plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_log_streaming_log_streaming_raw_handle_t,
+        LogStreamingRawCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_log_streaming_unsubscribe_log_streaming_raw(
+        reinterpret_cast<mavsdk_log_streaming_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
 } // extern "C"

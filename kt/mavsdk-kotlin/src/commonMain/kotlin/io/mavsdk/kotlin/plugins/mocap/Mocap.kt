@@ -6,8 +6,10 @@ package io.mavsdk.kotlin.plugins.mocap
 
 import io.mavsdk.kotlin.System
 
-
-class Mocap internal constructor(private val handle: Long) : AutoCloseable {
+class Mocap internal constructor(
+    private val native: MocapNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -17,8 +19,21 @@ class Mocap internal constructor(private val handle: Long) : AutoCloseable {
         INVALID_REQUEST_DATA(4),
         UNSUPPORTED(5),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
+    enum class MavFrame(val value: Int) {
+        MOCAP_NED(0),
+        LOCAL_FRD(1),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): MavFrame =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -52,7 +67,9 @@ class Mocap internal constructor(private val handle: Long) : AutoCloseable {
         val yawRadS: Float,
     )
 
-    class Covariance // TODO: all fields are repeated primitives
+    data class Covariance(
+        val covarianceMatrix: List<Float> = emptyList(),
+    )
 
     data class Quaternion(
         val w: Float,
@@ -83,7 +100,7 @@ class Mocap internal constructor(private val handle: Long) : AutoCloseable {
 
     data class Odometry(
         val timeUsec: Long,
-        val frameId: Int,
+        val frameId: MavFrame,
         val positionBody: PositionBody,
         val q: Quaternion,
         val speedBody: SpeedBody,
@@ -93,26 +110,21 @@ class Mocap internal constructor(private val handle: Long) : AutoCloseable {
     )
 
     fun setVisionPositionEstimate(visionPositionEstimate: VisionPositionEstimate): Result =
-        Result.fromValue(setVisionPositionEstimateBlocking(visionPositionEstimate))
+        Result.fromValue(native.setVisionPositionEstimate(visionPositionEstimate))
 
     fun setVisionSpeedEstimate(visionSpeedEstimate: VisionSpeedEstimate): Result =
-        Result.fromValue(setVisionSpeedEstimateBlocking(visionSpeedEstimate))
+        Result.fromValue(native.setVisionSpeedEstimate(visionSpeedEstimate))
 
     fun setAttitudePositionMocap(attitudePositionMocap: AttitudePositionMocap): Result =
-        Result.fromValue(setAttitudePositionMocapBlocking(attitudePositionMocap))
+        Result.fromValue(native.setAttitudePositionMocap(attitudePositionMocap))
 
     fun setOdometry(odometry: Odometry): Result =
-        Result.fromValue(setOdometryBlocking(odometry))
-
-
-    private external fun setVisionPositionEstimateBlocking(visionPositionEstimate: VisionPositionEstimate): Int
-    private external fun setVisionSpeedEstimateBlocking(visionSpeedEstimate: VisionSpeedEstimate): Int
-    private external fun setAttitudePositionMocapBlocking(attitudePositionMocap: AttitudePositionMocap): Int
-    private external fun setOdometryBlocking(odometry: Odometry): Int
-    private external fun destroy()
+        Result.fromValue(native.setOdometry(odometry))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class MocapException(
@@ -121,10 +133,19 @@ class Mocap internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Mocap {
-            val handle = createNative(system.getHandle())
-            return Mocap(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Mocap =
+            Mocap(
+                createMocapNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface MocapNative {
+    fun setVisionPositionEstimate(visionPositionEstimate: Mocap.VisionPositionEstimate): Int
+    fun setVisionSpeedEstimate(visionSpeedEstimate: Mocap.VisionSpeedEstimate): Int
+    fun setAttitudePositionMocap(attitudePositionMocap: Mocap.AttitudePositionMocap): Int
+    fun setOdometry(odometry: Mocap.Odometry): Int
+    fun destroy()
+}
+
+internal expect fun createMocapNative(systemHandle: Long): MocapNative

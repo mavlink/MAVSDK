@@ -5,16 +5,14 @@
 package io.mavsdk.kotlin.plugins.events
 
 import io.mavsdk.kotlin.System
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class Events internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class Events internal constructor(
+    private val native: EventsNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         SUCCESS(0),
@@ -27,8 +25,10 @@ class Events internal constructor(private val handle: Long) : AutoCloseable {
         NO_SYSTEM(7),
         UNKNOWN(8),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -42,8 +42,10 @@ class Events internal constructor(private val handle: Long) : AutoCloseable {
         INFO(6),
         DEBUG(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): LogLevel = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): LogLevel =
+                entries.find { it.value == value } ?: entries.first()
         }
     }
 
@@ -51,7 +53,7 @@ class Events internal constructor(private val handle: Long) : AutoCloseable {
         val compid: Int,
         val message: String,
         val description: String,
-        val logLevel: Int,
+        val logLevel: LogLevel,
         val eventNamespace: String,
         val eventName: String,
     )
@@ -59,7 +61,7 @@ class Events internal constructor(private val handle: Long) : AutoCloseable {
     data class HealthAndArmingCheckProblem(
         val message: String,
         val description: String,
-        val logLevel: Int,
+        val logLevel: LogLevel,
         val healthComponent: String,
     )
 
@@ -84,39 +86,28 @@ class Events internal constructor(private val handle: Long) : AutoCloseable {
     )
 
     fun subscribeEvents(): Flow<Event> = callbackFlow {
-        val callback = EventsCallback { value ->
+        val subscriptionHandle = native.subscribeEvents(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeEventsNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeEvents(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeEvents(subscriptionHandle) }
     }
 
     fun subscribeHealthAndArmingChecks(): Flow<HealthAndArmingCheckReport> = callbackFlow {
-        val callback = HealthAndArmingChecksCallback { value ->
+        val subscriptionHandle = native.subscribeHealthAndArmingChecks(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeHealthAndArmingChecksNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeHealthAndArmingChecks(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeHealthAndArmingChecks(subscriptionHandle) }
     }
 
     fun getHealthAndArmingChecksReport(): HealthAndArmingCheckReport =
-        getHealthAndArmingChecksReportBlocking()
-
-    private fun interface EventsCallback { fun invoke(value: Event) }
-    private fun interface HealthAndArmingChecksCallback { fun invoke(value: HealthAndArmingCheckReport) }
-
-    private external fun subscribeEventsNative(callback: EventsCallback): Long
-    private external fun unsubscribeEvents(handle: Long)
-    private external fun subscribeHealthAndArmingChecksNative(callback: HealthAndArmingChecksCallback): Long
-    private external fun unsubscribeHealthAndArmingChecks(handle: Long)
-    private external fun getHealthAndArmingChecksReportBlocking(): HealthAndArmingCheckReport
-    private external fun destroy()
+        native.getHealthAndArmingChecksReport()
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class EventsException(
@@ -125,10 +116,20 @@ class Events internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Events {
-            val handle = createNative(system.getHandle())
-            return Events(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Events =
+            Events(
+                createEventsNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface EventsNative {
+    fun subscribeEvents(callback: (Events.Event) -> Unit): Long
+    fun unsubscribeEvents(subscriptionHandle: Long)
+    fun subscribeHealthAndArmingChecks(callback: (Events.HealthAndArmingCheckReport) -> Unit): Long
+    fun unsubscribeHealthAndArmingChecks(subscriptionHandle: Long)
+    fun getHealthAndArmingChecksReport(): Events.HealthAndArmingCheckReport
+    fun destroy()
+}
+
+internal expect fun createEventsNative(systemHandle: Long): EventsNative

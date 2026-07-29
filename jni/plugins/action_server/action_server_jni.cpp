@@ -6,259 +6,440 @@
 #include "cmavsdk/plugins/action_server/action_server.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct AllowableFlightModesFromJava;
+struct AllowableFlightModesArrayFromJava;
+struct ArmDisarmFromJava;
+struct ArmDisarmArrayFromJava;
 
+struct AllowableFlightModesFromJava {
+    mavsdk_action_server_allowable_flight_modes_t value{};
 
-// ===== ArmDisarm Callback Wrapper =====
+    AllowableFlightModesFromJava(JNIEnv* env, jobject object);
+    ~AllowableFlightModesFromJava();
+};
+
+struct AllowableFlightModesArrayFromJava {
+    std::vector<std::unique_ptr<AllowableFlightModesFromJava>> holders;
+    std::vector<mavsdk_action_server_allowable_flight_modes_t> values;
+
+    AllowableFlightModesArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AllowableFlightModesFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ArmDisarmFromJava {
+    mavsdk_action_server_arm_disarm_t value{};
+
+    ArmDisarmFromJava(JNIEnv* env, jobject object);
+    ~ArmDisarmFromJava();
+};
+
+struct ArmDisarmArrayFromJava {
+    std::vector<std::unique_ptr<ArmDisarmFromJava>> holders;
+    std::vector<mavsdk_action_server_arm_disarm_t> values;
+
+    ArmDisarmArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ArmDisarmFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+AllowableFlightModesFromJava::AllowableFlightModesFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID can_auto_modeField = env->GetFieldID(
+        clazz, "canAutoMode", "Z");
+    value.can_auto_mode =
+        static_cast<bool>(env->GetBooleanField(object, can_auto_modeField));
+    jfieldID can_guided_modeField = env->GetFieldID(
+        clazz, "canGuidedMode", "Z");
+    value.can_guided_mode =
+        static_cast<bool>(env->GetBooleanField(object, can_guided_modeField));
+    jfieldID can_stabilize_modeField = env->GetFieldID(
+        clazz, "canStabilizeMode", "Z");
+    value.can_stabilize_mode =
+        static_cast<bool>(env->GetBooleanField(object, can_stabilize_modeField));
+    jfieldID can_auto_rtl_modeField = env->GetFieldID(
+        clazz, "canAutoRtlMode", "Z");
+    value.can_auto_rtl_mode =
+        static_cast<bool>(env->GetBooleanField(object, can_auto_rtl_modeField));
+    jfieldID can_auto_takeoff_modeField = env->GetFieldID(
+        clazz, "canAutoTakeoffMode", "Z");
+    value.can_auto_takeoff_mode =
+        static_cast<bool>(env->GetBooleanField(object, can_auto_takeoff_modeField));
+    jfieldID can_auto_land_modeField = env->GetFieldID(
+        clazz, "canAutoLandMode", "Z");
+    value.can_auto_land_mode =
+        static_cast<bool>(env->GetBooleanField(object, can_auto_land_modeField));
+    jfieldID can_auto_loiter_modeField = env->GetFieldID(
+        clazz, "canAutoLoiterMode", "Z");
+    value.can_auto_loiter_mode =
+        static_cast<bool>(env->GetBooleanField(object, can_auto_loiter_modeField));
+    env->DeleteLocalRef(clazz);
+}
+
+AllowableFlightModesFromJava::~AllowableFlightModesFromJava() = default;
+ArmDisarmFromJava::ArmDisarmFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID armField = env->GetFieldID(
+        clazz, "arm", "Z");
+    value.arm =
+        static_cast<bool>(env->GetBooleanField(object, armField));
+    jfieldID forceField = env->GetFieldID(
+        clazz, "force", "Z");
+    value.force =
+        static_cast<bool>(env->GetBooleanField(object, forceField));
+    env->DeleteLocalRef(clazz);
+}
+
+ArmDisarmFromJava::~ArmDisarmFromJava() = default;
+
+jobject toJavaAllowableFlightModes(
+    JNIEnv* env, const mavsdk_action_server_allowable_flight_modes_t& value);
+jobjectArray toJavaAllowableFlightModesArray(
+    JNIEnv* env,
+    const mavsdk_action_server_allowable_flight_modes_t* values,
+    size_t count);
+jobject toJavaArmDisarm(
+    JNIEnv* env, const mavsdk_action_server_arm_disarm_t& value);
+jobjectArray toJavaArmDisarmArray(
+    JNIEnv* env,
+    const mavsdk_action_server_arm_disarm_t* values,
+    size_t count);
+
+jobject toJavaAllowableFlightModes(
+    JNIEnv* env, const mavsdk_action_server_allowable_flight_modes_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/action_server/NativeActionServer$AllowableFlightModes");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZZZZZZZ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.can_auto_mode)
+        , static_cast<jboolean>(value.can_guided_mode)
+        , static_cast<jboolean>(value.can_stabilize_mode)
+        , static_cast<jboolean>(value.can_auto_rtl_mode)
+        , static_cast<jboolean>(value.can_auto_takeoff_mode)
+        , static_cast<jboolean>(value.can_auto_land_mode)
+        , static_cast<jboolean>(value.can_auto_loiter_mode)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAllowableFlightModesArray(
+    JNIEnv* env,
+    const mavsdk_action_server_allowable_flight_modes_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/action_server/NativeActionServer$AllowableFlightModes");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAllowableFlightModes(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaArmDisarm(
+    JNIEnv* env, const mavsdk_action_server_arm_disarm_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/action_server/NativeActionServer$ArmDisarm");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ZZ)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jboolean>(value.arm)
+        , static_cast<jboolean>(value.force)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaArmDisarmArray(
+    JNIEnv* env,
+    const mavsdk_action_server_arm_disarm_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/action_server/NativeActionServer$ArmDisarm");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaArmDisarm(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct ArmDisarmCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ArmDisarmCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ArmDisarmCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/action_server/ActionServer$ArmDisarm;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/action_server/NativeActionServer$ArmDisarm;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_server_result_t result, const mavsdk_action_server_arm_disarm_t value) const {
+    void operator()(
+        const mavsdk_action_server_result_t result,        const mavsdk_action_server_arm_disarm_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/action_server/ActionServer$ArmDisarm");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(value.arm)            , static_cast<jboolean>(value.force)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaArmDisarm(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== FlightModeChange Callback Wrapper =====
 struct FlightModeChangeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    FlightModeChangeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    FlightModeChangeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(II)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_server_result_t result, const mavsdk_action_server_flight_mode_t value) const {
+    void operator()(
+        const mavsdk_action_server_result_t result,        const mavsdk_action_server_flight_mode_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Takeoff Callback Wrapper =====
 struct TakeoffCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TakeoffCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TakeoffCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(IZ)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_server_result_t result, const bool value) const {
+    void operator()(
+        const mavsdk_action_server_result_t result,        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), static_cast<jboolean>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Land Callback Wrapper =====
 struct LandCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    LandCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    LandCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(IZ)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_server_result_t result, const bool value) const {
+    void operator()(
+        const mavsdk_action_server_result_t result,        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), static_cast<jboolean>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Reboot Callback Wrapper =====
 struct RebootCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    RebootCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    RebootCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(IZ)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_server_result_t result, const bool value) const {
+    void operator()(
+        const mavsdk_action_server_result_t result,        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), static_cast<jboolean>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Shutdown Callback Wrapper =====
 struct ShutdownCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ShutdownCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ShutdownCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(IZ)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_server_result_t result, const bool value) const {
+    void operator()(
+        const mavsdk_action_server_result_t result,        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), static_cast<jboolean>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Terminate Callback Wrapper =====
 struct TerminateCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TerminateCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TerminateCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(IZ)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_action_server_result_t result, const bool value) const {
+    void operator()(
+        const mavsdk_action_server_result_t result,        const bool value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), static_cast<jboolean>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , static_cast<jboolean>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -266,598 +447,520 @@ struct TerminateCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== ActionServer.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_action_server_t handle = mavsdk_action_server_create(
         reinterpret_cast<mavsdk_server_component_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create ActionServer plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== ActionServer.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return;
-
-    mavsdk_action_server_destroy(reinterpret_cast<mavsdk_action_server_t>(handle));
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return;
+    }
+    mavsdk_action_server_destroy(
+        reinterpret_cast<mavsdk_action_server_t>(handle));
 }
 
-
-// ===== ActionServer.subscribeArmDisarmNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_subscribeArmDisarmNative(
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_subscribeArmDisarm(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ActionServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ArmDisarmCallbackWrapper(env, callback);
-
-    mavsdk_action_server_arm_disarm_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_action_server_subscribe_arm_disarm(
-            reinterpret_cast<mavsdk_action_server_t>(handle),            [](const mavsdk_action_server_result_t result, const mavsdk_action_server_arm_disarm_t value, void* user_data) {
-                auto* w = static_cast<ArmDisarmCallbackWrapper*>(user_data);
-                (*w)(result, value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_action_server_arm_disarm_handle_t,
-        ArmDisarmCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ActionServer.unsubscribeArmDisarm =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_unsubscribeArmDisarm(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_action_server_arm_disarm_handle_t,
-                  ArmDisarmCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_action_server_unsubscribe_arm_disarm(
             reinterpret_cast<mavsdk_action_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](const mavsdk_action_server_result_t result,
+               const mavsdk_action_server_arm_disarm_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ArmDisarmCallbackWrapper*>(userData);
+                (*callbackWrapper)(result, value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_action_server_arm_disarm_handle_t,
+        ArmDisarmCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ActionServer.subscribeFlightModeChangeNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_subscribeFlightModeChangeNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_unsubscribeArmDisarm(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ActionServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_action_server_arm_disarm_handle_t,
+        ArmDisarmCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_action_server_unsubscribe_arm_disarm(
+        reinterpret_cast<mavsdk_action_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_subscribeFlightModeChange(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ActionServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new FlightModeChangeCallbackWrapper(env, callback);
-
-    mavsdk_action_server_flight_mode_change_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_action_server_subscribe_flight_mode_change(
-            reinterpret_cast<mavsdk_action_server_t>(handle),            [](const mavsdk_action_server_result_t result, const mavsdk_action_server_flight_mode_t value, void* user_data) {
-                auto* w = static_cast<FlightModeChangeCallbackWrapper*>(user_data);
-                (*w)(result, value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_action_server_flight_mode_change_handle_t,
-        FlightModeChangeCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ActionServer.unsubscribeFlightModeChange =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_unsubscribeFlightModeChange(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_action_server_flight_mode_change_handle_t,
-                  FlightModeChangeCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_action_server_unsubscribe_flight_mode_change(
             reinterpret_cast<mavsdk_action_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](const mavsdk_action_server_result_t result,
+               const mavsdk_action_server_flight_mode_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FlightModeChangeCallbackWrapper*>(userData);
+                (*callbackWrapper)(result, value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_action_server_flight_mode_change_handle_t,
+        FlightModeChangeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ActionServer.subscribeTakeoffNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_subscribeTakeoffNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_unsubscribeFlightModeChange(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ActionServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_action_server_flight_mode_change_handle_t,
+        FlightModeChangeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_action_server_unsubscribe_flight_mode_change(
+        reinterpret_cast<mavsdk_action_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_subscribeTakeoff(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ActionServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new TakeoffCallbackWrapper(env, callback);
-
-    mavsdk_action_server_takeoff_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_action_server_subscribe_takeoff(
-            reinterpret_cast<mavsdk_action_server_t>(handle),            [](const mavsdk_action_server_result_t result, const bool value, void* user_data) {
-                auto* w = static_cast<TakeoffCallbackWrapper*>(user_data);
-                (*w)(result, value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_action_server_takeoff_handle_t,
-        TakeoffCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ActionServer.unsubscribeTakeoff =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_unsubscribeTakeoff(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_action_server_takeoff_handle_t,
-                  TakeoffCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_action_server_unsubscribe_takeoff(
             reinterpret_cast<mavsdk_action_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](const mavsdk_action_server_result_t result,
+               const bool value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<TakeoffCallbackWrapper*>(userData);
+                (*callbackWrapper)(result, value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_action_server_takeoff_handle_t,
+        TakeoffCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ActionServer.subscribeLandNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_subscribeLandNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_unsubscribeTakeoff(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ActionServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_action_server_takeoff_handle_t,
+        TakeoffCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_action_server_unsubscribe_takeoff(
+        reinterpret_cast<mavsdk_action_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_subscribeLand(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ActionServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new LandCallbackWrapper(env, callback);
-
-    mavsdk_action_server_land_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_action_server_subscribe_land(
-            reinterpret_cast<mavsdk_action_server_t>(handle),            [](const mavsdk_action_server_result_t result, const bool value, void* user_data) {
-                auto* w = static_cast<LandCallbackWrapper*>(user_data);
-                (*w)(result, value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_action_server_land_handle_t,
-        LandCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ActionServer.unsubscribeLand =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_unsubscribeLand(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_action_server_land_handle_t,
-                  LandCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_action_server_unsubscribe_land(
             reinterpret_cast<mavsdk_action_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](const mavsdk_action_server_result_t result,
+               const bool value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<LandCallbackWrapper*>(userData);
+                (*callbackWrapper)(result, value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_action_server_land_handle_t,
+        LandCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ActionServer.subscribeRebootNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_subscribeRebootNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_unsubscribeLand(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ActionServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_action_server_land_handle_t,
+        LandCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_action_server_unsubscribe_land(
+        reinterpret_cast<mavsdk_action_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_subscribeReboot(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ActionServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new RebootCallbackWrapper(env, callback);
-
-    mavsdk_action_server_reboot_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_action_server_subscribe_reboot(
-            reinterpret_cast<mavsdk_action_server_t>(handle),            [](const mavsdk_action_server_result_t result, const bool value, void* user_data) {
-                auto* w = static_cast<RebootCallbackWrapper*>(user_data);
-                (*w)(result, value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_action_server_reboot_handle_t,
-        RebootCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ActionServer.unsubscribeReboot =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_unsubscribeReboot(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_action_server_reboot_handle_t,
-                  RebootCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_action_server_unsubscribe_reboot(
             reinterpret_cast<mavsdk_action_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](const mavsdk_action_server_result_t result,
+               const bool value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<RebootCallbackWrapper*>(userData);
+                (*callbackWrapper)(result, value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_action_server_reboot_handle_t,
+        RebootCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ActionServer.subscribeShutdownNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_subscribeShutdownNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_unsubscribeReboot(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ActionServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_action_server_reboot_handle_t,
+        RebootCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_action_server_unsubscribe_reboot(
+        reinterpret_cast<mavsdk_action_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_subscribeShutdown(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ActionServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ShutdownCallbackWrapper(env, callback);
-
-    mavsdk_action_server_shutdown_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_action_server_subscribe_shutdown(
-            reinterpret_cast<mavsdk_action_server_t>(handle),            [](const mavsdk_action_server_result_t result, const bool value, void* user_data) {
-                auto* w = static_cast<ShutdownCallbackWrapper*>(user_data);
-                (*w)(result, value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_action_server_shutdown_handle_t,
-        ShutdownCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ActionServer.unsubscribeShutdown =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_unsubscribeShutdown(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_action_server_shutdown_handle_t,
-                  ShutdownCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_action_server_unsubscribe_shutdown(
             reinterpret_cast<mavsdk_action_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](const mavsdk_action_server_result_t result,
+               const bool value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ShutdownCallbackWrapper*>(userData);
+                (*callbackWrapper)(result, value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_action_server_shutdown_handle_t,
+        ShutdownCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ActionServer.subscribeTerminateNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_subscribeTerminateNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_unsubscribeShutdown(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ActionServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_action_server_shutdown_handle_t,
+        ShutdownCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_action_server_unsubscribe_shutdown(
+        reinterpret_cast<mavsdk_action_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_subscribeTerminate(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ActionServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new TerminateCallbackWrapper(env, callback);
-
-    mavsdk_action_server_terminate_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_action_server_subscribe_terminate(
-            reinterpret_cast<mavsdk_action_server_t>(handle),            [](const mavsdk_action_server_result_t result, const bool value, void* user_data) {
-                auto* w = static_cast<TerminateCallbackWrapper*>(user_data);
-                (*w)(result, value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_action_server_terminate_handle_t,
-        TerminateCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ActionServer.unsubscribeTerminate =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_unsubscribeTerminate(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_action_server_terminate_handle_t,
-                  TerminateCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_action_server_unsubscribe_terminate(
             reinterpret_cast<mavsdk_action_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](const mavsdk_action_server_result_t result,
+               const bool value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<TerminateCallbackWrapper*>(userData);
+                (*callbackWrapper)(result, value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_action_server_terminate_handle_t,
+        TerminateCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ActionServer.set_allow_takeoffBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_setAllowTakeoffBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_unsubscribeTerminate(
     JNIEnv* env,
-    jobject obj,
-    jboolean allow_takeoff) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_action_server_result_t result = mavsdk_action_server_set_allow_takeoff(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ActionServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_action_server_terminate_handle_t,
+        TerminateCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_action_server_unsubscribe_terminate(
         reinterpret_cast<mavsdk_action_server_t>(handle),
-        allow_takeoff    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_setAllowTakeoff(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jboolean allow_takeoff) {
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return {};
+    }
+
+    mavsdk_action_server_result_t result =
+        mavsdk_action_server_set_allow_takeoff(
+            reinterpret_cast<mavsdk_action_server_t>(handle),
+            static_cast<bool>(allow_takeoff));
     return static_cast<jint>(result);
 }
 
-
-// ===== ActionServer.set_armableBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_setArmableBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_setArmable(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jboolean armable,
     jboolean force_armable) {
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_action_server_result_t result = mavsdk_action_server_set_armable(
-        reinterpret_cast<mavsdk_action_server_t>(handle),
-        armable,
-        force_armable    );
-
+    mavsdk_action_server_result_t result =
+        mavsdk_action_server_set_armable(
+            reinterpret_cast<mavsdk_action_server_t>(handle),
+            static_cast<bool>(armable),
+            static_cast<bool>(force_armable));
     return static_cast<jint>(result);
 }
 
-
-// ===== ActionServer.set_disarmableBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_setDisarmableBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_setDisarmable(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jboolean disarmable,
     jboolean force_disarmable) {
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_action_server_result_t result = mavsdk_action_server_set_disarmable(
-        reinterpret_cast<mavsdk_action_server_t>(handle),
-        disarmable,
-        force_disarmable    );
-
+    mavsdk_action_server_result_t result =
+        mavsdk_action_server_set_disarmable(
+            reinterpret_cast<mavsdk_action_server_t>(handle),
+            static_cast<bool>(disarmable),
+            static_cast<bool>(force_disarmable));
     return static_cast<jint>(result);
 }
 
-
-// ===== ActionServer.set_allowable_flight_modesBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_setAllowableFlightModesBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_setAllowableFlightModes(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject flight_modes) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
-
-    mavsdk_action_server_allowable_flight_modes_t flight_modes_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_action_server_result_t result = mavsdk_action_server_set_allowable_flight_modes(
-        reinterpret_cast<mavsdk_action_server_t>(handle),
-        flight_modes_c    );
-
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return {};
+    }
+    AllowableFlightModesFromJava
+        flight_modesValue(env, flight_modes);
+    mavsdk_action_server_result_t result =
+        mavsdk_action_server_set_allowable_flight_modes(
+            reinterpret_cast<mavsdk_action_server_t>(handle),
+            flight_modesValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== ActionServer.get_allowable_flight_modesBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_getAllowableFlightModesBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_getAllowableFlightModes(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return {};
-
-
-    mavsdk_action_server_allowable_flight_modes_t ret_val{};
-    mavsdk_action_server_get_allowable_flight_modes(
-        reinterpret_cast<mavsdk_action_server_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/action_server/ActionServer$AllowableFlightModes");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZZZZZZ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(ret_val.can_auto_mode)            , static_cast<jboolean>(ret_val.can_guided_mode)            , static_cast<jboolean>(ret_val.can_stabilize_mode)            , static_cast<jboolean>(ret_val.can_auto_rtl_mode)            , static_cast<jboolean>(ret_val.can_auto_takeoff_mode)            , static_cast<jboolean>(ret_val.can_auto_land_mode)            , static_cast<jboolean>(ret_val.can_auto_loiter_mode)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_action_server_allowable_flight_modes_destroy(&ret_val);
-    return retObj;
+    mavsdk_action_server_allowable_flight_modes_t returnValue{};
+        mavsdk_action_server_get_allowable_flight_modes(
+            reinterpret_cast<mavsdk_action_server_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaAllowableFlightModes(env, returnValue);
+    mavsdk_action_server_allowable_flight_modes_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== ActionServer.set_armed_stateBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_setArmedStateBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_setArmedState(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jboolean is_armed) {
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_action_server_result_t result = mavsdk_action_server_set_armed_state(
-        reinterpret_cast<mavsdk_action_server_t>(handle),
-        is_armed    );
-
+    mavsdk_action_server_result_t result =
+        mavsdk_action_server_set_armed_state(
+            reinterpret_cast<mavsdk_action_server_t>(handle),
+            static_cast<bool>(is_armed));
     return static_cast<jint>(result);
 }
 
-
-// ===== ActionServer.set_flight_modeBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_setFlightModeBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_setFlightMode(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint flight_mode) {
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_action_server_result_t result = mavsdk_action_server_set_flight_mode(
-        reinterpret_cast<mavsdk_action_server_t>(handle),
-        static_cast<mavsdk_action_server_flight_mode_t>(flight_mode)    );
-
+    mavsdk_action_server_result_t result =
+        mavsdk_action_server_set_flight_mode(
+            reinterpret_cast<mavsdk_action_server_t>(handle),
+            static_cast<mavsdk_action_server_flight_mode_t>(flight_mode));
     return static_cast<jint>(result);
 }
 
-
-// ===== ActionServer.set_flight_mode_internalBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_setFlightModeInternalBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_1server_NativeActionServer_setFlightModeInternal(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint flight_mode) {
+    if (!requireHandle(env, handle, "ActionServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
-    if (!handle) return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_action_server_result_t result = mavsdk_action_server_set_flight_mode_internal(
-        reinterpret_cast<mavsdk_action_server_t>(handle),
-        static_cast<mavsdk_action_server_flight_mode_t>(flight_mode)    );
-
+    mavsdk_action_server_result_t result =
+        mavsdk_action_server_set_flight_mode_internal(
+            reinterpret_cast<mavsdk_action_server_t>(handle),
+            static_cast<mavsdk_action_server_flight_mode_t>(flight_mode));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

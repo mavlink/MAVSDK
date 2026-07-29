@@ -6,84 +6,222 @@
 #include "cmavsdk/plugins/transponder/transponder.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct AdsbVehicleFromJava;
+struct AdsbVehicleArrayFromJava;
 
+struct AdsbVehicleFromJava {
+    mavsdk_transponder_adsb_vehicle_t value{};
+    std::string callsignValue;
 
-// ===== Transponder Callback Wrapper =====
+    AdsbVehicleFromJava(JNIEnv* env, jobject object);
+    ~AdsbVehicleFromJava();
+};
+
+struct AdsbVehicleArrayFromJava {
+    std::vector<std::unique_ptr<AdsbVehicleFromJava>> holders;
+    std::vector<mavsdk_transponder_adsb_vehicle_t> values;
+
+    AdsbVehicleArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AdsbVehicleFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+AdsbVehicleFromJava::AdsbVehicleFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID icao_addressField = env->GetFieldID(
+        clazz, "icaoAddress", "I");
+    value.icao_address =
+        static_cast<uint32_t>(env->GetIntField(object, icao_addressField));
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID altitude_typeField = env->GetFieldID(
+        clazz, "altitudeType", "I");
+    value.altitude_type =
+        static_cast<mavsdk_transponder_adsb_altitude_type_t>(env->GetIntField(object, altitude_typeField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID heading_degField = env->GetFieldID(
+        clazz, "headingDeg", "F");
+    value.heading_deg =
+        static_cast<float>(env->GetFloatField(object, heading_degField));
+    jfieldID horizontal_velocity_m_sField = env->GetFieldID(
+        clazz, "horizontalVelocityMS", "F");
+    value.horizontal_velocity_m_s =
+        static_cast<float>(env->GetFloatField(object, horizontal_velocity_m_sField));
+    jfieldID vertical_velocity_m_sField = env->GetFieldID(
+        clazz, "verticalVelocityMS", "F");
+    value.vertical_velocity_m_s =
+        static_cast<float>(env->GetFloatField(object, vertical_velocity_m_sField));
+    jfieldID callsignField = env->GetFieldID(
+        clazz, "callsign", "Ljava/lang/String;");
+    auto callsignString =
+        static_cast<jstring>(env->GetObjectField(object, callsignField));
+    JStringHolder callsignHolder(env, callsignString);
+    callsignValue =
+        callsignHolder.c_str() ? callsignHolder.c_str() : "";
+    value.callsign = const_cast<char*>(callsignValue.c_str());
+    env->DeleteLocalRef(callsignString);
+    jfieldID emitter_typeField = env->GetFieldID(
+        clazz, "emitterType", "I");
+    value.emitter_type =
+        static_cast<mavsdk_transponder_adsb_emitter_type_t>(env->GetIntField(object, emitter_typeField));
+    jfieldID squawkField = env->GetFieldID(
+        clazz, "squawk", "I");
+    value.squawk =
+        static_cast<uint32_t>(env->GetIntField(object, squawkField));
+    jfieldID tslc_sField = env->GetFieldID(
+        clazz, "tslcS", "I");
+    value.tslc_s =
+        static_cast<uint32_t>(env->GetIntField(object, tslc_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+AdsbVehicleFromJava::~AdsbVehicleFromJava() = default;
+
+jobject toJavaAdsbVehicle(
+    JNIEnv* env, const mavsdk_transponder_adsb_vehicle_t& value);
+jobjectArray toJavaAdsbVehicleArray(
+    JNIEnv* env,
+    const mavsdk_transponder_adsb_vehicle_t* values,
+    size_t count);
+
+jobject toJavaAdsbVehicle(
+    JNIEnv* env, const mavsdk_transponder_adsb_vehicle_t& value) {
+    jstring callsignValue =
+        toJavaString(env, value.callsign);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/transponder/NativeTransponder$AdsbVehicle");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(IDDIFFFFLjava/lang/String;III)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.icao_address)
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jint>(value.altitude_type)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jfloat>(value.heading_deg)
+        , static_cast<jfloat>(value.horizontal_velocity_m_s)
+        , static_cast<jfloat>(value.vertical_velocity_m_s)
+        , callsignValue
+        , static_cast<jint>(value.emitter_type)
+        , static_cast<jint>(value.squawk)
+        , static_cast<jint>(value.tslc_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(callsignValue);
+    return result;
+}
+
+jobjectArray toJavaAdsbVehicleArray(
+    JNIEnv* env,
+    const mavsdk_transponder_adsb_vehicle_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/transponder/NativeTransponder$AdsbVehicle");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAdsbVehicle(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct TransponderCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TransponderCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TransponderCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/transponder/Transponder$AdsbVehicle;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/transponder/NativeTransponder$AdsbVehicle;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_transponder_adsb_vehicle_t value) const {
+    void operator()(
+        const mavsdk_transponder_adsb_vehicle_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/transponder/Transponder$AdsbVehicle");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IDDIFFFFLjava/lang/String;III)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.icao_address)            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jint>(value.altitude_type)            , static_cast<jfloat>(value.absolute_altitude_m)            , static_cast<jfloat>(value.heading_deg)            , static_cast<jfloat>(value.horizontal_velocity_m_s)            , static_cast<jfloat>(value.vertical_velocity_m_s)            , toJavaString(env, value.callsign)            , static_cast<jint>(value.emitter_type)            , static_cast<jint>(value.squawk)            , static_cast<jint>(value.tslc_s)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaAdsbVehicle(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRateTransponder Callback Wrapper =====
 struct SetRateTransponderCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRateTransponderCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRateTransponderCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_transponder_result_t result) const {
+    void operator()(
+        const mavsdk_transponder_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -91,167 +229,143 @@ struct SetRateTransponderCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Transponder.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_transponder_Transponder_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_transponder_NativeTransponder_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_transponder_t handle = mavsdk_transponder_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Transponder plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Transponder.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_transponder_Transponder_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/transponder/Transponder");
-    if (!handle) return;
-
-    mavsdk_transponder_destroy(reinterpret_cast<mavsdk_transponder_t>(handle));
+Java_io_mavsdk_jni_plugins_transponder_NativeTransponder_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Transponder plugin")) {
+        return;
+    }
+    mavsdk_transponder_destroy(
+        reinterpret_cast<mavsdk_transponder_t>(handle));
 }
 
-
-// ===== Transponder.transponderBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_transponder_Transponder_transponderBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_transponder_NativeTransponder_transponder(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Transponder plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/transponder/Transponder");
-    if (!handle) return {};
-
-
-    mavsdk_transponder_adsb_vehicle_t ret_val{};
-    mavsdk_transponder_transponder(
-        reinterpret_cast<mavsdk_transponder_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/transponder/Transponder$AdsbVehicle");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IDDIFFFFLjava/lang/String;III)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.icao_address)            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jint>(ret_val.altitude_type)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.heading_deg)            , static_cast<jfloat>(ret_val.horizontal_velocity_m_s)            , static_cast<jfloat>(ret_val.vertical_velocity_m_s)            , toJavaString(env, ret_val.callsign)            , static_cast<jint>(ret_val.emitter_type)            , static_cast<jint>(ret_val.squawk)            , static_cast<jint>(ret_val.tslc_s)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_transponder_adsb_vehicle_destroy(&ret_val);
-    return retObj;
+    mavsdk_transponder_adsb_vehicle_t returnValue{};
+        mavsdk_transponder_transponder(
+            reinterpret_cast<mavsdk_transponder_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaAdsbVehicle(env, returnValue);
+    mavsdk_transponder_adsb_vehicle_destroy(&returnValue);
+    return javaResult;
 }
 
-// ===== Transponder.subscribeTransponderNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_transponder_Transponder_subscribeTransponderNative(
+Java_io_mavsdk_jni_plugins_transponder_NativeTransponder_subscribeTransponder(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/transponder/Transponder");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Transponder plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new TransponderCallbackWrapper(env, callback);
-
-    mavsdk_transponder_transponder_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_transponder_subscribe_transponder(
-            reinterpret_cast<mavsdk_transponder_t>(handle),            [](const mavsdk_transponder_adsb_vehicle_t value, void* user_data) {
-                auto* w = static_cast<TransponderCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_transponder_transponder_handle_t,
-        TransponderCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Transponder.unsubscribeTransponder =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_transponder_Transponder_unsubscribeTransponder(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/transponder/Transponder");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_transponder_transponder_handle_t,
-                  TransponderCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_transponder_unsubscribe_transponder(
             reinterpret_cast<mavsdk_transponder_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_transponder_adsb_vehicle_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<TransponderCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_transponder_transponder_handle_t,
+        TransponderCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== Transponder.set_rate_transponderBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_transponder_Transponder_setRateTransponderBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_transponder_NativeTransponder_unsubscribeTransponder(
     JNIEnv* env,
-    jobject obj,
-    jdouble rate_hz) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/transponder/Transponder");
-    if (!handle) return MAVSDK_TRANSPONDER_RESULT_UNKNOWN;
-
-
-    mavsdk_transponder_result_t result = mavsdk_transponder_set_rate_transponder(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Transponder plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_transponder_transponder_handle_t,
+        TransponderCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_transponder_unsubscribe_transponder(
         reinterpret_cast<mavsdk_transponder_t>(handle),
-        rate_hz    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_transponder_NativeTransponder_setRateTransponder(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Transponder plugin")) {
+        return {};
+    }
+
+    mavsdk_transponder_result_t result =
+        mavsdk_transponder_set_rate_transponder(
+            reinterpret_cast<mavsdk_transponder_t>(handle),
+            static_cast<double>(rate_hz));
     return static_cast<jint>(result);
 }
 
-// ===== Transponder.set_rate_transponderAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_transponder_Transponder_setRateTransponderAsyncNative(
+Java_io_mavsdk_jni_plugins_transponder_NativeTransponder_setRateTransponderAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jdouble rate_hz,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/transponder/Transponder");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Transponder plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRateTransponderCallbackWrapper(env, callback);
-
     mavsdk_transponder_set_rate_transponder_async(
-        reinterpret_cast<mavsdk_transponder_t>(handle),        rate_hz,        [](const mavsdk_transponder_result_t result, void* user_data) {
-            auto* w = static_cast<SetRateTransponderCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_transponder_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_transponder_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateTransponderCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
-
 
 } // extern "C"

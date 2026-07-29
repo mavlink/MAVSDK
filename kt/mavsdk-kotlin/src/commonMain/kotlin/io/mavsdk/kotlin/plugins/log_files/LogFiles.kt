@@ -11,8 +11,10 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
+class LogFiles internal constructor(
+    private val native: LogFilesNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -24,8 +26,10 @@ class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
         FILE_OPEN_FAILED(6),
         NO_SYSTEM(7),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -39,42 +43,58 @@ class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
         val sizeBytes: Int,
     )
 
-    suspend fun getEntries(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = GetEntriesCallback { result ->
-            val r = Result.fromValue(result)
-            if (r != Result.NEXT) {
-                continuation.resume(r)
+    suspend fun getEntries(): kotlin.Result<List<Entry>> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = LogFilesCallbackGuard()
+            native.getEntriesAsync() { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                LogFilesException(
+                                    parsedResult,
+                                    "getEntries failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                    }
+                }
             }
         }
-        getEntriesAsyncNative(callback)
-    }
 
-    fun downloadLogFile(entry: Entry, path: String): Flow<kotlin.Result<ProgressData>> = callbackFlow {
-        val callback = DownloadLogFileCallback { result, value ->
-            val r = Result.fromValue(result)
-            when {
-                r == Result.NEXT -> trySend(kotlin.Result.success(value))
-                r == Result.SUCCESS -> close()
-                else -> { trySend(kotlin.Result.failure(LogFilesException(r, "downloadLogFile failed: ${r.name}"))); close() }
+    fun downloadLogFile(entry: Entry, path: String): Flow<kotlin.Result<ProgressData>> =
+        callbackFlow {
+            native.downloadLogFileAsync(entry, path, ) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                when {
+                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                    parsedResult == Result.SUCCESS -> close()
+                    else -> {
+                        trySend(
+                            kotlin.Result.failure(
+                                LogFilesException(
+                                    parsedResult,
+                                    "downloadLogFile failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                        close()
+                    }
+                }
             }
+            awaitClose {}
         }
-        downloadLogFileAsyncNative(entry, path, callback)
-        awaitClose {}
-    }
 
     fun eraseAllLogFiles(): Result =
-        Result.fromValue(eraseAllLogFilesBlocking())
-
-    private fun interface GetEntriesCallback { fun invoke(result: Int) }
-    private fun interface DownloadLogFileCallback { fun invoke(result: Int, value: ProgressData) }
-
-    private external fun getEntriesAsyncNative(callback: GetEntriesCallback)
-    private external fun downloadLogFileAsyncNative(entry: Entry, path: String, callback: DownloadLogFileCallback)
-    private external fun eraseAllLogFilesBlocking(): Int
-    private external fun destroy()
+        Result.fromValue(native.eraseAllLogFiles())
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class LogFilesException(
@@ -83,10 +103,22 @@ class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): LogFiles {
-            val handle = createNative(system.getHandle())
-            return LogFiles(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): LogFiles =
+            LogFiles(
+                createLogFilesNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
+}
+
+internal interface LogFilesNative {
+    fun getEntriesAsync(callback: (Int, List<LogFiles.Entry>) -> Unit)
+    fun downloadLogFileAsync(entry: LogFiles.Entry, path: String, callback: (Int, LogFiles.ProgressData) -> Unit)
+    fun eraseAllLogFiles(): Int
+    fun destroy()
+}
+
+internal expect fun createLogFilesNative(systemHandle: Long): LogFilesNative
+
+internal expect class LogFilesCallbackGuard() {
+    fun tryClaim(): Boolean
 }

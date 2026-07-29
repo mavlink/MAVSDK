@@ -6,196 +6,375 @@
 #include "cmavsdk/plugins/follow_me/follow_me.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct ConfigFromJava;
+struct ConfigArrayFromJava;
+struct TargetLocationFromJava;
+struct TargetLocationArrayFromJava;
 
+struct ConfigFromJava {
+    mavsdk_follow_me_config_t value{};
+
+    ConfigFromJava(JNIEnv* env, jobject object);
+    ~ConfigFromJava();
+};
+
+struct ConfigArrayFromJava {
+    std::vector<std::unique_ptr<ConfigFromJava>> holders;
+    std::vector<mavsdk_follow_me_config_t> values;
+
+    ConfigArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ConfigFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct TargetLocationFromJava {
+    mavsdk_follow_me_target_location_t value{};
+
+    TargetLocationFromJava(JNIEnv* env, jobject object);
+    ~TargetLocationFromJava();
+};
+
+struct TargetLocationArrayFromJava {
+    std::vector<std::unique_ptr<TargetLocationFromJava>> holders;
+    std::vector<mavsdk_follow_me_target_location_t> values;
+
+    TargetLocationArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<TargetLocationFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+ConfigFromJava::ConfigFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID follow_height_mField = env->GetFieldID(
+        clazz, "followHeightM", "F");
+    value.follow_height_m =
+        static_cast<float>(env->GetFloatField(object, follow_height_mField));
+    jfieldID follow_distance_mField = env->GetFieldID(
+        clazz, "followDistanceM", "F");
+    value.follow_distance_m =
+        static_cast<float>(env->GetFloatField(object, follow_distance_mField));
+    jfieldID responsivenessField = env->GetFieldID(
+        clazz, "responsiveness", "F");
+    value.responsiveness =
+        static_cast<float>(env->GetFloatField(object, responsivenessField));
+    jfieldID altitude_modeField = env->GetFieldID(
+        clazz, "altitudeMode", "I");
+    value.altitude_mode =
+        static_cast<mavsdk_follow_me_config_follow_altitude_mode_t>(env->GetIntField(object, altitude_modeField));
+    jfieldID max_tangential_vel_m_sField = env->GetFieldID(
+        clazz, "maxTangentialVelMS", "F");
+    value.max_tangential_vel_m_s =
+        static_cast<float>(env->GetFloatField(object, max_tangential_vel_m_sField));
+    jfieldID follow_angle_degField = env->GetFieldID(
+        clazz, "followAngleDeg", "F");
+    value.follow_angle_deg =
+        static_cast<float>(env->GetFloatField(object, follow_angle_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+ConfigFromJava::~ConfigFromJava() = default;
+TargetLocationFromJava::TargetLocationFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID velocity_x_m_sField = env->GetFieldID(
+        clazz, "velocityXMS", "F");
+    value.velocity_x_m_s =
+        static_cast<float>(env->GetFloatField(object, velocity_x_m_sField));
+    jfieldID velocity_y_m_sField = env->GetFieldID(
+        clazz, "velocityYMS", "F");
+    value.velocity_y_m_s =
+        static_cast<float>(env->GetFloatField(object, velocity_y_m_sField));
+    jfieldID velocity_z_m_sField = env->GetFieldID(
+        clazz, "velocityZMS", "F");
+    value.velocity_z_m_s =
+        static_cast<float>(env->GetFloatField(object, velocity_z_m_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+TargetLocationFromJava::~TargetLocationFromJava() = default;
+
+jobject toJavaConfig(
+    JNIEnv* env, const mavsdk_follow_me_config_t& value);
+jobjectArray toJavaConfigArray(
+    JNIEnv* env,
+    const mavsdk_follow_me_config_t* values,
+    size_t count);
+jobject toJavaTargetLocation(
+    JNIEnv* env, const mavsdk_follow_me_target_location_t& value);
+jobjectArray toJavaTargetLocationArray(
+    JNIEnv* env,
+    const mavsdk_follow_me_target_location_t* values,
+    size_t count);
+
+jobject toJavaConfig(
+    JNIEnv* env, const mavsdk_follow_me_config_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/follow_me/NativeFollowMe$Config");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFIFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.follow_height_m)
+        , static_cast<jfloat>(value.follow_distance_m)
+        , static_cast<jfloat>(value.responsiveness)
+        , static_cast<jint>(value.altitude_mode)
+        , static_cast<jfloat>(value.max_tangential_vel_m_s)
+        , static_cast<jfloat>(value.follow_angle_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaConfigArray(
+    JNIEnv* env,
+    const mavsdk_follow_me_config_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/follow_me/NativeFollowMe$Config");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaConfig(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaTargetLocation(
+    JNIEnv* env, const mavsdk_follow_me_target_location_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/follow_me/NativeFollowMe$TargetLocation");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(DDFFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jfloat>(value.velocity_x_m_s)
+        , static_cast<jfloat>(value.velocity_y_m_s)
+        , static_cast<jfloat>(value.velocity_z_m_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaTargetLocationArray(
+    JNIEnv* env,
+    const mavsdk_follow_me_target_location_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/follow_me/NativeFollowMe$TargetLocation");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaTargetLocation(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
+
+} // namespace
 
 extern "C" {
 
-// ===== FollowMe.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_follow_me_t handle = mavsdk_follow_me_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create FollowMe plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== FollowMe.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
-    if (!handle) return;
-
-    mavsdk_follow_me_destroy(reinterpret_cast<mavsdk_follow_me_t>(handle));
+Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "FollowMe plugin")) {
+        return;
+    }
+    mavsdk_follow_me_destroy(
+        reinterpret_cast<mavsdk_follow_me_t>(handle));
 }
 
-
-// ===== FollowMe.get_configBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_getConfigBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_getConfig(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "FollowMe plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
-    if (!handle) return {};
-
-
-    mavsdk_follow_me_config_t ret_val{};
-    mavsdk_follow_me_get_config(
-        reinterpret_cast<mavsdk_follow_me_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/follow_me/FollowMe$Config");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFIFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.follow_height_m)            , static_cast<jfloat>(ret_val.follow_distance_m)            , static_cast<jfloat>(ret_val.responsiveness)            , static_cast<jint>(ret_val.altitude_mode)            , static_cast<jfloat>(ret_val.max_tangential_vel_m_s)            , static_cast<jfloat>(ret_val.follow_angle_deg)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_follow_me_config_destroy(&ret_val);
-    return retObj;
+    mavsdk_follow_me_config_t returnValue{};
+        mavsdk_follow_me_get_config(
+            reinterpret_cast<mavsdk_follow_me_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaConfig(env, returnValue);
+    mavsdk_follow_me_config_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== FollowMe.set_configBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_setConfigBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_setConfig(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject config) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
-    if (!handle) return MAVSDK_FOLLOW_ME_RESULT_UNKNOWN;
-
-    mavsdk_follow_me_config_t config_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_follow_me_result_t result = mavsdk_follow_me_set_config(
-        reinterpret_cast<mavsdk_follow_me_t>(handle),
-        config_c    );
-
+    if (!requireHandle(env, handle, "FollowMe plugin")) {
+        return {};
+    }
+    ConfigFromJava
+        configValue(env, config);
+    mavsdk_follow_me_result_t result =
+        mavsdk_follow_me_set_config(
+            reinterpret_cast<mavsdk_follow_me_t>(handle),
+            configValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== FollowMe.is_activeBlocking =====
-JNIEXPORT jboolean JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_isActiveBlocking(
+JNIEXPORT
+jboolean
+JNICALL Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_isActive(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "FollowMe plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
-    if (!handle) return {};
-
-
-    bool ret_val{};
-    mavsdk_follow_me_is_active(
-        reinterpret_cast<mavsdk_follow_me_t>(handle),
-        &ret_val
-    );
-
-    return static_cast<jboolean>(ret_val);
+    bool returnValue{};
+        mavsdk_follow_me_is_active(
+            reinterpret_cast<mavsdk_follow_me_t>(handle),
+            &returnValue);
+    return static_cast<jboolean>(returnValue);
 }
 
-
-// ===== FollowMe.set_target_locationBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_setTargetLocationBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_setTargetLocation(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject location) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
-    if (!handle) return MAVSDK_FOLLOW_ME_RESULT_UNKNOWN;
-
-    mavsdk_follow_me_target_location_t location_c{}; /* TODO: convert scalar-only struct from Java object */
-    mavsdk_follow_me_result_t result = mavsdk_follow_me_set_target_location(
-        reinterpret_cast<mavsdk_follow_me_t>(handle),
-        location_c    );
-
+    if (!requireHandle(env, handle, "FollowMe plugin")) {
+        return {};
+    }
+    TargetLocationFromJava
+        locationValue(env, location);
+    mavsdk_follow_me_result_t result =
+        mavsdk_follow_me_set_target_location(
+            reinterpret_cast<mavsdk_follow_me_t>(handle),
+            locationValue.value);
     return static_cast<jint>(result);
 }
 
-
-// ===== FollowMe.get_last_locationBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_getLastLocationBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_getLastLocation(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "FollowMe plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
-    if (!handle) return {};
-
-
-    mavsdk_follow_me_target_location_t ret_val{};
-    mavsdk_follow_me_get_last_location(
-        reinterpret_cast<mavsdk_follow_me_t>(handle),
-        &ret_val
-    );
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/follow_me/FollowMe$TargetLocation");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFFFF)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.velocity_x_m_s)            , static_cast<jfloat>(ret_val.velocity_y_m_s)            , static_cast<jfloat>(ret_val.velocity_z_m_s)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_follow_me_target_location_destroy(&ret_val);
-    return retObj;
+    mavsdk_follow_me_target_location_t returnValue{};
+        mavsdk_follow_me_get_last_location(
+            reinterpret_cast<mavsdk_follow_me_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaTargetLocation(env, returnValue);
+    mavsdk_follow_me_target_location_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== FollowMe.startBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_startBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_start(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "FollowMe plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
-    if (!handle) return MAVSDK_FOLLOW_ME_RESULT_UNKNOWN;
-
-
-    mavsdk_follow_me_result_t result = mavsdk_follow_me_start(
-        reinterpret_cast<mavsdk_follow_me_t>(handle)    );
-
+    mavsdk_follow_me_result_t result =
+        mavsdk_follow_me_start(
+            reinterpret_cast<mavsdk_follow_me_t>(handle));
     return static_cast<jint>(result);
 }
 
-
-// ===== FollowMe.stopBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_stopBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_follow_1me_NativeFollowMe_stop(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "FollowMe plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
-    if (!handle) return MAVSDK_FOLLOW_ME_RESULT_UNKNOWN;
-
-
-    mavsdk_follow_me_result_t result = mavsdk_follow_me_stop(
-        reinterpret_cast<mavsdk_follow_me_t>(handle)    );
-
+    mavsdk_follow_me_result_t result =
+        mavsdk_follow_me_stop(
+            reinterpret_cast<mavsdk_follow_me_t>(handle));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

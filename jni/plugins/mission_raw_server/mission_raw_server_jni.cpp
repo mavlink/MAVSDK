@@ -6,137 +6,423 @@
 #include "cmavsdk/plugins/mission_raw_server/mission_raw_server.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct MissionItemFromJava;
+struct MissionItemArrayFromJava;
+struct MissionPlanFromJava;
+struct MissionPlanArrayFromJava;
+struct MissionProgressFromJava;
+struct MissionProgressArrayFromJava;
 
+struct MissionItemFromJava {
+    mavsdk_mission_raw_server_mission_item_t value{};
 
-// ===== IncomingMission Callback Wrapper =====
+    MissionItemFromJava(JNIEnv* env, jobject object);
+    ~MissionItemFromJava();
+};
+
+struct MissionItemArrayFromJava {
+    std::vector<std::unique_ptr<MissionItemFromJava>> holders;
+    std::vector<mavsdk_mission_raw_server_mission_item_t> values;
+
+    MissionItemArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MissionItemFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct MissionPlanFromJava {
+    mavsdk_mission_raw_server_mission_plan_t value{};
+    std::unique_ptr<MissionItemArrayFromJava> mission_itemsValues;
+
+    MissionPlanFromJava(JNIEnv* env, jobject object);
+    ~MissionPlanFromJava();
+};
+
+struct MissionPlanArrayFromJava {
+    std::vector<std::unique_ptr<MissionPlanFromJava>> holders;
+    std::vector<mavsdk_mission_raw_server_mission_plan_t> values;
+
+    MissionPlanArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MissionPlanFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct MissionProgressFromJava {
+    mavsdk_mission_raw_server_mission_progress_t value{};
+
+    MissionProgressFromJava(JNIEnv* env, jobject object);
+    ~MissionProgressFromJava();
+};
+
+struct MissionProgressArrayFromJava {
+    std::vector<std::unique_ptr<MissionProgressFromJava>> holders;
+    std::vector<mavsdk_mission_raw_server_mission_progress_t> values;
+
+    MissionProgressArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<MissionProgressFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+MissionItemFromJava::MissionItemFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID seqField = env->GetFieldID(
+        clazz, "seq", "I");
+    value.seq =
+        static_cast<uint32_t>(env->GetIntField(object, seqField));
+    jfieldID frameField = env->GetFieldID(
+        clazz, "frame", "I");
+    value.frame =
+        static_cast<uint32_t>(env->GetIntField(object, frameField));
+    jfieldID commandField = env->GetFieldID(
+        clazz, "command", "I");
+    value.command =
+        static_cast<uint32_t>(env->GetIntField(object, commandField));
+    jfieldID currentField = env->GetFieldID(
+        clazz, "current", "I");
+    value.current =
+        static_cast<uint32_t>(env->GetIntField(object, currentField));
+    jfieldID autocontinueField = env->GetFieldID(
+        clazz, "autocontinue", "I");
+    value.autocontinue =
+        static_cast<uint32_t>(env->GetIntField(object, autocontinueField));
+    jfieldID param1Field = env->GetFieldID(
+        clazz, "param1", "F");
+    value.param1 =
+        static_cast<float>(env->GetFloatField(object, param1Field));
+    jfieldID param2Field = env->GetFieldID(
+        clazz, "param2", "F");
+    value.param2 =
+        static_cast<float>(env->GetFloatField(object, param2Field));
+    jfieldID param3Field = env->GetFieldID(
+        clazz, "param3", "F");
+    value.param3 =
+        static_cast<float>(env->GetFloatField(object, param3Field));
+    jfieldID param4Field = env->GetFieldID(
+        clazz, "param4", "F");
+    value.param4 =
+        static_cast<float>(env->GetFloatField(object, param4Field));
+    jfieldID xField = env->GetFieldID(
+        clazz, "x", "I");
+    value.x =
+        static_cast<int32_t>(env->GetIntField(object, xField));
+    jfieldID yField = env->GetFieldID(
+        clazz, "y", "I");
+    value.y =
+        static_cast<int32_t>(env->GetIntField(object, yField));
+    jfieldID zField = env->GetFieldID(
+        clazz, "z", "F");
+    value.z =
+        static_cast<float>(env->GetFloatField(object, zField));
+    jfieldID mission_typeField = env->GetFieldID(
+        clazz, "missionType", "I");
+    value.mission_type =
+        static_cast<uint32_t>(env->GetIntField(object, mission_typeField));
+    env->DeleteLocalRef(clazz);
+}
+
+MissionItemFromJava::~MissionItemFromJava() = default;
+MissionPlanFromJava::MissionPlanFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID mission_itemsField = env->GetFieldID(
+        clazz, "missionItems", "[Lio/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem;");
+    auto mission_itemsArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, mission_itemsField));
+    const jsize mission_itemsCount =
+        mission_itemsArray ? env->GetArrayLength(mission_itemsArray) : 0;
+    mission_itemsValues =
+        std::make_unique<MissionItemArrayFromJava>(
+            env, mission_itemsArray);
+    value.mission_items = mission_itemsValues->values.data();
+    value.mission_items_size =
+        static_cast<size_t>(mission_itemsCount);
+    env->DeleteLocalRef(mission_itemsArray);
+    env->DeleteLocalRef(clazz);
+}
+
+MissionPlanFromJava::~MissionPlanFromJava() = default;
+MissionProgressFromJava::MissionProgressFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID currentField = env->GetFieldID(
+        clazz, "current", "I");
+    value.current =
+        static_cast<int32_t>(env->GetIntField(object, currentField));
+    jfieldID totalField = env->GetFieldID(
+        clazz, "total", "I");
+    value.total =
+        static_cast<int32_t>(env->GetIntField(object, totalField));
+    env->DeleteLocalRef(clazz);
+}
+
+MissionProgressFromJava::~MissionProgressFromJava() = default;
+
+jobject toJavaMissionItem(
+    JNIEnv* env, const mavsdk_mission_raw_server_mission_item_t& value);
+jobjectArray toJavaMissionItemArray(
+    JNIEnv* env,
+    const mavsdk_mission_raw_server_mission_item_t* values,
+    size_t count);
+jobject toJavaMissionPlan(
+    JNIEnv* env, const mavsdk_mission_raw_server_mission_plan_t& value);
+jobjectArray toJavaMissionPlanArray(
+    JNIEnv* env,
+    const mavsdk_mission_raw_server_mission_plan_t* values,
+    size_t count);
+jobject toJavaMissionProgress(
+    JNIEnv* env, const mavsdk_mission_raw_server_mission_progress_t& value);
+jobjectArray toJavaMissionProgressArray(
+    JNIEnv* env,
+    const mavsdk_mission_raw_server_mission_progress_t* values,
+    size_t count);
+
+jobject toJavaMissionItem(
+    JNIEnv* env, const mavsdk_mission_raw_server_mission_item_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(IIIIIFFFFIIFI)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.seq)
+        , static_cast<jint>(value.frame)
+        , static_cast<jint>(value.command)
+        , static_cast<jint>(value.current)
+        , static_cast<jint>(value.autocontinue)
+        , static_cast<jfloat>(value.param1)
+        , static_cast<jfloat>(value.param2)
+        , static_cast<jfloat>(value.param3)
+        , static_cast<jfloat>(value.param4)
+        , static_cast<jint>(value.x)
+        , static_cast<jint>(value.y)
+        , static_cast<jfloat>(value.z)
+        , static_cast<jint>(value.mission_type)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaMissionItemArray(
+    JNIEnv* env,
+    const mavsdk_mission_raw_server_mission_item_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMissionItem(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaMissionPlan(
+    JNIEnv* env, const mavsdk_mission_raw_server_mission_plan_t& value) {
+    jobjectArray mission_itemsValue =
+        toJavaMissionItemArray(
+            env, value.mission_items, value.mission_items_size);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionPlan");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , mission_itemsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(mission_itemsValue);
+    return result;
+}
+
+jobjectArray toJavaMissionPlanArray(
+    JNIEnv* env,
+    const mavsdk_mission_raw_server_mission_plan_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionPlan");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMissionPlan(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaMissionProgress(
+    JNIEnv* env, const mavsdk_mission_raw_server_mission_progress_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionProgress");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(II)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.current)
+        , static_cast<jint>(value.total)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaMissionProgressArray(
+    JNIEnv* env,
+    const mavsdk_mission_raw_server_mission_progress_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionProgress");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaMissionProgress(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct IncomingMissionCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    IncomingMissionCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    IncomingMissionCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionPlan;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionPlan;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_raw_server_result_t result, const mavsdk_mission_raw_server_mission_plan_t value) const {
+    void operator()(
+        const mavsdk_mission_raw_server_result_t result,        const mavsdk_mission_raw_server_mission_plan_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass arrayListClass_MissionPlan = env->FindClass("java/util/ArrayList");
-        jmethodID arrayListCtor_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "<init>", "()V");
-        jmethodID arrayListAdd_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionPlan, arrayListCtor_MissionPlan);
-        {
-            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionItem");
-            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(IIIIIFFFFIIFI)V");
-            for (size_t i = 0; i < value.mission_items_size; i++) {
-                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jint>(value.mission_items[i].seq)                    , static_cast<jint>(value.mission_items[i].frame)                    , static_cast<jint>(value.mission_items[i].command)                    , static_cast<jint>(value.mission_items[i].current)                    , static_cast<jint>(value.mission_items[i].autocontinue)                    , static_cast<jfloat>(value.mission_items[i].param1)                    , static_cast<jfloat>(value.mission_items[i].param2)                    , static_cast<jfloat>(value.mission_items[i].param3)                    , static_cast<jfloat>(value.mission_items[i].param4)                    , static_cast<jint>(value.mission_items[i].x)                    , static_cast<jint>(value.mission_items[i].y)                    , static_cast<jfloat>(value.mission_items[i].z)                    , static_cast<jint>(value.mission_items[i].mission_type)                );
-                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionPlan, elem);
-                env->DeleteLocalRef(elem);
-            }
-            env->DeleteLocalRef(elemClass_mission_items);
-        }env->DeleteLocalRef(arrayListClass_MissionPlan);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionPlan");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaMissionPlan(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== CurrentItemChanged Callback Wrapper =====
 struct CurrentItemChangedCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    CurrentItemChangedCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    CurrentItemChangedCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionItem;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_mission_raw_server_mission_item_t value) const {
+    void operator()(
+        const mavsdk_mission_raw_server_mission_item_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionItem");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IIIIIFFFFIIFI)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.seq)            , static_cast<jint>(value.frame)            , static_cast<jint>(value.command)            , static_cast<jint>(value.current)            , static_cast<jint>(value.autocontinue)            , static_cast<jfloat>(value.param1)            , static_cast<jfloat>(value.param2)            , static_cast<jfloat>(value.param3)            , static_cast<jfloat>(value.param4)            , static_cast<jint>(value.x)            , static_cast<jint>(value.y)            , static_cast<jfloat>(value.z)            , static_cast<jint>(value.mission_type)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaMissionItem(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ClearAll Callback Wrapper =====
 struct ClearAllCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ClearAllCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ClearAllCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const uint32_t value) const {
+    void operator()(
+        const uint32_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(value));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -144,226 +430,191 @@ struct ClearAllCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== MissionRawServer.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_mission_raw_server_t handle = mavsdk_mission_raw_server_create(
         reinterpret_cast<mavsdk_server_component_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create MissionRawServer plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== MissionRawServer.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer");
-    if (!handle) return;
-
-    mavsdk_mission_raw_server_destroy(reinterpret_cast<mavsdk_mission_raw_server_t>(handle));
+Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "MissionRawServer plugin")) {
+        return;
+    }
+    mavsdk_mission_raw_server_destroy(
+        reinterpret_cast<mavsdk_mission_raw_server_t>(handle));
 }
 
-
-// ===== MissionRawServer.subscribeIncomingMissionNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_subscribeIncomingMissionNative(
+Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_subscribeIncomingMission(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "MissionRawServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new IncomingMissionCallbackWrapper(env, callback);
-
-    mavsdk_mission_raw_server_incoming_mission_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_mission_raw_server_subscribe_incoming_mission(
-            reinterpret_cast<mavsdk_mission_raw_server_t>(handle),            [](const mavsdk_mission_raw_server_result_t result, const mavsdk_mission_raw_server_mission_plan_t value, void* user_data) {
-                auto* w = static_cast<IncomingMissionCallbackWrapper*>(user_data);
-                (*w)(result, value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_mission_raw_server_incoming_mission_handle_t,
-        IncomingMissionCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== MissionRawServer.unsubscribeIncomingMission =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_unsubscribeIncomingMission(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_mission_raw_server_incoming_mission_handle_t,
-                  IncomingMissionCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_mission_raw_server_unsubscribe_incoming_mission(
             reinterpret_cast<mavsdk_mission_raw_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](const mavsdk_mission_raw_server_result_t result,
+               const mavsdk_mission_raw_server_mission_plan_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<IncomingMissionCallbackWrapper*>(userData);
+                (*callbackWrapper)(result, value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_mission_raw_server_incoming_mission_handle_t,
+        IncomingMissionCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== MissionRawServer.subscribeCurrentItemChangedNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_subscribeCurrentItemChangedNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_unsubscribeIncomingMission(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "MissionRawServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_mission_raw_server_incoming_mission_handle_t,
+        IncomingMissionCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_mission_raw_server_unsubscribe_incoming_mission(
+        reinterpret_cast<mavsdk_mission_raw_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_subscribeCurrentItemChanged(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "MissionRawServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new CurrentItemChangedCallbackWrapper(env, callback);
-
-    mavsdk_mission_raw_server_current_item_changed_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_mission_raw_server_subscribe_current_item_changed(
-            reinterpret_cast<mavsdk_mission_raw_server_t>(handle),            [](const mavsdk_mission_raw_server_mission_item_t value, void* user_data) {
-                auto* w = static_cast<CurrentItemChangedCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_mission_raw_server_current_item_changed_handle_t,
-        CurrentItemChangedCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== MissionRawServer.unsubscribeCurrentItemChanged =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_unsubscribeCurrentItemChanged(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_mission_raw_server_current_item_changed_handle_t,
-                  CurrentItemChangedCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_mission_raw_server_unsubscribe_current_item_changed(
             reinterpret_cast<mavsdk_mission_raw_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_mission_raw_server_mission_item_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<CurrentItemChangedCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_mission_raw_server_current_item_changed_handle_t,
+        CurrentItemChangedCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== MissionRawServer.set_current_item_completeBlocking =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_setCurrentItemCompleteBlocking(
+Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_unsubscribeCurrentItemChanged(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "MissionRawServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_mission_raw_server_current_item_changed_handle_t,
+        CurrentItemChangedCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_mission_raw_server_unsubscribe_current_item_changed(
+        reinterpret_cast<mavsdk_mission_raw_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer");
-    if (!handle) return;
-
+JNIEXPORT
+void
+JNICALL Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_setCurrentItemComplete(
+    JNIEnv* env,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "MissionRawServer plugin")) {
+        return;
+    }
 
     mavsdk_mission_raw_server_set_current_item_complete(
-        reinterpret_cast<mavsdk_mission_raw_server_t>(handle)    );
+        reinterpret_cast<mavsdk_mission_raw_server_t>(handle));
 }
 
-
-// ===== MissionRawServer.subscribeClearAllNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_subscribeClearAllNative(
+Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_subscribeClearAll(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "MissionRawServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ClearAllCallbackWrapper(env, callback);
-
-    mavsdk_mission_raw_server_clear_all_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_mission_raw_server_subscribe_clear_all(
-            reinterpret_cast<mavsdk_mission_raw_server_t>(handle),            [](const uint32_t value, void* user_data) {
-                auto* w = static_cast<ClearAllCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_mission_raw_server_clear_all_handle_t,
-        ClearAllCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== MissionRawServer.unsubscribeClearAll =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_mission_1raw_1server_MissionRawServer_unsubscribeClearAll(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_mission_raw_server_clear_all_handle_t,
-                  ClearAllCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_mission_raw_server_unsubscribe_clear_all(
             reinterpret_cast<mavsdk_mission_raw_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const uint32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ClearAllCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_mission_raw_server_clear_all_handle_t,
+        ClearAllCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_mission_1raw_1server_NativeMissionRawServer_unsubscribeClearAll(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "MissionRawServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_mission_raw_server_clear_all_handle_t,
+        ClearAllCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_mission_raw_server_unsubscribe_clear_all(
+        reinterpret_cast<mavsdk_mission_raw_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
 } // extern "C"

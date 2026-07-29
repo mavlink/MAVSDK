@@ -8,8 +8,10 @@ import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-
-class ManualControl internal constructor(private val handle: Long) : AutoCloseable {
+class ManualControl internal constructor(
+    private val native: ManualControlNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -22,40 +24,42 @@ class ManualControl internal constructor(private val handle: Long) : AutoCloseab
         INPUT_OUT_OF_RANGE(7),
         INPUT_NOT_SET(8),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    suspend fun startPositionControl(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = StartPositionControlCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun startPositionControl(): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = ManualControlCallbackGuard()
+            native.startPositionControlAsync() { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        startPositionControlAsyncNative(callback)
-    }
 
-    suspend fun startAltitudeControl(): Result = suspendCancellableCoroutine { continuation ->
-        val callback = StartAltitudeControlCallback { result ->
-            val r = Result.fromValue(result)
-            continuation.resume(r)
+    suspend fun startAltitudeControl(): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = ManualControlCallbackGuard()
+            native.startAltitudeControlAsync() { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
         }
-        startAltitudeControlAsyncNative(callback)
-    }
 
     fun setManualControlInput(x: Float, y: Float, z: Float, r: Float): Result =
-        Result.fromValue(setManualControlInputBlocking(x, y, z, r))
-
-    private fun interface StartPositionControlCallback { fun invoke(result: Int) }
-    private fun interface StartAltitudeControlCallback { fun invoke(result: Int) }
-
-    private external fun startPositionControlAsyncNative(callback: StartPositionControlCallback)
-    private external fun startAltitudeControlAsyncNative(callback: StartAltitudeControlCallback)
-    private external fun setManualControlInputBlocking(x: Float, y: Float, z: Float, r: Float): Int
-    private external fun destroy()
+        Result.fromValue(native.setManualControlInput(x, y, z, r))
 
     override fun close() {
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class ManualControlException(
@@ -64,10 +68,22 @@ class ManualControl internal constructor(private val handle: Long) : AutoCloseab
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): ManualControl {
-            val handle = createNative(system.getHandle())
-            return ManualControl(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): ManualControl =
+            ManualControl(
+                createManualControlNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
+}
+
+internal interface ManualControlNative {
+    fun startPositionControlAsync(callback: (Int) -> Unit)
+    fun startAltitudeControlAsync(callback: (Int) -> Unit)
+    fun setManualControlInput(x: Float, y: Float, z: Float, r: Float): Int
+    fun destroy()
+}
+
+internal expect fun createManualControlNative(systemHandle: Long): ManualControlNative
+
+internal expect class ManualControlCallbackGuard() {
+    fun tryClaim(): Boolean
 }

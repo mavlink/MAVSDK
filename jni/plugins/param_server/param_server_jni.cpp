@@ -6,131 +6,523 @@
 #include "cmavsdk/plugins/param_server/param_server.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct IntParamFromJava;
+struct IntParamArrayFromJava;
+struct FloatParamFromJava;
+struct FloatParamArrayFromJava;
+struct CustomParamFromJava;
+struct CustomParamArrayFromJava;
+struct AllParamsFromJava;
+struct AllParamsArrayFromJava;
 
+struct IntParamFromJava {
+    mavsdk_param_server_int_param_t value{};
+    std::string nameValue;
 
-// ===== ChangedParamInt Callback Wrapper =====
+    IntParamFromJava(JNIEnv* env, jobject object);
+    ~IntParamFromJava();
+};
+
+struct IntParamArrayFromJava {
+    std::vector<std::unique_ptr<IntParamFromJava>> holders;
+    std::vector<mavsdk_param_server_int_param_t> values;
+
+    IntParamArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<IntParamFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct FloatParamFromJava {
+    mavsdk_param_server_float_param_t value{};
+    std::string nameValue;
+
+    FloatParamFromJava(JNIEnv* env, jobject object);
+    ~FloatParamFromJava();
+};
+
+struct FloatParamArrayFromJava {
+    std::vector<std::unique_ptr<FloatParamFromJava>> holders;
+    std::vector<mavsdk_param_server_float_param_t> values;
+
+    FloatParamArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<FloatParamFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct CustomParamFromJava {
+    mavsdk_param_server_custom_param_t value{};
+    std::string nameValue;
+    std::string valueValue;
+
+    CustomParamFromJava(JNIEnv* env, jobject object);
+    ~CustomParamFromJava();
+};
+
+struct CustomParamArrayFromJava {
+    std::vector<std::unique_ptr<CustomParamFromJava>> holders;
+    std::vector<mavsdk_param_server_custom_param_t> values;
+
+    CustomParamArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<CustomParamFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AllParamsFromJava {
+    mavsdk_param_server_all_params_t value{};
+    std::unique_ptr<IntParamArrayFromJava> int_paramsValues;
+    std::unique_ptr<FloatParamArrayFromJava> float_paramsValues;
+    std::unique_ptr<CustomParamArrayFromJava> custom_paramsValues;
+
+    AllParamsFromJava(JNIEnv* env, jobject object);
+    ~AllParamsFromJava();
+};
+
+struct AllParamsArrayFromJava {
+    std::vector<std::unique_ptr<AllParamsFromJava>> holders;
+    std::vector<mavsdk_param_server_all_params_t> values;
+
+    AllParamsArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AllParamsFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+IntParamFromJava::IntParamFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID nameField = env->GetFieldID(
+        clazz, "name", "Ljava/lang/String;");
+    auto nameString =
+        static_cast<jstring>(env->GetObjectField(object, nameField));
+    JStringHolder nameHolder(env, nameString);
+    nameValue =
+        nameHolder.c_str() ? nameHolder.c_str() : "";
+    value.name = const_cast<char*>(nameValue.c_str());
+    env->DeleteLocalRef(nameString);
+    jfieldID valueField = env->GetFieldID(
+        clazz, "value", "I");
+    value.value =
+        static_cast<int32_t>(env->GetIntField(object, valueField));
+    env->DeleteLocalRef(clazz);
+}
+
+IntParamFromJava::~IntParamFromJava() = default;
+FloatParamFromJava::FloatParamFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID nameField = env->GetFieldID(
+        clazz, "name", "Ljava/lang/String;");
+    auto nameString =
+        static_cast<jstring>(env->GetObjectField(object, nameField));
+    JStringHolder nameHolder(env, nameString);
+    nameValue =
+        nameHolder.c_str() ? nameHolder.c_str() : "";
+    value.name = const_cast<char*>(nameValue.c_str());
+    env->DeleteLocalRef(nameString);
+    jfieldID valueField = env->GetFieldID(
+        clazz, "value", "F");
+    value.value =
+        static_cast<float>(env->GetFloatField(object, valueField));
+    env->DeleteLocalRef(clazz);
+}
+
+FloatParamFromJava::~FloatParamFromJava() = default;
+CustomParamFromJava::CustomParamFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID nameField = env->GetFieldID(
+        clazz, "name", "Ljava/lang/String;");
+    auto nameString =
+        static_cast<jstring>(env->GetObjectField(object, nameField));
+    JStringHolder nameHolder(env, nameString);
+    nameValue =
+        nameHolder.c_str() ? nameHolder.c_str() : "";
+    value.name = const_cast<char*>(nameValue.c_str());
+    env->DeleteLocalRef(nameString);
+    jfieldID valueField = env->GetFieldID(
+        clazz, "value", "Ljava/lang/String;");
+    auto valueString =
+        static_cast<jstring>(env->GetObjectField(object, valueField));
+    JStringHolder valueHolder(env, valueString);
+    valueValue =
+        valueHolder.c_str() ? valueHolder.c_str() : "";
+    value.value = const_cast<char*>(valueValue.c_str());
+    env->DeleteLocalRef(valueString);
+    env->DeleteLocalRef(clazz);
+}
+
+CustomParamFromJava::~CustomParamFromJava() = default;
+AllParamsFromJava::AllParamsFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID int_paramsField = env->GetFieldID(
+        clazz, "intParams", "[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam;");
+    auto int_paramsArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, int_paramsField));
+    const jsize int_paramsCount =
+        int_paramsArray ? env->GetArrayLength(int_paramsArray) : 0;
+    int_paramsValues =
+        std::make_unique<IntParamArrayFromJava>(
+            env, int_paramsArray);
+    value.int_params = int_paramsValues->values.data();
+    value.int_params_size =
+        static_cast<size_t>(int_paramsCount);
+    env->DeleteLocalRef(int_paramsArray);
+    jfieldID float_paramsField = env->GetFieldID(
+        clazz, "floatParams", "[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam;");
+    auto float_paramsArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, float_paramsField));
+    const jsize float_paramsCount =
+        float_paramsArray ? env->GetArrayLength(float_paramsArray) : 0;
+    float_paramsValues =
+        std::make_unique<FloatParamArrayFromJava>(
+            env, float_paramsArray);
+    value.float_params = float_paramsValues->values.data();
+    value.float_params_size =
+        static_cast<size_t>(float_paramsCount);
+    env->DeleteLocalRef(float_paramsArray);
+    jfieldID custom_paramsField = env->GetFieldID(
+        clazz, "customParams", "[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam;");
+    auto custom_paramsArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, custom_paramsField));
+    const jsize custom_paramsCount =
+        custom_paramsArray ? env->GetArrayLength(custom_paramsArray) : 0;
+    custom_paramsValues =
+        std::make_unique<CustomParamArrayFromJava>(
+            env, custom_paramsArray);
+    value.custom_params = custom_paramsValues->values.data();
+    value.custom_params_size =
+        static_cast<size_t>(custom_paramsCount);
+    env->DeleteLocalRef(custom_paramsArray);
+    env->DeleteLocalRef(clazz);
+}
+
+AllParamsFromJava::~AllParamsFromJava() = default;
+
+jobject toJavaIntParam(
+    JNIEnv* env, const mavsdk_param_server_int_param_t& value);
+jobjectArray toJavaIntParamArray(
+    JNIEnv* env,
+    const mavsdk_param_server_int_param_t* values,
+    size_t count);
+jobject toJavaFloatParam(
+    JNIEnv* env, const mavsdk_param_server_float_param_t& value);
+jobjectArray toJavaFloatParamArray(
+    JNIEnv* env,
+    const mavsdk_param_server_float_param_t* values,
+    size_t count);
+jobject toJavaCustomParam(
+    JNIEnv* env, const mavsdk_param_server_custom_param_t& value);
+jobjectArray toJavaCustomParamArray(
+    JNIEnv* env,
+    const mavsdk_param_server_custom_param_t* values,
+    size_t count);
+jobject toJavaAllParams(
+    JNIEnv* env, const mavsdk_param_server_all_params_t& value);
+jobjectArray toJavaAllParamsArray(
+    JNIEnv* env,
+    const mavsdk_param_server_all_params_t* values,
+    size_t count);
+
+jobject toJavaIntParam(
+    JNIEnv* env, const mavsdk_param_server_int_param_t& value) {
+    jstring nameValue =
+        toJavaString(env, value.name);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;I)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , nameValue
+        , static_cast<jint>(value.value)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(nameValue);
+    return result;
+}
+
+jobjectArray toJavaIntParamArray(
+    JNIEnv* env,
+    const mavsdk_param_server_int_param_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaIntParam(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaFloatParam(
+    JNIEnv* env, const mavsdk_param_server_float_param_t& value) {
+    jstring nameValue =
+        toJavaString(env, value.name);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;F)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , nameValue
+        , static_cast<jfloat>(value.value)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(nameValue);
+    return result;
+}
+
+jobjectArray toJavaFloatParamArray(
+    JNIEnv* env,
+    const mavsdk_param_server_float_param_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaFloatParam(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaCustomParam(
+    JNIEnv* env, const mavsdk_param_server_custom_param_t& value) {
+    jstring nameValue =
+        toJavaString(env, value.name);
+    jstring valueValue =
+        toJavaString(env, value.value);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , nameValue
+        , valueValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(nameValue);
+    env->DeleteLocalRef(valueValue);
+    return result;
+}
+
+jobjectArray toJavaCustomParamArray(
+    JNIEnv* env,
+    const mavsdk_param_server_custom_param_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaCustomParam(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAllParams(
+    JNIEnv* env, const mavsdk_param_server_all_params_t& value) {
+    jobjectArray int_paramsValue =
+        toJavaIntParamArray(
+            env, value.int_params, value.int_params_size);
+    jobjectArray float_paramsValue =
+        toJavaFloatParamArray(
+            env, value.float_params, value.float_params_size);
+    jobjectArray custom_paramsValue =
+        toJavaCustomParamArray(
+            env, value.custom_params, value.custom_params_size);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$AllParams");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam;[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam;[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , int_paramsValue
+        , float_paramsValue
+        , custom_paramsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(int_paramsValue);
+    env->DeleteLocalRef(float_paramsValue);
+    env->DeleteLocalRef(custom_paramsValue);
+    return result;
+}
+
+jobjectArray toJavaAllParamsArray(
+    JNIEnv* env,
+    const mavsdk_param_server_all_params_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$AllParams");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAllParams(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct ChangedParamIntCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ChangedParamIntCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ChangedParamIntCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/param_server/ParamServer$IntParam;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_param_server_int_param_t value) const {
+    void operator()(
+        const mavsdk_param_server_int_param_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/param_server/ParamServer$IntParam");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, value.name)            , static_cast<jint>(value.value)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaIntParam(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ChangedParamFloat Callback Wrapper =====
 struct ChangedParamFloatCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ChangedParamFloatCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ChangedParamFloatCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/param_server/ParamServer$FloatParam;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_param_server_float_param_t value) const {
+    void operator()(
+        const mavsdk_param_server_float_param_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/param_server/ParamServer$FloatParam");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;F)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, value.name)            , static_cast<jfloat>(value.value)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaFloatParam(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ChangedParamCustom Callback Wrapper =====
 struct ChangedParamCustomCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ChangedParamCustomCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ChangedParamCustomCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/param_server/ParamServer$CustomParam;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_param_server_custom_param_t value) const {
+    void operator()(
+        const mavsdk_param_server_custom_param_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/param_server/ParamServer$CustomParam");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, value.name)            , toJavaString(env, value.value)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaCustomParam(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -138,440 +530,357 @@ struct ChangedParamCustomCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== ParamServer.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_param_server_t handle = mavsdk_param_server_create(
         reinterpret_cast<mavsdk_server_component_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create ParamServer plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== ParamServer.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return;
-
-    mavsdk_param_server_destroy(reinterpret_cast<mavsdk_param_server_t>(handle));
+Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return;
+    }
+    mavsdk_param_server_destroy(
+        reinterpret_cast<mavsdk_param_server_t>(handle));
 }
 
-
-// ===== ParamServer.set_protocolBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_setProtocolBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_setProtocol(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jboolean extended_protocol) {
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return MAVSDK_PARAM_SERVER_RESULT_UNKNOWN;
-
-
-    mavsdk_param_server_result_t result = mavsdk_param_server_set_protocol(
-        reinterpret_cast<mavsdk_param_server_t>(handle),
-        extended_protocol    );
-
+    mavsdk_param_server_result_t result =
+        mavsdk_param_server_set_protocol(
+            reinterpret_cast<mavsdk_param_server_t>(handle),
+            static_cast<bool>(extended_protocol));
     return static_cast<jint>(result);
 }
 
-
-// ===== ParamServer.retrieve_param_intBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_retrieveParamIntBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_retrieveParamInt(
     JNIEnv* env,
-    jobject obj,
-    jstring name) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return {};
-
-    JStringHolder name_holder(env, name);
-
-    int32_t ret_val{};
-    mavsdk_param_server_result_t result = mavsdk_param_server_retrieve_param_int(
-        reinterpret_cast<mavsdk_param_server_t>(handle),
-        const_cast<char*>(name_holder.c_str()),
-        &ret_val
-    );
-
+    jclass,
+    jlong handle,
+    jobject name) {
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return {};
+    }
+    JStringHolder nameHolder(
+        env, static_cast<jstring>(name));
+    int32_t returnValue{};
+    mavsdk_param_server_result_t result =
+        mavsdk_param_server_retrieve_param_int(
+            reinterpret_cast<mavsdk_param_server_t>(handle),
+            const_cast<char*>(nameHolder.c_str()),
+            &returnValue);
     if (result != MAVSDK_PARAM_SERVER_RESULT_SUCCESS) {
         throwMavsdkError(env, "OperationError", "retrieve_param_int failed");
         return {};
     }
-
-    return static_cast<jint>(ret_val);
+    return static_cast<jint>(returnValue);
 }
 
-
-// ===== ParamServer.provide_param_intBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_provideParamIntBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_provideParamInt(
     JNIEnv* env,
-    jobject obj,
-    jstring name,
+    jclass,
+    jlong handle,
+    jobject name,
     jint value) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return MAVSDK_PARAM_SERVER_RESULT_UNKNOWN;
-
-    JStringHolder name_holder(env, name);
-
-    mavsdk_param_server_result_t result = mavsdk_param_server_provide_param_int(
-        reinterpret_cast<mavsdk_param_server_t>(handle),
-        const_cast<char*>(name_holder.c_str()),
-        value    );
-
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return {};
+    }
+    JStringHolder nameHolder(
+        env, static_cast<jstring>(name));
+    mavsdk_param_server_result_t result =
+        mavsdk_param_server_provide_param_int(
+            reinterpret_cast<mavsdk_param_server_t>(handle),
+            const_cast<char*>(nameHolder.c_str()),
+            static_cast<int32_t>(value));
     return static_cast<jint>(result);
 }
 
-
-// ===== ParamServer.retrieve_param_floatBlocking =====
-JNIEXPORT jfloat JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_retrieveParamFloatBlocking(
+JNIEXPORT
+jfloat
+JNICALL Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_retrieveParamFloat(
     JNIEnv* env,
-    jobject obj,
-    jstring name) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return {};
-
-    JStringHolder name_holder(env, name);
-
-    float ret_val{};
-    mavsdk_param_server_result_t result = mavsdk_param_server_retrieve_param_float(
-        reinterpret_cast<mavsdk_param_server_t>(handle),
-        const_cast<char*>(name_holder.c_str()),
-        &ret_val
-    );
-
+    jclass,
+    jlong handle,
+    jobject name) {
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return {};
+    }
+    JStringHolder nameHolder(
+        env, static_cast<jstring>(name));
+    float returnValue{};
+    mavsdk_param_server_result_t result =
+        mavsdk_param_server_retrieve_param_float(
+            reinterpret_cast<mavsdk_param_server_t>(handle),
+            const_cast<char*>(nameHolder.c_str()),
+            &returnValue);
     if (result != MAVSDK_PARAM_SERVER_RESULT_SUCCESS) {
         throwMavsdkError(env, "OperationError", "retrieve_param_float failed");
         return {};
     }
-
-    return static_cast<jfloat>(ret_val);
+    return static_cast<jfloat>(returnValue);
 }
 
-
-// ===== ParamServer.provide_param_floatBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_provideParamFloatBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_provideParamFloat(
     JNIEnv* env,
-    jobject obj,
-    jstring name,
+    jclass,
+    jlong handle,
+    jobject name,
     jfloat value) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return MAVSDK_PARAM_SERVER_RESULT_UNKNOWN;
-
-    JStringHolder name_holder(env, name);
-
-    mavsdk_param_server_result_t result = mavsdk_param_server_provide_param_float(
-        reinterpret_cast<mavsdk_param_server_t>(handle),
-        const_cast<char*>(name_holder.c_str()),
-        value    );
-
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return {};
+    }
+    JStringHolder nameHolder(
+        env, static_cast<jstring>(name));
+    mavsdk_param_server_result_t result =
+        mavsdk_param_server_provide_param_float(
+            reinterpret_cast<mavsdk_param_server_t>(handle),
+            const_cast<char*>(nameHolder.c_str()),
+            static_cast<float>(value));
     return static_cast<jint>(result);
 }
 
-
-// ===== ParamServer.retrieve_param_customBlocking =====
-JNIEXPORT jstring JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_retrieveParamCustomBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_retrieveParamCustom(
     JNIEnv* env,
-    jobject obj,
-    jstring name) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return {};
-
-    JStringHolder name_holder(env, name);
-
-    char* ret_val = nullptr;
-    mavsdk_param_server_result_t result = mavsdk_param_server_retrieve_param_custom(
-        reinterpret_cast<mavsdk_param_server_t>(handle),
-        const_cast<char*>(name_holder.c_str()),
-        &ret_val
-    );
-
+    jclass,
+    jlong handle,
+    jobject name) {
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return {};
+    }
+    JStringHolder nameHolder(
+        env, static_cast<jstring>(name));
+    char* returnValue = nullptr;
+    mavsdk_param_server_result_t result =
+        mavsdk_param_server_retrieve_param_custom(
+            reinterpret_cast<mavsdk_param_server_t>(handle),
+            const_cast<char*>(nameHolder.c_str()),
+            &returnValue);
     if (result != MAVSDK_PARAM_SERVER_RESULT_SUCCESS) {
+        mavsdk_param_server_string_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "retrieve_param_custom failed");
         return nullptr;
     }
-
-    jstring j_ret = env->NewStringUTF(ret_val ? ret_val : "");
-    return j_ret;
+    jstring javaResult = toJavaString(env, returnValue);
+    mavsdk_param_server_string_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== ParamServer.provide_param_customBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_provideParamCustomBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_provideParamCustom(
     JNIEnv* env,
-    jobject obj,
-    jstring name,
-    jstring value) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return MAVSDK_PARAM_SERVER_RESULT_UNKNOWN;
-
-    JStringHolder name_holder(env, name);
-    JStringHolder value_holder(env, value);
-
-    mavsdk_param_server_result_t result = mavsdk_param_server_provide_param_custom(
-        reinterpret_cast<mavsdk_param_server_t>(handle),
-        const_cast<char*>(name_holder.c_str()),
-        const_cast<char*>(value_holder.c_str())    );
-
+    jclass,
+    jlong handle,
+    jobject name,
+    jobject value) {
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return {};
+    }
+    JStringHolder nameHolder(
+        env, static_cast<jstring>(name));    JStringHolder valueHolder(
+        env, static_cast<jstring>(value));
+    mavsdk_param_server_result_t result =
+        mavsdk_param_server_provide_param_custom(
+            reinterpret_cast<mavsdk_param_server_t>(handle),
+            const_cast<char*>(nameHolder.c_str()),
+            const_cast<char*>(valueHolder.c_str()));
     return static_cast<jint>(result);
 }
 
-
-// ===== ParamServer.retrieve_all_paramsBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_retrieveAllParamsBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_retrieveAllParams(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "ParamServer plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle) return {};
-
-
-    mavsdk_param_server_all_params_t ret_val{};
-    mavsdk_param_server_retrieve_all_params(
-        reinterpret_cast<mavsdk_param_server_t>(handle),
-        &ret_val
-    );
-
-        jclass arrayListClass_AllParams = env->FindClass("java/util/ArrayList");
-        jmethodID arrayListCtor_AllParams = env->GetMethodID(arrayListClass_AllParams, "<init>", "()V");
-        jmethodID arrayListAdd_AllParams = env->GetMethodID(arrayListClass_AllParams, "add", "(Ljava/lang/Object;)Z");        jobject list_int_params = env->NewObject(arrayListClass_AllParams, arrayListCtor_AllParams);
-        {
-            jclass elemClass_int_params = env->FindClass("io/mavsdk/kotlin/plugins/param_server/ParamServer$IntParam");
-            jmethodID elemCtor_int_params = env->GetMethodID(elemClass_int_params, "<init>", "(Ljava/lang/String;I)V");
-            for (size_t i = 0; i < ret_val.int_params_size; i++) {
-                jobject elem = env->NewObject(elemClass_int_params, elemCtor_int_params                    , toJavaString(env, ret_val.int_params[i].name)                    , static_cast<jint>(ret_val.int_params[i].value)                );
-                env->CallBooleanMethod(list_int_params, arrayListAdd_AllParams, elem);
-                env->DeleteLocalRef(elem);
-            }
-            env->DeleteLocalRef(elemClass_int_params);
-        }        jobject list_float_params = env->NewObject(arrayListClass_AllParams, arrayListCtor_AllParams);
-        {
-            jclass elemClass_float_params = env->FindClass("io/mavsdk/kotlin/plugins/param_server/ParamServer$FloatParam");
-            jmethodID elemCtor_float_params = env->GetMethodID(elemClass_float_params, "<init>", "(Ljava/lang/String;F)V");
-            for (size_t i = 0; i < ret_val.float_params_size; i++) {
-                jobject elem = env->NewObject(elemClass_float_params, elemCtor_float_params                    , toJavaString(env, ret_val.float_params[i].name)                    , static_cast<jfloat>(ret_val.float_params[i].value)                );
-                env->CallBooleanMethod(list_float_params, arrayListAdd_AllParams, elem);
-                env->DeleteLocalRef(elem);
-            }
-            env->DeleteLocalRef(elemClass_float_params);
-        }        jobject list_custom_params = env->NewObject(arrayListClass_AllParams, arrayListCtor_AllParams);
-        {
-            jclass elemClass_custom_params = env->FindClass("io/mavsdk/kotlin/plugins/param_server/ParamServer$CustomParam");
-            jmethodID elemCtor_custom_params = env->GetMethodID(elemClass_custom_params, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
-            for (size_t i = 0; i < ret_val.custom_params_size; i++) {
-                jobject elem = env->NewObject(elemClass_custom_params, elemCtor_custom_params                    , toJavaString(env, ret_val.custom_params[i].name)                    , toJavaString(env, ret_val.custom_params[i].value)                );
-                env->CallBooleanMethod(list_custom_params, arrayListAdd_AllParams, elem);
-                env->DeleteLocalRef(elem);
-            }
-            env->DeleteLocalRef(elemClass_custom_params);
-        }env->DeleteLocalRef(arrayListClass_AllParams);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/param_server/ParamServer$AllParams");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;Ljava/util/List;Ljava/util/List;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , list_int_params            , list_float_params            , list_custom_params        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_int_params);        env->DeleteLocalRef(list_float_params);        env->DeleteLocalRef(list_custom_params);
-    mavsdk_param_server_all_params_destroy(&ret_val);
-    return retObj;
+    mavsdk_param_server_all_params_t returnValue{};
+        mavsdk_param_server_retrieve_all_params(
+            reinterpret_cast<mavsdk_param_server_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaAllParams(env, returnValue);
+    mavsdk_param_server_all_params_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== ParamServer.subscribeChangedParamIntNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_subscribeChangedParamIntNative(
+Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_subscribeChangedParamInt(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ParamServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ChangedParamIntCallbackWrapper(env, callback);
-
-    mavsdk_param_server_changed_param_int_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_param_server_subscribe_changed_param_int(
-            reinterpret_cast<mavsdk_param_server_t>(handle),            [](const mavsdk_param_server_int_param_t value, void* user_data) {
-                auto* w = static_cast<ChangedParamIntCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_param_server_changed_param_int_handle_t,
-        ChangedParamIntCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ParamServer.unsubscribeChangedParamInt =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_unsubscribeChangedParamInt(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_param_server_changed_param_int_handle_t,
-                  ChangedParamIntCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_param_server_unsubscribe_changed_param_int(
             reinterpret_cast<mavsdk_param_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_param_server_int_param_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ChangedParamIntCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_param_server_changed_param_int_handle_t,
+        ChangedParamIntCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ParamServer.subscribeChangedParamFloatNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_subscribeChangedParamFloatNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_unsubscribeChangedParamInt(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ParamServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_param_server_changed_param_int_handle_t,
+        ChangedParamIntCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_param_server_unsubscribe_changed_param_int(
+        reinterpret_cast<mavsdk_param_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_subscribeChangedParamFloat(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ParamServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ChangedParamFloatCallbackWrapper(env, callback);
-
-    mavsdk_param_server_changed_param_float_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_param_server_subscribe_changed_param_float(
-            reinterpret_cast<mavsdk_param_server_t>(handle),            [](const mavsdk_param_server_float_param_t value, void* user_data) {
-                auto* w = static_cast<ChangedParamFloatCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_param_server_changed_param_float_handle_t,
-        ChangedParamFloatCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ParamServer.unsubscribeChangedParamFloat =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_unsubscribeChangedParamFloat(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_param_server_changed_param_float_handle_t,
-                  ChangedParamFloatCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_param_server_unsubscribe_changed_param_float(
             reinterpret_cast<mavsdk_param_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_param_server_float_param_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ChangedParamFloatCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_param_server_changed_param_float_handle_t,
+        ChangedParamFloatCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== ParamServer.subscribeChangedParamCustomNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_subscribeChangedParamCustomNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_unsubscribeChangedParamFloat(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ParamServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_param_server_changed_param_float_handle_t,
+        ChangedParamFloatCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_param_server_unsubscribe_changed_param_float(
+        reinterpret_cast<mavsdk_param_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_subscribeChangedParamCustom(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "ParamServer plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ChangedParamCustomCallbackWrapper(env, callback);
-
-    mavsdk_param_server_changed_param_custom_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_param_server_subscribe_changed_param_custom(
-            reinterpret_cast<mavsdk_param_server_t>(handle),            [](const mavsdk_param_server_custom_param_t value, void* user_data) {
-                auto* w = static_cast<ChangedParamCustomCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_param_server_changed_param_custom_handle_t,
-        ChangedParamCustomCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== ParamServer.unsubscribeChangedParamCustom =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_param_1server_ParamServer_unsubscribeChangedParamCustom(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/param_server/ParamServer");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_param_server_changed_param_custom_handle_t,
-                  ChangedParamCustomCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_param_server_unsubscribe_changed_param_custom(
             reinterpret_cast<mavsdk_param_server_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_param_server_custom_param_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ChangedParamCustomCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_param_server_changed_param_custom_handle_t,
+        ChangedParamCustomCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_param_1server_NativeParamServer_unsubscribeChangedParamCustom(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ParamServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_param_server_changed_param_custom_handle_t,
+        ChangedParamCustomCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_param_server_unsubscribe_changed_param_custom(
+        reinterpret_cast<mavsdk_param_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
 } // extern "C"

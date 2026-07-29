@@ -5,16 +5,14 @@
 package io.mavsdk.kotlin.plugins.shell
 
 import io.mavsdk.kotlin.System
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class Shell internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class Shell internal constructor(
+    private val native: ShellNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -24,33 +22,28 @@ class Shell internal constructor(private val handle: Long) : AutoCloseable {
         NO_RESPONSE(4),
         BUSY(5),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
     fun send(command: String): Result =
-        Result.fromValue(sendBlocking(command))
+        Result.fromValue(native.send(command))
 
     fun subscribeReceive(): Flow<String> = callbackFlow {
-        val callback = ReceiveCallback { value ->
+        val subscriptionHandle = native.subscribeReceive(
+                    ) { value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeReceiveNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeReceive(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeReceive(subscriptionHandle) }
     }
 
-    private fun interface ReceiveCallback { fun invoke(value: String) }
-
-    private external fun sendBlocking(command: String): Int
-    private external fun subscribeReceiveNative(callback: ReceiveCallback): Long
-    private external fun unsubscribeReceive(handle: Long)
-    private external fun destroy()
-
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class ShellException(
@@ -59,10 +52,18 @@ class Shell internal constructor(private val handle: Long) : AutoCloseable {
     ) : Exception(message)
 
     companion object {
-        fun create(system: System): Shell {
-            val handle = createNative(system.getHandle())
-            return Shell(handle).also { system.registerPlugin(it) }
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(system: System): Shell =
+            Shell(
+                createShellNative(system.getHandle())
+            ).also { system.registerPlugin(it) }
     }
 }
+
+internal interface ShellNative {
+    fun send(command: String): Int
+    fun subscribeReceive(callback: (String) -> Unit): Long
+    fun unsubscribeReceive(subscriptionHandle: Long)
+    fun destroy()
+}
+
+internal expect fun createShellNative(systemHandle: Long): ShellNative

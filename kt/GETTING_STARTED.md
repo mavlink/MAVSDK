@@ -50,13 +50,10 @@ cp /path/to/android/x86_64/libcmavsdk.so \
 
 **For Desktop:**
 
-First, build the JNI wrapper:
+First, build the repository-level JNI wrapper:
 ```bash
-cd mavsdk-kotlin
-mkdir -p build && cd build
-cmake ../src/androidMain/cpp -DCMAKE_BUILD_TYPE=Release
-make
-cd ..
+cmake -S ../jni -B ../jni/build -DCMAKE_BUILD_TYPE=Release
+cmake --build ../jni/build
 ```
 
 Then build the Kotlin library:
@@ -66,7 +63,8 @@ Then build the Kotlin library:
 
 **For Android:**
 
-The JNI build is automatic via `externalNativeBuild`:
+Build `cmavsdk` and `mavsdk-jni` for each Android ABI, place the libraries in
+`mavsdk-kotlin/src/androidMain/jniLibs/<abi>/`, then assemble:
 ```bash
 cd mavsdk-kotlin
 ./gradlew assembleDebug
@@ -94,12 +92,9 @@ mavsdk-kotlin-root/
 │   │   ├── jvmMain/            # Desktop JVM
 │   │   │   ├── kotlin/         # JVM-specific implementations
 │   │   │   └── resources/native/  # Where JNI libs go
+│   │   ├── jvmAndroidMain/     # Shared neutral-JNI adapters
 │   │   └── androidMain/
 │   │       ├── kotlin/         # Android-specific implementations
-│   │       ├── cpp/            # JNI C++ code
-│   │       │   ├── CMakeLists.txt
-│   │       │   ├── mavsdk_jni.cpp
-│   │       │   └── include/    # C headers from cmavsdk
 │   │       └── jniLibs/        # Prebuilt Android libs
 │   └── libs/                   # Desktop native libs
 │
@@ -242,7 +237,7 @@ The library loader will extract it to a temp file if needed.
 
 ### Android
 
-- Uses `externalNativeBuild` with CMake
+- Uses prebuilt `cmavsdk` and `mavsdk-jni` libraries
 - Native libraries go in `jniLibs/{ABI}/`
 - Supported ABIs: arm64-v8a, armeabi-v7a, x86_64
 - Minimum SDK: 24
@@ -273,10 +268,8 @@ Similar to macOS but with `.so` extension.
 
 **Desktop:**
 ```bash
-cd mavsdk-kotlin/build
-rm -rf *
-cmake ../src/androidMain/cpp
-make
+cmake -S ../jni -B ../jni/build
+cmake --build ../jni/build
 ```
 
 **Android:**

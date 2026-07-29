@@ -6,338 +6,1003 @@
 #include "cmavsdk/plugins/gimbal/gimbal.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct QuaternionFromJava;
+struct QuaternionArrayFromJava;
+struct EulerAngleFromJava;
+struct EulerAngleArrayFromJava;
+struct AngularVelocityBodyFromJava;
+struct AngularVelocityBodyArrayFromJava;
+struct AttitudeFromJava;
+struct AttitudeArrayFromJava;
+struct GimbalItemFromJava;
+struct GimbalItemArrayFromJava;
+struct GimbalListFromJava;
+struct GimbalListArrayFromJava;
+struct ControlStatusFromJava;
+struct ControlStatusArrayFromJava;
 
+struct QuaternionFromJava {
+    mavsdk_gimbal_quaternion_t value{};
 
-// ===== SetAngles Callback Wrapper =====
+    QuaternionFromJava(JNIEnv* env, jobject object);
+    ~QuaternionFromJava();
+};
+
+struct QuaternionArrayFromJava {
+    std::vector<std::unique_ptr<QuaternionFromJava>> holders;
+    std::vector<mavsdk_gimbal_quaternion_t> values;
+
+    QuaternionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<QuaternionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct EulerAngleFromJava {
+    mavsdk_gimbal_euler_angle_t value{};
+
+    EulerAngleFromJava(JNIEnv* env, jobject object);
+    ~EulerAngleFromJava();
+};
+
+struct EulerAngleArrayFromJava {
+    std::vector<std::unique_ptr<EulerAngleFromJava>> holders;
+    std::vector<mavsdk_gimbal_euler_angle_t> values;
+
+    EulerAngleArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<EulerAngleFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AngularVelocityBodyFromJava {
+    mavsdk_gimbal_angular_velocity_body_t value{};
+
+    AngularVelocityBodyFromJava(JNIEnv* env, jobject object);
+    ~AngularVelocityBodyFromJava();
+};
+
+struct AngularVelocityBodyArrayFromJava {
+    std::vector<std::unique_ptr<AngularVelocityBodyFromJava>> holders;
+    std::vector<mavsdk_gimbal_angular_velocity_body_t> values;
+
+    AngularVelocityBodyArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AngularVelocityBodyFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct AttitudeFromJava {
+    mavsdk_gimbal_attitude_t value{};
+    std::unique_ptr<EulerAngleFromJava> euler_angle_forwardValue;
+    std::unique_ptr<QuaternionFromJava> quaternion_forwardValue;
+    std::unique_ptr<EulerAngleFromJava> euler_angle_northValue;
+    std::unique_ptr<QuaternionFromJava> quaternion_northValue;
+    std::unique_ptr<AngularVelocityBodyFromJava> angular_velocityValue;
+
+    AttitudeFromJava(JNIEnv* env, jobject object);
+    ~AttitudeFromJava();
+};
+
+struct AttitudeArrayFromJava {
+    std::vector<std::unique_ptr<AttitudeFromJava>> holders;
+    std::vector<mavsdk_gimbal_attitude_t> values;
+
+    AttitudeArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<AttitudeFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct GimbalItemFromJava {
+    mavsdk_gimbal_gimbal_item_t value{};
+    std::string vendor_nameValue;
+    std::string model_nameValue;
+    std::string custom_nameValue;
+
+    GimbalItemFromJava(JNIEnv* env, jobject object);
+    ~GimbalItemFromJava();
+};
+
+struct GimbalItemArrayFromJava {
+    std::vector<std::unique_ptr<GimbalItemFromJava>> holders;
+    std::vector<mavsdk_gimbal_gimbal_item_t> values;
+
+    GimbalItemArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<GimbalItemFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct GimbalListFromJava {
+    mavsdk_gimbal_gimbal_list_t value{};
+    std::unique_ptr<GimbalItemArrayFromJava> gimbalsValues;
+
+    GimbalListFromJava(JNIEnv* env, jobject object);
+    ~GimbalListFromJava();
+};
+
+struct GimbalListArrayFromJava {
+    std::vector<std::unique_ptr<GimbalListFromJava>> holders;
+    std::vector<mavsdk_gimbal_gimbal_list_t> values;
+
+    GimbalListArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<GimbalListFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ControlStatusFromJava {
+    mavsdk_gimbal_control_status_t value{};
+
+    ControlStatusFromJava(JNIEnv* env, jobject object);
+    ~ControlStatusFromJava();
+};
+
+struct ControlStatusArrayFromJava {
+    std::vector<std::unique_ptr<ControlStatusFromJava>> holders;
+    std::vector<mavsdk_gimbal_control_status_t> values;
+
+    ControlStatusArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ControlStatusFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+QuaternionFromJava::QuaternionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID wField = env->GetFieldID(
+        clazz, "w", "F");
+    value.w =
+        static_cast<float>(env->GetFloatField(object, wField));
+    jfieldID xField = env->GetFieldID(
+        clazz, "x", "F");
+    value.x =
+        static_cast<float>(env->GetFloatField(object, xField));
+    jfieldID yField = env->GetFieldID(
+        clazz, "y", "F");
+    value.y =
+        static_cast<float>(env->GetFloatField(object, yField));
+    jfieldID zField = env->GetFieldID(
+        clazz, "z", "F");
+    value.z =
+        static_cast<float>(env->GetFloatField(object, zField));
+    env->DeleteLocalRef(clazz);
+}
+
+QuaternionFromJava::~QuaternionFromJava() = default;
+EulerAngleFromJava::EulerAngleFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID roll_degField = env->GetFieldID(
+        clazz, "rollDeg", "F");
+    value.roll_deg =
+        static_cast<float>(env->GetFloatField(object, roll_degField));
+    jfieldID pitch_degField = env->GetFieldID(
+        clazz, "pitchDeg", "F");
+    value.pitch_deg =
+        static_cast<float>(env->GetFloatField(object, pitch_degField));
+    jfieldID yaw_degField = env->GetFieldID(
+        clazz, "yawDeg", "F");
+    value.yaw_deg =
+        static_cast<float>(env->GetFloatField(object, yaw_degField));
+    env->DeleteLocalRef(clazz);
+}
+
+EulerAngleFromJava::~EulerAngleFromJava() = default;
+AngularVelocityBodyFromJava::AngularVelocityBodyFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID roll_rad_sField = env->GetFieldID(
+        clazz, "rollRadS", "F");
+    value.roll_rad_s =
+        static_cast<float>(env->GetFloatField(object, roll_rad_sField));
+    jfieldID pitch_rad_sField = env->GetFieldID(
+        clazz, "pitchRadS", "F");
+    value.pitch_rad_s =
+        static_cast<float>(env->GetFloatField(object, pitch_rad_sField));
+    jfieldID yaw_rad_sField = env->GetFieldID(
+        clazz, "yawRadS", "F");
+    value.yaw_rad_s =
+        static_cast<float>(env->GetFloatField(object, yaw_rad_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+AngularVelocityBodyFromJava::~AngularVelocityBodyFromJava() = default;
+AttitudeFromJava::AttitudeFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID gimbal_idField = env->GetFieldID(
+        clazz, "gimbalId", "I");
+    value.gimbal_id =
+        static_cast<int32_t>(env->GetIntField(object, gimbal_idField));
+    jfieldID euler_angle_forwardField = env->GetFieldID(
+        clazz, "eulerAngleForward", "Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$EulerAngle;");
+    jobject euler_angle_forwardObject =
+        env->GetObjectField(object, euler_angle_forwardField);
+    euler_angle_forwardValue =
+        std::make_unique<EulerAngleFromJava>(
+            env, euler_angle_forwardObject);
+    value.euler_angle_forward = euler_angle_forwardValue->value;
+    env->DeleteLocalRef(euler_angle_forwardObject);
+    jfieldID quaternion_forwardField = env->GetFieldID(
+        clazz, "quaternionForward", "Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$Quaternion;");
+    jobject quaternion_forwardObject =
+        env->GetObjectField(object, quaternion_forwardField);
+    quaternion_forwardValue =
+        std::make_unique<QuaternionFromJava>(
+            env, quaternion_forwardObject);
+    value.quaternion_forward = quaternion_forwardValue->value;
+    env->DeleteLocalRef(quaternion_forwardObject);
+    jfieldID euler_angle_northField = env->GetFieldID(
+        clazz, "eulerAngleNorth", "Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$EulerAngle;");
+    jobject euler_angle_northObject =
+        env->GetObjectField(object, euler_angle_northField);
+    euler_angle_northValue =
+        std::make_unique<EulerAngleFromJava>(
+            env, euler_angle_northObject);
+    value.euler_angle_north = euler_angle_northValue->value;
+    env->DeleteLocalRef(euler_angle_northObject);
+    jfieldID quaternion_northField = env->GetFieldID(
+        clazz, "quaternionNorth", "Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$Quaternion;");
+    jobject quaternion_northObject =
+        env->GetObjectField(object, quaternion_northField);
+    quaternion_northValue =
+        std::make_unique<QuaternionFromJava>(
+            env, quaternion_northObject);
+    value.quaternion_north = quaternion_northValue->value;
+    env->DeleteLocalRef(quaternion_northObject);
+    jfieldID angular_velocityField = env->GetFieldID(
+        clazz, "angularVelocity", "Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$AngularVelocityBody;");
+    jobject angular_velocityObject =
+        env->GetObjectField(object, angular_velocityField);
+    angular_velocityValue =
+        std::make_unique<AngularVelocityBodyFromJava>(
+            env, angular_velocityObject);
+    value.angular_velocity = angular_velocityValue->value;
+    env->DeleteLocalRef(angular_velocityObject);
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    env->DeleteLocalRef(clazz);
+}
+
+AttitudeFromJava::~AttitudeFromJava() = default;
+GimbalItemFromJava::GimbalItemFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID gimbal_idField = env->GetFieldID(
+        clazz, "gimbalId", "I");
+    value.gimbal_id =
+        static_cast<int32_t>(env->GetIntField(object, gimbal_idField));
+    jfieldID vendor_nameField = env->GetFieldID(
+        clazz, "vendorName", "Ljava/lang/String;");
+    auto vendor_nameString =
+        static_cast<jstring>(env->GetObjectField(object, vendor_nameField));
+    JStringHolder vendor_nameHolder(env, vendor_nameString);
+    vendor_nameValue =
+        vendor_nameHolder.c_str() ? vendor_nameHolder.c_str() : "";
+    value.vendor_name = const_cast<char*>(vendor_nameValue.c_str());
+    env->DeleteLocalRef(vendor_nameString);
+    jfieldID model_nameField = env->GetFieldID(
+        clazz, "modelName", "Ljava/lang/String;");
+    auto model_nameString =
+        static_cast<jstring>(env->GetObjectField(object, model_nameField));
+    JStringHolder model_nameHolder(env, model_nameString);
+    model_nameValue =
+        model_nameHolder.c_str() ? model_nameHolder.c_str() : "";
+    value.model_name = const_cast<char*>(model_nameValue.c_str());
+    env->DeleteLocalRef(model_nameString);
+    jfieldID custom_nameField = env->GetFieldID(
+        clazz, "customName", "Ljava/lang/String;");
+    auto custom_nameString =
+        static_cast<jstring>(env->GetObjectField(object, custom_nameField));
+    JStringHolder custom_nameHolder(env, custom_nameString);
+    custom_nameValue =
+        custom_nameHolder.c_str() ? custom_nameHolder.c_str() : "";
+    value.custom_name = const_cast<char*>(custom_nameValue.c_str());
+    env->DeleteLocalRef(custom_nameString);
+    jfieldID gimbal_manager_component_idField = env->GetFieldID(
+        clazz, "gimbalManagerComponentId", "I");
+    value.gimbal_manager_component_id =
+        static_cast<int32_t>(env->GetIntField(object, gimbal_manager_component_idField));
+    jfieldID gimbal_device_idField = env->GetFieldID(
+        clazz, "gimbalDeviceId", "I");
+    value.gimbal_device_id =
+        static_cast<int32_t>(env->GetIntField(object, gimbal_device_idField));
+    env->DeleteLocalRef(clazz);
+}
+
+GimbalItemFromJava::~GimbalItemFromJava() = default;
+GimbalListFromJava::GimbalListFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID gimbalsField = env->GetFieldID(
+        clazz, "gimbals", "[Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$GimbalItem;");
+    auto gimbalsArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, gimbalsField));
+    const jsize gimbalsCount =
+        gimbalsArray ? env->GetArrayLength(gimbalsArray) : 0;
+    gimbalsValues =
+        std::make_unique<GimbalItemArrayFromJava>(
+            env, gimbalsArray);
+    value.gimbals = gimbalsValues->values.data();
+    value.gimbals_size =
+        static_cast<size_t>(gimbalsCount);
+    env->DeleteLocalRef(gimbalsArray);
+    env->DeleteLocalRef(clazz);
+}
+
+GimbalListFromJava::~GimbalListFromJava() = default;
+ControlStatusFromJava::ControlStatusFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID gimbal_idField = env->GetFieldID(
+        clazz, "gimbalId", "I");
+    value.gimbal_id =
+        static_cast<int32_t>(env->GetIntField(object, gimbal_idField));
+    jfieldID control_modeField = env->GetFieldID(
+        clazz, "controlMode", "I");
+    value.control_mode =
+        static_cast<mavsdk_gimbal_control_mode_t>(env->GetIntField(object, control_modeField));
+    jfieldID sysid_primary_controlField = env->GetFieldID(
+        clazz, "sysidPrimaryControl", "I");
+    value.sysid_primary_control =
+        static_cast<int32_t>(env->GetIntField(object, sysid_primary_controlField));
+    jfieldID compid_primary_controlField = env->GetFieldID(
+        clazz, "compidPrimaryControl", "I");
+    value.compid_primary_control =
+        static_cast<int32_t>(env->GetIntField(object, compid_primary_controlField));
+    jfieldID sysid_secondary_controlField = env->GetFieldID(
+        clazz, "sysidSecondaryControl", "I");
+    value.sysid_secondary_control =
+        static_cast<int32_t>(env->GetIntField(object, sysid_secondary_controlField));
+    jfieldID compid_secondary_controlField = env->GetFieldID(
+        clazz, "compidSecondaryControl", "I");
+    value.compid_secondary_control =
+        static_cast<int32_t>(env->GetIntField(object, compid_secondary_controlField));
+    env->DeleteLocalRef(clazz);
+}
+
+ControlStatusFromJava::~ControlStatusFromJava() = default;
+
+jobject toJavaQuaternion(
+    JNIEnv* env, const mavsdk_gimbal_quaternion_t& value);
+jobjectArray toJavaQuaternionArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_quaternion_t* values,
+    size_t count);
+jobject toJavaEulerAngle(
+    JNIEnv* env, const mavsdk_gimbal_euler_angle_t& value);
+jobjectArray toJavaEulerAngleArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_euler_angle_t* values,
+    size_t count);
+jobject toJavaAngularVelocityBody(
+    JNIEnv* env, const mavsdk_gimbal_angular_velocity_body_t& value);
+jobjectArray toJavaAngularVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_angular_velocity_body_t* values,
+    size_t count);
+jobject toJavaAttitude(
+    JNIEnv* env, const mavsdk_gimbal_attitude_t& value);
+jobjectArray toJavaAttitudeArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_attitude_t* values,
+    size_t count);
+jobject toJavaGimbalItem(
+    JNIEnv* env, const mavsdk_gimbal_gimbal_item_t& value);
+jobjectArray toJavaGimbalItemArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_gimbal_item_t* values,
+    size_t count);
+jobject toJavaGimbalList(
+    JNIEnv* env, const mavsdk_gimbal_gimbal_list_t& value);
+jobjectArray toJavaGimbalListArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_gimbal_list_t* values,
+    size_t count);
+jobject toJavaControlStatus(
+    JNIEnv* env, const mavsdk_gimbal_control_status_t& value);
+jobjectArray toJavaControlStatusArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_control_status_t* values,
+    size_t count);
+
+jobject toJavaQuaternion(
+    JNIEnv* env, const mavsdk_gimbal_quaternion_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$Quaternion");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.w)
+        , static_cast<jfloat>(value.x)
+        , static_cast<jfloat>(value.y)
+        , static_cast<jfloat>(value.z)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaQuaternionArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_quaternion_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$Quaternion");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaQuaternion(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaEulerAngle(
+    JNIEnv* env, const mavsdk_gimbal_euler_angle_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$EulerAngle");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.roll_deg)
+        , static_cast<jfloat>(value.pitch_deg)
+        , static_cast<jfloat>(value.yaw_deg)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaEulerAngleArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_euler_angle_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$EulerAngle");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaEulerAngle(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAngularVelocityBody(
+    JNIEnv* env, const mavsdk_gimbal_angular_velocity_body_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$AngularVelocityBody");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(FFF)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jfloat>(value.roll_rad_s)
+        , static_cast<jfloat>(value.pitch_rad_s)
+        , static_cast<jfloat>(value.yaw_rad_s)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaAngularVelocityBodyArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_angular_velocity_body_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$AngularVelocityBody");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAngularVelocityBody(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaAttitude(
+    JNIEnv* env, const mavsdk_gimbal_attitude_t& value) {
+    jobject euler_angle_forwardValue =
+        toJavaEulerAngle(env, value.euler_angle_forward);
+    jobject quaternion_forwardValue =
+        toJavaQuaternion(env, value.quaternion_forward);
+    jobject euler_angle_northValue =
+        toJavaEulerAngle(env, value.euler_angle_north);
+    jobject quaternion_northValue =
+        toJavaQuaternion(env, value.quaternion_north);
+    jobject angular_velocityValue =
+        toJavaAngularVelocityBody(env, value.angular_velocity);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$Attitude");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILio/mavsdk/jni/plugins/gimbal/NativeGimbal$EulerAngle;Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$Quaternion;Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$EulerAngle;Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$Quaternion;Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$AngularVelocityBody;J)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.gimbal_id)
+        , euler_angle_forwardValue
+        , quaternion_forwardValue
+        , euler_angle_northValue
+        , quaternion_northValue
+        , angular_velocityValue
+        , static_cast<jlong>(value.timestamp_us)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(euler_angle_forwardValue);
+    env->DeleteLocalRef(quaternion_forwardValue);
+    env->DeleteLocalRef(euler_angle_northValue);
+    env->DeleteLocalRef(quaternion_northValue);
+    env->DeleteLocalRef(angular_velocityValue);
+    return result;
+}
+
+jobjectArray toJavaAttitudeArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_attitude_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$Attitude");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaAttitude(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaGimbalItem(
+    JNIEnv* env, const mavsdk_gimbal_gimbal_item_t& value) {
+    jstring vendor_nameValue =
+        toJavaString(env, value.vendor_name);
+    jstring model_nameValue =
+        toJavaString(env, value.model_name);
+    jstring custom_nameValue =
+        toJavaString(env, value.custom_name);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$GimbalItem");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;II)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.gimbal_id)
+        , vendor_nameValue
+        , model_nameValue
+        , custom_nameValue
+        , static_cast<jint>(value.gimbal_manager_component_id)
+        , static_cast<jint>(value.gimbal_device_id)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(vendor_nameValue);
+    env->DeleteLocalRef(model_nameValue);
+    env->DeleteLocalRef(custom_nameValue);
+    return result;
+}
+
+jobjectArray toJavaGimbalItemArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_gimbal_item_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$GimbalItem");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaGimbalItem(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaGimbalList(
+    JNIEnv* env, const mavsdk_gimbal_gimbal_list_t& value) {
+    jobjectArray gimbalsValue =
+        toJavaGimbalItemArray(
+            env, value.gimbals, value.gimbals_size);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$GimbalList");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$GimbalItem;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , gimbalsValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(gimbalsValue);
+    return result;
+}
+
+jobjectArray toJavaGimbalListArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_gimbal_list_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$GimbalList");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaGimbalList(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaControlStatus(
+    JNIEnv* env, const mavsdk_gimbal_control_status_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$ControlStatus");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(IIIIII)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.gimbal_id)
+        , static_cast<jint>(value.control_mode)
+        , static_cast<jint>(value.sysid_primary_control)
+        , static_cast<jint>(value.compid_primary_control)
+        , static_cast<jint>(value.sysid_secondary_control)
+        , static_cast<jint>(value.compid_secondary_control)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaControlStatusArray(
+    JNIEnv* env,
+    const mavsdk_gimbal_control_status_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/gimbal/NativeGimbal$ControlStatus");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaControlStatus(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct SetAnglesCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetAnglesCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetAnglesCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gimbal_result_t result) const {
+    void operator()(
+        const mavsdk_gimbal_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetAngularRates Callback Wrapper =====
 struct SetAngularRatesCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetAngularRatesCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetAngularRatesCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gimbal_result_t result) const {
+    void operator()(
+        const mavsdk_gimbal_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== SetRoiLocation Callback Wrapper =====
 struct SetRoiLocationCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    SetRoiLocationCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    SetRoiLocationCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gimbal_result_t result) const {
+    void operator()(
+        const mavsdk_gimbal_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== TakeControl Callback Wrapper =====
 struct TakeControlCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    TakeControlCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    TakeControlCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gimbal_result_t result) const {
+    void operator()(
+        const mavsdk_gimbal_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ReleaseControl Callback Wrapper =====
 struct ReleaseControlCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ReleaseControlCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ReleaseControlCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
+            jclass callbackClass = env->GetObjectClass(callbackObject);
             invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gimbal_result_t result) const {
+    void operator()(
+        const mavsdk_gimbal_result_t result    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result));
-
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== GimbalList Callback Wrapper =====
 struct GimbalListCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    GimbalListCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    GimbalListCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalList;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$GimbalList;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gimbal_gimbal_list_t value) const {
+    void operator()(
+        const mavsdk_gimbal_gimbal_list_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass arrayListClass_GimbalList = env->FindClass("java/util/ArrayList");
-        jmethodID arrayListCtor_GimbalList = env->GetMethodID(arrayListClass_GimbalList, "<init>", "()V");
-        jmethodID arrayListAdd_GimbalList = env->GetMethodID(arrayListClass_GimbalList, "add", "(Ljava/lang/Object;)Z");        jobject list_gimbals = env->NewObject(arrayListClass_GimbalList, arrayListCtor_GimbalList);
-        {
-            jclass elemClass_gimbals = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalItem");
-            jmethodID elemCtor_gimbals = env->GetMethodID(elemClass_gimbals, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;II)V");
-            for (size_t i = 0; i < value.gimbals_size; i++) {
-                jobject elem = env->NewObject(elemClass_gimbals, elemCtor_gimbals                    , static_cast<jint>(value.gimbals[i].gimbal_id)                    , toJavaString(env, value.gimbals[i].vendor_name)                    , toJavaString(env, value.gimbals[i].model_name)                    , toJavaString(env, value.gimbals[i].custom_name)                    , static_cast<jint>(value.gimbals[i].gimbal_manager_component_id)                    , static_cast<jint>(value.gimbals[i].gimbal_device_id)                );
-                env->CallBooleanMethod(list_gimbals, arrayListAdd_GimbalList, elem);
-                env->DeleteLocalRef(elem);
-            }
-            env->DeleteLocalRef(elemClass_gimbals);
-        }env->DeleteLocalRef(arrayListClass_GimbalList);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalList");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , list_gimbals        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_gimbals);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaGimbalList(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== ControlStatus Callback Wrapper =====
 struct ControlStatusCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    ControlStatusCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    ControlStatusCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$ControlStatus;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$ControlStatus;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gimbal_control_status_t value) const {
+    void operator()(
+        const mavsdk_gimbal_control_status_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$ControlStatus");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IIIIII)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.gimbal_id)            , static_cast<jint>(value.control_mode)            , static_cast<jint>(value.sysid_primary_control)            , static_cast<jint>(value.compid_primary_control)            , static_cast<jint>(value.sysid_secondary_control)            , static_cast<jint>(value.compid_secondary_control)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaControlStatus(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
         }
     }
 };
-
-// ===== Attitude Callback Wrapper =====
 struct AttitudeCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    AttitudeCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    AttitudeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Attitude;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/gimbal/NativeGimbal$Attitude;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_gimbal_attitude_t value) const {
+    void operator()(
+        const mavsdk_gimbal_attitude_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jobject nestedObj_euler_angle_forward = nullptr;
-        {            jclass nestedClass_euler_angle_forward = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle");
-            jmethodID nestedCtor_euler_angle_forward = env->GetMethodID(nestedClass_euler_angle_forward, "<init>", "(FFF)V");
-            nestedObj_euler_angle_forward = env->NewObject(nestedClass_euler_angle_forward, nestedCtor_euler_angle_forward                , static_cast<jfloat>(value.euler_angle_forward.roll_deg)                , static_cast<jfloat>(value.euler_angle_forward.pitch_deg)                , static_cast<jfloat>(value.euler_angle_forward.yaw_deg)            );
-            env->DeleteLocalRef(nestedClass_euler_angle_forward);        }        jobject nestedObj_quaternion_forward = nullptr;
-        {            jclass nestedClass_quaternion_forward = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion");
-            jmethodID nestedCtor_quaternion_forward = env->GetMethodID(nestedClass_quaternion_forward, "<init>", "(FFFF)V");
-            nestedObj_quaternion_forward = env->NewObject(nestedClass_quaternion_forward, nestedCtor_quaternion_forward                , static_cast<jfloat>(value.quaternion_forward.w)                , static_cast<jfloat>(value.quaternion_forward.x)                , static_cast<jfloat>(value.quaternion_forward.y)                , static_cast<jfloat>(value.quaternion_forward.z)            );
-            env->DeleteLocalRef(nestedClass_quaternion_forward);        }        jobject nestedObj_euler_angle_north = nullptr;
-        {            jclass nestedClass_euler_angle_north = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle");
-            jmethodID nestedCtor_euler_angle_north = env->GetMethodID(nestedClass_euler_angle_north, "<init>", "(FFF)V");
-            nestedObj_euler_angle_north = env->NewObject(nestedClass_euler_angle_north, nestedCtor_euler_angle_north                , static_cast<jfloat>(value.euler_angle_north.roll_deg)                , static_cast<jfloat>(value.euler_angle_north.pitch_deg)                , static_cast<jfloat>(value.euler_angle_north.yaw_deg)            );
-            env->DeleteLocalRef(nestedClass_euler_angle_north);        }        jobject nestedObj_quaternion_north = nullptr;
-        {            jclass nestedClass_quaternion_north = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion");
-            jmethodID nestedCtor_quaternion_north = env->GetMethodID(nestedClass_quaternion_north, "<init>", "(FFFF)V");
-            nestedObj_quaternion_north = env->NewObject(nestedClass_quaternion_north, nestedCtor_quaternion_north                , static_cast<jfloat>(value.quaternion_north.w)                , static_cast<jfloat>(value.quaternion_north.x)                , static_cast<jfloat>(value.quaternion_north.y)                , static_cast<jfloat>(value.quaternion_north.z)            );
-            env->DeleteLocalRef(nestedClass_quaternion_north);        }        jobject nestedObj_angular_velocity = nullptr;
-        {            jclass nestedClass_angular_velocity = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$AngularVelocityBody");
-            jmethodID nestedCtor_angular_velocity = env->GetMethodID(nestedClass_angular_velocity, "<init>", "(FFF)V");
-            nestedObj_angular_velocity = env->NewObject(nestedClass_angular_velocity, nestedCtor_angular_velocity                , static_cast<jfloat>(value.angular_velocity.roll_rad_s)                , static_cast<jfloat>(value.angular_velocity.pitch_rad_s)                , static_cast<jfloat>(value.angular_velocity.yaw_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Attitude");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$AngularVelocityBody;J)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.gimbal_id)            , nestedObj_euler_angle_forward            , nestedObj_quaternion_forward            , nestedObj_euler_angle_north            , nestedObj_quaternion_north            , nestedObj_angular_velocity            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_euler_angle_forward);        env->DeleteLocalRef(nestedObj_quaternion_forward);        env->DeleteLocalRef(nestedObj_euler_angle_north);        env->DeleteLocalRef(nestedObj_quaternion_north);        env->DeleteLocalRef(nestedObj_angular_velocity);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaAttitude(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -345,78 +1010,68 @@ struct AttitudeCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Gimbal.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_gimbal_t handle = mavsdk_gimbal_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Gimbal plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Gimbal.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return;
-
-    mavsdk_gimbal_destroy(reinterpret_cast<mavsdk_gimbal_t>(handle));
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return;
+    }
+    mavsdk_gimbal_destroy(
+        reinterpret_cast<mavsdk_gimbal_t>(handle));
 }
 
-
-// ===== Gimbal.set_anglesBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_setAnglesBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_setAngles(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jfloat roll_deg,
     jfloat pitch_deg,
     jfloat yaw_deg,
     jint gimbal_mode,
     jint send_mode) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return MAVSDK_GIMBAL_RESULT_UNKNOWN;
-
-
-    mavsdk_gimbal_result_t result = mavsdk_gimbal_set_angles(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),
-        gimbal_id,
-        roll_deg,
-        pitch_deg,
-        yaw_deg,
-        static_cast<mavsdk_gimbal_gimbal_mode_t>(gimbal_mode),
-        static_cast<mavsdk_gimbal_send_mode_t>(send_mode)    );
-
+    mavsdk_gimbal_result_t result =
+        mavsdk_gimbal_set_angles(
+            reinterpret_cast<mavsdk_gimbal_t>(handle),
+            static_cast<int32_t>(gimbal_id),
+            static_cast<float>(roll_deg),
+            static_cast<float>(pitch_deg),
+            static_cast<float>(yaw_deg),
+            static_cast<mavsdk_gimbal_gimbal_mode_t>(gimbal_mode),
+            static_cast<mavsdk_gimbal_send_mode_t>(send_mode));
     return static_cast<jint>(result);
 }
 
-// ===== Gimbal.set_anglesAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_setAnglesAsyncNative(
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_setAnglesAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jfloat roll_deg,
     jfloat pitch_deg,
@@ -424,57 +1079,61 @@ Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_setAnglesAsyncNative(
     jint gimbal_mode,
     jint send_mode,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Gimbal plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetAnglesCallbackWrapper(env, callback);
-
     mavsdk_gimbal_set_angles_async(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),        gimbal_id,        roll_deg,        pitch_deg,        yaw_deg,        static_cast<mavsdk_gimbal_gimbal_mode_t>(gimbal_mode),        static_cast<mavsdk_gimbal_send_mode_t>(send_mode),        [](const mavsdk_gimbal_result_t result, void* user_data) {
-            auto* w = static_cast<SetAnglesCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_gimbal_t>(handle),
+        static_cast<int32_t>(gimbal_id),
+        static_cast<float>(roll_deg),
+        static_cast<float>(pitch_deg),
+        static_cast<float>(yaw_deg),
+        static_cast<mavsdk_gimbal_gimbal_mode_t>(gimbal_mode),
+        static_cast<mavsdk_gimbal_send_mode_t>(send_mode),
+        [](const mavsdk_gimbal_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetAnglesCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Gimbal.set_angular_ratesBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_setAngularRatesBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_setAngularRates(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jfloat roll_rate_deg_s,
     jfloat pitch_rate_deg_s,
     jfloat yaw_rate_deg_s,
     jint gimbal_mode,
     jint send_mode) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return MAVSDK_GIMBAL_RESULT_UNKNOWN;
-
-
-    mavsdk_gimbal_result_t result = mavsdk_gimbal_set_angular_rates(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),
-        gimbal_id,
-        roll_rate_deg_s,
-        pitch_rate_deg_s,
-        yaw_rate_deg_s,
-        static_cast<mavsdk_gimbal_gimbal_mode_t>(gimbal_mode),
-        static_cast<mavsdk_gimbal_send_mode_t>(send_mode)    );
-
+    mavsdk_gimbal_result_t result =
+        mavsdk_gimbal_set_angular_rates(
+            reinterpret_cast<mavsdk_gimbal_t>(handle),
+            static_cast<int32_t>(gimbal_id),
+            static_cast<float>(roll_rate_deg_s),
+            static_cast<float>(pitch_rate_deg_s),
+            static_cast<float>(yaw_rate_deg_s),
+            static_cast<mavsdk_gimbal_gimbal_mode_t>(gimbal_mode),
+            static_cast<mavsdk_gimbal_send_mode_t>(send_mode));
     return static_cast<jint>(result);
 }
 
-// ===== Gimbal.set_angular_ratesAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_setAngularRatesAsyncNative(
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_setAngularRatesAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jfloat roll_rate_deg_s,
     jfloat pitch_rate_deg_s,
@@ -482,454 +1141,388 @@ Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_setAngularRatesAsyncNative(
     jint gimbal_mode,
     jint send_mode,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Gimbal plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetAngularRatesCallbackWrapper(env, callback);
-
     mavsdk_gimbal_set_angular_rates_async(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),        gimbal_id,        roll_rate_deg_s,        pitch_rate_deg_s,        yaw_rate_deg_s,        static_cast<mavsdk_gimbal_gimbal_mode_t>(gimbal_mode),        static_cast<mavsdk_gimbal_send_mode_t>(send_mode),        [](const mavsdk_gimbal_result_t result, void* user_data) {
-            auto* w = static_cast<SetAngularRatesCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_gimbal_t>(handle),
+        static_cast<int32_t>(gimbal_id),
+        static_cast<float>(roll_rate_deg_s),
+        static_cast<float>(pitch_rate_deg_s),
+        static_cast<float>(yaw_rate_deg_s),
+        static_cast<mavsdk_gimbal_gimbal_mode_t>(gimbal_mode),
+        static_cast<mavsdk_gimbal_send_mode_t>(send_mode),
+        [](const mavsdk_gimbal_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetAngularRatesCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Gimbal.set_roi_locationBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_setRoiLocationBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_setRoiLocation(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jdouble latitude_deg,
     jdouble longitude_deg,
     jfloat altitude_m) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return MAVSDK_GIMBAL_RESULT_UNKNOWN;
-
-
-    mavsdk_gimbal_result_t result = mavsdk_gimbal_set_roi_location(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),
-        gimbal_id,
-        latitude_deg,
-        longitude_deg,
-        altitude_m    );
-
+    mavsdk_gimbal_result_t result =
+        mavsdk_gimbal_set_roi_location(
+            reinterpret_cast<mavsdk_gimbal_t>(handle),
+            static_cast<int32_t>(gimbal_id),
+            static_cast<double>(latitude_deg),
+            static_cast<double>(longitude_deg),
+            static_cast<float>(altitude_m));
     return static_cast<jint>(result);
 }
 
-// ===== Gimbal.set_roi_locationAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_setRoiLocationAsyncNative(
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_setRoiLocationAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jdouble latitude_deg,
     jdouble longitude_deg,
     jfloat altitude_m,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Gimbal plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new SetRoiLocationCallbackWrapper(env, callback);
-
     mavsdk_gimbal_set_roi_location_async(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),        gimbal_id,        latitude_deg,        longitude_deg,        altitude_m,        [](const mavsdk_gimbal_result_t result, void* user_data) {
-            auto* w = static_cast<SetRoiLocationCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_gimbal_t>(handle),
+        static_cast<int32_t>(gimbal_id),
+        static_cast<double>(latitude_deg),
+        static_cast<double>(longitude_deg),
+        static_cast<float>(altitude_m),
+        [](const mavsdk_gimbal_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRoiLocationCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Gimbal.take_controlBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_takeControlBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_takeControl(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jint control_mode) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return MAVSDK_GIMBAL_RESULT_UNKNOWN;
-
-
-    mavsdk_gimbal_result_t result = mavsdk_gimbal_take_control(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),
-        gimbal_id,
-        static_cast<mavsdk_gimbal_control_mode_t>(control_mode)    );
-
+    mavsdk_gimbal_result_t result =
+        mavsdk_gimbal_take_control(
+            reinterpret_cast<mavsdk_gimbal_t>(handle),
+            static_cast<int32_t>(gimbal_id),
+            static_cast<mavsdk_gimbal_control_mode_t>(control_mode));
     return static_cast<jint>(result);
 }
 
-// ===== Gimbal.take_controlAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_takeControlAsyncNative(
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_takeControlAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jint control_mode,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Gimbal plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new TakeControlCallbackWrapper(env, callback);
-
     mavsdk_gimbal_take_control_async(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),        gimbal_id,        static_cast<mavsdk_gimbal_control_mode_t>(control_mode),        [](const mavsdk_gimbal_result_t result, void* user_data) {
-            auto* w = static_cast<TakeControlCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
+        reinterpret_cast<mavsdk_gimbal_t>(handle),
+        static_cast<int32_t>(gimbal_id),
+        static_cast<mavsdk_gimbal_control_mode_t>(control_mode),
+        [](const mavsdk_gimbal_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<TakeControlCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
         },
-        wrapper
-    );
+        wrapper);
 }
 
-
-// ===== Gimbal.release_controlBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_releaseControlBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_releaseControl(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return MAVSDK_GIMBAL_RESULT_UNKNOWN;
-
-
-    mavsdk_gimbal_result_t result = mavsdk_gimbal_release_control(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),
-        gimbal_id    );
-
+    mavsdk_gimbal_result_t result =
+        mavsdk_gimbal_release_control(
+            reinterpret_cast<mavsdk_gimbal_t>(handle),
+            static_cast<int32_t>(gimbal_id));
     return static_cast<jint>(result);
 }
 
-// ===== Gimbal.release_controlAsyncNative =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_releaseControlAsyncNative(
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_releaseControlAsync(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jint gimbal_id,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !callback) return;
-
+    if (!requireHandle(env, handle, "Gimbal plugin") || !callback) {
+        return;
+    }
 
     auto* wrapper = new ReleaseControlCallbackWrapper(env, callback);
-
     mavsdk_gimbal_release_control_async(
-        reinterpret_cast<mavsdk_gimbal_t>(handle),        gimbal_id,        [](const mavsdk_gimbal_result_t result, void* user_data) {
-            auto* w = static_cast<ReleaseControlCallbackWrapper*>(user_data);
-            (*w)(result);
-            delete w;
-        },
-        wrapper
-    );
-}
-
-
-// ===== Gimbal.gimbal_listBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_gimbalListBlocking(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return {};
-
-
-    mavsdk_gimbal_gimbal_list_t ret_val{};
-    mavsdk_gimbal_gimbal_list(
         reinterpret_cast<mavsdk_gimbal_t>(handle),
-        &ret_val
-    );
-
-        jclass arrayListClass_GimbalList = env->FindClass("java/util/ArrayList");
-        jmethodID arrayListCtor_GimbalList = env->GetMethodID(arrayListClass_GimbalList, "<init>", "()V");
-        jmethodID arrayListAdd_GimbalList = env->GetMethodID(arrayListClass_GimbalList, "add", "(Ljava/lang/Object;)Z");        jobject list_gimbals = env->NewObject(arrayListClass_GimbalList, arrayListCtor_GimbalList);
-        {
-            jclass elemClass_gimbals = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalItem");
-            jmethodID elemCtor_gimbals = env->GetMethodID(elemClass_gimbals, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;II)V");
-            for (size_t i = 0; i < ret_val.gimbals_size; i++) {
-                jobject elem = env->NewObject(elemClass_gimbals, elemCtor_gimbals                    , static_cast<jint>(ret_val.gimbals[i].gimbal_id)                    , toJavaString(env, ret_val.gimbals[i].vendor_name)                    , toJavaString(env, ret_val.gimbals[i].model_name)                    , toJavaString(env, ret_val.gimbals[i].custom_name)                    , static_cast<jint>(ret_val.gimbals[i].gimbal_manager_component_id)                    , static_cast<jint>(ret_val.gimbals[i].gimbal_device_id)                );
-                env->CallBooleanMethod(list_gimbals, arrayListAdd_GimbalList, elem);
-                env->DeleteLocalRef(elem);
-            }
-            env->DeleteLocalRef(elemClass_gimbals);
-        }env->DeleteLocalRef(arrayListClass_GimbalList);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalList");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , list_gimbals        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_gimbals);
-    mavsdk_gimbal_gimbal_list_destroy(&ret_val);
-    return retObj;
+        static_cast<int32_t>(gimbal_id),
+        [](const mavsdk_gimbal_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<ReleaseControlCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
+        },
+        wrapper);
 }
 
-// ===== Gimbal.subscribeGimbalListNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_subscribeGimbalListNative(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_gimbalList(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return {};
+    }
+
+    mavsdk_gimbal_gimbal_list_t returnValue{};
+        mavsdk_gimbal_gimbal_list(
+            reinterpret_cast<mavsdk_gimbal_t>(handle),
+            &returnValue);
+    jobject javaResult =
+        toJavaGimbalList(env, returnValue);
+    mavsdk_gimbal_gimbal_list_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_subscribeGimbalList(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Gimbal plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new GimbalListCallbackWrapper(env, callback);
-
-    mavsdk_gimbal_gimbal_list_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_gimbal_subscribe_gimbal_list(
-            reinterpret_cast<mavsdk_gimbal_t>(handle),            [](const mavsdk_gimbal_gimbal_list_t value, void* user_data) {
-                auto* w = static_cast<GimbalListCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_gimbal_gimbal_list_handle_t,
-        GimbalListCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Gimbal.unsubscribeGimbalList =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_unsubscribeGimbalList(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_gimbal_gimbal_list_handle_t,
-                  GimbalListCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_gimbal_unsubscribe_gimbal_list(
             reinterpret_cast<mavsdk_gimbal_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_gimbal_gimbal_list_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<GimbalListCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_gimbal_gimbal_list_handle_t,
+        GimbalListCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== Gimbal.subscribeControlStatusNative =====
-JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_subscribeControlStatusNative(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_unsubscribeGimbalList(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Gimbal plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_gimbal_gimbal_list_handle_t,
+        GimbalListCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_gimbal_unsubscribe_gimbal_list(
+        reinterpret_cast<mavsdk_gimbal_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_subscribeControlStatus(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Gimbal plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new ControlStatusCallbackWrapper(env, callback);
-
-    mavsdk_gimbal_control_status_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_gimbal_subscribe_control_status(
-            reinterpret_cast<mavsdk_gimbal_t>(handle),            [](const mavsdk_gimbal_control_status_t value, void* user_data) {
-                auto* w = static_cast<ControlStatusCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_gimbal_control_status_handle_t,
-        ControlStatusCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Gimbal.unsubscribeControlStatus =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_unsubscribeControlStatus(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_gimbal_control_status_handle_t,
-                  ControlStatusCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_gimbal_unsubscribe_control_status(
             reinterpret_cast<mavsdk_gimbal_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_gimbal_control_status_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ControlStatusCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_gimbal_control_status_handle_t,
+        ControlStatusCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== Gimbal.get_control_statusBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_getControlStatusBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_unsubscribeControlStatus(
     JNIEnv* env,
-    jobject obj,
-    jint gimbal_id) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return {};
-
-
-    mavsdk_gimbal_control_status_t ret_val{};
-    mavsdk_gimbal_result_t result = mavsdk_gimbal_get_control_status(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Gimbal plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_gimbal_control_status_handle_t,
+        ControlStatusCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_gimbal_unsubscribe_control_status(
         reinterpret_cast<mavsdk_gimbal_t>(handle),
-        gimbal_id,
-        &ret_val
-    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_getControlStatus(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint gimbal_id) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return {};
+    }
+
+    mavsdk_gimbal_control_status_t returnValue{};
+    mavsdk_gimbal_result_t result =
+        mavsdk_gimbal_get_control_status(
+            reinterpret_cast<mavsdk_gimbal_t>(handle),
+            static_cast<int32_t>(gimbal_id),
+            &returnValue);
     if (result != MAVSDK_GIMBAL_RESULT_SUCCESS) {
+        mavsdk_gimbal_control_status_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "get_control_status failed");
         return nullptr;
     }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$ControlStatus");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IIIIII)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.gimbal_id)            , static_cast<jint>(ret_val.control_mode)            , static_cast<jint>(ret_val.sysid_primary_control)            , static_cast<jint>(ret_val.compid_primary_control)            , static_cast<jint>(ret_val.sysid_secondary_control)            , static_cast<jint>(ret_val.compid_secondary_control)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_gimbal_control_status_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaControlStatus(env, returnValue);
+    mavsdk_gimbal_control_status_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== Gimbal.subscribeAttitudeNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_subscribeAttitudeNative(
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_subscribeAttitude(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Gimbal plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new AttitudeCallbackWrapper(env, callback);
-
-    mavsdk_gimbal_attitude_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_gimbal_subscribe_attitude(
-            reinterpret_cast<mavsdk_gimbal_t>(handle),            [](const mavsdk_gimbal_attitude_t value, void* user_data) {
-                auto* w = static_cast<AttitudeCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_gimbal_attitude_handle_t,
-        AttitudeCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Gimbal.unsubscribeAttitude =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_unsubscribeAttitude(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_gimbal_attitude_handle_t,
-                  AttitudeCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_gimbal_unsubscribe_attitude(
             reinterpret_cast<mavsdk_gimbal_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_gimbal_attitude_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<AttitudeCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_gimbal_attitude_handle_t,
+        AttitudeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
-
-// ===== Gimbal.get_attitudeBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_getAttitudeBlocking(
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_unsubscribeAttitude(
     JNIEnv* env,
-    jobject obj,
-    jint gimbal_id) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/gimbal/Gimbal");
-    if (!handle) return {};
-
-
-    mavsdk_gimbal_attitude_t ret_val{};
-    mavsdk_gimbal_result_t result = mavsdk_gimbal_get_attitude(
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Gimbal plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_gimbal_attitude_handle_t,
+        AttitudeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_gimbal_unsubscribe_attitude(
         reinterpret_cast<mavsdk_gimbal_t>(handle),
-        gimbal_id,
-        &ret_val
-    );
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_gimbal_NativeGimbal_getAttitude(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint gimbal_id) {
+    if (!requireHandle(env, handle, "Gimbal plugin")) {
+        return {};
+    }
+
+    mavsdk_gimbal_attitude_t returnValue{};
+    mavsdk_gimbal_result_t result =
+        mavsdk_gimbal_get_attitude(
+            reinterpret_cast<mavsdk_gimbal_t>(handle),
+            static_cast<int32_t>(gimbal_id),
+            &returnValue);
     if (result != MAVSDK_GIMBAL_RESULT_SUCCESS) {
+        mavsdk_gimbal_attitude_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "get_attitude failed");
         return nullptr;
     }
-
-        jobject nestedObj_euler_angle_forward = nullptr;
-        {            jclass nestedClass_euler_angle_forward = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle");
-            jmethodID nestedCtor_euler_angle_forward = env->GetMethodID(nestedClass_euler_angle_forward, "<init>", "(FFF)V");
-            nestedObj_euler_angle_forward = env->NewObject(nestedClass_euler_angle_forward, nestedCtor_euler_angle_forward                , static_cast<jfloat>(ret_val.euler_angle_forward.roll_deg)                , static_cast<jfloat>(ret_val.euler_angle_forward.pitch_deg)                , static_cast<jfloat>(ret_val.euler_angle_forward.yaw_deg)            );
-            env->DeleteLocalRef(nestedClass_euler_angle_forward);        }        jobject nestedObj_quaternion_forward = nullptr;
-        {            jclass nestedClass_quaternion_forward = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion");
-            jmethodID nestedCtor_quaternion_forward = env->GetMethodID(nestedClass_quaternion_forward, "<init>", "(FFFF)V");
-            nestedObj_quaternion_forward = env->NewObject(nestedClass_quaternion_forward, nestedCtor_quaternion_forward                , static_cast<jfloat>(ret_val.quaternion_forward.w)                , static_cast<jfloat>(ret_val.quaternion_forward.x)                , static_cast<jfloat>(ret_val.quaternion_forward.y)                , static_cast<jfloat>(ret_val.quaternion_forward.z)            );
-            env->DeleteLocalRef(nestedClass_quaternion_forward);        }        jobject nestedObj_euler_angle_north = nullptr;
-        {            jclass nestedClass_euler_angle_north = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle");
-            jmethodID nestedCtor_euler_angle_north = env->GetMethodID(nestedClass_euler_angle_north, "<init>", "(FFF)V");
-            nestedObj_euler_angle_north = env->NewObject(nestedClass_euler_angle_north, nestedCtor_euler_angle_north                , static_cast<jfloat>(ret_val.euler_angle_north.roll_deg)                , static_cast<jfloat>(ret_val.euler_angle_north.pitch_deg)                , static_cast<jfloat>(ret_val.euler_angle_north.yaw_deg)            );
-            env->DeleteLocalRef(nestedClass_euler_angle_north);        }        jobject nestedObj_quaternion_north = nullptr;
-        {            jclass nestedClass_quaternion_north = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion");
-            jmethodID nestedCtor_quaternion_north = env->GetMethodID(nestedClass_quaternion_north, "<init>", "(FFFF)V");
-            nestedObj_quaternion_north = env->NewObject(nestedClass_quaternion_north, nestedCtor_quaternion_north                , static_cast<jfloat>(ret_val.quaternion_north.w)                , static_cast<jfloat>(ret_val.quaternion_north.x)                , static_cast<jfloat>(ret_val.quaternion_north.y)                , static_cast<jfloat>(ret_val.quaternion_north.z)            );
-            env->DeleteLocalRef(nestedClass_quaternion_north);        }        jobject nestedObj_angular_velocity = nullptr;
-        {            jclass nestedClass_angular_velocity = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$AngularVelocityBody");
-            jmethodID nestedCtor_angular_velocity = env->GetMethodID(nestedClass_angular_velocity, "<init>", "(FFF)V");
-            nestedObj_angular_velocity = env->NewObject(nestedClass_angular_velocity, nestedCtor_angular_velocity                , static_cast<jfloat>(ret_val.angular_velocity.roll_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity.pitch_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity.yaw_rad_s)            );
-            env->DeleteLocalRef(nestedClass_angular_velocity);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Attitude");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$AngularVelocityBody;J)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.gimbal_id)            , nestedObj_euler_angle_forward            , nestedObj_quaternion_forward            , nestedObj_euler_angle_north            , nestedObj_quaternion_north            , nestedObj_angular_velocity            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_euler_angle_forward);        env->DeleteLocalRef(nestedObj_quaternion_forward);        env->DeleteLocalRef(nestedObj_euler_angle_north);        env->DeleteLocalRef(nestedObj_quaternion_north);        env->DeleteLocalRef(nestedObj_angular_velocity);
-    mavsdk_gimbal_attitude_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaAttitude(env, returnValue);
+    mavsdk_gimbal_attitude_destroy(&returnValue);
+    return javaResult;
 }
-
 
 } // extern "C"

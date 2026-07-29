@@ -6,72 +6,69 @@
 #include "cmavsdk/plugins/ftp_server/ftp_server.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
 
+
+
+
+
+
+} // namespace
 
 extern "C" {
 
-// ===== FtpServer.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_1server_FtpServer_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_ftp_1server_NativeFtpServer_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_ftp_server_t handle = mavsdk_ftp_server_create(
         reinterpret_cast<mavsdk_server_component_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create FtpServer plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== FtpServer.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_1server_FtpServer_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp_server/FtpServer");
-    if (!handle) return;
-
-    mavsdk_ftp_server_destroy(reinterpret_cast<mavsdk_ftp_server_t>(handle));
+Java_io_mavsdk_jni_plugins_ftp_1server_NativeFtpServer_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "FtpServer plugin")) {
+        return;
+    }
+    mavsdk_ftp_server_destroy(
+        reinterpret_cast<mavsdk_ftp_server_t>(handle));
 }
 
-
-// ===== FtpServer.set_root_dirBlocking =====
-JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_plugins_ftp_1server_FtpServer_setRootDirBlocking(
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_ftp_1server_NativeFtpServer_setRootDir(
     JNIEnv* env,
-    jobject obj,
-    jstring path) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp_server/FtpServer");
-    if (!handle) return MAVSDK_FTP_SERVER_RESULT_UNKNOWN;
-
-    JStringHolder path_holder(env, path);
-
-    mavsdk_ftp_server_result_t result = mavsdk_ftp_server_set_root_dir(
-        reinterpret_cast<mavsdk_ftp_server_t>(handle),
-        const_cast<char*>(path_holder.c_str())    );
-
+    jclass,
+    jlong handle,
+    jobject path) {
+    if (!requireHandle(env, handle, "FtpServer plugin")) {
+        return {};
+    }
+    JStringHolder pathHolder(
+        env, static_cast<jstring>(path));
+    mavsdk_ftp_server_result_t result =
+        mavsdk_ftp_server_set_root_dir(
+            reinterpret_cast<mavsdk_ftp_server_t>(handle),
+            const_cast<char*>(pathHolder.c_str()));
     return static_cast<jint>(result);
 }
-
 
 } // extern "C"

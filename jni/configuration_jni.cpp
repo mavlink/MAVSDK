@@ -6,129 +6,97 @@ using namespace mavsdk::jni;
 
 extern "C" {
 
-// Configuration.createWithComponentType
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_Configuration_createWithComponentType(
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_NativeConfiguration_createWithComponentType(
     JNIEnv* env,
-    jclass clazz,
-    jobject componentType) {
+    jobject,
+    jint component_type) {
 
-    // Get the component type value
-    jclass enumClass = env->GetObjectClass(componentType);
-    jmethodID getValueMethod = env->GetMethodID(enumClass, "getValue", "()I");
-    jint componentTypeValue = env->CallIntMethod(componentType, getValueMethod);
-    env->DeleteLocalRef(enumClass);
-
-    // Create configuration
-    mavsdk_configuration_t handle = mavsdk_configuration_create_with_component_type(
-        static_cast<mavsdk_component_type_t>(componentTypeValue));
-
+    const auto handle = mavsdk_configuration_create_with_component_type(
+        static_cast<mavsdk_component_type_t>(component_type));
     if (!handle) {
-        throwMavsdkError(env, "OperationError", "Failed to create configuration");
-        return nullptr;
+        throwMavsdkError(env, "Failed to create configuration");
+        return 0;
     }
-
-    // Create Configuration object
-    jclass configClass = env->FindClass("io/mavsdk/kotlin/Configuration");
-    jmethodID constructor = env->GetMethodID(configClass, "<init>", "(J)V");
-    jobject configObj = env->NewObject(configClass, constructor, reinterpret_cast<jlong>(handle));
-    
-    env->DeleteLocalRef(configClass);
-    return configObj;
+    return reinterpret_cast<jlong>(handle);
 }
 
-// Configuration.createManual
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_Configuration_createManual(
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_NativeConfiguration_createManual(
     JNIEnv* env,
-    jclass clazz,
-    jint systemId,
-    jint componentId,
-    jboolean alwaysSendHeartbeats) {
+    jobject,
+    jint system_id,
+    jint component_id,
+    jboolean always_send_heartbeats) {
 
-    mavsdk_configuration_t handle = mavsdk_configuration_create_manual(
-        static_cast<uint8_t>(systemId),
-        static_cast<uint8_t>(componentId),
-        alwaysSendHeartbeats);
-
+    const auto handle = mavsdk_configuration_create_manual(
+        static_cast<uint8_t>(system_id),
+        static_cast<uint8_t>(component_id),
+        always_send_heartbeats);
     if (!handle) {
-        throwMavsdkError(env, "OperationError", "Failed to create configuration");
-        return nullptr;
+        throwMavsdkError(env, "Failed to create configuration");
+        return 0;
     }
-
-    // Create Configuration object
-    jclass configClass = env->FindClass("io/mavsdk/kotlin/Configuration");
-    jmethodID constructor = env->GetMethodID(configClass, "<init>", "(J)V");
-    jobject configObj = env->NewObject(configClass, constructor, reinterpret_cast<jlong>(handle));
-    
-    env->DeleteLocalRef(configClass);
-    return configObj;
+    return reinterpret_cast<jlong>(handle);
 }
 
-// Configuration.getSystemIdNative
 JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_Configuration_getSystemIdNative(
+Java_io_mavsdk_jni_NativeConfiguration_getSystemId(
     JNIEnv* env,
-    jobject obj) {
+    jobject,
+    jlong handle) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Configuration");
-    if (!handle) return 0;
-
-    return mavsdk_configuration_get_system_id(reinterpret_cast<mavsdk_configuration_t>(handle));
+    if (!requireHandle(env, handle, "configuration")) return 0;
+    return mavsdk_configuration_get_system_id(
+        reinterpret_cast<mavsdk_configuration_t>(handle));
 }
 
-// Configuration.setSystemIdNative
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Configuration_setSystemIdNative(
+Java_io_mavsdk_jni_NativeConfiguration_setSystemId(
     JNIEnv* env,
-    jobject obj,
+    jobject,
+    jlong handle,
     jint value) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Configuration");
-    if (!handle) return;
-
+    if (!requireHandle(env, handle, "configuration")) return;
     mavsdk_configuration_set_system_id(
         reinterpret_cast<mavsdk_configuration_t>(handle),
         static_cast<uint8_t>(value));
 }
 
-// Configuration.getComponentIdNative
 JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_Configuration_getComponentIdNative(
+Java_io_mavsdk_jni_NativeConfiguration_getComponentId(
     JNIEnv* env,
-    jobject obj) {
+    jobject,
+    jlong handle) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Configuration");
-    if (!handle) return 0;
-
-    return mavsdk_configuration_get_component_id(reinterpret_cast<mavsdk_configuration_t>(handle));
+    if (!requireHandle(env, handle, "configuration")) return 0;
+    return mavsdk_configuration_get_component_id(
+        reinterpret_cast<mavsdk_configuration_t>(handle));
 }
 
-// Configuration.setComponentIdNative
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Configuration_setComponentIdNative(
+Java_io_mavsdk_jni_NativeConfiguration_setComponentId(
     JNIEnv* env,
-    jobject obj,
+    jobject,
+    jlong handle,
     jint value) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Configuration");
-    if (!handle) return;
-
+    if (!requireHandle(env, handle, "configuration")) return;
     mavsdk_configuration_set_component_id(
         reinterpret_cast<mavsdk_configuration_t>(handle),
         static_cast<uint8_t>(value));
 }
 
-// Configuration.destroy
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Configuration_destroy(
-    JNIEnv* env,
-    jobject obj) {
+Java_io_mavsdk_jni_NativeConfiguration_destroy(
+    JNIEnv*,
+    jobject,
+    jlong handle) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Configuration");
-    if (!handle) return;
-
-    mavsdk_configuration_destroy(reinterpret_cast<mavsdk_configuration_t>(handle));
+    if (handle) {
+        mavsdk_configuration_destroy(reinterpret_cast<mavsdk_configuration_t>(handle));
+    }
 }
 
 } // extern "C"

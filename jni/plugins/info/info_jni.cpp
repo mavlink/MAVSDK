@@ -6,49 +6,483 @@
 #include "cmavsdk/plugins/info/info.h"
 #include "../../jni_utils.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 using namespace mavsdk::jni;
 
+namespace {
 
 
+struct FlightInfoFromJava;
+struct FlightInfoArrayFromJava;
+struct IdentificationFromJava;
+struct IdentificationArrayFromJava;
+struct ProductFromJava;
+struct ProductArrayFromJava;
+struct VersionFromJava;
+struct VersionArrayFromJava;
 
+struct FlightInfoFromJava {
+    mavsdk_info_flight_info_t value{};
 
-// ===== FlightInformation Callback Wrapper =====
+    FlightInfoFromJava(JNIEnv* env, jobject object);
+    ~FlightInfoFromJava();
+};
+
+struct FlightInfoArrayFromJava {
+    std::vector<std::unique_ptr<FlightInfoFromJava>> holders;
+    std::vector<mavsdk_info_flight_info_t> values;
+
+    FlightInfoArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<FlightInfoFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct IdentificationFromJava {
+    mavsdk_info_identification_t value{};
+    std::string hardware_uidValue;
+
+    IdentificationFromJava(JNIEnv* env, jobject object);
+    ~IdentificationFromJava();
+};
+
+struct IdentificationArrayFromJava {
+    std::vector<std::unique_ptr<IdentificationFromJava>> holders;
+    std::vector<mavsdk_info_identification_t> values;
+
+    IdentificationArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<IdentificationFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct ProductFromJava {
+    mavsdk_info_product_t value{};
+    std::string vendor_nameValue;
+    std::string product_nameValue;
+
+    ProductFromJava(JNIEnv* env, jobject object);
+    ~ProductFromJava();
+};
+
+struct ProductArrayFromJava {
+    std::vector<std::unique_ptr<ProductFromJava>> holders;
+    std::vector<mavsdk_info_product_t> values;
+
+    ProductArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ProductFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct VersionFromJava {
+    mavsdk_info_version_t value{};
+    std::string flight_sw_git_hashValue;
+    std::string os_sw_git_hashValue;
+
+    VersionFromJava(JNIEnv* env, jobject object);
+    ~VersionFromJava();
+};
+
+struct VersionArrayFromJava {
+    std::vector<std::unique_ptr<VersionFromJava>> holders;
+    std::vector<mavsdk_info_version_t> values;
+
+    VersionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<VersionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+FlightInfoFromJava::FlightInfoFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID time_boot_msField = env->GetFieldID(
+        clazz, "timeBootMs", "I");
+    value.time_boot_ms =
+        static_cast<uint32_t>(env->GetIntField(object, time_boot_msField));
+    jfieldID flight_uidField = env->GetFieldID(
+        clazz, "flightUid", "J");
+    value.flight_uid =
+        static_cast<uint64_t>(env->GetLongField(object, flight_uidField));
+    jfieldID duration_since_arming_msField = env->GetFieldID(
+        clazz, "durationSinceArmingMs", "I");
+    value.duration_since_arming_ms =
+        static_cast<uint32_t>(env->GetIntField(object, duration_since_arming_msField));
+    jfieldID duration_since_takeoff_msField = env->GetFieldID(
+        clazz, "durationSinceTakeoffMs", "I");
+    value.duration_since_takeoff_ms =
+        static_cast<uint32_t>(env->GetIntField(object, duration_since_takeoff_msField));
+    env->DeleteLocalRef(clazz);
+}
+
+FlightInfoFromJava::~FlightInfoFromJava() = default;
+IdentificationFromJava::IdentificationFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID hardware_uidField = env->GetFieldID(
+        clazz, "hardwareUid", "Ljava/lang/String;");
+    auto hardware_uidString =
+        static_cast<jstring>(env->GetObjectField(object, hardware_uidField));
+    JStringHolder hardware_uidHolder(env, hardware_uidString);
+    hardware_uidValue =
+        hardware_uidHolder.c_str() ? hardware_uidHolder.c_str() : "";
+    value.hardware_uid = const_cast<char*>(hardware_uidValue.c_str());
+    env->DeleteLocalRef(hardware_uidString);
+    jfieldID legacy_uidField = env->GetFieldID(
+        clazz, "legacyUid", "J");
+    value.legacy_uid =
+        static_cast<uint64_t>(env->GetLongField(object, legacy_uidField));
+    env->DeleteLocalRef(clazz);
+}
+
+IdentificationFromJava::~IdentificationFromJava() = default;
+ProductFromJava::ProductFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID vendor_idField = env->GetFieldID(
+        clazz, "vendorId", "I");
+    value.vendor_id =
+        static_cast<int32_t>(env->GetIntField(object, vendor_idField));
+    jfieldID vendor_nameField = env->GetFieldID(
+        clazz, "vendorName", "Ljava/lang/String;");
+    auto vendor_nameString =
+        static_cast<jstring>(env->GetObjectField(object, vendor_nameField));
+    JStringHolder vendor_nameHolder(env, vendor_nameString);
+    vendor_nameValue =
+        vendor_nameHolder.c_str() ? vendor_nameHolder.c_str() : "";
+    value.vendor_name = const_cast<char*>(vendor_nameValue.c_str());
+    env->DeleteLocalRef(vendor_nameString);
+    jfieldID product_idField = env->GetFieldID(
+        clazz, "productId", "I");
+    value.product_id =
+        static_cast<int32_t>(env->GetIntField(object, product_idField));
+    jfieldID product_nameField = env->GetFieldID(
+        clazz, "productName", "Ljava/lang/String;");
+    auto product_nameString =
+        static_cast<jstring>(env->GetObjectField(object, product_nameField));
+    JStringHolder product_nameHolder(env, product_nameString);
+    product_nameValue =
+        product_nameHolder.c_str() ? product_nameHolder.c_str() : "";
+    value.product_name = const_cast<char*>(product_nameValue.c_str());
+    env->DeleteLocalRef(product_nameString);
+    env->DeleteLocalRef(clazz);
+}
+
+ProductFromJava::~ProductFromJava() = default;
+VersionFromJava::VersionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID flight_sw_majorField = env->GetFieldID(
+        clazz, "flightSwMajor", "I");
+    value.flight_sw_major =
+        static_cast<int32_t>(env->GetIntField(object, flight_sw_majorField));
+    jfieldID flight_sw_minorField = env->GetFieldID(
+        clazz, "flightSwMinor", "I");
+    value.flight_sw_minor =
+        static_cast<int32_t>(env->GetIntField(object, flight_sw_minorField));
+    jfieldID flight_sw_patchField = env->GetFieldID(
+        clazz, "flightSwPatch", "I");
+    value.flight_sw_patch =
+        static_cast<int32_t>(env->GetIntField(object, flight_sw_patchField));
+    jfieldID flight_sw_vendor_majorField = env->GetFieldID(
+        clazz, "flightSwVendorMajor", "I");
+    value.flight_sw_vendor_major =
+        static_cast<int32_t>(env->GetIntField(object, flight_sw_vendor_majorField));
+    jfieldID flight_sw_vendor_minorField = env->GetFieldID(
+        clazz, "flightSwVendorMinor", "I");
+    value.flight_sw_vendor_minor =
+        static_cast<int32_t>(env->GetIntField(object, flight_sw_vendor_minorField));
+    jfieldID flight_sw_vendor_patchField = env->GetFieldID(
+        clazz, "flightSwVendorPatch", "I");
+    value.flight_sw_vendor_patch =
+        static_cast<int32_t>(env->GetIntField(object, flight_sw_vendor_patchField));
+    jfieldID os_sw_majorField = env->GetFieldID(
+        clazz, "osSwMajor", "I");
+    value.os_sw_major =
+        static_cast<int32_t>(env->GetIntField(object, os_sw_majorField));
+    jfieldID os_sw_minorField = env->GetFieldID(
+        clazz, "osSwMinor", "I");
+    value.os_sw_minor =
+        static_cast<int32_t>(env->GetIntField(object, os_sw_minorField));
+    jfieldID os_sw_patchField = env->GetFieldID(
+        clazz, "osSwPatch", "I");
+    value.os_sw_patch =
+        static_cast<int32_t>(env->GetIntField(object, os_sw_patchField));
+    jfieldID flight_sw_git_hashField = env->GetFieldID(
+        clazz, "flightSwGitHash", "Ljava/lang/String;");
+    auto flight_sw_git_hashString =
+        static_cast<jstring>(env->GetObjectField(object, flight_sw_git_hashField));
+    JStringHolder flight_sw_git_hashHolder(env, flight_sw_git_hashString);
+    flight_sw_git_hashValue =
+        flight_sw_git_hashHolder.c_str() ? flight_sw_git_hashHolder.c_str() : "";
+    value.flight_sw_git_hash = const_cast<char*>(flight_sw_git_hashValue.c_str());
+    env->DeleteLocalRef(flight_sw_git_hashString);
+    jfieldID os_sw_git_hashField = env->GetFieldID(
+        clazz, "osSwGitHash", "Ljava/lang/String;");
+    auto os_sw_git_hashString =
+        static_cast<jstring>(env->GetObjectField(object, os_sw_git_hashField));
+    JStringHolder os_sw_git_hashHolder(env, os_sw_git_hashString);
+    os_sw_git_hashValue =
+        os_sw_git_hashHolder.c_str() ? os_sw_git_hashHolder.c_str() : "";
+    value.os_sw_git_hash = const_cast<char*>(os_sw_git_hashValue.c_str());
+    env->DeleteLocalRef(os_sw_git_hashString);
+    jfieldID flight_sw_version_typeField = env->GetFieldID(
+        clazz, "flightSwVersionType", "I");
+    value.flight_sw_version_type =
+        static_cast<mavsdk_info_version_flight_software_version_type_t>(env->GetIntField(object, flight_sw_version_typeField));
+    env->DeleteLocalRef(clazz);
+}
+
+VersionFromJava::~VersionFromJava() = default;
+
+jobject toJavaFlightInfo(
+    JNIEnv* env, const mavsdk_info_flight_info_t& value);
+jobjectArray toJavaFlightInfoArray(
+    JNIEnv* env,
+    const mavsdk_info_flight_info_t* values,
+    size_t count);
+jobject toJavaIdentification(
+    JNIEnv* env, const mavsdk_info_identification_t& value);
+jobjectArray toJavaIdentificationArray(
+    JNIEnv* env,
+    const mavsdk_info_identification_t* values,
+    size_t count);
+jobject toJavaProduct(
+    JNIEnv* env, const mavsdk_info_product_t& value);
+jobjectArray toJavaProductArray(
+    JNIEnv* env,
+    const mavsdk_info_product_t* values,
+    size_t count);
+jobject toJavaVersion(
+    JNIEnv* env, const mavsdk_info_version_t& value);
+jobjectArray toJavaVersionArray(
+    JNIEnv* env,
+    const mavsdk_info_version_t* values,
+    size_t count);
+
+jobject toJavaFlightInfo(
+    JNIEnv* env, const mavsdk_info_flight_info_t& value) {
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$FlightInfo");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(IJII)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.time_boot_ms)
+        , static_cast<jlong>(value.flight_uid)
+        , static_cast<jint>(value.duration_since_arming_ms)
+        , static_cast<jint>(value.duration_since_takeoff_ms)
+    );
+    env->DeleteLocalRef(carrierClass);
+    return result;
+}
+
+jobjectArray toJavaFlightInfoArray(
+    JNIEnv* env,
+    const mavsdk_info_flight_info_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$FlightInfo");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaFlightInfo(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaIdentification(
+    JNIEnv* env, const mavsdk_info_identification_t& value) {
+    jstring hardware_uidValue =
+        toJavaString(env, value.hardware_uid);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Identification");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;J)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , hardware_uidValue
+        , static_cast<jlong>(value.legacy_uid)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(hardware_uidValue);
+    return result;
+}
+
+jobjectArray toJavaIdentificationArray(
+    JNIEnv* env,
+    const mavsdk_info_identification_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Identification");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaIdentification(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaProduct(
+    JNIEnv* env, const mavsdk_info_product_t& value) {
+    jstring vendor_nameValue =
+        toJavaString(env, value.vendor_name);
+    jstring product_nameValue =
+        toJavaString(env, value.product_name);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Product");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILjava/lang/String;ILjava/lang/String;)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.vendor_id)
+        , vendor_nameValue
+        , static_cast<jint>(value.product_id)
+        , product_nameValue
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(vendor_nameValue);
+    env->DeleteLocalRef(product_nameValue);
+    return result;
+}
+
+jobjectArray toJavaProductArray(
+    JNIEnv* env,
+    const mavsdk_info_product_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Product");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaProduct(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+jobject toJavaVersion(
+    JNIEnv* env, const mavsdk_info_version_t& value) {
+    jstring flight_sw_git_hashValue =
+        toJavaString(env, value.flight_sw_git_hash);
+    jstring os_sw_git_hashValue =
+        toJavaString(env, value.os_sw_git_hash);
+    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Version");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(IIIIIIIIILjava/lang/String;Ljava/lang/String;I)V");
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jint>(value.flight_sw_major)
+        , static_cast<jint>(value.flight_sw_minor)
+        , static_cast<jint>(value.flight_sw_patch)
+        , static_cast<jint>(value.flight_sw_vendor_major)
+        , static_cast<jint>(value.flight_sw_vendor_minor)
+        , static_cast<jint>(value.flight_sw_vendor_patch)
+        , static_cast<jint>(value.os_sw_major)
+        , static_cast<jint>(value.os_sw_minor)
+        , static_cast<jint>(value.os_sw_patch)
+        , flight_sw_git_hashValue
+        , os_sw_git_hashValue
+        , static_cast<jint>(value.flight_sw_version_type)
+    );
+    env->DeleteLocalRef(carrierClass);
+    env->DeleteLocalRef(flight_sw_git_hashValue);
+    env->DeleteLocalRef(os_sw_git_hashValue);
+    return result;
+}
+
+jobjectArray toJavaVersionArray(
+    JNIEnv* env,
+    const mavsdk_info_version_t* values,
+    size_t count) {
+    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Version");
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaVersion(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    env->DeleteLocalRef(elementClass);
+    return result;
+}
+
 struct FlightInformationCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
 
-    FlightInformationCallbackWrapper(JNIEnv* env, jobject callback_obj)
-        : callback(env, callback_obj), invokeMethod(nullptr) {
-
+    FlightInformationCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callback_obj);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/plugins/info/Info$FlightInfo;)V");
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/info/NativeInfo$FlightInfo;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
-    void operator()(const mavsdk_info_flight_info_t value) const {
+    void operator()(
+        const mavsdk_info_flight_info_t value
+    ) const {
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
-
         JavaVMAttacher attacher(g_jvm);
         JNIEnv* env = attacher.getEnv();
         if (!env) {
             return;
         }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$FlightInfo");
-        if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IJII)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.time_boot_ms)            , static_cast<jlong>(value.flight_uid)            , static_cast<jint>(value.duration_since_arming_ms)            , static_cast<jint>(value.duration_since_takeoff_ms)        );
-        env->DeleteLocalRef(retClass);
-        env->CallVoidMethod(callback.get(), invokeMethod, retObj);
-        env->DeleteLocalRef(retObj);
-
+        jobject javaValue =
+            toJavaFlightInfo(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
             env->ExceptionClear();
@@ -56,248 +490,207 @@ struct FlightInformationCallbackWrapper {
     }
 };
 
+} // namespace
+
 extern "C" {
 
-// ===== Info.Companion.createNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_00024Companion_createNative(
-    JNIEnv* env,
-    jclass clazz,
-    jlong systemHandle) {
-
+Java_io_mavsdk_jni_plugins_info_NativeInfo_create(JNIEnv* env, jclass, jlong systemHandle) {
     if (!systemHandle) {
         throwMavsdkError(env, "OperationError", "Invalid system handle");
         return 0;
     }
-
     mavsdk_info_t handle = mavsdk_info_create(
         reinterpret_cast<mavsdk_system_t>(systemHandle)
     );
-
     if (!handle) {
         throwMavsdkError(env, "OperationError", "Failed to create Info plugin");
         return 0;
     }
-
     return reinterpret_cast<jlong>(handle);
 }
 
-// ===== Info.destroy =====
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_destroy(
-    JNIEnv* env,
-    jobject obj) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/info/Info");
-    if (!handle) return;
-
-    mavsdk_info_destroy(reinterpret_cast<mavsdk_info_t>(handle));
+Java_io_mavsdk_jni_plugins_info_NativeInfo_destroy(JNIEnv* env, jclass, jlong handle) {
+    if (!requireHandle(env, handle, "Info plugin")) {
+        return;
+    }
+    mavsdk_info_destroy(
+        reinterpret_cast<mavsdk_info_t>(handle));
 }
 
-
-// ===== Info.get_flight_informationBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_getFlightInformationBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_info_NativeInfo_getFlightInformation(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Info plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/info/Info");
-    if (!handle) return {};
-
-
-    mavsdk_info_flight_info_t ret_val{};
-    mavsdk_info_result_t result = mavsdk_info_get_flight_information(
-        reinterpret_cast<mavsdk_info_t>(handle),
-        &ret_val
-    );
-
+    mavsdk_info_flight_info_t returnValue{};
+    mavsdk_info_result_t result =
+        mavsdk_info_get_flight_information(
+            reinterpret_cast<mavsdk_info_t>(handle),
+            &returnValue);
     if (result != MAVSDK_INFO_RESULT_SUCCESS) {
+        mavsdk_info_flight_info_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "get_flight_information failed");
         return nullptr;
     }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$FlightInfo");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IJII)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.time_boot_ms)            , static_cast<jlong>(ret_val.flight_uid)            , static_cast<jint>(ret_val.duration_since_arming_ms)            , static_cast<jint>(ret_val.duration_since_takeoff_ms)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_info_flight_info_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaFlightInfo(env, returnValue);
+    mavsdk_info_flight_info_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== Info.get_identificationBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_getIdentificationBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_info_NativeInfo_getIdentification(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Info plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/info/Info");
-    if (!handle) return {};
-
-
-    mavsdk_info_identification_t ret_val{};
-    mavsdk_info_result_t result = mavsdk_info_get_identification(
-        reinterpret_cast<mavsdk_info_t>(handle),
-        &ret_val
-    );
-
+    mavsdk_info_identification_t returnValue{};
+    mavsdk_info_result_t result =
+        mavsdk_info_get_identification(
+            reinterpret_cast<mavsdk_info_t>(handle),
+            &returnValue);
     if (result != MAVSDK_INFO_RESULT_SUCCESS) {
+        mavsdk_info_identification_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "get_identification failed");
         return nullptr;
     }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Identification");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;J)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, ret_val.hardware_uid)            , static_cast<jlong>(ret_val.legacy_uid)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_info_identification_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaIdentification(env, returnValue);
+    mavsdk_info_identification_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== Info.get_productBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_getProductBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_info_NativeInfo_getProduct(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Info plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/info/Info");
-    if (!handle) return {};
-
-
-    mavsdk_info_product_t ret_val{};
-    mavsdk_info_result_t result = mavsdk_info_get_product(
-        reinterpret_cast<mavsdk_info_t>(handle),
-        &ret_val
-    );
-
+    mavsdk_info_product_t returnValue{};
+    mavsdk_info_result_t result =
+        mavsdk_info_get_product(
+            reinterpret_cast<mavsdk_info_t>(handle),
+            &returnValue);
     if (result != MAVSDK_INFO_RESULT_SUCCESS) {
+        mavsdk_info_product_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "get_product failed");
         return nullptr;
     }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Product");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/lang/String;ILjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.vendor_id)            , toJavaString(env, ret_val.vendor_name)            , static_cast<jint>(ret_val.product_id)            , toJavaString(env, ret_val.product_name)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_info_product_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaProduct(env, returnValue);
+    mavsdk_info_product_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== Info.get_versionBlocking =====
-JNIEXPORT jobject JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_getVersionBlocking(
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_info_NativeInfo_getVersion(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Info plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/info/Info");
-    if (!handle) return {};
-
-
-    mavsdk_info_version_t ret_val{};
-    mavsdk_info_result_t result = mavsdk_info_get_version(
-        reinterpret_cast<mavsdk_info_t>(handle),
-        &ret_val
-    );
-
+    mavsdk_info_version_t returnValue{};
+    mavsdk_info_result_t result =
+        mavsdk_info_get_version(
+            reinterpret_cast<mavsdk_info_t>(handle),
+            &returnValue);
     if (result != MAVSDK_INFO_RESULT_SUCCESS) {
+        mavsdk_info_version_destroy(&returnValue);
         throwMavsdkError(env, "OperationError", "get_version failed");
         return nullptr;
     }
-
-        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Version");
-        if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IIIIIIIIILjava/lang/String;Ljava/lang/String;I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.flight_sw_major)            , static_cast<jint>(ret_val.flight_sw_minor)            , static_cast<jint>(ret_val.flight_sw_patch)            , static_cast<jint>(ret_val.flight_sw_vendor_major)            , static_cast<jint>(ret_val.flight_sw_vendor_minor)            , static_cast<jint>(ret_val.flight_sw_vendor_patch)            , static_cast<jint>(ret_val.os_sw_major)            , static_cast<jint>(ret_val.os_sw_minor)            , static_cast<jint>(ret_val.os_sw_patch)            , toJavaString(env, ret_val.flight_sw_git_hash)            , toJavaString(env, ret_val.os_sw_git_hash)            , static_cast<jint>(ret_val.flight_sw_version_type)        );
-        env->DeleteLocalRef(retClass);
-    mavsdk_info_version_destroy(&ret_val);
-    return retObj;
+    jobject javaResult =
+        toJavaVersion(env, returnValue);
+    mavsdk_info_version_destroy(&returnValue);
+    return javaResult;
 }
 
-
-// ===== Info.get_speed_factorBlocking =====
-JNIEXPORT jdouble JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_getSpeedFactorBlocking(
+JNIEXPORT
+jdouble
+JNICALL Java_io_mavsdk_jni_plugins_info_NativeInfo_getSpeedFactor(
     JNIEnv* env,
-    jobject obj) {
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Info plugin")) {
+        return {};
+    }
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/info/Info");
-    if (!handle) return {};
-
-
-    double ret_val{};
-    mavsdk_info_result_t result = mavsdk_info_get_speed_factor(
-        reinterpret_cast<mavsdk_info_t>(handle),
-        &ret_val
-    );
-
+    double returnValue{};
+    mavsdk_info_result_t result =
+        mavsdk_info_get_speed_factor(
+            reinterpret_cast<mavsdk_info_t>(handle),
+            &returnValue);
     if (result != MAVSDK_INFO_RESULT_SUCCESS) {
         throwMavsdkError(env, "OperationError", "get_speed_factor failed");
         return {};
     }
-
-    return static_cast<jdouble>(ret_val);
+    return static_cast<jdouble>(returnValue);
 }
 
-
-// ===== Info.subscribeFlightInformationNative =====
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_subscribeFlightInformationNative(
+Java_io_mavsdk_jni_plugins_info_NativeInfo_subscribeFlightInformation(
     JNIEnv* env,
-    jobject obj,
+    jclass,
+    jlong handle,
     jobject callback) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/info/Info");
-    if (!handle || !callback) return 0;
-
+    if (!requireHandle(env, handle, "Info plugin") || !callback) {
+        return 0;
+    }
 
     auto* wrapper = new FlightInformationCallbackWrapper(env, callback);
-
-    mavsdk_info_flight_information_handle_t subscription_handle =
+    auto subscriptionHandle =
         mavsdk_info_subscribe_flight_information(
-            reinterpret_cast<mavsdk_info_t>(handle),            [](const mavsdk_info_flight_info_t value, void* user_data) {
-                auto* w = static_cast<FlightInformationCallbackWrapper*>(user_data);
-                (*w)(value);
-            },
-            wrapper
-        );
-
-    auto* handle_pair = new std::pair<
-        mavsdk_info_flight_information_handle_t,
-        FlightInformationCallbackWrapper*>(
-        subscription_handle, wrapper
-    );
-
-    return reinterpret_cast<jlong>(handle_pair);
-}
-
-// ===== Info.unsubscribeFlightInformation =====
-JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_plugins_info_Info_unsubscribeFlightInformation(
-    JNIEnv* env,
-    jobject obj,
-    jlong subscriptionHandle) {
-
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/info/Info");
-    if (!handle || !subscriptionHandle) return;
-
-    auto* handle_pair = reinterpret_cast<
-        std::pair<mavsdk_info_flight_information_handle_t,
-                  FlightInformationCallbackWrapper*>*>(subscriptionHandle);
-
-    if (handle_pair) {
-        mavsdk_info_unsubscribe_flight_information(
             reinterpret_cast<mavsdk_info_t>(handle),
-            handle_pair->first
-        );
-        delete handle_pair->second;
-        delete handle_pair;
-    }
+            [](
+               const mavsdk_info_flight_info_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FlightInformationCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_info_flight_information_handle_t,
+        FlightInformationCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
 }
 
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_info_NativeInfo_unsubscribeFlightInformation(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "Info plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_info_flight_information_handle_t,
+        FlightInformationCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_info_unsubscribe_flight_information(
+        reinterpret_cast<mavsdk_info_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
 
 } // extern "C"

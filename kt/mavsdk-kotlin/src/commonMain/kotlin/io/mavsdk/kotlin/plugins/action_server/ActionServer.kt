@@ -5,16 +5,14 @@
 package io.mavsdk.kotlin.plugins.action_server
 
 import io.mavsdk.kotlin.Mavsdk
-import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
-class ActionServer internal constructor(private val handle: Long) : AutoCloseable {
-    // Tracks active subscriptions so close() can unsubscribe them before destroy(),
-    // preventing native callbacks from firing on a destroyed object.
-    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+class ActionServer internal constructor(
+    private val native: ActionServerNative
+) : AutoCloseable {
+    private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
@@ -31,8 +29,10 @@ class ActionServer internal constructor(private val handle: Long) : AutoCloseabl
         PARAMETER_ERROR(11),
         NEXT(12),
         ;
+
         companion object {
-            fun fromValue(v: Int): Result = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): Result =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -52,8 +52,10 @@ class ActionServer internal constructor(private val handle: Long) : AutoCloseabl
         ACRO(12),
         STABILIZED(13),
         ;
+
         companion object {
-            fun fromValue(v: Int): FlightMode = entries.find { it.value == v } ?: values()[0]
+            fun fromValue(value: Int): FlightMode =
+                entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -73,127 +75,89 @@ class ActionServer internal constructor(private val handle: Long) : AutoCloseabl
     )
 
     fun subscribeArmDisarm(): Flow<ArmDisarm> = callbackFlow {
-        val callback = ArmDisarmCallback { _, value ->
+        val subscriptionHandle = native.subscribeArmDisarm(
+                    ) { _, value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeArmDisarmNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeArmDisarm(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeArmDisarm(subscriptionHandle) }
     }
 
     fun subscribeFlightModeChange(): Flow<FlightMode> = callbackFlow {
-        val callback = FlightModeChangeCallback { _, value ->
-            trySend(FlightMode.fromValue(value))
+        val subscriptionHandle = native.subscribeFlightModeChange(
+                    ) { _, value ->
+            trySend(value)
         }
-        val subscriptionHandle = subscribeFlightModeChangeNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeFlightModeChange(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeFlightModeChange(subscriptionHandle) }
     }
 
     fun subscribeTakeoff(): Flow<Boolean> = callbackFlow {
-        val callback = TakeoffCallback { _, value ->
+        val subscriptionHandle = native.subscribeTakeoff(
+                    ) { _, value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeTakeoffNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeTakeoff(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeTakeoff(subscriptionHandle) }
     }
 
     fun subscribeLand(): Flow<Boolean> = callbackFlow {
-        val callback = LandCallback { _, value ->
+        val subscriptionHandle = native.subscribeLand(
+                    ) { _, value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeLandNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeLand(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeLand(subscriptionHandle) }
     }
 
     fun subscribeReboot(): Flow<Boolean> = callbackFlow {
-        val callback = RebootCallback { _, value ->
+        val subscriptionHandle = native.subscribeReboot(
+                    ) { _, value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeRebootNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeReboot(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeReboot(subscriptionHandle) }
     }
 
     fun subscribeShutdown(): Flow<Boolean> = callbackFlow {
-        val callback = ShutdownCallback { _, value ->
+        val subscriptionHandle = native.subscribeShutdown(
+                    ) { _, value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeShutdownNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeShutdown(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeShutdown(subscriptionHandle) }
     }
 
     fun subscribeTerminate(): Flow<Boolean> = callbackFlow {
-        val callback = TerminateCallback { _, value ->
+        val subscriptionHandle = native.subscribeTerminate(
+                    ) { _, value ->
             trySend(value)
         }
-        val subscriptionHandle = subscribeTerminateNative(callback)
-        if (subscriptionHandle != 0L) activeSubscriptions[subscriptionHandle] = { unsubscribeTerminate(subscriptionHandle) }
-        awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        awaitClose { native.unsubscribeTerminate(subscriptionHandle) }
     }
 
     fun setAllowTakeoff(allowTakeoff: Boolean): Result =
-        Result.fromValue(setAllowTakeoffBlocking(allowTakeoff))
+        Result.fromValue(native.setAllowTakeoff(allowTakeoff))
 
     fun setArmable(armable: Boolean, forceArmable: Boolean): Result =
-        Result.fromValue(setArmableBlocking(armable, forceArmable))
+        Result.fromValue(native.setArmable(armable, forceArmable))
 
     fun setDisarmable(disarmable: Boolean, forceDisarmable: Boolean): Result =
-        Result.fromValue(setDisarmableBlocking(disarmable, forceDisarmable))
+        Result.fromValue(native.setDisarmable(disarmable, forceDisarmable))
 
     fun setAllowableFlightModes(flightModes: AllowableFlightModes): Result =
-        Result.fromValue(setAllowableFlightModesBlocking(flightModes))
+        Result.fromValue(native.setAllowableFlightModes(flightModes))
 
     fun getAllowableFlightModes(): AllowableFlightModes =
-        getAllowableFlightModesBlocking()
+        native.getAllowableFlightModes()
 
     fun setArmedState(isArmed: Boolean): Result =
-        Result.fromValue(setArmedStateBlocking(isArmed))
+        Result.fromValue(native.setArmedState(isArmed))
 
     fun setFlightMode(flightMode: FlightMode): Result =
-        Result.fromValue(setFlightModeBlocking(flightMode.value))
+        Result.fromValue(native.setFlightMode(flightMode))
 
     fun setFlightModeInternal(flightMode: FlightMode): Result =
-        Result.fromValue(setFlightModeInternalBlocking(flightMode.value))
-
-    private fun interface ArmDisarmCallback { fun invoke(result: Int, value: ArmDisarm) }
-    private fun interface FlightModeChangeCallback { fun invoke(result: Int, value: Int) }
-    private fun interface TakeoffCallback { fun invoke(result: Int, value: Boolean) }
-    private fun interface LandCallback { fun invoke(result: Int, value: Boolean) }
-    private fun interface RebootCallback { fun invoke(result: Int, value: Boolean) }
-    private fun interface ShutdownCallback { fun invoke(result: Int, value: Boolean) }
-    private fun interface TerminateCallback { fun invoke(result: Int, value: Boolean) }
-
-    private external fun subscribeArmDisarmNative(callback: ArmDisarmCallback): Long
-    private external fun unsubscribeArmDisarm(handle: Long)
-    private external fun subscribeFlightModeChangeNative(callback: FlightModeChangeCallback): Long
-    private external fun unsubscribeFlightModeChange(handle: Long)
-    private external fun subscribeTakeoffNative(callback: TakeoffCallback): Long
-    private external fun unsubscribeTakeoff(handle: Long)
-    private external fun subscribeLandNative(callback: LandCallback): Long
-    private external fun unsubscribeLand(handle: Long)
-    private external fun subscribeRebootNative(callback: RebootCallback): Long
-    private external fun unsubscribeReboot(handle: Long)
-    private external fun subscribeShutdownNative(callback: ShutdownCallback): Long
-    private external fun unsubscribeShutdown(handle: Long)
-    private external fun subscribeTerminateNative(callback: TerminateCallback): Long
-    private external fun unsubscribeTerminate(handle: Long)
-    private external fun setAllowTakeoffBlocking(allowTakeoff: Boolean): Int
-    private external fun setArmableBlocking(armable: Boolean, forceArmable: Boolean): Int
-    private external fun setDisarmableBlocking(disarmable: Boolean, forceDisarmable: Boolean): Int
-    private external fun setAllowableFlightModesBlocking(flightModes: AllowableFlightModes): Int
-    private external fun getAllowableFlightModesBlocking(): AllowableFlightModes
-    private external fun setArmedStateBlocking(isArmed: Boolean): Int
-    private external fun setFlightModeBlocking(flightMode: Int): Int
-    private external fun setFlightModeInternalBlocking(flightMode: Int): Int
-    private external fun destroy()
+        Result.fromValue(native.setFlightModeInternal(flightMode))
 
     override fun close() {
-        activeSubscriptions.keys.toList().forEach { activeSubscriptions.remove(it)?.invoke() }
-        destroy()
+        if (closed) return
+        closed = true
+        native.destroy()
     }
 
     class ActionServerException(
@@ -202,10 +166,37 @@ class ActionServer internal constructor(private val handle: Long) : AutoCloseabl
     ) : Exception(message)
 
     companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): ActionServer {
-            val handle = createNative(mavsdk.serverComponentHandle(instance))
-            return ActionServer(handle)
-        }
-        private external fun createNative(systemHandle: Long): Long
+        fun create(mavsdk: Mavsdk, instance: Int = 1): ActionServer =
+            ActionServer(
+                createActionServerNative(mavsdk.serverComponentHandle(instance))
+            )
     }
 }
+
+internal interface ActionServerNative {
+    fun subscribeArmDisarm(callback: (Int, ActionServer.ArmDisarm) -> Unit): Long
+    fun unsubscribeArmDisarm(subscriptionHandle: Long)
+    fun subscribeFlightModeChange(callback: (Int, ActionServer.FlightMode) -> Unit): Long
+    fun unsubscribeFlightModeChange(subscriptionHandle: Long)
+    fun subscribeTakeoff(callback: (Int, Boolean) -> Unit): Long
+    fun unsubscribeTakeoff(subscriptionHandle: Long)
+    fun subscribeLand(callback: (Int, Boolean) -> Unit): Long
+    fun unsubscribeLand(subscriptionHandle: Long)
+    fun subscribeReboot(callback: (Int, Boolean) -> Unit): Long
+    fun unsubscribeReboot(subscriptionHandle: Long)
+    fun subscribeShutdown(callback: (Int, Boolean) -> Unit): Long
+    fun unsubscribeShutdown(subscriptionHandle: Long)
+    fun subscribeTerminate(callback: (Int, Boolean) -> Unit): Long
+    fun unsubscribeTerminate(subscriptionHandle: Long)
+    fun setAllowTakeoff(allowTakeoff: Boolean): Int
+    fun setArmable(armable: Boolean, forceArmable: Boolean): Int
+    fun setDisarmable(disarmable: Boolean, forceDisarmable: Boolean): Int
+    fun setAllowableFlightModes(flightModes: ActionServer.AllowableFlightModes): Int
+    fun getAllowableFlightModes(): ActionServer.AllowableFlightModes
+    fun setArmedState(isArmed: Boolean): Int
+    fun setFlightMode(flightMode: ActionServer.FlightMode): Int
+    fun setFlightModeInternal(flightMode: ActionServer.FlightMode): Int
+    fun destroy()
+}
+
+internal expect fun createActionServerNative(systemHandle: Long): ActionServerNative

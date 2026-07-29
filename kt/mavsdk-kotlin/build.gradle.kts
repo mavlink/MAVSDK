@@ -1,4 +1,6 @@
 import com.android.build.gradle.LibraryExtension
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.tasks.Jar
 
 buildscript {
     repositories {
@@ -24,6 +26,15 @@ repositories {
     google()
     mavenCentral()
 }
+
+val compileNeutralJniJava by tasks.registering(JavaCompile::class) {
+    source(fileTree("../../jni/jvm/src/main/java") { include("**/*.java") })
+    classpath = files()
+    destinationDirectory.set(layout.buildDirectory.dir("classes/java/neutralJni"))
+    options.release.set(8)
+}
+val neutralJniClasses = files(compileNeutralJniJava.flatMap { it.destinationDirectory })
+    .builtBy(compileNeutralJniJava)
 
 kotlin {
     jvm {
@@ -54,9 +65,21 @@ kotlin {
             }
         }
         
-        val jvmMain by getting
-        val androidMain by getting
+        val sharedJvmAndroidSources = "src/jvmAndroidMain/kotlin"
+        val jvmMain by getting {
+            kotlin.srcDir(sharedJvmAndroidSources)
+            dependencies {
+                implementation(neutralJniClasses)
+            }
+        }
+        val androidMain by getting {
+            kotlin.srcDir(sharedJvmAndroidSources)
+        }
     }
+}
+
+tasks.named<Jar>("jvmJar") {
+    from(compileNeutralJniJava.flatMap { it.destinationDirectory })
 }
 
 configure<LibraryExtension> {
@@ -74,5 +97,6 @@ configure<LibraryExtension> {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-}
 
+    sourceSets.getByName("main").java.srcDir("../../jni/jvm/src/main/java")
+}
