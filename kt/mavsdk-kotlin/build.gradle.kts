@@ -1,4 +1,5 @@
 import com.android.build.gradle.LibraryExtension
+import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.jvm.tasks.Jar
 
@@ -14,12 +15,15 @@ buildscript {
 
 plugins {
     kotlin("multiplatform") version "2.0.0"
-    id("maven-publish")
+    id("com.vanniktech.maven.publish") version "0.33.0"
 }
 
 apply(plugin = "com.android.library")
 
 group = "io.mavsdk"
+// The published version can be overridden without touching this file, because
+// the publishing plugin reads the VERSION_NAME property:
+// ./gradlew publishToMavenCentral -PVERSION_NAME=2.0.0
 version = "1.0.0"
 
 repositories {
@@ -44,7 +48,7 @@ kotlin {
     }
     
     androidTarget {
-        publishLibraryVariants("release", "debug")
+        publishLibraryVariants("release")
         compilations.all {
             kotlinOptions.jvmTarget = "21"
         }
@@ -99,4 +103,53 @@ configure<LibraryExtension> {
     }
 
     sourceSets.getByName("main").java.srcDir("../../jni/jvm/src/main/java")
+}
+
+// Publishes the KMP artifact set: io.mavsdk:mavsdk-kotlin (root module with
+// Gradle Module Metadata), plus -jvm and -android variants.
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    // Maven Central requires signatures, but unconditional signing breaks
+    // publishToMavenLocal for contributors without keys. CI supplies the key
+    // as ORG_GRADLE_PROJECT_signingInMemoryKey, which Gradle exposes as this
+    // project property.
+    if (findProperty("signingInMemoryKey") != null) {
+        signAllPublications()
+    }
+
+    // Version is deliberately omitted so the VERSION_NAME property can drive it.
+    coordinates(group.toString(), "mavsdk-kotlin")
+
+    pom {
+        name.set("MAVSDK-Kotlin")
+        description.set(
+            "Kotlin Multiplatform library for MAVLink communication with drones, " +
+                "backed by the MAVSDK C++ core via JNI."
+        )
+        url.set("https://github.com/mavlink/MAVSDK")
+        inceptionYear.set("2017")
+
+        licenses {
+            license {
+                name.set("BSD 3-Clause")
+                url.set("https://opensource.org/licenses/BSD-3-Clause")
+                distribution.set("repo")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("jonasvautherin")
+                name.set("Jonas Vautherin")
+                email.set("dev@jonas.vautherin.ch")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/mavlink/MAVSDK")
+            connection.set("scm:git:https://github.com/mavlink/MAVSDK")
+            developerConnection.set("scm:git:https://github.com/mavlink/MAVSDK")
+        }
+    }
 }
