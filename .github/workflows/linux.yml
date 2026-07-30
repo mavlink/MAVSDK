@@ -767,7 +767,7 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/manylinux/cpp/third_party/install" >> $GITHUB_ENV
       - name: configure cpp
         working-directory: .
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "yum install -y perl-core && cmake $superbuild $cmake_prefix_path -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=build/manylinux/cpp/install -DBUILD_MAVSDK_SERVER=OFF -Bbuild/manylinux/cpp -Scpp"
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "sudo yum install -y perl-core && cmake $superbuild $cmake_prefix_path -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=build/manylinux/cpp/install -DBUILD_MAVSDK_SERVER=OFF -Bbuild/manylinux/cpp -Scpp"
       - name: build cpp
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/cpp -j$(nproc) --target install
@@ -786,8 +786,8 @@ jobs:
       - name: build mavsdk wheel
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} bash -c "
-          ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt auditwheel &&
-          ${{ matrix.python_exec_auditwheel }} -m pip install auditwheel &&
+          sudo ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt auditwheel &&
+          sudo ${{ matrix.python_exec_auditwheel }} -m pip install auditwheel &&
           mkdir -p /work/py/mavsdk/mavsdk/lib &&
           cp /work/build/manylinux/c/install/lib/libcmavsdk.so /work/py/mavsdk/mavsdk/lib/libcmavsdk.so &&
           cd /work/py/mavsdk &&
@@ -804,7 +804,7 @@ jobs:
         if: matrix.artifact_arch == 'x86_64'
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} bash -c "
-          ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt &&
+          sudo ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt &&
           cd /work/py/aiomavsdk &&
           ${{ matrix.python_exec }} setup.py bdist_wheel"
       - name: upload aiomavsdk wheel
