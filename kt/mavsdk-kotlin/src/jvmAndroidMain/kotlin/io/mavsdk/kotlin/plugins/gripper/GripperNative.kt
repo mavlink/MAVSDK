@@ -7,32 +7,20 @@ package io.mavsdk.kotlin.plugins.gripper
 import io.mavsdk.jni.plugins.gripper.NativeGripper
 import java.util.concurrent.atomic.AtomicBoolean
 
-private class GripperNativeImpl(
-    private val handle: Long
-) : GripperNative {
-    override fun grabAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+private class GripperNativeImpl(private val handle: Long) : GripperNative {
+    override fun grabAsync(instance: Int, callback: (Int) -> Unit) {
         NativeGripper.grabAsync(
             handle,
             instance,
-            NativeGripper.GrabCallback {
-                    result -> callback(result)
-            }
+            NativeGripper.GrabCallback { result -> callback(result) },
         )
     }
 
-    override fun releaseAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun releaseAsync(instance: Int, callback: (Int) -> Unit) {
         NativeGripper.releaseAsync(
             handle,
             instance,
-            NativeGripper.ReleaseCallback {
-                    result -> callback(result)
-            }
+            NativeGripper.ReleaseCallback { result -> callback(result) },
         )
     }
 

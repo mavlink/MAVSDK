@@ -5,15 +5,13 @@
 package io.mavsdk.kotlin.plugins.camera
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Camera internal constructor(
-    private val native: CameraNative
-) : AutoCloseable {
+class Camera internal constructor(private val native: CameraNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -29,31 +27,26 @@ class Camera internal constructor(
         PROTOCOL_UNSUPPORTED(9),
         UNAVAILABLE(10),
         CAMERA_ID_INVALID(11),
-        ACTION_UNSUPPORTED(12),
-        ;
+        ACTION_UNSUPPORTED(12);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
     enum class Mode(val value: Int) {
         UNKNOWN(0),
         PHOTO(1),
-        VIDEO(2),
-        ;
+        VIDEO(2);
 
         companion object {
-            fun fromValue(value: Int): Mode =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Mode = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
     enum class PhotosRange(val value: Int) {
         ALL(0),
-        SINCE_CONNECTION(1),
-        ;
+        SINCE_CONNECTION(1);
 
         companion object {
             fun fromValue(value: Int): PhotosRange =
@@ -63,8 +56,7 @@ class Camera internal constructor(
 
     enum class VideoStreamStatus(val value: Int) {
         NOT_RUNNING(0),
-        IN_PROGRESS(1),
-        ;
+        IN_PROGRESS(1);
 
         companion object {
             fun fromValue(value: Int): VideoStreamStatus =
@@ -75,8 +67,7 @@ class Camera internal constructor(
     enum class VideoStreamSpectrum(val value: Int) {
         UNKNOWN(0),
         VISIBLE_LIGHT(1),
-        INFRARED(2),
-        ;
+        INFRARED(2);
 
         companion object {
             fun fromValue(value: Int): VideoStreamSpectrum =
@@ -88,8 +79,7 @@ class Camera internal constructor(
         NOT_AVAILABLE(0),
         UNFORMATTED(1),
         FORMATTED(2),
-        NOT_SUPPORTED(3),
-        ;
+        NOT_SUPPORTED(3);
 
         companion object {
             fun fromValue(value: Int): StorageStatus =
@@ -103,19 +93,14 @@ class Camera internal constructor(
         SD(2),
         MICROSD(3),
         HD(4),
-        OTHER(5),
-        ;
+        OTHER(5);
 
         companion object {
-            fun fromValue(value: Int): StorageType =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): StorageType = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    data class Option(
-        val optionId: String,
-        val optionDescription: String,
-    )
+    data class Option(val optionId: String, val optionDescription: String)
 
     data class Setting(
         val settingId: String,
@@ -149,15 +134,9 @@ class Camera internal constructor(
         val spectrum: VideoStreamSpectrum,
     )
 
-    data class ModeUpdate(
-        val componentId: Int,
-        val mode: Mode,
-    )
+    data class ModeUpdate(val componentId: Int, val mode: Mode)
 
-    data class VideoStreamUpdate(
-        val componentId: Int,
-        val videoStreamInfo: VideoStreamInfo,
-    )
+    data class VideoStreamUpdate(val componentId: Int, val videoStreamInfo: VideoStreamInfo)
 
     data class Storage(
         val componentId: Int,
@@ -173,10 +152,7 @@ class Camera internal constructor(
         val storageType: StorageType,
     )
 
-    data class StorageUpdate(
-        val componentId: Int,
-        val storage: Storage,
-    )
+    data class StorageUpdate(val componentId: Int, val storage: Storage)
 
     data class CurrentSettingsUpdate(
         val componentId: Int,
@@ -195,18 +171,9 @@ class Camera internal constructor(
         val relativeAltitudeM: Float,
     )
 
-    data class Quaternion(
-        val w: Float,
-        val x: Float,
-        val y: Float,
-        val z: Float,
-    )
+    data class Quaternion(val w: Float, val x: Float, val y: Float, val z: Float)
 
-    data class EulerAngle(
-        val rollDeg: Float,
-        val pitchDeg: Float,
-        val yawDeg: Float,
-    )
+    data class EulerAngle(val rollDeg: Float, val pitchDeg: Float, val yawDeg: Float)
 
     data class CaptureInfo(
         val componentId: Int,
@@ -230,27 +197,32 @@ class Camera internal constructor(
         val verticalResolutionPx: Int,
     )
 
-    data class CameraList(
-        val cameras: List<Information> = emptyList(),
-    )
+    data class CameraList(val cameras: List<Information> = emptyList())
 
-    suspend fun takePhoto(componentId: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = CameraCallbackGuard()
-            native.takePhotoAsync(componentId, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun takePhoto(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.takePhotoAsync(componentId) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (
+                continuation.isActive &&
+                    parsedResult != Result.IN_PROGRESS &&
+                    callbackGuard.tryClaim()
+            ) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun startPhotoInterval(componentId: Int, intervalS: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.startPhotoIntervalAsync(componentId, intervalS, ) { result ->
+            native.startPhotoIntervalAsync(componentId, intervalS) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -259,35 +231,45 @@ class Camera internal constructor(
     suspend fun stopPhotoInterval(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.stopPhotoIntervalAsync(componentId, ) { result ->
+            native.stopPhotoIntervalAsync(componentId) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
         }
 
-    suspend fun startVideo(componentId: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = CameraCallbackGuard()
-            native.startVideoAsync(componentId, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun startVideo(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.startVideoAsync(componentId) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (
+                continuation.isActive &&
+                    parsedResult != Result.IN_PROGRESS &&
+                    callbackGuard.tryClaim()
+            ) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun stopVideo(componentId: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = CameraCallbackGuard()
-            native.stopVideoAsync(componentId, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun stopVideo(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.stopVideoAsync(componentId) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (
+                continuation.isActive &&
+                    parsedResult != Result.IN_PROGRESS &&
+                    callbackGuard.tryClaim()
+            ) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     fun startVideoStreaming(componentId: Int, streamId: Int): Result =
         Result.fromValue(native.startVideoStreaming(componentId, streamId))
@@ -298,63 +280,55 @@ class Camera internal constructor(
     suspend fun setMode(componentId: Int, mode: Mode): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.setModeAsync(componentId, mode, ) { result ->
+            native.setModeAsync(componentId, mode) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
         }
 
-    suspend fun listPhotos(componentId: Int, photosRange: PhotosRange): kotlin.Result<List<CaptureInfo>> =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = CameraCallbackGuard()
-            native.listPhotosAsync(componentId, photosRange, ) { result, value ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && callbackGuard.tryClaim()) {
-                    if (parsedResult == Result.SUCCESS) {
-                        continuation.resume(kotlin.Result.success(value))
-                    } else {
-                        continuation.resume(
-                            kotlin.Result.failure(
-                                CameraException(
-                                    parsedResult,
-                                    "listPhotos failed: ${parsedResult.name}"
-                                )
-                            )
+    suspend fun listPhotos(
+        componentId: Int,
+        photosRange: PhotosRange,
+    ): kotlin.Result<List<CaptureInfo>> = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.listPhotosAsync(componentId, photosRange) { result, value ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && callbackGuard.tryClaim()) {
+                if (parsedResult == Result.SUCCESS) {
+                    continuation.resume(kotlin.Result.success(value))
+                } else {
+                    continuation.resume(
+                        kotlin.Result.failure(
+                            CameraException(parsedResult, "listPhotos failed: ${parsedResult.name}")
                         )
-                    }
+                    )
                 }
             }
         }
+    }
 
-    fun cameraList(): CameraList =
-        native.cameraList()
+    fun cameraList(): CameraList = native.cameraList()
 
     fun subscribeCameraList(): Flow<CameraList> = callbackFlow {
-        val subscriptionHandle = native.subscribeCameraList(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeCameraList() { value -> trySend(value) }
         awaitClose { native.unsubscribeCameraList(subscriptionHandle) }
     }
 
     fun subscribeMode(): Flow<ModeUpdate> = callbackFlow {
-        val subscriptionHandle = native.subscribeMode(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeMode() { value -> trySend(value) }
         awaitClose { native.unsubscribeMode(subscriptionHandle) }
     }
 
-    fun getMode(componentId: Int): Mode =
-        native.getMode(componentId)
+    fun getMode(componentId: Int): Mode = native.getMode(componentId)
 
     fun subscribeVideoStreamInfo(): Flow<VideoStreamUpdate> = callbackFlow {
-        val subscriptionHandle = native.subscribeVideoStreamInfo(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeVideoStreamInfo() { value -> trySend(value) }
         awaitClose { native.unsubscribeVideoStreamInfo(subscriptionHandle) }
     }
 
@@ -362,40 +336,27 @@ class Camera internal constructor(
         native.getVideoStreamInfo(componentId)
 
     fun subscribeCaptureInfo(): Flow<CaptureInfo> = callbackFlow {
-        val subscriptionHandle = native.subscribeCaptureInfo(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeCaptureInfo() { value -> trySend(value) }
         awaitClose { native.unsubscribeCaptureInfo(subscriptionHandle) }
     }
 
     fun subscribeStorage(): Flow<StorageUpdate> = callbackFlow {
-        val subscriptionHandle = native.subscribeStorage(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeStorage() { value -> trySend(value) }
         awaitClose { native.unsubscribeStorage(subscriptionHandle) }
     }
 
-    fun getStorage(componentId: Int): Storage =
-        native.getStorage(componentId)
+    fun getStorage(componentId: Int): Storage = native.getStorage(componentId)
 
     fun subscribeCurrentSettings(): Flow<CurrentSettingsUpdate> = callbackFlow {
-        val subscriptionHandle = native.subscribeCurrentSettings(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeCurrentSettings() { value -> trySend(value) }
         awaitClose { native.unsubscribeCurrentSettings(subscriptionHandle) }
     }
 
-    fun getCurrentSettings(componentId: Int): List<Setting> =
-        native.getCurrentSettings(componentId)
+    fun getCurrentSettings(componentId: Int): List<Setting> = native.getCurrentSettings(componentId)
 
     fun subscribePossibleSettingOptions(): Flow<PossibleSettingOptionsUpdate> = callbackFlow {
-        val subscriptionHandle = native.subscribePossibleSettingOptions(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle =
+            native.subscribePossibleSettingOptions() { value -> trySend(value) }
         awaitClose { native.unsubscribePossibleSettingOptions(subscriptionHandle) }
     }
 
@@ -405,9 +366,13 @@ class Camera internal constructor(
     suspend fun setSetting(componentId: Int, setting: Setting): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.setSettingAsync(componentId, setting, ) { result ->
+            native.setSettingAsync(componentId, setting) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -416,7 +381,7 @@ class Camera internal constructor(
     suspend fun getSetting(componentId: Int, setting: Setting): kotlin.Result<Setting> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.getSettingAsync(componentId, setting, ) { result, value ->
+            native.getSettingAsync(componentId, setting) { result, value ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && callbackGuard.tryClaim()) {
                     if (parsedResult == Result.SUCCESS) {
@@ -426,7 +391,7 @@ class Camera internal constructor(
                             kotlin.Result.failure(
                                 CameraException(
                                     parsedResult,
-                                    "getSetting failed: ${parsedResult.name}"
+                                    "getSetting failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -438,9 +403,13 @@ class Camera internal constructor(
     suspend fun formatStorage(componentId: Int, storageId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.formatStorageAsync(componentId, storageId, ) { result ->
+            native.formatStorageAsync(componentId, storageId) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -449,9 +418,13 @@ class Camera internal constructor(
     suspend fun resetSettings(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.resetSettingsAsync(componentId, ) { result ->
+            native.resetSettingsAsync(componentId) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -460,9 +433,13 @@ class Camera internal constructor(
     suspend fun zoomInStart(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.zoomInStartAsync(componentId, ) { result ->
+            native.zoomInStartAsync(componentId) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -471,31 +448,42 @@ class Camera internal constructor(
     suspend fun zoomOutStart(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.zoomOutStartAsync(componentId, ) { result ->
+            native.zoomOutStartAsync(componentId) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
         }
 
-    suspend fun zoomStop(componentId: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = CameraCallbackGuard()
-            native.zoomStopAsync(componentId, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun zoomStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.zoomStopAsync(componentId) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (
+                continuation.isActive &&
+                    parsedResult != Result.IN_PROGRESS &&
+                    callbackGuard.tryClaim()
+            ) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun zoomRange(componentId: Int, range: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.zoomRangeAsync(componentId, range, ) { result ->
+            native.zoomRangeAsync(componentId, range) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -504,42 +492,63 @@ class Camera internal constructor(
     suspend fun trackPoint(componentId: Int, pointX: Float, pointY: Float, radius: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.trackPointAsync(componentId, pointX, pointY, radius, ) { result ->
+            native.trackPointAsync(componentId, pointX, pointY, radius) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
         }
 
-    suspend fun trackRectangle(componentId: Int, topLeftX: Float, topLeftY: Float, bottomRightX: Float, bottomRightY: Float): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = CameraCallbackGuard()
-            native.trackRectangleAsync(componentId, topLeftX, topLeftY, bottomRightX, bottomRightY, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun trackRectangle(
+        componentId: Int,
+        topLeftX: Float,
+        topLeftY: Float,
+        bottomRightX: Float,
+        bottomRightY: Float,
+    ): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.trackRectangleAsync(componentId, topLeftX, topLeftY, bottomRightX, bottomRightY) {
+            result ->
+            val parsedResult = Result.fromValue(result)
+            if (
+                continuation.isActive &&
+                    parsedResult != Result.IN_PROGRESS &&
+                    callbackGuard.tryClaim()
+            ) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun trackStop(componentId: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = CameraCallbackGuard()
-            native.trackStopAsync(componentId, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun trackStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.trackStopAsync(componentId) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (
+                continuation.isActive &&
+                    parsedResult != Result.IN_PROGRESS &&
+                    callbackGuard.tryClaim()
+            ) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun focusInStart(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.focusInStartAsync(componentId, ) { result ->
+            native.focusInStartAsync(componentId) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -548,31 +557,42 @@ class Camera internal constructor(
     suspend fun focusOutStart(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.focusOutStartAsync(componentId, ) { result ->
+            native.focusOutStartAsync(componentId) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
         }
 
-    suspend fun focusStop(componentId: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = CameraCallbackGuard()
-            native.focusStopAsync(componentId, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun focusStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.focusStopAsync(componentId) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (
+                continuation.isActive &&
+                    parsedResult != Result.IN_PROGRESS &&
+                    callbackGuard.tryClaim()
+            ) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun focusRange(componentId: Int, range: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
-            native.focusRangeAsync(componentId, range, ) { result ->
+            native.focusRangeAsync(componentId, range) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.IN_PROGRESS && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -584,64 +604,126 @@ class Camera internal constructor(
         native.destroy()
     }
 
-    class CameraException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class CameraException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Camera =
-            Camera(
-                createCameraNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Camera(createCameraNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface CameraNative {
     fun takePhotoAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun startPhotoIntervalAsync(componentId: Int, intervalS: Float, callback: (Int) -> Unit)
+
     fun stopPhotoIntervalAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun startVideoAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun stopVideoAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun startVideoStreaming(componentId: Int, streamId: Int): Int
+
     fun stopVideoStreaming(componentId: Int, streamId: Int): Int
+
     fun setModeAsync(componentId: Int, mode: Camera.Mode, callback: (Int) -> Unit)
-    fun listPhotosAsync(componentId: Int, photosRange: Camera.PhotosRange, callback: (Int, List<Camera.CaptureInfo>) -> Unit)
+
+    fun listPhotosAsync(
+        componentId: Int,
+        photosRange: Camera.PhotosRange,
+        callback: (Int, List<Camera.CaptureInfo>) -> Unit,
+    )
+
     fun cameraList(): Camera.CameraList
+
     fun subscribeCameraList(callback: (Camera.CameraList) -> Unit): Long
+
     fun unsubscribeCameraList(subscriptionHandle: Long)
+
     fun subscribeMode(callback: (Camera.ModeUpdate) -> Unit): Long
+
     fun unsubscribeMode(subscriptionHandle: Long)
+
     fun getMode(componentId: Int): Camera.Mode
+
     fun subscribeVideoStreamInfo(callback: (Camera.VideoStreamUpdate) -> Unit): Long
+
     fun unsubscribeVideoStreamInfo(subscriptionHandle: Long)
+
     fun getVideoStreamInfo(componentId: Int): Camera.VideoStreamInfo
+
     fun subscribeCaptureInfo(callback: (Camera.CaptureInfo) -> Unit): Long
+
     fun unsubscribeCaptureInfo(subscriptionHandle: Long)
+
     fun subscribeStorage(callback: (Camera.StorageUpdate) -> Unit): Long
+
     fun unsubscribeStorage(subscriptionHandle: Long)
+
     fun getStorage(componentId: Int): Camera.Storage
+
     fun subscribeCurrentSettings(callback: (Camera.CurrentSettingsUpdate) -> Unit): Long
+
     fun unsubscribeCurrentSettings(subscriptionHandle: Long)
+
     fun getCurrentSettings(componentId: Int): List<Camera.Setting>
-    fun subscribePossibleSettingOptions(callback: (Camera.PossibleSettingOptionsUpdate) -> Unit): Long
+
+    fun subscribePossibleSettingOptions(
+        callback: (Camera.PossibleSettingOptionsUpdate) -> Unit
+    ): Long
+
     fun unsubscribePossibleSettingOptions(subscriptionHandle: Long)
+
     fun getPossibleSettingOptions(componentId: Int): List<Camera.SettingOptions>
+
     fun setSettingAsync(componentId: Int, setting: Camera.Setting, callback: (Int) -> Unit)
-    fun getSettingAsync(componentId: Int, setting: Camera.Setting, callback: (Int, Camera.Setting) -> Unit)
+
+    fun getSettingAsync(
+        componentId: Int,
+        setting: Camera.Setting,
+        callback: (Int, Camera.Setting) -> Unit,
+    )
+
     fun formatStorageAsync(componentId: Int, storageId: Int, callback: (Int) -> Unit)
+
     fun resetSettingsAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun zoomInStartAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun zoomOutStartAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun zoomStopAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun zoomRangeAsync(componentId: Int, range: Float, callback: (Int) -> Unit)
-    fun trackPointAsync(componentId: Int, pointX: Float, pointY: Float, radius: Float, callback: (Int) -> Unit)
-    fun trackRectangleAsync(componentId: Int, topLeftX: Float, topLeftY: Float, bottomRightX: Float, bottomRightY: Float, callback: (Int) -> Unit)
+
+    fun trackPointAsync(
+        componentId: Int,
+        pointX: Float,
+        pointY: Float,
+        radius: Float,
+        callback: (Int) -> Unit,
+    )
+
+    fun trackRectangleAsync(
+        componentId: Int,
+        topLeftX: Float,
+        topLeftY: Float,
+        bottomRightX: Float,
+        bottomRightY: Float,
+        callback: (Int) -> Unit,
+    )
+
     fun trackStopAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun focusInStartAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun focusOutStartAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun focusStopAsync(componentId: Int, callback: (Int) -> Unit)
+
     fun focusRangeAsync(componentId: Int, range: Float, callback: (Int) -> Unit)
+
     fun destroy()
 }
 

@@ -9,9 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class Events internal constructor(
-    private val native: EventsNative
-) : AutoCloseable {
+class Events internal constructor(private val native: EventsNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -23,12 +21,10 @@ class Events internal constructor(
         FAILED(5),
         TIMEOUT(6),
         NO_SYSTEM(7),
-        UNKNOWN(8),
-        ;
+        UNKNOWN(8);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -40,8 +36,7 @@ class Events internal constructor(
         WARNING(4),
         NOTICE(5),
         INFO(6),
-        DEBUG(7),
-        ;
+        DEBUG(7);
 
         companion object {
             fun fromValue(value: Int): LogLevel =
@@ -86,18 +81,12 @@ class Events internal constructor(
     )
 
     fun subscribeEvents(): Flow<Event> = callbackFlow {
-        val subscriptionHandle = native.subscribeEvents(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeEvents() { value -> trySend(value) }
         awaitClose { native.unsubscribeEvents(subscriptionHandle) }
     }
 
     fun subscribeHealthAndArmingChecks(): Flow<HealthAndArmingCheckReport> = callbackFlow {
-        val subscriptionHandle = native.subscribeHealthAndArmingChecks(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeHealthAndArmingChecks() { value -> trySend(value) }
         awaitClose { native.unsubscribeHealthAndArmingChecks(subscriptionHandle) }
     }
 
@@ -110,25 +99,25 @@ class Events internal constructor(
         native.destroy()
     }
 
-    class EventsException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class EventsException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Events =
-            Events(
-                createEventsNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Events(createEventsNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface EventsNative {
     fun subscribeEvents(callback: (Events.Event) -> Unit): Long
+
     fun unsubscribeEvents(subscriptionHandle: Long)
+
     fun subscribeHealthAndArmingChecks(callback: (Events.HealthAndArmingCheckReport) -> Unit): Long
+
     fun unsubscribeHealthAndArmingChecks(subscriptionHandle: Long)
+
     fun getHealthAndArmingChecksReport(): Events.HealthAndArmingCheckReport
+
     fun destroy()
 }
 

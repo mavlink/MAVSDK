@@ -23,7 +23,7 @@ private fun Mission.MissionItem.toNative(): NativeMission.MissionItem =
         acceptanceRadiusM,
         yawDeg,
         cameraPhotoDistanceM,
-        vehicleAction.value
+        vehicleAction.value,
     )
 
 private fun NativeMission.MissionItem.toKotlin(): Mission.MissionItem =
@@ -41,99 +41,65 @@ private fun NativeMission.MissionItem.toKotlin(): Mission.MissionItem =
         acceptanceRadiusM,
         yawDeg,
         cameraPhotoDistanceM,
-        Mission.VehicleAction.fromValue(vehicleAction)
+        Mission.VehicleAction.fromValue(vehicleAction),
     )
 
 private fun Mission.MissionPlan.toNative(): NativeMission.MissionPlan =
-    NativeMission.MissionPlan(
-        missionItems.map { it.toNative() }.toTypedArray()
-    )
+    NativeMission.MissionPlan(missionItems.map { it.toNative() }.toTypedArray())
 
 private fun NativeMission.MissionPlan.toKotlin(): Mission.MissionPlan =
-    Mission.MissionPlan(
-        missionItems.map { it.toKotlin() }
-    )
+    Mission.MissionPlan(missionItems.map { it.toKotlin() })
 
 private fun Mission.MissionProgress.toNative(): NativeMission.MissionProgress =
-    NativeMission.MissionProgress(
-        current,
-        total
-    )
+    NativeMission.MissionProgress(current, total)
 
 private fun NativeMission.MissionProgress.toKotlin(): Mission.MissionProgress =
-    Mission.MissionProgress(
-        current,
-        total
-    )
+    Mission.MissionProgress(current, total)
 
 private fun Mission.ProgressData.toNative(): NativeMission.ProgressData =
-    NativeMission.ProgressData(
-        progress
-    )
+    NativeMission.ProgressData(progress)
 
 private fun NativeMission.ProgressData.toKotlin(): Mission.ProgressData =
-    Mission.ProgressData(
-        progress
-    )
+    Mission.ProgressData(progress)
 
 private fun Mission.ProgressDataOrMission.toNative(): NativeMission.ProgressDataOrMission =
-    NativeMission.ProgressDataOrMission(
-        hasProgress,
-        progress,
-        hasMission,
-        missionPlan.toNative()
-    )
+    NativeMission.ProgressDataOrMission(hasProgress, progress, hasMission, missionPlan.toNative())
 
 private fun NativeMission.ProgressDataOrMission.toKotlin(): Mission.ProgressDataOrMission =
-    Mission.ProgressDataOrMission(
-        hasProgress,
-        progress,
-        hasMission,
-        missionPlan.toKotlin()
-    )
+    Mission.ProgressDataOrMission(hasProgress, progress, hasMission, missionPlan.toKotlin())
 
-private class MissionNativeImpl(
-    private val handle: Long
-) : MissionNative {
+private class MissionNativeImpl(private val handle: Long) : MissionNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun uploadMissionAsync(
-        missionPlan: Mission.MissionPlan,
-        callback: (Int) -> Unit
-    ) {
+    override fun uploadMissionAsync(missionPlan: Mission.MissionPlan, callback: (Int) -> Unit) {
         NativeMission.uploadMissionAsync(
             handle,
             missionPlan.toNative(),
-            NativeMission.UploadMissionCallback {
-                    result -> callback(result)
-            }
+            NativeMission.UploadMissionCallback { result -> callback(result) },
         )
     }
 
     override fun uploadMissionWithProgressAsync(
         missionPlan: Mission.MissionPlan,
-        callback: (Int, Mission.ProgressData) -> Unit
+        callback: (Int, Mission.ProgressData) -> Unit,
     ) {
         NativeMission.uploadMissionWithProgressAsync(
             handle,
             missionPlan.toNative(),
-            NativeMission.UploadMissionWithProgressCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeMission.UploadMissionWithProgressCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
-    override fun cancelMissionUpload(): Int =
-        NativeMission.cancelMissionUpload(handle)
+    override fun cancelMissionUpload(): Int = NativeMission.cancelMissionUpload(handle)
 
-    override fun downloadMissionAsync(
-        callback: (Int, Mission.MissionPlan) -> Unit
-    ) {
+    override fun downloadMissionAsync(callback: (Int, Mission.MissionPlan) -> Unit) {
         NativeMission.downloadMissionAsync(
             handle,
-            NativeMission.DownloadMissionCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeMission.DownloadMissionCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
@@ -142,82 +108,59 @@ private class MissionNativeImpl(
     ) {
         NativeMission.downloadMissionWithProgressAsync(
             handle,
-            NativeMission.DownloadMissionWithProgressCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeMission.DownloadMissionWithProgressCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
-    override fun cancelMissionDownload(): Int =
-        NativeMission.cancelMissionDownload(handle)
+    override fun cancelMissionDownload(): Int = NativeMission.cancelMissionDownload(handle)
 
-    override fun startMissionAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun startMissionAsync(callback: (Int) -> Unit) {
         NativeMission.startMissionAsync(
             handle,
-            NativeMission.StartMissionCallback {
-                    result -> callback(result)
-            }
+            NativeMission.StartMissionCallback { result -> callback(result) },
         )
     }
 
-    override fun pauseMissionAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun pauseMissionAsync(callback: (Int) -> Unit) {
         NativeMission.pauseMissionAsync(
             handle,
-            NativeMission.PauseMissionCallback {
-                    result -> callback(result)
-            }
+            NativeMission.PauseMissionCallback { result -> callback(result) },
         )
     }
 
-    override fun clearMissionAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun clearMissionAsync(callback: (Int) -> Unit) {
         NativeMission.clearMissionAsync(
             handle,
-            NativeMission.ClearMissionCallback {
-                    result -> callback(result)
-            }
+            NativeMission.ClearMissionCallback { result -> callback(result) },
         )
     }
 
-    override fun setCurrentMissionItemAsync(
-        index: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun setCurrentMissionItemAsync(index: Int, callback: (Int) -> Unit) {
         NativeMission.setCurrentMissionItemAsync(
             handle,
             index,
-            NativeMission.SetCurrentMissionItemCallback {
-                    result -> callback(result)
-            }
+            NativeMission.SetCurrentMissionItemCallback { result -> callback(result) },
         )
     }
 
     override fun isMissionFinished(): Boolean {
-        val value = NativeMission.isMissionFinished(
-            handle        )
+        val value = NativeMission.isMissionFinished(handle)
         return value
     }
 
     override fun missionProgress(): Mission.MissionProgress {
-        val value = NativeMission.missionProgress(
-            handle        )
+        val value = NativeMission.missionProgress(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeMissionProgress(
-        callback: (Mission.MissionProgress) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeMission.subscribeMissionProgress(
-            handle,
-            NativeMission.MissionProgressCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeMissionProgress(callback: (Mission.MissionProgress) -> Unit): Long {
+        val subscriptionHandle =
+            NativeMission.subscribeMissionProgress(
+                handle,
+                NativeMission.MissionProgressCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeMission.unsubscribeMissionProgress(handle, subscriptionHandle)
@@ -231,8 +174,7 @@ private class MissionNativeImpl(
     }
 
     override fun getReturnToLaunchAfterMission(): Boolean {
-        val value = NativeMission.getReturnToLaunchAfterMission(
-            handle        )
+        val value = NativeMission.getReturnToLaunchAfterMission(handle)
         return value
     }
 

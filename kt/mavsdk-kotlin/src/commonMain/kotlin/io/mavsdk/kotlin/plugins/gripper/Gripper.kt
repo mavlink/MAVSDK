@@ -5,12 +5,10 @@
 package io.mavsdk.kotlin.plugins.gripper
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Gripper internal constructor(
-    private val native: GripperNative
-) : AutoCloseable {
+class Gripper internal constructor(private val native: GripperNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -20,19 +18,16 @@ class Gripper internal constructor(
         BUSY(3),
         TIMEOUT(4),
         UNSUPPORTED(5),
-        FAILED(6),
-        ;
+        FAILED(6);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
     enum class GripperAction(val value: Int) {
         RELEASE(0),
-        GRAB(1),
-        ;
+        GRAB(1);
 
         companion object {
             fun fromValue(value: Int): GripperAction =
@@ -40,27 +35,25 @@ class Gripper internal constructor(
         }
     }
 
-    suspend fun grab(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = GripperCallbackGuard()
-            native.grabAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun grab(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = GripperCallbackGuard()
+        native.grabAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun release(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = GripperCallbackGuard()
-            native.releaseAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun release(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = GripperCallbackGuard()
+        native.releaseAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     override fun close() {
         if (closed) return
@@ -68,22 +61,19 @@ class Gripper internal constructor(
         native.destroy()
     }
 
-    class GripperException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class GripperException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Gripper =
-            Gripper(
-                createGripperNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Gripper(createGripperNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface GripperNative {
     fun grabAsync(instance: Int, callback: (Int) -> Unit)
+
     fun releaseAsync(instance: Int, callback: (Int) -> Unit)
+
     fun destroy()
 }
 

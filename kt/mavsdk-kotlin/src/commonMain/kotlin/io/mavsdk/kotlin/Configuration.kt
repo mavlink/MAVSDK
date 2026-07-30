@@ -1,17 +1,11 @@
 package io.mavsdk.kotlin
 
-/**
- * Configuration for MAVSDK instance
- */
+/** Configuration for MAVSDK instance */
 expect class Configuration : AutoCloseable {
-    /**
-     * System ID for this MAVSDK instance
-     */
+    /** System ID for this MAVSDK instance */
     var systemId: Int
 
-    /**
-     * Component ID for this MAVSDK instance
-     */
+    /** Component ID for this MAVSDK instance */
     var componentId: Int
 
     override fun close()
@@ -21,14 +15,14 @@ expect class Configuration : AutoCloseable {
     companion object {
         /**
          * Create configuration with component type
-         * 
+         *
          * @param componentType Type of component
          */
         fun createWithComponentType(componentType: ComponentType): Configuration
 
         /**
          * Create manual configuration
-         * 
+         *
          * @param systemId System ID
          * @param componentId Component ID
          * @param alwaysSendHeartbeats Whether to always send heartbeats
@@ -36,7 +30,7 @@ expect class Configuration : AutoCloseable {
         fun createManual(
             systemId: Int,
             componentId: Int,
-            alwaysSendHeartbeats: Boolean
+            alwaysSendHeartbeats: Boolean,
         ): Configuration
     }
 }

@@ -5,15 +5,13 @@
 package io.mavsdk.kotlin.plugins.winch
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Winch internal constructor(
-    private val native: WinchNative
-) : AutoCloseable {
+class Winch internal constructor(private val native: WinchNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -23,12 +21,10 @@ class Winch internal constructor(
         BUSY(3),
         TIMEOUT(4),
         UNSUPPORTED(5),
-        FAILED(6),
-        ;
+        FAILED(6);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -42,8 +38,7 @@ class Winch internal constructor(
         RETRACT(6),
         LOAD_LINE(7),
         ABANDON_LINE(8),
-        LOAD_PAYLOAD(9),
-        ;
+        LOAD_PAYLOAD(9);
 
         companion object {
             fun fromValue(value: Int): WinchAction =
@@ -79,32 +74,27 @@ class Winch internal constructor(
         val statusFlags: StatusFlags,
     )
 
-    fun status(): Status =
-        native.status()
+    fun status(): Status = native.status()
 
     fun subscribeStatus(): Flow<Status> = callbackFlow {
-        val subscriptionHandle = native.subscribeStatus(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeStatus() { value -> trySend(value) }
         awaitClose { native.unsubscribeStatus(subscriptionHandle) }
     }
 
-    suspend fun relax(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = WinchCallbackGuard()
-            native.relaxAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun relax(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = WinchCallbackGuard()
+        native.relaxAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun relativeLengthControl(instance: Int, lengthM: Float, rateMS: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = WinchCallbackGuard()
-            native.relativeLengthControlAsync(instance, lengthM, rateMS, ) { result ->
+            native.relativeLengthControlAsync(instance, lengthM, rateMS) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -115,7 +105,7 @@ class Winch internal constructor(
     suspend fun rateControl(instance: Int, rateMS: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = WinchCallbackGuard()
-            native.rateControlAsync(instance, rateMS, ) { result ->
+            native.rateControlAsync(instance, rateMS) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -123,82 +113,75 @@ class Winch internal constructor(
             }
         }
 
-    suspend fun lock(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = WinchCallbackGuard()
-            native.lockAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun lock(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = WinchCallbackGuard()
+        native.lockAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun deliver(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = WinchCallbackGuard()
-            native.deliverAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun deliver(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = WinchCallbackGuard()
+        native.deliverAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun hold(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = WinchCallbackGuard()
-            native.holdAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun hold(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = WinchCallbackGuard()
+        native.holdAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun retract(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = WinchCallbackGuard()
-            native.retractAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun retract(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = WinchCallbackGuard()
+        native.retractAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun loadLine(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = WinchCallbackGuard()
-            native.loadLineAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun loadLine(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = WinchCallbackGuard()
+        native.loadLineAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun abandonLine(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = WinchCallbackGuard()
-            native.abandonLineAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun abandonLine(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = WinchCallbackGuard()
+        native.abandonLineAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun loadPayload(instance: Int): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = WinchCallbackGuard()
-            native.loadPayloadAsync(instance, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun loadPayload(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = WinchCallbackGuard()
+        native.loadPayloadAsync(instance) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     override fun close() {
         if (closed) return
@@ -206,33 +189,46 @@ class Winch internal constructor(
         native.destroy()
     }
 
-    class WinchException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class WinchException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Winch =
-            Winch(
-                createWinchNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Winch(createWinchNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface WinchNative {
     fun status(): Winch.Status
+
     fun subscribeStatus(callback: (Winch.Status) -> Unit): Long
+
     fun unsubscribeStatus(subscriptionHandle: Long)
+
     fun relaxAsync(instance: Int, callback: (Int) -> Unit)
-    fun relativeLengthControlAsync(instance: Int, lengthM: Float, rateMS: Float, callback: (Int) -> Unit)
+
+    fun relativeLengthControlAsync(
+        instance: Int,
+        lengthM: Float,
+        rateMS: Float,
+        callback: (Int) -> Unit,
+    )
+
     fun rateControlAsync(instance: Int, rateMS: Float, callback: (Int) -> Unit)
+
     fun lockAsync(instance: Int, callback: (Int) -> Unit)
+
     fun deliverAsync(instance: Int, callback: (Int) -> Unit)
+
     fun holdAsync(instance: Int, callback: (Int) -> Unit)
+
     fun retractAsync(instance: Int, callback: (Int) -> Unit)
+
     fun loadLineAsync(instance: Int, callback: (Int) -> Unit)
+
     fun abandonLineAsync(instance: Int, callback: (Int) -> Unit)
+
     fun loadPayloadAsync(instance: Int, callback: (Int) -> Unit)
+
     fun destroy()
 }
 

@@ -21,7 +21,7 @@ private fun CameraServer.Information.toNative(): NativeCameraServer.Information 
         definitionFileVersion,
         definitionFileUri,
         imageInVideoModeSupported,
-        videoInImageModeSupported
+        videoInImageModeSupported,
     )
 
 private fun NativeCameraServer.Information.toKotlin(): CameraServer.Information =
@@ -38,52 +38,26 @@ private fun NativeCameraServer.Information.toKotlin(): CameraServer.Information 
         definitionFileVersion,
         definitionFileUri,
         imageInVideoModeSupported,
-        videoInImageModeSupported
+        videoInImageModeSupported,
     )
 
 private fun CameraServer.VideoStreaming.toNative(): NativeCameraServer.VideoStreaming =
-    NativeCameraServer.VideoStreaming(
-        hasRtspServer,
-        rtspUri
-    )
+    NativeCameraServer.VideoStreaming(hasRtspServer, rtspUri)
 
 private fun NativeCameraServer.VideoStreaming.toKotlin(): CameraServer.VideoStreaming =
-    CameraServer.VideoStreaming(
-        hasRtspServer,
-        rtspUri
-    )
+    CameraServer.VideoStreaming(hasRtspServer, rtspUri)
 
 private fun CameraServer.Position.toNative(): NativeCameraServer.Position =
-    NativeCameraServer.Position(
-        latitudeDeg,
-        longitudeDeg,
-        absoluteAltitudeM,
-        relativeAltitudeM
-    )
+    NativeCameraServer.Position(latitudeDeg, longitudeDeg, absoluteAltitudeM, relativeAltitudeM)
 
 private fun NativeCameraServer.Position.toKotlin(): CameraServer.Position =
-    CameraServer.Position(
-        latitudeDeg,
-        longitudeDeg,
-        absoluteAltitudeM,
-        relativeAltitudeM
-    )
+    CameraServer.Position(latitudeDeg, longitudeDeg, absoluteAltitudeM, relativeAltitudeM)
 
 private fun CameraServer.Quaternion.toNative(): NativeCameraServer.Quaternion =
-    NativeCameraServer.Quaternion(
-        w,
-        x,
-        y,
-        z
-    )
+    NativeCameraServer.Quaternion(w, x, y, z)
 
 private fun NativeCameraServer.Quaternion.toKotlin(): CameraServer.Quaternion =
-    CameraServer.Quaternion(
-        w,
-        x,
-        y,
-        z
-    )
+    CameraServer.Quaternion(w, x, y, z)
 
 private fun CameraServer.CaptureInfo.toNative(): NativeCameraServer.CaptureInfo =
     NativeCameraServer.CaptureInfo(
@@ -92,7 +66,7 @@ private fun CameraServer.CaptureInfo.toNative(): NativeCameraServer.CaptureInfo 
         timeUtcUs,
         isSuccess,
         index,
-        fileUrl
+        fileUrl,
     )
 
 private fun NativeCameraServer.CaptureInfo.toKotlin(): CameraServer.CaptureInfo =
@@ -102,7 +76,7 @@ private fun NativeCameraServer.CaptureInfo.toKotlin(): CameraServer.CaptureInfo 
         timeUtcUs,
         isSuccess,
         index,
-        fileUrl
+        fileUrl,
     )
 
 private fun CameraServer.StorageInformation.toNative(): NativeCameraServer.StorageInformation =
@@ -114,7 +88,7 @@ private fun CameraServer.StorageInformation.toNative(): NativeCameraServer.Stora
         storageId,
         storageType.value,
         readSpeedMibS,
-        writeSpeedMibS
+        writeSpeedMibS,
     )
 
 private fun NativeCameraServer.StorageInformation.toKotlin(): CameraServer.StorageInformation =
@@ -126,7 +100,7 @@ private fun NativeCameraServer.StorageInformation.toKotlin(): CameraServer.Stora
         storageId,
         CameraServer.StorageType.fromValue(storageType),
         readSpeedMibS,
-        writeSpeedMibS
+        writeSpeedMibS,
     )
 
 private fun CameraServer.CaptureStatus.toNative(): NativeCameraServer.CaptureStatus =
@@ -136,7 +110,7 @@ private fun CameraServer.CaptureStatus.toNative(): NativeCameraServer.CaptureSta
         availableCapacityMib,
         imageStatus.value,
         videoStatus.value,
-        imageCount
+        imageCount,
     )
 
 private fun NativeCameraServer.CaptureStatus.toKotlin(): CameraServer.CaptureStatus =
@@ -146,29 +120,21 @@ private fun NativeCameraServer.CaptureStatus.toKotlin(): CameraServer.CaptureSta
         availableCapacityMib,
         CameraServer.ImageStatus.fromValue(imageStatus),
         CameraServer.VideoStatus.fromValue(videoStatus),
-        imageCount
+        imageCount,
     )
 
 private fun CameraServer.TrackPoint.toNative(): NativeCameraServer.TrackPoint =
-    NativeCameraServer.TrackPoint(
-        pointX,
-        pointY,
-        radius
-    )
+    NativeCameraServer.TrackPoint(pointX, pointY, radius)
 
 private fun NativeCameraServer.TrackPoint.toKotlin(): CameraServer.TrackPoint =
-    CameraServer.TrackPoint(
-        pointX,
-        pointY,
-        radius
-    )
+    CameraServer.TrackPoint(pointX, pointY, radius)
 
 private fun CameraServer.TrackRectangle.toNative(): NativeCameraServer.TrackRectangle =
     NativeCameraServer.TrackRectangle(
         topLeftCornerX,
         topLeftCornerY,
         bottomRightCornerX,
-        bottomRightCornerY
+        bottomRightCornerY,
     )
 
 private fun NativeCameraServer.TrackRectangle.toKotlin(): CameraServer.TrackRectangle =
@@ -176,12 +142,10 @@ private fun NativeCameraServer.TrackRectangle.toKotlin(): CameraServer.TrackRect
         topLeftCornerX,
         topLeftCornerY,
         bottomRightCornerX,
-        bottomRightCornerY
+        bottomRightCornerY,
     )
 
-private class CameraServerNativeImpl(
-    private val handle: Long
-) : CameraServerNative {
+private class CameraServerNativeImpl(private val handle: Long) : CameraServerNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     override fun setInformation(information: CameraServer.Information): Int =
@@ -193,15 +157,12 @@ private class CameraServerNativeImpl(
     override fun setInProgress(inProgress: Boolean): Int =
         NativeCameraServer.setInProgress(handle, inProgress)
 
-    override fun subscribeTakePhoto(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeTakePhoto(
-            handle,
-            NativeCameraServer.TakePhotoCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeTakePhoto(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeTakePhoto(
+                handle,
+                NativeCameraServer.TakePhotoCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeTakePhoto(handle, subscriptionHandle)
@@ -214,18 +175,18 @@ private class CameraServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun respondTakePhoto(takePhotoFeedback: CameraServer.CameraFeedback, captureInfo: CameraServer.CaptureInfo): Int =
+    override fun respondTakePhoto(
+        takePhotoFeedback: CameraServer.CameraFeedback,
+        captureInfo: CameraServer.CaptureInfo,
+    ): Int =
         NativeCameraServer.respondTakePhoto(handle, takePhotoFeedback.value, captureInfo.toNative())
 
-    override fun subscribeStartVideo(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeStartVideo(
-            handle,
-            NativeCameraServer.StartVideoCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeStartVideo(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeStartVideo(
+                handle,
+                NativeCameraServer.StartVideoCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeStartVideo(handle, subscriptionHandle)
@@ -241,15 +202,12 @@ private class CameraServerNativeImpl(
     override fun respondStartVideo(startVideoFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondStartVideo(handle, startVideoFeedback.value)
 
-    override fun subscribeStopVideo(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeStopVideo(
-            handle,
-            NativeCameraServer.StopVideoCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeStopVideo(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeStopVideo(
+                handle,
+                NativeCameraServer.StopVideoCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeStopVideo(handle, subscriptionHandle)
@@ -265,15 +223,12 @@ private class CameraServerNativeImpl(
     override fun respondStopVideo(stopVideoFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondStopVideo(handle, stopVideoFeedback.value)
 
-    override fun subscribeStartVideoStreaming(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeStartVideoStreaming(
-            handle,
-            NativeCameraServer.StartVideoStreamingCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeStartVideoStreaming(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeStartVideoStreaming(
+                handle,
+                NativeCameraServer.StartVideoStreamingCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeStartVideoStreaming(handle, subscriptionHandle)
@@ -286,18 +241,17 @@ private class CameraServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun respondStartVideoStreaming(startVideoStreamingFeedback: CameraServer.CameraFeedback): Int =
+    override fun respondStartVideoStreaming(
+        startVideoStreamingFeedback: CameraServer.CameraFeedback
+    ): Int =
         NativeCameraServer.respondStartVideoStreaming(handle, startVideoStreamingFeedback.value)
 
-    override fun subscribeStopVideoStreaming(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeStopVideoStreaming(
-            handle,
-            NativeCameraServer.StopVideoStreamingCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeStopVideoStreaming(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeStopVideoStreaming(
+                handle,
+                NativeCameraServer.StopVideoStreamingCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeStopVideoStreaming(handle, subscriptionHandle)
@@ -310,18 +264,18 @@ private class CameraServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun respondStopVideoStreaming(stopVideoStreamingFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondStopVideoStreaming(handle, stopVideoStreamingFeedback.value)
+    override fun respondStopVideoStreaming(
+        stopVideoStreamingFeedback: CameraServer.CameraFeedback
+    ): Int = NativeCameraServer.respondStopVideoStreaming(handle, stopVideoStreamingFeedback.value)
 
-    override fun subscribeSetMode(
-        callback: (CameraServer.Mode) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeSetMode(
-            handle,
-            NativeCameraServer.SetModeCallback {
-                    value -> callback(CameraServer.Mode.fromValue(value))
-            }
-        )
+    override fun subscribeSetMode(callback: (CameraServer.Mode) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeSetMode(
+                handle,
+                NativeCameraServer.SetModeCallback { value ->
+                    callback(CameraServer.Mode.fromValue(value))
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeSetMode(handle, subscriptionHandle)
@@ -337,15 +291,12 @@ private class CameraServerNativeImpl(
     override fun respondSetMode(setModeFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondSetMode(handle, setModeFeedback.value)
 
-    override fun subscribeStorageInformation(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeStorageInformation(
-            handle,
-            NativeCameraServer.StorageInformationCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeStorageInformation(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeStorageInformation(
+                handle,
+                NativeCameraServer.StorageInformationCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeStorageInformation(handle, subscriptionHandle)
@@ -358,18 +309,22 @@ private class CameraServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun respondStorageInformation(storageInformationFeedback: CameraServer.CameraFeedback, storageInformation: CameraServer.StorageInformation): Int =
-        NativeCameraServer.respondStorageInformation(handle, storageInformationFeedback.value, storageInformation.toNative())
-
-    override fun subscribeCaptureStatus(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeCaptureStatus(
+    override fun respondStorageInformation(
+        storageInformationFeedback: CameraServer.CameraFeedback,
+        storageInformation: CameraServer.StorageInformation,
+    ): Int =
+        NativeCameraServer.respondStorageInformation(
             handle,
-            NativeCameraServer.CaptureStatusCallback {
-                    value -> callback(value)
-            }
+            storageInformationFeedback.value,
+            storageInformation.toNative(),
         )
+
+    override fun subscribeCaptureStatus(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeCaptureStatus(
+                handle,
+                NativeCameraServer.CaptureStatusCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeCaptureStatus(handle, subscriptionHandle)
@@ -382,18 +337,22 @@ private class CameraServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun respondCaptureStatus(captureStatusFeedback: CameraServer.CameraFeedback, captureStatus: CameraServer.CaptureStatus): Int =
-        NativeCameraServer.respondCaptureStatus(handle, captureStatusFeedback.value, captureStatus.toNative())
-
-    override fun subscribeFormatStorage(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeFormatStorage(
+    override fun respondCaptureStatus(
+        captureStatusFeedback: CameraServer.CameraFeedback,
+        captureStatus: CameraServer.CaptureStatus,
+    ): Int =
+        NativeCameraServer.respondCaptureStatus(
             handle,
-            NativeCameraServer.FormatStorageCallback {
-                    value -> callback(value)
-            }
+            captureStatusFeedback.value,
+            captureStatus.toNative(),
         )
+
+    override fun subscribeFormatStorage(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeFormatStorage(
+                handle,
+                NativeCameraServer.FormatStorageCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeFormatStorage(handle, subscriptionHandle)
@@ -409,15 +368,12 @@ private class CameraServerNativeImpl(
     override fun respondFormatStorage(formatStorageFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondFormatStorage(handle, formatStorageFeedback.value)
 
-    override fun subscribeResetSettings(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeResetSettings(
-            handle,
-            NativeCameraServer.ResetSettingsCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeResetSettings(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeResetSettings(
+                handle,
+                NativeCameraServer.ResetSettingsCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeResetSettings(handle, subscriptionHandle)
@@ -433,15 +389,12 @@ private class CameraServerNativeImpl(
     override fun respondResetSettings(resetSettingsFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondResetSettings(handle, resetSettingsFeedback.value)
 
-    override fun subscribeZoomInStart(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeZoomInStart(
-            handle,
-            NativeCameraServer.ZoomInStartCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeZoomInStart(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeZoomInStart(
+                handle,
+                NativeCameraServer.ZoomInStartCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeZoomInStart(handle, subscriptionHandle)
@@ -457,15 +410,12 @@ private class CameraServerNativeImpl(
     override fun respondZoomInStart(zoomInStartFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondZoomInStart(handle, zoomInStartFeedback.value)
 
-    override fun subscribeZoomOutStart(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeZoomOutStart(
-            handle,
-            NativeCameraServer.ZoomOutStartCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeZoomOutStart(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeZoomOutStart(
+                handle,
+                NativeCameraServer.ZoomOutStartCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeZoomOutStart(handle, subscriptionHandle)
@@ -481,15 +431,12 @@ private class CameraServerNativeImpl(
     override fun respondZoomOutStart(zoomOutStartFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondZoomOutStart(handle, zoomOutStartFeedback.value)
 
-    override fun subscribeZoomStop(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeZoomStop(
-            handle,
-            NativeCameraServer.ZoomStopCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeZoomStop(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeZoomStop(
+                handle,
+                NativeCameraServer.ZoomStopCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeZoomStop(handle, subscriptionHandle)
@@ -505,15 +452,12 @@ private class CameraServerNativeImpl(
     override fun respondZoomStop(zoomStopFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondZoomStop(handle, zoomStopFeedback.value)
 
-    override fun subscribeZoomRange(
-        callback: (Float) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeZoomRange(
-            handle,
-            NativeCameraServer.ZoomRangeCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeZoomRange(callback: (Float) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeZoomRange(
+                handle,
+                NativeCameraServer.ZoomRangeCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeZoomRange(handle, subscriptionHandle)
@@ -537,15 +481,14 @@ private class CameraServerNativeImpl(
         NativeCameraServer.setTrackingOffStatus(handle)
     }
 
-    override fun subscribeTrackingPointCommand(
-        callback: (CameraServer.TrackPoint) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeTrackingPointCommand(
-            handle,
-            NativeCameraServer.TrackingPointCommandCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeTrackingPointCommand(callback: (CameraServer.TrackPoint) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeTrackingPointCommand(
+                handle,
+                NativeCameraServer.TrackingPointCommandCallback { value ->
+                    callback(value.toKotlin())
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeTrackingPointCommand(handle, subscriptionHandle)
@@ -561,12 +504,13 @@ private class CameraServerNativeImpl(
     override fun subscribeTrackingRectangleCommand(
         callback: (CameraServer.TrackRectangle) -> Unit
     ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeTrackingRectangleCommand(
-            handle,
-            NativeCameraServer.TrackingRectangleCommandCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+        val subscriptionHandle =
+            NativeCameraServer.subscribeTrackingRectangleCommand(
+                handle,
+                NativeCameraServer.TrackingRectangleCommandCallback { value ->
+                    callback(value.toKotlin())
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeTrackingRectangleCommand(handle, subscriptionHandle)
@@ -579,15 +523,12 @@ private class CameraServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeTrackingOffCommand(
-        callback: (Int) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCameraServer.subscribeTrackingOffCommand(
-            handle,
-            NativeCameraServer.TrackingOffCommandCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeTrackingOffCommand(callback: (Int) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeTrackingOffCommand(
+                handle,
+                NativeCameraServer.TrackingOffCommandCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCameraServer.unsubscribeTrackingOffCommand(handle, subscriptionHandle)
@@ -603,8 +544,9 @@ private class CameraServerNativeImpl(
     override fun respondTrackingPointCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondTrackingPointCommand(handle, stopVideoFeedback.value)
 
-    override fun respondTrackingRectangleCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondTrackingRectangleCommand(handle, stopVideoFeedback.value)
+    override fun respondTrackingRectangleCommand(
+        stopVideoFeedback: CameraServer.CameraFeedback
+    ): Int = NativeCameraServer.respondTrackingRectangleCommand(handle, stopVideoFeedback.value)
 
     override fun respondTrackingOffCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondTrackingOffCommand(handle, stopVideoFeedback.value)

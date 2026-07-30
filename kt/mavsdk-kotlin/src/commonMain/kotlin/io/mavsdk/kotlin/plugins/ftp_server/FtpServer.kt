@@ -6,26 +6,21 @@ package io.mavsdk.kotlin.plugins.ftp_server
 
 import io.mavsdk.kotlin.Mavsdk
 
-class FtpServer internal constructor(
-    private val native: FtpServerNative
-) : AutoCloseable {
+class FtpServer internal constructor(private val native: FtpServerNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
         SUCCESS(1),
         DOES_NOT_EXIST(2),
-        BUSY(3),
-        ;
+        BUSY(3);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    fun setRootDir(path: String): Result =
-        Result.fromValue(native.setRootDir(path))
+    fun setRootDir(path: String): Result = Result.fromValue(native.setRootDir(path))
 
     override fun close() {
         if (closed) return
@@ -33,21 +28,17 @@ class FtpServer internal constructor(
         native.destroy()
     }
 
-    class FtpServerException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class FtpServerException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(mavsdk: Mavsdk, instance: Int = 1): FtpServer =
-            FtpServer(
-                createFtpServerNative(mavsdk.serverComponentHandle(instance))
-            )
+            FtpServer(createFtpServerNative(mavsdk.serverComponentHandle(instance)))
     }
 }
 
 internal interface FtpServerNative {
     fun setRootDir(path: String): Int
+
     fun destroy()
 }
 

@@ -8,66 +8,45 @@ import io.mavsdk.jni.plugins.param_server.NativeParamServer
 import java.util.concurrent.ConcurrentHashMap
 
 private fun ParamServer.IntParam.toNative(): NativeParamServer.IntParam =
-    NativeParamServer.IntParam(
-        name,
-        value
-    )
+    NativeParamServer.IntParam(name, value)
 
 private fun NativeParamServer.IntParam.toKotlin(): ParamServer.IntParam =
-    ParamServer.IntParam(
-        name,
-        value
-    )
+    ParamServer.IntParam(name, value)
 
 private fun ParamServer.FloatParam.toNative(): NativeParamServer.FloatParam =
-    NativeParamServer.FloatParam(
-        name,
-        value
-    )
+    NativeParamServer.FloatParam(name, value)
 
 private fun NativeParamServer.FloatParam.toKotlin(): ParamServer.FloatParam =
-    ParamServer.FloatParam(
-        name,
-        value
-    )
+    ParamServer.FloatParam(name, value)
 
 private fun ParamServer.CustomParam.toNative(): NativeParamServer.CustomParam =
-    NativeParamServer.CustomParam(
-        name,
-        value
-    )
+    NativeParamServer.CustomParam(name, value)
 
 private fun NativeParamServer.CustomParam.toKotlin(): ParamServer.CustomParam =
-    ParamServer.CustomParam(
-        name,
-        value
-    )
+    ParamServer.CustomParam(name, value)
 
 private fun ParamServer.AllParams.toNative(): NativeParamServer.AllParams =
     NativeParamServer.AllParams(
         intParams.map { it.toNative() }.toTypedArray(),
         floatParams.map { it.toNative() }.toTypedArray(),
-        customParams.map { it.toNative() }.toTypedArray()
+        customParams.map { it.toNative() }.toTypedArray(),
     )
 
 private fun NativeParamServer.AllParams.toKotlin(): ParamServer.AllParams =
     ParamServer.AllParams(
         intParams.map { it.toKotlin() },
         floatParams.map { it.toKotlin() },
-        customParams.map { it.toKotlin() }
+        customParams.map { it.toKotlin() },
     )
 
-private class ParamServerNativeImpl(
-    private val handle: Long
-) : ParamServerNative {
+private class ParamServerNativeImpl(private val handle: Long) : ParamServerNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     override fun setProtocol(extendedProtocol: Boolean): Int =
         NativeParamServer.setProtocol(handle, extendedProtocol)
 
     override fun retrieveParamInt(name: String): Int {
-        val value = NativeParamServer.retrieveParamInt(
-            handle, name        )
+        val value = NativeParamServer.retrieveParamInt(handle, name)
         return value
     }
 
@@ -75,8 +54,7 @@ private class ParamServerNativeImpl(
         NativeParamServer.provideParamInt(handle, name, value)
 
     override fun retrieveParamFloat(name: String): Float {
-        val value = NativeParamServer.retrieveParamFloat(
-            handle, name        )
+        val value = NativeParamServer.retrieveParamFloat(handle, name)
         return value
     }
 
@@ -84,8 +62,7 @@ private class ParamServerNativeImpl(
         NativeParamServer.provideParamFloat(handle, name, value)
 
     override fun retrieveParamCustom(name: String): String {
-        val value = NativeParamServer.retrieveParamCustom(
-            handle, name        )
+        val value = NativeParamServer.retrieveParamCustom(handle, name)
         return value
     }
 
@@ -93,20 +70,16 @@ private class ParamServerNativeImpl(
         NativeParamServer.provideParamCustom(handle, name, value)
 
     override fun retrieveAllParams(): ParamServer.AllParams {
-        val value = NativeParamServer.retrieveAllParams(
-            handle        )
+        val value = NativeParamServer.retrieveAllParams(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeChangedParamInt(
-        callback: (ParamServer.IntParam) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeParamServer.subscribeChangedParamInt(
-            handle,
-            NativeParamServer.ChangedParamIntCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeChangedParamInt(callback: (ParamServer.IntParam) -> Unit): Long {
+        val subscriptionHandle =
+            NativeParamServer.subscribeChangedParamInt(
+                handle,
+                NativeParamServer.ChangedParamIntCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeParamServer.unsubscribeChangedParamInt(handle, subscriptionHandle)
@@ -119,15 +92,12 @@ private class ParamServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeChangedParamFloat(
-        callback: (ParamServer.FloatParam) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeParamServer.subscribeChangedParamFloat(
-            handle,
-            NativeParamServer.ChangedParamFloatCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeChangedParamFloat(callback: (ParamServer.FloatParam) -> Unit): Long {
+        val subscriptionHandle =
+            NativeParamServer.subscribeChangedParamFloat(
+                handle,
+                NativeParamServer.ChangedParamFloatCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeParamServer.unsubscribeChangedParamFloat(handle, subscriptionHandle)
@@ -140,15 +110,12 @@ private class ParamServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeChangedParamCustom(
-        callback: (ParamServer.CustomParam) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeParamServer.subscribeChangedParamCustom(
-            handle,
-            NativeParamServer.ChangedParamCustomCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeChangedParamCustom(callback: (ParamServer.CustomParam) -> Unit): Long {
+        val subscriptionHandle =
+            NativeParamServer.subscribeChangedParamCustom(
+                handle,
+                NativeParamServer.ChangedParamCustomCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeParamServer.unsubscribeChangedParamCustom(handle, subscriptionHandle)

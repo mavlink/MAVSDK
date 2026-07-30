@@ -5,15 +5,13 @@
 package io.mavsdk.kotlin.plugins.log_streaming
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class LogStreaming internal constructor(
-    private val native: LogStreamingNative
-) : AutoCloseable {
+class LogStreaming internal constructor(private val native: LogStreamingNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -24,46 +22,37 @@ class LogStreaming internal constructor(
         COMMAND_DENIED(4),
         TIMEOUT(5),
         UNSUPPORTED(6),
-        UNKNOWN(7),
-        ;
+        UNKNOWN(7);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    data class LogStreamingRaw(
-        val dataBase64: String,
-    )
+    data class LogStreamingRaw(val dataBase64: String)
 
-    suspend fun startLogStreaming(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = LogStreamingCallbackGuard()
-            native.startLogStreamingAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun startLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = LogStreamingCallbackGuard()
+        native.startLogStreamingAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun stopLogStreaming(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = LogStreamingCallbackGuard()
-            native.stopLogStreamingAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun stopLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = LogStreamingCallbackGuard()
+        native.stopLogStreamingAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     fun subscribeLogStreamingRaw(): Flow<LogStreamingRaw> = callbackFlow {
-        val subscriptionHandle = native.subscribeLogStreamingRaw(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeLogStreamingRaw() { value -> trySend(value) }
         awaitClose { native.unsubscribeLogStreamingRaw(subscriptionHandle) }
     }
 
@@ -73,24 +62,25 @@ class LogStreaming internal constructor(
         native.destroy()
     }
 
-    class LogStreamingException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class LogStreamingException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): LogStreaming =
-            LogStreaming(
-                createLogStreamingNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            LogStreaming(createLogStreamingNative(system.getHandle())).also {
+                system.registerPlugin(it)
+            }
     }
 }
 
 internal interface LogStreamingNative {
     fun startLogStreamingAsync(callback: (Int) -> Unit)
+
     fun stopLogStreamingAsync(callback: (Int) -> Unit)
+
     fun subscribeLogStreamingRaw(callback: (LogStreaming.LogStreamingRaw) -> Unit): Long
+
     fun unsubscribeLogStreamingRaw(subscriptionHandle: Long)
+
     fun destroy()
 }
 

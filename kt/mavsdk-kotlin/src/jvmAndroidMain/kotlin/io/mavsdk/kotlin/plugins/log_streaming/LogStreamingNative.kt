@@ -9,51 +9,34 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 private fun LogStreaming.LogStreamingRaw.toNative(): NativeLogStreaming.LogStreamingRaw =
-    NativeLogStreaming.LogStreamingRaw(
-        dataBase64
-    )
+    NativeLogStreaming.LogStreamingRaw(dataBase64)
 
 private fun NativeLogStreaming.LogStreamingRaw.toKotlin(): LogStreaming.LogStreamingRaw =
-    LogStreaming.LogStreamingRaw(
-        dataBase64
-    )
+    LogStreaming.LogStreamingRaw(dataBase64)
 
-private class LogStreamingNativeImpl(
-    private val handle: Long
-) : LogStreamingNative {
+private class LogStreamingNativeImpl(private val handle: Long) : LogStreamingNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun startLogStreamingAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun startLogStreamingAsync(callback: (Int) -> Unit) {
         NativeLogStreaming.startLogStreamingAsync(
             handle,
-            NativeLogStreaming.StartLogStreamingCallback {
-                    result -> callback(result)
-            }
+            NativeLogStreaming.StartLogStreamingCallback { result -> callback(result) },
         )
     }
 
-    override fun stopLogStreamingAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun stopLogStreamingAsync(callback: (Int) -> Unit) {
         NativeLogStreaming.stopLogStreamingAsync(
             handle,
-            NativeLogStreaming.StopLogStreamingCallback {
-                    result -> callback(result)
-            }
+            NativeLogStreaming.StopLogStreamingCallback { result -> callback(result) },
         )
     }
 
-    override fun subscribeLogStreamingRaw(
-        callback: (LogStreaming.LogStreamingRaw) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeLogStreaming.subscribeLogStreamingRaw(
-            handle,
-            NativeLogStreaming.LogStreamingRawCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeLogStreamingRaw(callback: (LogStreaming.LogStreamingRaw) -> Unit): Long {
+        val subscriptionHandle =
+            NativeLogStreaming.subscribeLogStreamingRaw(
+                handle,
+                NativeLogStreaming.LogStreamingRawCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeLogStreaming.unsubscribeLogStreamingRaw(handle, subscriptionHandle)

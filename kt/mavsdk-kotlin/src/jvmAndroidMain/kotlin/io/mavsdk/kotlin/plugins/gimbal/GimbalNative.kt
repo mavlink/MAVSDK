@@ -9,48 +9,21 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 private fun Gimbal.Quaternion.toNative(): NativeGimbal.Quaternion =
-    NativeGimbal.Quaternion(
-        w,
-        x,
-        y,
-        z
-    )
+    NativeGimbal.Quaternion(w, x, y, z)
 
-private fun NativeGimbal.Quaternion.toKotlin(): Gimbal.Quaternion =
-    Gimbal.Quaternion(
-        w,
-        x,
-        y,
-        z
-    )
+private fun NativeGimbal.Quaternion.toKotlin(): Gimbal.Quaternion = Gimbal.Quaternion(w, x, y, z)
 
 private fun Gimbal.EulerAngle.toNative(): NativeGimbal.EulerAngle =
-    NativeGimbal.EulerAngle(
-        rollDeg,
-        pitchDeg,
-        yawDeg
-    )
+    NativeGimbal.EulerAngle(rollDeg, pitchDeg, yawDeg)
 
 private fun NativeGimbal.EulerAngle.toKotlin(): Gimbal.EulerAngle =
-    Gimbal.EulerAngle(
-        rollDeg,
-        pitchDeg,
-        yawDeg
-    )
+    Gimbal.EulerAngle(rollDeg, pitchDeg, yawDeg)
 
 private fun Gimbal.AngularVelocityBody.toNative(): NativeGimbal.AngularVelocityBody =
-    NativeGimbal.AngularVelocityBody(
-        rollRadS,
-        pitchRadS,
-        yawRadS
-    )
+    NativeGimbal.AngularVelocityBody(rollRadS, pitchRadS, yawRadS)
 
 private fun NativeGimbal.AngularVelocityBody.toKotlin(): Gimbal.AngularVelocityBody =
-    Gimbal.AngularVelocityBody(
-        rollRadS,
-        pitchRadS,
-        yawRadS
-    )
+    Gimbal.AngularVelocityBody(rollRadS, pitchRadS, yawRadS)
 
 private fun Gimbal.Attitude.toNative(): NativeGimbal.Attitude =
     NativeGimbal.Attitude(
@@ -60,7 +33,7 @@ private fun Gimbal.Attitude.toNative(): NativeGimbal.Attitude =
         eulerAngleNorth.toNative(),
         quaternionNorth.toNative(),
         angularVelocity.toNative(),
-        timestampUs
+        timestampUs,
     )
 
 private fun NativeGimbal.Attitude.toKotlin(): Gimbal.Attitude =
@@ -71,7 +44,7 @@ private fun NativeGimbal.Attitude.toKotlin(): Gimbal.Attitude =
         eulerAngleNorth.toKotlin(),
         quaternionNorth.toKotlin(),
         angularVelocity.toKotlin(),
-        timestampUs
+        timestampUs,
     )
 
 private fun Gimbal.GimbalItem.toNative(): NativeGimbal.GimbalItem =
@@ -81,7 +54,7 @@ private fun Gimbal.GimbalItem.toNative(): NativeGimbal.GimbalItem =
         modelName,
         customName,
         gimbalManagerComponentId,
-        gimbalDeviceId
+        gimbalDeviceId,
     )
 
 private fun NativeGimbal.GimbalItem.toKotlin(): Gimbal.GimbalItem =
@@ -91,18 +64,14 @@ private fun NativeGimbal.GimbalItem.toKotlin(): Gimbal.GimbalItem =
         modelName,
         customName,
         gimbalManagerComponentId,
-        gimbalDeviceId
+        gimbalDeviceId,
     )
 
 private fun Gimbal.GimbalList.toNative(): NativeGimbal.GimbalList =
-    NativeGimbal.GimbalList(
-        gimbals.map { it.toNative() }.toTypedArray()
-    )
+    NativeGimbal.GimbalList(gimbals.map { it.toNative() }.toTypedArray())
 
 private fun NativeGimbal.GimbalList.toKotlin(): Gimbal.GimbalList =
-    Gimbal.GimbalList(
-        gimbals.map { it.toKotlin() }
-    )
+    Gimbal.GimbalList(gimbals.map { it.toKotlin() })
 
 private fun Gimbal.ControlStatus.toNative(): NativeGimbal.ControlStatus =
     NativeGimbal.ControlStatus(
@@ -111,7 +80,7 @@ private fun Gimbal.ControlStatus.toNative(): NativeGimbal.ControlStatus =
         sysidPrimaryControl,
         compidPrimaryControl,
         sysidSecondaryControl,
-        compidSecondaryControl
+        compidSecondaryControl,
     )
 
 private fun NativeGimbal.ControlStatus.toKotlin(): Gimbal.ControlStatus =
@@ -121,12 +90,10 @@ private fun NativeGimbal.ControlStatus.toKotlin(): Gimbal.ControlStatus =
         sysidPrimaryControl,
         compidPrimaryControl,
         sysidSecondaryControl,
-        compidSecondaryControl
+        compidSecondaryControl,
     )
 
-private class GimbalNativeImpl(
-    private val handle: Long
-) : GimbalNative {
+private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     override fun setAnglesAsync(
@@ -136,7 +103,7 @@ private class GimbalNativeImpl(
         yawDeg: Float,
         gimbalMode: Gimbal.GimbalMode,
         sendMode: Gimbal.SendMode,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeGimbal.setAnglesAsync(
             handle,
@@ -146,9 +113,7 @@ private class GimbalNativeImpl(
             yawDeg,
             gimbalMode.value,
             sendMode.value,
-            NativeGimbal.SetAnglesCallback {
-                    result -> callback(result)
-            }
+            NativeGimbal.SetAnglesCallback { result -> callback(result) },
         )
     }
 
@@ -159,7 +124,7 @@ private class GimbalNativeImpl(
         yawRateDegS: Float,
         gimbalMode: Gimbal.GimbalMode,
         sendMode: Gimbal.SendMode,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeGimbal.setAngularRatesAsync(
             handle,
@@ -169,9 +134,7 @@ private class GimbalNativeImpl(
             yawRateDegS,
             gimbalMode.value,
             sendMode.value,
-            NativeGimbal.SetAngularRatesCallback {
-                    result -> callback(result)
-            }
+            NativeGimbal.SetAngularRatesCallback { result -> callback(result) },
         )
     }
 
@@ -180,7 +143,7 @@ private class GimbalNativeImpl(
         latitudeDeg: Double,
         longitudeDeg: Double,
         altitudeM: Float,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeGimbal.setRoiLocationAsync(
             handle,
@@ -188,55 +151,42 @@ private class GimbalNativeImpl(
             latitudeDeg,
             longitudeDeg,
             altitudeM,
-            NativeGimbal.SetRoiLocationCallback {
-                    result -> callback(result)
-            }
+            NativeGimbal.SetRoiLocationCallback { result -> callback(result) },
         )
     }
 
     override fun takeControlAsync(
         gimbalId: Int,
         controlMode: Gimbal.ControlMode,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeGimbal.takeControlAsync(
             handle,
             gimbalId,
             controlMode.value,
-            NativeGimbal.TakeControlCallback {
-                    result -> callback(result)
-            }
+            NativeGimbal.TakeControlCallback { result -> callback(result) },
         )
     }
 
-    override fun releaseControlAsync(
-        gimbalId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun releaseControlAsync(gimbalId: Int, callback: (Int) -> Unit) {
         NativeGimbal.releaseControlAsync(
             handle,
             gimbalId,
-            NativeGimbal.ReleaseControlCallback {
-                    result -> callback(result)
-            }
+            NativeGimbal.ReleaseControlCallback { result -> callback(result) },
         )
     }
 
     override fun gimbalList(): Gimbal.GimbalList {
-        val value = NativeGimbal.gimbalList(
-            handle        )
+        val value = NativeGimbal.gimbalList(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeGimbalList(
-        callback: (Gimbal.GimbalList) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeGimbal.subscribeGimbalList(
-            handle,
-            NativeGimbal.GimbalListCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeGimbalList(callback: (Gimbal.GimbalList) -> Unit): Long {
+        val subscriptionHandle =
+            NativeGimbal.subscribeGimbalList(
+                handle,
+                NativeGimbal.GimbalListCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeGimbal.unsubscribeGimbalList(handle, subscriptionHandle)
@@ -249,15 +199,12 @@ private class GimbalNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeControlStatus(
-        callback: (Gimbal.ControlStatus) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeGimbal.subscribeControlStatus(
-            handle,
-            NativeGimbal.ControlStatusCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeControlStatus(callback: (Gimbal.ControlStatus) -> Unit): Long {
+        val subscriptionHandle =
+            NativeGimbal.subscribeControlStatus(
+                handle,
+                NativeGimbal.ControlStatusCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeGimbal.unsubscribeControlStatus(handle, subscriptionHandle)
@@ -271,20 +218,16 @@ private class GimbalNativeImpl(
     }
 
     override fun getControlStatus(gimbalId: Int): Gimbal.ControlStatus {
-        val value = NativeGimbal.getControlStatus(
-            handle, gimbalId        )
+        val value = NativeGimbal.getControlStatus(handle, gimbalId)
         return value.toKotlin()
     }
 
-    override fun subscribeAttitude(
-        callback: (Gimbal.Attitude) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeGimbal.subscribeAttitude(
-            handle,
-            NativeGimbal.AttitudeCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeAttitude(callback: (Gimbal.Attitude) -> Unit): Long {
+        val subscriptionHandle =
+            NativeGimbal.subscribeAttitude(
+                handle,
+                NativeGimbal.AttitudeCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeGimbal.unsubscribeAttitude(handle, subscriptionHandle)
@@ -298,8 +241,7 @@ private class GimbalNativeImpl(
     }
 
     override fun getAttitude(gimbalId: Int): Gimbal.Attitude {
-        val value = NativeGimbal.getAttitude(
-            handle, gimbalId        )
+        val value = NativeGimbal.getAttitude(handle, gimbalId)
         return value.toKotlin()
     }
 

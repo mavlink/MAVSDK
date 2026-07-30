@@ -5,15 +5,13 @@
 package io.mavsdk.kotlin.plugins.mission_raw
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class MissionRaw internal constructor(
-    private val native: MissionRawNative
-) : AutoCloseable {
+class MissionRaw internal constructor(private val native: MissionRawNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -38,12 +36,10 @@ class MissionRaw internal constructor(
         INT_MESSAGES_NOT_SUPPORTED(18),
         FAILED_TO_OPEN_MISSION_PLANNER_PLAN(19),
         FAILED_TO_PARSE_MISSION_PLANNER_PLAN(20),
-        NEXT(21),
-        ;
+        NEXT(21);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -63,14 +59,9 @@ class MissionRaw internal constructor(
         val missionType: Int,
     )
 
-    data class MissionPlan(
-        val missionItems: List<MissionItem> = emptyList(),
-    )
+    data class MissionPlan(val missionItems: List<MissionItem> = emptyList())
 
-    data class MissionProgress(
-        val current: Int,
-        val total: Int,
-    )
+    data class MissionProgress(val current: Int, val total: Int)
 
     data class MissionImportData(
         val missionItems: List<MissionItem> = emptyList(),
@@ -78,16 +69,16 @@ class MissionRaw internal constructor(
         val rallyItems: List<MissionItem> = emptyList(),
     )
 
-    data class ProgressData(
-        val progress: Float,
-    )
+    data class ProgressData(val progress: Float)
 
     suspend fun uploadMission(missionItems: List<MissionItem>): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionRawCallbackGuard()
-            native.uploadMissionAsync(missionItems, ) { result ->
+            native.uploadMissionAsync(missionItems) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -95,7 +86,7 @@ class MissionRaw internal constructor(
 
     fun uploadMissionWithProgress(missionPlan: MissionPlan): Flow<kotlin.Result<ProgressData>> =
         callbackFlow {
-            native.uploadMissionWithProgressAsync(missionPlan, ) { result, value ->
+            native.uploadMissionWithProgressAsync(missionPlan) { result, value ->
                 val parsedResult = Result.fromValue(result)
                 when {
                     parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
@@ -105,7 +96,7 @@ class MissionRaw internal constructor(
                             kotlin.Result.failure(
                                 MissionRawException(
                                     parsedResult,
-                                    "uploadMissionWithProgress failed: ${parsedResult.name}"
+                                    "uploadMissionWithProgress failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -119,9 +110,11 @@ class MissionRaw internal constructor(
     suspend fun uploadGeofence(missionItems: List<MissionItem>): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionRawCallbackGuard()
-            native.uploadGeofenceAsync(missionItems, ) { result ->
+            native.uploadGeofenceAsync(missionItems) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -130,16 +123,17 @@ class MissionRaw internal constructor(
     suspend fun uploadRallyPoints(missionItems: List<MissionItem>): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionRawCallbackGuard()
-            native.uploadRallyPointsAsync(missionItems, ) { result ->
+            native.uploadRallyPointsAsync(missionItems) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
         }
 
-    fun cancelMissionUpload(): Result =
-        Result.fromValue(native.cancelMissionUpload())
+    fun cancelMissionUpload(): Result = Result.fromValue(native.cancelMissionUpload())
 
     suspend fun downloadMission(): kotlin.Result<List<MissionItem>> =
         suspendCancellableCoroutine { continuation ->
@@ -154,7 +148,7 @@ class MissionRaw internal constructor(
                             kotlin.Result.failure(
                                 MissionRawException(
                                     parsedResult,
-                                    "downloadMission failed: ${parsedResult.name}"
+                                    "downloadMission failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -176,7 +170,7 @@ class MissionRaw internal constructor(
                             kotlin.Result.failure(
                                 MissionRawException(
                                     parsedResult,
-                                    "downloadGeofence failed: ${parsedResult.name}"
+                                    "downloadGeofence failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -198,7 +192,7 @@ class MissionRaw internal constructor(
                             kotlin.Result.failure(
                                 MissionRawException(
                                     parsedResult,
-                                    "downloadRallypoints failed: ${parsedResult.name}"
+                                    "downloadRallypoints failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -207,69 +201,60 @@ class MissionRaw internal constructor(
             }
         }
 
-    fun cancelMissionDownload(): Result =
-        Result.fromValue(native.cancelMissionDownload())
+    fun cancelMissionDownload(): Result = Result.fromValue(native.cancelMissionDownload())
 
-    suspend fun startMission(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = MissionRawCallbackGuard()
-            native.startMissionAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = MissionRawCallbackGuard()
+        native.startMissionAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun pauseMission(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = MissionRawCallbackGuard()
-            native.pauseMissionAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = MissionRawCallbackGuard()
+        native.pauseMissionAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun clearMission(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = MissionRawCallbackGuard()
-            native.clearMissionAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = MissionRawCallbackGuard()
+        native.clearMissionAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun setCurrentMissionItem(index: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionRawCallbackGuard()
-            native.setCurrentMissionItemAsync(index, ) { result ->
+            native.setCurrentMissionItemAsync(index) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
         }
 
-    fun missionProgress(): MissionProgress =
-        native.missionProgress()
+    fun missionProgress(): MissionProgress = native.missionProgress()
 
     fun subscribeMissionProgress(): Flow<MissionProgress> = callbackFlow {
-        val subscriptionHandle = native.subscribeMissionProgress(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeMissionProgress() { value -> trySend(value) }
         awaitClose { native.unsubscribeMissionProgress(subscriptionHandle) }
     }
 
     fun subscribeMissionChanged(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeMissionChanged(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeMissionChanged() { value -> trySend(value) }
         awaitClose { native.unsubscribeMissionChanged(subscriptionHandle) }
     }
 
@@ -285,8 +270,7 @@ class MissionRaw internal constructor(
     fun importMissionPlannerMissionFromString(missionPlannerMission: String): MissionImportData =
         native.importMissionPlannerMissionFromString(missionPlannerMission)
 
-    fun isMissionFinished(): Boolean =
-        native.isMissionFinished()
+    fun isMissionFinished(): Boolean = native.isMissionFinished()
 
     override fun close() {
         if (closed) return
@@ -294,43 +278,68 @@ class MissionRaw internal constructor(
         native.destroy()
     }
 
-    class MissionRawException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class MissionRawException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): MissionRaw =
-            MissionRaw(
-                createMissionRawNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            MissionRaw(createMissionRawNative(system.getHandle())).also {
+                system.registerPlugin(it)
+            }
     }
 }
 
 internal interface MissionRawNative {
     fun uploadMissionAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
-    fun uploadMissionWithProgressAsync(missionPlan: MissionRaw.MissionPlan, callback: (Int, MissionRaw.ProgressData) -> Unit)
+
+    fun uploadMissionWithProgressAsync(
+        missionPlan: MissionRaw.MissionPlan,
+        callback: (Int, MissionRaw.ProgressData) -> Unit,
+    )
+
     fun uploadGeofenceAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
+
     fun uploadRallyPointsAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
+
     fun cancelMissionUpload(): Int
+
     fun downloadMissionAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit)
+
     fun downloadGeofenceAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit)
+
     fun downloadRallypointsAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit)
+
     fun cancelMissionDownload(): Int
+
     fun startMissionAsync(callback: (Int) -> Unit)
+
     fun pauseMissionAsync(callback: (Int) -> Unit)
+
     fun clearMissionAsync(callback: (Int) -> Unit)
+
     fun setCurrentMissionItemAsync(index: Int, callback: (Int) -> Unit)
+
     fun missionProgress(): MissionRaw.MissionProgress
+
     fun subscribeMissionProgress(callback: (MissionRaw.MissionProgress) -> Unit): Long
+
     fun unsubscribeMissionProgress(subscriptionHandle: Long)
+
     fun subscribeMissionChanged(callback: (Boolean) -> Unit): Long
+
     fun unsubscribeMissionChanged(subscriptionHandle: Long)
+
     fun importQgroundcontrolMission(qgcPlanPath: String): MissionRaw.MissionImportData
+
     fun importQgroundcontrolMissionFromString(qgcPlan: String): MissionRaw.MissionImportData
+
     fun importMissionPlannerMission(missionPlannerPath: String): MissionRaw.MissionImportData
-    fun importMissionPlannerMissionFromString(missionPlannerMission: String): MissionRaw.MissionImportData
+
+    fun importMissionPlannerMissionFromString(
+        missionPlannerMission: String
+    ): MissionRaw.MissionImportData
+
     fun isMissionFinished(): Boolean
+
     fun destroy()
 }
 

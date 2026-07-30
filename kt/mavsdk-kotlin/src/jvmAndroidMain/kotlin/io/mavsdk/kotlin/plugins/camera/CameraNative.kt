@@ -9,32 +9,16 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 private fun Camera.Option.toNative(): NativeCamera.Option =
-    NativeCamera.Option(
-        optionId,
-        optionDescription
-    )
+    NativeCamera.Option(optionId, optionDescription)
 
 private fun NativeCamera.Option.toKotlin(): Camera.Option =
-    Camera.Option(
-        optionId,
-        optionDescription
-    )
+    Camera.Option(optionId, optionDescription)
 
 private fun Camera.Setting.toNative(): NativeCamera.Setting =
-    NativeCamera.Setting(
-        settingId,
-        settingDescription,
-        option.toNative(),
-        isRange
-    )
+    NativeCamera.Setting(settingId, settingDescription, option.toNative(), isRange)
 
 private fun NativeCamera.Setting.toKotlin(): Camera.Setting =
-    Camera.Setting(
-        settingId,
-        settingDescription,
-        option.toKotlin(),
-        isRange
-    )
+    Camera.Setting(settingId, settingDescription, option.toKotlin(), isRange)
 
 private fun Camera.SettingOptions.toNative(): NativeCamera.SettingOptions =
     NativeCamera.SettingOptions(
@@ -42,7 +26,7 @@ private fun Camera.SettingOptions.toNative(): NativeCamera.SettingOptions =
         settingId,
         settingDescription,
         options.map { it.toNative() }.toTypedArray(),
-        isRange
+        isRange,
     )
 
 private fun NativeCamera.SettingOptions.toKotlin(): Camera.SettingOptions =
@@ -51,7 +35,7 @@ private fun NativeCamera.SettingOptions.toKotlin(): Camera.SettingOptions =
         settingId,
         settingDescription,
         options.map { it.toKotlin() },
-        isRange
+        isRange,
     )
 
 private fun Camera.VideoStreamSettings.toNative(): NativeCamera.VideoStreamSettings =
@@ -62,7 +46,7 @@ private fun Camera.VideoStreamSettings.toNative(): NativeCamera.VideoStreamSetti
         bitRateBS,
         rotationDeg,
         uri,
-        horizontalFovDeg
+        horizontalFovDeg,
     )
 
 private fun NativeCamera.VideoStreamSettings.toKotlin(): Camera.VideoStreamSettings =
@@ -73,48 +57,31 @@ private fun NativeCamera.VideoStreamSettings.toKotlin(): Camera.VideoStreamSetti
         bitRateBS,
         rotationDeg,
         uri,
-        horizontalFovDeg
+        horizontalFovDeg,
     )
 
 private fun Camera.VideoStreamInfo.toNative(): NativeCamera.VideoStreamInfo =
-    NativeCamera.VideoStreamInfo(
-        streamId,
-        settings.toNative(),
-        status.value,
-        spectrum.value
-    )
+    NativeCamera.VideoStreamInfo(streamId, settings.toNative(), status.value, spectrum.value)
 
 private fun NativeCamera.VideoStreamInfo.toKotlin(): Camera.VideoStreamInfo =
     Camera.VideoStreamInfo(
         streamId,
         settings.toKotlin(),
         Camera.VideoStreamStatus.fromValue(status),
-        Camera.VideoStreamSpectrum.fromValue(spectrum)
+        Camera.VideoStreamSpectrum.fromValue(spectrum),
     )
 
 private fun Camera.ModeUpdate.toNative(): NativeCamera.ModeUpdate =
-    NativeCamera.ModeUpdate(
-        componentId,
-        mode.value
-    )
+    NativeCamera.ModeUpdate(componentId, mode.value)
 
 private fun NativeCamera.ModeUpdate.toKotlin(): Camera.ModeUpdate =
-    Camera.ModeUpdate(
-        componentId,
-        Camera.Mode.fromValue(mode)
-    )
+    Camera.ModeUpdate(componentId, Camera.Mode.fromValue(mode))
 
 private fun Camera.VideoStreamUpdate.toNative(): NativeCamera.VideoStreamUpdate =
-    NativeCamera.VideoStreamUpdate(
-        componentId,
-        videoStreamInfo.toNative()
-    )
+    NativeCamera.VideoStreamUpdate(componentId, videoStreamInfo.toNative())
 
 private fun NativeCamera.VideoStreamUpdate.toKotlin(): Camera.VideoStreamUpdate =
-    Camera.VideoStreamUpdate(
-        componentId,
-        videoStreamInfo.toKotlin()
-    )
+    Camera.VideoStreamUpdate(componentId, videoStreamInfo.toKotlin())
 
 private fun Camera.Storage.toNative(): NativeCamera.Storage =
     NativeCamera.Storage(
@@ -128,7 +95,7 @@ private fun Camera.Storage.toNative(): NativeCamera.Storage =
         mediaFolderName,
         storageStatus.value,
         storageId,
-        storageType.value
+        storageType.value,
     )
 
 private fun NativeCamera.Storage.toKotlin(): Camera.Storage =
@@ -143,90 +110,51 @@ private fun NativeCamera.Storage.toKotlin(): Camera.Storage =
         mediaFolderName,
         Camera.StorageStatus.fromValue(storageStatus),
         storageId,
-        Camera.StorageType.fromValue(storageType)
+        Camera.StorageType.fromValue(storageType),
     )
 
 private fun Camera.StorageUpdate.toNative(): NativeCamera.StorageUpdate =
-    NativeCamera.StorageUpdate(
-        componentId,
-        storage.toNative()
-    )
+    NativeCamera.StorageUpdate(componentId, storage.toNative())
 
 private fun NativeCamera.StorageUpdate.toKotlin(): Camera.StorageUpdate =
-    Camera.StorageUpdate(
-        componentId,
-        storage.toKotlin()
-    )
+    Camera.StorageUpdate(componentId, storage.toKotlin())
 
 private fun Camera.CurrentSettingsUpdate.toNative(): NativeCamera.CurrentSettingsUpdate =
     NativeCamera.CurrentSettingsUpdate(
         componentId,
-        currentSettings.map { it.toNative() }.toTypedArray()
+        currentSettings.map { it.toNative() }.toTypedArray(),
     )
 
 private fun NativeCamera.CurrentSettingsUpdate.toKotlin(): Camera.CurrentSettingsUpdate =
-    Camera.CurrentSettingsUpdate(
-        componentId,
-        currentSettings.map { it.toKotlin() }
-    )
+    Camera.CurrentSettingsUpdate(componentId, currentSettings.map { it.toKotlin() })
 
-private fun Camera.PossibleSettingOptionsUpdate.toNative(): NativeCamera.PossibleSettingOptionsUpdate =
+private fun Camera.PossibleSettingOptionsUpdate.toNative():
+    NativeCamera.PossibleSettingOptionsUpdate =
     NativeCamera.PossibleSettingOptionsUpdate(
         componentId,
-        settingOptions.map { it.toNative() }.toTypedArray()
+        settingOptions.map { it.toNative() }.toTypedArray(),
     )
 
-private fun NativeCamera.PossibleSettingOptionsUpdate.toKotlin(): Camera.PossibleSettingOptionsUpdate =
-    Camera.PossibleSettingOptionsUpdate(
-        componentId,
-        settingOptions.map { it.toKotlin() }
-    )
+private fun NativeCamera.PossibleSettingOptionsUpdate.toKotlin():
+    Camera.PossibleSettingOptionsUpdate =
+    Camera.PossibleSettingOptionsUpdate(componentId, settingOptions.map { it.toKotlin() })
 
 private fun Camera.Position.toNative(): NativeCamera.Position =
-    NativeCamera.Position(
-        latitudeDeg,
-        longitudeDeg,
-        absoluteAltitudeM,
-        relativeAltitudeM
-    )
+    NativeCamera.Position(latitudeDeg, longitudeDeg, absoluteAltitudeM, relativeAltitudeM)
 
 private fun NativeCamera.Position.toKotlin(): Camera.Position =
-    Camera.Position(
-        latitudeDeg,
-        longitudeDeg,
-        absoluteAltitudeM,
-        relativeAltitudeM
-    )
+    Camera.Position(latitudeDeg, longitudeDeg, absoluteAltitudeM, relativeAltitudeM)
 
 private fun Camera.Quaternion.toNative(): NativeCamera.Quaternion =
-    NativeCamera.Quaternion(
-        w,
-        x,
-        y,
-        z
-    )
+    NativeCamera.Quaternion(w, x, y, z)
 
-private fun NativeCamera.Quaternion.toKotlin(): Camera.Quaternion =
-    Camera.Quaternion(
-        w,
-        x,
-        y,
-        z
-    )
+private fun NativeCamera.Quaternion.toKotlin(): Camera.Quaternion = Camera.Quaternion(w, x, y, z)
 
 private fun Camera.EulerAngle.toNative(): NativeCamera.EulerAngle =
-    NativeCamera.EulerAngle(
-        rollDeg,
-        pitchDeg,
-        yawDeg
-    )
+    NativeCamera.EulerAngle(rollDeg, pitchDeg, yawDeg)
 
 private fun NativeCamera.EulerAngle.toKotlin(): Camera.EulerAngle =
-    Camera.EulerAngle(
-        rollDeg,
-        pitchDeg,
-        yawDeg
-    )
+    Camera.EulerAngle(rollDeg, pitchDeg, yawDeg)
 
 private fun Camera.CaptureInfo.toNative(): NativeCamera.CaptureInfo =
     NativeCamera.CaptureInfo(
@@ -237,7 +165,7 @@ private fun Camera.CaptureInfo.toNative(): NativeCamera.CaptureInfo =
         timeUtcUs,
         isSuccess,
         index,
-        fileUrl
+        fileUrl,
     )
 
 private fun NativeCamera.CaptureInfo.toKotlin(): Camera.CaptureInfo =
@@ -249,7 +177,7 @@ private fun NativeCamera.CaptureInfo.toKotlin(): Camera.CaptureInfo =
         timeUtcUs,
         isSuccess,
         index,
-        fileUrl
+        fileUrl,
     )
 
 private fun Camera.Information.toNative(): NativeCamera.Information =
@@ -261,7 +189,7 @@ private fun Camera.Information.toNative(): NativeCamera.Information =
         horizontalSensorSizeMm,
         verticalSensorSizeMm,
         horizontalResolutionPx,
-        verticalResolutionPx
+        verticalResolutionPx,
     )
 
 private fun NativeCamera.Information.toKotlin(): Camera.Information =
@@ -273,88 +201,60 @@ private fun NativeCamera.Information.toKotlin(): Camera.Information =
         horizontalSensorSizeMm,
         verticalSensorSizeMm,
         horizontalResolutionPx,
-        verticalResolutionPx
+        verticalResolutionPx,
     )
 
 private fun Camera.CameraList.toNative(): NativeCamera.CameraList =
-    NativeCamera.CameraList(
-        cameras.map { it.toNative() }.toTypedArray()
-    )
+    NativeCamera.CameraList(cameras.map { it.toNative() }.toTypedArray())
 
 private fun NativeCamera.CameraList.toKotlin(): Camera.CameraList =
-    Camera.CameraList(
-        cameras.map { it.toKotlin() }
-    )
+    Camera.CameraList(cameras.map { it.toKotlin() })
 
-private class CameraNativeImpl(
-    private val handle: Long
-) : CameraNative {
+private class CameraNativeImpl(private val handle: Long) : CameraNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun takePhotoAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun takePhotoAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.takePhotoAsync(
             handle,
             componentId,
-            NativeCamera.TakePhotoCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.TakePhotoCallback { result -> callback(result) },
         )
     }
 
     override fun startPhotoIntervalAsync(
         componentId: Int,
         intervalS: Float,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeCamera.startPhotoIntervalAsync(
             handle,
             componentId,
             intervalS,
-            NativeCamera.StartPhotoIntervalCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.StartPhotoIntervalCallback { result -> callback(result) },
         )
     }
 
-    override fun stopPhotoIntervalAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun stopPhotoIntervalAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.stopPhotoIntervalAsync(
             handle,
             componentId,
-            NativeCamera.StopPhotoIntervalCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.StopPhotoIntervalCallback { result -> callback(result) },
         )
     }
 
-    override fun startVideoAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun startVideoAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.startVideoAsync(
             handle,
             componentId,
-            NativeCamera.StartVideoCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.StartVideoCallback { result -> callback(result) },
         )
     }
 
-    override fun stopVideoAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun stopVideoAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.stopVideoAsync(
             handle,
             componentId,
-            NativeCamera.StopVideoCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.StopVideoCallback { result -> callback(result) },
         )
     }
 
@@ -364,51 +264,41 @@ private class CameraNativeImpl(
     override fun stopVideoStreaming(componentId: Int, streamId: Int): Int =
         NativeCamera.stopVideoStreaming(handle, componentId, streamId)
 
-    override fun setModeAsync(
-        componentId: Int,
-        mode: Camera.Mode,
-        callback: (Int) -> Unit
-    ) {
+    override fun setModeAsync(componentId: Int, mode: Camera.Mode, callback: (Int) -> Unit) {
         NativeCamera.setModeAsync(
             handle,
             componentId,
             mode.value,
-            NativeCamera.SetModeCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.SetModeCallback { result -> callback(result) },
         )
     }
 
     override fun listPhotosAsync(
         componentId: Int,
         photosRange: Camera.PhotosRange,
-        callback: (Int, List<Camera.CaptureInfo>) -> Unit
+        callback: (Int, List<Camera.CaptureInfo>) -> Unit,
     ) {
         NativeCamera.listPhotosAsync(
             handle,
             componentId,
             photosRange.value,
-            NativeCamera.ListPhotosCallback {
-                    result, value -> callback(result, value.map { it.toKotlin() })
-            }
+            NativeCamera.ListPhotosCallback { result, value ->
+                callback(result, value.map { it.toKotlin() })
+            },
         )
     }
 
     override fun cameraList(): Camera.CameraList {
-        val value = NativeCamera.cameraList(
-            handle        )
+        val value = NativeCamera.cameraList(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeCameraList(
-        callback: (Camera.CameraList) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCamera.subscribeCameraList(
-            handle,
-            NativeCamera.CameraListCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeCameraList(callback: (Camera.CameraList) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCamera.subscribeCameraList(
+                handle,
+                NativeCamera.CameraListCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCamera.unsubscribeCameraList(handle, subscriptionHandle)
@@ -421,15 +311,12 @@ private class CameraNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeMode(
-        callback: (Camera.ModeUpdate) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCamera.subscribeMode(
-            handle,
-            NativeCamera.ModeCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeMode(callback: (Camera.ModeUpdate) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCamera.subscribeMode(
+                handle,
+                NativeCamera.ModeCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCamera.unsubscribeMode(handle, subscriptionHandle)
@@ -443,20 +330,16 @@ private class CameraNativeImpl(
     }
 
     override fun getMode(componentId: Int): Camera.Mode {
-        val value = NativeCamera.getMode(
-            handle, componentId        )
+        val value = NativeCamera.getMode(handle, componentId)
         return Camera.Mode.fromValue(value)
     }
 
-    override fun subscribeVideoStreamInfo(
-        callback: (Camera.VideoStreamUpdate) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCamera.subscribeVideoStreamInfo(
-            handle,
-            NativeCamera.VideoStreamInfoCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeVideoStreamInfo(callback: (Camera.VideoStreamUpdate) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCamera.subscribeVideoStreamInfo(
+                handle,
+                NativeCamera.VideoStreamInfoCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCamera.unsubscribeVideoStreamInfo(handle, subscriptionHandle)
@@ -470,20 +353,16 @@ private class CameraNativeImpl(
     }
 
     override fun getVideoStreamInfo(componentId: Int): Camera.VideoStreamInfo {
-        val value = NativeCamera.getVideoStreamInfo(
-            handle, componentId        )
+        val value = NativeCamera.getVideoStreamInfo(handle, componentId)
         return value.toKotlin()
     }
 
-    override fun subscribeCaptureInfo(
-        callback: (Camera.CaptureInfo) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCamera.subscribeCaptureInfo(
-            handle,
-            NativeCamera.CaptureInfoCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeCaptureInfo(callback: (Camera.CaptureInfo) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCamera.subscribeCaptureInfo(
+                handle,
+                NativeCamera.CaptureInfoCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCamera.unsubscribeCaptureInfo(handle, subscriptionHandle)
@@ -496,15 +375,12 @@ private class CameraNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeStorage(
-        callback: (Camera.StorageUpdate) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCamera.subscribeStorage(
-            handle,
-            NativeCamera.StorageCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeStorage(callback: (Camera.StorageUpdate) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCamera.subscribeStorage(
+                handle,
+                NativeCamera.StorageCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCamera.unsubscribeStorage(handle, subscriptionHandle)
@@ -518,20 +394,16 @@ private class CameraNativeImpl(
     }
 
     override fun getStorage(componentId: Int): Camera.Storage {
-        val value = NativeCamera.getStorage(
-            handle, componentId        )
+        val value = NativeCamera.getStorage(handle, componentId)
         return value.toKotlin()
     }
 
-    override fun subscribeCurrentSettings(
-        callback: (Camera.CurrentSettingsUpdate) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeCamera.subscribeCurrentSettings(
-            handle,
-            NativeCamera.CurrentSettingsCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeCurrentSettings(callback: (Camera.CurrentSettingsUpdate) -> Unit): Long {
+        val subscriptionHandle =
+            NativeCamera.subscribeCurrentSettings(
+                handle,
+                NativeCamera.CurrentSettingsCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCamera.unsubscribeCurrentSettings(handle, subscriptionHandle)
@@ -545,20 +417,18 @@ private class CameraNativeImpl(
     }
 
     override fun getCurrentSettings(componentId: Int): List<Camera.Setting> {
-        val value = NativeCamera.getCurrentSettings(
-            handle, componentId        )
+        val value = NativeCamera.getCurrentSettings(handle, componentId)
         return value.map { it.toKotlin() }
     }
 
     override fun subscribePossibleSettingOptions(
         callback: (Camera.PossibleSettingOptionsUpdate) -> Unit
     ): Long {
-        val subscriptionHandle = NativeCamera.subscribePossibleSettingOptions(
-            handle,
-            NativeCamera.PossibleSettingOptionsCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+        val subscriptionHandle =
+            NativeCamera.subscribePossibleSettingOptions(
+                handle,
+                NativeCamera.PossibleSettingOptionsCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeCamera.unsubscribePossibleSettingOptions(handle, subscriptionHandle)
@@ -572,120 +442,83 @@ private class CameraNativeImpl(
     }
 
     override fun getPossibleSettingOptions(componentId: Int): List<Camera.SettingOptions> {
-        val value = NativeCamera.getPossibleSettingOptions(
-            handle, componentId        )
+        val value = NativeCamera.getPossibleSettingOptions(handle, componentId)
         return value.map { it.toKotlin() }
     }
 
     override fun setSettingAsync(
         componentId: Int,
         setting: Camera.Setting,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeCamera.setSettingAsync(
             handle,
             componentId,
             setting.toNative(),
-            NativeCamera.SetSettingCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.SetSettingCallback { result -> callback(result) },
         )
     }
 
     override fun getSettingAsync(
         componentId: Int,
         setting: Camera.Setting,
-        callback: (Int, Camera.Setting) -> Unit
+        callback: (Int, Camera.Setting) -> Unit,
     ) {
         NativeCamera.getSettingAsync(
             handle,
             componentId,
             setting.toNative(),
-            NativeCamera.GetSettingCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeCamera.GetSettingCallback { result, value -> callback(result, value.toKotlin()) },
         )
     }
 
-    override fun formatStorageAsync(
-        componentId: Int,
-        storageId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun formatStorageAsync(componentId: Int, storageId: Int, callback: (Int) -> Unit) {
         NativeCamera.formatStorageAsync(
             handle,
             componentId,
             storageId,
-            NativeCamera.FormatStorageCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.FormatStorageCallback { result -> callback(result) },
         )
     }
 
-    override fun resetSettingsAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun resetSettingsAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.resetSettingsAsync(
             handle,
             componentId,
-            NativeCamera.ResetSettingsCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.ResetSettingsCallback { result -> callback(result) },
         )
     }
 
-    override fun zoomInStartAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun zoomInStartAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.zoomInStartAsync(
             handle,
             componentId,
-            NativeCamera.ZoomInStartCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.ZoomInStartCallback { result -> callback(result) },
         )
     }
 
-    override fun zoomOutStartAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun zoomOutStartAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.zoomOutStartAsync(
             handle,
             componentId,
-            NativeCamera.ZoomOutStartCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.ZoomOutStartCallback { result -> callback(result) },
         )
     }
 
-    override fun zoomStopAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun zoomStopAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.zoomStopAsync(
             handle,
             componentId,
-            NativeCamera.ZoomStopCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.ZoomStopCallback { result -> callback(result) },
         )
     }
 
-    override fun zoomRangeAsync(
-        componentId: Int,
-        range: Float,
-        callback: (Int) -> Unit
-    ) {
+    override fun zoomRangeAsync(componentId: Int, range: Float, callback: (Int) -> Unit) {
         NativeCamera.zoomRangeAsync(
             handle,
             componentId,
             range,
-            NativeCamera.ZoomRangeCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.ZoomRangeCallback { result -> callback(result) },
         )
     }
 
@@ -694,7 +527,7 @@ private class CameraNativeImpl(
         pointX: Float,
         pointY: Float,
         radius: Float,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeCamera.trackPointAsync(
             handle,
@@ -702,9 +535,7 @@ private class CameraNativeImpl(
             pointX,
             pointY,
             radius,
-            NativeCamera.TrackPointCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.TrackPointCallback { result -> callback(result) },
         )
     }
 
@@ -714,7 +545,7 @@ private class CameraNativeImpl(
         topLeftY: Float,
         bottomRightX: Float,
         bottomRightY: Float,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeCamera.trackRectangleAsync(
             handle,
@@ -723,76 +554,48 @@ private class CameraNativeImpl(
             topLeftY,
             bottomRightX,
             bottomRightY,
-            NativeCamera.TrackRectangleCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.TrackRectangleCallback { result -> callback(result) },
         )
     }
 
-    override fun trackStopAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun trackStopAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.trackStopAsync(
             handle,
             componentId,
-            NativeCamera.TrackStopCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.TrackStopCallback { result -> callback(result) },
         )
     }
 
-    override fun focusInStartAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun focusInStartAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.focusInStartAsync(
             handle,
             componentId,
-            NativeCamera.FocusInStartCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.FocusInStartCallback { result -> callback(result) },
         )
     }
 
-    override fun focusOutStartAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun focusOutStartAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.focusOutStartAsync(
             handle,
             componentId,
-            NativeCamera.FocusOutStartCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.FocusOutStartCallback { result -> callback(result) },
         )
     }
 
-    override fun focusStopAsync(
-        componentId: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun focusStopAsync(componentId: Int, callback: (Int) -> Unit) {
         NativeCamera.focusStopAsync(
             handle,
             componentId,
-            NativeCamera.FocusStopCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.FocusStopCallback { result -> callback(result) },
         )
     }
 
-    override fun focusRangeAsync(
-        componentId: Int,
-        range: Float,
-        callback: (Int) -> Unit
-    ) {
+    override fun focusRangeAsync(componentId: Int, range: Float, callback: (Int) -> Unit) {
         NativeCamera.focusRangeAsync(
             handle,
             componentId,
             range,
-            NativeCamera.FocusRangeCallback {
-                    result -> callback(result)
-            }
+            NativeCamera.FocusRangeCallback { result -> callback(result) },
         )
     }
 

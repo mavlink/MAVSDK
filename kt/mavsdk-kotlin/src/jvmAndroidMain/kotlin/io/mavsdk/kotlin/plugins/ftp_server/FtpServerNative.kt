@@ -6,11 +6,8 @@ package io.mavsdk.kotlin.plugins.ftp_server
 
 import io.mavsdk.jni.plugins.ftp_server.NativeFtpServer
 
-private class FtpServerNativeImpl(
-    private val handle: Long
-) : FtpServerNative {
-    override fun setRootDir(path: String): Int =
-        NativeFtpServer.setRootDir(handle, path)
+private class FtpServerNativeImpl(private val handle: Long) : FtpServerNative {
+    override fun setRootDir(path: String): Int = NativeFtpServer.setRootDir(handle, path)
 
     override fun destroy() {
         NativeFtpServer.destroy(handle)

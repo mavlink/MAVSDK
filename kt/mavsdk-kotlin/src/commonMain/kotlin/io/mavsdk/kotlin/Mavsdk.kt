@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Main MAVSDK class for connecting to and managing MAVLink systems
- * 
+ *
  * Example usage:
  * ```kotlin
  * Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
@@ -19,14 +19,12 @@ import kotlinx.coroutines.flow.Flow
  * ```
  */
 expect class Mavsdk(configuration: Configuration) : AutoCloseable {
-    /**
-     * Get MAVSDK version string
-     */
+    /** Get MAVSDK version string */
     fun version(): String
 
     /**
      * Add a connection
-     * 
+     *
      * @param connectionUrl Connection URL (e.g., "udp://:14540", "serial:///dev/ttyUSB0:57600")
      * @return Result with ConnectionResult
      */
@@ -34,7 +32,7 @@ expect class Mavsdk(configuration: Configuration) : AutoCloseable {
 
     /**
      * Add a connection and get handle
-     * 
+     *
      * @param connectionUrl Connection URL
      * @return Result with connection handle
      */
@@ -42,24 +40,20 @@ expect class Mavsdk(configuration: Configuration) : AutoCloseable {
 
     /**
      * Remove a connection
-     * 
+     *
      * @param handle Connection handle from addAnyConnectionWithHandle
      */
     fun removeConnection(handle: Long)
 
-    /**
-     * Get number of discovered systems
-     */
+    /** Get number of discovered systems */
     fun systemCount(): Int
 
-    /**
-     * Get all discovered systems
-     */
+    /** Get all discovered systems */
     fun getSystems(): List<System>
 
     /**
      * Wait for and return first autopilot system
-     * 
+     *
      * @param timeoutSeconds Timeout in seconds (default: 3.0)
      * @return First autopilot system, or null if timeout
      */
@@ -67,14 +61,14 @@ expect class Mavsdk(configuration: Configuration) : AutoCloseable {
 
     /**
      * Subscribe to new system discoveries
-     * 
+     *
      * @return Flow emitting newly discovered systems
      */
     fun subscribeOnNewSystem(): Flow<System>
 
     /**
-     * Get the server component handle for creating server-side plugins
-     * (CameraServer, ActionServer, TelemetryServer, etc.)
+     * Get the server component handle for creating server-side plugins (CameraServer, ActionServer,
+     * TelemetryServer, etc.)
      *
      * @param instance Server component instance number (default: 1)
      * @return Raw server component handle to pass to server plugin create()

@@ -1,8 +1,6 @@
 package io.mavsdk.kotlin
 
-/**
- * Connection result codes
- */
+/** Connection result codes */
 enum class ConnectionResult(val value: Int) {
     SUCCESS(0),
     TIMEOUT(1),

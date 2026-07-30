@@ -29,9 +29,10 @@ actual class Configuration private constructor(private val handle: Long) : AutoC
         actual fun createManual(
             systemId: Int,
             componentId: Int,
-            alwaysSendHeartbeats: Boolean
-        ): Configuration = Configuration(
-            NativeConfiguration.createManual(systemId, componentId, alwaysSendHeartbeats)
-        )
+            alwaysSendHeartbeats: Boolean,
+        ): Configuration =
+            Configuration(
+                NativeConfiguration.createManual(systemId, componentId, alwaysSendHeartbeats)
+            )
     }
 }

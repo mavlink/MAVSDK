@@ -22,7 +22,7 @@ private fun MissionRaw.MissionItem.toNative(): NativeMissionRaw.MissionItem =
         x,
         y,
         z,
-        missionType
+        missionType,
     )
 
 private fun NativeMissionRaw.MissionItem.toKotlin(): MissionRaw.MissionItem =
@@ -39,212 +39,161 @@ private fun NativeMissionRaw.MissionItem.toKotlin(): MissionRaw.MissionItem =
         x,
         y,
         z,
-        missionType
+        missionType,
     )
 
 private fun MissionRaw.MissionPlan.toNative(): NativeMissionRaw.MissionPlan =
-    NativeMissionRaw.MissionPlan(
-        missionItems.map { it.toNative() }.toTypedArray()
-    )
+    NativeMissionRaw.MissionPlan(missionItems.map { it.toNative() }.toTypedArray())
 
 private fun NativeMissionRaw.MissionPlan.toKotlin(): MissionRaw.MissionPlan =
-    MissionRaw.MissionPlan(
-        missionItems.map { it.toKotlin() }
-    )
+    MissionRaw.MissionPlan(missionItems.map { it.toKotlin() })
 
 private fun MissionRaw.MissionProgress.toNative(): NativeMissionRaw.MissionProgress =
-    NativeMissionRaw.MissionProgress(
-        current,
-        total
-    )
+    NativeMissionRaw.MissionProgress(current, total)
 
 private fun NativeMissionRaw.MissionProgress.toKotlin(): MissionRaw.MissionProgress =
-    MissionRaw.MissionProgress(
-        current,
-        total
-    )
+    MissionRaw.MissionProgress(current, total)
 
 private fun MissionRaw.MissionImportData.toNative(): NativeMissionRaw.MissionImportData =
     NativeMissionRaw.MissionImportData(
         missionItems.map { it.toNative() }.toTypedArray(),
         geofenceItems.map { it.toNative() }.toTypedArray(),
-        rallyItems.map { it.toNative() }.toTypedArray()
+        rallyItems.map { it.toNative() }.toTypedArray(),
     )
 
 private fun NativeMissionRaw.MissionImportData.toKotlin(): MissionRaw.MissionImportData =
     MissionRaw.MissionImportData(
         missionItems.map { it.toKotlin() },
         geofenceItems.map { it.toKotlin() },
-        rallyItems.map { it.toKotlin() }
+        rallyItems.map { it.toKotlin() },
     )
 
 private fun MissionRaw.ProgressData.toNative(): NativeMissionRaw.ProgressData =
-    NativeMissionRaw.ProgressData(
-        progress
-    )
+    NativeMissionRaw.ProgressData(progress)
 
 private fun NativeMissionRaw.ProgressData.toKotlin(): MissionRaw.ProgressData =
-    MissionRaw.ProgressData(
-        progress
-    )
+    MissionRaw.ProgressData(progress)
 
-private class MissionRawNativeImpl(
-    private val handle: Long
-) : MissionRawNative {
+private class MissionRawNativeImpl(private val handle: Long) : MissionRawNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     override fun uploadMissionAsync(
         missionItems: List<MissionRaw.MissionItem>,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeMissionRaw.uploadMissionAsync(
             handle,
             missionItems.map { it.toNative() }.toTypedArray(),
-            NativeMissionRaw.UploadMissionCallback {
-                    result -> callback(result)
-            }
+            NativeMissionRaw.UploadMissionCallback { result -> callback(result) },
         )
     }
 
     override fun uploadMissionWithProgressAsync(
         missionPlan: MissionRaw.MissionPlan,
-        callback: (Int, MissionRaw.ProgressData) -> Unit
+        callback: (Int, MissionRaw.ProgressData) -> Unit,
     ) {
         NativeMissionRaw.uploadMissionWithProgressAsync(
             handle,
             missionPlan.toNative(),
-            NativeMissionRaw.UploadMissionWithProgressCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeMissionRaw.UploadMissionWithProgressCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
     override fun uploadGeofenceAsync(
         missionItems: List<MissionRaw.MissionItem>,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeMissionRaw.uploadGeofenceAsync(
             handle,
             missionItems.map { it.toNative() }.toTypedArray(),
-            NativeMissionRaw.UploadGeofenceCallback {
-                    result -> callback(result)
-            }
+            NativeMissionRaw.UploadGeofenceCallback { result -> callback(result) },
         )
     }
 
     override fun uploadRallyPointsAsync(
         missionItems: List<MissionRaw.MissionItem>,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeMissionRaw.uploadRallyPointsAsync(
             handle,
             missionItems.map { it.toNative() }.toTypedArray(),
-            NativeMissionRaw.UploadRallyPointsCallback {
-                    result -> callback(result)
-            }
+            NativeMissionRaw.UploadRallyPointsCallback { result -> callback(result) },
         )
     }
 
-    override fun cancelMissionUpload(): Int =
-        NativeMissionRaw.cancelMissionUpload(handle)
+    override fun cancelMissionUpload(): Int = NativeMissionRaw.cancelMissionUpload(handle)
 
-    override fun downloadMissionAsync(
-        callback: (Int, List<MissionRaw.MissionItem>) -> Unit
-    ) {
+    override fun downloadMissionAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit) {
         NativeMissionRaw.downloadMissionAsync(
             handle,
-            NativeMissionRaw.DownloadMissionCallback {
-                    result, value -> callback(result, value.map { it.toKotlin() })
-            }
+            NativeMissionRaw.DownloadMissionCallback { result, value ->
+                callback(result, value.map { it.toKotlin() })
+            },
         )
     }
 
-    override fun downloadGeofenceAsync(
-        callback: (Int, List<MissionRaw.MissionItem>) -> Unit
-    ) {
+    override fun downloadGeofenceAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit) {
         NativeMissionRaw.downloadGeofenceAsync(
             handle,
-            NativeMissionRaw.DownloadGeofenceCallback {
-                    result, value -> callback(result, value.map { it.toKotlin() })
-            }
+            NativeMissionRaw.DownloadGeofenceCallback { result, value ->
+                callback(result, value.map { it.toKotlin() })
+            },
         )
     }
 
-    override fun downloadRallypointsAsync(
-        callback: (Int, List<MissionRaw.MissionItem>) -> Unit
-    ) {
+    override fun downloadRallypointsAsync(callback: (Int, List<MissionRaw.MissionItem>) -> Unit) {
         NativeMissionRaw.downloadRallypointsAsync(
             handle,
-            NativeMissionRaw.DownloadRallypointsCallback {
-                    result, value -> callback(result, value.map { it.toKotlin() })
-            }
+            NativeMissionRaw.DownloadRallypointsCallback { result, value ->
+                callback(result, value.map { it.toKotlin() })
+            },
         )
     }
 
-    override fun cancelMissionDownload(): Int =
-        NativeMissionRaw.cancelMissionDownload(handle)
+    override fun cancelMissionDownload(): Int = NativeMissionRaw.cancelMissionDownload(handle)
 
-    override fun startMissionAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun startMissionAsync(callback: (Int) -> Unit) {
         NativeMissionRaw.startMissionAsync(
             handle,
-            NativeMissionRaw.StartMissionCallback {
-                    result -> callback(result)
-            }
+            NativeMissionRaw.StartMissionCallback { result -> callback(result) },
         )
     }
 
-    override fun pauseMissionAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun pauseMissionAsync(callback: (Int) -> Unit) {
         NativeMissionRaw.pauseMissionAsync(
             handle,
-            NativeMissionRaw.PauseMissionCallback {
-                    result -> callback(result)
-            }
+            NativeMissionRaw.PauseMissionCallback { result -> callback(result) },
         )
     }
 
-    override fun clearMissionAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun clearMissionAsync(callback: (Int) -> Unit) {
         NativeMissionRaw.clearMissionAsync(
             handle,
-            NativeMissionRaw.ClearMissionCallback {
-                    result -> callback(result)
-            }
+            NativeMissionRaw.ClearMissionCallback { result -> callback(result) },
         )
     }
 
-    override fun setCurrentMissionItemAsync(
-        index: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun setCurrentMissionItemAsync(index: Int, callback: (Int) -> Unit) {
         NativeMissionRaw.setCurrentMissionItemAsync(
             handle,
             index,
-            NativeMissionRaw.SetCurrentMissionItemCallback {
-                    result -> callback(result)
-            }
+            NativeMissionRaw.SetCurrentMissionItemCallback { result -> callback(result) },
         )
     }
 
     override fun missionProgress(): MissionRaw.MissionProgress {
-        val value = NativeMissionRaw.missionProgress(
-            handle        )
+        val value = NativeMissionRaw.missionProgress(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeMissionProgress(
-        callback: (MissionRaw.MissionProgress) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeMissionRaw.subscribeMissionProgress(
-            handle,
-            NativeMissionRaw.MissionProgressCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeMissionProgress(callback: (MissionRaw.MissionProgress) -> Unit): Long {
+        val subscriptionHandle =
+            NativeMissionRaw.subscribeMissionProgress(
+                handle,
+                NativeMissionRaw.MissionProgressCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeMissionRaw.unsubscribeMissionProgress(handle, subscriptionHandle)
@@ -257,15 +206,12 @@ private class MissionRawNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeMissionChanged(
-        callback: (Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeMissionRaw.subscribeMissionChanged(
-            handle,
-            NativeMissionRaw.MissionChangedCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeMissionChanged(callback: (Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeMissionRaw.subscribeMissionChanged(
+                handle,
+                NativeMissionRaw.MissionChangedCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeMissionRaw.unsubscribeMissionChanged(handle, subscriptionHandle)
@@ -279,32 +225,34 @@ private class MissionRawNativeImpl(
     }
 
     override fun importQgroundcontrolMission(qgcPlanPath: String): MissionRaw.MissionImportData {
-        val value = NativeMissionRaw.importQgroundcontrolMission(
-            handle, qgcPlanPath        )
+        val value = NativeMissionRaw.importQgroundcontrolMission(handle, qgcPlanPath)
         return value.toKotlin()
     }
 
-    override fun importQgroundcontrolMissionFromString(qgcPlan: String): MissionRaw.MissionImportData {
-        val value = NativeMissionRaw.importQgroundcontrolMissionFromString(
-            handle, qgcPlan        )
+    override fun importQgroundcontrolMissionFromString(
+        qgcPlan: String
+    ): MissionRaw.MissionImportData {
+        val value = NativeMissionRaw.importQgroundcontrolMissionFromString(handle, qgcPlan)
         return value.toKotlin()
     }
 
-    override fun importMissionPlannerMission(missionPlannerPath: String): MissionRaw.MissionImportData {
-        val value = NativeMissionRaw.importMissionPlannerMission(
-            handle, missionPlannerPath        )
+    override fun importMissionPlannerMission(
+        missionPlannerPath: String
+    ): MissionRaw.MissionImportData {
+        val value = NativeMissionRaw.importMissionPlannerMission(handle, missionPlannerPath)
         return value.toKotlin()
     }
 
-    override fun importMissionPlannerMissionFromString(missionPlannerMission: String): MissionRaw.MissionImportData {
-        val value = NativeMissionRaw.importMissionPlannerMissionFromString(
-            handle, missionPlannerMission        )
+    override fun importMissionPlannerMissionFromString(
+        missionPlannerMission: String
+    ): MissionRaw.MissionImportData {
+        val value =
+            NativeMissionRaw.importMissionPlannerMissionFromString(handle, missionPlannerMission)
         return value.toKotlin()
     }
 
     override fun isMissionFinished(): Boolean {
-        val value = NativeMissionRaw.isMissionFinished(
-            handle        )
+        val value = NativeMissionRaw.isMissionFinished(handle)
         return value
     }
 

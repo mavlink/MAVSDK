@@ -5,12 +5,10 @@
 package io.mavsdk.kotlin.plugins.geofence
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Geofence internal constructor(
-    private val native: GeofenceNative
-) : AutoCloseable {
+class Geofence internal constructor(private val native: GeofenceNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -21,19 +19,16 @@ class Geofence internal constructor(
         BUSY(4),
         TIMEOUT(5),
         INVALID_ARGUMENT(6),
-        NO_SYSTEM(7),
-        ;
+        NO_SYSTEM(7);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
     enum class FenceType(val value: Int) {
         INCLUSION(0),
-        EXCLUSION(1),
-        ;
+        EXCLUSION(1);
 
         companion object {
             fun fromValue(value: Int): FenceType =
@@ -41,21 +36,11 @@ class Geofence internal constructor(
         }
     }
 
-    data class Point(
-        val latitudeDeg: Double,
-        val longitudeDeg: Double,
-    )
+    data class Point(val latitudeDeg: Double, val longitudeDeg: Double)
 
-    data class Polygon(
-        val points: List<Point> = emptyList(),
-        val fenceType: FenceType,
-    )
+    data class Polygon(val points: List<Point> = emptyList(), val fenceType: FenceType)
 
-    data class Circle(
-        val point: Point,
-        val radius: Float,
-        val fenceType: FenceType,
-    )
+    data class Circle(val point: Point, val radius: Float, val fenceType: FenceType)
 
     data class GeofenceData(
         val polygons: List<Polygon> = emptyList(),
@@ -65,7 +50,7 @@ class Geofence internal constructor(
     suspend fun uploadGeofence(geofenceData: GeofenceData): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = GeofenceCallbackGuard()
-            native.uploadGeofenceAsync(geofenceData, ) { result ->
+            native.uploadGeofenceAsync(geofenceData) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -86,7 +71,7 @@ class Geofence internal constructor(
                             kotlin.Result.failure(
                                 GeofenceException(
                                     parsedResult,
-                                    "downloadGeofence failed: ${parsedResult.name}"
+                                    "downloadGeofence failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -95,16 +80,15 @@ class Geofence internal constructor(
             }
         }
 
-    suspend fun clearGeofence(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = GeofenceCallbackGuard()
-            native.clearGeofenceAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun clearGeofence(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = GeofenceCallbackGuard()
+        native.clearGeofenceAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     override fun close() {
         if (closed) return
@@ -112,23 +96,21 @@ class Geofence internal constructor(
         native.destroy()
     }
 
-    class GeofenceException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class GeofenceException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Geofence =
-            Geofence(
-                createGeofenceNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Geofence(createGeofenceNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface GeofenceNative {
     fun uploadGeofenceAsync(geofenceData: Geofence.GeofenceData, callback: (Int) -> Unit)
+
     fun downloadGeofenceAsync(callback: (Int, Geofence.GeofenceData) -> Unit)
+
     fun clearGeofenceAsync(callback: (Int) -> Unit)
+
     fun destroy()
 }
 

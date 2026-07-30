@@ -15,7 +15,7 @@ private fun ActionServer.AllowableFlightModes.toNative(): NativeActionServer.All
         canAutoRtlMode,
         canAutoTakeoffMode,
         canAutoLandMode,
-        canAutoLoiterMode
+        canAutoLoiterMode,
     )
 
 private fun NativeActionServer.AllowableFlightModes.toKotlin(): ActionServer.AllowableFlightModes =
@@ -26,35 +26,26 @@ private fun NativeActionServer.AllowableFlightModes.toKotlin(): ActionServer.All
         canAutoRtlMode,
         canAutoTakeoffMode,
         canAutoLandMode,
-        canAutoLoiterMode
+        canAutoLoiterMode,
     )
 
 private fun ActionServer.ArmDisarm.toNative(): NativeActionServer.ArmDisarm =
-    NativeActionServer.ArmDisarm(
-        arm,
-        force
-    )
+    NativeActionServer.ArmDisarm(arm, force)
 
 private fun NativeActionServer.ArmDisarm.toKotlin(): ActionServer.ArmDisarm =
-    ActionServer.ArmDisarm(
-        arm,
-        force
-    )
+    ActionServer.ArmDisarm(arm, force)
 
-private class ActionServerNativeImpl(
-    private val handle: Long
-) : ActionServerNative {
+private class ActionServerNativeImpl(private val handle: Long) : ActionServerNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun subscribeArmDisarm(
-        callback: (Int, ActionServer.ArmDisarm) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeActionServer.subscribeArmDisarm(
-            handle,
-            NativeActionServer.ArmDisarmCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
-        )
+    override fun subscribeArmDisarm(callback: (Int, ActionServer.ArmDisarm) -> Unit): Long {
+        val subscriptionHandle =
+            NativeActionServer.subscribeArmDisarm(
+                handle,
+                NativeActionServer.ArmDisarmCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeActionServer.unsubscribeArmDisarm(handle, subscriptionHandle)
@@ -67,15 +58,14 @@ private class ActionServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeFlightModeChange(
-        callback: (Int, ActionServer.FlightMode) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeActionServer.subscribeFlightModeChange(
-            handle,
-            NativeActionServer.FlightModeChangeCallback {
-                    result, value -> callback(result, ActionServer.FlightMode.fromValue(value))
-            }
-        )
+    override fun subscribeFlightModeChange(callback: (Int, ActionServer.FlightMode) -> Unit): Long {
+        val subscriptionHandle =
+            NativeActionServer.subscribeFlightModeChange(
+                handle,
+                NativeActionServer.FlightModeChangeCallback { result, value ->
+                    callback(result, ActionServer.FlightMode.fromValue(value))
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeActionServer.unsubscribeFlightModeChange(handle, subscriptionHandle)
@@ -88,15 +78,12 @@ private class ActionServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeTakeoff(
-        callback: (Int, Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeActionServer.subscribeTakeoff(
-            handle,
-            NativeActionServer.TakeoffCallback {
-                    result, value -> callback(result, value)
-            }
-        )
+    override fun subscribeTakeoff(callback: (Int, Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeActionServer.subscribeTakeoff(
+                handle,
+                NativeActionServer.TakeoffCallback { result, value -> callback(result, value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeActionServer.unsubscribeTakeoff(handle, subscriptionHandle)
@@ -109,15 +96,12 @@ private class ActionServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeLand(
-        callback: (Int, Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeActionServer.subscribeLand(
-            handle,
-            NativeActionServer.LandCallback {
-                    result, value -> callback(result, value)
-            }
-        )
+    override fun subscribeLand(callback: (Int, Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeActionServer.subscribeLand(
+                handle,
+                NativeActionServer.LandCallback { result, value -> callback(result, value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeActionServer.unsubscribeLand(handle, subscriptionHandle)
@@ -130,15 +114,12 @@ private class ActionServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeReboot(
-        callback: (Int, Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeActionServer.subscribeReboot(
-            handle,
-            NativeActionServer.RebootCallback {
-                    result, value -> callback(result, value)
-            }
-        )
+    override fun subscribeReboot(callback: (Int, Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeActionServer.subscribeReboot(
+                handle,
+                NativeActionServer.RebootCallback { result, value -> callback(result, value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeActionServer.unsubscribeReboot(handle, subscriptionHandle)
@@ -151,15 +132,12 @@ private class ActionServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeShutdown(
-        callback: (Int, Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeActionServer.subscribeShutdown(
-            handle,
-            NativeActionServer.ShutdownCallback {
-                    result, value -> callback(result, value)
-            }
-        )
+    override fun subscribeShutdown(callback: (Int, Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeActionServer.subscribeShutdown(
+                handle,
+                NativeActionServer.ShutdownCallback { result, value -> callback(result, value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeActionServer.unsubscribeShutdown(handle, subscriptionHandle)
@@ -172,15 +150,12 @@ private class ActionServerNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun subscribeTerminate(
-        callback: (Int, Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeActionServer.subscribeTerminate(
-            handle,
-            NativeActionServer.TerminateCallback {
-                    result, value -> callback(result, value)
-            }
-        )
+    override fun subscribeTerminate(callback: (Int, Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeActionServer.subscribeTerminate(
+                handle,
+                NativeActionServer.TerminateCallback { result, value -> callback(result, value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeActionServer.unsubscribeTerminate(handle, subscriptionHandle)
@@ -206,8 +181,7 @@ private class ActionServerNativeImpl(
         NativeActionServer.setAllowableFlightModes(handle, flightModes.toNative())
 
     override fun getAllowableFlightModes(): ActionServer.AllowableFlightModes {
-        val value = NativeActionServer.getAllowableFlightModes(
-            handle        )
+        val value = NativeActionServer.getAllowableFlightModes(handle)
         return value.toKotlin()
     }
 

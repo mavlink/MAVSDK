@@ -8,14 +8,7 @@ import io.mavsdk.jni.plugins.events.NativeEvents
 import java.util.concurrent.ConcurrentHashMap
 
 private fun Events.Event.toNative(): NativeEvents.Event =
-    NativeEvents.Event(
-        compid,
-        message,
-        description,
-        logLevel.value,
-        eventNamespace,
-        eventName
-    )
+    NativeEvents.Event(compid, message, description, logLevel.value, eventNamespace, eventName)
 
 private fun NativeEvents.Event.toKotlin(): Events.Event =
     Events.Event(
@@ -24,85 +17,61 @@ private fun NativeEvents.Event.toKotlin(): Events.Event =
         description,
         Events.LogLevel.fromValue(logLevel),
         eventNamespace,
-        eventName
+        eventName,
     )
 
-private fun Events.HealthAndArmingCheckProblem.toNative(): NativeEvents.HealthAndArmingCheckProblem =
-    NativeEvents.HealthAndArmingCheckProblem(
-        message,
-        description,
-        logLevel.value,
-        healthComponent
-    )
+private fun Events.HealthAndArmingCheckProblem.toNative():
+    NativeEvents.HealthAndArmingCheckProblem =
+    NativeEvents.HealthAndArmingCheckProblem(message, description, logLevel.value, healthComponent)
 
-private fun NativeEvents.HealthAndArmingCheckProblem.toKotlin(): Events.HealthAndArmingCheckProblem =
+private fun NativeEvents.HealthAndArmingCheckProblem.toKotlin():
+    Events.HealthAndArmingCheckProblem =
     Events.HealthAndArmingCheckProblem(
         message,
         description,
         Events.LogLevel.fromValue(logLevel),
-        healthComponent
+        healthComponent,
     )
 
 private fun Events.HealthAndArmingCheckMode.toNative(): NativeEvents.HealthAndArmingCheckMode =
     NativeEvents.HealthAndArmingCheckMode(
         modeName,
         canArmOrRun,
-        problems.map { it.toNative() }.toTypedArray()
+        problems.map { it.toNative() }.toTypedArray(),
     )
 
 private fun NativeEvents.HealthAndArmingCheckMode.toKotlin(): Events.HealthAndArmingCheckMode =
-    Events.HealthAndArmingCheckMode(
-        modeName,
-        canArmOrRun,
-        problems.map { it.toKotlin() }
-    )
+    Events.HealthAndArmingCheckMode(modeName, canArmOrRun, problems.map { it.toKotlin() })
 
 private fun Events.HealthComponentReport.toNative(): NativeEvents.HealthComponentReport =
-    NativeEvents.HealthComponentReport(
-        name,
-        label,
-        isPresent,
-        hasError,
-        hasWarning
-    )
+    NativeEvents.HealthComponentReport(name, label, isPresent, hasError, hasWarning)
 
 private fun NativeEvents.HealthComponentReport.toKotlin(): Events.HealthComponentReport =
-    Events.HealthComponentReport(
-        name,
-        label,
-        isPresent,
-        hasError,
-        hasWarning
-    )
+    Events.HealthComponentReport(name, label, isPresent, hasError, hasWarning)
 
 private fun Events.HealthAndArmingCheckReport.toNative(): NativeEvents.HealthAndArmingCheckReport =
     NativeEvents.HealthAndArmingCheckReport(
         currentModeIntention.toNative(),
         healthComponents.map { it.toNative() }.toTypedArray(),
-        allProblems.map { it.toNative() }.toTypedArray()
+        allProblems.map { it.toNative() }.toTypedArray(),
     )
 
 private fun NativeEvents.HealthAndArmingCheckReport.toKotlin(): Events.HealthAndArmingCheckReport =
     Events.HealthAndArmingCheckReport(
         currentModeIntention.toKotlin(),
         healthComponents.map { it.toKotlin() },
-        allProblems.map { it.toKotlin() }
+        allProblems.map { it.toKotlin() },
     )
 
-private class EventsNativeImpl(
-    private val handle: Long
-) : EventsNative {
+private class EventsNativeImpl(private val handle: Long) : EventsNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun subscribeEvents(
-        callback: (Events.Event) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeEvents.subscribeEvents(
-            handle,
-            NativeEvents.EventsCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeEvents(callback: (Events.Event) -> Unit): Long {
+        val subscriptionHandle =
+            NativeEvents.subscribeEvents(
+                handle,
+                NativeEvents.EventsCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeEvents.unsubscribeEvents(handle, subscriptionHandle)
@@ -118,12 +87,11 @@ private class EventsNativeImpl(
     override fun subscribeHealthAndArmingChecks(
         callback: (Events.HealthAndArmingCheckReport) -> Unit
     ): Long {
-        val subscriptionHandle = NativeEvents.subscribeHealthAndArmingChecks(
-            handle,
-            NativeEvents.HealthAndArmingChecksCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+        val subscriptionHandle =
+            NativeEvents.subscribeHealthAndArmingChecks(
+                handle,
+                NativeEvents.HealthAndArmingChecksCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeEvents.unsubscribeHealthAndArmingChecks(handle, subscriptionHandle)
@@ -137,8 +105,7 @@ private class EventsNativeImpl(
     }
 
     override fun getHealthAndArmingChecksReport(): Events.HealthAndArmingCheckReport {
-        val value = NativeEvents.getHealthAndArmingChecksReport(
-            handle        )
+        val value = NativeEvents.getHealthAndArmingChecksReport(handle)
         return value.toKotlin()
     }
 

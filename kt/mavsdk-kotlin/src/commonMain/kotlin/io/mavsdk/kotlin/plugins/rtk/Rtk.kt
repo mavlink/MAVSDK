@@ -6,9 +6,7 @@ package io.mavsdk.kotlin.plugins.rtk
 
 import io.mavsdk.kotlin.System
 
-class Rtk internal constructor(
-    private val native: RtkNative
-) : AutoCloseable {
+class Rtk internal constructor(private val native: RtkNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -16,21 +14,16 @@ class Rtk internal constructor(
         SUCCESS(1),
         TOO_LONG(2),
         NO_SYSTEM(3),
-        CONNECTION_ERROR(4),
-        ;
+        CONNECTION_ERROR(4);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    data class RtcmData(
-        val dataBase64: String,
-    )
+    data class RtcmData(val dataBase64: String)
 
-    fun sendRtcmData(rtcmData: RtcmData): Result =
-        Result.fromValue(native.sendRtcmData(rtcmData))
+    fun sendRtcmData(rtcmData: RtcmData): Result = Result.fromValue(native.sendRtcmData(rtcmData))
 
     override fun close() {
         if (closed) return
@@ -38,21 +31,17 @@ class Rtk internal constructor(
         native.destroy()
     }
 
-    class RtkException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class RtkException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Rtk =
-            Rtk(
-                createRtkNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Rtk(createRtkNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface RtkNative {
     fun sendRtcmData(rtcmData: Rtk.RtcmData): Int
+
     fun destroy()
 }
 

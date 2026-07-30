@@ -9,9 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class Calibration internal constructor(
-    private val native: CalibrationNative
-) : AutoCloseable {
+class Calibration internal constructor(private val native: CalibrationNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -26,12 +24,10 @@ class Calibration internal constructor(
         TIMEOUT(8),
         CANCELLED(9),
         FAILED_ARMED(10),
-        UNSUPPORTED(11),
-        ;
+        UNSUPPORTED(11);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -42,123 +38,117 @@ class Calibration internal constructor(
         val statusText: String,
     )
 
-    fun calibrateGyro(): Flow<kotlin.Result<ProgressData>> =
-        callbackFlow {
-            native.calibrateGyroAsync() { result, value ->
-                val parsedResult = Result.fromValue(result)
-                when {
-                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
-                    parsedResult == Result.SUCCESS -> close()
-                    else -> {
-                        trySend(
-                            kotlin.Result.failure(
-                                CalibrationException(
-                                    parsedResult,
-                                    "calibrateGyro failed: ${parsedResult.name}"
-                                )
+    fun calibrateGyro(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
+        native.calibrateGyroAsync() { result, value ->
+            val parsedResult = Result.fromValue(result)
+            when {
+                parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                parsedResult == Result.SUCCESS -> close()
+                else -> {
+                    trySend(
+                        kotlin.Result.failure(
+                            CalibrationException(
+                                parsedResult,
+                                "calibrateGyro failed: ${parsedResult.name}",
                             )
                         )
-                        close()
-                    }
+                    )
+                    close()
                 }
             }
-            awaitClose {}
         }
+        awaitClose {}
+    }
 
-    fun calibrateAccelerometer(): Flow<kotlin.Result<ProgressData>> =
-        callbackFlow {
-            native.calibrateAccelerometerAsync() { result, value ->
-                val parsedResult = Result.fromValue(result)
-                when {
-                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
-                    parsedResult == Result.SUCCESS -> close()
-                    else -> {
-                        trySend(
-                            kotlin.Result.failure(
-                                CalibrationException(
-                                    parsedResult,
-                                    "calibrateAccelerometer failed: ${parsedResult.name}"
-                                )
+    fun calibrateAccelerometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
+        native.calibrateAccelerometerAsync() { result, value ->
+            val parsedResult = Result.fromValue(result)
+            when {
+                parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                parsedResult == Result.SUCCESS -> close()
+                else -> {
+                    trySend(
+                        kotlin.Result.failure(
+                            CalibrationException(
+                                parsedResult,
+                                "calibrateAccelerometer failed: ${parsedResult.name}",
                             )
                         )
-                        close()
-                    }
+                    )
+                    close()
                 }
             }
-            awaitClose {}
         }
+        awaitClose {}
+    }
 
-    fun calibrateMagnetometer(): Flow<kotlin.Result<ProgressData>> =
-        callbackFlow {
-            native.calibrateMagnetometerAsync() { result, value ->
-                val parsedResult = Result.fromValue(result)
-                when {
-                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
-                    parsedResult == Result.SUCCESS -> close()
-                    else -> {
-                        trySend(
-                            kotlin.Result.failure(
-                                CalibrationException(
-                                    parsedResult,
-                                    "calibrateMagnetometer failed: ${parsedResult.name}"
-                                )
+    fun calibrateMagnetometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
+        native.calibrateMagnetometerAsync() { result, value ->
+            val parsedResult = Result.fromValue(result)
+            when {
+                parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                parsedResult == Result.SUCCESS -> close()
+                else -> {
+                    trySend(
+                        kotlin.Result.failure(
+                            CalibrationException(
+                                parsedResult,
+                                "calibrateMagnetometer failed: ${parsedResult.name}",
                             )
                         )
-                        close()
-                    }
+                    )
+                    close()
                 }
             }
-            awaitClose {}
         }
+        awaitClose {}
+    }
 
-    fun calibrateLevelHorizon(): Flow<kotlin.Result<ProgressData>> =
-        callbackFlow {
-            native.calibrateLevelHorizonAsync() { result, value ->
-                val parsedResult = Result.fromValue(result)
-                when {
-                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
-                    parsedResult == Result.SUCCESS -> close()
-                    else -> {
-                        trySend(
-                            kotlin.Result.failure(
-                                CalibrationException(
-                                    parsedResult,
-                                    "calibrateLevelHorizon failed: ${parsedResult.name}"
-                                )
+    fun calibrateLevelHorizon(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
+        native.calibrateLevelHorizonAsync() { result, value ->
+            val parsedResult = Result.fromValue(result)
+            when {
+                parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                parsedResult == Result.SUCCESS -> close()
+                else -> {
+                    trySend(
+                        kotlin.Result.failure(
+                            CalibrationException(
+                                parsedResult,
+                                "calibrateLevelHorizon failed: ${parsedResult.name}",
                             )
                         )
-                        close()
-                    }
+                    )
+                    close()
                 }
             }
-            awaitClose {}
         }
+        awaitClose {}
+    }
 
-    fun calibrateGimbalAccelerometer(): Flow<kotlin.Result<ProgressData>> =
-        callbackFlow {
-            native.calibrateGimbalAccelerometerAsync() { result, value ->
-                val parsedResult = Result.fromValue(result)
-                when {
-                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
-                    parsedResult == Result.SUCCESS -> close()
-                    else -> {
-                        trySend(
-                            kotlin.Result.failure(
-                                CalibrationException(
-                                    parsedResult,
-                                    "calibrateGimbalAccelerometer failed: ${parsedResult.name}"
-                                )
+    fun calibrateGimbalAccelerometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
+        native.calibrateGimbalAccelerometerAsync() { result, value ->
+            val parsedResult = Result.fromValue(result)
+            when {
+                parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                parsedResult == Result.SUCCESS -> close()
+                else -> {
+                    trySend(
+                        kotlin.Result.failure(
+                            CalibrationException(
+                                parsedResult,
+                                "calibrateGimbalAccelerometer failed: ${parsedResult.name}",
                             )
                         )
-                        close()
-                    }
+                    )
+                    close()
                 }
             }
-            awaitClose {}
         }
+        awaitClose {}
+    }
 
-    fun cancel(): Result =
-        Result.fromValue(native.cancel())
+    fun cancel(): Result = Result.fromValue(native.cancel())
 
     override fun close() {
         if (closed) return
@@ -166,26 +156,29 @@ class Calibration internal constructor(
         native.destroy()
     }
 
-    class CalibrationException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class CalibrationException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Calibration =
-            Calibration(
-                createCalibrationNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Calibration(createCalibrationNative(system.getHandle())).also {
+                system.registerPlugin(it)
+            }
     }
 }
 
 internal interface CalibrationNative {
     fun calibrateGyroAsync(callback: (Int, Calibration.ProgressData) -> Unit)
+
     fun calibrateAccelerometerAsync(callback: (Int, Calibration.ProgressData) -> Unit)
+
     fun calibrateMagnetometerAsync(callback: (Int, Calibration.ProgressData) -> Unit)
+
     fun calibrateLevelHorizonAsync(callback: (Int, Calibration.ProgressData) -> Unit)
+
     fun calibrateGimbalAccelerometerAsync(callback: (Int, Calibration.ProgressData) -> Unit)
+
     fun cancel(): Int
+
     fun destroy()
 }
 

@@ -5,15 +5,13 @@
 package io.mavsdk.kotlin.plugins.transponder
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Transponder internal constructor(
-    private val native: TransponderNative
-) : AutoCloseable {
+class Transponder internal constructor(private val native: TransponderNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -23,12 +21,10 @@ class Transponder internal constructor(
         CONNECTION_ERROR(3),
         BUSY(4),
         COMMAND_DENIED(5),
-        TIMEOUT(6),
-        ;
+        TIMEOUT(6);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -52,8 +48,7 @@ class Transponder internal constructor(
         UNASSGINED3(16),
         EMERGENCY_SURFACE(17),
         SERVICE_SURFACE(18),
-        POINT_OBSTACLE(19),
-        ;
+        POINT_OBSTACLE(19);
 
         companion object {
             fun fromValue(value: Int): AdsbEmitterType =
@@ -63,8 +58,7 @@ class Transponder internal constructor(
 
     enum class AdsbAltitudeType(val value: Int) {
         PRESSURE_QNH(0),
-        GEOMETRIC(1),
-        ;
+        GEOMETRIC(1);
 
         companion object {
             fun fromValue(value: Int): AdsbAltitudeType =
@@ -87,21 +81,17 @@ class Transponder internal constructor(
         val tslcS: Int,
     )
 
-    fun transponder(): AdsbVehicle =
-        native.transponder()
+    fun transponder(): AdsbVehicle = native.transponder()
 
     fun subscribeTransponder(): Flow<AdsbVehicle> = callbackFlow {
-        val subscriptionHandle = native.subscribeTransponder(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeTransponder() { value -> trySend(value) }
         awaitClose { native.unsubscribeTransponder(subscriptionHandle) }
     }
 
     suspend fun setRateTransponder(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TransponderCallbackGuard()
-            native.setRateTransponderAsync(rateHz, ) { result ->
+            native.setRateTransponderAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -115,24 +105,25 @@ class Transponder internal constructor(
         native.destroy()
     }
 
-    class TransponderException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class TransponderException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Transponder =
-            Transponder(
-                createTransponderNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Transponder(createTransponderNative(system.getHandle())).also {
+                system.registerPlugin(it)
+            }
     }
 }
 
 internal interface TransponderNative {
     fun transponder(): Transponder.AdsbVehicle
+
     fun subscribeTransponder(callback: (Transponder.AdsbVehicle) -> Unit): Long
+
     fun unsubscribeTransponder(subscriptionHandle: Long)
+
     fun setRateTransponderAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun destroy()
 }
 

@@ -8,30 +8,17 @@ import io.mavsdk.jni.plugins.tune.NativeTune
 import java.util.concurrent.atomic.AtomicBoolean
 
 private fun Tune.TuneDescription.toNative(): NativeTune.TuneDescription =
-    NativeTune.TuneDescription(
-        songElements.map { it.value }.toIntArray(),
-        tempo
-    )
+    NativeTune.TuneDescription(songElements.map { it.value }.toIntArray(), tempo)
 
 private fun NativeTune.TuneDescription.toKotlin(): Tune.TuneDescription =
-    Tune.TuneDescription(
-        songElements.map { Tune.SongElement.fromValue(it) },
-        tempo
-    )
+    Tune.TuneDescription(songElements.map { Tune.SongElement.fromValue(it) }, tempo)
 
-private class TuneNativeImpl(
-    private val handle: Long
-) : TuneNative {
-    override fun playTuneAsync(
-        tuneDescription: Tune.TuneDescription,
-        callback: (Int) -> Unit
-    ) {
+private class TuneNativeImpl(private val handle: Long) : TuneNative {
+    override fun playTuneAsync(tuneDescription: Tune.TuneDescription, callback: (Int) -> Unit) {
         NativeTune.playTuneAsync(
             handle,
             tuneDescription.toNative(),
-            NativeTune.PlayTuneCallback {
-                    result -> callback(result)
-            }
+            NativeTune.PlayTuneCallback { result -> callback(result) },
         )
     }
 

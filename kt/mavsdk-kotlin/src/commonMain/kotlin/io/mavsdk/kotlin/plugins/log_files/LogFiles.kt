@@ -5,15 +5,13 @@
 package io.mavsdk.kotlin.plugins.log_files
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class LogFiles internal constructor(
-    private val native: LogFilesNative
-) : AutoCloseable {
+class LogFiles internal constructor(private val native: LogFilesNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -24,24 +22,16 @@ class LogFiles internal constructor(
         TIMEOUT(4),
         INVALID_ARGUMENT(5),
         FILE_OPEN_FAILED(6),
-        NO_SYSTEM(7),
-        ;
+        NO_SYSTEM(7);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    data class ProgressData(
-        val progress: Float,
-    )
+    data class ProgressData(val progress: Float)
 
-    data class Entry(
-        val id: Int,
-        val date: String,
-        val sizeBytes: Int,
-    )
+    data class Entry(val id: Int, val date: String, val sizeBytes: Int)
 
     suspend fun getEntries(): kotlin.Result<List<Entry>> =
         suspendCancellableCoroutine { continuation ->
@@ -56,7 +46,7 @@ class LogFiles internal constructor(
                             kotlin.Result.failure(
                                 LogFilesException(
                                     parsedResult,
-                                    "getEntries failed: ${parsedResult.name}"
+                                    "getEntries failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -67,7 +57,7 @@ class LogFiles internal constructor(
 
     fun downloadLogFile(entry: Entry, path: String): Flow<kotlin.Result<ProgressData>> =
         callbackFlow {
-            native.downloadLogFileAsync(entry, path, ) { result, value ->
+            native.downloadLogFileAsync(entry, path) { result, value ->
                 val parsedResult = Result.fromValue(result)
                 when {
                     parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
@@ -77,7 +67,7 @@ class LogFiles internal constructor(
                             kotlin.Result.failure(
                                 LogFilesException(
                                     parsedResult,
-                                    "downloadLogFile failed: ${parsedResult.name}"
+                                    "downloadLogFile failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -88,8 +78,7 @@ class LogFiles internal constructor(
             awaitClose {}
         }
 
-    fun eraseAllLogFiles(): Result =
-        Result.fromValue(native.eraseAllLogFiles())
+    fun eraseAllLogFiles(): Result = Result.fromValue(native.eraseAllLogFiles())
 
     override fun close() {
         if (closed) return
@@ -97,23 +86,25 @@ class LogFiles internal constructor(
         native.destroy()
     }
 
-    class LogFilesException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class LogFilesException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): LogFiles =
-            LogFiles(
-                createLogFilesNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            LogFiles(createLogFilesNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface LogFilesNative {
     fun getEntriesAsync(callback: (Int, List<LogFiles.Entry>) -> Unit)
-    fun downloadLogFileAsync(entry: LogFiles.Entry, path: String, callback: (Int, LogFiles.ProgressData) -> Unit)
+
+    fun downloadLogFileAsync(
+        entry: LogFiles.Entry,
+        path: String,
+        callback: (Int, LogFiles.ProgressData) -> Unit,
+    )
+
     fun eraseAllLogFiles(): Int
+
     fun destroy()
 }
 

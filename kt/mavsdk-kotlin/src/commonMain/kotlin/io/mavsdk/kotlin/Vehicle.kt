@@ -1,8 +1,6 @@
 package io.mavsdk.kotlin
 
-/**
- * Vehicle types
- */
+/** Vehicle types */
 enum class Vehicle(val value: Int) {
     UNKNOWN(0),
     GENERIC(1),
@@ -12,7 +10,6 @@ enum class Vehicle(val value: Int) {
     SUBMARINE(5);
 
     companion object {
-        fun fromValue(value: Int): Vehicle =
-            entries.find { it.value == value } ?: UNKNOWN
+        fun fromValue(value: Int): Vehicle = entries.find { it.value == value } ?: UNKNOWN
     }
 }

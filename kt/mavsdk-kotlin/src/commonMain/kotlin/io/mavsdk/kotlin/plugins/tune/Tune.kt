@@ -5,12 +5,10 @@
 package io.mavsdk.kotlin.plugins.tune
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Tune internal constructor(
-    private val native: TuneNative
-) : AutoCloseable {
+class Tune internal constructor(private val native: TuneNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -19,12 +17,10 @@ class Tune internal constructor(
         INVALID_TEMPO(2),
         TUNE_TOO_LONG(3),
         ERROR(4),
-        NO_SYSTEM(5),
-        ;
+        NO_SYSTEM(5);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -49,8 +45,7 @@ class Tune internal constructor(
         SHARP(17),
         FLAT(18),
         OCTAVE_UP(19),
-        OCTAVE_DOWN(20),
-        ;
+        OCTAVE_DOWN(20);
 
         companion object {
             fun fromValue(value: Int): SongElement =
@@ -58,15 +53,12 @@ class Tune internal constructor(
         }
     }
 
-    data class TuneDescription(
-        val songElements: List<SongElement> = emptyList(),
-        val tempo: Int,
-    )
+    data class TuneDescription(val songElements: List<SongElement> = emptyList(), val tempo: Int)
 
     suspend fun playTune(tuneDescription: TuneDescription): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TuneCallbackGuard()
-            native.playTuneAsync(tuneDescription, ) { result ->
+            native.playTuneAsync(tuneDescription) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -80,21 +72,17 @@ class Tune internal constructor(
         native.destroy()
     }
 
-    class TuneException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class TuneException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Tune =
-            Tune(
-                createTuneNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Tune(createTuneNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface TuneNative {
     fun playTuneAsync(tuneDescription: Tune.TuneDescription, callback: (Int) -> Unit)
+
     fun destroy()
 }
 

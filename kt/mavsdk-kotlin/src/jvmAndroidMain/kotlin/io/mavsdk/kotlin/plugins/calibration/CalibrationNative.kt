@@ -7,65 +7,45 @@ package io.mavsdk.kotlin.plugins.calibration
 import io.mavsdk.jni.plugins.calibration.NativeCalibration
 
 private fun Calibration.ProgressData.toNative(): NativeCalibration.ProgressData =
-    NativeCalibration.ProgressData(
-        hasProgress,
-        progress,
-        hasStatusText,
-        statusText
-    )
+    NativeCalibration.ProgressData(hasProgress, progress, hasStatusText, statusText)
 
 private fun NativeCalibration.ProgressData.toKotlin(): Calibration.ProgressData =
-    Calibration.ProgressData(
-        hasProgress,
-        progress,
-        hasStatusText,
-        statusText
-    )
+    Calibration.ProgressData(hasProgress, progress, hasStatusText, statusText)
 
-private class CalibrationNativeImpl(
-    private val handle: Long
-) : CalibrationNative {
-    override fun calibrateGyroAsync(
-        callback: (Int, Calibration.ProgressData) -> Unit
-    ) {
+private class CalibrationNativeImpl(private val handle: Long) : CalibrationNative {
+    override fun calibrateGyroAsync(callback: (Int, Calibration.ProgressData) -> Unit) {
         NativeCalibration.calibrateGyroAsync(
             handle,
-            NativeCalibration.CalibrateGyroCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeCalibration.CalibrateGyroCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
-    override fun calibrateAccelerometerAsync(
-        callback: (Int, Calibration.ProgressData) -> Unit
-    ) {
+    override fun calibrateAccelerometerAsync(callback: (Int, Calibration.ProgressData) -> Unit) {
         NativeCalibration.calibrateAccelerometerAsync(
             handle,
-            NativeCalibration.CalibrateAccelerometerCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeCalibration.CalibrateAccelerometerCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
-    override fun calibrateMagnetometerAsync(
-        callback: (Int, Calibration.ProgressData) -> Unit
-    ) {
+    override fun calibrateMagnetometerAsync(callback: (Int, Calibration.ProgressData) -> Unit) {
         NativeCalibration.calibrateMagnetometerAsync(
             handle,
-            NativeCalibration.CalibrateMagnetometerCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeCalibration.CalibrateMagnetometerCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
-    override fun calibrateLevelHorizonAsync(
-        callback: (Int, Calibration.ProgressData) -> Unit
-    ) {
+    override fun calibrateLevelHorizonAsync(callback: (Int, Calibration.ProgressData) -> Unit) {
         NativeCalibration.calibrateLevelHorizonAsync(
             handle,
-            NativeCalibration.CalibrateLevelHorizonCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeCalibration.CalibrateLevelHorizonCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
@@ -74,14 +54,13 @@ private class CalibrationNativeImpl(
     ) {
         NativeCalibration.calibrateGimbalAccelerometerAsync(
             handle,
-            NativeCalibration.CalibrateGimbalAccelerometerCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeCalibration.CalibrateGimbalAccelerometerCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
-    override fun cancel(): Int =
-        NativeCalibration.cancel(handle)
+    override fun cancel(): Int = NativeCalibration.cancel(handle)
 
     override fun destroy() {
         NativeCalibration.destroy(handle)

@@ -17,9 +17,7 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
         return if (result == ConnectionResult.SUCCESS.value) {
             Result.success(Unit)
         } else {
-            Result.failure(
-                MavsdkError.ConnectionError(ConnectionResult.fromValue(result))
-            )
+            Result.failure(MavsdkError.ConnectionError(ConnectionResult.fromValue(result)))
         }
     }
 
@@ -31,15 +29,16 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
         return if (resultCode == ConnectionResult.SUCCESS.value) {
             Result.success(connectionHandle)
         } else {
-            Result.failure(
-                MavsdkError.ConnectionError(ConnectionResult.fromValue(resultCode))
-            )
+            Result.failure(MavsdkError.ConnectionError(ConnectionResult.fromValue(resultCode)))
         }
     }
 
     actual fun removeConnection(handle: Long) = NativeMavsdk.removeConnection(this.handle, handle)
+
     actual fun systemCount(): Int = NativeMavsdk.systemCount(handle)
+
     actual fun getSystems(): List<System> = NativeMavsdk.getSystems(handle).map(::System)
+
     actual fun firstAutopilot(timeoutSeconds: Double): System? =
         NativeMavsdk.firstAutopilot(handle, timeoutSeconds).takeIf { it != 0L }?.let(::System)
 
@@ -47,10 +46,11 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
         NativeMavsdk.serverComponentHandle(handle, instance)
 
     actual fun subscribeOnNewSystem(): Flow<System> = callbackFlow {
-        val subHandle = NativeMavsdk.subscribeOnNewSystem(
-            handle,
-            NativeMavsdk.NewSystemCallback { trySend(System(it)) }
-        )
+        val subHandle =
+            NativeMavsdk.subscribeOnNewSystem(
+                handle,
+                NativeMavsdk.NewSystemCallback { trySend(System(it)) },
+            )
         awaitClose { NativeMavsdk.unsubscribeOnNewSystem(handle, subHandle) }
     }
 

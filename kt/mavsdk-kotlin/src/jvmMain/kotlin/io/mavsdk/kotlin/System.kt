@@ -18,13 +18,18 @@ actual class System internal constructor(private val handle: Long) {
         plugins.clear()
     }
 
-
     actual fun hasAutopilot(): Boolean = NativeSystem.hasAutopilot(handle)
+
     actual fun isStandalone(): Boolean = NativeSystem.isStandalone(handle)
+
     actual fun hasCamera(cameraId: Int): Boolean = NativeSystem.hasCamera(handle, cameraId)
+
     actual fun hasGimbal(): Boolean = NativeSystem.hasGimbal(handle)
+
     actual fun isConnected(): Boolean = NativeSystem.isConnected(handle)
+
     actual fun getSystemId(): Int = NativeSystem.getSystemId(handle)
+
     actual fun getComponentIds(): IntArray = NativeSystem.getComponentIds(handle)
 
     actual fun getAutopilotType(): Autopilot {
@@ -38,10 +43,8 @@ actual class System internal constructor(private val handle: Long) {
     }
 
     actual fun subscribeIsConnected(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = NativeSystem.subscribeIsConnected(
-            handle,
-            NativeSystem.BooleanCallback { trySend(it) }
-        )
+        val subscriptionHandle =
+            NativeSystem.subscribeIsConnected(handle, NativeSystem.BooleanCallback { trySend(it) })
         awaitClose { NativeSystem.unsubscribeIsConnected(handle, subscriptionHandle) }
     }
 

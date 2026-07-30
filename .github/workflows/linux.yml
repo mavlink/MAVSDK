@@ -387,7 +387,8 @@ jobs:
             python3-venv \
             libasio-dev \
             libfmt-dev \
-            nlohmann-json3-dev
+            nlohmann-json3-dev \
+            openjdk-21-jdk-headless
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -415,6 +416,9 @@ jobs:
         run: PATH="$PATH:$HOME/.local/bin:$(pwd)/cpp/build/release/third_party/install/bin" tools/generate_from_protos.bash
       - name: fix style
         run: tools/fix_style.py . || true
+      - name: fix kotlin style
+        working-directory: kt/mavsdk-kotlin
+        run: ./gradlew ktfmtFormat --console=plain
       - name: check for diff
         run: git diff --exit-code
 

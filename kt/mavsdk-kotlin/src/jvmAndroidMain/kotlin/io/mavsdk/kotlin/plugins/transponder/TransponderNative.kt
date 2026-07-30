@@ -21,7 +21,7 @@ private fun Transponder.AdsbVehicle.toNative(): NativeTransponder.AdsbVehicle =
         callsign,
         emitterType.value,
         squawk,
-        tslcS
+        tslcS,
     )
 
 private fun NativeTransponder.AdsbVehicle.toKotlin(): Transponder.AdsbVehicle =
@@ -37,29 +37,23 @@ private fun NativeTransponder.AdsbVehicle.toKotlin(): Transponder.AdsbVehicle =
         callsign,
         Transponder.AdsbEmitterType.fromValue(emitterType),
         squawk,
-        tslcS
+        tslcS,
     )
 
-private class TransponderNativeImpl(
-    private val handle: Long
-) : TransponderNative {
+private class TransponderNativeImpl(private val handle: Long) : TransponderNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     override fun transponder(): Transponder.AdsbVehicle {
-        val value = NativeTransponder.transponder(
-            handle        )
+        val value = NativeTransponder.transponder(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeTransponder(
-        callback: (Transponder.AdsbVehicle) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTransponder.subscribeTransponder(
-            handle,
-            NativeTransponder.TransponderCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeTransponder(callback: (Transponder.AdsbVehicle) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTransponder.subscribeTransponder(
+                handle,
+                NativeTransponder.TransponderCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTransponder.unsubscribeTransponder(handle, subscriptionHandle)
@@ -72,16 +66,11 @@ private class TransponderNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun setRateTransponderAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateTransponderAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTransponder.setRateTransponderAsync(
             handle,
             rateHz,
-            NativeTransponder.SetRateTransponderCallback {
-                    result -> callback(result)
-            }
+            NativeTransponder.SetRateTransponderCallback { result -> callback(result) },
         )
     }
 

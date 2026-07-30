@@ -5,12 +5,10 @@
 package io.mavsdk.kotlin.plugins.offboard
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Offboard internal constructor(
-    private val native: OffboardNative
-) : AutoCloseable {
+class Offboard internal constructor(private val native: OffboardNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -22,20 +20,17 @@ class Offboard internal constructor(
         COMMAND_DENIED(5),
         TIMEOUT(6),
         NO_SETPOINT_SET(7),
-        FAILED(8),
-        ;
+        FAILED(8);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
     enum class AltitudeType(val value: Int) {
         REL_HOME(0),
         AMSL(1),
-        AGL(2),
-        ;
+        AGL(2);
 
         companion object {
             fun fromValue(value: Int): AltitudeType =
@@ -50,13 +45,9 @@ class Offboard internal constructor(
         val thrustValue: Float,
     )
 
-    data class ActuatorControlGroup(
-        val controls: List<Float> = emptyList(),
-    )
+    data class ActuatorControlGroup(val controls: List<Float> = emptyList())
 
-    data class ActuatorControl(
-        val groups: List<ActuatorControlGroup> = emptyList(),
-    )
+    data class ActuatorControl(val groups: List<ActuatorControlGroup> = emptyList())
 
     data class AttitudeRate(
         val rollDegS: Float,
@@ -94,39 +85,31 @@ class Offboard internal constructor(
         val yawDeg: Float,
     )
 
-    data class AccelerationNed(
-        val northMS2: Float,
-        val eastMS2: Float,
-        val downMS2: Float,
-    )
+    data class AccelerationNed(val northMS2: Float, val eastMS2: Float, val downMS2: Float)
 
-    suspend fun start(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = OffboardCallbackGuard()
-            native.startAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun start(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = OffboardCallbackGuard()
+        native.startAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun stop(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = OffboardCallbackGuard()
-            native.stopAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun stop(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = OffboardCallbackGuard()
+        native.stopAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    fun isActive(): Boolean =
-        native.isActive()
+    fun isActive(): Boolean = native.isActive()
 
-    fun setAttitude(attitude: Attitude): Result =
-        Result.fromValue(native.setAttitude(attitude))
+    fun setAttitude(attitude: Attitude): Result = Result.fromValue(native.setAttitude(attitude))
 
     fun setActuatorControl(actuatorControl: ActuatorControl): Result =
         Result.fromValue(native.setActuatorControl(actuatorControl))
@@ -146,11 +129,23 @@ class Offboard internal constructor(
     fun setVelocityNed(velocityNedYaw: VelocityNedYaw): Result =
         Result.fromValue(native.setVelocityNed(velocityNedYaw))
 
-    fun setPositionVelocityNed(positionNedYaw: PositionNedYaw, velocityNedYaw: VelocityNedYaw): Result =
-        Result.fromValue(native.setPositionVelocityNed(positionNedYaw, velocityNedYaw))
+    fun setPositionVelocityNed(
+        positionNedYaw: PositionNedYaw,
+        velocityNedYaw: VelocityNedYaw,
+    ): Result = Result.fromValue(native.setPositionVelocityNed(positionNedYaw, velocityNedYaw))
 
-    fun setPositionVelocityAccelerationNed(positionNedYaw: PositionNedYaw, velocityNedYaw: VelocityNedYaw, accelerationNed: AccelerationNed): Result =
-        Result.fromValue(native.setPositionVelocityAccelerationNed(positionNedYaw, velocityNedYaw, accelerationNed))
+    fun setPositionVelocityAccelerationNed(
+        positionNedYaw: PositionNedYaw,
+        velocityNedYaw: VelocityNedYaw,
+        accelerationNed: AccelerationNed,
+    ): Result =
+        Result.fromValue(
+            native.setPositionVelocityAccelerationNed(
+                positionNedYaw,
+                velocityNedYaw,
+                accelerationNed,
+            )
+        )
 
     fun setAccelerationNed(accelerationNed: AccelerationNed): Result =
         Result.fromValue(native.setAccelerationNed(accelerationNed))
@@ -161,33 +156,48 @@ class Offboard internal constructor(
         native.destroy()
     }
 
-    class OffboardException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class OffboardException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Offboard =
-            Offboard(
-                createOffboardNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Offboard(createOffboardNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface OffboardNative {
     fun startAsync(callback: (Int) -> Unit)
+
     fun stopAsync(callback: (Int) -> Unit)
+
     fun isActive(): Boolean
+
     fun setAttitude(attitude: Offboard.Attitude): Int
+
     fun setActuatorControl(actuatorControl: Offboard.ActuatorControl): Int
+
     fun setAttitudeRate(attitudeRate: Offboard.AttitudeRate): Int
+
     fun setPositionNed(positionNedYaw: Offboard.PositionNedYaw): Int
+
     fun setPositionGlobal(positionGlobalYaw: Offboard.PositionGlobalYaw): Int
+
     fun setVelocityBody(velocityBodyYawspeed: Offboard.VelocityBodyYawspeed): Int
+
     fun setVelocityNed(velocityNedYaw: Offboard.VelocityNedYaw): Int
-    fun setPositionVelocityNed(positionNedYaw: Offboard.PositionNedYaw, velocityNedYaw: Offboard.VelocityNedYaw): Int
-    fun setPositionVelocityAccelerationNed(positionNedYaw: Offboard.PositionNedYaw, velocityNedYaw: Offboard.VelocityNedYaw, accelerationNed: Offboard.AccelerationNed): Int
+
+    fun setPositionVelocityNed(
+        positionNedYaw: Offboard.PositionNedYaw,
+        velocityNedYaw: Offboard.VelocityNedYaw,
+    ): Int
+
+    fun setPositionVelocityAccelerationNed(
+        positionNedYaw: Offboard.PositionNedYaw,
+        velocityNedYaw: Offboard.VelocityNedYaw,
+        accelerationNed: Offboard.AccelerationNed,
+    ): Int
+
     fun setAccelerationNed(accelerationNed: Offboard.AccelerationNed): Int
+
     fun destroy()
 }
 

@@ -5,15 +5,13 @@
 package io.mavsdk.kotlin.plugins.mission
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Mission internal constructor(
-    private val native: MissionNative
-) : AutoCloseable {
+class Mission internal constructor(private val native: MissionNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -32,12 +30,10 @@ class Mission internal constructor(
         NEXT(12),
         DENIED(13),
         PROTOCOL_ERROR(14),
-        INT_MESSAGES_NOT_SUPPORTED(15),
-        ;
+        INT_MESSAGES_NOT_SUPPORTED(15);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -49,8 +45,7 @@ class Mission internal constructor(
         START_VIDEO(4),
         STOP_VIDEO(5),
         START_PHOTO_DISTANCE(6),
-        STOP_PHOTO_DISTANCE(7),
-        ;
+        STOP_PHOTO_DISTANCE(7);
 
         companion object {
             fun fromValue(value: Int): CameraAction =
@@ -63,8 +58,7 @@ class Mission internal constructor(
         TAKEOFF(1),
         LAND(2),
         TRANSITION_TO_FW(3),
-        TRANSITION_TO_MC(4),
-        ;
+        TRANSITION_TO_MC(4);
 
         companion object {
             fun fromValue(value: Int): VehicleAction =
@@ -89,18 +83,11 @@ class Mission internal constructor(
         val vehicleAction: VehicleAction,
     )
 
-    data class MissionPlan(
-        val missionItems: List<MissionItem> = emptyList(),
-    )
+    data class MissionPlan(val missionItems: List<MissionItem> = emptyList())
 
-    data class MissionProgress(
-        val current: Int,
-        val total: Int,
-    )
+    data class MissionProgress(val current: Int, val total: Int)
 
-    data class ProgressData(
-        val progress: Float,
-    )
+    data class ProgressData(val progress: Float)
 
     data class ProgressDataOrMission(
         val hasProgress: Boolean,
@@ -112,9 +99,11 @@ class Mission internal constructor(
     suspend fun uploadMission(missionPlan: MissionPlan): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionCallbackGuard()
-            native.uploadMissionAsync(missionPlan, ) { result ->
+            native.uploadMissionAsync(missionPlan) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -122,7 +111,7 @@ class Mission internal constructor(
 
     fun uploadMissionWithProgress(missionPlan: MissionPlan): Flow<kotlin.Result<ProgressData>> =
         callbackFlow {
-            native.uploadMissionWithProgressAsync(missionPlan, ) { result, value ->
+            native.uploadMissionWithProgressAsync(missionPlan) { result, value ->
                 val parsedResult = Result.fromValue(result)
                 when {
                     parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
@@ -132,7 +121,7 @@ class Mission internal constructor(
                             kotlin.Result.failure(
                                 MissionException(
                                     parsedResult,
-                                    "uploadMissionWithProgress failed: ${parsedResult.name}"
+                                    "uploadMissionWithProgress failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -143,8 +132,7 @@ class Mission internal constructor(
             awaitClose {}
         }
 
-    fun cancelMissionUpload(): Result =
-        Result.fromValue(native.cancelMissionUpload())
+    fun cancelMissionUpload(): Result = Result.fromValue(native.cancelMissionUpload())
 
     suspend fun downloadMission(): kotlin.Result<MissionPlan> =
         suspendCancellableCoroutine { continuation ->
@@ -159,7 +147,7 @@ class Mission internal constructor(
                             kotlin.Result.failure(
                                 MissionException(
                                     parsedResult,
-                                    "downloadMission failed: ${parsedResult.name}"
+                                    "downloadMission failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -168,92 +156,83 @@ class Mission internal constructor(
             }
         }
 
-    fun downloadMissionWithProgress(): Flow<kotlin.Result<ProgressDataOrMission>> =
-        callbackFlow {
-            native.downloadMissionWithProgressAsync() { result, value ->
-                val parsedResult = Result.fromValue(result)
-                when {
-                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
-                    parsedResult == Result.SUCCESS -> close()
-                    else -> {
-                        trySend(
-                            kotlin.Result.failure(
-                                MissionException(
-                                    parsedResult,
-                                    "downloadMissionWithProgress failed: ${parsedResult.name}"
-                                )
+    fun downloadMissionWithProgress(): Flow<kotlin.Result<ProgressDataOrMission>> = callbackFlow {
+        native.downloadMissionWithProgressAsync() { result, value ->
+            val parsedResult = Result.fromValue(result)
+            when {
+                parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                parsedResult == Result.SUCCESS -> close()
+                else -> {
+                    trySend(
+                        kotlin.Result.failure(
+                            MissionException(
+                                parsedResult,
+                                "downloadMissionWithProgress failed: ${parsedResult.name}",
                             )
                         )
-                        close()
-                    }
-                }
-            }
-            awaitClose {}
-        }
-
-    fun cancelMissionDownload(): Result =
-        Result.fromValue(native.cancelMissionDownload())
-
-    suspend fun startMission(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = MissionCallbackGuard()
-            native.startMissionAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
+                    )
+                    close()
                 }
             }
         }
+        awaitClose {}
+    }
 
-    suspend fun pauseMission(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = MissionCallbackGuard()
-            native.pauseMissionAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    fun cancelMissionDownload(): Result = Result.fromValue(native.cancelMissionDownload())
+
+    suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = MissionCallbackGuard()
+        native.startMissionAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun clearMission(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = MissionCallbackGuard()
-            native.clearMissionAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = MissionCallbackGuard()
+        native.pauseMissionAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
+
+    suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = MissionCallbackGuard()
+        native.clearMissionAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
+            }
+        }
+    }
 
     suspend fun setCurrentMissionItem(index: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionCallbackGuard()
-            native.setCurrentMissionItemAsync(index, ) { result ->
+            native.setCurrentMissionItemAsync(index) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
+                if (
+                    continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()
+                ) {
                     continuation.resume(parsedResult)
                 }
             }
         }
 
-    fun isMissionFinished(): Boolean =
-        native.isMissionFinished()
+    fun isMissionFinished(): Boolean = native.isMissionFinished()
 
-    fun missionProgress(): MissionProgress =
-        native.missionProgress()
+    fun missionProgress(): MissionProgress = native.missionProgress()
 
     fun subscribeMissionProgress(): Flow<MissionProgress> = callbackFlow {
-        val subscriptionHandle = native.subscribeMissionProgress(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeMissionProgress() { value -> trySend(value) }
         awaitClose { native.unsubscribeMissionProgress(subscriptionHandle) }
     }
 
-    fun getReturnToLaunchAfterMission(): Boolean =
-        native.getReturnToLaunchAfterMission()
+    fun getReturnToLaunchAfterMission(): Boolean = native.getReturnToLaunchAfterMission()
 
     fun setReturnToLaunchAfterMission(enable: Boolean): Result =
         Result.fromValue(native.setReturnToLaunchAfterMission(enable))
@@ -264,36 +243,50 @@ class Mission internal constructor(
         native.destroy()
     }
 
-    class MissionException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class MissionException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Mission =
-            Mission(
-                createMissionNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Mission(createMissionNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface MissionNative {
     fun uploadMissionAsync(missionPlan: Mission.MissionPlan, callback: (Int) -> Unit)
-    fun uploadMissionWithProgressAsync(missionPlan: Mission.MissionPlan, callback: (Int, Mission.ProgressData) -> Unit)
+
+    fun uploadMissionWithProgressAsync(
+        missionPlan: Mission.MissionPlan,
+        callback: (Int, Mission.ProgressData) -> Unit,
+    )
+
     fun cancelMissionUpload(): Int
+
     fun downloadMissionAsync(callback: (Int, Mission.MissionPlan) -> Unit)
+
     fun downloadMissionWithProgressAsync(callback: (Int, Mission.ProgressDataOrMission) -> Unit)
+
     fun cancelMissionDownload(): Int
+
     fun startMissionAsync(callback: (Int) -> Unit)
+
     fun pauseMissionAsync(callback: (Int) -> Unit)
+
     fun clearMissionAsync(callback: (Int) -> Unit)
+
     fun setCurrentMissionItemAsync(index: Int, callback: (Int) -> Unit)
+
     fun isMissionFinished(): Boolean
+
     fun missionProgress(): Mission.MissionProgress
+
     fun subscribeMissionProgress(callback: (Mission.MissionProgress) -> Unit): Long
+
     fun unsubscribeMissionProgress(subscriptionHandle: Long)
+
     fun getReturnToLaunchAfterMission(): Boolean
+
     fun setReturnToLaunchAfterMission(enable: Boolean): Int
+
     fun destroy()
 }
 

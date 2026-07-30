@@ -3,9 +3,7 @@ package io.mavsdk.kotlin
 import java.io.File
 import java.io.FileOutputStream
 
-/**
- * Utility to load the native MAVSDK library for JVM
- */
+/** Utility to load the native MAVSDK library for JVM */
 internal object NativeLibraryLoader {
     private var loaded = false
 
@@ -27,16 +25,18 @@ internal object NativeLibraryLoader {
         // Prefer the per-platform layout, so a single jar can carry every
         // supported OS/architecture combination. The flat layout is kept as a
         // fallback for locally built libraries.
-        val candidates = listOf(
-            "/native/${getOsName()}-${getArchName()}/$libraryName",
-            "/native/$libraryName",
-        )
+        val candidates =
+            listOf("/native/${getOsName()}-${getArchName()}/$libraryName", "/native/$libraryName")
 
-        val (resourcePath, inputStream) = candidates.firstNotNullOfOrNull { candidate ->
-            NativeLibraryLoader::class.java.getResourceAsStream(candidate)?.let { candidate to it }
-        } ?: throw MavsdkError.LibraryNotFoundError(
-            "Native library not found in resources, tried: ${candidates.joinToString(", ")}"
-        )
+        val (resourcePath, inputStream) =
+            candidates.firstNotNullOfOrNull { candidate ->
+                NativeLibraryLoader::class.java.getResourceAsStream(candidate)?.let {
+                    candidate to it
+                }
+            }
+                ?: throw MavsdkError.LibraryNotFoundError(
+                    "Native library not found in resources, tried: ${candidates.joinToString(", ")}"
+                )
 
         try {
             // Extract from resources to temp file
@@ -44,9 +44,7 @@ internal object NativeLibraryLoader {
             tempFile.deleteOnExit()
 
             inputStream.use { input ->
-                FileOutputStream(tempFile).use { output ->
-                    input.copyTo(output)
-                }
+                FileOutputStream(tempFile).use { output -> input.copyTo(output) }
             }
 
             java.lang.System.load(tempFile.absolutePath)
@@ -72,25 +70,34 @@ internal object NativeLibraryLoader {
     private fun getArchName(): String {
         val arch = java.lang.System.getProperty("os.arch").orEmpty().lowercase()
         return when (arch) {
-            "aarch64", "arm64" -> "aarch64"
-            "x86_64", "amd64" -> "x86_64"
-            "arm", "armv7l" -> "arm"
-            "x86", "i386", "i486", "i586", "i686" -> "x86"
+            "aarch64",
+            "arm64" -> "aarch64"
+            "x86_64",
+            "amd64" -> "x86_64"
+            "arm",
+            "armv7l" -> "arm"
+            "x86",
+            "i386",
+            "i486",
+            "i586",
+            "i686" -> "x86"
             else -> throw MavsdkError.LibraryNotFoundError("Unsupported architecture: $arch")
         }
     }
 
-    private fun getLibraryName(): String = when (val os = getOsName()) {
-        "darwin" -> "libmavsdk_jni.dylib"
-        "linux" -> "libmavsdk_jni.so"
-        "windows" -> "mavsdk_jni.dll"
-        else -> throw MavsdkError.LibraryNotFoundError("Unsupported OS: $os")
-    }
+    private fun getLibraryName(): String =
+        when (val os = getOsName()) {
+            "darwin" -> "libmavsdk_jni.dylib"
+            "linux" -> "libmavsdk_jni.so"
+            "windows" -> "mavsdk_jni.dll"
+            else -> throw MavsdkError.LibraryNotFoundError("Unsupported OS: $os")
+        }
 
-    private fun getNativeExtension(): String = when (val os = getOsName()) {
-        "darwin" -> ".dylib"
-        "linux" -> ".so"
-        "windows" -> ".dll"
-        else -> throw MavsdkError.LibraryNotFoundError("Unsupported OS: $os")
-    }
+    private fun getNativeExtension(): String =
+        when (val os = getOsName()) {
+            "darwin" -> ".dylib"
+            "linux" -> ".so"
+            "windows" -> ".dll"
+            else -> throw MavsdkError.LibraryNotFoundError("Unsupported OS: $os")
+        }
 }

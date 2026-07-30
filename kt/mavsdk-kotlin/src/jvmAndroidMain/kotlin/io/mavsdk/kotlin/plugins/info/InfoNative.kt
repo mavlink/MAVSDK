@@ -8,48 +8,22 @@ import io.mavsdk.jni.plugins.info.NativeInfo
 import java.util.concurrent.ConcurrentHashMap
 
 private fun Info.FlightInfo.toNative(): NativeInfo.FlightInfo =
-    NativeInfo.FlightInfo(
-        timeBootMs,
-        flightUid,
-        durationSinceArmingMs,
-        durationSinceTakeoffMs
-    )
+    NativeInfo.FlightInfo(timeBootMs, flightUid, durationSinceArmingMs, durationSinceTakeoffMs)
 
 private fun NativeInfo.FlightInfo.toKotlin(): Info.FlightInfo =
-    Info.FlightInfo(
-        timeBootMs,
-        flightUid,
-        durationSinceArmingMs,
-        durationSinceTakeoffMs
-    )
+    Info.FlightInfo(timeBootMs, flightUid, durationSinceArmingMs, durationSinceTakeoffMs)
 
 private fun Info.Identification.toNative(): NativeInfo.Identification =
-    NativeInfo.Identification(
-        hardwareUid,
-        legacyUid
-    )
+    NativeInfo.Identification(hardwareUid, legacyUid)
 
 private fun NativeInfo.Identification.toKotlin(): Info.Identification =
-    Info.Identification(
-        hardwareUid,
-        legacyUid
-    )
+    Info.Identification(hardwareUid, legacyUid)
 
 private fun Info.Product.toNative(): NativeInfo.Product =
-    NativeInfo.Product(
-        vendorId,
-        vendorName,
-        productId,
-        productName
-    )
+    NativeInfo.Product(vendorId, vendorName, productId, productName)
 
 private fun NativeInfo.Product.toKotlin(): Info.Product =
-    Info.Product(
-        vendorId,
-        vendorName,
-        productId,
-        productName
-    )
+    Info.Product(vendorId, vendorName, productId, productName)
 
 private fun Info.Version.toNative(): NativeInfo.Version =
     NativeInfo.Version(
@@ -64,7 +38,7 @@ private fun Info.Version.toNative(): NativeInfo.Version =
         osSwPatch,
         flightSwGitHash,
         osSwGitHash,
-        flightSwVersionType.value
+        flightSwVersionType.value,
     )
 
 private fun NativeInfo.Version.toKotlin(): Info.Version =
@@ -80,47 +54,38 @@ private fun NativeInfo.Version.toKotlin(): Info.Version =
         osSwPatch,
         flightSwGitHash,
         osSwGitHash,
-        Info.FlightSoftwareVersionType.fromValue(flightSwVersionType)
+        Info.FlightSoftwareVersionType.fromValue(flightSwVersionType),
     )
 
-private class InfoNativeImpl(
-    private val handle: Long
-) : InfoNative {
+private class InfoNativeImpl(private val handle: Long) : InfoNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     override fun getIdentification(): Info.Identification {
-        val value = NativeInfo.getIdentification(
-            handle        )
+        val value = NativeInfo.getIdentification(handle)
         return value.toKotlin()
     }
 
     override fun getProduct(): Info.Product {
-        val value = NativeInfo.getProduct(
-            handle        )
+        val value = NativeInfo.getProduct(handle)
         return value.toKotlin()
     }
 
     override fun getVersion(): Info.Version {
-        val value = NativeInfo.getVersion(
-            handle        )
+        val value = NativeInfo.getVersion(handle)
         return value.toKotlin()
     }
 
     override fun getSpeedFactor(): Double {
-        val value = NativeInfo.getSpeedFactor(
-            handle        )
+        val value = NativeInfo.getSpeedFactor(handle)
         return value
     }
 
-    override fun subscribeFlightInformation(
-        callback: (Info.FlightInfo) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeInfo.subscribeFlightInformation(
-            handle,
-            NativeInfo.FlightInformationCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeFlightInformation(callback: (Info.FlightInfo) -> Unit): Long {
+        val subscriptionHandle =
+            NativeInfo.subscribeFlightInformation(
+                handle,
+                NativeInfo.FlightInformationCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeInfo.unsubscribeFlightInformation(handle, subscriptionHandle)

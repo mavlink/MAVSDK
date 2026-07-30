@@ -8,81 +8,37 @@ import io.mavsdk.jni.plugins.offboard.NativeOffboard
 import java.util.concurrent.atomic.AtomicBoolean
 
 private fun Offboard.Attitude.toNative(): NativeOffboard.Attitude =
-    NativeOffboard.Attitude(
-        rollDeg,
-        pitchDeg,
-        yawDeg,
-        thrustValue
-    )
+    NativeOffboard.Attitude(rollDeg, pitchDeg, yawDeg, thrustValue)
 
 private fun NativeOffboard.Attitude.toKotlin(): Offboard.Attitude =
-    Offboard.Attitude(
-        rollDeg,
-        pitchDeg,
-        yawDeg,
-        thrustValue
-    )
+    Offboard.Attitude(rollDeg, pitchDeg, yawDeg, thrustValue)
 
 private fun Offboard.ActuatorControlGroup.toNative(): NativeOffboard.ActuatorControlGroup =
-    NativeOffboard.ActuatorControlGroup(
-        controls.toFloatArray()
-    )
+    NativeOffboard.ActuatorControlGroup(controls.toFloatArray())
 
 private fun NativeOffboard.ActuatorControlGroup.toKotlin(): Offboard.ActuatorControlGroup =
-    Offboard.ActuatorControlGroup(
-        controls.toList()
-    )
+    Offboard.ActuatorControlGroup(controls.toList())
 
 private fun Offboard.ActuatorControl.toNative(): NativeOffboard.ActuatorControl =
-    NativeOffboard.ActuatorControl(
-        groups.map { it.toNative() }.toTypedArray()
-    )
+    NativeOffboard.ActuatorControl(groups.map { it.toNative() }.toTypedArray())
 
 private fun NativeOffboard.ActuatorControl.toKotlin(): Offboard.ActuatorControl =
-    Offboard.ActuatorControl(
-        groups.map { it.toKotlin() }
-    )
+    Offboard.ActuatorControl(groups.map { it.toKotlin() })
 
 private fun Offboard.AttitudeRate.toNative(): NativeOffboard.AttitudeRate =
-    NativeOffboard.AttitudeRate(
-        rollDegS,
-        pitchDegS,
-        yawDegS,
-        thrustValue
-    )
+    NativeOffboard.AttitudeRate(rollDegS, pitchDegS, yawDegS, thrustValue)
 
 private fun NativeOffboard.AttitudeRate.toKotlin(): Offboard.AttitudeRate =
-    Offboard.AttitudeRate(
-        rollDegS,
-        pitchDegS,
-        yawDegS,
-        thrustValue
-    )
+    Offboard.AttitudeRate(rollDegS, pitchDegS, yawDegS, thrustValue)
 
 private fun Offboard.PositionNedYaw.toNative(): NativeOffboard.PositionNedYaw =
-    NativeOffboard.PositionNedYaw(
-        northM,
-        eastM,
-        downM,
-        yawDeg
-    )
+    NativeOffboard.PositionNedYaw(northM, eastM, downM, yawDeg)
 
 private fun NativeOffboard.PositionNedYaw.toKotlin(): Offboard.PositionNedYaw =
-    Offboard.PositionNedYaw(
-        northM,
-        eastM,
-        downM,
-        yawDeg
-    )
+    Offboard.PositionNedYaw(northM, eastM, downM, yawDeg)
 
 private fun Offboard.PositionGlobalYaw.toNative(): NativeOffboard.PositionGlobalYaw =
-    NativeOffboard.PositionGlobalYaw(
-        latDeg,
-        lonDeg,
-        altM,
-        yawDeg,
-        altitudeType.value
-    )
+    NativeOffboard.PositionGlobalYaw(latDeg, lonDeg, altM, yawDeg, altitudeType.value)
 
 private fun NativeOffboard.PositionGlobalYaw.toKotlin(): Offboard.PositionGlobalYaw =
     Offboard.PositionGlobalYaw(
@@ -90,83 +46,41 @@ private fun NativeOffboard.PositionGlobalYaw.toKotlin(): Offboard.PositionGlobal
         lonDeg,
         altM,
         yawDeg,
-        Offboard.AltitudeType.fromValue(altitudeType)
+        Offboard.AltitudeType.fromValue(altitudeType),
     )
 
 private fun Offboard.VelocityBodyYawspeed.toNative(): NativeOffboard.VelocityBodyYawspeed =
-    NativeOffboard.VelocityBodyYawspeed(
-        forwardMS,
-        rightMS,
-        downMS,
-        yawspeedDegS
-    )
+    NativeOffboard.VelocityBodyYawspeed(forwardMS, rightMS, downMS, yawspeedDegS)
 
 private fun NativeOffboard.VelocityBodyYawspeed.toKotlin(): Offboard.VelocityBodyYawspeed =
-    Offboard.VelocityBodyYawspeed(
-        forwardMS,
-        rightMS,
-        downMS,
-        yawspeedDegS
-    )
+    Offboard.VelocityBodyYawspeed(forwardMS, rightMS, downMS, yawspeedDegS)
 
 private fun Offboard.VelocityNedYaw.toNative(): NativeOffboard.VelocityNedYaw =
-    NativeOffboard.VelocityNedYaw(
-        northMS,
-        eastMS,
-        downMS,
-        yawDeg
-    )
+    NativeOffboard.VelocityNedYaw(northMS, eastMS, downMS, yawDeg)
 
 private fun NativeOffboard.VelocityNedYaw.toKotlin(): Offboard.VelocityNedYaw =
-    Offboard.VelocityNedYaw(
-        northMS,
-        eastMS,
-        downMS,
-        yawDeg
-    )
+    Offboard.VelocityNedYaw(northMS, eastMS, downMS, yawDeg)
 
 private fun Offboard.AccelerationNed.toNative(): NativeOffboard.AccelerationNed =
-    NativeOffboard.AccelerationNed(
-        northMS2,
-        eastMS2,
-        downMS2
-    )
+    NativeOffboard.AccelerationNed(northMS2, eastMS2, downMS2)
 
 private fun NativeOffboard.AccelerationNed.toKotlin(): Offboard.AccelerationNed =
-    Offboard.AccelerationNed(
-        northMS2,
-        eastMS2,
-        downMS2
-    )
+    Offboard.AccelerationNed(northMS2, eastMS2, downMS2)
 
-private class OffboardNativeImpl(
-    private val handle: Long
-) : OffboardNative {
-    override fun startAsync(
-        callback: (Int) -> Unit
-    ) {
+private class OffboardNativeImpl(private val handle: Long) : OffboardNative {
+    override fun startAsync(callback: (Int) -> Unit) {
         NativeOffboard.startAsync(
             handle,
-            NativeOffboard.StartCallback {
-                    result -> callback(result)
-            }
+            NativeOffboard.StartCallback { result -> callback(result) },
         )
     }
 
-    override fun stopAsync(
-        callback: (Int) -> Unit
-    ) {
-        NativeOffboard.stopAsync(
-            handle,
-            NativeOffboard.StopCallback {
-                    result -> callback(result)
-            }
-        )
+    override fun stopAsync(callback: (Int) -> Unit) {
+        NativeOffboard.stopAsync(handle, NativeOffboard.StopCallback { result -> callback(result) })
     }
 
     override fun isActive(): Boolean {
-        val value = NativeOffboard.isActive(
-            handle        )
+        val value = NativeOffboard.isActive(handle)
         return value
     }
 
@@ -191,11 +105,27 @@ private class OffboardNativeImpl(
     override fun setVelocityNed(velocityNedYaw: Offboard.VelocityNedYaw): Int =
         NativeOffboard.setVelocityNed(handle, velocityNedYaw.toNative())
 
-    override fun setPositionVelocityNed(positionNedYaw: Offboard.PositionNedYaw, velocityNedYaw: Offboard.VelocityNedYaw): Int =
-        NativeOffboard.setPositionVelocityNed(handle, positionNedYaw.toNative(), velocityNedYaw.toNative())
+    override fun setPositionVelocityNed(
+        positionNedYaw: Offboard.PositionNedYaw,
+        velocityNedYaw: Offboard.VelocityNedYaw,
+    ): Int =
+        NativeOffboard.setPositionVelocityNed(
+            handle,
+            positionNedYaw.toNative(),
+            velocityNedYaw.toNative(),
+        )
 
-    override fun setPositionVelocityAccelerationNed(positionNedYaw: Offboard.PositionNedYaw, velocityNedYaw: Offboard.VelocityNedYaw, accelerationNed: Offboard.AccelerationNed): Int =
-        NativeOffboard.setPositionVelocityAccelerationNed(handle, positionNedYaw.toNative(), velocityNedYaw.toNative(), accelerationNed.toNative())
+    override fun setPositionVelocityAccelerationNed(
+        positionNedYaw: Offboard.PositionNedYaw,
+        velocityNedYaw: Offboard.VelocityNedYaw,
+        accelerationNed: Offboard.AccelerationNed,
+    ): Int =
+        NativeOffboard.setPositionVelocityAccelerationNed(
+            handle,
+            positionNedYaw.toNative(),
+            velocityNedYaw.toNative(),
+            accelerationNed.toNative(),
+        )
 
     override fun setAccelerationNed(accelerationNed: Offboard.AccelerationNed): Int =
         NativeOffboard.setAccelerationNed(handle, accelerationNed.toNative())

@@ -7,23 +7,17 @@ package io.mavsdk.kotlin.plugins.shell
 import io.mavsdk.jni.plugins.shell.NativeShell
 import java.util.concurrent.ConcurrentHashMap
 
-private class ShellNativeImpl(
-    private val handle: Long
-) : ShellNative {
+private class ShellNativeImpl(private val handle: Long) : ShellNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun send(command: String): Int =
-        NativeShell.send(handle, command)
+    override fun send(command: String): Int = NativeShell.send(handle, command)
 
-    override fun subscribeReceive(
-        callback: (String) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeShell.subscribeReceive(
-            handle,
-            NativeShell.ReceiveCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeReceive(callback: (String) -> Unit): Long {
+        val subscriptionHandle =
+            NativeShell.subscribeReceive(
+                handle,
+                NativeShell.ReceiveCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeShell.unsubscribeReceive(handle, subscriptionHandle)

@@ -7,116 +7,59 @@ package io.mavsdk.kotlin.plugins.action
 import io.mavsdk.jni.plugins.action.NativeAction
 import java.util.concurrent.atomic.AtomicBoolean
 
-private class ActionNativeImpl(
-    private val handle: Long
-) : ActionNative {
-    override fun armAsync(
-        callback: (Int) -> Unit
-    ) {
-        NativeAction.armAsync(
-            handle,
-            NativeAction.ArmCallback {
-                    result -> callback(result)
-            }
-        )
+private class ActionNativeImpl(private val handle: Long) : ActionNative {
+    override fun armAsync(callback: (Int) -> Unit) {
+        NativeAction.armAsync(handle, NativeAction.ArmCallback { result -> callback(result) })
     }
 
-    override fun armForceAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun armForceAsync(callback: (Int) -> Unit) {
         NativeAction.armForceAsync(
             handle,
-            NativeAction.ArmForceCallback {
-                    result -> callback(result)
-            }
+            NativeAction.ArmForceCallback { result -> callback(result) },
         )
     }
 
-    override fun disarmAsync(
-        callback: (Int) -> Unit
-    ) {
-        NativeAction.disarmAsync(
-            handle,
-            NativeAction.DisarmCallback {
-                    result -> callback(result)
-            }
-        )
+    override fun disarmAsync(callback: (Int) -> Unit) {
+        NativeAction.disarmAsync(handle, NativeAction.DisarmCallback { result -> callback(result) })
     }
 
-    override fun takeoffAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun takeoffAsync(callback: (Int) -> Unit) {
         NativeAction.takeoffAsync(
             handle,
-            NativeAction.TakeoffCallback {
-                    result -> callback(result)
-            }
+            NativeAction.TakeoffCallback { result -> callback(result) },
         )
     }
 
-    override fun landAsync(
-        callback: (Int) -> Unit
-    ) {
-        NativeAction.landAsync(
-            handle,
-            NativeAction.LandCallback {
-                    result -> callback(result)
-            }
-        )
+    override fun landAsync(callback: (Int) -> Unit) {
+        NativeAction.landAsync(handle, NativeAction.LandCallback { result -> callback(result) })
     }
 
-    override fun rebootAsync(
-        callback: (Int) -> Unit
-    ) {
-        NativeAction.rebootAsync(
-            handle,
-            NativeAction.RebootCallback {
-                    result -> callback(result)
-            }
-        )
+    override fun rebootAsync(callback: (Int) -> Unit) {
+        NativeAction.rebootAsync(handle, NativeAction.RebootCallback { result -> callback(result) })
     }
 
-    override fun shutdownAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun shutdownAsync(callback: (Int) -> Unit) {
         NativeAction.shutdownAsync(
             handle,
-            NativeAction.ShutdownCallback {
-                    result -> callback(result)
-            }
+            NativeAction.ShutdownCallback { result -> callback(result) },
         )
     }
 
-    override fun terminateAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun terminateAsync(callback: (Int) -> Unit) {
         NativeAction.terminateAsync(
             handle,
-            NativeAction.TerminateCallback {
-                    result -> callback(result)
-            }
+            NativeAction.TerminateCallback { result -> callback(result) },
         )
     }
 
-    override fun killAsync(
-        callback: (Int) -> Unit
-    ) {
-        NativeAction.killAsync(
-            handle,
-            NativeAction.KillCallback {
-                    result -> callback(result)
-            }
-        )
+    override fun killAsync(callback: (Int) -> Unit) {
+        NativeAction.killAsync(handle, NativeAction.KillCallback { result -> callback(result) })
     }
 
-    override fun returnToLaunchAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun returnToLaunchAsync(callback: (Int) -> Unit) {
         NativeAction.returnToLaunchAsync(
             handle,
-            NativeAction.ReturnToLaunchCallback {
-                    result -> callback(result)
-            }
+            NativeAction.ReturnToLaunchCallback { result -> callback(result) },
         )
     }
 
@@ -125,7 +68,7 @@ private class ActionNativeImpl(
         longitudeDeg: Double,
         absoluteAltitudeM: Float,
         yawDeg: Float,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeAction.gotoLocationAsync(
             handle,
@@ -133,9 +76,7 @@ private class ActionNativeImpl(
             longitudeDeg,
             absoluteAltitudeM,
             yawDeg,
-            NativeAction.GotoLocationCallback {
-                    result -> callback(result)
-            }
+            NativeAction.GotoLocationCallback { result -> callback(result) },
         )
     }
 
@@ -146,7 +87,7 @@ private class ActionNativeImpl(
         latitudeDeg: Double,
         longitudeDeg: Double,
         absoluteAltitudeM: Double,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeAction.doOrbitAsync(
             handle,
@@ -156,141 +97,105 @@ private class ActionNativeImpl(
             latitudeDeg,
             longitudeDeg,
             absoluteAltitudeM,
-            NativeAction.DoOrbitCallback {
-                    result -> callback(result)
-            }
+            NativeAction.DoOrbitCallback { result -> callback(result) },
         )
     }
 
-    override fun holdAsync(
-        callback: (Int) -> Unit
-    ) {
-        NativeAction.holdAsync(
-            handle,
-            NativeAction.HoldCallback {
-                    result -> callback(result)
-            }
-        )
+    override fun holdAsync(callback: (Int) -> Unit) {
+        NativeAction.holdAsync(handle, NativeAction.HoldCallback { result -> callback(result) })
     }
 
-    override fun setActuatorAsync(
-        index: Int,
-        value: Float,
-        callback: (Int) -> Unit
-    ) {
+    override fun setActuatorAsync(index: Int, value: Float, callback: (Int) -> Unit) {
         NativeAction.setActuatorAsync(
             handle,
             index,
             value,
-            NativeAction.SetActuatorCallback {
-                    result -> callback(result)
-            }
+            NativeAction.SetActuatorCallback { result -> callback(result) },
         )
     }
 
-    override fun setRelayAsync(
-        index: Int,
-        setting: Action.RelayCommand,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRelayAsync(index: Int, setting: Action.RelayCommand, callback: (Int) -> Unit) {
         NativeAction.setRelayAsync(
             handle,
             index,
             setting.value,
-            NativeAction.SetRelayCallback {
-                    result -> callback(result)
-            }
+            NativeAction.SetRelayCallback { result -> callback(result) },
         )
     }
 
-    override fun transitionToFixedwingAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun transitionToFixedwingAsync(callback: (Int) -> Unit) {
         NativeAction.transitionToFixedwingAsync(
             handle,
-            NativeAction.TransitionToFixedwingCallback {
-                    result -> callback(result)
-            }
+            NativeAction.TransitionToFixedwingCallback { result -> callback(result) },
         )
     }
 
-    override fun transitionToMulticopterAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun transitionToMulticopterAsync(callback: (Int) -> Unit) {
         NativeAction.transitionToMulticopterAsync(
             handle,
-            NativeAction.TransitionToMulticopterCallback {
-                    result -> callback(result)
-            }
+            NativeAction.TransitionToMulticopterCallback { result -> callback(result) },
         )
     }
 
-    override fun getTakeoffAltitudeAsync(
-        callback: (Int, Float) -> Unit
-    ) {
+    override fun getTakeoffAltitudeAsync(callback: (Int, Float) -> Unit) {
         NativeAction.getTakeoffAltitudeAsync(
             handle,
-            NativeAction.GetTakeoffAltitudeCallback {
-                    result, value -> callback(result, value)
-            }
+            NativeAction.GetTakeoffAltitudeCallback { result, value -> callback(result, value) },
         )
     }
 
-    override fun setTakeoffAltitudeAsync(
-        altitude: Float,
-        callback: (Int) -> Unit
-    ) {
+    override fun setTakeoffAltitudeAsync(altitude: Float, callback: (Int) -> Unit) {
         NativeAction.setTakeoffAltitudeAsync(
             handle,
             altitude,
-            NativeAction.SetTakeoffAltitudeCallback {
-                    result -> callback(result)
-            }
+            NativeAction.SetTakeoffAltitudeCallback { result -> callback(result) },
         )
     }
 
-    override fun getReturnToLaunchAltitudeAsync(
-        callback: (Int, Float) -> Unit
-    ) {
+    override fun getReturnToLaunchAltitudeAsync(callback: (Int, Float) -> Unit) {
         NativeAction.getReturnToLaunchAltitudeAsync(
             handle,
-            NativeAction.GetReturnToLaunchAltitudeCallback {
-                    result, value -> callback(result, value)
-            }
+            NativeAction.GetReturnToLaunchAltitudeCallback { result, value ->
+                callback(result, value)
+            },
         )
     }
 
-    override fun setReturnToLaunchAltitudeAsync(
-        relativeAltitudeM: Float,
-        callback: (Int) -> Unit
-    ) {
+    override fun setReturnToLaunchAltitudeAsync(relativeAltitudeM: Float, callback: (Int) -> Unit) {
         NativeAction.setReturnToLaunchAltitudeAsync(
             handle,
             relativeAltitudeM,
-            NativeAction.SetReturnToLaunchAltitudeCallback {
-                    result -> callback(result)
-            }
+            NativeAction.SetReturnToLaunchAltitudeCallback { result -> callback(result) },
         )
     }
 
-    override fun setCurrentSpeedAsync(
-        speedMS: Float,
-        callback: (Int) -> Unit
-    ) {
+    override fun setCurrentSpeedAsync(speedMS: Float, callback: (Int) -> Unit) {
         NativeAction.setCurrentSpeedAsync(
             handle,
             speedMS,
-            NativeAction.SetCurrentSpeedCallback {
-                    result -> callback(result)
-            }
+            NativeAction.SetCurrentSpeedCallback { result -> callback(result) },
         )
     }
 
-    override fun setGpsGlobalOrigin(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Int =
-        NativeAction.setGpsGlobalOrigin(handle, latitudeDeg, longitudeDeg, absoluteAltitudeM)
+    override fun setGpsGlobalOrigin(
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+    ): Int = NativeAction.setGpsGlobalOrigin(handle, latitudeDeg, longitudeDeg, absoluteAltitudeM)
 
-    override fun setHome(useCurrentLocation: Boolean, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Int =
-        NativeAction.setHome(handle, useCurrentLocation, latitudeDeg, longitudeDeg, absoluteAltitudeM)
+    override fun setHome(
+        useCurrentLocation: Boolean,
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+    ): Int =
+        NativeAction.setHome(
+            handle,
+            useCurrentLocation,
+            latitudeDeg,
+            longitudeDeg,
+            absoluteAltitudeM,
+        )
 
     override fun destroy() {
         NativeAction.destroy(handle)

@@ -9,9 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class Shell internal constructor(
-    private val native: ShellNative
-) : AutoCloseable {
+class Shell internal constructor(private val native: ShellNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -20,23 +18,17 @@ class Shell internal constructor(
         NO_SYSTEM(2),
         CONNECTION_ERROR(3),
         NO_RESPONSE(4),
-        BUSY(5),
-        ;
+        BUSY(5);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    fun send(command: String): Result =
-        Result.fromValue(native.send(command))
+    fun send(command: String): Result = Result.fromValue(native.send(command))
 
     fun subscribeReceive(): Flow<String> = callbackFlow {
-        val subscriptionHandle = native.subscribeReceive(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeReceive() { value -> trySend(value) }
         awaitClose { native.unsubscribeReceive(subscriptionHandle) }
     }
 
@@ -46,23 +38,21 @@ class Shell internal constructor(
         native.destroy()
     }
 
-    class ShellException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class ShellException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Shell =
-            Shell(
-                createShellNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Shell(createShellNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface ShellNative {
     fun send(command: String): Int
+
     fun subscribeReceive(callback: (String) -> Unit): Long
+
     fun unsubscribeReceive(subscriptionHandle: Long)
+
     fun destroy()
 }
 

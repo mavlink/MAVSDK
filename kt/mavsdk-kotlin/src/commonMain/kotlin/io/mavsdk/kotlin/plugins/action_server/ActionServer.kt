@@ -9,9 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class ActionServer internal constructor(
-    private val native: ActionServerNative
-) : AutoCloseable {
+class ActionServer internal constructor(private val native: ActionServerNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -27,12 +25,10 @@ class ActionServer internal constructor(
         VTOL_TRANSITION_SUPPORT_UNKNOWN(9),
         NO_VTOL_TRANSITION_SUPPORT(10),
         PARAMETER_ERROR(11),
-        NEXT(12),
-        ;
+        NEXT(12);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -50,12 +46,10 @@ class ActionServer internal constructor(
         ALTCTL(10),
         POSCTL(11),
         ACRO(12),
-        STABILIZED(13),
-        ;
+        STABILIZED(13);
 
         companion object {
-            fun fromValue(value: Int): FlightMode =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): FlightMode = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -69,64 +63,40 @@ class ActionServer internal constructor(
         val canAutoLoiterMode: Boolean,
     )
 
-    data class ArmDisarm(
-        val arm: Boolean,
-        val force: Boolean,
-    )
+    data class ArmDisarm(val arm: Boolean, val force: Boolean)
 
     fun subscribeArmDisarm(): Flow<ArmDisarm> = callbackFlow {
-        val subscriptionHandle = native.subscribeArmDisarm(
-                    ) { _, value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeArmDisarm() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeArmDisarm(subscriptionHandle) }
     }
 
     fun subscribeFlightModeChange(): Flow<FlightMode> = callbackFlow {
-        val subscriptionHandle = native.subscribeFlightModeChange(
-                    ) { _, value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeFlightModeChange() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeFlightModeChange(subscriptionHandle) }
     }
 
     fun subscribeTakeoff(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeTakeoff(
-                    ) { _, value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeTakeoff() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeTakeoff(subscriptionHandle) }
     }
 
     fun subscribeLand(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeLand(
-                    ) { _, value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeLand() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeLand(subscriptionHandle) }
     }
 
     fun subscribeReboot(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeReboot(
-                    ) { _, value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeReboot() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeReboot(subscriptionHandle) }
     }
 
     fun subscribeShutdown(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeShutdown(
-                    ) { _, value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeShutdown() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeShutdown(subscriptionHandle) }
     }
 
     fun subscribeTerminate(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeTerminate(
-                    ) { _, value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeTerminate() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeTerminate(subscriptionHandle) }
     }
 
@@ -142,11 +112,9 @@ class ActionServer internal constructor(
     fun setAllowableFlightModes(flightModes: AllowableFlightModes): Result =
         Result.fromValue(native.setAllowableFlightModes(flightModes))
 
-    fun getAllowableFlightModes(): AllowableFlightModes =
-        native.getAllowableFlightModes()
+    fun getAllowableFlightModes(): AllowableFlightModes = native.getAllowableFlightModes()
 
-    fun setArmedState(isArmed: Boolean): Result =
-        Result.fromValue(native.setArmedState(isArmed))
+    fun setArmedState(isArmed: Boolean): Result = Result.fromValue(native.setArmedState(isArmed))
 
     fun setFlightMode(flightMode: FlightMode): Result =
         Result.fromValue(native.setFlightMode(flightMode))
@@ -160,42 +128,59 @@ class ActionServer internal constructor(
         native.destroy()
     }
 
-    class ActionServerException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class ActionServerException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(mavsdk: Mavsdk, instance: Int = 1): ActionServer =
-            ActionServer(
-                createActionServerNative(mavsdk.serverComponentHandle(instance))
-            )
+            ActionServer(createActionServerNative(mavsdk.serverComponentHandle(instance)))
     }
 }
 
 internal interface ActionServerNative {
     fun subscribeArmDisarm(callback: (Int, ActionServer.ArmDisarm) -> Unit): Long
+
     fun unsubscribeArmDisarm(subscriptionHandle: Long)
+
     fun subscribeFlightModeChange(callback: (Int, ActionServer.FlightMode) -> Unit): Long
+
     fun unsubscribeFlightModeChange(subscriptionHandle: Long)
+
     fun subscribeTakeoff(callback: (Int, Boolean) -> Unit): Long
+
     fun unsubscribeTakeoff(subscriptionHandle: Long)
+
     fun subscribeLand(callback: (Int, Boolean) -> Unit): Long
+
     fun unsubscribeLand(subscriptionHandle: Long)
+
     fun subscribeReboot(callback: (Int, Boolean) -> Unit): Long
+
     fun unsubscribeReboot(subscriptionHandle: Long)
+
     fun subscribeShutdown(callback: (Int, Boolean) -> Unit): Long
+
     fun unsubscribeShutdown(subscriptionHandle: Long)
+
     fun subscribeTerminate(callback: (Int, Boolean) -> Unit): Long
+
     fun unsubscribeTerminate(subscriptionHandle: Long)
+
     fun setAllowTakeoff(allowTakeoff: Boolean): Int
+
     fun setArmable(armable: Boolean, forceArmable: Boolean): Int
+
     fun setDisarmable(disarmable: Boolean, forceDisarmable: Boolean): Int
+
     fun setAllowableFlightModes(flightModes: ActionServer.AllowableFlightModes): Int
+
     fun getAllowableFlightModes(): ActionServer.AllowableFlightModes
+
     fun setArmedState(isArmed: Boolean): Int
+
     fun setFlightMode(flightMode: ActionServer.FlightMode): Int
+
     fun setFlightModeInternal(flightMode: ActionServer.FlightMode): Int
+
     fun destroy()
 }
 

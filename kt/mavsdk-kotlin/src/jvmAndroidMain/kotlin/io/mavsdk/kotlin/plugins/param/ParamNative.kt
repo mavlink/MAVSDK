@@ -6,62 +6,37 @@ package io.mavsdk.kotlin.plugins.param
 
 import io.mavsdk.jni.plugins.param.NativeParam
 
-private fun Param.IntParam.toNative(): NativeParam.IntParam =
-    NativeParam.IntParam(
-        name,
-        value
-    )
+private fun Param.IntParam.toNative(): NativeParam.IntParam = NativeParam.IntParam(name, value)
 
-private fun NativeParam.IntParam.toKotlin(): Param.IntParam =
-    Param.IntParam(
-        name,
-        value
-    )
+private fun NativeParam.IntParam.toKotlin(): Param.IntParam = Param.IntParam(name, value)
 
 private fun Param.FloatParam.toNative(): NativeParam.FloatParam =
-    NativeParam.FloatParam(
-        name,
-        value
-    )
+    NativeParam.FloatParam(name, value)
 
-private fun NativeParam.FloatParam.toKotlin(): Param.FloatParam =
-    Param.FloatParam(
-        name,
-        value
-    )
+private fun NativeParam.FloatParam.toKotlin(): Param.FloatParam = Param.FloatParam(name, value)
 
 private fun Param.CustomParam.toNative(): NativeParam.CustomParam =
-    NativeParam.CustomParam(
-        name,
-        value
-    )
+    NativeParam.CustomParam(name, value)
 
-private fun NativeParam.CustomParam.toKotlin(): Param.CustomParam =
-    Param.CustomParam(
-        name,
-        value
-    )
+private fun NativeParam.CustomParam.toKotlin(): Param.CustomParam = Param.CustomParam(name, value)
 
 private fun Param.AllParams.toNative(): NativeParam.AllParams =
     NativeParam.AllParams(
         intParams.map { it.toNative() }.toTypedArray(),
         floatParams.map { it.toNative() }.toTypedArray(),
-        customParams.map { it.toNative() }.toTypedArray()
+        customParams.map { it.toNative() }.toTypedArray(),
     )
 
 private fun NativeParam.AllParams.toKotlin(): Param.AllParams =
     Param.AllParams(
         intParams.map { it.toKotlin() },
         floatParams.map { it.toKotlin() },
-        customParams.map { it.toKotlin() }
+        customParams.map { it.toKotlin() },
     )
 
-private class ParamNativeImpl(
-    private val handle: Long
-) : ParamNative {
+private class ParamNativeImpl(private val handle: Long) : ParamNative {
     override fun getParamInt(name: String): Int {
-        val value = NativeParam.getParamInt(
-            handle, name        )
+        val value = NativeParam.getParamInt(handle, name)
         return value
     }
 
@@ -69,8 +44,7 @@ private class ParamNativeImpl(
         NativeParam.setParamInt(handle, name, value)
 
     override fun getParamFloat(name: String): Float {
-        val value = NativeParam.getParamFloat(
-            handle, name        )
+        val value = NativeParam.getParamFloat(handle, name)
         return value
     }
 
@@ -78,8 +52,7 @@ private class ParamNativeImpl(
         NativeParam.setParamFloat(handle, name, value)
 
     override fun getParamCustom(name: String): String {
-        val value = NativeParam.getParamCustom(
-            handle, name        )
+        val value = NativeParam.getParamCustom(handle, name)
         return value
     }
 
@@ -87,8 +60,7 @@ private class ParamNativeImpl(
         NativeParam.setParamCustom(handle, name, value)
 
     override fun getAllParams(): Param.AllParams {
-        val value = NativeParam.getAllParams(
-            handle        )
+        val value = NativeParam.getAllParams(handle)
         return value.toKotlin()
     }
 

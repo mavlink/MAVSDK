@@ -9,9 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class CameraServer internal constructor(
-    private val native: CameraServerNative
-) : AutoCloseable {
+class CameraServer internal constructor(private val native: CameraServerNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -23,12 +21,10 @@ class CameraServer internal constructor(
         ERROR(5),
         TIMEOUT(6),
         WRONG_ARGUMENT(7),
-        NO_SYSTEM(8),
-        ;
+        NO_SYSTEM(8);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -36,8 +32,7 @@ class CameraServer internal constructor(
         UNKNOWN(0),
         OK(1),
         BUSY(2),
-        FAILED(3),
-        ;
+        FAILED(3);
 
         companion object {
             fun fromValue(value: Int): CameraFeedback =
@@ -48,12 +43,10 @@ class CameraServer internal constructor(
     enum class Mode(val value: Int) {
         UNKNOWN(0),
         PHOTO(1),
-        VIDEO(2),
-        ;
+        VIDEO(2);
 
         companion object {
-            fun fromValue(value: Int): Mode =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Mode = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -61,8 +54,7 @@ class CameraServer internal constructor(
         NOT_AVAILABLE(0),
         UNFORMATTED(1),
         FORMATTED(2),
-        NOT_SUPPORTED(3),
-        ;
+        NOT_SUPPORTED(3);
 
         companion object {
             fun fromValue(value: Int): StorageStatus =
@@ -76,12 +68,10 @@ class CameraServer internal constructor(
         SD(2),
         MICROSD(3),
         HD(4),
-        OTHER(5),
-        ;
+        OTHER(5);
 
         companion object {
-            fun fromValue(value: Int): StorageType =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): StorageType = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -89,8 +79,7 @@ class CameraServer internal constructor(
         IDLE(0),
         CAPTURE_IN_PROGRESS(1),
         INTERVAL_IDLE(2),
-        INTERVAL_IN_PROGRESS(3),
-        ;
+        INTERVAL_IN_PROGRESS(3);
 
         companion object {
             fun fromValue(value: Int): ImageStatus =
@@ -100,8 +89,7 @@ class CameraServer internal constructor(
 
     enum class VideoStatus(val value: Int) {
         IDLE(0),
-        CAPTURE_IN_PROGRESS(1),
-        ;
+        CAPTURE_IN_PROGRESS(1);
 
         companion object {
             fun fromValue(value: Int): VideoStatus =
@@ -125,10 +113,7 @@ class CameraServer internal constructor(
         val videoInImageModeSupported: Boolean,
     )
 
-    data class VideoStreaming(
-        val hasRtspServer: Boolean,
-        val rtspUri: String,
-    )
+    data class VideoStreaming(val hasRtspServer: Boolean, val rtspUri: String)
 
     data class Position(
         val latitudeDeg: Double,
@@ -137,12 +122,7 @@ class CameraServer internal constructor(
         val relativeAltitudeM: Float,
     )
 
-    data class Quaternion(
-        val w: Float,
-        val x: Float,
-        val y: Float,
-        val z: Float,
-    )
+    data class Quaternion(val w: Float, val x: Float, val y: Float, val z: Float)
 
     data class CaptureInfo(
         val position: Position,
@@ -173,11 +153,7 @@ class CameraServer internal constructor(
         val imageCount: Int,
     )
 
-    data class TrackPoint(
-        val pointX: Float,
-        val pointY: Float,
-        val radius: Float,
-    )
+    data class TrackPoint(val pointX: Float, val pointY: Float, val radius: Float)
 
     data class TrackRectangle(
         val topLeftCornerX: Float,
@@ -196,10 +172,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.setInProgress(inProgress))
 
     fun subscribeTakePhoto(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeTakePhoto(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeTakePhoto() { value -> trySend(value) }
         awaitClose { native.unsubscribeTakePhoto(subscriptionHandle) }
     }
 
@@ -207,10 +180,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondTakePhoto(takePhotoFeedback, captureInfo))
 
     fun subscribeStartVideo(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeStartVideo(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeStartVideo() { value -> trySend(value) }
         awaitClose { native.unsubscribeStartVideo(subscriptionHandle) }
     }
 
@@ -218,10 +188,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondStartVideo(startVideoFeedback))
 
     fun subscribeStopVideo(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeStopVideo(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeStopVideo() { value -> trySend(value) }
         awaitClose { native.unsubscribeStopVideo(subscriptionHandle) }
     }
 
@@ -229,10 +196,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondStopVideo(stopVideoFeedback))
 
     fun subscribeStartVideoStreaming(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeStartVideoStreaming(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeStartVideoStreaming() { value -> trySend(value) }
         awaitClose { native.unsubscribeStartVideoStreaming(subscriptionHandle) }
     }
 
@@ -240,10 +204,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondStartVideoStreaming(startVideoStreamingFeedback))
 
     fun subscribeStopVideoStreaming(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeStopVideoStreaming(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeStopVideoStreaming() { value -> trySend(value) }
         awaitClose { native.unsubscribeStopVideoStreaming(subscriptionHandle) }
     }
 
@@ -251,10 +212,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondStopVideoStreaming(stopVideoStreamingFeedback))
 
     fun subscribeSetMode(): Flow<Mode> = callbackFlow {
-        val subscriptionHandle = native.subscribeSetMode(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeSetMode() { value -> trySend(value) }
         awaitClose { native.unsubscribeSetMode(subscriptionHandle) }
     }
 
@@ -262,32 +220,30 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondSetMode(setModeFeedback))
 
     fun subscribeStorageInformation(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeStorageInformation(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeStorageInformation() { value -> trySend(value) }
         awaitClose { native.unsubscribeStorageInformation(subscriptionHandle) }
     }
 
-    fun respondStorageInformation(storageInformationFeedback: CameraFeedback, storageInformation: StorageInformation): Result =
-        Result.fromValue(native.respondStorageInformation(storageInformationFeedback, storageInformation))
+    fun respondStorageInformation(
+        storageInformationFeedback: CameraFeedback,
+        storageInformation: StorageInformation,
+    ): Result =
+        Result.fromValue(
+            native.respondStorageInformation(storageInformationFeedback, storageInformation)
+        )
 
     fun subscribeCaptureStatus(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeCaptureStatus(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeCaptureStatus() { value -> trySend(value) }
         awaitClose { native.unsubscribeCaptureStatus(subscriptionHandle) }
     }
 
-    fun respondCaptureStatus(captureStatusFeedback: CameraFeedback, captureStatus: CaptureStatus): Result =
-        Result.fromValue(native.respondCaptureStatus(captureStatusFeedback, captureStatus))
+    fun respondCaptureStatus(
+        captureStatusFeedback: CameraFeedback,
+        captureStatus: CaptureStatus,
+    ): Result = Result.fromValue(native.respondCaptureStatus(captureStatusFeedback, captureStatus))
 
     fun subscribeFormatStorage(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeFormatStorage(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeFormatStorage() { value -> trySend(value) }
         awaitClose { native.unsubscribeFormatStorage(subscriptionHandle) }
     }
 
@@ -295,10 +251,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondFormatStorage(formatStorageFeedback))
 
     fun subscribeResetSettings(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeResetSettings(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeResetSettings() { value -> trySend(value) }
         awaitClose { native.unsubscribeResetSettings(subscriptionHandle) }
     }
 
@@ -306,10 +259,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondResetSettings(resetSettingsFeedback))
 
     fun subscribeZoomInStart(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeZoomInStart(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeZoomInStart() { value -> trySend(value) }
         awaitClose { native.unsubscribeZoomInStart(subscriptionHandle) }
     }
 
@@ -317,10 +267,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondZoomInStart(zoomInStartFeedback))
 
     fun subscribeZoomOutStart(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeZoomOutStart(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeZoomOutStart() { value -> trySend(value) }
         awaitClose { native.unsubscribeZoomOutStart(subscriptionHandle) }
     }
 
@@ -328,10 +275,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondZoomOutStart(zoomOutStartFeedback))
 
     fun subscribeZoomStop(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeZoomStop(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeZoomStop() { value -> trySend(value) }
         awaitClose { native.unsubscribeZoomStop(subscriptionHandle) }
     }
 
@@ -339,10 +283,7 @@ class CameraServer internal constructor(
         Result.fromValue(native.respondZoomStop(zoomStopFeedback))
 
     fun subscribeZoomRange(): Flow<Float> = callbackFlow {
-        val subscriptionHandle = native.subscribeZoomRange(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeZoomRange() { value -> trySend(value) }
         awaitClose { native.unsubscribeZoomRange(subscriptionHandle) }
     }
 
@@ -358,26 +299,18 @@ class CameraServer internal constructor(
     }
 
     fun subscribeTrackingPointCommand(): Flow<TrackPoint> = callbackFlow {
-        val subscriptionHandle = native.subscribeTrackingPointCommand(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeTrackingPointCommand() { value -> trySend(value) }
         awaitClose { native.unsubscribeTrackingPointCommand(subscriptionHandle) }
     }
 
     fun subscribeTrackingRectangleCommand(): Flow<TrackRectangle> = callbackFlow {
-        val subscriptionHandle = native.subscribeTrackingRectangleCommand(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle =
+            native.subscribeTrackingRectangleCommand() { value -> trySend(value) }
         awaitClose { native.unsubscribeTrackingRectangleCommand(subscriptionHandle) }
     }
 
     fun subscribeTrackingOffCommand(): Flow<Int> = callbackFlow {
-        val subscriptionHandle = native.subscribeTrackingOffCommand(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeTrackingOffCommand() { value -> trySend(value) }
         awaitClose { native.unsubscribeTrackingOffCommand(subscriptionHandle) }
     }
 
@@ -390,8 +323,7 @@ class CameraServer internal constructor(
     fun respondTrackingOffCommand(stopVideoFeedback: CameraFeedback): Result =
         Result.fromValue(native.respondTrackingOffCommand(stopVideoFeedback))
 
-    fun setPosition(position: Position): Result =
-        Result.fromValue(native.setPosition(position))
+    fun setPosition(position: Position): Result = Result.fromValue(native.setPosition(position))
 
     fun setAttitudeQuaternion(attitudeQuaternion: Quaternion): Result =
         Result.fromValue(native.setAttitudeQuaternion(attitudeQuaternion))
@@ -408,80 +340,144 @@ class CameraServer internal constructor(
         native.destroy()
     }
 
-    class CameraServerException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class CameraServerException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(mavsdk: Mavsdk, instance: Int = 1): CameraServer =
-            CameraServer(
-                createCameraServerNative(mavsdk.serverComponentHandle(instance))
-            )
+            CameraServer(createCameraServerNative(mavsdk.serverComponentHandle(instance)))
     }
 }
 
 internal interface CameraServerNative {
     fun setInformation(information: CameraServer.Information): Int
+
     fun setVideoStreaming(videoStreaming: CameraServer.VideoStreaming): Int
+
     fun setInProgress(inProgress: Boolean): Int
+
     fun subscribeTakePhoto(callback: (Int) -> Unit): Long
+
     fun unsubscribeTakePhoto(subscriptionHandle: Long)
-    fun respondTakePhoto(takePhotoFeedback: CameraServer.CameraFeedback, captureInfo: CameraServer.CaptureInfo): Int
+
+    fun respondTakePhoto(
+        takePhotoFeedback: CameraServer.CameraFeedback,
+        captureInfo: CameraServer.CaptureInfo,
+    ): Int
+
     fun subscribeStartVideo(callback: (Int) -> Unit): Long
+
     fun unsubscribeStartVideo(subscriptionHandle: Long)
+
     fun respondStartVideo(startVideoFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeStopVideo(callback: (Int) -> Unit): Long
+
     fun unsubscribeStopVideo(subscriptionHandle: Long)
+
     fun respondStopVideo(stopVideoFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeStartVideoStreaming(callback: (Int) -> Unit): Long
+
     fun unsubscribeStartVideoStreaming(subscriptionHandle: Long)
+
     fun respondStartVideoStreaming(startVideoStreamingFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeStopVideoStreaming(callback: (Int) -> Unit): Long
+
     fun unsubscribeStopVideoStreaming(subscriptionHandle: Long)
+
     fun respondStopVideoStreaming(stopVideoStreamingFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeSetMode(callback: (CameraServer.Mode) -> Unit): Long
+
     fun unsubscribeSetMode(subscriptionHandle: Long)
+
     fun respondSetMode(setModeFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeStorageInformation(callback: (Int) -> Unit): Long
+
     fun unsubscribeStorageInformation(subscriptionHandle: Long)
-    fun respondStorageInformation(storageInformationFeedback: CameraServer.CameraFeedback, storageInformation: CameraServer.StorageInformation): Int
+
+    fun respondStorageInformation(
+        storageInformationFeedback: CameraServer.CameraFeedback,
+        storageInformation: CameraServer.StorageInformation,
+    ): Int
+
     fun subscribeCaptureStatus(callback: (Int) -> Unit): Long
+
     fun unsubscribeCaptureStatus(subscriptionHandle: Long)
-    fun respondCaptureStatus(captureStatusFeedback: CameraServer.CameraFeedback, captureStatus: CameraServer.CaptureStatus): Int
+
+    fun respondCaptureStatus(
+        captureStatusFeedback: CameraServer.CameraFeedback,
+        captureStatus: CameraServer.CaptureStatus,
+    ): Int
+
     fun subscribeFormatStorage(callback: (Int) -> Unit): Long
+
     fun unsubscribeFormatStorage(subscriptionHandle: Long)
+
     fun respondFormatStorage(formatStorageFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeResetSettings(callback: (Int) -> Unit): Long
+
     fun unsubscribeResetSettings(subscriptionHandle: Long)
+
     fun respondResetSettings(resetSettingsFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeZoomInStart(callback: (Int) -> Unit): Long
+
     fun unsubscribeZoomInStart(subscriptionHandle: Long)
+
     fun respondZoomInStart(zoomInStartFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeZoomOutStart(callback: (Int) -> Unit): Long
+
     fun unsubscribeZoomOutStart(subscriptionHandle: Long)
+
     fun respondZoomOutStart(zoomOutStartFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeZoomStop(callback: (Int) -> Unit): Long
+
     fun unsubscribeZoomStop(subscriptionHandle: Long)
+
     fun respondZoomStop(zoomStopFeedback: CameraServer.CameraFeedback): Int
+
     fun subscribeZoomRange(callback: (Float) -> Unit): Long
+
     fun unsubscribeZoomRange(subscriptionHandle: Long)
+
     fun respondZoomRange(zoomRangeFeedback: CameraServer.CameraFeedback): Int
+
     fun setTrackingRectangleStatus(trackedRectangle: CameraServer.TrackRectangle)
+
     fun setTrackingOffStatus()
+
     fun subscribeTrackingPointCommand(callback: (CameraServer.TrackPoint) -> Unit): Long
+
     fun unsubscribeTrackingPointCommand(subscriptionHandle: Long)
+
     fun subscribeTrackingRectangleCommand(callback: (CameraServer.TrackRectangle) -> Unit): Long
+
     fun unsubscribeTrackingRectangleCommand(subscriptionHandle: Long)
+
     fun subscribeTrackingOffCommand(callback: (Int) -> Unit): Long
+
     fun unsubscribeTrackingOffCommand(subscriptionHandle: Long)
+
     fun respondTrackingPointCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
+
     fun respondTrackingRectangleCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
+
     fun respondTrackingOffCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
+
     fun setPosition(position: CameraServer.Position): Int
+
     fun setAttitudeQuaternion(attitudeQuaternion: CameraServer.Quaternion): Int
+
     fun setZoomFactor(zoomFactor: Float): Int
+
     fun setFieldOfView(horizontalFovDeg: Float, verticalFovDeg: Float): Int
+
     fun destroy()
 }
 

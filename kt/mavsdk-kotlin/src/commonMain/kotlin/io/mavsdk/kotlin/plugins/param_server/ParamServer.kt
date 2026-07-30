@@ -9,9 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class ParamServer internal constructor(
-    private val native: ParamServerNative
-) : AutoCloseable {
+class ParamServer internal constructor(private val native: ParamServerNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -22,29 +20,18 @@ class ParamServer internal constructor(
         PARAM_NAME_TOO_LONG(4),
         NO_SYSTEM(5),
         PARAM_VALUE_TOO_LONG(6),
-        PARAM_PROVIDED_TOO_LATE(7),
-        ;
+        PARAM_PROVIDED_TOO_LATE(7);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    data class IntParam(
-        val name: String,
-        val value: Int,
-    )
+    data class IntParam(val name: String, val value: Int)
 
-    data class FloatParam(
-        val name: String,
-        val value: Float,
-    )
+    data class FloatParam(val name: String, val value: Float)
 
-    data class CustomParam(
-        val name: String,
-        val value: String,
-    )
+    data class CustomParam(val name: String, val value: String)
 
     data class AllParams(
         val intParams: List<IntParam> = emptyList(),
@@ -55,48 +42,35 @@ class ParamServer internal constructor(
     fun setProtocol(extendedProtocol: Boolean): Result =
         Result.fromValue(native.setProtocol(extendedProtocol))
 
-    fun retrieveParamInt(name: String): Int =
-        native.retrieveParamInt(name)
+    fun retrieveParamInt(name: String): Int = native.retrieveParamInt(name)
 
     fun provideParamInt(name: String, value: Int): Result =
         Result.fromValue(native.provideParamInt(name, value))
 
-    fun retrieveParamFloat(name: String): Float =
-        native.retrieveParamFloat(name)
+    fun retrieveParamFloat(name: String): Float = native.retrieveParamFloat(name)
 
     fun provideParamFloat(name: String, value: Float): Result =
         Result.fromValue(native.provideParamFloat(name, value))
 
-    fun retrieveParamCustom(name: String): String =
-        native.retrieveParamCustom(name)
+    fun retrieveParamCustom(name: String): String = native.retrieveParamCustom(name)
 
     fun provideParamCustom(name: String, value: String): Result =
         Result.fromValue(native.provideParamCustom(name, value))
 
-    fun retrieveAllParams(): AllParams =
-        native.retrieveAllParams()
+    fun retrieveAllParams(): AllParams = native.retrieveAllParams()
 
     fun subscribeChangedParamInt(): Flow<IntParam> = callbackFlow {
-        val subscriptionHandle = native.subscribeChangedParamInt(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeChangedParamInt() { value -> trySend(value) }
         awaitClose { native.unsubscribeChangedParamInt(subscriptionHandle) }
     }
 
     fun subscribeChangedParamFloat(): Flow<FloatParam> = callbackFlow {
-        val subscriptionHandle = native.subscribeChangedParamFloat(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeChangedParamFloat() { value -> trySend(value) }
         awaitClose { native.unsubscribeChangedParamFloat(subscriptionHandle) }
     }
 
     fun subscribeChangedParamCustom(): Flow<CustomParam> = callbackFlow {
-        val subscriptionHandle = native.subscribeChangedParamCustom(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeChangedParamCustom() { value -> trySend(value) }
         awaitClose { native.unsubscribeChangedParamCustom(subscriptionHandle) }
     }
 
@@ -106,34 +80,43 @@ class ParamServer internal constructor(
         native.destroy()
     }
 
-    class ParamServerException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class ParamServerException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(mavsdk: Mavsdk, instance: Int = 1): ParamServer =
-            ParamServer(
-                createParamServerNative(mavsdk.serverComponentHandle(instance))
-            )
+            ParamServer(createParamServerNative(mavsdk.serverComponentHandle(instance)))
     }
 }
 
 internal interface ParamServerNative {
     fun setProtocol(extendedProtocol: Boolean): Int
+
     fun retrieveParamInt(name: String): Int
+
     fun provideParamInt(name: String, value: Int): Int
+
     fun retrieveParamFloat(name: String): Float
+
     fun provideParamFloat(name: String, value: Float): Int
+
     fun retrieveParamCustom(name: String): String
+
     fun provideParamCustom(name: String, value: String): Int
+
     fun retrieveAllParams(): ParamServer.AllParams
+
     fun subscribeChangedParamInt(callback: (ParamServer.IntParam) -> Unit): Long
+
     fun unsubscribeChangedParamInt(subscriptionHandle: Long)
+
     fun subscribeChangedParamFloat(callback: (ParamServer.FloatParam) -> Unit): Long
+
     fun unsubscribeChangedParamFloat(subscriptionHandle: Long)
+
     fun subscribeChangedParamCustom(callback: (ParamServer.CustomParam) -> Unit): Long
+
     fun unsubscribeChangedParamCustom(subscriptionHandle: Long)
+
     fun destroy()
 }
 

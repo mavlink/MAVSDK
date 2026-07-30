@@ -8,60 +8,42 @@ import io.mavsdk.jni.plugins.log_files.NativeLogFiles
 import java.util.concurrent.atomic.AtomicBoolean
 
 private fun LogFiles.ProgressData.toNative(): NativeLogFiles.ProgressData =
-    NativeLogFiles.ProgressData(
-        progress
-    )
+    NativeLogFiles.ProgressData(progress)
 
 private fun NativeLogFiles.ProgressData.toKotlin(): LogFiles.ProgressData =
-    LogFiles.ProgressData(
-        progress
-    )
+    LogFiles.ProgressData(progress)
 
 private fun LogFiles.Entry.toNative(): NativeLogFiles.Entry =
-    NativeLogFiles.Entry(
-        id,
-        date,
-        sizeBytes
-    )
+    NativeLogFiles.Entry(id, date, sizeBytes)
 
-private fun NativeLogFiles.Entry.toKotlin(): LogFiles.Entry =
-    LogFiles.Entry(
-        id,
-        date,
-        sizeBytes
-    )
+private fun NativeLogFiles.Entry.toKotlin(): LogFiles.Entry = LogFiles.Entry(id, date, sizeBytes)
 
-private class LogFilesNativeImpl(
-    private val handle: Long
-) : LogFilesNative {
-    override fun getEntriesAsync(
-        callback: (Int, List<LogFiles.Entry>) -> Unit
-    ) {
+private class LogFilesNativeImpl(private val handle: Long) : LogFilesNative {
+    override fun getEntriesAsync(callback: (Int, List<LogFiles.Entry>) -> Unit) {
         NativeLogFiles.getEntriesAsync(
             handle,
-            NativeLogFiles.GetEntriesCallback {
-                    result, value -> callback(result, value.map { it.toKotlin() })
-            }
+            NativeLogFiles.GetEntriesCallback { result, value ->
+                callback(result, value.map { it.toKotlin() })
+            },
         )
     }
 
     override fun downloadLogFileAsync(
         entry: LogFiles.Entry,
         path: String,
-        callback: (Int, LogFiles.ProgressData) -> Unit
+        callback: (Int, LogFiles.ProgressData) -> Unit,
     ) {
         NativeLogFiles.downloadLogFileAsync(
             handle,
             entry.toNative(),
             path,
-            NativeLogFiles.DownloadLogFileCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeLogFiles.DownloadLogFileCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
-    override fun eraseAllLogFiles(): Int =
-        NativeLogFiles.eraseAllLogFiles(handle)
+    override fun eraseAllLogFiles(): Int = NativeLogFiles.eraseAllLogFiles(handle)
 
     override fun destroy() {
         NativeLogFiles.destroy(handle)

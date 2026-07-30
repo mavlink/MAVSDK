@@ -6,11 +6,12 @@ package io.mavsdk.kotlin.plugins.failure
 
 import io.mavsdk.jni.plugins.failure.NativeFailure
 
-private class FailureNativeImpl(
-    private val handle: Long
-) : FailureNative {
-    override fun inject(failureUnit: Failure.FailureUnit, failureType: Failure.FailureType, instance: Int): Int =
-        NativeFailure.inject(handle, failureUnit.value, failureType.value, instance)
+private class FailureNativeImpl(private val handle: Long) : FailureNative {
+    override fun inject(
+        failureUnit: Failure.FailureUnit,
+        failureType: Failure.FailureType,
+        instance: Int,
+    ): Int = NativeFailure.inject(handle, failureUnit.value, failureType.value, instance)
 
     override fun destroy() {
         NativeFailure.destroy(handle)

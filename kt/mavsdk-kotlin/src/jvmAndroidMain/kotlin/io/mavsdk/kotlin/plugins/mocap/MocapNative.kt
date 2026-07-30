@@ -7,100 +7,41 @@ package io.mavsdk.kotlin.plugins.mocap
 import io.mavsdk.jni.plugins.mocap.NativeMocap
 
 private fun Mocap.PositionBody.toNative(): NativeMocap.PositionBody =
-    NativeMocap.PositionBody(
-        xM,
-        yM,
-        zM
-    )
+    NativeMocap.PositionBody(xM, yM, zM)
 
-private fun NativeMocap.PositionBody.toKotlin(): Mocap.PositionBody =
-    Mocap.PositionBody(
-        xM,
-        yM,
-        zM
-    )
+private fun NativeMocap.PositionBody.toKotlin(): Mocap.PositionBody = Mocap.PositionBody(xM, yM, zM)
 
 private fun Mocap.AngleBody.toNative(): NativeMocap.AngleBody =
-    NativeMocap.AngleBody(
-        rollRad,
-        pitchRad,
-        yawRad
-    )
+    NativeMocap.AngleBody(rollRad, pitchRad, yawRad)
 
 private fun NativeMocap.AngleBody.toKotlin(): Mocap.AngleBody =
-    Mocap.AngleBody(
-        rollRad,
-        pitchRad,
-        yawRad
-    )
+    Mocap.AngleBody(rollRad, pitchRad, yawRad)
 
-private fun Mocap.SpeedBody.toNative(): NativeMocap.SpeedBody =
-    NativeMocap.SpeedBody(
-        xMS,
-        yMS,
-        zMS
-    )
+private fun Mocap.SpeedBody.toNative(): NativeMocap.SpeedBody = NativeMocap.SpeedBody(xMS, yMS, zMS)
 
-private fun NativeMocap.SpeedBody.toKotlin(): Mocap.SpeedBody =
-    Mocap.SpeedBody(
-        xMS,
-        yMS,
-        zMS
-    )
+private fun NativeMocap.SpeedBody.toKotlin(): Mocap.SpeedBody = Mocap.SpeedBody(xMS, yMS, zMS)
 
 private fun Mocap.SpeedNed.toNative(): NativeMocap.SpeedNed =
-    NativeMocap.SpeedNed(
-        northMS,
-        eastMS,
-        downMS
-    )
+    NativeMocap.SpeedNed(northMS, eastMS, downMS)
 
 private fun NativeMocap.SpeedNed.toKotlin(): Mocap.SpeedNed =
-    Mocap.SpeedNed(
-        northMS,
-        eastMS,
-        downMS
-    )
+    Mocap.SpeedNed(northMS, eastMS, downMS)
 
 private fun Mocap.AngularVelocityBody.toNative(): NativeMocap.AngularVelocityBody =
-    NativeMocap.AngularVelocityBody(
-        rollRadS,
-        pitchRadS,
-        yawRadS
-    )
+    NativeMocap.AngularVelocityBody(rollRadS, pitchRadS, yawRadS)
 
 private fun NativeMocap.AngularVelocityBody.toKotlin(): Mocap.AngularVelocityBody =
-    Mocap.AngularVelocityBody(
-        rollRadS,
-        pitchRadS,
-        yawRadS
-    )
+    Mocap.AngularVelocityBody(rollRadS, pitchRadS, yawRadS)
 
 private fun Mocap.Covariance.toNative(): NativeMocap.Covariance =
-    NativeMocap.Covariance(
-        covarianceMatrix.toFloatArray()
-    )
+    NativeMocap.Covariance(covarianceMatrix.toFloatArray())
 
 private fun NativeMocap.Covariance.toKotlin(): Mocap.Covariance =
-    Mocap.Covariance(
-        covarianceMatrix.toList()
-    )
+    Mocap.Covariance(covarianceMatrix.toList())
 
-private fun Mocap.Quaternion.toNative(): NativeMocap.Quaternion =
-    NativeMocap.Quaternion(
-        w,
-        x,
-        y,
-        z
-    )
+private fun Mocap.Quaternion.toNative(): NativeMocap.Quaternion = NativeMocap.Quaternion(w, x, y, z)
 
-private fun NativeMocap.Quaternion.toKotlin(): Mocap.Quaternion =
-    Mocap.Quaternion(
-        w,
-        x,
-        y,
-        z
-    )
+private fun NativeMocap.Quaternion.toKotlin(): Mocap.Quaternion = Mocap.Quaternion(w, x, y, z)
 
 private fun Mocap.VisionPositionEstimate.toNative(): NativeMocap.VisionPositionEstimate =
     NativeMocap.VisionPositionEstimate(
@@ -108,7 +49,7 @@ private fun Mocap.VisionPositionEstimate.toNative(): NativeMocap.VisionPositionE
         positionBody.toNative(),
         angleBody.toNative(),
         poseCovariance.toNative(),
-        resetCounter
+        resetCounter,
     )
 
 private fun NativeMocap.VisionPositionEstimate.toKotlin(): Mocap.VisionPositionEstimate =
@@ -117,7 +58,7 @@ private fun NativeMocap.VisionPositionEstimate.toKotlin(): Mocap.VisionPositionE
         positionBody.toKotlin(),
         angleBody.toKotlin(),
         poseCovariance.toKotlin(),
-        resetCounter
+        resetCounter,
     )
 
 private fun Mocap.VisionSpeedEstimate.toNative(): NativeMocap.VisionSpeedEstimate =
@@ -125,7 +66,7 @@ private fun Mocap.VisionSpeedEstimate.toNative(): NativeMocap.VisionSpeedEstimat
         timeUsec,
         speedNed.toNative(),
         speedCovariance.toNative(),
-        resetCounter
+        resetCounter,
     )
 
 private fun NativeMocap.VisionSpeedEstimate.toKotlin(): Mocap.VisionSpeedEstimate =
@@ -133,7 +74,7 @@ private fun NativeMocap.VisionSpeedEstimate.toKotlin(): Mocap.VisionSpeedEstimat
         timeUsec,
         speedNed.toKotlin(),
         speedCovariance.toKotlin(),
-        resetCounter
+        resetCounter,
     )
 
 private fun Mocap.AttitudePositionMocap.toNative(): NativeMocap.AttitudePositionMocap =
@@ -141,7 +82,7 @@ private fun Mocap.AttitudePositionMocap.toNative(): NativeMocap.AttitudePosition
         timeUsec,
         q.toNative(),
         positionBody.toNative(),
-        poseCovariance.toNative()
+        poseCovariance.toNative(),
     )
 
 private fun NativeMocap.AttitudePositionMocap.toKotlin(): Mocap.AttitudePositionMocap =
@@ -149,7 +90,7 @@ private fun NativeMocap.AttitudePositionMocap.toKotlin(): Mocap.AttitudePosition
         timeUsec,
         q.toKotlin(),
         positionBody.toKotlin(),
-        poseCovariance.toKotlin()
+        poseCovariance.toKotlin(),
     )
 
 private fun Mocap.Odometry.toNative(): NativeMocap.Odometry =
@@ -164,7 +105,7 @@ private fun Mocap.Odometry.toNative(): NativeMocap.Odometry =
         velocityCovariance.toNative(),
         resetCounter,
         estimatorType.value,
-        qualityPercent
+        qualityPercent,
     )
 
 private fun NativeMocap.Odometry.toKotlin(): Mocap.Odometry =
@@ -179,14 +120,13 @@ private fun NativeMocap.Odometry.toKotlin(): Mocap.Odometry =
         velocityCovariance.toKotlin(),
         resetCounter,
         Mocap.MavEstimatorType.fromValue(estimatorType),
-        qualityPercent
+        qualityPercent,
     )
 
-private class MocapNativeImpl(
-    private val handle: Long
-) : MocapNative {
-    override fun setVisionPositionEstimate(visionPositionEstimate: Mocap.VisionPositionEstimate): Int =
-        NativeMocap.setVisionPositionEstimate(handle, visionPositionEstimate.toNative())
+private class MocapNativeImpl(private val handle: Long) : MocapNative {
+    override fun setVisionPositionEstimate(
+        visionPositionEstimate: Mocap.VisionPositionEstimate
+    ): Int = NativeMocap.setVisionPositionEstimate(handle, visionPositionEstimate.toNative())
 
     override fun setVisionSpeedEstimate(visionSpeedEstimate: Mocap.VisionSpeedEstimate): Int =
         NativeMocap.setVisionSpeedEstimate(handle, visionSpeedEstimate.toNative())

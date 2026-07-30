@@ -6,19 +6,11 @@ package io.mavsdk.kotlin.plugins.rtk
 
 import io.mavsdk.jni.plugins.rtk.NativeRtk
 
-private fun Rtk.RtcmData.toNative(): NativeRtk.RtcmData =
-    NativeRtk.RtcmData(
-        dataBase64
-    )
+private fun Rtk.RtcmData.toNative(): NativeRtk.RtcmData = NativeRtk.RtcmData(dataBase64)
 
-private fun NativeRtk.RtcmData.toKotlin(): Rtk.RtcmData =
-    Rtk.RtcmData(
-        dataBase64
-    )
+private fun NativeRtk.RtcmData.toKotlin(): Rtk.RtcmData = Rtk.RtcmData(dataBase64)
 
-private class RtkNativeImpl(
-    private val handle: Long
-) : RtkNative {
+private class RtkNativeImpl(private val handle: Long) : RtkNative {
     override fun sendRtcmData(rtcmData: Rtk.RtcmData): Int =
         NativeRtk.sendRtcmData(handle, rtcmData.toNative())
 

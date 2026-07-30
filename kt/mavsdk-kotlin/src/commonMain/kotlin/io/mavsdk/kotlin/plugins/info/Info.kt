@@ -9,21 +9,17 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-class Info internal constructor(
-    private val native: InfoNative
-) : AutoCloseable {
+class Info internal constructor(private val native: InfoNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
         UNKNOWN(0),
         SUCCESS(1),
         INFORMATION_NOT_RECEIVED_YET(2),
-        NO_SYSTEM(3),
-        ;
+        NO_SYSTEM(3);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -33,8 +29,7 @@ class Info internal constructor(
         ALPHA(2),
         BETA(3),
         RC(4),
-        RELEASE(5),
-        ;
+        RELEASE(5);
 
         companion object {
             fun fromValue(value: Int): FlightSoftwareVersionType =
@@ -49,10 +44,7 @@ class Info internal constructor(
         val durationSinceTakeoffMs: Int,
     )
 
-    data class Identification(
-        val hardwareUid: String,
-        val legacyUid: Long,
-    )
+    data class Identification(val hardwareUid: String, val legacyUid: Long)
 
     data class Product(
         val vendorId: Int,
@@ -76,23 +68,16 @@ class Info internal constructor(
         val flightSwVersionType: FlightSoftwareVersionType,
     )
 
-    fun getIdentification(): Identification =
-        native.getIdentification()
+    fun getIdentification(): Identification = native.getIdentification()
 
-    fun getProduct(): Product =
-        native.getProduct()
+    fun getProduct(): Product = native.getProduct()
 
-    fun getVersion(): Version =
-        native.getVersion()
+    fun getVersion(): Version = native.getVersion()
 
-    fun getSpeedFactor(): Double =
-        native.getSpeedFactor()
+    fun getSpeedFactor(): Double = native.getSpeedFactor()
 
     fun subscribeFlightInformation(): Flow<FlightInfo> = callbackFlow {
-        val subscriptionHandle = native.subscribeFlightInformation(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeFlightInformation() { value -> trySend(value) }
         awaitClose { native.unsubscribeFlightInformation(subscriptionHandle) }
     }
 
@@ -102,26 +87,27 @@ class Info internal constructor(
         native.destroy()
     }
 
-    class InfoException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class InfoException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Info =
-            Info(
-                createInfoNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Info(createInfoNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface InfoNative {
     fun getIdentification(): Info.Identification
+
     fun getProduct(): Info.Product
+
     fun getVersion(): Info.Version
+
     fun getSpeedFactor(): Double
+
     fun subscribeFlightInformation(callback: (Info.FlightInfo) -> Unit): Long
+
     fun unsubscribeFlightInformation(subscriptionHandle: Long)
+
     fun destroy()
 }
 

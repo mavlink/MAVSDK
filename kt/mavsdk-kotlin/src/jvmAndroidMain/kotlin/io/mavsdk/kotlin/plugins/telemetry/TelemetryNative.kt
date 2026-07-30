@@ -9,48 +9,21 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
 private fun Telemetry.Position.toNative(): NativeTelemetry.Position =
-    NativeTelemetry.Position(
-        latitudeDeg,
-        longitudeDeg,
-        absoluteAltitudeM,
-        relativeAltitudeM
-    )
+    NativeTelemetry.Position(latitudeDeg, longitudeDeg, absoluteAltitudeM, relativeAltitudeM)
 
 private fun NativeTelemetry.Position.toKotlin(): Telemetry.Position =
-    Telemetry.Position(
-        latitudeDeg,
-        longitudeDeg,
-        absoluteAltitudeM,
-        relativeAltitudeM
-    )
+    Telemetry.Position(latitudeDeg, longitudeDeg, absoluteAltitudeM, relativeAltitudeM)
 
 private fun Telemetry.Heading.toNative(): NativeTelemetry.Heading =
-    NativeTelemetry.Heading(
-        headingDeg
-    )
+    NativeTelemetry.Heading(headingDeg)
 
-private fun NativeTelemetry.Heading.toKotlin(): Telemetry.Heading =
-    Telemetry.Heading(
-        headingDeg
-    )
+private fun NativeTelemetry.Heading.toKotlin(): Telemetry.Heading = Telemetry.Heading(headingDeg)
 
 private fun Telemetry.Quaternion.toNative(): NativeTelemetry.Quaternion =
-    NativeTelemetry.Quaternion(
-        w,
-        x,
-        y,
-        z,
-        timestampUs
-    )
+    NativeTelemetry.Quaternion(w, x, y, z, timestampUs)
 
 private fun NativeTelemetry.Quaternion.toKotlin(): Telemetry.Quaternion =
-    Telemetry.Quaternion(
-        w,
-        x,
-        y,
-        z,
-        timestampUs
-    )
+    Telemetry.Quaternion(w, x, y, z, timestampUs)
 
 private fun Telemetry.HomePosition.toNative(): NativeTelemetry.HomePosition =
     NativeTelemetry.HomePosition(
@@ -65,7 +38,7 @@ private fun Telemetry.HomePosition.toNative(): NativeTelemetry.HomePosition =
         q.toNative(),
         approachNorthM,
         approachEastM,
-        approachDownM
+        approachDownM,
     )
 
 private fun NativeTelemetry.HomePosition.toKotlin(): Telemetry.HomePosition =
@@ -81,50 +54,26 @@ private fun NativeTelemetry.HomePosition.toKotlin(): Telemetry.HomePosition =
         q.toKotlin(),
         approachNorthM,
         approachEastM,
-        approachDownM
+        approachDownM,
     )
 
 private fun Telemetry.EulerAngle.toNative(): NativeTelemetry.EulerAngle =
-    NativeTelemetry.EulerAngle(
-        rollDeg,
-        pitchDeg,
-        yawDeg,
-        timestampUs
-    )
+    NativeTelemetry.EulerAngle(rollDeg, pitchDeg, yawDeg, timestampUs)
 
 private fun NativeTelemetry.EulerAngle.toKotlin(): Telemetry.EulerAngle =
-    Telemetry.EulerAngle(
-        rollDeg,
-        pitchDeg,
-        yawDeg,
-        timestampUs
-    )
+    Telemetry.EulerAngle(rollDeg, pitchDeg, yawDeg, timestampUs)
 
 private fun Telemetry.AngularVelocityBody.toNative(): NativeTelemetry.AngularVelocityBody =
-    NativeTelemetry.AngularVelocityBody(
-        rollRadS,
-        pitchRadS,
-        yawRadS
-    )
+    NativeTelemetry.AngularVelocityBody(rollRadS, pitchRadS, yawRadS)
 
 private fun NativeTelemetry.AngularVelocityBody.toKotlin(): Telemetry.AngularVelocityBody =
-    Telemetry.AngularVelocityBody(
-        rollRadS,
-        pitchRadS,
-        yawRadS
-    )
+    Telemetry.AngularVelocityBody(rollRadS, pitchRadS, yawRadS)
 
 private fun Telemetry.GpsInfo.toNative(): NativeTelemetry.GpsInfo =
-    NativeTelemetry.GpsInfo(
-        numSatellites,
-        fixType.value
-    )
+    NativeTelemetry.GpsInfo(numSatellites, fixType.value)
 
 private fun NativeTelemetry.GpsInfo.toKotlin(): Telemetry.GpsInfo =
-    Telemetry.GpsInfo(
-        numSatellites,
-        Telemetry.FixType.fromValue(fixType)
-    )
+    Telemetry.GpsInfo(numSatellites, Telemetry.FixType.fromValue(fixType))
 
 private fun Telemetry.RawGps.toNative(): NativeTelemetry.RawGps =
     NativeTelemetry.RawGps(
@@ -141,7 +90,7 @@ private fun Telemetry.RawGps.toNative(): NativeTelemetry.RawGps =
         verticalUncertaintyM,
         velocityUncertaintyMS,
         headingUncertaintyDeg,
-        yawDeg
+        yawDeg,
     )
 
 private fun NativeTelemetry.RawGps.toKotlin(): Telemetry.RawGps =
@@ -159,7 +108,7 @@ private fun NativeTelemetry.RawGps.toKotlin(): Telemetry.RawGps =
         verticalUncertaintyM,
         velocityUncertaintyMS,
         headingUncertaintyDeg,
-        yawDeg
+        yawDeg,
     )
 
 private fun Telemetry.Battery.toNative(): NativeTelemetry.Battery =
@@ -171,7 +120,7 @@ private fun Telemetry.Battery.toNative(): NativeTelemetry.Battery =
         capacityConsumedAh,
         remainingPercent,
         timeRemainingS,
-        batteryFunction.value
+        batteryFunction.value,
     )
 
 private fun NativeTelemetry.Battery.toKotlin(): Telemetry.Battery =
@@ -183,7 +132,7 @@ private fun NativeTelemetry.Battery.toKotlin(): Telemetry.Battery =
         capacityConsumedAh,
         remainingPercent,
         timeRemainingS,
-        Telemetry.BatteryFunction.fromValue(batteryFunction)
+        Telemetry.BatteryFunction.fromValue(batteryFunction),
     )
 
 private fun Telemetry.Health.toNative(): NativeTelemetry.Health =
@@ -194,7 +143,7 @@ private fun Telemetry.Health.toNative(): NativeTelemetry.Health =
         isLocalPositionOk,
         isGlobalPositionOk,
         isHomePositionOk,
-        isArmable
+        isArmable,
     )
 
 private fun NativeTelemetry.Health.toKotlin(): Telemetry.Health =
@@ -205,96 +154,50 @@ private fun NativeTelemetry.Health.toKotlin(): Telemetry.Health =
         isLocalPositionOk,
         isGlobalPositionOk,
         isHomePositionOk,
-        isArmable
+        isArmable,
     )
 
 private fun Telemetry.RcStatus.toNative(): NativeTelemetry.RcStatus =
-    NativeTelemetry.RcStatus(
-        wasAvailableOnce,
-        isAvailable,
-        signalStrengthPercent
-    )
+    NativeTelemetry.RcStatus(wasAvailableOnce, isAvailable, signalStrengthPercent)
 
 private fun NativeTelemetry.RcStatus.toKotlin(): Telemetry.RcStatus =
-    Telemetry.RcStatus(
-        wasAvailableOnce,
-        isAvailable,
-        signalStrengthPercent
-    )
+    Telemetry.RcStatus(wasAvailableOnce, isAvailable, signalStrengthPercent)
 
 private fun Telemetry.StatusText.toNative(): NativeTelemetry.StatusText =
-    NativeTelemetry.StatusText(
-        type.value,
-        text
-    )
+    NativeTelemetry.StatusText(type.value, text)
 
 private fun NativeTelemetry.StatusText.toKotlin(): Telemetry.StatusText =
-    Telemetry.StatusText(
-        Telemetry.StatusTextType.fromValue(type),
-        text
-    )
+    Telemetry.StatusText(Telemetry.StatusTextType.fromValue(type), text)
 
 private fun Telemetry.ActuatorControlTarget.toNative(): NativeTelemetry.ActuatorControlTarget =
-    NativeTelemetry.ActuatorControlTarget(
-        group,
-        controls.toFloatArray()
-    )
+    NativeTelemetry.ActuatorControlTarget(group, controls.toFloatArray())
 
 private fun NativeTelemetry.ActuatorControlTarget.toKotlin(): Telemetry.ActuatorControlTarget =
-    Telemetry.ActuatorControlTarget(
-        group,
-        controls.toList()
-    )
+    Telemetry.ActuatorControlTarget(group, controls.toList())
 
 private fun Telemetry.ActuatorOutputStatus.toNative(): NativeTelemetry.ActuatorOutputStatus =
-    NativeTelemetry.ActuatorOutputStatus(
-        active,
-        actuator.toFloatArray()
-    )
+    NativeTelemetry.ActuatorOutputStatus(active, actuator.toFloatArray())
 
 private fun NativeTelemetry.ActuatorOutputStatus.toKotlin(): Telemetry.ActuatorOutputStatus =
-    Telemetry.ActuatorOutputStatus(
-        active,
-        actuator.toList()
-    )
+    Telemetry.ActuatorOutputStatus(active, actuator.toList())
 
 private fun Telemetry.Covariance.toNative(): NativeTelemetry.Covariance =
-    NativeTelemetry.Covariance(
-        covarianceMatrix.toFloatArray()
-    )
+    NativeTelemetry.Covariance(covarianceMatrix.toFloatArray())
 
 private fun NativeTelemetry.Covariance.toKotlin(): Telemetry.Covariance =
-    Telemetry.Covariance(
-        covarianceMatrix.toList()
-    )
+    Telemetry.Covariance(covarianceMatrix.toList())
 
 private fun Telemetry.VelocityBody.toNative(): NativeTelemetry.VelocityBody =
-    NativeTelemetry.VelocityBody(
-        xMS,
-        yMS,
-        zMS
-    )
+    NativeTelemetry.VelocityBody(xMS, yMS, zMS)
 
 private fun NativeTelemetry.VelocityBody.toKotlin(): Telemetry.VelocityBody =
-    Telemetry.VelocityBody(
-        xMS,
-        yMS,
-        zMS
-    )
+    Telemetry.VelocityBody(xMS, yMS, zMS)
 
 private fun Telemetry.PositionBody.toNative(): NativeTelemetry.PositionBody =
-    NativeTelemetry.PositionBody(
-        xM,
-        yM,
-        zM
-    )
+    NativeTelemetry.PositionBody(xM, yM, zM)
 
 private fun NativeTelemetry.PositionBody.toKotlin(): Telemetry.PositionBody =
-    Telemetry.PositionBody(
-        xM,
-        yM,
-        zM
-    )
+    Telemetry.PositionBody(xM, yM, zM)
 
 private fun Telemetry.Odometry.toNative(): NativeTelemetry.Odometry =
     NativeTelemetry.Odometry(
@@ -306,7 +209,7 @@ private fun Telemetry.Odometry.toNative(): NativeTelemetry.Odometry =
         velocityBody.toNative(),
         angularVelocityBody.toNative(),
         poseCovariance.toNative(),
-        velocityCovariance.toNative()
+        velocityCovariance.toNative(),
     )
 
 private fun NativeTelemetry.Odometry.toKotlin(): Telemetry.Odometry =
@@ -319,7 +222,7 @@ private fun NativeTelemetry.Odometry.toKotlin(): Telemetry.Odometry =
         velocityBody.toKotlin(),
         angularVelocityBody.toKotlin(),
         poseCovariance.toKotlin(),
-        velocityCovariance.toKotlin()
+        velocityCovariance.toKotlin(),
     )
 
 private fun Telemetry.DistanceSensor.toNative(): NativeTelemetry.DistanceSensor =
@@ -327,7 +230,7 @@ private fun Telemetry.DistanceSensor.toNative(): NativeTelemetry.DistanceSensor 
         minimumDistanceM,
         maximumDistanceM,
         currentDistanceM,
-        orientation.toNative()
+        orientation.toNative(),
     )
 
 private fun NativeTelemetry.DistanceSensor.toKotlin(): Telemetry.DistanceSensor =
@@ -335,7 +238,7 @@ private fun NativeTelemetry.DistanceSensor.toKotlin(): Telemetry.DistanceSensor 
         minimumDistanceM,
         maximumDistanceM,
         currentDistanceM,
-        orientation.toKotlin()
+        orientation.toKotlin(),
     )
 
 private fun Telemetry.ScaledPressure.toNative(): NativeTelemetry.ScaledPressure =
@@ -344,7 +247,7 @@ private fun Telemetry.ScaledPressure.toNative(): NativeTelemetry.ScaledPressure 
         absolutePressureHpa,
         differentialPressureHpa,
         temperatureDeg,
-        differentialPressureTemperatureDeg
+        differentialPressureTemperatureDeg,
     )
 
 private fun NativeTelemetry.ScaledPressure.toKotlin(): Telemetry.ScaledPressure =
@@ -353,64 +256,32 @@ private fun NativeTelemetry.ScaledPressure.toKotlin(): Telemetry.ScaledPressure 
         absolutePressureHpa,
         differentialPressureHpa,
         temperatureDeg,
-        differentialPressureTemperatureDeg
+        differentialPressureTemperatureDeg,
     )
 
 private fun Telemetry.PositionNed.toNative(): NativeTelemetry.PositionNed =
-    NativeTelemetry.PositionNed(
-        northM,
-        eastM,
-        downM
-    )
+    NativeTelemetry.PositionNed(northM, eastM, downM)
 
 private fun NativeTelemetry.PositionNed.toKotlin(): Telemetry.PositionNed =
-    Telemetry.PositionNed(
-        northM,
-        eastM,
-        downM
-    )
+    Telemetry.PositionNed(northM, eastM, downM)
 
 private fun Telemetry.VelocityNed.toNative(): NativeTelemetry.VelocityNed =
-    NativeTelemetry.VelocityNed(
-        northMS,
-        eastMS,
-        downMS
-    )
+    NativeTelemetry.VelocityNed(northMS, eastMS, downMS)
 
 private fun NativeTelemetry.VelocityNed.toKotlin(): Telemetry.VelocityNed =
-    Telemetry.VelocityNed(
-        northMS,
-        eastMS,
-        downMS
-    )
+    Telemetry.VelocityNed(northMS, eastMS, downMS)
 
 private fun Telemetry.PositionVelocityNed.toNative(): NativeTelemetry.PositionVelocityNed =
-    NativeTelemetry.PositionVelocityNed(
-        position.toNative(),
-        velocity.toNative()
-    )
+    NativeTelemetry.PositionVelocityNed(position.toNative(), velocity.toNative())
 
 private fun NativeTelemetry.PositionVelocityNed.toKotlin(): Telemetry.PositionVelocityNed =
-    Telemetry.PositionVelocityNed(
-        position.toKotlin(),
-        velocity.toKotlin()
-    )
+    Telemetry.PositionVelocityNed(position.toKotlin(), velocity.toKotlin())
 
 private fun Telemetry.GroundTruth.toNative(): NativeTelemetry.GroundTruth =
-    NativeTelemetry.GroundTruth(
-        latitudeDeg,
-        longitudeDeg,
-        absoluteAltitudeM,
-        timestampUs
-    )
+    NativeTelemetry.GroundTruth(latitudeDeg, longitudeDeg, absoluteAltitudeM, timestampUs)
 
 private fun NativeTelemetry.GroundTruth.toKotlin(): Telemetry.GroundTruth =
-    Telemetry.GroundTruth(
-        latitudeDeg,
-        longitudeDeg,
-        absoluteAltitudeM,
-        timestampUs
-    )
+    Telemetry.GroundTruth(latitudeDeg, longitudeDeg, absoluteAltitudeM, timestampUs)
 
 private fun Telemetry.FixedwingMetrics.toNative(): NativeTelemetry.FixedwingMetrics =
     NativeTelemetry.FixedwingMetrics(
@@ -419,7 +290,7 @@ private fun Telemetry.FixedwingMetrics.toNative(): NativeTelemetry.FixedwingMetr
         climbRateMS,
         groundspeedMS,
         headingDeg,
-        absoluteAltitudeM
+        absoluteAltitudeM,
     )
 
 private fun NativeTelemetry.FixedwingMetrics.toKotlin(): Telemetry.FixedwingMetrics =
@@ -429,50 +300,26 @@ private fun NativeTelemetry.FixedwingMetrics.toKotlin(): Telemetry.FixedwingMetr
         climbRateMS,
         groundspeedMS,
         headingDeg,
-        absoluteAltitudeM
+        absoluteAltitudeM,
     )
 
 private fun Telemetry.AccelerationFrd.toNative(): NativeTelemetry.AccelerationFrd =
-    NativeTelemetry.AccelerationFrd(
-        forwardMS2,
-        rightMS2,
-        downMS2
-    )
+    NativeTelemetry.AccelerationFrd(forwardMS2, rightMS2, downMS2)
 
 private fun NativeTelemetry.AccelerationFrd.toKotlin(): Telemetry.AccelerationFrd =
-    Telemetry.AccelerationFrd(
-        forwardMS2,
-        rightMS2,
-        downMS2
-    )
+    Telemetry.AccelerationFrd(forwardMS2, rightMS2, downMS2)
 
 private fun Telemetry.AngularVelocityFrd.toNative(): NativeTelemetry.AngularVelocityFrd =
-    NativeTelemetry.AngularVelocityFrd(
-        forwardRadS,
-        rightRadS,
-        downRadS
-    )
+    NativeTelemetry.AngularVelocityFrd(forwardRadS, rightRadS, downRadS)
 
 private fun NativeTelemetry.AngularVelocityFrd.toKotlin(): Telemetry.AngularVelocityFrd =
-    Telemetry.AngularVelocityFrd(
-        forwardRadS,
-        rightRadS,
-        downRadS
-    )
+    Telemetry.AngularVelocityFrd(forwardRadS, rightRadS, downRadS)
 
 private fun Telemetry.MagneticFieldFrd.toNative(): NativeTelemetry.MagneticFieldFrd =
-    NativeTelemetry.MagneticFieldFrd(
-        forwardGauss,
-        rightGauss,
-        downGauss
-    )
+    NativeTelemetry.MagneticFieldFrd(forwardGauss, rightGauss, downGauss)
 
 private fun NativeTelemetry.MagneticFieldFrd.toKotlin(): Telemetry.MagneticFieldFrd =
-    Telemetry.MagneticFieldFrd(
-        forwardGauss,
-        rightGauss,
-        downGauss
-    )
+    Telemetry.MagneticFieldFrd(forwardGauss, rightGauss, downGauss)
 
 private fun Telemetry.Imu.toNative(): NativeTelemetry.Imu =
     NativeTelemetry.Imu(
@@ -480,7 +327,7 @@ private fun Telemetry.Imu.toNative(): NativeTelemetry.Imu =
         angularVelocityFrd.toNative(),
         magneticFieldFrd.toNative(),
         temperatureDegc,
-        timestampUs
+        timestampUs,
     )
 
 private fun NativeTelemetry.Imu.toKotlin(): Telemetry.Imu =
@@ -489,22 +336,14 @@ private fun NativeTelemetry.Imu.toKotlin(): Telemetry.Imu =
         angularVelocityFrd.toKotlin(),
         magneticFieldFrd.toKotlin(),
         temperatureDegc,
-        timestampUs
+        timestampUs,
     )
 
 private fun Telemetry.GpsGlobalOrigin.toNative(): NativeTelemetry.GpsGlobalOrigin =
-    NativeTelemetry.GpsGlobalOrigin(
-        latitudeDeg,
-        longitudeDeg,
-        altitudeM
-    )
+    NativeTelemetry.GpsGlobalOrigin(latitudeDeg, longitudeDeg, altitudeM)
 
 private fun NativeTelemetry.GpsGlobalOrigin.toKotlin(): Telemetry.GpsGlobalOrigin =
-    Telemetry.GpsGlobalOrigin(
-        latitudeDeg,
-        longitudeDeg,
-        altitudeM
-    )
+    Telemetry.GpsGlobalOrigin(latitudeDeg, longitudeDeg, altitudeM)
 
 private fun Telemetry.Altitude.toNative(): NativeTelemetry.Altitude =
     NativeTelemetry.Altitude(
@@ -514,7 +353,7 @@ private fun Telemetry.Altitude.toNative(): NativeTelemetry.Altitude =
         altitudeRelativeM,
         altitudeTerrainM,
         bottomClearanceM,
-        timestampUs
+        timestampUs,
     )
 
 private fun NativeTelemetry.Altitude.toKotlin(): Telemetry.Altitude =
@@ -525,7 +364,7 @@ private fun NativeTelemetry.Altitude.toKotlin(): Telemetry.Altitude =
         altitudeRelativeM,
         altitudeTerrainM,
         bottomClearanceM,
-        timestampUs
+        timestampUs,
     )
 
 private fun Telemetry.Wind.toNative(): NativeTelemetry.Wind =
@@ -537,7 +376,7 @@ private fun Telemetry.Wind.toNative(): NativeTelemetry.Wind =
         verticalVariabilityStddevMS,
         windAltitudeMslM,
         horizontalWindSpeedAccuracyMS,
-        verticalWindSpeedAccuracyMS
+        verticalWindSpeedAccuracyMS,
     )
 
 private fun NativeTelemetry.Wind.toKotlin(): Telemetry.Wind =
@@ -549,29 +388,23 @@ private fun NativeTelemetry.Wind.toKotlin(): Telemetry.Wind =
         verticalVariabilityStddevMS,
         windAltitudeMslM,
         horizontalWindSpeedAccuracyMS,
-        verticalWindSpeedAccuracyMS
+        verticalWindSpeedAccuracyMS,
     )
 
-private class TelemetryNativeImpl(
-    private val handle: Long
-) : TelemetryNative {
+private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     override fun position(): Telemetry.Position {
-        val value = NativeTelemetry.position(
-            handle        )
+        val value = NativeTelemetry.position(handle)
         return value.toKotlin()
     }
 
-    override fun subscribePosition(
-        callback: (Telemetry.Position) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribePosition(
-            handle,
-            NativeTelemetry.PositionCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribePosition(callback: (Telemetry.Position) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribePosition(
+                handle,
+                NativeTelemetry.PositionCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribePosition(handle, subscriptionHandle)
@@ -585,20 +418,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun home(): Telemetry.HomePosition {
-        val value = NativeTelemetry.home(
-            handle        )
+        val value = NativeTelemetry.home(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeHome(
-        callback: (Telemetry.HomePosition) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeHome(
-            handle,
-            NativeTelemetry.HomeCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeHome(callback: (Telemetry.HomePosition) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeHome(
+                handle,
+                NativeTelemetry.HomeCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeHome(handle, subscriptionHandle)
@@ -612,20 +441,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun inAir(): Boolean {
-        val value = NativeTelemetry.inAir(
-            handle        )
+        val value = NativeTelemetry.inAir(handle)
         return value
     }
 
-    override fun subscribeInAir(
-        callback: (Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeInAir(
-            handle,
-            NativeTelemetry.InAirCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeInAir(callback: (Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeInAir(
+                handle,
+                NativeTelemetry.InAirCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeInAir(handle, subscriptionHandle)
@@ -639,20 +464,18 @@ private class TelemetryNativeImpl(
     }
 
     override fun landedState(): Telemetry.LandedState {
-        val value = NativeTelemetry.landedState(
-            handle        )
+        val value = NativeTelemetry.landedState(handle)
         return Telemetry.LandedState.fromValue(value)
     }
 
-    override fun subscribeLandedState(
-        callback: (Telemetry.LandedState) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeLandedState(
-            handle,
-            NativeTelemetry.LandedStateCallback {
-                    value -> callback(Telemetry.LandedState.fromValue(value))
-            }
-        )
+    override fun subscribeLandedState(callback: (Telemetry.LandedState) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeLandedState(
+                handle,
+                NativeTelemetry.LandedStateCallback { value ->
+                    callback(Telemetry.LandedState.fromValue(value))
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeLandedState(handle, subscriptionHandle)
@@ -666,20 +489,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun armed(): Boolean {
-        val value = NativeTelemetry.armed(
-            handle        )
+        val value = NativeTelemetry.armed(handle)
         return value
     }
 
-    override fun subscribeArmed(
-        callback: (Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeArmed(
-            handle,
-            NativeTelemetry.ArmedCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeArmed(callback: (Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeArmed(
+                handle,
+                NativeTelemetry.ArmedCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeArmed(handle, subscriptionHandle)
@@ -693,20 +512,18 @@ private class TelemetryNativeImpl(
     }
 
     override fun vtolState(): Telemetry.VtolState {
-        val value = NativeTelemetry.vtolState(
-            handle        )
+        val value = NativeTelemetry.vtolState(handle)
         return Telemetry.VtolState.fromValue(value)
     }
 
-    override fun subscribeVtolState(
-        callback: (Telemetry.VtolState) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeVtolState(
-            handle,
-            NativeTelemetry.VtolStateCallback {
-                    value -> callback(Telemetry.VtolState.fromValue(value))
-            }
-        )
+    override fun subscribeVtolState(callback: (Telemetry.VtolState) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeVtolState(
+                handle,
+                NativeTelemetry.VtolStateCallback { value ->
+                    callback(Telemetry.VtolState.fromValue(value))
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeVtolState(handle, subscriptionHandle)
@@ -720,20 +537,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun attitudeQuaternion(): Telemetry.Quaternion {
-        val value = NativeTelemetry.attitudeQuaternion(
-            handle        )
+        val value = NativeTelemetry.attitudeQuaternion(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeAttitudeQuaternion(
-        callback: (Telemetry.Quaternion) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeAttitudeQuaternion(
-            handle,
-            NativeTelemetry.AttitudeQuaternionCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeAttitudeQuaternion(callback: (Telemetry.Quaternion) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeAttitudeQuaternion(
+                handle,
+                NativeTelemetry.AttitudeQuaternionCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeAttitudeQuaternion(handle, subscriptionHandle)
@@ -747,20 +560,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun attitudeEuler(): Telemetry.EulerAngle {
-        val value = NativeTelemetry.attitudeEuler(
-            handle        )
+        val value = NativeTelemetry.attitudeEuler(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeAttitudeEuler(
-        callback: (Telemetry.EulerAngle) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeAttitudeEuler(
-            handle,
-            NativeTelemetry.AttitudeEulerCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeAttitudeEuler(callback: (Telemetry.EulerAngle) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeAttitudeEuler(
+                handle,
+                NativeTelemetry.AttitudeEulerCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeAttitudeEuler(handle, subscriptionHandle)
@@ -774,20 +583,20 @@ private class TelemetryNativeImpl(
     }
 
     override fun attitudeAngularVelocityBody(): Telemetry.AngularVelocityBody {
-        val value = NativeTelemetry.attitudeAngularVelocityBody(
-            handle        )
+        val value = NativeTelemetry.attitudeAngularVelocityBody(handle)
         return value.toKotlin()
     }
 
     override fun subscribeAttitudeAngularVelocityBody(
         callback: (Telemetry.AngularVelocityBody) -> Unit
     ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeAttitudeAngularVelocityBody(
-            handle,
-            NativeTelemetry.AttitudeAngularVelocityBodyCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+        val subscriptionHandle =
+            NativeTelemetry.subscribeAttitudeAngularVelocityBody(
+                handle,
+                NativeTelemetry.AttitudeAngularVelocityBodyCallback { value ->
+                    callback(value.toKotlin())
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeAttitudeAngularVelocityBody(handle, subscriptionHandle)
@@ -801,20 +610,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun velocityNed(): Telemetry.VelocityNed {
-        val value = NativeTelemetry.velocityNed(
-            handle        )
+        val value = NativeTelemetry.velocityNed(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeVelocityNed(
-        callback: (Telemetry.VelocityNed) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeVelocityNed(
-            handle,
-            NativeTelemetry.VelocityNedCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeVelocityNed(callback: (Telemetry.VelocityNed) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeVelocityNed(
+                handle,
+                NativeTelemetry.VelocityNedCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeVelocityNed(handle, subscriptionHandle)
@@ -828,20 +633,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun gpsInfo(): Telemetry.GpsInfo {
-        val value = NativeTelemetry.gpsInfo(
-            handle        )
+        val value = NativeTelemetry.gpsInfo(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeGpsInfo(
-        callback: (Telemetry.GpsInfo) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeGpsInfo(
-            handle,
-            NativeTelemetry.GpsInfoCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeGpsInfo(callback: (Telemetry.GpsInfo) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeGpsInfo(
+                handle,
+                NativeTelemetry.GpsInfoCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeGpsInfo(handle, subscriptionHandle)
@@ -855,20 +656,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun rawGps(): Telemetry.RawGps {
-        val value = NativeTelemetry.rawGps(
-            handle        )
+        val value = NativeTelemetry.rawGps(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeRawGps(
-        callback: (Telemetry.RawGps) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeRawGps(
-            handle,
-            NativeTelemetry.RawGpsCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeRawGps(callback: (Telemetry.RawGps) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeRawGps(
+                handle,
+                NativeTelemetry.RawGpsCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeRawGps(handle, subscriptionHandle)
@@ -882,20 +679,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun battery(): Telemetry.Battery {
-        val value = NativeTelemetry.battery(
-            handle        )
+        val value = NativeTelemetry.battery(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeBattery(
-        callback: (Telemetry.Battery) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeBattery(
-            handle,
-            NativeTelemetry.BatteryCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeBattery(callback: (Telemetry.Battery) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeBattery(
+                handle,
+                NativeTelemetry.BatteryCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeBattery(handle, subscriptionHandle)
@@ -909,20 +702,18 @@ private class TelemetryNativeImpl(
     }
 
     override fun flightMode(): Telemetry.FlightMode {
-        val value = NativeTelemetry.flightMode(
-            handle        )
+        val value = NativeTelemetry.flightMode(handle)
         return Telemetry.FlightMode.fromValue(value)
     }
 
-    override fun subscribeFlightMode(
-        callback: (Telemetry.FlightMode) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeFlightMode(
-            handle,
-            NativeTelemetry.FlightModeCallback {
-                    value -> callback(Telemetry.FlightMode.fromValue(value))
-            }
-        )
+    override fun subscribeFlightMode(callback: (Telemetry.FlightMode) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeFlightMode(
+                handle,
+                NativeTelemetry.FlightModeCallback { value ->
+                    callback(Telemetry.FlightMode.fromValue(value))
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeFlightMode(handle, subscriptionHandle)
@@ -936,20 +727,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun health(): Telemetry.Health {
-        val value = NativeTelemetry.health(
-            handle        )
+        val value = NativeTelemetry.health(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeHealth(
-        callback: (Telemetry.Health) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeHealth(
-            handle,
-            NativeTelemetry.HealthCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeHealth(callback: (Telemetry.Health) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeHealth(
+                handle,
+                NativeTelemetry.HealthCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeHealth(handle, subscriptionHandle)
@@ -963,20 +750,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun rcStatus(): Telemetry.RcStatus {
-        val value = NativeTelemetry.rcStatus(
-            handle        )
+        val value = NativeTelemetry.rcStatus(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeRcStatus(
-        callback: (Telemetry.RcStatus) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeRcStatus(
-            handle,
-            NativeTelemetry.RcStatusCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeRcStatus(callback: (Telemetry.RcStatus) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeRcStatus(
+                handle,
+                NativeTelemetry.RcStatusCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeRcStatus(handle, subscriptionHandle)
@@ -990,20 +773,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun statusText(): Telemetry.StatusText {
-        val value = NativeTelemetry.statusText(
-            handle        )
+        val value = NativeTelemetry.statusText(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeStatusText(
-        callback: (Telemetry.StatusText) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeStatusText(
-            handle,
-            NativeTelemetry.StatusTextCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeStatusText(callback: (Telemetry.StatusText) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeStatusText(
+                handle,
+                NativeTelemetry.StatusTextCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeStatusText(handle, subscriptionHandle)
@@ -1017,20 +796,20 @@ private class TelemetryNativeImpl(
     }
 
     override fun actuatorControlTarget(): Telemetry.ActuatorControlTarget {
-        val value = NativeTelemetry.actuatorControlTarget(
-            handle        )
+        val value = NativeTelemetry.actuatorControlTarget(handle)
         return value.toKotlin()
     }
 
     override fun subscribeActuatorControlTarget(
         callback: (Telemetry.ActuatorControlTarget) -> Unit
     ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeActuatorControlTarget(
-            handle,
-            NativeTelemetry.ActuatorControlTargetCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+        val subscriptionHandle =
+            NativeTelemetry.subscribeActuatorControlTarget(
+                handle,
+                NativeTelemetry.ActuatorControlTargetCallback { value ->
+                    callback(value.toKotlin())
+                },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeActuatorControlTarget(handle, subscriptionHandle)
@@ -1044,20 +823,18 @@ private class TelemetryNativeImpl(
     }
 
     override fun actuatorOutputStatus(): Telemetry.ActuatorOutputStatus {
-        val value = NativeTelemetry.actuatorOutputStatus(
-            handle        )
+        val value = NativeTelemetry.actuatorOutputStatus(handle)
         return value.toKotlin()
     }
 
     override fun subscribeActuatorOutputStatus(
         callback: (Telemetry.ActuatorOutputStatus) -> Unit
     ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeActuatorOutputStatus(
-            handle,
-            NativeTelemetry.ActuatorOutputStatusCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+        val subscriptionHandle =
+            NativeTelemetry.subscribeActuatorOutputStatus(
+                handle,
+                NativeTelemetry.ActuatorOutputStatusCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeActuatorOutputStatus(handle, subscriptionHandle)
@@ -1071,20 +848,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun odometry(): Telemetry.Odometry {
-        val value = NativeTelemetry.odometry(
-            handle        )
+        val value = NativeTelemetry.odometry(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeOdometry(
-        callback: (Telemetry.Odometry) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeOdometry(
-            handle,
-            NativeTelemetry.OdometryCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeOdometry(callback: (Telemetry.Odometry) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeOdometry(
+                handle,
+                NativeTelemetry.OdometryCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeOdometry(handle, subscriptionHandle)
@@ -1098,20 +871,18 @@ private class TelemetryNativeImpl(
     }
 
     override fun positionVelocityNed(): Telemetry.PositionVelocityNed {
-        val value = NativeTelemetry.positionVelocityNed(
-            handle        )
+        val value = NativeTelemetry.positionVelocityNed(handle)
         return value.toKotlin()
     }
 
     override fun subscribePositionVelocityNed(
         callback: (Telemetry.PositionVelocityNed) -> Unit
     ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribePositionVelocityNed(
-            handle,
-            NativeTelemetry.PositionVelocityNedCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+        val subscriptionHandle =
+            NativeTelemetry.subscribePositionVelocityNed(
+                handle,
+                NativeTelemetry.PositionVelocityNedCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribePositionVelocityNed(handle, subscriptionHandle)
@@ -1125,20 +896,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun groundTruth(): Telemetry.GroundTruth {
-        val value = NativeTelemetry.groundTruth(
-            handle        )
+        val value = NativeTelemetry.groundTruth(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeGroundTruth(
-        callback: (Telemetry.GroundTruth) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeGroundTruth(
-            handle,
-            NativeTelemetry.GroundTruthCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeGroundTruth(callback: (Telemetry.GroundTruth) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeGroundTruth(
+                handle,
+                NativeTelemetry.GroundTruthCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeGroundTruth(handle, subscriptionHandle)
@@ -1152,20 +919,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun fixedwingMetrics(): Telemetry.FixedwingMetrics {
-        val value = NativeTelemetry.fixedwingMetrics(
-            handle        )
+        val value = NativeTelemetry.fixedwingMetrics(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeFixedwingMetrics(
-        callback: (Telemetry.FixedwingMetrics) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeFixedwingMetrics(
-            handle,
-            NativeTelemetry.FixedwingMetricsCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeFixedwingMetrics(callback: (Telemetry.FixedwingMetrics) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeFixedwingMetrics(
+                handle,
+                NativeTelemetry.FixedwingMetricsCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeFixedwingMetrics(handle, subscriptionHandle)
@@ -1179,20 +942,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun imu(): Telemetry.Imu {
-        val value = NativeTelemetry.imu(
-            handle        )
+        val value = NativeTelemetry.imu(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeImu(
-        callback: (Telemetry.Imu) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeImu(
-            handle,
-            NativeTelemetry.ImuCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeImu(callback: (Telemetry.Imu) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeImu(
+                handle,
+                NativeTelemetry.ImuCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeImu(handle, subscriptionHandle)
@@ -1206,20 +965,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun scaledImu(): Telemetry.Imu {
-        val value = NativeTelemetry.scaledImu(
-            handle        )
+        val value = NativeTelemetry.scaledImu(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeScaledImu(
-        callback: (Telemetry.Imu) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeScaledImu(
-            handle,
-            NativeTelemetry.ScaledImuCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeScaledImu(callback: (Telemetry.Imu) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeScaledImu(
+                handle,
+                NativeTelemetry.ScaledImuCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeScaledImu(handle, subscriptionHandle)
@@ -1233,20 +988,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun rawImu(): Telemetry.Imu {
-        val value = NativeTelemetry.rawImu(
-            handle        )
+        val value = NativeTelemetry.rawImu(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeRawImu(
-        callback: (Telemetry.Imu) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeRawImu(
-            handle,
-            NativeTelemetry.RawImuCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeRawImu(callback: (Telemetry.Imu) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeRawImu(
+                handle,
+                NativeTelemetry.RawImuCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeRawImu(handle, subscriptionHandle)
@@ -1260,20 +1011,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun healthAllOk(): Boolean {
-        val value = NativeTelemetry.healthAllOk(
-            handle        )
+        val value = NativeTelemetry.healthAllOk(handle)
         return value
     }
 
-    override fun subscribeHealthAllOk(
-        callback: (Boolean) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeHealthAllOk(
-            handle,
-            NativeTelemetry.HealthAllOkCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeHealthAllOk(callback: (Boolean) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeHealthAllOk(
+                handle,
+                NativeTelemetry.HealthAllOkCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeHealthAllOk(handle, subscriptionHandle)
@@ -1287,20 +1034,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun unixEpochTime(): Long {
-        val value = NativeTelemetry.unixEpochTime(
-            handle        )
+        val value = NativeTelemetry.unixEpochTime(handle)
         return value
     }
 
-    override fun subscribeUnixEpochTime(
-        callback: (Long) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeUnixEpochTime(
-            handle,
-            NativeTelemetry.UnixEpochTimeCallback {
-                    value -> callback(value)
-            }
-        )
+    override fun subscribeUnixEpochTime(callback: (Long) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeUnixEpochTime(
+                handle,
+                NativeTelemetry.UnixEpochTimeCallback { value -> callback(value) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeUnixEpochTime(handle, subscriptionHandle)
@@ -1314,20 +1057,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun distanceSensor(): Telemetry.DistanceSensor {
-        val value = NativeTelemetry.distanceSensor(
-            handle        )
+        val value = NativeTelemetry.distanceSensor(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeDistanceSensor(
-        callback: (Telemetry.DistanceSensor) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeDistanceSensor(
-            handle,
-            NativeTelemetry.DistanceSensorCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeDistanceSensor(callback: (Telemetry.DistanceSensor) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeDistanceSensor(
+                handle,
+                NativeTelemetry.DistanceSensorCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeDistanceSensor(handle, subscriptionHandle)
@@ -1341,20 +1080,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun scaledPressure(): Telemetry.ScaledPressure {
-        val value = NativeTelemetry.scaledPressure(
-            handle        )
+        val value = NativeTelemetry.scaledPressure(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeScaledPressure(
-        callback: (Telemetry.ScaledPressure) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeScaledPressure(
-            handle,
-            NativeTelemetry.ScaledPressureCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeScaledPressure(callback: (Telemetry.ScaledPressure) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeScaledPressure(
+                handle,
+                NativeTelemetry.ScaledPressureCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeScaledPressure(handle, subscriptionHandle)
@@ -1368,20 +1103,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun heading(): Telemetry.Heading {
-        val value = NativeTelemetry.heading(
-            handle        )
+        val value = NativeTelemetry.heading(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeHeading(
-        callback: (Telemetry.Heading) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeHeading(
-            handle,
-            NativeTelemetry.HeadingCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeHeading(callback: (Telemetry.Heading) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeHeading(
+                handle,
+                NativeTelemetry.HeadingCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeHeading(handle, subscriptionHandle)
@@ -1395,20 +1126,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun altitude(): Telemetry.Altitude {
-        val value = NativeTelemetry.altitude(
-            handle        )
+        val value = NativeTelemetry.altitude(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeAltitude(
-        callback: (Telemetry.Altitude) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeAltitude(
-            handle,
-            NativeTelemetry.AltitudeCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeAltitude(callback: (Telemetry.Altitude) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeAltitude(
+                handle,
+                NativeTelemetry.AltitudeCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeAltitude(handle, subscriptionHandle)
@@ -1422,20 +1149,16 @@ private class TelemetryNativeImpl(
     }
 
     override fun wind(): Telemetry.Wind {
-        val value = NativeTelemetry.wind(
-            handle        )
+        val value = NativeTelemetry.wind(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeWind(
-        callback: (Telemetry.Wind) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeTelemetry.subscribeWind(
-            handle,
-            NativeTelemetry.WindCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeWind(callback: (Telemetry.Wind) -> Unit): Long {
+        val subscriptionHandle =
+            NativeTelemetry.subscribeWind(
+                handle,
+                NativeTelemetry.WindCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeTelemetry.unsubscribeWind(handle, subscriptionHandle)
@@ -1448,339 +1171,212 @@ private class TelemetryNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun setRatePositionAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRatePositionAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRatePositionAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRatePositionCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRatePositionCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateHomeAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateHomeAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateHomeAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateHomeCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateHomeCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateInAirAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateInAirAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateInAirAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateInAirCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateInAirCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateLandedStateAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateLandedStateAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateLandedStateAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateLandedStateCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateLandedStateCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateVtolStateAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateVtolStateAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateVtolStateAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateVtolStateCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateVtolStateCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateAttitudeQuaternionAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateAttitudeQuaternionAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateAttitudeQuaternionAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateAttitudeQuaternionCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateAttitudeQuaternionCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateAttitudeEulerAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateAttitudeEulerAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateAttitudeEulerAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateAttitudeEulerCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateAttitudeEulerCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateVelocityNedAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateVelocityNedAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateVelocityNedAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateVelocityNedCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateVelocityNedCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateGpsInfoAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateGpsInfoAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateGpsInfoAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateGpsInfoCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateGpsInfoCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateRawGpsAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateRawGpsAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateRawGpsAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateRawGpsCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateRawGpsCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateBatteryAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateBatteryAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateBatteryAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateBatteryCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateBatteryCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateRcStatusAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateRcStatusAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateRcStatusAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateRcStatusCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateRcStatusCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateActuatorControlTargetAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateActuatorControlTargetAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateActuatorControlTargetAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateActuatorControlTargetCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateActuatorControlTargetCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateActuatorOutputStatusAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateActuatorOutputStatusAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateActuatorOutputStatusAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateActuatorOutputStatusCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateActuatorOutputStatusCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateOdometryAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateOdometryAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateOdometryAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateOdometryCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateOdometryCallback { result -> callback(result) },
         )
     }
 
-    override fun setRatePositionVelocityNedAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRatePositionVelocityNedAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRatePositionVelocityNedAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRatePositionVelocityNedCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRatePositionVelocityNedCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateGroundTruthAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateGroundTruthAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateGroundTruthAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateGroundTruthCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateGroundTruthCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateFixedwingMetricsAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateFixedwingMetricsAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateFixedwingMetricsAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateFixedwingMetricsCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateFixedwingMetricsCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateImuAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateImuAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateImuAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateImuCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateImuCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateScaledImuAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateScaledImuAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateScaledImuAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateScaledImuCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateScaledImuCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateRawImuAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateRawImuAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateRawImuAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateRawImuCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateRawImuCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateUnixEpochTimeAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateUnixEpochTimeAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateUnixEpochTimeAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateUnixEpochTimeCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateUnixEpochTimeCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateDistanceSensorAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateDistanceSensorAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateDistanceSensorAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateDistanceSensorCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateDistanceSensorCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateAltitudeAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateAltitudeAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateAltitudeAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateAltitudeCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateAltitudeCallback { result -> callback(result) },
         )
     }
 
-    override fun setRateHealthAsync(
-        rateHz: Double,
-        callback: (Int) -> Unit
-    ) {
+    override fun setRateHealthAsync(rateHz: Double, callback: (Int) -> Unit) {
         NativeTelemetry.setRateHealthAsync(
             handle,
             rateHz,
-            NativeTelemetry.SetRateHealthCallback {
-                    result -> callback(result)
-            }
+            NativeTelemetry.SetRateHealthCallback { result -> callback(result) },
         )
     }
 
-    override fun getGpsGlobalOriginAsync(
-        callback: (Int, Telemetry.GpsGlobalOrigin) -> Unit
-    ) {
+    override fun getGpsGlobalOriginAsync(callback: (Int, Telemetry.GpsGlobalOrigin) -> Unit) {
         NativeTelemetry.getGpsGlobalOriginAsync(
             handle,
-            NativeTelemetry.GetGpsGlobalOriginCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeTelemetry.GetGpsGlobalOriginCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 

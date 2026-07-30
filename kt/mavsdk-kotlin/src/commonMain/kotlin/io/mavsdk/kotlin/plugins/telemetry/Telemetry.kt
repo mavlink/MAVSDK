@@ -5,15 +5,13 @@
 package io.mavsdk.kotlin.plugins.telemetry
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Telemetry internal constructor(
-    private val native: TelemetryNative
-) : AutoCloseable {
+class Telemetry internal constructor(private val native: TelemetryNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -24,12 +22,10 @@ class Telemetry internal constructor(
         BUSY(4),
         COMMAND_DENIED(5),
         TIMEOUT(6),
-        UNSUPPORTED(7),
-        ;
+        UNSUPPORTED(7);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -40,8 +36,7 @@ class Telemetry internal constructor(
         FIX_3D(3),
         FIX_DGPS(4),
         RTK_FLOAT(5),
-        RTK_FIXED(6),
-        ;
+        RTK_FIXED(6);
 
         companion object {
             fun fromValue(value: Int): FixType =
@@ -54,8 +49,7 @@ class Telemetry internal constructor(
         ALL(1),
         PROPULSION(2),
         AVIONICS(3),
-        PAYLOAD(4),
-        ;
+        PAYLOAD(4);
 
         companion object {
             fun fromValue(value: Int): BatteryFunction =
@@ -78,12 +72,10 @@ class Telemetry internal constructor(
         POSCTL(11),
         ACRO(12),
         STABILIZED(13),
-        RATTITUDE(14),
-        ;
+        RATTITUDE(14);
 
         companion object {
-            fun fromValue(value: Int): FlightMode =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): FlightMode = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -95,8 +87,7 @@ class Telemetry internal constructor(
         ERROR(4),
         CRITICAL(5),
         ALERT(6),
-        EMERGENCY(7),
-        ;
+        EMERGENCY(7);
 
         companion object {
             fun fromValue(value: Int): StatusTextType =
@@ -109,12 +100,10 @@ class Telemetry internal constructor(
         ON_GROUND(1),
         IN_AIR(2),
         TAKING_OFF(3),
-        LANDING(4),
-        ;
+        LANDING(4);
 
         companion object {
-            fun fromValue(value: Int): LandedState =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): LandedState = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -123,8 +112,7 @@ class Telemetry internal constructor(
         TRANSITION_TO_FW(1),
         TRANSITION_TO_MC(2),
         MC(3),
-        FW(4),
-        ;
+        FW(4);
 
         companion object {
             fun fromValue(value: Int): VtolState =
@@ -136,8 +124,7 @@ class Telemetry internal constructor(
         UNDEF(0),
         BODY_NED(1),
         VISION_NED(2),
-        ESTIM_NED(3),
-        ;
+        ESTIM_NED(3);
 
         companion object {
             fun fromValue(value: Int): MavFrame =
@@ -152,9 +139,7 @@ class Telemetry internal constructor(
         val relativeAltitudeM: Float,
     )
 
-    data class Heading(
-        val headingDeg: Double,
-    )
+    data class Heading(val headingDeg: Double)
 
     data class Quaternion(
         val w: Float,
@@ -186,16 +171,9 @@ class Telemetry internal constructor(
         val timestampUs: Long,
     )
 
-    data class AngularVelocityBody(
-        val rollRadS: Float,
-        val pitchRadS: Float,
-        val yawRadS: Float,
-    )
+    data class AngularVelocityBody(val rollRadS: Float, val pitchRadS: Float, val yawRadS: Float)
 
-    data class GpsInfo(
-        val numSatellites: Int,
-        val fixType: FixType,
-    )
+    data class GpsInfo(val numSatellites: Int, val fixType: FixType)
 
     data class RawGps(
         val timestampUs: Long,
@@ -241,36 +219,17 @@ class Telemetry internal constructor(
         val signalStrengthPercent: Float,
     )
 
-    data class StatusText(
-        val type: StatusTextType,
-        val text: String,
-    )
+    data class StatusText(val type: StatusTextType, val text: String)
 
-    data class ActuatorControlTarget(
-        val group: Int,
-        val controls: List<Float> = emptyList(),
-    )
+    data class ActuatorControlTarget(val group: Int, val controls: List<Float> = emptyList())
 
-    data class ActuatorOutputStatus(
-        val active: Int,
-        val actuator: List<Float> = emptyList(),
-    )
+    data class ActuatorOutputStatus(val active: Int, val actuator: List<Float> = emptyList())
 
-    data class Covariance(
-        val covarianceMatrix: List<Float> = emptyList(),
-    )
+    data class Covariance(val covarianceMatrix: List<Float> = emptyList())
 
-    data class VelocityBody(
-        val xMS: Float,
-        val yMS: Float,
-        val zMS: Float,
-    )
+    data class VelocityBody(val xMS: Float, val yMS: Float, val zMS: Float)
 
-    data class PositionBody(
-        val xM: Float,
-        val yM: Float,
-        val zM: Float,
-    )
+    data class PositionBody(val xM: Float, val yM: Float, val zM: Float)
 
     data class Odometry(
         val timeUsec: Long,
@@ -299,22 +258,11 @@ class Telemetry internal constructor(
         val differentialPressureTemperatureDeg: Float,
     )
 
-    data class PositionNed(
-        val northM: Float,
-        val eastM: Float,
-        val downM: Float,
-    )
+    data class PositionNed(val northM: Float, val eastM: Float, val downM: Float)
 
-    data class VelocityNed(
-        val northMS: Float,
-        val eastMS: Float,
-        val downMS: Float,
-    )
+    data class VelocityNed(val northMS: Float, val eastMS: Float, val downMS: Float)
 
-    data class PositionVelocityNed(
-        val position: PositionNed,
-        val velocity: VelocityNed,
-    )
+    data class PositionVelocityNed(val position: PositionNed, val velocity: VelocityNed)
 
     data class GroundTruth(
         val latitudeDeg: Double,
@@ -332,17 +280,9 @@ class Telemetry internal constructor(
         val absoluteAltitudeM: Float,
     )
 
-    data class AccelerationFrd(
-        val forwardMS2: Float,
-        val rightMS2: Float,
-        val downMS2: Float,
-    )
+    data class AccelerationFrd(val forwardMS2: Float, val rightMS2: Float, val downMS2: Float)
 
-    data class AngularVelocityFrd(
-        val forwardRadS: Float,
-        val rightRadS: Float,
-        val downRadS: Float,
-    )
+    data class AngularVelocityFrd(val forwardRadS: Float, val rightRadS: Float, val downRadS: Float)
 
     data class MagneticFieldFrd(
         val forwardGauss: Float,
@@ -385,373 +325,242 @@ class Telemetry internal constructor(
         val verticalWindSpeedAccuracyMS: Float,
     )
 
-    fun position(): Position =
-        native.position()
+    fun position(): Position = native.position()
 
     fun subscribePosition(): Flow<Position> = callbackFlow {
-        val subscriptionHandle = native.subscribePosition(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribePosition() { value -> trySend(value) }
         awaitClose { native.unsubscribePosition(subscriptionHandle) }
     }
 
-    fun home(): HomePosition =
-        native.home()
+    fun home(): HomePosition = native.home()
 
     fun subscribeHome(): Flow<HomePosition> = callbackFlow {
-        val subscriptionHandle = native.subscribeHome(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeHome() { value -> trySend(value) }
         awaitClose { native.unsubscribeHome(subscriptionHandle) }
     }
 
-    fun inAir(): Boolean =
-        native.inAir()
+    fun inAir(): Boolean = native.inAir()
 
     fun subscribeInAir(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeInAir(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeInAir() { value -> trySend(value) }
         awaitClose { native.unsubscribeInAir(subscriptionHandle) }
     }
 
-    fun landedState(): LandedState =
-        native.landedState()
+    fun landedState(): LandedState = native.landedState()
 
     fun subscribeLandedState(): Flow<LandedState> = callbackFlow {
-        val subscriptionHandle = native.subscribeLandedState(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeLandedState() { value -> trySend(value) }
         awaitClose { native.unsubscribeLandedState(subscriptionHandle) }
     }
 
-    fun armed(): Boolean =
-        native.armed()
+    fun armed(): Boolean = native.armed()
 
     fun subscribeArmed(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeArmed(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeArmed() { value -> trySend(value) }
         awaitClose { native.unsubscribeArmed(subscriptionHandle) }
     }
 
-    fun vtolState(): VtolState =
-        native.vtolState()
+    fun vtolState(): VtolState = native.vtolState()
 
     fun subscribeVtolState(): Flow<VtolState> = callbackFlow {
-        val subscriptionHandle = native.subscribeVtolState(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeVtolState() { value -> trySend(value) }
         awaitClose { native.unsubscribeVtolState(subscriptionHandle) }
     }
 
-    fun attitudeQuaternion(): Quaternion =
-        native.attitudeQuaternion()
+    fun attitudeQuaternion(): Quaternion = native.attitudeQuaternion()
 
     fun subscribeAttitudeQuaternion(): Flow<Quaternion> = callbackFlow {
-        val subscriptionHandle = native.subscribeAttitudeQuaternion(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeAttitudeQuaternion() { value -> trySend(value) }
         awaitClose { native.unsubscribeAttitudeQuaternion(subscriptionHandle) }
     }
 
-    fun attitudeEuler(): EulerAngle =
-        native.attitudeEuler()
+    fun attitudeEuler(): EulerAngle = native.attitudeEuler()
 
     fun subscribeAttitudeEuler(): Flow<EulerAngle> = callbackFlow {
-        val subscriptionHandle = native.subscribeAttitudeEuler(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeAttitudeEuler() { value -> trySend(value) }
         awaitClose { native.unsubscribeAttitudeEuler(subscriptionHandle) }
     }
 
-    fun attitudeAngularVelocityBody(): AngularVelocityBody =
-        native.attitudeAngularVelocityBody()
+    fun attitudeAngularVelocityBody(): AngularVelocityBody = native.attitudeAngularVelocityBody()
 
     fun subscribeAttitudeAngularVelocityBody(): Flow<AngularVelocityBody> = callbackFlow {
-        val subscriptionHandle = native.subscribeAttitudeAngularVelocityBody(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle =
+            native.subscribeAttitudeAngularVelocityBody() { value -> trySend(value) }
         awaitClose { native.unsubscribeAttitudeAngularVelocityBody(subscriptionHandle) }
     }
 
-    fun velocityNed(): VelocityNed =
-        native.velocityNed()
+    fun velocityNed(): VelocityNed = native.velocityNed()
 
     fun subscribeVelocityNed(): Flow<VelocityNed> = callbackFlow {
-        val subscriptionHandle = native.subscribeVelocityNed(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeVelocityNed() { value -> trySend(value) }
         awaitClose { native.unsubscribeVelocityNed(subscriptionHandle) }
     }
 
-    fun gpsInfo(): GpsInfo =
-        native.gpsInfo()
+    fun gpsInfo(): GpsInfo = native.gpsInfo()
 
     fun subscribeGpsInfo(): Flow<GpsInfo> = callbackFlow {
-        val subscriptionHandle = native.subscribeGpsInfo(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeGpsInfo() { value -> trySend(value) }
         awaitClose { native.unsubscribeGpsInfo(subscriptionHandle) }
     }
 
-    fun rawGps(): RawGps =
-        native.rawGps()
+    fun rawGps(): RawGps = native.rawGps()
 
     fun subscribeRawGps(): Flow<RawGps> = callbackFlow {
-        val subscriptionHandle = native.subscribeRawGps(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeRawGps() { value -> trySend(value) }
         awaitClose { native.unsubscribeRawGps(subscriptionHandle) }
     }
 
-    fun battery(): Battery =
-        native.battery()
+    fun battery(): Battery = native.battery()
 
     fun subscribeBattery(): Flow<Battery> = callbackFlow {
-        val subscriptionHandle = native.subscribeBattery(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeBattery() { value -> trySend(value) }
         awaitClose { native.unsubscribeBattery(subscriptionHandle) }
     }
 
-    fun flightMode(): FlightMode =
-        native.flightMode()
+    fun flightMode(): FlightMode = native.flightMode()
 
     fun subscribeFlightMode(): Flow<FlightMode> = callbackFlow {
-        val subscriptionHandle = native.subscribeFlightMode(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeFlightMode() { value -> trySend(value) }
         awaitClose { native.unsubscribeFlightMode(subscriptionHandle) }
     }
 
-    fun health(): Health =
-        native.health()
+    fun health(): Health = native.health()
 
     fun subscribeHealth(): Flow<Health> = callbackFlow {
-        val subscriptionHandle = native.subscribeHealth(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeHealth() { value -> trySend(value) }
         awaitClose { native.unsubscribeHealth(subscriptionHandle) }
     }
 
-    fun rcStatus(): RcStatus =
-        native.rcStatus()
+    fun rcStatus(): RcStatus = native.rcStatus()
 
     fun subscribeRcStatus(): Flow<RcStatus> = callbackFlow {
-        val subscriptionHandle = native.subscribeRcStatus(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeRcStatus() { value -> trySend(value) }
         awaitClose { native.unsubscribeRcStatus(subscriptionHandle) }
     }
 
-    fun statusText(): StatusText =
-        native.statusText()
+    fun statusText(): StatusText = native.statusText()
 
     fun subscribeStatusText(): Flow<StatusText> = callbackFlow {
-        val subscriptionHandle = native.subscribeStatusText(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeStatusText() { value -> trySend(value) }
         awaitClose { native.unsubscribeStatusText(subscriptionHandle) }
     }
 
-    fun actuatorControlTarget(): ActuatorControlTarget =
-        native.actuatorControlTarget()
+    fun actuatorControlTarget(): ActuatorControlTarget = native.actuatorControlTarget()
 
     fun subscribeActuatorControlTarget(): Flow<ActuatorControlTarget> = callbackFlow {
-        val subscriptionHandle = native.subscribeActuatorControlTarget(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeActuatorControlTarget() { value -> trySend(value) }
         awaitClose { native.unsubscribeActuatorControlTarget(subscriptionHandle) }
     }
 
-    fun actuatorOutputStatus(): ActuatorOutputStatus =
-        native.actuatorOutputStatus()
+    fun actuatorOutputStatus(): ActuatorOutputStatus = native.actuatorOutputStatus()
 
     fun subscribeActuatorOutputStatus(): Flow<ActuatorOutputStatus> = callbackFlow {
-        val subscriptionHandle = native.subscribeActuatorOutputStatus(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeActuatorOutputStatus() { value -> trySend(value) }
         awaitClose { native.unsubscribeActuatorOutputStatus(subscriptionHandle) }
     }
 
-    fun odometry(): Odometry =
-        native.odometry()
+    fun odometry(): Odometry = native.odometry()
 
     fun subscribeOdometry(): Flow<Odometry> = callbackFlow {
-        val subscriptionHandle = native.subscribeOdometry(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeOdometry() { value -> trySend(value) }
         awaitClose { native.unsubscribeOdometry(subscriptionHandle) }
     }
 
-    fun positionVelocityNed(): PositionVelocityNed =
-        native.positionVelocityNed()
+    fun positionVelocityNed(): PositionVelocityNed = native.positionVelocityNed()
 
     fun subscribePositionVelocityNed(): Flow<PositionVelocityNed> = callbackFlow {
-        val subscriptionHandle = native.subscribePositionVelocityNed(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribePositionVelocityNed() { value -> trySend(value) }
         awaitClose { native.unsubscribePositionVelocityNed(subscriptionHandle) }
     }
 
-    fun groundTruth(): GroundTruth =
-        native.groundTruth()
+    fun groundTruth(): GroundTruth = native.groundTruth()
 
     fun subscribeGroundTruth(): Flow<GroundTruth> = callbackFlow {
-        val subscriptionHandle = native.subscribeGroundTruth(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeGroundTruth() { value -> trySend(value) }
         awaitClose { native.unsubscribeGroundTruth(subscriptionHandle) }
     }
 
-    fun fixedwingMetrics(): FixedwingMetrics =
-        native.fixedwingMetrics()
+    fun fixedwingMetrics(): FixedwingMetrics = native.fixedwingMetrics()
 
     fun subscribeFixedwingMetrics(): Flow<FixedwingMetrics> = callbackFlow {
-        val subscriptionHandle = native.subscribeFixedwingMetrics(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeFixedwingMetrics() { value -> trySend(value) }
         awaitClose { native.unsubscribeFixedwingMetrics(subscriptionHandle) }
     }
 
-    fun imu(): Imu =
-        native.imu()
+    fun imu(): Imu = native.imu()
 
     fun subscribeImu(): Flow<Imu> = callbackFlow {
-        val subscriptionHandle = native.subscribeImu(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeImu() { value -> trySend(value) }
         awaitClose { native.unsubscribeImu(subscriptionHandle) }
     }
 
-    fun scaledImu(): Imu =
-        native.scaledImu()
+    fun scaledImu(): Imu = native.scaledImu()
 
     fun subscribeScaledImu(): Flow<Imu> = callbackFlow {
-        val subscriptionHandle = native.subscribeScaledImu(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeScaledImu() { value -> trySend(value) }
         awaitClose { native.unsubscribeScaledImu(subscriptionHandle) }
     }
 
-    fun rawImu(): Imu =
-        native.rawImu()
+    fun rawImu(): Imu = native.rawImu()
 
     fun subscribeRawImu(): Flow<Imu> = callbackFlow {
-        val subscriptionHandle = native.subscribeRawImu(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeRawImu() { value -> trySend(value) }
         awaitClose { native.unsubscribeRawImu(subscriptionHandle) }
     }
 
-    fun healthAllOk(): Boolean =
-        native.healthAllOk()
+    fun healthAllOk(): Boolean = native.healthAllOk()
 
     fun subscribeHealthAllOk(): Flow<Boolean> = callbackFlow {
-        val subscriptionHandle = native.subscribeHealthAllOk(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeHealthAllOk() { value -> trySend(value) }
         awaitClose { native.unsubscribeHealthAllOk(subscriptionHandle) }
     }
 
-    fun unixEpochTime(): Long =
-        native.unixEpochTime()
+    fun unixEpochTime(): Long = native.unixEpochTime()
 
     fun subscribeUnixEpochTime(): Flow<Long> = callbackFlow {
-        val subscriptionHandle = native.subscribeUnixEpochTime(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeUnixEpochTime() { value -> trySend(value) }
         awaitClose { native.unsubscribeUnixEpochTime(subscriptionHandle) }
     }
 
-    fun distanceSensor(): DistanceSensor =
-        native.distanceSensor()
+    fun distanceSensor(): DistanceSensor = native.distanceSensor()
 
     fun subscribeDistanceSensor(): Flow<DistanceSensor> = callbackFlow {
-        val subscriptionHandle = native.subscribeDistanceSensor(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeDistanceSensor() { value -> trySend(value) }
         awaitClose { native.unsubscribeDistanceSensor(subscriptionHandle) }
     }
 
-    fun scaledPressure(): ScaledPressure =
-        native.scaledPressure()
+    fun scaledPressure(): ScaledPressure = native.scaledPressure()
 
     fun subscribeScaledPressure(): Flow<ScaledPressure> = callbackFlow {
-        val subscriptionHandle = native.subscribeScaledPressure(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeScaledPressure() { value -> trySend(value) }
         awaitClose { native.unsubscribeScaledPressure(subscriptionHandle) }
     }
 
-    fun heading(): Heading =
-        native.heading()
+    fun heading(): Heading = native.heading()
 
     fun subscribeHeading(): Flow<Heading> = callbackFlow {
-        val subscriptionHandle = native.subscribeHeading(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeHeading() { value -> trySend(value) }
         awaitClose { native.unsubscribeHeading(subscriptionHandle) }
     }
 
-    fun altitude(): Altitude =
-        native.altitude()
+    fun altitude(): Altitude = native.altitude()
 
     fun subscribeAltitude(): Flow<Altitude> = callbackFlow {
-        val subscriptionHandle = native.subscribeAltitude(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeAltitude() { value -> trySend(value) }
         awaitClose { native.unsubscribeAltitude(subscriptionHandle) }
     }
 
-    fun wind(): Wind =
-        native.wind()
+    fun wind(): Wind = native.wind()
 
     fun subscribeWind(): Flow<Wind> = callbackFlow {
-        val subscriptionHandle = native.subscribeWind(
-                    ) { value ->
-            trySend(value)
-        }
+        val subscriptionHandle = native.subscribeWind() { value -> trySend(value) }
         awaitClose { native.unsubscribeWind(subscriptionHandle) }
     }
 
     suspend fun setRatePosition(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRatePositionAsync(rateHz, ) { result ->
+            native.setRatePositionAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -759,32 +568,30 @@ class Telemetry internal constructor(
             }
         }
 
-    suspend fun setRateHome(rateHz: Double): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = TelemetryCallbackGuard()
-            native.setRateHomeAsync(rateHz, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun setRateHome(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = TelemetryCallbackGuard()
+        native.setRateHomeAsync(rateHz) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun setRateInAir(rateHz: Double): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = TelemetryCallbackGuard()
-            native.setRateInAirAsync(rateHz, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun setRateInAir(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = TelemetryCallbackGuard()
+        native.setRateInAirAsync(rateHz) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun setRateLandedState(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateLandedStateAsync(rateHz, ) { result ->
+            native.setRateLandedStateAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -795,7 +602,7 @@ class Telemetry internal constructor(
     suspend fun setRateVtolState(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateVtolStateAsync(rateHz, ) { result ->
+            native.setRateVtolStateAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -806,7 +613,7 @@ class Telemetry internal constructor(
     suspend fun setRateAttitudeQuaternion(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateAttitudeQuaternionAsync(rateHz, ) { result ->
+            native.setRateAttitudeQuaternionAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -817,7 +624,7 @@ class Telemetry internal constructor(
     suspend fun setRateAttitudeEuler(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateAttitudeEulerAsync(rateHz, ) { result ->
+            native.setRateAttitudeEulerAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -828,7 +635,7 @@ class Telemetry internal constructor(
     suspend fun setRateVelocityNed(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateVelocityNedAsync(rateHz, ) { result ->
+            native.setRateVelocityNedAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -839,7 +646,7 @@ class Telemetry internal constructor(
     suspend fun setRateGpsInfo(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateGpsInfoAsync(rateHz, ) { result ->
+            native.setRateGpsInfoAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -850,7 +657,7 @@ class Telemetry internal constructor(
     suspend fun setRateRawGps(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateRawGpsAsync(rateHz, ) { result ->
+            native.setRateRawGpsAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -861,7 +668,7 @@ class Telemetry internal constructor(
     suspend fun setRateBattery(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateBatteryAsync(rateHz, ) { result ->
+            native.setRateBatteryAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -872,7 +679,7 @@ class Telemetry internal constructor(
     suspend fun setRateRcStatus(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateRcStatusAsync(rateHz, ) { result ->
+            native.setRateRcStatusAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -883,7 +690,7 @@ class Telemetry internal constructor(
     suspend fun setRateActuatorControlTarget(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateActuatorControlTargetAsync(rateHz, ) { result ->
+            native.setRateActuatorControlTargetAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -894,7 +701,7 @@ class Telemetry internal constructor(
     suspend fun setRateActuatorOutputStatus(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateActuatorOutputStatusAsync(rateHz, ) { result ->
+            native.setRateActuatorOutputStatusAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -905,7 +712,7 @@ class Telemetry internal constructor(
     suspend fun setRateOdometry(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateOdometryAsync(rateHz, ) { result ->
+            native.setRateOdometryAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -916,7 +723,7 @@ class Telemetry internal constructor(
     suspend fun setRatePositionVelocityNed(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRatePositionVelocityNedAsync(rateHz, ) { result ->
+            native.setRatePositionVelocityNedAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -927,7 +734,7 @@ class Telemetry internal constructor(
     suspend fun setRateGroundTruth(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateGroundTruthAsync(rateHz, ) { result ->
+            native.setRateGroundTruthAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -938,7 +745,7 @@ class Telemetry internal constructor(
     suspend fun setRateFixedwingMetrics(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateFixedwingMetricsAsync(rateHz, ) { result ->
+            native.setRateFixedwingMetricsAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -946,21 +753,20 @@ class Telemetry internal constructor(
             }
         }
 
-    suspend fun setRateImu(rateHz: Double): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = TelemetryCallbackGuard()
-            native.setRateImuAsync(rateHz, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun setRateImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = TelemetryCallbackGuard()
+        native.setRateImuAsync(rateHz) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun setRateScaledImu(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateScaledImuAsync(rateHz, ) { result ->
+            native.setRateScaledImuAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -971,7 +777,7 @@ class Telemetry internal constructor(
     suspend fun setRateRawImu(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateRawImuAsync(rateHz, ) { result ->
+            native.setRateRawImuAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -982,7 +788,7 @@ class Telemetry internal constructor(
     suspend fun setRateUnixEpochTime(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateUnixEpochTimeAsync(rateHz, ) { result ->
+            native.setRateUnixEpochTimeAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -993,7 +799,7 @@ class Telemetry internal constructor(
     suspend fun setRateDistanceSensor(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateDistanceSensorAsync(rateHz, ) { result ->
+            native.setRateDistanceSensorAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -1004,7 +810,7 @@ class Telemetry internal constructor(
     suspend fun setRateAltitude(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateAltitudeAsync(rateHz, ) { result ->
+            native.setRateAltitudeAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -1015,7 +821,7 @@ class Telemetry internal constructor(
     suspend fun setRateHealth(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
-            native.setRateHealthAsync(rateHz, ) { result ->
+            native.setRateHealthAsync(rateHz) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -1036,7 +842,7 @@ class Telemetry internal constructor(
                             kotlin.Result.failure(
                                 TelemetryException(
                                     parsedResult,
-                                    "getGpsGlobalOrigin failed: ${parsedResult.name}"
+                                    "getGpsGlobalOrigin failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -1051,145 +857,267 @@ class Telemetry internal constructor(
         native.destroy()
     }
 
-    class TelemetryException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class TelemetryException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Telemetry =
-            Telemetry(
-                createTelemetryNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Telemetry(createTelemetryNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface TelemetryNative {
     fun position(): Telemetry.Position
+
     fun subscribePosition(callback: (Telemetry.Position) -> Unit): Long
+
     fun unsubscribePosition(subscriptionHandle: Long)
+
     fun home(): Telemetry.HomePosition
+
     fun subscribeHome(callback: (Telemetry.HomePosition) -> Unit): Long
+
     fun unsubscribeHome(subscriptionHandle: Long)
+
     fun inAir(): Boolean
+
     fun subscribeInAir(callback: (Boolean) -> Unit): Long
+
     fun unsubscribeInAir(subscriptionHandle: Long)
+
     fun landedState(): Telemetry.LandedState
+
     fun subscribeLandedState(callback: (Telemetry.LandedState) -> Unit): Long
+
     fun unsubscribeLandedState(subscriptionHandle: Long)
+
     fun armed(): Boolean
+
     fun subscribeArmed(callback: (Boolean) -> Unit): Long
+
     fun unsubscribeArmed(subscriptionHandle: Long)
+
     fun vtolState(): Telemetry.VtolState
+
     fun subscribeVtolState(callback: (Telemetry.VtolState) -> Unit): Long
+
     fun unsubscribeVtolState(subscriptionHandle: Long)
+
     fun attitudeQuaternion(): Telemetry.Quaternion
+
     fun subscribeAttitudeQuaternion(callback: (Telemetry.Quaternion) -> Unit): Long
+
     fun unsubscribeAttitudeQuaternion(subscriptionHandle: Long)
+
     fun attitudeEuler(): Telemetry.EulerAngle
+
     fun subscribeAttitudeEuler(callback: (Telemetry.EulerAngle) -> Unit): Long
+
     fun unsubscribeAttitudeEuler(subscriptionHandle: Long)
+
     fun attitudeAngularVelocityBody(): Telemetry.AngularVelocityBody
-    fun subscribeAttitudeAngularVelocityBody(callback: (Telemetry.AngularVelocityBody) -> Unit): Long
+
+    fun subscribeAttitudeAngularVelocityBody(
+        callback: (Telemetry.AngularVelocityBody) -> Unit
+    ): Long
+
     fun unsubscribeAttitudeAngularVelocityBody(subscriptionHandle: Long)
+
     fun velocityNed(): Telemetry.VelocityNed
+
     fun subscribeVelocityNed(callback: (Telemetry.VelocityNed) -> Unit): Long
+
     fun unsubscribeVelocityNed(subscriptionHandle: Long)
+
     fun gpsInfo(): Telemetry.GpsInfo
+
     fun subscribeGpsInfo(callback: (Telemetry.GpsInfo) -> Unit): Long
+
     fun unsubscribeGpsInfo(subscriptionHandle: Long)
+
     fun rawGps(): Telemetry.RawGps
+
     fun subscribeRawGps(callback: (Telemetry.RawGps) -> Unit): Long
+
     fun unsubscribeRawGps(subscriptionHandle: Long)
+
     fun battery(): Telemetry.Battery
+
     fun subscribeBattery(callback: (Telemetry.Battery) -> Unit): Long
+
     fun unsubscribeBattery(subscriptionHandle: Long)
+
     fun flightMode(): Telemetry.FlightMode
+
     fun subscribeFlightMode(callback: (Telemetry.FlightMode) -> Unit): Long
+
     fun unsubscribeFlightMode(subscriptionHandle: Long)
+
     fun health(): Telemetry.Health
+
     fun subscribeHealth(callback: (Telemetry.Health) -> Unit): Long
+
     fun unsubscribeHealth(subscriptionHandle: Long)
+
     fun rcStatus(): Telemetry.RcStatus
+
     fun subscribeRcStatus(callback: (Telemetry.RcStatus) -> Unit): Long
+
     fun unsubscribeRcStatus(subscriptionHandle: Long)
+
     fun statusText(): Telemetry.StatusText
+
     fun subscribeStatusText(callback: (Telemetry.StatusText) -> Unit): Long
+
     fun unsubscribeStatusText(subscriptionHandle: Long)
+
     fun actuatorControlTarget(): Telemetry.ActuatorControlTarget
+
     fun subscribeActuatorControlTarget(callback: (Telemetry.ActuatorControlTarget) -> Unit): Long
+
     fun unsubscribeActuatorControlTarget(subscriptionHandle: Long)
+
     fun actuatorOutputStatus(): Telemetry.ActuatorOutputStatus
+
     fun subscribeActuatorOutputStatus(callback: (Telemetry.ActuatorOutputStatus) -> Unit): Long
+
     fun unsubscribeActuatorOutputStatus(subscriptionHandle: Long)
+
     fun odometry(): Telemetry.Odometry
+
     fun subscribeOdometry(callback: (Telemetry.Odometry) -> Unit): Long
+
     fun unsubscribeOdometry(subscriptionHandle: Long)
+
     fun positionVelocityNed(): Telemetry.PositionVelocityNed
+
     fun subscribePositionVelocityNed(callback: (Telemetry.PositionVelocityNed) -> Unit): Long
+
     fun unsubscribePositionVelocityNed(subscriptionHandle: Long)
+
     fun groundTruth(): Telemetry.GroundTruth
+
     fun subscribeGroundTruth(callback: (Telemetry.GroundTruth) -> Unit): Long
+
     fun unsubscribeGroundTruth(subscriptionHandle: Long)
+
     fun fixedwingMetrics(): Telemetry.FixedwingMetrics
+
     fun subscribeFixedwingMetrics(callback: (Telemetry.FixedwingMetrics) -> Unit): Long
+
     fun unsubscribeFixedwingMetrics(subscriptionHandle: Long)
+
     fun imu(): Telemetry.Imu
+
     fun subscribeImu(callback: (Telemetry.Imu) -> Unit): Long
+
     fun unsubscribeImu(subscriptionHandle: Long)
+
     fun scaledImu(): Telemetry.Imu
+
     fun subscribeScaledImu(callback: (Telemetry.Imu) -> Unit): Long
+
     fun unsubscribeScaledImu(subscriptionHandle: Long)
+
     fun rawImu(): Telemetry.Imu
+
     fun subscribeRawImu(callback: (Telemetry.Imu) -> Unit): Long
+
     fun unsubscribeRawImu(subscriptionHandle: Long)
+
     fun healthAllOk(): Boolean
+
     fun subscribeHealthAllOk(callback: (Boolean) -> Unit): Long
+
     fun unsubscribeHealthAllOk(subscriptionHandle: Long)
+
     fun unixEpochTime(): Long
+
     fun subscribeUnixEpochTime(callback: (Long) -> Unit): Long
+
     fun unsubscribeUnixEpochTime(subscriptionHandle: Long)
+
     fun distanceSensor(): Telemetry.DistanceSensor
+
     fun subscribeDistanceSensor(callback: (Telemetry.DistanceSensor) -> Unit): Long
+
     fun unsubscribeDistanceSensor(subscriptionHandle: Long)
+
     fun scaledPressure(): Telemetry.ScaledPressure
+
     fun subscribeScaledPressure(callback: (Telemetry.ScaledPressure) -> Unit): Long
+
     fun unsubscribeScaledPressure(subscriptionHandle: Long)
+
     fun heading(): Telemetry.Heading
+
     fun subscribeHeading(callback: (Telemetry.Heading) -> Unit): Long
+
     fun unsubscribeHeading(subscriptionHandle: Long)
+
     fun altitude(): Telemetry.Altitude
+
     fun subscribeAltitude(callback: (Telemetry.Altitude) -> Unit): Long
+
     fun unsubscribeAltitude(subscriptionHandle: Long)
+
     fun wind(): Telemetry.Wind
+
     fun subscribeWind(callback: (Telemetry.Wind) -> Unit): Long
+
     fun unsubscribeWind(subscriptionHandle: Long)
+
     fun setRatePositionAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateHomeAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateInAirAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateLandedStateAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateVtolStateAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateAttitudeQuaternionAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateAttitudeEulerAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateVelocityNedAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateGpsInfoAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateRawGpsAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateBatteryAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateRcStatusAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateActuatorControlTargetAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateActuatorOutputStatusAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateOdometryAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRatePositionVelocityNedAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateGroundTruthAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateFixedwingMetricsAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateImuAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateScaledImuAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateRawImuAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateUnixEpochTimeAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateDistanceSensorAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateAltitudeAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun setRateHealthAsync(rateHz: Double, callback: (Int) -> Unit)
+
     fun getGpsGlobalOriginAsync(callback: (Int, Telemetry.GpsGlobalOrigin) -> Unit)
+
     fun destroy()
 }
 

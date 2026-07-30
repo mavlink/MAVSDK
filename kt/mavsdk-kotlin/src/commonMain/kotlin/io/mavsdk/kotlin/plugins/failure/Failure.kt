@@ -6,9 +6,7 @@ package io.mavsdk.kotlin.plugins.failure
 
 import io.mavsdk.kotlin.System
 
-class Failure internal constructor(
-    private val native: FailureNative
-) : AutoCloseable {
+class Failure internal constructor(private val native: FailureNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -19,12 +17,10 @@ class Failure internal constructor(
         UNSUPPORTED(4),
         DENIED(5),
         DISABLED(6),
-        TIMEOUT(7),
-        ;
+        TIMEOUT(7);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -43,8 +39,7 @@ class Failure internal constructor(
         SYSTEM_SERVO(11),
         SYSTEM_AVOIDANCE(12),
         SYSTEM_RC_SIGNAL(13),
-        SYSTEM_MAVLINK_SIGNAL(14),
-        ;
+        SYSTEM_MAVLINK_SIGNAL(14);
 
         companion object {
             fun fromValue(value: Int): FailureUnit =
@@ -60,8 +55,7 @@ class Failure internal constructor(
         WRONG(4),
         SLOW(5),
         DELAYED(6),
-        INTERMITTENT(7),
-        ;
+        INTERMITTENT(7);
 
         companion object {
             fun fromValue(value: Int): FailureType =
@@ -78,21 +72,21 @@ class Failure internal constructor(
         native.destroy()
     }
 
-    class FailureException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class FailureException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Failure =
-            Failure(
-                createFailureNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Failure(createFailureNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface FailureNative {
-    fun inject(failureUnit: Failure.FailureUnit, failureType: Failure.FailureType, instance: Int): Int
+    fun inject(
+        failureUnit: Failure.FailureUnit,
+        failureType: Failure.FailureType,
+        instance: Int,
+    ): Int
+
     fun destroy()
 }
 

@@ -8,90 +8,54 @@ import io.mavsdk.jni.plugins.geofence.NativeGeofence
 import java.util.concurrent.atomic.AtomicBoolean
 
 private fun Geofence.Point.toNative(): NativeGeofence.Point =
-    NativeGeofence.Point(
-        latitudeDeg,
-        longitudeDeg
-    )
+    NativeGeofence.Point(latitudeDeg, longitudeDeg)
 
 private fun NativeGeofence.Point.toKotlin(): Geofence.Point =
-    Geofence.Point(
-        latitudeDeg,
-        longitudeDeg
-    )
+    Geofence.Point(latitudeDeg, longitudeDeg)
 
 private fun Geofence.Polygon.toNative(): NativeGeofence.Polygon =
-    NativeGeofence.Polygon(
-        points.map { it.toNative() }.toTypedArray(),
-        fenceType.value
-    )
+    NativeGeofence.Polygon(points.map { it.toNative() }.toTypedArray(), fenceType.value)
 
 private fun NativeGeofence.Polygon.toKotlin(): Geofence.Polygon =
-    Geofence.Polygon(
-        points.map { it.toKotlin() },
-        Geofence.FenceType.fromValue(fenceType)
-    )
+    Geofence.Polygon(points.map { it.toKotlin() }, Geofence.FenceType.fromValue(fenceType))
 
 private fun Geofence.Circle.toNative(): NativeGeofence.Circle =
-    NativeGeofence.Circle(
-        point.toNative(),
-        radius,
-        fenceType.value
-    )
+    NativeGeofence.Circle(point.toNative(), radius, fenceType.value)
 
 private fun NativeGeofence.Circle.toKotlin(): Geofence.Circle =
-    Geofence.Circle(
-        point.toKotlin(),
-        radius,
-        Geofence.FenceType.fromValue(fenceType)
-    )
+    Geofence.Circle(point.toKotlin(), radius, Geofence.FenceType.fromValue(fenceType))
 
 private fun Geofence.GeofenceData.toNative(): NativeGeofence.GeofenceData =
     NativeGeofence.GeofenceData(
         polygons.map { it.toNative() }.toTypedArray(),
-        circles.map { it.toNative() }.toTypedArray()
+        circles.map { it.toNative() }.toTypedArray(),
     )
 
 private fun NativeGeofence.GeofenceData.toKotlin(): Geofence.GeofenceData =
-    Geofence.GeofenceData(
-        polygons.map { it.toKotlin() },
-        circles.map { it.toKotlin() }
-    )
+    Geofence.GeofenceData(polygons.map { it.toKotlin() }, circles.map { it.toKotlin() })
 
-private class GeofenceNativeImpl(
-    private val handle: Long
-) : GeofenceNative {
-    override fun uploadGeofenceAsync(
-        geofenceData: Geofence.GeofenceData,
-        callback: (Int) -> Unit
-    ) {
+private class GeofenceNativeImpl(private val handle: Long) : GeofenceNative {
+    override fun uploadGeofenceAsync(geofenceData: Geofence.GeofenceData, callback: (Int) -> Unit) {
         NativeGeofence.uploadGeofenceAsync(
             handle,
             geofenceData.toNative(),
-            NativeGeofence.UploadGeofenceCallback {
-                    result -> callback(result)
-            }
+            NativeGeofence.UploadGeofenceCallback { result -> callback(result) },
         )
     }
 
-    override fun downloadGeofenceAsync(
-        callback: (Int, Geofence.GeofenceData) -> Unit
-    ) {
+    override fun downloadGeofenceAsync(callback: (Int, Geofence.GeofenceData) -> Unit) {
         NativeGeofence.downloadGeofenceAsync(
             handle,
-            NativeGeofence.DownloadGeofenceCallback {
-                    result, value -> callback(result, value.toKotlin())
-            }
+            NativeGeofence.DownloadGeofenceCallback { result, value ->
+                callback(result, value.toKotlin())
+            },
         )
     }
 
-    override fun clearGeofenceAsync(
-        callback: (Int) -> Unit
-    ) {
+    override fun clearGeofenceAsync(callback: (Int) -> Unit) {
         NativeGeofence.clearGeofenceAsync(
             handle,
-            NativeGeofence.ClearGeofenceCallback {
-                    result -> callback(result)
-            }
+            NativeGeofence.ClearGeofenceCallback { result -> callback(result) },
         )
     }
 

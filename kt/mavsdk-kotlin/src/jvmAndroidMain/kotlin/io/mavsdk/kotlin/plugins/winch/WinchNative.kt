@@ -23,7 +23,7 @@ private fun Winch.StatusFlags.toNative(): NativeWinch.StatusFlags =
         abandonLine,
         locking,
         loadLine,
-        loadPayload
+        loadPayload,
     )
 
 private fun NativeWinch.StatusFlags.toKotlin(): Winch.StatusFlags =
@@ -41,7 +41,7 @@ private fun NativeWinch.StatusFlags.toKotlin(): Winch.StatusFlags =
         abandonLine,
         locking,
         loadLine,
-        loadPayload
+        loadPayload,
     )
 
 private fun Winch.Status.toNative(): NativeWinch.Status =
@@ -53,7 +53,7 @@ private fun Winch.Status.toNative(): NativeWinch.Status =
         voltageV,
         currentA,
         temperatureC,
-        statusFlags.toNative()
+        statusFlags.toNative(),
     )
 
 private fun NativeWinch.Status.toKotlin(): Winch.Status =
@@ -65,29 +65,23 @@ private fun NativeWinch.Status.toKotlin(): Winch.Status =
         voltageV,
         currentA,
         temperatureC,
-        statusFlags.toKotlin()
+        statusFlags.toKotlin(),
     )
 
-private class WinchNativeImpl(
-    private val handle: Long
-) : WinchNative {
+private class WinchNativeImpl(private val handle: Long) : WinchNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     override fun status(): Winch.Status {
-        val value = NativeWinch.status(
-            handle        )
+        val value = NativeWinch.status(handle)
         return value.toKotlin()
     }
 
-    override fun subscribeStatus(
-        callback: (Winch.Status) -> Unit
-    ): Long {
-        val subscriptionHandle = NativeWinch.subscribeStatus(
-            handle,
-            NativeWinch.StatusCallback {
-                    value -> callback(value.toKotlin())
-            }
-        )
+    override fun subscribeStatus(callback: (Winch.Status) -> Unit): Long {
+        val subscriptionHandle =
+            NativeWinch.subscribeStatus(
+                handle,
+                NativeWinch.StatusCallback { value -> callback(value.toKotlin()) },
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 NativeWinch.unsubscribeStatus(handle, subscriptionHandle)
@@ -100,16 +94,11 @@ private class WinchNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun relaxAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun relaxAsync(instance: Int, callback: (Int) -> Unit) {
         NativeWinch.relaxAsync(
             handle,
             instance,
-            NativeWinch.RelaxCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.RelaxCallback { result -> callback(result) },
         )
     }
 
@@ -117,122 +106,79 @@ private class WinchNativeImpl(
         instance: Int,
         lengthM: Float,
         rateMS: Float,
-        callback: (Int) -> Unit
+        callback: (Int) -> Unit,
     ) {
         NativeWinch.relativeLengthControlAsync(
             handle,
             instance,
             lengthM,
             rateMS,
-            NativeWinch.RelativeLengthControlCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.RelativeLengthControlCallback { result -> callback(result) },
         )
     }
 
-    override fun rateControlAsync(
-        instance: Int,
-        rateMS: Float,
-        callback: (Int) -> Unit
-    ) {
+    override fun rateControlAsync(instance: Int, rateMS: Float, callback: (Int) -> Unit) {
         NativeWinch.rateControlAsync(
             handle,
             instance,
             rateMS,
-            NativeWinch.RateControlCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.RateControlCallback { result -> callback(result) },
         )
     }
 
-    override fun lockAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun lockAsync(instance: Int, callback: (Int) -> Unit) {
         NativeWinch.lockAsync(
             handle,
             instance,
-            NativeWinch.LockCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.LockCallback { result -> callback(result) },
         )
     }
 
-    override fun deliverAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun deliverAsync(instance: Int, callback: (Int) -> Unit) {
         NativeWinch.deliverAsync(
             handle,
             instance,
-            NativeWinch.DeliverCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.DeliverCallback { result -> callback(result) },
         )
     }
 
-    override fun holdAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun holdAsync(instance: Int, callback: (Int) -> Unit) {
         NativeWinch.holdAsync(
             handle,
             instance,
-            NativeWinch.HoldCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.HoldCallback { result -> callback(result) },
         )
     }
 
-    override fun retractAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun retractAsync(instance: Int, callback: (Int) -> Unit) {
         NativeWinch.retractAsync(
             handle,
             instance,
-            NativeWinch.RetractCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.RetractCallback { result -> callback(result) },
         )
     }
 
-    override fun loadLineAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun loadLineAsync(instance: Int, callback: (Int) -> Unit) {
         NativeWinch.loadLineAsync(
             handle,
             instance,
-            NativeWinch.LoadLineCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.LoadLineCallback { result -> callback(result) },
         )
     }
 
-    override fun abandonLineAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun abandonLineAsync(instance: Int, callback: (Int) -> Unit) {
         NativeWinch.abandonLineAsync(
             handle,
             instance,
-            NativeWinch.AbandonLineCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.AbandonLineCallback { result -> callback(result) },
         )
     }
 
-    override fun loadPayloadAsync(
-        instance: Int,
-        callback: (Int) -> Unit
-    ) {
+    override fun loadPayloadAsync(instance: Int, callback: (Int) -> Unit) {
         NativeWinch.loadPayloadAsync(
             handle,
             instance,
-            NativeWinch.LoadPayloadCallback {
-                    result -> callback(result)
-            }
+            NativeWinch.LoadPayloadCallback { result -> callback(result) },
         )
     }
 

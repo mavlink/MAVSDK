@@ -1,8 +1,6 @@
 package io.mavsdk.kotlin
 
-/**
- * MAVLink component types
- */
+/** MAVLink component types */
 enum class ComponentType(val value: Int) {
     AUTOPILOT(0),
     GROUND_STATION(1),
@@ -13,7 +11,6 @@ enum class ComponentType(val value: Int) {
     CUSTOM(6);
 
     companion object {
-        fun fromValue(value: Int): ComponentType =
-            entries.find { it.value == value } ?: CUSTOM
+        fun fromValue(value: Int): ComponentType = entries.find { it.value == value } ?: CUSTOM
     }
 }

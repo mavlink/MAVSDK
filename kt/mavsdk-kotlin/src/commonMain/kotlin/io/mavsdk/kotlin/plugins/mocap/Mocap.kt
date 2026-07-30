@@ -6,9 +6,7 @@ package io.mavsdk.kotlin.plugins.mocap
 
 import io.mavsdk.kotlin.System
 
-class Mocap internal constructor(
-    private val native: MocapNative
-) : AutoCloseable {
+class Mocap internal constructor(private val native: MocapNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -17,19 +15,16 @@ class Mocap internal constructor(
         NO_SYSTEM(2),
         CONNECTION_ERROR(3),
         INVALID_REQUEST_DATA(4),
-        UNSUPPORTED(5),
-        ;
+        UNSUPPORTED(5);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
     enum class MavFrame(val value: Int) {
         MOCAP_NED(0),
-        LOCAL_FRD(1),
-        ;
+        LOCAL_FRD(1);
 
         companion object {
             fun fromValue(value: Int): MavFrame =
@@ -46,8 +41,7 @@ class Mocap internal constructor(
         GPS_INS(5),
         MOCAP(6),
         LIDAR(7),
-        AUTOPILOT(8),
-        ;
+        AUTOPILOT(8);
 
         companion object {
             fun fromValue(value: Int): MavEstimatorType =
@@ -55,46 +49,19 @@ class Mocap internal constructor(
         }
     }
 
-    data class PositionBody(
-        val xM: Float,
-        val yM: Float,
-        val zM: Float,
-    )
+    data class PositionBody(val xM: Float, val yM: Float, val zM: Float)
 
-    data class AngleBody(
-        val rollRad: Float,
-        val pitchRad: Float,
-        val yawRad: Float,
-    )
+    data class AngleBody(val rollRad: Float, val pitchRad: Float, val yawRad: Float)
 
-    data class SpeedBody(
-        val xMS: Float,
-        val yMS: Float,
-        val zMS: Float,
-    )
+    data class SpeedBody(val xMS: Float, val yMS: Float, val zMS: Float)
 
-    data class SpeedNed(
-        val northMS: Float,
-        val eastMS: Float,
-        val downMS: Float,
-    )
+    data class SpeedNed(val northMS: Float, val eastMS: Float, val downMS: Float)
 
-    data class AngularVelocityBody(
-        val rollRadS: Float,
-        val pitchRadS: Float,
-        val yawRadS: Float,
-    )
+    data class AngularVelocityBody(val rollRadS: Float, val pitchRadS: Float, val yawRadS: Float)
 
-    data class Covariance(
-        val covarianceMatrix: List<Float> = emptyList(),
-    )
+    data class Covariance(val covarianceMatrix: List<Float> = emptyList())
 
-    data class Quaternion(
-        val w: Float,
-        val x: Float,
-        val y: Float,
-        val z: Float,
-    )
+    data class Quaternion(val w: Float, val x: Float, val y: Float, val z: Float)
 
     data class VisionPositionEstimate(
         val timeUsec: Long,
@@ -141,8 +108,7 @@ class Mocap internal constructor(
     fun setAttitudePositionMocap(attitudePositionMocap: AttitudePositionMocap): Result =
         Result.fromValue(native.setAttitudePositionMocap(attitudePositionMocap))
 
-    fun setOdometry(odometry: Odometry): Result =
-        Result.fromValue(native.setOdometry(odometry))
+    fun setOdometry(odometry: Odometry): Result = Result.fromValue(native.setOdometry(odometry))
 
     override fun close() {
         if (closed) return
@@ -150,24 +116,23 @@ class Mocap internal constructor(
         native.destroy()
     }
 
-    class MocapException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class MocapException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Mocap =
-            Mocap(
-                createMocapNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Mocap(createMocapNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface MocapNative {
     fun setVisionPositionEstimate(visionPositionEstimate: Mocap.VisionPositionEstimate): Int
+
     fun setVisionSpeedEstimate(visionSpeedEstimate: Mocap.VisionSpeedEstimate): Int
+
     fun setAttitudePositionMocap(attitudePositionMocap: Mocap.AttitudePositionMocap): Int
+
     fun setOdometry(odometry: Mocap.Odometry): Int
+
     fun destroy()
 }
 

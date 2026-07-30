@@ -13,7 +13,7 @@ private fun FollowMe.Config.toNative(): NativeFollowMe.Config =
         responsiveness,
         altitudeMode.value,
         maxTangentialVelMS,
-        followAngleDeg
+        followAngleDeg,
     )
 
 private fun NativeFollowMe.Config.toKotlin(): FollowMe.Config =
@@ -23,7 +23,7 @@ private fun NativeFollowMe.Config.toKotlin(): FollowMe.Config =
         responsiveness,
         FollowMe.FollowAltitudeMode.fromValue(altitudeMode),
         maxTangentialVelMS,
-        followAngleDeg
+        followAngleDeg,
     )
 
 private fun FollowMe.TargetLocation.toNative(): NativeFollowMe.TargetLocation =
@@ -33,7 +33,7 @@ private fun FollowMe.TargetLocation.toNative(): NativeFollowMe.TargetLocation =
         absoluteAltitudeM,
         velocityXMS,
         velocityYMS,
-        velocityZMS
+        velocityZMS,
     )
 
 private fun NativeFollowMe.TargetLocation.toKotlin(): FollowMe.TargetLocation =
@@ -43,15 +43,12 @@ private fun NativeFollowMe.TargetLocation.toKotlin(): FollowMe.TargetLocation =
         absoluteAltitudeM,
         velocityXMS,
         velocityYMS,
-        velocityZMS
+        velocityZMS,
     )
 
-private class FollowMeNativeImpl(
-    private val handle: Long
-) : FollowMeNative {
+private class FollowMeNativeImpl(private val handle: Long) : FollowMeNative {
     override fun getConfig(): FollowMe.Config {
-        val value = NativeFollowMe.getConfig(
-            handle        )
+        val value = NativeFollowMe.getConfig(handle)
         return value.toKotlin()
     }
 
@@ -59,8 +56,7 @@ private class FollowMeNativeImpl(
         NativeFollowMe.setConfig(handle, config.toNative())
 
     override fun isActive(): Boolean {
-        val value = NativeFollowMe.isActive(
-            handle        )
+        val value = NativeFollowMe.isActive(handle)
         return value
     }
 
@@ -68,16 +64,13 @@ private class FollowMeNativeImpl(
         NativeFollowMe.setTargetLocation(handle, location.toNative())
 
     override fun getLastLocation(): FollowMe.TargetLocation {
-        val value = NativeFollowMe.getLastLocation(
-            handle        )
+        val value = NativeFollowMe.getLastLocation(handle)
         return value.toKotlin()
     }
 
-    override fun start(): Int =
-        NativeFollowMe.start(handle)
+    override fun start(): Int = NativeFollowMe.start(handle)
 
-    override fun stop(): Int =
-        NativeFollowMe.stop(handle)
+    override fun stop(): Int = NativeFollowMe.stop(handle)
 
     override fun destroy() {
         NativeFollowMe.destroy(handle)

@@ -5,12 +5,10 @@
 package io.mavsdk.kotlin.plugins.action
 
 import io.mavsdk.kotlin.System
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
+import kotlinx.coroutines.suspendCancellableCoroutine
 
-class Action internal constructor(
-    private val native: ActionNative
-) : AutoCloseable {
+class Action internal constructor(private val native: ActionNative) : AutoCloseable {
     private var closed = false
 
     enum class Result(val value: Int) {
@@ -28,12 +26,10 @@ class Action internal constructor(
         PARAMETER_ERROR(11),
         UNSUPPORTED(12),
         FAILED(13),
-        INVALID_ARGUMENT(14),
-        ;
+        INVALID_ARGUMENT(14);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -42,8 +38,7 @@ class Action internal constructor(
         HOLD_INITIAL_HEADING(1),
         UNCONTROLLED(2),
         HOLD_FRONT_TANGENT_TO_CIRCLE(3),
-        RC_CONTROLLED(4),
-        ;
+        RC_CONTROLLED(4);
 
         companion object {
             fun fromValue(value: Int): OrbitYawBehavior =
@@ -53,8 +48,7 @@ class Action internal constructor(
 
     enum class RelayCommand(val value: Int) {
         ON(0),
-        OFF(1),
-        ;
+        OFF(1);
 
         companion object {
             fun fromValue(value: Int): RelayCommand =
@@ -62,153 +56,159 @@ class Action internal constructor(
         }
     }
 
-    suspend fun arm(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.armAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun arm(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.armAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun armForce(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.armForceAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun armForce(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.armForceAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun disarm(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.disarmAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun disarm(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.disarmAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun takeoff(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.takeoffAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun takeoff(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.takeoffAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun land(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.landAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun land(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.landAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun reboot(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.rebootAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun reboot(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.rebootAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun shutdown(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.shutdownAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun shutdown(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.shutdownAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun terminate(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.terminateAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun terminate(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.terminateAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun kill(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.killAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun kill(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.killAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun returnToLaunch(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.returnToLaunchAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun returnToLaunch(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.returnToLaunchAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun gotoLocation(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float, yawDeg: Float): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.gotoLocationAsync(latitudeDeg, longitudeDeg, absoluteAltitudeM, yawDeg, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun gotoLocation(
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+        yawDeg: Float,
+    ): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.gotoLocationAsync(latitudeDeg, longitudeDeg, absoluteAltitudeM, yawDeg) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun doOrbit(radiusM: Float, velocityMs: Float, yawBehavior: OrbitYawBehavior, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Double): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.doOrbitAsync(radiusM, velocityMs, yawBehavior, latitudeDeg, longitudeDeg, absoluteAltitudeM, ) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun doOrbit(
+        radiusM: Float,
+        velocityMs: Float,
+        yawBehavior: OrbitYawBehavior,
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Double,
+    ): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.doOrbitAsync(
+            radiusM,
+            velocityMs,
+            yawBehavior,
+            latitudeDeg,
+            longitudeDeg,
+            absoluteAltitudeM,
+        ) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun hold(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.holdAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun hold(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.holdAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun setActuator(index: Int, value: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
-            native.setActuatorAsync(index, value, ) { result ->
+            native.setActuatorAsync(index, value) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -219,7 +219,7 @@ class Action internal constructor(
     suspend fun setRelay(index: Int, setting: RelayCommand): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
-            native.setRelayAsync(index, setting, ) { result ->
+            native.setRelayAsync(index, setting) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -227,27 +227,25 @@ class Action internal constructor(
             }
         }
 
-    suspend fun transitionToFixedwing(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.transitionToFixedwingAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun transitionToFixedwing(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.transitionToFixedwingAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
-    suspend fun transitionToMulticopter(): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ActionCallbackGuard()
-            native.transitionToMulticopterAsync() { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
+    suspend fun transitionToMulticopter(): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.transitionToMulticopterAsync() { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
             }
         }
+    }
 
     suspend fun getTakeoffAltitude(): kotlin.Result<Float> =
         suspendCancellableCoroutine { continuation ->
@@ -262,7 +260,7 @@ class Action internal constructor(
                             kotlin.Result.failure(
                                 ActionException(
                                     parsedResult,
-                                    "getTakeoffAltitude failed: ${parsedResult.name}"
+                                    "getTakeoffAltitude failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -274,7 +272,7 @@ class Action internal constructor(
     suspend fun setTakeoffAltitude(altitude: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
-            native.setTakeoffAltitudeAsync(altitude, ) { result ->
+            native.setTakeoffAltitudeAsync(altitude) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -295,7 +293,7 @@ class Action internal constructor(
                             kotlin.Result.failure(
                                 ActionException(
                                     parsedResult,
-                                    "getReturnToLaunchAltitude failed: ${parsedResult.name}"
+                                    "getReturnToLaunchAltitude failed: ${parsedResult.name}",
                                 )
                             )
                         )
@@ -307,7 +305,7 @@ class Action internal constructor(
     suspend fun setReturnToLaunchAltitude(relativeAltitudeM: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
-            native.setReturnToLaunchAltitudeAsync(relativeAltitudeM, ) { result ->
+            native.setReturnToLaunchAltitudeAsync(relativeAltitudeM) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -318,7 +316,7 @@ class Action internal constructor(
     suspend fun setCurrentSpeed(speedMS: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
-            native.setCurrentSpeedAsync(speedMS, ) { result ->
+            native.setCurrentSpeedAsync(speedMS) { result ->
                 val parsedResult = Result.fromValue(result)
                 if (continuation.isActive && true && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
@@ -326,11 +324,22 @@ class Action internal constructor(
             }
         }
 
-    fun setGpsGlobalOrigin(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Result =
+    fun setGpsGlobalOrigin(
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+    ): Result =
         Result.fromValue(native.setGpsGlobalOrigin(latitudeDeg, longitudeDeg, absoluteAltitudeM))
 
-    fun setHome(useCurrentLocation: Boolean, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Result =
-        Result.fromValue(native.setHome(useCurrentLocation, latitudeDeg, longitudeDeg, absoluteAltitudeM))
+    fun setHome(
+        useCurrentLocation: Boolean,
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+    ): Result =
+        Result.fromValue(
+            native.setHome(useCurrentLocation, latitudeDeg, longitudeDeg, absoluteAltitudeM)
+        )
 
     override fun close() {
         if (closed) return
@@ -338,44 +347,82 @@ class Action internal constructor(
         native.destroy()
     }
 
-    class ActionException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
+    class ActionException(val result: Result, message: String) : Exception(message)
 
     companion object {
         fun create(system: System): Action =
-            Action(
-                createActionNative(system.getHandle())
-            ).also { system.registerPlugin(it) }
+            Action(createActionNative(system.getHandle())).also { system.registerPlugin(it) }
     }
 }
 
 internal interface ActionNative {
     fun armAsync(callback: (Int) -> Unit)
+
     fun armForceAsync(callback: (Int) -> Unit)
+
     fun disarmAsync(callback: (Int) -> Unit)
+
     fun takeoffAsync(callback: (Int) -> Unit)
+
     fun landAsync(callback: (Int) -> Unit)
+
     fun rebootAsync(callback: (Int) -> Unit)
+
     fun shutdownAsync(callback: (Int) -> Unit)
+
     fun terminateAsync(callback: (Int) -> Unit)
+
     fun killAsync(callback: (Int) -> Unit)
+
     fun returnToLaunchAsync(callback: (Int) -> Unit)
-    fun gotoLocationAsync(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float, yawDeg: Float, callback: (Int) -> Unit)
-    fun doOrbitAsync(radiusM: Float, velocityMs: Float, yawBehavior: Action.OrbitYawBehavior, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Double, callback: (Int) -> Unit)
+
+    fun gotoLocationAsync(
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+        yawDeg: Float,
+        callback: (Int) -> Unit,
+    )
+
+    fun doOrbitAsync(
+        radiusM: Float,
+        velocityMs: Float,
+        yawBehavior: Action.OrbitYawBehavior,
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Double,
+        callback: (Int) -> Unit,
+    )
+
     fun holdAsync(callback: (Int) -> Unit)
+
     fun setActuatorAsync(index: Int, value: Float, callback: (Int) -> Unit)
+
     fun setRelayAsync(index: Int, setting: Action.RelayCommand, callback: (Int) -> Unit)
+
     fun transitionToFixedwingAsync(callback: (Int) -> Unit)
+
     fun transitionToMulticopterAsync(callback: (Int) -> Unit)
+
     fun getTakeoffAltitudeAsync(callback: (Int, Float) -> Unit)
+
     fun setTakeoffAltitudeAsync(altitude: Float, callback: (Int) -> Unit)
+
     fun getReturnToLaunchAltitudeAsync(callback: (Int, Float) -> Unit)
+
     fun setReturnToLaunchAltitudeAsync(relativeAltitudeM: Float, callback: (Int) -> Unit)
+
     fun setCurrentSpeedAsync(speedMS: Float, callback: (Int) -> Unit)
+
     fun setGpsGlobalOrigin(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Int
-    fun setHome(useCurrentLocation: Boolean, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Int
+
+    fun setHome(
+        useCurrentLocation: Boolean,
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+    ): Int
+
     fun destroy()
 }
 
