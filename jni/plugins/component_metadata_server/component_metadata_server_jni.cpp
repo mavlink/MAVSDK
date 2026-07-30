@@ -78,19 +78,21 @@ jobjectArray toJavaMetadataArray(
 
 jobject toJavaMetadata(
     JNIEnv* env, const mavsdk_component_metadata_server_metadata_t& value) {
-    jstring json_metadataValue =
-        toJavaString(env, value.json_metadata);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata_server/NativeComponentMetadataServer$Metadata");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/component_metadata_server/NativeComponentMetadataServer$Metadata");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ILjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring json_metadataValue =
+        toJavaString(env, value.json_metadata);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.type)
         , json_metadataValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(json_metadataValue);
     return result;
 }
@@ -99,14 +101,16 @@ jobjectArray toJavaMetadataArray(
     JNIEnv* env,
     const mavsdk_component_metadata_server_metadata_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata_server/NativeComponentMetadataServer$Metadata");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/component_metadata_server/NativeComponentMetadataServer$Metadata");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMetadata(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 

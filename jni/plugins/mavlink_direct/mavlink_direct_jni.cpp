@@ -100,16 +100,19 @@ jobjectArray toJavaMavlinkMessageArray(
 
 jobject toJavaMavlinkMessage(
     JNIEnv* env, const mavsdk_mavlink_direct_mavlink_message_t& value) {
-    jstring message_nameValue =
-        toJavaString(env, value.message_name);
-    jstring fields_jsonValue =
-        toJavaString(env, value.fields_json);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mavlink_direct/NativeMavlinkDirect$MavlinkMessage");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mavlink_direct/NativeMavlinkDirect$MavlinkMessage");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;IIIILjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring message_nameValue =
+        toJavaString(env, value.message_name);
+    jstring fields_jsonValue =
+        toJavaString(env, value.fields_json);
     jobject result = env->NewObject(carrierClass, constructor
         , message_nameValue
         , static_cast<jint>(value.system_id)
@@ -118,7 +121,6 @@ jobject toJavaMavlinkMessage(
         , static_cast<jint>(value.target_component_id)
         , fields_jsonValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(message_nameValue);
     env->DeleteLocalRef(fields_jsonValue);
     return result;
@@ -128,14 +130,16 @@ jobjectArray toJavaMavlinkMessageArray(
     JNIEnv* env,
     const mavsdk_mavlink_direct_mavlink_message_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mavlink_direct/NativeMavlinkDirect$MavlinkMessage");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mavlink_direct/NativeMavlinkDirect$MavlinkMessage");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMavlinkMessage(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -155,6 +159,13 @@ struct MessageCallbackWrapper {
     void operator()(
         const mavsdk_mavlink_direct_mavlink_message_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_mavlink_direct_mavlink_message_t value;
+            ~ValueGuard() {
+                mavsdk_mavlink_direct_mavlink_message_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

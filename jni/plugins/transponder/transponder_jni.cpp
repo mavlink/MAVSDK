@@ -118,14 +118,17 @@ jobjectArray toJavaAdsbVehicleArray(
 
 jobject toJavaAdsbVehicle(
     JNIEnv* env, const mavsdk_transponder_adsb_vehicle_t& value) {
-    jstring callsignValue =
-        toJavaString(env, value.callsign);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/transponder/NativeTransponder$AdsbVehicle");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/transponder/NativeTransponder$AdsbVehicle");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(IDDIFFFFLjava/lang/String;III)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring callsignValue =
+        toJavaString(env, value.callsign);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.icao_address)
         , static_cast<jdouble>(value.latitude_deg)
@@ -140,7 +143,6 @@ jobject toJavaAdsbVehicle(
         , static_cast<jint>(value.squawk)
         , static_cast<jint>(value.tslc_s)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(callsignValue);
     return result;
 }
@@ -149,14 +151,16 @@ jobjectArray toJavaAdsbVehicleArray(
     JNIEnv* env,
     const mavsdk_transponder_adsb_vehicle_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/transponder/NativeTransponder$AdsbVehicle");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/transponder/NativeTransponder$AdsbVehicle");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAdsbVehicle(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -176,6 +180,13 @@ struct TransponderCallbackWrapper {
     void operator()(
         const mavsdk_transponder_adsb_vehicle_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_transponder_adsb_vehicle_t value;
+            ~ValueGuard() {
+                mavsdk_transponder_adsb_vehicle_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -211,6 +222,7 @@ struct SetRateTransponderCallbackWrapper {
 
     void operator()(
         const mavsdk_transponder_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

@@ -37,6 +37,7 @@ struct StartPositionControlCallbackWrapper {
 
     void operator()(
         const mavsdk_manual_control_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -69,6 +70,7 @@ struct StartAltitudeControlCallbackWrapper {
 
     void operator()(
         const mavsdk_manual_control_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

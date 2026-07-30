@@ -540,19 +540,21 @@ jobjectArray toJavaAccelerationNedArray(
 
 jobject toJavaAttitude(
     JNIEnv* env, const mavsdk_offboard_attitude_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$Attitude");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$Attitude");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.roll_deg)
         , static_cast<jfloat>(value.pitch_deg)
         , static_cast<jfloat>(value.yaw_deg)
         , static_cast<jfloat>(value.thrust_value)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -560,18 +562,29 @@ jobjectArray toJavaAttitudeArray(
     JNIEnv* env,
     const mavsdk_offboard_attitude_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$Attitude");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$Attitude");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAttitude(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaActuatorControlGroup(
     JNIEnv* env, const mavsdk_offboard_actuator_control_group_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([F)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jfloatArray controlsValue =
         env->NewFloatArray(
             static_cast<jsize>(value.controls_size));
@@ -587,16 +600,9 @@ jobject toJavaActuatorControlGroup(
             static_cast<jsize>(controlsJavaValues.size()),
             controlsJavaValues.data());
     }
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([F)V");
     jobject result = env->NewObject(carrierClass, constructor
         , controlsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(controlsValue);
     return result;
 }
@@ -605,31 +611,35 @@ jobjectArray toJavaActuatorControlGroupArray(
     JNIEnv* env,
     const mavsdk_offboard_actuator_control_group_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaActuatorControlGroup(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaActuatorControl(
     JNIEnv* env, const mavsdk_offboard_actuator_control_t& value) {
-    jobjectArray groupsValue =
-        toJavaActuatorControlGroupArray(
-            env, value.groups, value.groups_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControl");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControl");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControlGroup;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobjectArray groupsValue =
+        toJavaActuatorControlGroupArray(
+            env, value.groups, value.groups_size);
     jobject result = env->NewObject(carrierClass, constructor
         , groupsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(groupsValue);
     return result;
 }
@@ -638,31 +648,35 @@ jobjectArray toJavaActuatorControlArray(
     JNIEnv* env,
     const mavsdk_offboard_actuator_control_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControl");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$ActuatorControl");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaActuatorControl(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAttitudeRate(
     JNIEnv* env, const mavsdk_offboard_attitude_rate_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$AttitudeRate");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$AttitudeRate");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.roll_deg_s)
         , static_cast<jfloat>(value.pitch_deg_s)
         , static_cast<jfloat>(value.yaw_deg_s)
         , static_cast<jfloat>(value.thrust_value)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -670,31 +684,35 @@ jobjectArray toJavaAttitudeRateArray(
     JNIEnv* env,
     const mavsdk_offboard_attitude_rate_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$AttitudeRate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$AttitudeRate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAttitudeRate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPositionNedYaw(
     JNIEnv* env, const mavsdk_offboard_position_ned_yaw_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionNedYaw");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionNedYaw");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.north_m)
         , static_cast<jfloat>(value.east_m)
         , static_cast<jfloat>(value.down_m)
         , static_cast<jfloat>(value.yaw_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -702,24 +720,29 @@ jobjectArray toJavaPositionNedYawArray(
     JNIEnv* env,
     const mavsdk_offboard_position_ned_yaw_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionNedYaw");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionNedYaw");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPositionNedYaw(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPositionGlobalYaw(
     JNIEnv* env, const mavsdk_offboard_position_global_yaw_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionGlobalYaw");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionGlobalYaw");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(DDFFI)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jdouble>(value.lat_deg)
         , static_cast<jdouble>(value.lon_deg)
@@ -727,7 +750,6 @@ jobject toJavaPositionGlobalYaw(
         , static_cast<jfloat>(value.yaw_deg)
         , static_cast<jint>(value.altitude_type)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -735,31 +757,35 @@ jobjectArray toJavaPositionGlobalYawArray(
     JNIEnv* env,
     const mavsdk_offboard_position_global_yaw_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionGlobalYaw");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$PositionGlobalYaw");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPositionGlobalYaw(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVelocityBodyYawspeed(
     JNIEnv* env, const mavsdk_offboard_velocity_body_yawspeed_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityBodyYawspeed");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityBodyYawspeed");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.forward_m_s)
         , static_cast<jfloat>(value.right_m_s)
         , static_cast<jfloat>(value.down_m_s)
         , static_cast<jfloat>(value.yawspeed_deg_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -767,31 +793,35 @@ jobjectArray toJavaVelocityBodyYawspeedArray(
     JNIEnv* env,
     const mavsdk_offboard_velocity_body_yawspeed_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityBodyYawspeed");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityBodyYawspeed");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVelocityBodyYawspeed(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVelocityNedYaw(
     JNIEnv* env, const mavsdk_offboard_velocity_ned_yaw_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityNedYaw");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityNedYaw");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.north_m_s)
         , static_cast<jfloat>(value.east_m_s)
         , static_cast<jfloat>(value.down_m_s)
         , static_cast<jfloat>(value.yaw_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -799,30 +829,34 @@ jobjectArray toJavaVelocityNedYawArray(
     JNIEnv* env,
     const mavsdk_offboard_velocity_ned_yaw_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityNedYaw");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$VelocityNedYaw");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVelocityNedYaw(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAccelerationNed(
     JNIEnv* env, const mavsdk_offboard_acceleration_ned_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$AccelerationNed");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$AccelerationNed");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.north_m_s2)
         , static_cast<jfloat>(value.east_m_s2)
         , static_cast<jfloat>(value.down_m_s2)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -830,14 +864,16 @@ jobjectArray toJavaAccelerationNedArray(
     JNIEnv* env,
     const mavsdk_offboard_acceleration_ned_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/offboard/NativeOffboard$AccelerationNed");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/offboard/NativeOffboard$AccelerationNed");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAccelerationNed(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -856,6 +892,7 @@ struct StartCallbackWrapper {
 
     void operator()(
         const mavsdk_offboard_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -888,6 +925,7 @@ struct StopCallbackWrapper {
 
     void operator()(
         const mavsdk_offboard_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

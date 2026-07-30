@@ -159,7 +159,16 @@ jobjectArray toJavaProgressDataArray(
 
 jobject toJavaListDirectoryData(
     JNIEnv* env, const mavsdk_ftp_list_directory_data_t& value) {
-    jclass dirsElementClass = env->FindClass("java/lang/String");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/ftp/NativeFtp$ListDirectoryData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Ljava/lang/String;[Ljava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jclass dirsElementClass = findClass(env, "java/lang/String");
     jobjectArray dirsValue = env->NewObjectArray(
         static_cast<jsize>(value.dirs_size),
         dirsElementClass, nullptr);
@@ -168,8 +177,7 @@ jobject toJavaListDirectoryData(
         env->SetObjectArrayElement(dirsValue, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(dirsElementClass);
-    jclass filesElementClass = env->FindClass("java/lang/String");
+    jclass filesElementClass = findClass(env, "java/lang/String");
     jobjectArray filesValue = env->NewObjectArray(
         static_cast<jsize>(value.files_size),
         filesElementClass, nullptr);
@@ -178,18 +186,10 @@ jobject toJavaListDirectoryData(
         env->SetObjectArrayElement(filesValue, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(filesElementClass);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/ftp/NativeFtp$ListDirectoryData");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([Ljava/lang/String;[Ljava/lang/String;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , dirsValue
         , filesValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(dirsValue);
     env->DeleteLocalRef(filesValue);
     return result;
@@ -199,29 +199,33 @@ jobjectArray toJavaListDirectoryDataArray(
     JNIEnv* env,
     const mavsdk_ftp_list_directory_data_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/ftp/NativeFtp$ListDirectoryData");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/ftp/NativeFtp$ListDirectoryData");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaListDirectoryData(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaProgressData(
     JNIEnv* env, const mavsdk_ftp_progress_data_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/ftp/NativeFtp$ProgressData");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/ftp/NativeFtp$ProgressData");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(II)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.bytes_transferred)
         , static_cast<jint>(value.total_bytes)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -229,14 +233,16 @@ jobjectArray toJavaProgressDataArray(
     JNIEnv* env,
     const mavsdk_ftp_progress_data_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/ftp/NativeFtp$ProgressData");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/ftp/NativeFtp$ProgressData");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaProgressData(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -256,6 +262,13 @@ struct DownloadCallbackWrapper {
     void operator()(
         const mavsdk_ftp_result_t result,        const mavsdk_ftp_progress_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_ftp_progress_data_t value;
+            ~ValueGuard() {
+                mavsdk_ftp_progress_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -293,6 +306,13 @@ struct UploadCallbackWrapper {
     void operator()(
         const mavsdk_ftp_result_t result,        const mavsdk_ftp_progress_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_ftp_progress_data_t value;
+            ~ValueGuard() {
+                mavsdk_ftp_progress_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -330,6 +350,13 @@ struct ListDirectoryCallbackWrapper {
     void operator()(
         const mavsdk_ftp_result_t result,        const mavsdk_ftp_list_directory_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_ftp_list_directory_data_t value;
+            ~ValueGuard() {
+                mavsdk_ftp_list_directory_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -366,6 +393,7 @@ struct CreateDirectoryCallbackWrapper {
 
     void operator()(
         const mavsdk_ftp_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -398,6 +426,7 @@ struct RemoveDirectoryCallbackWrapper {
 
     void operator()(
         const mavsdk_ftp_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -430,6 +459,7 @@ struct RemoveFileCallbackWrapper {
 
     void operator()(
         const mavsdk_ftp_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -462,6 +492,7 @@ struct RenameCallbackWrapper {
 
     void operator()(
         const mavsdk_ftp_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -495,6 +526,7 @@ struct AreFilesIdenticalCallbackWrapper {
     void operator()(
         const mavsdk_ftp_result_t result,        const bool value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

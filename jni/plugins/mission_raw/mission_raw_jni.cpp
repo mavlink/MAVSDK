@@ -248,17 +248,19 @@ jobjectArray toJavaMissionImportDataArray(
 
 jobject toJavaMissionProgress(
     JNIEnv* env, const mavsdk_mission_raw_mission_progress_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionProgress");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionProgress");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(II)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.current)
         , static_cast<jint>(value.total)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -266,24 +268,29 @@ jobjectArray toJavaMissionProgressArray(
     JNIEnv* env,
     const mavsdk_mission_raw_mission_progress_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionProgress");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionProgress");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMissionProgress(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaMissionItem(
     JNIEnv* env, const mavsdk_mission_raw_mission_item_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(IIIIIFFFFIIFI)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.seq)
         , static_cast<jint>(value.frame)
@@ -299,7 +306,6 @@ jobject toJavaMissionItem(
         , static_cast<jfloat>(value.z)
         , static_cast<jint>(value.mission_type)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -307,18 +313,29 @@ jobjectArray toJavaMissionItemArray(
     JNIEnv* env,
     const mavsdk_mission_raw_mission_item_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMissionItem(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaMissionImportData(
     JNIEnv* env, const mavsdk_mission_raw_mission_import_data_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionImportData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem;[Lio/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem;[Lio/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobjectArray mission_itemsValue =
         toJavaMissionItemArray(
             env, value.mission_items, value.mission_items_size);
@@ -328,18 +345,11 @@ jobject toJavaMissionImportData(
     jobjectArray rally_itemsValue =
         toJavaMissionItemArray(
             env, value.rally_items, value.rally_items_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionImportData");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem;[Lio/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem;[Lio/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionItem;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , mission_itemsValue
         , geofence_itemsValue
         , rally_itemsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(mission_itemsValue);
     env->DeleteLocalRef(geofence_itemsValue);
     env->DeleteLocalRef(rally_itemsValue);
@@ -350,14 +360,16 @@ jobjectArray toJavaMissionImportDataArray(
     JNIEnv* env,
     const mavsdk_mission_raw_mission_import_data_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionImportData");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw/NativeMissionRaw$MissionImportData");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMissionImportData(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -376,6 +388,7 @@ struct UploadMissionCallbackWrapper {
 
     void operator()(
         const mavsdk_mission_raw_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -408,6 +421,7 @@ struct UploadGeofenceCallbackWrapper {
 
     void operator()(
         const mavsdk_mission_raw_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -440,6 +454,7 @@ struct UploadRallyPointsCallbackWrapper {
 
     void operator()(
         const mavsdk_mission_raw_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -473,6 +488,13 @@ struct DownloadMissionCallbackWrapper {
     void operator()(
         const mavsdk_mission_raw_result_t result,        const mavsdk_mission_raw_mission_item_t* values, size_t count
     ) const {
+        struct ValueGuard {
+            mavsdk_mission_raw_mission_item_t* values;
+            size_t count;
+            ~ValueGuard() { mavsdk_mission_raw_mission_item_array_destroy(
+        &values, count); }
+        } valueGuard{const_cast<mavsdk_mission_raw_mission_item_t*>(values), count};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -510,6 +532,13 @@ struct DownloadGeofenceCallbackWrapper {
     void operator()(
         const mavsdk_mission_raw_result_t result,        const mavsdk_mission_raw_mission_item_t* values, size_t count
     ) const {
+        struct ValueGuard {
+            mavsdk_mission_raw_mission_item_t* values;
+            size_t count;
+            ~ValueGuard() { mavsdk_mission_raw_mission_item_array_destroy(
+        &values, count); }
+        } valueGuard{const_cast<mavsdk_mission_raw_mission_item_t*>(values), count};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -547,6 +576,13 @@ struct DownloadRallypointsCallbackWrapper {
     void operator()(
         const mavsdk_mission_raw_result_t result,        const mavsdk_mission_raw_mission_item_t* values, size_t count
     ) const {
+        struct ValueGuard {
+            mavsdk_mission_raw_mission_item_t* values;
+            size_t count;
+            ~ValueGuard() { mavsdk_mission_raw_mission_item_array_destroy(
+        &values, count); }
+        } valueGuard{const_cast<mavsdk_mission_raw_mission_item_t*>(values), count};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -583,6 +619,7 @@ struct StartMissionCallbackWrapper {
 
     void operator()(
         const mavsdk_mission_raw_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -615,6 +652,7 @@ struct PauseMissionCallbackWrapper {
 
     void operator()(
         const mavsdk_mission_raw_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -647,6 +685,7 @@ struct ClearMissionCallbackWrapper {
 
     void operator()(
         const mavsdk_mission_raw_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -679,6 +718,7 @@ struct SetCurrentMissionItemCallbackWrapper {
 
     void operator()(
         const mavsdk_mission_raw_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -712,6 +752,13 @@ struct MissionProgressCallbackWrapper {
     void operator()(
         const mavsdk_mission_raw_mission_progress_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_mission_raw_mission_progress_t value;
+            ~ValueGuard() {
+                mavsdk_mission_raw_mission_progress_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -748,6 +795,7 @@ struct MissionChangedCallbackWrapper {
     void operator()(
         const bool value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

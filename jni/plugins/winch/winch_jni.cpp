@@ -199,12 +199,15 @@ jobjectArray toJavaStatusArray(
 
 jobject toJavaStatusFlags(
     JNIEnv* env, const mavsdk_winch_status_flags_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ZZZZZZZZZZZZZZ)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jboolean>(value.healthy)
         , static_cast<jboolean>(value.fully_retracted)
@@ -221,7 +224,6 @@ jobject toJavaStatusFlags(
         , static_cast<jboolean>(value.load_line)
         , static_cast<jboolean>(value.load_payload)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -229,26 +231,31 @@ jobjectArray toJavaStatusFlagsArray(
     JNIEnv* env,
     const mavsdk_winch_status_flags_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaStatusFlags(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaStatus(
     JNIEnv* env, const mavsdk_winch_status_t& value) {
-    jobject status_flagsValue =
-        toJavaStatusFlags(env, value.status_flags);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/winch/NativeWinch$Status");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/winch/NativeWinch$Status");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(JFFFFFILio/mavsdk/jni/plugins/winch/NativeWinch$StatusFlags;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobject status_flagsValue =
+        toJavaStatusFlags(env, value.status_flags);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jlong>(value.time_usec)
         , static_cast<jfloat>(value.line_length_m)
@@ -259,7 +266,6 @@ jobject toJavaStatus(
         , static_cast<jint>(value.temperature_c)
         , status_flagsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(status_flagsValue);
     return result;
 }
@@ -268,14 +274,16 @@ jobjectArray toJavaStatusArray(
     JNIEnv* env,
     const mavsdk_winch_status_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/winch/NativeWinch$Status");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/winch/NativeWinch$Status");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaStatus(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -295,6 +303,13 @@ struct StatusCallbackWrapper {
     void operator()(
         const mavsdk_winch_status_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_winch_status_t value;
+            ~ValueGuard() {
+                mavsdk_winch_status_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -330,6 +345,7 @@ struct RelaxCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -362,6 +378,7 @@ struct RelativeLengthControlCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -394,6 +411,7 @@ struct RateControlCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -426,6 +444,7 @@ struct LockCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -458,6 +477,7 @@ struct DeliverCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -490,6 +510,7 @@ struct HoldCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -522,6 +543,7 @@ struct RetractCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -554,6 +576,7 @@ struct LoadLineCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -586,6 +609,7 @@ struct AbandonLineCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -618,6 +642,7 @@ struct LoadPayloadCallbackWrapper {
 
     void operator()(
         const mavsdk_winch_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

@@ -153,12 +153,15 @@ jobjectArray toJavaTargetLocationArray(
 
 jobject toJavaConfig(
     JNIEnv* env, const mavsdk_follow_me_config_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/follow_me/NativeFollowMe$Config");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/follow_me/NativeFollowMe$Config");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFIFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.follow_height_m)
         , static_cast<jfloat>(value.follow_distance_m)
@@ -167,7 +170,6 @@ jobject toJavaConfig(
         , static_cast<jfloat>(value.max_tangential_vel_m_s)
         , static_cast<jfloat>(value.follow_angle_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -175,24 +177,29 @@ jobjectArray toJavaConfigArray(
     JNIEnv* env,
     const mavsdk_follow_me_config_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/follow_me/NativeFollowMe$Config");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/follow_me/NativeFollowMe$Config");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaConfig(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaTargetLocation(
     JNIEnv* env, const mavsdk_follow_me_target_location_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/follow_me/NativeFollowMe$TargetLocation");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/follow_me/NativeFollowMe$TargetLocation");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(DDFFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jdouble>(value.latitude_deg)
         , static_cast<jdouble>(value.longitude_deg)
@@ -201,7 +208,6 @@ jobject toJavaTargetLocation(
         , static_cast<jfloat>(value.velocity_y_m_s)
         , static_cast<jfloat>(value.velocity_z_m_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -209,14 +215,16 @@ jobjectArray toJavaTargetLocationArray(
     JNIEnv* env,
     const mavsdk_follow_me_target_location_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/follow_me/NativeFollowMe$TargetLocation");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/follow_me/NativeFollowMe$TargetLocation");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaTargetLocation(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 

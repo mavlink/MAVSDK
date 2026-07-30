@@ -127,16 +127,18 @@ jobjectArray toJavaEntryArray(
 
 jobject toJavaProgressData(
     JNIEnv* env, const mavsdk_log_files_progress_data_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/log_files/NativeLogFiles$ProgressData");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/log_files/NativeLogFiles$ProgressData");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(F)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.progress)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -144,32 +146,36 @@ jobjectArray toJavaProgressDataArray(
     JNIEnv* env,
     const mavsdk_log_files_progress_data_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/log_files/NativeLogFiles$ProgressData");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/log_files/NativeLogFiles$ProgressData");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaProgressData(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaEntry(
     JNIEnv* env, const mavsdk_log_files_entry_t& value) {
-    jstring dateValue =
-        toJavaString(env, value.date);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/log_files/NativeLogFiles$Entry");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/log_files/NativeLogFiles$Entry");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ILjava/lang/String;I)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring dateValue =
+        toJavaString(env, value.date);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.id)
         , dateValue
         , static_cast<jint>(value.size_bytes)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(dateValue);
     return result;
 }
@@ -178,14 +184,16 @@ jobjectArray toJavaEntryArray(
     JNIEnv* env,
     const mavsdk_log_files_entry_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/log_files/NativeLogFiles$Entry");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/log_files/NativeLogFiles$Entry");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaEntry(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -205,6 +213,13 @@ struct GetEntriesCallbackWrapper {
     void operator()(
         const mavsdk_log_files_result_t result,        const mavsdk_log_files_entry_t* values, size_t count
     ) const {
+        struct ValueGuard {
+            mavsdk_log_files_entry_t* values;
+            size_t count;
+            ~ValueGuard() { mavsdk_log_files_entry_array_destroy(
+        &values, count); }
+        } valueGuard{const_cast<mavsdk_log_files_entry_t*>(values), count};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -242,6 +257,13 @@ struct DownloadLogFileCallbackWrapper {
     void operator()(
         const mavsdk_log_files_result_t result,        const mavsdk_log_files_progress_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_log_files_progress_data_t value;
+            ~ValueGuard() {
+                mavsdk_log_files_progress_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

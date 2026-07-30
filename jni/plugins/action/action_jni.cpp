@@ -37,6 +37,7 @@ struct ArmCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -69,6 +70,7 @@ struct ArmForceCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -101,6 +103,7 @@ struct DisarmCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -133,6 +136,7 @@ struct TakeoffCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -165,6 +169,7 @@ struct LandCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -197,6 +202,7 @@ struct RebootCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -229,6 +235,7 @@ struct ShutdownCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -261,6 +268,7 @@ struct TerminateCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -293,6 +301,7 @@ struct KillCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -325,6 +334,7 @@ struct ReturnToLaunchCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -357,6 +367,7 @@ struct GotoLocationCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -389,6 +400,7 @@ struct DoOrbitCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -421,6 +433,7 @@ struct HoldCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -453,6 +466,7 @@ struct SetActuatorCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -485,6 +499,7 @@ struct SetRelayCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -517,6 +532,7 @@ struct TransitionToFixedwingCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -549,6 +565,7 @@ struct TransitionToMulticopterCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -582,6 +599,7 @@ struct GetTakeoffAltitudeCallbackWrapper {
     void operator()(
         const mavsdk_action_result_t result,        const float value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -615,6 +633,7 @@ struct SetTakeoffAltitudeCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -648,6 +667,7 @@ struct GetReturnToLaunchAltitudeCallbackWrapper {
     void operator()(
         const mavsdk_action_result_t result,        const float value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -681,6 +701,7 @@ struct SetReturnToLaunchAltitudeCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -713,6 +734,7 @@ struct SetCurrentSpeedCallbackWrapper {
 
     void operator()(
         const mavsdk_action_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

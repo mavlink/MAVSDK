@@ -277,19 +277,21 @@ jobjectArray toJavaAllParamsArray(
 
 jobject toJavaIntParam(
     JNIEnv* env, const mavsdk_param_server_int_param_t& value) {
-    jstring nameValue =
-        toJavaString(env, value.name);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;I)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring nameValue =
+        toJavaString(env, value.name);
     jobject result = env->NewObject(carrierClass, constructor
         , nameValue
         , static_cast<jint>(value.value)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(nameValue);
     return result;
 }
@@ -298,31 +300,35 @@ jobjectArray toJavaIntParamArray(
     JNIEnv* env,
     const mavsdk_param_server_int_param_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaIntParam(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaFloatParam(
     JNIEnv* env, const mavsdk_param_server_float_param_t& value) {
-    jstring nameValue =
-        toJavaString(env, value.name);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;F)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring nameValue =
+        toJavaString(env, value.name);
     jobject result = env->NewObject(carrierClass, constructor
         , nameValue
         , static_cast<jfloat>(value.value)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(nameValue);
     return result;
 }
@@ -331,33 +337,37 @@ jobjectArray toJavaFloatParamArray(
     JNIEnv* env,
     const mavsdk_param_server_float_param_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaFloatParam(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCustomParam(
     JNIEnv* env, const mavsdk_param_server_custom_param_t& value) {
-    jstring nameValue =
-        toJavaString(env, value.name);
-    jstring valueValue =
-        toJavaString(env, value.value);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring nameValue =
+        toJavaString(env, value.name);
+    jstring valueValue =
+        toJavaString(env, value.value);
     jobject result = env->NewObject(carrierClass, constructor
         , nameValue
         , valueValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(nameValue);
     env->DeleteLocalRef(valueValue);
     return result;
@@ -367,18 +377,29 @@ jobjectArray toJavaCustomParamArray(
     JNIEnv* env,
     const mavsdk_param_server_custom_param_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCustomParam(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAllParams(
     JNIEnv* env, const mavsdk_param_server_all_params_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/param_server/NativeParamServer$AllParams");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam;[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam;[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobjectArray int_paramsValue =
         toJavaIntParamArray(
             env, value.int_params, value.int_params_size);
@@ -388,18 +409,11 @@ jobject toJavaAllParams(
     jobjectArray custom_paramsValue =
         toJavaCustomParamArray(
             env, value.custom_params, value.custom_params_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$AllParams");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/param_server/NativeParamServer$IntParam;[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$FloatParam;[Lio/mavsdk/jni/plugins/param_server/NativeParamServer$CustomParam;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , int_paramsValue
         , float_paramsValue
         , custom_paramsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(int_paramsValue);
     env->DeleteLocalRef(float_paramsValue);
     env->DeleteLocalRef(custom_paramsValue);
@@ -410,14 +424,16 @@ jobjectArray toJavaAllParamsArray(
     JNIEnv* env,
     const mavsdk_param_server_all_params_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/param_server/NativeParamServer$AllParams");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/param_server/NativeParamServer$AllParams");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAllParams(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -437,6 +453,13 @@ struct ChangedParamIntCallbackWrapper {
     void operator()(
         const mavsdk_param_server_int_param_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_param_server_int_param_t value;
+            ~ValueGuard() {
+                mavsdk_param_server_int_param_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -473,6 +496,13 @@ struct ChangedParamFloatCallbackWrapper {
     void operator()(
         const mavsdk_param_server_float_param_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_param_server_float_param_t value;
+            ~ValueGuard() {
+                mavsdk_param_server_float_param_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -509,6 +539,13 @@ struct ChangedParamCustomCallbackWrapper {
     void operator()(
         const mavsdk_param_server_custom_param_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_param_server_custom_param_t value;
+            ~ValueGuard() {
+                mavsdk_param_server_custom_param_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

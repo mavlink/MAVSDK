@@ -305,19 +305,21 @@ jobjectArray toJavaVersionArray(
 
 jobject toJavaFlightInfo(
     JNIEnv* env, const mavsdk_info_flight_info_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$FlightInfo");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/info/NativeInfo$FlightInfo");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(IJII)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.time_boot_ms)
         , static_cast<jlong>(value.flight_uid)
         , static_cast<jint>(value.duration_since_arming_ms)
         , static_cast<jint>(value.duration_since_takeoff_ms)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -325,31 +327,35 @@ jobjectArray toJavaFlightInfoArray(
     JNIEnv* env,
     const mavsdk_info_flight_info_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$FlightInfo");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/info/NativeInfo$FlightInfo");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaFlightInfo(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaIdentification(
     JNIEnv* env, const mavsdk_info_identification_t& value) {
-    jstring hardware_uidValue =
-        toJavaString(env, value.hardware_uid);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Identification");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/info/NativeInfo$Identification");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;J)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring hardware_uidValue =
+        toJavaString(env, value.hardware_uid);
     jobject result = env->NewObject(carrierClass, constructor
         , hardware_uidValue
         , static_cast<jlong>(value.legacy_uid)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(hardware_uidValue);
     return result;
 }
@@ -358,35 +364,39 @@ jobjectArray toJavaIdentificationArray(
     JNIEnv* env,
     const mavsdk_info_identification_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Identification");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/info/NativeInfo$Identification");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaIdentification(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaProduct(
     JNIEnv* env, const mavsdk_info_product_t& value) {
-    jstring vendor_nameValue =
-        toJavaString(env, value.vendor_name);
-    jstring product_nameValue =
-        toJavaString(env, value.product_name);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Product");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/info/NativeInfo$Product");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ILjava/lang/String;ILjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring vendor_nameValue =
+        toJavaString(env, value.vendor_name);
+    jstring product_nameValue =
+        toJavaString(env, value.product_name);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.vendor_id)
         , vendor_nameValue
         , static_cast<jint>(value.product_id)
         , product_nameValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(vendor_nameValue);
     env->DeleteLocalRef(product_nameValue);
     return result;
@@ -396,28 +406,33 @@ jobjectArray toJavaProductArray(
     JNIEnv* env,
     const mavsdk_info_product_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Product");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/info/NativeInfo$Product");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaProduct(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVersion(
     JNIEnv* env, const mavsdk_info_version_t& value) {
-    jstring flight_sw_git_hashValue =
-        toJavaString(env, value.flight_sw_git_hash);
-    jstring os_sw_git_hashValue =
-        toJavaString(env, value.os_sw_git_hash);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Version");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/info/NativeInfo$Version");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(IIIIIIIIILjava/lang/String;Ljava/lang/String;I)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring flight_sw_git_hashValue =
+        toJavaString(env, value.flight_sw_git_hash);
+    jstring os_sw_git_hashValue =
+        toJavaString(env, value.os_sw_git_hash);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.flight_sw_major)
         , static_cast<jint>(value.flight_sw_minor)
@@ -432,7 +447,6 @@ jobject toJavaVersion(
         , os_sw_git_hashValue
         , static_cast<jint>(value.flight_sw_version_type)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(flight_sw_git_hashValue);
     env->DeleteLocalRef(os_sw_git_hashValue);
     return result;
@@ -442,14 +456,16 @@ jobjectArray toJavaVersionArray(
     JNIEnv* env,
     const mavsdk_info_version_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/info/NativeInfo$Version");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/info/NativeInfo$Version");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVersion(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -469,6 +485,13 @@ struct FlightInformationCallbackWrapper {
     void operator()(
         const mavsdk_info_flight_info_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_info_flight_info_t value;
+            ~ValueGuard() {
+                mavsdk_info_flight_info_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

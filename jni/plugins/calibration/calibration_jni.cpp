@@ -86,21 +86,23 @@ jobjectArray toJavaProgressDataArray(
 
 jobject toJavaProgressData(
     JNIEnv* env, const mavsdk_calibration_progress_data_t& value) {
-    jstring status_textValue =
-        toJavaString(env, value.status_text);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ZFZLjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring status_textValue =
+        toJavaString(env, value.status_text);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jboolean>(value.has_progress)
         , static_cast<jfloat>(value.progress)
         , static_cast<jboolean>(value.has_status_text)
         , status_textValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(status_textValue);
     return result;
 }
@@ -109,14 +111,16 @@ jobjectArray toJavaProgressDataArray(
     JNIEnv* env,
     const mavsdk_calibration_progress_data_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/calibration/NativeCalibration$ProgressData");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaProgressData(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -136,6 +140,13 @@ struct CalibrateGyroCallbackWrapper {
     void operator()(
         const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_calibration_progress_data_t value;
+            ~ValueGuard() {
+                mavsdk_calibration_progress_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -173,6 +184,13 @@ struct CalibrateAccelerometerCallbackWrapper {
     void operator()(
         const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_calibration_progress_data_t value;
+            ~ValueGuard() {
+                mavsdk_calibration_progress_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -210,6 +228,13 @@ struct CalibrateMagnetometerCallbackWrapper {
     void operator()(
         const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_calibration_progress_data_t value;
+            ~ValueGuard() {
+                mavsdk_calibration_progress_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -247,6 +272,13 @@ struct CalibrateLevelHorizonCallbackWrapper {
     void operator()(
         const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_calibration_progress_data_t value;
+            ~ValueGuard() {
+                mavsdk_calibration_progress_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -284,6 +316,13 @@ struct CalibrateGimbalAccelerometerCallbackWrapper {
     void operator()(
         const mavsdk_calibration_result_t result,        const mavsdk_calibration_progress_data_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_calibration_progress_data_t value;
+            ~ValueGuard() {
+                mavsdk_calibration_progress_data_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

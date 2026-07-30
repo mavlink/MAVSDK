@@ -347,10 +347,19 @@ jobjectArray toJava{{ struct.name.upper_camel_case }}Array(
 {% if not struct.name.upper_camel_case.endswith('Result') %}
 jobject toJava{{ struct.name.upper_camel_case }}(
     JNIEnv* env, const mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t& value) {
+    jclass carrierClass = findClass(env, "{{ pkg }}/{{ cls }}${{ struct.name.upper_camel_case }}");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "({{ struct_ctor_sig(struct.name.upper_camel_case) }})V");
+    if (!constructor) {
+        return nullptr;
+    }
 {% for field in struct.fields %}
 {% if field.type_info.is_repeated %}
 {% if field.type_info.is_string %}
-    jclass {{ field.name.lower_snake_case }}ElementClass = env->FindClass("java/lang/String");
+    jclass {{ field.name.lower_snake_case }}ElementClass = findClass(env, "java/lang/String");
     jobjectArray {{ field.name.lower_snake_case }}Value = env->NewObjectArray(
         static_cast<jsize>(value.{{ field.name.lower_snake_case }}_size),
         {{ field.name.lower_snake_case }}ElementClass, nullptr);
@@ -359,7 +368,6 @@ jobject toJava{{ struct.name.upper_camel_case }}(
         env->SetObjectArrayElement({{ field.name.lower_snake_case }}Value, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef({{ field.name.lower_snake_case }}ElementClass);
 {% elif field.type_info.is_primitive or field.type_info.is_enum %}
     {{ jni_array_type(field.type_info) }} {{ field.name.lower_snake_case }}Value =
         env->New{{ jni_array_stem(field.type_info) }}Array(
@@ -404,12 +412,6 @@ jobject toJava{{ struct.name.upper_camel_case }}(
         toJava{{ field.type_info.name.upper_camel_case }}(env, value.{{ field.name.lower_snake_case }});
 {% endif %}
 {% endfor %}
-    jclass carrierClass = env->FindClass("{{ pkg }}/{{ cls }}${{ struct.name.upper_camel_case }}");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "({{ struct_ctor_sig(struct.name.upper_camel_case) }})V");
     jobject result = env->NewObject(carrierClass, constructor
 {% for field in struct.fields %}
 {% if field.type_info.is_repeated or field.type_info.name == 'std::byte' or field.type_info.is_string or not field.type_info.is_primitive and not field.type_info.is_enum %}
@@ -419,7 +421,6 @@ jobject toJava{{ struct.name.upper_camel_case }}(
 {% endif %}
 {% endfor %}
     );
-    env->DeleteLocalRef(carrierClass);
 {% for field in struct.fields %}
 {% if field.type_info.is_repeated or field.type_info.name == 'std::byte' or field.type_info.is_string or not field.type_info.is_primitive and not field.type_info.is_enum %}
     env->DeleteLocalRef({{ field.name.lower_snake_case }}Value);
@@ -432,14 +433,16 @@ jobjectArray toJava{{ struct.name.upper_camel_case }}Array(
     JNIEnv* env,
     const mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("{{ pkg }}/{{ cls }}${{ struct.name.upper_camel_case }}");
+    jclass elementClass = findClass(env, "{{ pkg }}/{{ cls }}${{ struct.name.upper_camel_case }}");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJava{{ struct.name.upper_camel_case }}(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 {% endif %}
@@ -541,7 +544,7 @@ jobjectArray toJava{{ struct.name.upper_camel_case }}Array(
 
 {%- macro create_java_array(type_info, values, count, name) -%}
 {%- if type_info.is_string %}
-        jclass {{ name }}ElementClass = env->FindClass("java/lang/String");
+        jclass {{ name }}ElementClass = findClass(env, "java/lang/String");
         jobjectArray {{ name }} = env->NewObjectArray(
             static_cast<jsize>({{ count }}), {{ name }}ElementClass, nullptr);
         for (size_t i = 0; i < {{ count }}; ++i) {
@@ -549,7 +552,6 @@ jobjectArray toJava{{ struct.name.upper_camel_case }}Array(
             env->SetObjectArrayElement({{ name }}, static_cast<jsize>(i), item);
             env->DeleteLocalRef(item);
         }
-        env->DeleteLocalRef({{ name }}ElementClass);
 {%- elif type_info.is_primitive or type_info.is_enum %}
         {{ jni_array_type(type_info) }} {{ name }} =
             env->New{{ jni_array_stem(type_info) }}Array(static_cast<jsize>({{ count }}));
@@ -575,6 +577,54 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ type_info.inner_name.lower_snake_ca
 {%- elif type_info.is_primitive -%}
 mavsdk_{{ plugin_name.lower_snake_case }}_{{ type_info.inner_name | replace('_', '') }}_array_destroy(
         &{{ values }});
+{%- endif -%}
+{%- endmacro -%}
+
+{# ------------------------------------------------------------------------ #}
+{# Callback value ownership                                                 #}
+{#                                                                          #}
+{# The C layer hands callbacks freshly allocated memory - strdup'd strings,  #}
+{# new[]'d arrays, and structs whose string fields are strdup'd - and never  #}
+{# frees any of it. The receiver owns it. These guards release it on every   #}
+{# exit path, including the early returns above the conversion.              #}
+{# ------------------------------------------------------------------------ #}
+{%- macro own_callback_value(method) -%}
+{%- if method.return_type -%}
+{%- if method.return_type.is_repeated -%}
+{%- if not method.return_type.is_primitive and not method.return_type.is_enum and not method.return_type.is_string %}
+        struct ValueGuard {
+            {{ c_value_type(method.return_type) }}* values;
+            size_t count;
+            ~ValueGuard() { {{ destroy_c_array(method.return_type, "values", "count") }} }
+        } valueGuard{const_cast<{{ c_value_type(method.return_type) }}*>(values), count};
+{% elif method.return_type.is_primitive %}
+        struct ValueGuard {
+            {{ c_value_type(method.return_type) }}* values;
+            ~ValueGuard() { {{ destroy_c_array(method.return_type, "values", "count") }} }
+        } valueGuard{const_cast<{{ c_value_type(method.return_type) }}*>(values)};
+{% endif %}
+{%- elif method.return_type.name == 'std::byte' %}
+        struct ValueGuard {
+            uint8_t* values;
+            ~ValueGuard() {
+                mavsdk_{{ plugin_name.lower_snake_case }}_byte_buffer_destroy(&values);
+            }
+        } valueGuard{const_cast<uint8_t*>(values)};
+{% elif method.return_type.is_string %}
+        struct ValueGuard {
+            char* value;
+            ~ValueGuard() {
+                mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy(&value);
+            }
+        } valueGuard{const_cast<char*>(value)};
+{% elif not method.return_type.is_primitive and not method.return_type.is_enum %}
+        struct ValueGuard {
+            {{ c_value_type(method.return_type) }} value;
+            ~ValueGuard() {
+                mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_destroy(&value);
+            }
+        } valueGuard{value};
+{% endif %}
 {%- endif -%}
 {%- endmacro -%}
 
@@ -615,6 +665,7 @@ struct {{ method.name.upper_camel_case }}CallbackWrapper {
 {% endif %}
 {% endif %}
     ) const {
+{{ own_callback_value(method) }}
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

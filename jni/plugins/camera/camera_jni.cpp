@@ -1152,21 +1152,23 @@ jobjectArray toJavaCameraListArray(
 
 jobject toJavaOption(
     JNIEnv* env, const mavsdk_camera_option_t& value) {
-    jstring option_idValue =
-        toJavaString(env, value.option_id);
-    jstring option_descriptionValue =
-        toJavaString(env, value.option_description);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Option");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Option");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring option_idValue =
+        toJavaString(env, value.option_id);
+    jstring option_descriptionValue =
+        toJavaString(env, value.option_description);
     jobject result = env->NewObject(carrierClass, constructor
         , option_idValue
         , option_descriptionValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(option_idValue);
     env->DeleteLocalRef(option_descriptionValue);
     return result;
@@ -1176,37 +1178,41 @@ jobjectArray toJavaOptionArray(
     JNIEnv* env,
     const mavsdk_camera_option_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Option");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Option");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaOption(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaSetting(
     JNIEnv* env, const mavsdk_camera_setting_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Setting");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Lio/mavsdk/jni/plugins/camera/NativeCamera$Option;Z)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jstring setting_idValue =
         toJavaString(env, value.setting_id);
     jstring setting_descriptionValue =
         toJavaString(env, value.setting_description);
     jobject optionValue =
         toJavaOption(env, value.option);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Setting");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Lio/mavsdk/jni/plugins/camera/NativeCamera$Option;Z)V");
     jobject result = env->NewObject(carrierClass, constructor
         , setting_idValue
         , setting_descriptionValue
         , optionValue
         , static_cast<jboolean>(value.is_range)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(setting_idValue);
     env->DeleteLocalRef(setting_descriptionValue);
     env->DeleteLocalRef(optionValue);
@@ -1217,18 +1223,29 @@ jobjectArray toJavaSettingArray(
     JNIEnv* env,
     const mavsdk_camera_setting_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Setting");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Setting");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaSetting(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaSettingOptions(
     JNIEnv* env, const mavsdk_camera_setting_options_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$SettingOptions");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;[Lio/mavsdk/jni/plugins/camera/NativeCamera$Option;Z)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jstring setting_idValue =
         toJavaString(env, value.setting_id);
     jstring setting_descriptionValue =
@@ -1236,12 +1253,6 @@ jobject toJavaSettingOptions(
     jobjectArray optionsValue =
         toJavaOptionArray(
             env, value.options, value.options_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$SettingOptions");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;[Lio/mavsdk/jni/plugins/camera/NativeCamera$Option;Z)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , setting_idValue
@@ -1249,7 +1260,6 @@ jobject toJavaSettingOptions(
         , optionsValue
         , static_cast<jboolean>(value.is_range)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(setting_idValue);
     env->DeleteLocalRef(setting_descriptionValue);
     env->DeleteLocalRef(optionsValue);
@@ -1260,26 +1270,31 @@ jobjectArray toJavaSettingOptionsArray(
     JNIEnv* env,
     const mavsdk_camera_setting_options_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$SettingOptions");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$SettingOptions");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaSettingOptions(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVideoStreamSettings(
     JNIEnv* env, const mavsdk_camera_video_stream_settings_t& value) {
-    jstring uriValue =
-        toJavaString(env, value.uri);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamSettings");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamSettings");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FIIIILjava/lang/String;F)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring uriValue =
+        toJavaString(env, value.uri);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.frame_rate_hz)
         , static_cast<jint>(value.horizontal_resolution_pix)
@@ -1289,7 +1304,6 @@ jobject toJavaVideoStreamSettings(
         , uriValue
         , static_cast<jfloat>(value.horizontal_fov_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(uriValue);
     return result;
 }
@@ -1298,33 +1312,37 @@ jobjectArray toJavaVideoStreamSettingsArray(
     JNIEnv* env,
     const mavsdk_camera_video_stream_settings_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamSettings");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamSettings");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVideoStreamSettings(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVideoStreamInfo(
     JNIEnv* env, const mavsdk_camera_video_stream_info_t& value) {
-    jobject settingsValue =
-        toJavaVideoStreamSettings(env, value.settings);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamInfo");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamInfo");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ILio/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamSettings;II)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobject settingsValue =
+        toJavaVideoStreamSettings(env, value.settings);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.stream_id)
         , settingsValue
         , static_cast<jint>(value.status)
         , static_cast<jint>(value.spectrum)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(settingsValue);
     return result;
 }
@@ -1333,29 +1351,33 @@ jobjectArray toJavaVideoStreamInfoArray(
     JNIEnv* env,
     const mavsdk_camera_video_stream_info_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamInfo");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamInfo");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVideoStreamInfo(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaModeUpdate(
     JNIEnv* env, const mavsdk_camera_mode_update_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$ModeUpdate");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$ModeUpdate");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(II)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , static_cast<jint>(value.mode)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1363,31 +1385,35 @@ jobjectArray toJavaModeUpdateArray(
     JNIEnv* env,
     const mavsdk_camera_mode_update_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$ModeUpdate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$ModeUpdate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaModeUpdate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVideoStreamUpdate(
     JNIEnv* env, const mavsdk_camera_video_stream_update_t& value) {
-    jobject video_stream_infoValue =
-        toJavaVideoStreamInfo(env, value.video_stream_info);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamUpdate");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamUpdate");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ILio/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamInfo;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobject video_stream_infoValue =
+        toJavaVideoStreamInfo(env, value.video_stream_info);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , video_stream_infoValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(video_stream_infoValue);
     return result;
 }
@@ -1396,26 +1422,31 @@ jobjectArray toJavaVideoStreamUpdateArray(
     JNIEnv* env,
     const mavsdk_camera_video_stream_update_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamUpdate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$VideoStreamUpdate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVideoStreamUpdate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaStorage(
     JNIEnv* env, const mavsdk_camera_storage_t& value) {
-    jstring media_folder_nameValue =
-        toJavaString(env, value.media_folder_name);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Storage");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Storage");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(IZZFFFFLjava/lang/String;III)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring media_folder_nameValue =
+        toJavaString(env, value.media_folder_name);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , static_cast<jboolean>(value.video_on)
@@ -1429,7 +1460,6 @@ jobject toJavaStorage(
         , static_cast<jint>(value.storage_id)
         , static_cast<jint>(value.storage_type)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(media_folder_nameValue);
     return result;
 }
@@ -1438,31 +1468,35 @@ jobjectArray toJavaStorageArray(
     JNIEnv* env,
     const mavsdk_camera_storage_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Storage");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Storage");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaStorage(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaStorageUpdate(
     JNIEnv* env, const mavsdk_camera_storage_update_t& value) {
-    jobject storageValue =
-        toJavaStorage(env, value.storage);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$StorageUpdate");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$StorageUpdate");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ILio/mavsdk/jni/plugins/camera/NativeCamera$Storage;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobject storageValue =
+        toJavaStorage(env, value.storage);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , storageValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(storageValue);
     return result;
 }
@@ -1471,32 +1505,36 @@ jobjectArray toJavaStorageUpdateArray(
     JNIEnv* env,
     const mavsdk_camera_storage_update_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$StorageUpdate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$StorageUpdate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaStorageUpdate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCurrentSettingsUpdate(
     JNIEnv* env, const mavsdk_camera_current_settings_update_t& value) {
-    jobjectArray current_settingsValue =
-        toJavaSettingArray(
-            env, value.current_settings, value.current_settings_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$CurrentSettingsUpdate");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$CurrentSettingsUpdate");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(I[Lio/mavsdk/jni/plugins/camera/NativeCamera$Setting;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobjectArray current_settingsValue =
+        toJavaSettingArray(
+            env, value.current_settings, value.current_settings_size);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , current_settingsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(current_settingsValue);
     return result;
 }
@@ -1505,32 +1543,36 @@ jobjectArray toJavaCurrentSettingsUpdateArray(
     JNIEnv* env,
     const mavsdk_camera_current_settings_update_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$CurrentSettingsUpdate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$CurrentSettingsUpdate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCurrentSettingsUpdate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPossibleSettingOptionsUpdate(
     JNIEnv* env, const mavsdk_camera_possible_setting_options_update_t& value) {
-    jobjectArray setting_optionsValue =
-        toJavaSettingOptionsArray(
-            env, value.setting_options, value.setting_options_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$PossibleSettingOptionsUpdate");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$PossibleSettingOptionsUpdate");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(I[Lio/mavsdk/jni/plugins/camera/NativeCamera$SettingOptions;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobjectArray setting_optionsValue =
+        toJavaSettingOptionsArray(
+            env, value.setting_options, value.setting_options_size);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , setting_optionsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(setting_optionsValue);
     return result;
 }
@@ -1539,31 +1581,35 @@ jobjectArray toJavaPossibleSettingOptionsUpdateArray(
     JNIEnv* env,
     const mavsdk_camera_possible_setting_options_update_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$PossibleSettingOptionsUpdate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$PossibleSettingOptionsUpdate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPossibleSettingOptionsUpdate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPosition(
     JNIEnv* env, const mavsdk_camera_position_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Position");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Position");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(DDFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jdouble>(value.latitude_deg)
         , static_cast<jdouble>(value.longitude_deg)
         , static_cast<jfloat>(value.absolute_altitude_m)
         , static_cast<jfloat>(value.relative_altitude_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1571,31 +1617,35 @@ jobjectArray toJavaPositionArray(
     JNIEnv* env,
     const mavsdk_camera_position_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Position");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Position");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPosition(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaQuaternion(
     JNIEnv* env, const mavsdk_camera_quaternion_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Quaternion");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Quaternion");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.w)
         , static_cast<jfloat>(value.x)
         , static_cast<jfloat>(value.y)
         , static_cast<jfloat>(value.z)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1603,30 +1653,34 @@ jobjectArray toJavaQuaternionArray(
     JNIEnv* env,
     const mavsdk_camera_quaternion_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Quaternion");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Quaternion");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaQuaternion(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaEulerAngle(
     JNIEnv* env, const mavsdk_camera_euler_angle_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$EulerAngle");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$EulerAngle");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.roll_deg)
         , static_cast<jfloat>(value.pitch_deg)
         , static_cast<jfloat>(value.yaw_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1634,18 +1688,29 @@ jobjectArray toJavaEulerAngleArray(
     JNIEnv* env,
     const mavsdk_camera_euler_angle_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$EulerAngle");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$EulerAngle");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaEulerAngle(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCaptureInfo(
     JNIEnv* env, const mavsdk_camera_capture_info_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$CaptureInfo");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILio/mavsdk/jni/plugins/camera/NativeCamera$Position;Lio/mavsdk/jni/plugins/camera/NativeCamera$Quaternion;Lio/mavsdk/jni/plugins/camera/NativeCamera$EulerAngle;JZILjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject positionValue =
         toJavaPosition(env, value.position);
     jobject attitude_quaternionValue =
@@ -1654,12 +1719,6 @@ jobject toJavaCaptureInfo(
         toJavaEulerAngle(env, value.attitude_euler_angle);
     jstring file_urlValue =
         toJavaString(env, value.file_url);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$CaptureInfo");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(ILio/mavsdk/jni/plugins/camera/NativeCamera$Position;Lio/mavsdk/jni/plugins/camera/NativeCamera$Quaternion;Lio/mavsdk/jni/plugins/camera/NativeCamera$EulerAngle;JZILjava/lang/String;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , positionValue
@@ -1670,7 +1729,6 @@ jobject toJavaCaptureInfo(
         , static_cast<jint>(value.index)
         , file_urlValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(positionValue);
     env->DeleteLocalRef(attitude_quaternionValue);
     env->DeleteLocalRef(attitude_euler_angleValue);
@@ -1682,28 +1740,33 @@ jobjectArray toJavaCaptureInfoArray(
     JNIEnv* env,
     const mavsdk_camera_capture_info_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$CaptureInfo");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$CaptureInfo");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCaptureInfo(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaInformation(
     JNIEnv* env, const mavsdk_camera_information_t& value) {
-    jstring vendor_nameValue =
-        toJavaString(env, value.vendor_name);
-    jstring model_nameValue =
-        toJavaString(env, value.model_name);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Information");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Information");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;FFFII)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring vendor_nameValue =
+        toJavaString(env, value.vendor_name);
+    jstring model_nameValue =
+        toJavaString(env, value.model_name);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.component_id)
         , vendor_nameValue
@@ -1714,7 +1777,6 @@ jobject toJavaInformation(
         , static_cast<jint>(value.horizontal_resolution_px)
         , static_cast<jint>(value.vertical_resolution_px)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(vendor_nameValue);
     env->DeleteLocalRef(model_nameValue);
     return result;
@@ -1724,31 +1786,35 @@ jobjectArray toJavaInformationArray(
     JNIEnv* env,
     const mavsdk_camera_information_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$Information");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$Information");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaInformation(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCameraList(
     JNIEnv* env, const mavsdk_camera_camera_list_t& value) {
-    jobjectArray camerasValue =
-        toJavaInformationArray(
-            env, value.cameras, value.cameras_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$CameraList");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$CameraList");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/camera/NativeCamera$Information;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobjectArray camerasValue =
+        toJavaInformationArray(
+            env, value.cameras, value.cameras_size);
     jobject result = env->NewObject(carrierClass, constructor
         , camerasValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(camerasValue);
     return result;
 }
@@ -1757,14 +1823,16 @@ jobjectArray toJavaCameraListArray(
     JNIEnv* env,
     const mavsdk_camera_camera_list_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera/NativeCamera$CameraList");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera/NativeCamera$CameraList");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCameraList(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -1783,6 +1851,7 @@ struct TakePhotoCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1815,6 +1884,7 @@ struct StartPhotoIntervalCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1847,6 +1917,7 @@ struct StopPhotoIntervalCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1879,6 +1950,7 @@ struct StartVideoCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1911,6 +1983,7 @@ struct StopVideoCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1943,6 +2016,7 @@ struct SetModeCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1976,6 +2050,13 @@ struct ListPhotosCallbackWrapper {
     void operator()(
         const mavsdk_camera_result_t result,        const mavsdk_camera_capture_info_t* values, size_t count
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_capture_info_t* values;
+            size_t count;
+            ~ValueGuard() { mavsdk_camera_capture_info_array_destroy(
+        &values, count); }
+        } valueGuard{const_cast<mavsdk_camera_capture_info_t*>(values), count};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2013,6 +2094,13 @@ struct CameraListCallbackWrapper {
     void operator()(
         const mavsdk_camera_camera_list_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_camera_list_t value;
+            ~ValueGuard() {
+                mavsdk_camera_camera_list_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2049,6 +2137,13 @@ struct ModeCallbackWrapper {
     void operator()(
         const mavsdk_camera_mode_update_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_mode_update_t value;
+            ~ValueGuard() {
+                mavsdk_camera_mode_update_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2085,6 +2180,13 @@ struct VideoStreamInfoCallbackWrapper {
     void operator()(
         const mavsdk_camera_video_stream_update_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_video_stream_update_t value;
+            ~ValueGuard() {
+                mavsdk_camera_video_stream_update_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2121,6 +2223,13 @@ struct CaptureInfoCallbackWrapper {
     void operator()(
         const mavsdk_camera_capture_info_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_capture_info_t value;
+            ~ValueGuard() {
+                mavsdk_camera_capture_info_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2157,6 +2266,13 @@ struct StorageCallbackWrapper {
     void operator()(
         const mavsdk_camera_storage_update_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_storage_update_t value;
+            ~ValueGuard() {
+                mavsdk_camera_storage_update_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2193,6 +2309,13 @@ struct CurrentSettingsCallbackWrapper {
     void operator()(
         const mavsdk_camera_current_settings_update_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_current_settings_update_t value;
+            ~ValueGuard() {
+                mavsdk_camera_current_settings_update_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2229,6 +2352,13 @@ struct PossibleSettingOptionsCallbackWrapper {
     void operator()(
         const mavsdk_camera_possible_setting_options_update_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_possible_setting_options_update_t value;
+            ~ValueGuard() {
+                mavsdk_camera_possible_setting_options_update_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2264,6 +2394,7 @@ struct SetSettingCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2297,6 +2428,13 @@ struct GetSettingCallbackWrapper {
     void operator()(
         const mavsdk_camera_result_t result,        const mavsdk_camera_setting_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_setting_t value;
+            ~ValueGuard() {
+                mavsdk_camera_setting_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2333,6 +2471,7 @@ struct FormatStorageCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2365,6 +2504,7 @@ struct ResetSettingsCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2397,6 +2537,7 @@ struct ZoomInStartCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2429,6 +2570,7 @@ struct ZoomOutStartCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2461,6 +2603,7 @@ struct ZoomStopCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2493,6 +2636,7 @@ struct ZoomRangeCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2525,6 +2669,7 @@ struct TrackPointCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2557,6 +2702,7 @@ struct TrackRectangleCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2589,6 +2735,7 @@ struct TrackStopCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2621,6 +2768,7 @@ struct FocusInStartCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2653,6 +2801,7 @@ struct FocusOutStartCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2685,6 +2834,7 @@ struct FocusStopCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -2717,6 +2867,7 @@ struct FocusRangeCallbackWrapper {
 
     void operator()(
         const mavsdk_camera_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

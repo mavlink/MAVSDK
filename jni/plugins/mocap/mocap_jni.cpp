@@ -732,18 +732,20 @@ jobjectArray toJavaOdometryArray(
 
 jobject toJavaPositionBody(
     JNIEnv* env, const mavsdk_mocap_position_body_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.x_m)
         , static_cast<jfloat>(value.y_m)
         , static_cast<jfloat>(value.z_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -751,30 +753,34 @@ jobjectArray toJavaPositionBodyArray(
     JNIEnv* env,
     const mavsdk_mocap_position_body_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPositionBody(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAngleBody(
     JNIEnv* env, const mavsdk_mocap_angle_body_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$AngleBody");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$AngleBody");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.roll_rad)
         , static_cast<jfloat>(value.pitch_rad)
         , static_cast<jfloat>(value.yaw_rad)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -782,30 +788,34 @@ jobjectArray toJavaAngleBodyArray(
     JNIEnv* env,
     const mavsdk_mocap_angle_body_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$AngleBody");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$AngleBody");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAngleBody(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaSpeedBody(
     JNIEnv* env, const mavsdk_mocap_speed_body_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$SpeedBody");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$SpeedBody");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.x_m_s)
         , static_cast<jfloat>(value.y_m_s)
         , static_cast<jfloat>(value.z_m_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -813,30 +823,34 @@ jobjectArray toJavaSpeedBodyArray(
     JNIEnv* env,
     const mavsdk_mocap_speed_body_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$SpeedBody");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$SpeedBody");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaSpeedBody(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaSpeedNed(
     JNIEnv* env, const mavsdk_mocap_speed_ned_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$SpeedNed");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$SpeedNed");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.north_m_s)
         , static_cast<jfloat>(value.east_m_s)
         , static_cast<jfloat>(value.down_m_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -844,30 +858,34 @@ jobjectArray toJavaSpeedNedArray(
     JNIEnv* env,
     const mavsdk_mocap_speed_ned_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$SpeedNed");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$SpeedNed");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaSpeedNed(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAngularVelocityBody(
     JNIEnv* env, const mavsdk_mocap_angular_velocity_body_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$AngularVelocityBody");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$AngularVelocityBody");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.roll_rad_s)
         , static_cast<jfloat>(value.pitch_rad_s)
         , static_cast<jfloat>(value.yaw_rad_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -875,18 +893,29 @@ jobjectArray toJavaAngularVelocityBodyArray(
     JNIEnv* env,
     const mavsdk_mocap_angular_velocity_body_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$AngularVelocityBody");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$AngularVelocityBody");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAngularVelocityBody(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCovariance(
     JNIEnv* env, const mavsdk_mocap_covariance_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$Covariance");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([F)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jfloatArray covariance_matrixValue =
         env->NewFloatArray(
             static_cast<jsize>(value.covariance_matrix_size));
@@ -902,16 +931,9 @@ jobject toJavaCovariance(
             static_cast<jsize>(covariance_matrixJavaValues.size()),
             covariance_matrixJavaValues.data());
     }
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$Covariance");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([F)V");
     jobject result = env->NewObject(carrierClass, constructor
         , covariance_matrixValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(covariance_matrixValue);
     return result;
 }
@@ -920,31 +942,35 @@ jobjectArray toJavaCovarianceArray(
     JNIEnv* env,
     const mavsdk_mocap_covariance_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$Covariance");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$Covariance");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCovariance(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaQuaternion(
     JNIEnv* env, const mavsdk_mocap_quaternion_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.w)
         , static_cast<jfloat>(value.x)
         , static_cast<jfloat>(value.y)
         , static_cast<jfloat>(value.z)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -952,37 +978,41 @@ jobjectArray toJavaQuaternionArray(
     JNIEnv* env,
     const mavsdk_mocap_quaternion_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaQuaternion(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVisionPositionEstimate(
     JNIEnv* env, const mavsdk_mocap_vision_position_estimate_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$VisionPositionEstimate");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$AngleBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject position_bodyValue =
         toJavaPositionBody(env, value.position_body);
     jobject angle_bodyValue =
         toJavaAngleBody(env, value.angle_body);
     jobject pose_covarianceValue =
         toJavaCovariance(env, value.pose_covariance);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$VisionPositionEstimate");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$AngleBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jlong>(value.time_usec)
         , position_bodyValue
         , angle_bodyValue
         , pose_covarianceValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(position_bodyValue);
     env->DeleteLocalRef(angle_bodyValue);
     env->DeleteLocalRef(pose_covarianceValue);
@@ -993,34 +1023,38 @@ jobjectArray toJavaVisionPositionEstimateArray(
     JNIEnv* env,
     const mavsdk_mocap_vision_position_estimate_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$VisionPositionEstimate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$VisionPositionEstimate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVisionPositionEstimate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVisionSpeedEstimate(
     JNIEnv* env, const mavsdk_mocap_vision_speed_estimate_t& value) {
-    jobject speed_nedValue =
-        toJavaSpeedNed(env, value.speed_ned);
-    jobject speed_covarianceValue =
-        toJavaCovariance(env, value.speed_covariance);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$VisionSpeedEstimate");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$VisionSpeedEstimate");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$SpeedNed;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobject speed_nedValue =
+        toJavaSpeedNed(env, value.speed_ned);
+    jobject speed_covarianceValue =
+        toJavaCovariance(env, value.speed_covariance);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jlong>(value.time_usec)
         , speed_nedValue
         , speed_covarianceValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(speed_nedValue);
     env->DeleteLocalRef(speed_covarianceValue);
     return result;
@@ -1030,37 +1064,41 @@ jobjectArray toJavaVisionSpeedEstimateArray(
     JNIEnv* env,
     const mavsdk_mocap_vision_speed_estimate_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$VisionSpeedEstimate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$VisionSpeedEstimate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVisionSpeedEstimate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAttitudePositionMocap(
     JNIEnv* env, const mavsdk_mocap_attitude_position_mocap_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$AttitudePositionMocap");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion;Lio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject qValue =
         toJavaQuaternion(env, value.q);
     jobject position_bodyValue =
         toJavaPositionBody(env, value.position_body);
     jobject pose_covarianceValue =
         toJavaCovariance(env, value.pose_covariance);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$AttitudePositionMocap");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion;Lio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jlong>(value.time_usec)
         , qValue
         , position_bodyValue
         , pose_covarianceValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(qValue);
     env->DeleteLocalRef(position_bodyValue);
     env->DeleteLocalRef(pose_covarianceValue);
@@ -1071,18 +1109,29 @@ jobjectArray toJavaAttitudePositionMocapArray(
     JNIEnv* env,
     const mavsdk_mocap_attitude_position_mocap_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$AttitudePositionMocap");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$AttitudePositionMocap");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAttitudePositionMocap(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaOdometry(
     JNIEnv* env, const mavsdk_mocap_odometry_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$Odometry");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JILio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion;Lio/mavsdk/jni/plugins/mocap/NativeMocap$SpeedBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$AngularVelocityBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject position_bodyValue =
         toJavaPositionBody(env, value.position_body);
     jobject qValue =
@@ -1095,12 +1144,6 @@ jobject toJavaOdometry(
         toJavaCovariance(env, value.pose_covariance);
     jobject velocity_covarianceValue =
         toJavaCovariance(env, value.velocity_covariance);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$Odometry");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(JILio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion;Lio/mavsdk/jni/plugins/mocap/NativeMocap$SpeedBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$AngularVelocityBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jlong>(value.time_usec)
         , static_cast<jint>(value.frame_id)
@@ -1111,7 +1154,6 @@ jobject toJavaOdometry(
         , pose_covarianceValue
         , velocity_covarianceValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(position_bodyValue);
     env->DeleteLocalRef(qValue);
     env->DeleteLocalRef(speed_bodyValue);
@@ -1125,14 +1167,16 @@ jobjectArray toJavaOdometryArray(
     JNIEnv* env,
     const mavsdk_mocap_odometry_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mocap/NativeMocap$Odometry");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mocap/NativeMocap$Odometry");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaOdometry(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 

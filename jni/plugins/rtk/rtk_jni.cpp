@@ -74,18 +74,20 @@ jobjectArray toJavaRtcmDataArray(
 
 jobject toJavaRtcmData(
     JNIEnv* env, const mavsdk_rtk_rtcm_data_t& value) {
-    jstring data_base64Value =
-        toJavaString(env, value.data_base64);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/rtk/NativeRtk$RtcmData");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/rtk/NativeRtk$RtcmData");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring data_base64Value =
+        toJavaString(env, value.data_base64);
     jobject result = env->NewObject(carrierClass, constructor
         , data_base64Value
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(data_base64Value);
     return result;
 }
@@ -94,14 +96,16 @@ jobjectArray toJavaRtcmDataArray(
     JNIEnv* env,
     const mavsdk_rtk_rtcm_data_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/rtk/NativeRtk$RtcmData");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/rtk/NativeRtk$RtcmData");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaRtcmData(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 

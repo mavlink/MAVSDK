@@ -38,6 +38,7 @@ struct ArmAuthorizationCallbackWrapper {
     void operator()(
         const uint32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

@@ -38,6 +38,13 @@ struct ReceiveCallbackWrapper {
     void operator()(
         const char* value
     ) const {
+        struct ValueGuard {
+            char* value;
+            ~ValueGuard() {
+                mavsdk_shell_string_destroy(&value);
+            }
+        } valueGuard{const_cast<char*>(value)};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

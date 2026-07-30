@@ -133,18 +133,20 @@ jobjectArray toJavaMetadataUpdateArray(
 
 jobject toJavaMetadataData(
     JNIEnv* env, const mavsdk_component_metadata_metadata_data_t& value) {
-    jstring json_metadataValue =
-        toJavaString(env, value.json_metadata);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataData");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataData");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring json_metadataValue =
+        toJavaString(env, value.json_metadata);
     jobject result = env->NewObject(carrierClass, constructor
         , json_metadataValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(json_metadataValue);
     return result;
 }
@@ -153,32 +155,36 @@ jobjectArray toJavaMetadataDataArray(
     JNIEnv* env,
     const mavsdk_component_metadata_metadata_data_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataData");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataData");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMetadataData(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaMetadataUpdate(
     JNIEnv* env, const mavsdk_component_metadata_metadata_update_t& value) {
-    jstring json_metadataValue =
-        toJavaString(env, value.json_metadata);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataUpdate");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataUpdate");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(IILjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring json_metadataValue =
+        toJavaString(env, value.json_metadata);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.compid)
         , static_cast<jint>(value.type)
         , json_metadataValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(json_metadataValue);
     return result;
 }
@@ -187,14 +193,16 @@ jobjectArray toJavaMetadataUpdateArray(
     JNIEnv* env,
     const mavsdk_component_metadata_metadata_update_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataUpdate");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/component_metadata/NativeComponentMetadata$MetadataUpdate");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMetadataUpdate(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -214,6 +222,13 @@ struct MetadataAvailableCallbackWrapper {
     void operator()(
         const mavsdk_component_metadata_metadata_update_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_component_metadata_metadata_update_t value;
+            ~ValueGuard() {
+                mavsdk_component_metadata_metadata_update_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

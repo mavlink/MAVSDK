@@ -91,7 +91,7 @@ mavsdk-kotlin-root/
 │   │   │       └── ...
 │   │   ├── jvmMain/            # Desktop JVM
 │   │   │   ├── kotlin/         # JVM-specific implementations
-│   │   │   └── resources/native/  # Where JNI libs go
+│   │   │   └── resources/native/<os>-<arch>/  # Where JNI libs go
 │   │   ├── jvmAndroidMain/     # Shared neutral-JNI adapters
 │   │   └── androidMain/
 │   │       ├── kotlin/         # Android-specific implementations
@@ -231,9 +231,16 @@ Vehicle type: MULTICOPTER
 
 The JNI library (`libmavsdk_jni.dylib`) must be in one of:
 - `java.library.path`
-- Packaged in resources (`src/jvmMain/resources/native/`)
+- Packaged in resources (`src/jvmMain/resources/native/<os>-<arch>/`)
 
 The library loader will extract it to a temp file if needed.
+
+The `<os>-<arch>` directory lets a single jar carry every supported platform.
+`<os>` is one of `darwin`, `linux`, `windows`; `<arch>` is one of `aarch64`,
+`x86_64`, `arm`, `x86` (normalised from the JVM's `os.arch`). On Apple Silicon
+that gives `native/darwin-aarch64/libmavsdk_jni.dylib`. A library placed
+directly in `native/` is still picked up as a fallback, which is convenient
+when building locally for just the current machine.
 
 ### Android
 

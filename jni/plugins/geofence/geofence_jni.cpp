@@ -259,17 +259,19 @@ jobjectArray toJavaGeofenceDataArray(
 
 jobject toJavaPoint(
     JNIEnv* env, const mavsdk_geofence_point_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/geofence/NativeGeofence$Point");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/geofence/NativeGeofence$Point");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(DD)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jdouble>(value.latitude_deg)
         , static_cast<jdouble>(value.longitude_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -277,32 +279,36 @@ jobjectArray toJavaPointArray(
     JNIEnv* env,
     const mavsdk_geofence_point_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/geofence/NativeGeofence$Point");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/geofence/NativeGeofence$Point");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPoint(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPolygon(
     JNIEnv* env, const mavsdk_geofence_polygon_t& value) {
-    jobjectArray pointsValue =
-        toJavaPointArray(
-            env, value.points, value.points_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/geofence/NativeGeofence$Polygon");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/geofence/NativeGeofence$Polygon");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/geofence/NativeGeofence$Point;I)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobjectArray pointsValue =
+        toJavaPointArray(
+            env, value.points, value.points_size);
     jobject result = env->NewObject(carrierClass, constructor
         , pointsValue
         , static_cast<jint>(value.fence_type)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(pointsValue);
     return result;
 }
@@ -311,32 +317,36 @@ jobjectArray toJavaPolygonArray(
     JNIEnv* env,
     const mavsdk_geofence_polygon_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/geofence/NativeGeofence$Polygon");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/geofence/NativeGeofence$Polygon");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPolygon(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCircle(
     JNIEnv* env, const mavsdk_geofence_circle_t& value) {
-    jobject pointValue =
-        toJavaPoint(env, value.point);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/geofence/NativeGeofence$Circle");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/geofence/NativeGeofence$Circle");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/geofence/NativeGeofence$Point;FI)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobject pointValue =
+        toJavaPoint(env, value.point);
     jobject result = env->NewObject(carrierClass, constructor
         , pointValue
         , static_cast<jfloat>(value.radius)
         , static_cast<jint>(value.fence_type)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(pointValue);
     return result;
 }
@@ -345,35 +355,39 @@ jobjectArray toJavaCircleArray(
     JNIEnv* env,
     const mavsdk_geofence_circle_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/geofence/NativeGeofence$Circle");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/geofence/NativeGeofence$Circle");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCircle(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaGeofenceData(
     JNIEnv* env, const mavsdk_geofence_geofence_data_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/geofence/NativeGeofence$GeofenceData");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/geofence/NativeGeofence$Polygon;[Lio/mavsdk/jni/plugins/geofence/NativeGeofence$Circle;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobjectArray polygonsValue =
         toJavaPolygonArray(
             env, value.polygons, value.polygons_size);
     jobjectArray circlesValue =
         toJavaCircleArray(
             env, value.circles, value.circles_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/geofence/NativeGeofence$GeofenceData");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/geofence/NativeGeofence$Polygon;[Lio/mavsdk/jni/plugins/geofence/NativeGeofence$Circle;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , polygonsValue
         , circlesValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(polygonsValue);
     env->DeleteLocalRef(circlesValue);
     return result;
@@ -383,14 +397,16 @@ jobjectArray toJavaGeofenceDataArray(
     JNIEnv* env,
     const mavsdk_geofence_geofence_data_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/geofence/NativeGeofence$GeofenceData");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/geofence/NativeGeofence$GeofenceData");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaGeofenceData(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -409,6 +425,7 @@ struct UploadGeofenceCallbackWrapper {
 
     void operator()(
         const mavsdk_geofence_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -441,6 +458,7 @@ struct ClearGeofenceCallbackWrapper {
 
     void operator()(
         const mavsdk_geofence_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

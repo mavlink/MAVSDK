@@ -1652,19 +1652,21 @@ jobjectArray toJavaImuArray(
 
 jobject toJavaPosition(
     JNIEnv* env, const mavsdk_telemetry_server_position_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Position");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Position");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(DDFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jdouble>(value.latitude_deg)
         , static_cast<jdouble>(value.longitude_deg)
         , static_cast<jfloat>(value.absolute_altitude_m)
         , static_cast<jfloat>(value.relative_altitude_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1672,28 +1674,32 @@ jobjectArray toJavaPositionArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_position_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Position");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Position");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPosition(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaHeading(
     JNIEnv* env, const mavsdk_telemetry_server_heading_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Heading");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Heading");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(D)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jdouble>(value.heading_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1701,24 +1707,29 @@ jobjectArray toJavaHeadingArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_heading_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Heading");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Heading");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaHeading(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaQuaternion(
     JNIEnv* env, const mavsdk_telemetry_server_quaternion_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFFJ)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.w)
         , static_cast<jfloat>(value.x)
@@ -1726,7 +1737,6 @@ jobject toJavaQuaternion(
         , static_cast<jfloat>(value.z)
         , static_cast<jlong>(value.timestamp_us)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1734,31 +1744,35 @@ jobjectArray toJavaQuaternionArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_quaternion_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaQuaternion(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaEulerAngle(
     JNIEnv* env, const mavsdk_telemetry_server_euler_angle_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$EulerAngle");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$EulerAngle");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFJ)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.roll_deg)
         , static_cast<jfloat>(value.pitch_deg)
         , static_cast<jfloat>(value.yaw_deg)
         , static_cast<jlong>(value.timestamp_us)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1766,30 +1780,34 @@ jobjectArray toJavaEulerAngleArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_euler_angle_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$EulerAngle");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$EulerAngle");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaEulerAngle(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAngularVelocityBody(
     JNIEnv* env, const mavsdk_telemetry_server_angular_velocity_body_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.roll_rad_s)
         , static_cast<jfloat>(value.pitch_rad_s)
         , static_cast<jfloat>(value.yaw_rad_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1797,29 +1815,33 @@ jobjectArray toJavaAngularVelocityBodyArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_angular_velocity_body_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAngularVelocityBody(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaGpsInfo(
     JNIEnv* env, const mavsdk_telemetry_server_gps_info_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GpsInfo");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GpsInfo");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(II)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.num_satellites)
         , static_cast<jint>(value.fix_type)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1827,24 +1849,29 @@ jobjectArray toJavaGpsInfoArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_gps_info_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GpsInfo");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GpsInfo");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaGpsInfo(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaRawGps(
     JNIEnv* env, const mavsdk_telemetry_server_raw_gps_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RawGps");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RawGps");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(JDDFFFFFFFFFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jlong>(value.timestamp_us)
         , static_cast<jdouble>(value.latitude_deg)
@@ -1861,7 +1888,6 @@ jobject toJavaRawGps(
         , static_cast<jfloat>(value.heading_uncertainty_deg)
         , static_cast<jfloat>(value.yaw_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1869,29 +1895,33 @@ jobjectArray toJavaRawGpsArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_raw_gps_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RawGps");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RawGps");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaRawGps(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaBattery(
     JNIEnv* env, const mavsdk_telemetry_server_battery_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Battery");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Battery");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.voltage_v)
         , static_cast<jfloat>(value.remaining_percent)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1899,30 +1929,34 @@ jobjectArray toJavaBatteryArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_battery_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Battery");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Battery");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaBattery(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaRcStatus(
     JNIEnv* env, const mavsdk_telemetry_server_rc_status_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RcStatus");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RcStatus");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ZZF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jboolean>(value.was_available_once)
         , static_cast<jboolean>(value.is_available)
         , static_cast<jfloat>(value.signal_strength_percent)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -1930,31 +1964,35 @@ jobjectArray toJavaRcStatusArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_rc_status_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RcStatus");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$RcStatus");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaRcStatus(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaStatusText(
     JNIEnv* env, const mavsdk_telemetry_server_status_text_t& value) {
-    jstring textValue =
-        toJavaString(env, value.text);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$StatusText");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$StatusText");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ILjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring textValue =
+        toJavaString(env, value.text);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.type)
         , textValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(textValue);
     return result;
 }
@@ -1963,18 +2001,29 @@ jobjectArray toJavaStatusTextArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_status_text_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$StatusText");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$StatusText");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaStatusText(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaActuatorControlTarget(
     JNIEnv* env, const mavsdk_telemetry_server_actuator_control_target_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorControlTarget");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(I[F)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jfloatArray controlsValue =
         env->NewFloatArray(
             static_cast<jsize>(value.controls_size));
@@ -1990,17 +2039,10 @@ jobject toJavaActuatorControlTarget(
             static_cast<jsize>(controlsJavaValues.size()),
             controlsJavaValues.data());
     }
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorControlTarget");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(I[F)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.group)
         , controlsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(controlsValue);
     return result;
 }
@@ -2009,18 +2051,29 @@ jobjectArray toJavaActuatorControlTargetArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_actuator_control_target_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorControlTarget");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorControlTarget");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaActuatorControlTarget(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaActuatorOutputStatus(
     JNIEnv* env, const mavsdk_telemetry_server_actuator_output_status_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorOutputStatus");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(I[F)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jfloatArray actuatorValue =
         env->NewFloatArray(
             static_cast<jsize>(value.actuator_size));
@@ -2036,17 +2089,10 @@ jobject toJavaActuatorOutputStatus(
             static_cast<jsize>(actuatorJavaValues.size()),
             actuatorJavaValues.data());
     }
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorOutputStatus");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(I[F)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.active)
         , actuatorValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(actuatorValue);
     return result;
 }
@@ -2055,18 +2101,29 @@ jobjectArray toJavaActuatorOutputStatusArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_actuator_output_status_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorOutputStatus");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ActuatorOutputStatus");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaActuatorOutputStatus(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCovariance(
     JNIEnv* env, const mavsdk_telemetry_server_covariance_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([F)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jfloatArray covariance_matrixValue =
         env->NewFloatArray(
             static_cast<jsize>(value.covariance_matrix_size));
@@ -2082,16 +2139,9 @@ jobject toJavaCovariance(
             static_cast<jsize>(covariance_matrixJavaValues.size()),
             covariance_matrixJavaValues.data());
     }
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([F)V");
     jobject result = env->NewObject(carrierClass, constructor
         , covariance_matrixValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(covariance_matrixValue);
     return result;
 }
@@ -2100,30 +2150,34 @@ jobjectArray toJavaCovarianceArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_covariance_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCovariance(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVelocityBody(
     JNIEnv* env, const mavsdk_telemetry_server_velocity_body_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.x_m_s)
         , static_cast<jfloat>(value.y_m_s)
         , static_cast<jfloat>(value.z_m_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2131,30 +2185,34 @@ jobjectArray toJavaVelocityBodyArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_velocity_body_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVelocityBody(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPositionBody(
     JNIEnv* env, const mavsdk_telemetry_server_position_body_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.x_m)
         , static_cast<jfloat>(value.y_m)
         , static_cast<jfloat>(value.z_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2162,18 +2220,29 @@ jobjectArray toJavaPositionBodyArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_position_body_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPositionBody(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaOdometry(
     JNIEnv* env, const mavsdk_telemetry_server_odometry_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Odometry");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JIILio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject position_bodyValue =
         toJavaPositionBody(env, value.position_body);
     jobject qValue =
@@ -2186,12 +2255,6 @@ jobject toJavaOdometry(
         toJavaCovariance(env, value.pose_covariance);
     jobject velocity_covarianceValue =
         toJavaCovariance(env, value.velocity_covariance);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Odometry");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(JIILio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Quaternion;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityBody;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Covariance;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jlong>(value.time_usec)
         , static_cast<jint>(value.frame_id)
@@ -2203,7 +2266,6 @@ jobject toJavaOdometry(
         , pose_covarianceValue
         , velocity_covarianceValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(position_bodyValue);
     env->DeleteLocalRef(qValue);
     env->DeleteLocalRef(velocity_bodyValue);
@@ -2217,30 +2279,34 @@ jobjectArray toJavaOdometryArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_odometry_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Odometry");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Odometry");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaOdometry(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaDistanceSensor(
     JNIEnv* env, const mavsdk_telemetry_server_distance_sensor_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$DistanceSensor");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$DistanceSensor");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.minimum_distance_m)
         , static_cast<jfloat>(value.maximum_distance_m)
         , static_cast<jfloat>(value.current_distance_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2248,24 +2314,29 @@ jobjectArray toJavaDistanceSensorArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_distance_sensor_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$DistanceSensor");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$DistanceSensor");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaDistanceSensor(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaScaledPressure(
     JNIEnv* env, const mavsdk_telemetry_server_scaled_pressure_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ScaledPressure");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ScaledPressure");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(JFFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jlong>(value.timestamp_us)
         , static_cast<jfloat>(value.absolute_pressure_hpa)
@@ -2273,7 +2344,6 @@ jobject toJavaScaledPressure(
         , static_cast<jfloat>(value.temperature_deg)
         , static_cast<jfloat>(value.differential_pressure_temperature_deg)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2281,30 +2351,34 @@ jobjectArray toJavaScaledPressureArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_scaled_pressure_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ScaledPressure");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$ScaledPressure");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaScaledPressure(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPositionNed(
     JNIEnv* env, const mavsdk_telemetry_server_position_ned_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.north_m)
         , static_cast<jfloat>(value.east_m)
         , static_cast<jfloat>(value.down_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2312,30 +2386,34 @@ jobjectArray toJavaPositionNedArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_position_ned_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPositionNed(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVelocityNed(
     JNIEnv* env, const mavsdk_telemetry_server_velocity_ned_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.north_m_s)
         , static_cast<jfloat>(value.east_m_s)
         , static_cast<jfloat>(value.down_m_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2343,33 +2421,37 @@ jobjectArray toJavaVelocityNedArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_velocity_ned_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVelocityNed(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPositionVelocityNed(
     JNIEnv* env, const mavsdk_telemetry_server_position_velocity_ned_t& value) {
-    jobject positionValue =
-        toJavaPositionNed(env, value.position);
-    jobject velocityValue =
-        toJavaVelocityNed(env, value.velocity);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionVelocityNed");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionVelocityNed");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionNed;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$VelocityNed;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobject positionValue =
+        toJavaPositionNed(env, value.position);
+    jobject velocityValue =
+        toJavaVelocityNed(env, value.velocity);
     jobject result = env->NewObject(carrierClass, constructor
         , positionValue
         , velocityValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(positionValue);
     env->DeleteLocalRef(velocityValue);
     return result;
@@ -2379,30 +2461,34 @@ jobjectArray toJavaPositionVelocityNedArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_position_velocity_ned_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionVelocityNed");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$PositionVelocityNed");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPositionVelocityNed(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaGroundTruth(
     JNIEnv* env, const mavsdk_telemetry_server_ground_truth_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GroundTruth");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GroundTruth");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(DDF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jdouble>(value.latitude_deg)
         , static_cast<jdouble>(value.longitude_deg)
         , static_cast<jfloat>(value.absolute_altitude_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2410,24 +2496,29 @@ jobjectArray toJavaGroundTruthArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_ground_truth_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GroundTruth");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$GroundTruth");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaGroundTruth(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaFixedwingMetrics(
     JNIEnv* env, const mavsdk_telemetry_server_fixedwing_metrics_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$FixedwingMetrics");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$FixedwingMetrics");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.airspeed_m_s)
         , static_cast<jfloat>(value.throttle_percentage)
@@ -2436,7 +2527,6 @@ jobject toJavaFixedwingMetrics(
         , static_cast<jfloat>(value.heading_deg)
         , static_cast<jfloat>(value.absolute_altitude_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2444,30 +2534,34 @@ jobjectArray toJavaFixedwingMetricsArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_fixedwing_metrics_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$FixedwingMetrics");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$FixedwingMetrics");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaFixedwingMetrics(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAccelerationFrd(
     JNIEnv* env, const mavsdk_telemetry_server_acceleration_frd_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.forward_m_s2)
         , static_cast<jfloat>(value.right_m_s2)
         , static_cast<jfloat>(value.down_m_s2)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2475,30 +2569,34 @@ jobjectArray toJavaAccelerationFrdArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_acceleration_frd_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAccelerationFrd(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaAngularVelocityFrd(
     JNIEnv* env, const mavsdk_telemetry_server_angular_velocity_frd_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.forward_rad_s)
         , static_cast<jfloat>(value.right_rad_s)
         , static_cast<jfloat>(value.down_rad_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2506,30 +2604,34 @@ jobjectArray toJavaAngularVelocityFrdArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_angular_velocity_frd_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAngularVelocityFrd(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaMagneticFieldFrd(
     JNIEnv* env, const mavsdk_telemetry_server_magnetic_field_frd_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.forward_gauss)
         , static_cast<jfloat>(value.right_gauss)
         , static_cast<jfloat>(value.down_gauss)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -2537,30 +2639,35 @@ jobjectArray toJavaMagneticFieldFrdArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_magnetic_field_frd_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMagneticFieldFrd(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaImu(
     JNIEnv* env, const mavsdk_telemetry_server_imu_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Imu");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd;FJ)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject acceleration_frdValue =
         toJavaAccelerationFrd(env, value.acceleration_frd);
     jobject angular_velocity_frdValue =
         toJavaAngularVelocityFrd(env, value.angular_velocity_frd);
     jobject magnetic_field_frdValue =
         toJavaMagneticFieldFrd(env, value.magnetic_field_frd);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Imu");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AccelerationFrd;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$AngularVelocityFrd;Lio/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$MagneticFieldFrd;FJ)V");
     jobject result = env->NewObject(carrierClass, constructor
         , acceleration_frdValue
         , angular_velocity_frdValue
@@ -2568,7 +2675,6 @@ jobject toJavaImu(
         , static_cast<jfloat>(value.temperature_degc)
         , static_cast<jlong>(value.timestamp_us)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(acceleration_frdValue);
     env->DeleteLocalRef(angular_velocity_frdValue);
     env->DeleteLocalRef(magnetic_field_frdValue);
@@ -2579,14 +2685,16 @@ jobjectArray toJavaImuArray(
     JNIEnv* env,
     const mavsdk_telemetry_server_imu_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Imu");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry_server/NativeTelemetryServer$Imu");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaImu(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 

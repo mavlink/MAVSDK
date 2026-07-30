@@ -640,6 +640,15 @@ jobjectArray toJavaTrackRectangleArray(
 
 jobject toJavaInformation(
     JNIEnv* env, const mavsdk_camera_server_information_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Information");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;FFFIIIILjava/lang/String;ZZ)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jstring vendor_nameValue =
         toJavaString(env, value.vendor_name);
     jstring model_nameValue =
@@ -648,12 +657,6 @@ jobject toJavaInformation(
         toJavaString(env, value.firmware_version);
     jstring definition_file_uriValue =
         toJavaString(env, value.definition_file_uri);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Information");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;FFFIIIILjava/lang/String;ZZ)V");
     jobject result = env->NewObject(carrierClass, constructor
         , vendor_nameValue
         , model_nameValue
@@ -669,7 +672,6 @@ jobject toJavaInformation(
         , static_cast<jboolean>(value.image_in_video_mode_supported)
         , static_cast<jboolean>(value.video_in_image_mode_supported)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(vendor_nameValue);
     env->DeleteLocalRef(model_nameValue);
     env->DeleteLocalRef(firmware_versionValue);
@@ -681,31 +683,35 @@ jobjectArray toJavaInformationArray(
     JNIEnv* env,
     const mavsdk_camera_server_information_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Information");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Information");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaInformation(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaVideoStreaming(
     JNIEnv* env, const mavsdk_camera_server_video_streaming_t& value) {
-    jstring rtsp_uriValue =
-        toJavaString(env, value.rtsp_uri);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$VideoStreaming");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$VideoStreaming");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ZLjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring rtsp_uriValue =
+        toJavaString(env, value.rtsp_uri);
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jboolean>(value.has_rtsp_server)
         , rtsp_uriValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(rtsp_uriValue);
     return result;
 }
@@ -714,31 +720,35 @@ jobjectArray toJavaVideoStreamingArray(
     JNIEnv* env,
     const mavsdk_camera_server_video_streaming_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$VideoStreaming");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$VideoStreaming");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaVideoStreaming(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaPosition(
     JNIEnv* env, const mavsdk_camera_server_position_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(DDFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jdouble>(value.latitude_deg)
         , static_cast<jdouble>(value.longitude_deg)
         , static_cast<jfloat>(value.absolute_altitude_m)
         , static_cast<jfloat>(value.relative_altitude_m)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -746,31 +756,35 @@ jobjectArray toJavaPositionArray(
     JNIEnv* env,
     const mavsdk_camera_server_position_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaPosition(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaQuaternion(
     JNIEnv* env, const mavsdk_camera_server_quaternion_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.w)
         , static_cast<jfloat>(value.x)
         , static_cast<jfloat>(value.y)
         , static_cast<jfloat>(value.z)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -778,30 +792,35 @@ jobjectArray toJavaQuaternionArray(
     JNIEnv* env,
     const mavsdk_camera_server_quaternion_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaQuaternion(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCaptureInfo(
     JNIEnv* env, const mavsdk_camera_server_capture_info_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureInfo");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position;Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion;JZILjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject positionValue =
         toJavaPosition(env, value.position);
     jobject attitude_quaternionValue =
         toJavaQuaternion(env, value.attitude_quaternion);
     jstring file_urlValue =
         toJavaString(env, value.file_url);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureInfo");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$Position;Lio/mavsdk/jni/plugins/camera_server/NativeCameraServer$Quaternion;JZILjava/lang/String;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , positionValue
         , attitude_quaternionValue
@@ -810,7 +829,6 @@ jobject toJavaCaptureInfo(
         , static_cast<jint>(value.index)
         , file_urlValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(positionValue);
     env->DeleteLocalRef(attitude_quaternionValue);
     env->DeleteLocalRef(file_urlValue);
@@ -821,24 +839,29 @@ jobjectArray toJavaCaptureInfoArray(
     JNIEnv* env,
     const mavsdk_camera_server_capture_info_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureInfo");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureInfo");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCaptureInfo(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaStorageInformation(
     JNIEnv* env, const mavsdk_camera_server_storage_information_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$StorageInformation");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$StorageInformation");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFIIIFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.used_storage_mib)
         , static_cast<jfloat>(value.available_storage_mib)
@@ -849,7 +872,6 @@ jobject toJavaStorageInformation(
         , static_cast<jfloat>(value.read_speed_mib_s)
         , static_cast<jfloat>(value.write_speed_mib_s)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -857,24 +879,29 @@ jobjectArray toJavaStorageInformationArray(
     JNIEnv* env,
     const mavsdk_camera_server_storage_information_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$StorageInformation");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$StorageInformation");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaStorageInformation(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaCaptureStatus(
     JNIEnv* env, const mavsdk_camera_server_capture_status_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureStatus");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureStatus");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFIII)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.image_interval_s)
         , static_cast<jfloat>(value.recording_time_s)
@@ -883,7 +910,6 @@ jobject toJavaCaptureStatus(
         , static_cast<jint>(value.video_status)
         , static_cast<jint>(value.image_count)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -891,30 +917,34 @@ jobjectArray toJavaCaptureStatusArray(
     JNIEnv* env,
     const mavsdk_camera_server_capture_status_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureStatus");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$CaptureStatus");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaCaptureStatus(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaTrackPoint(
     JNIEnv* env, const mavsdk_camera_server_track_point_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackPoint");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackPoint");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.point_x)
         , static_cast<jfloat>(value.point_y)
         , static_cast<jfloat>(value.radius)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -922,31 +952,35 @@ jobjectArray toJavaTrackPointArray(
     JNIEnv* env,
     const mavsdk_camera_server_track_point_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackPoint");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackPoint");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaTrackPoint(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaTrackRectangle(
     JNIEnv* env, const mavsdk_camera_server_track_rectangle_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackRectangle");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackRectangle");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(FFFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jfloat>(value.top_left_corner_x)
         , static_cast<jfloat>(value.top_left_corner_y)
         , static_cast<jfloat>(value.bottom_right_corner_x)
         , static_cast<jfloat>(value.bottom_right_corner_y)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -954,14 +988,16 @@ jobjectArray toJavaTrackRectangleArray(
     JNIEnv* env,
     const mavsdk_camera_server_track_rectangle_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackRectangle");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/camera_server/NativeCameraServer$TrackRectangle");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaTrackRectangle(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -981,6 +1017,7 @@ struct TakePhotoCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1014,6 +1051,7 @@ struct StartVideoCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1047,6 +1085,7 @@ struct StopVideoCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1080,6 +1119,7 @@ struct StartVideoStreamingCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1113,6 +1153,7 @@ struct StopVideoStreamingCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1146,6 +1187,7 @@ struct SetModeCallbackWrapper {
     void operator()(
         const mavsdk_camera_server_mode_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1179,6 +1221,7 @@ struct StorageInformationCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1212,6 +1255,7 @@ struct CaptureStatusCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1245,6 +1289,7 @@ struct FormatStorageCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1278,6 +1323,7 @@ struct ResetSettingsCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1311,6 +1357,7 @@ struct ZoomInStartCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1344,6 +1391,7 @@ struct ZoomOutStartCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1377,6 +1425,7 @@ struct ZoomStopCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1410,6 +1459,7 @@ struct ZoomRangeCallbackWrapper {
     void operator()(
         const float value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1443,6 +1493,13 @@ struct TrackingPointCommandCallbackWrapper {
     void operator()(
         const mavsdk_camera_server_track_point_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_server_track_point_t value;
+            ~ValueGuard() {
+                mavsdk_camera_server_track_point_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1479,6 +1536,13 @@ struct TrackingRectangleCommandCallbackWrapper {
     void operator()(
         const mavsdk_camera_server_track_rectangle_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_camera_server_track_rectangle_t value;
+            ~ValueGuard() {
+                mavsdk_camera_server_track_rectangle_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -1515,6 +1579,7 @@ struct TrackingOffCommandCallbackWrapper {
     void operator()(
         const int32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

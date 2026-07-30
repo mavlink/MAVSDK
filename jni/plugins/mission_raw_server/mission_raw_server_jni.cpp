@@ -220,12 +220,15 @@ jobjectArray toJavaMissionProgressArray(
 
 jobject toJavaMissionItem(
     JNIEnv* env, const mavsdk_mission_raw_server_mission_item_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(IIIIIFFFFIIFI)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.seq)
         , static_cast<jint>(value.frame)
@@ -241,7 +244,6 @@ jobject toJavaMissionItem(
         , static_cast<jfloat>(value.z)
         , static_cast<jint>(value.mission_type)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -249,31 +251,35 @@ jobjectArray toJavaMissionItemArray(
     JNIEnv* env,
     const mavsdk_mission_raw_server_mission_item_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMissionItem(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaMissionPlan(
     JNIEnv* env, const mavsdk_mission_raw_server_mission_plan_t& value) {
-    jobjectArray mission_itemsValue =
-        toJavaMissionItemArray(
-            env, value.mission_items, value.mission_items_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionPlan");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionPlan");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionItem;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobjectArray mission_itemsValue =
+        toJavaMissionItemArray(
+            env, value.mission_items, value.mission_items_size);
     jobject result = env->NewObject(carrierClass, constructor
         , mission_itemsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(mission_itemsValue);
     return result;
 }
@@ -282,29 +288,33 @@ jobjectArray toJavaMissionPlanArray(
     JNIEnv* env,
     const mavsdk_mission_raw_server_mission_plan_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionPlan");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionPlan");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMissionPlan(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaMissionProgress(
     JNIEnv* env, const mavsdk_mission_raw_server_mission_progress_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionProgress");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionProgress");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(II)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.current)
         , static_cast<jint>(value.total)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -312,14 +322,16 @@ jobjectArray toJavaMissionProgressArray(
     JNIEnv* env,
     const mavsdk_mission_raw_server_mission_progress_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionProgress");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/mission_raw_server/NativeMissionRawServer$MissionProgress");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaMissionProgress(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -339,6 +351,13 @@ struct IncomingMissionCallbackWrapper {
     void operator()(
         const mavsdk_mission_raw_server_result_t result,        const mavsdk_mission_raw_server_mission_plan_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_mission_raw_server_mission_plan_t value;
+            ~ValueGuard() {
+                mavsdk_mission_raw_server_mission_plan_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -376,6 +395,13 @@ struct CurrentItemChangedCallbackWrapper {
     void operator()(
         const mavsdk_mission_raw_server_mission_item_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_mission_raw_server_mission_item_t value;
+            ~ValueGuard() {
+                mavsdk_mission_raw_server_mission_item_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -412,6 +438,7 @@ struct ClearAllCallbackWrapper {
     void operator()(
         const uint32_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

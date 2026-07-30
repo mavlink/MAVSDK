@@ -37,6 +37,7 @@ struct GrabCallbackWrapper {
 
     void operator()(
         const mavsdk_gripper_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -69,6 +70,7 @@ struct ReleaseCallbackWrapper {
 
     void operator()(
         const mavsdk_gripper_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

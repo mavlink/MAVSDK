@@ -408,6 +408,15 @@ jobjectArray toJavaHealthAndArmingCheckReportArray(
 
 jobject toJavaEvent(
     JNIEnv* env, const mavsdk_events_event_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$Event");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jstring messageValue =
         toJavaString(env, value.message);
     jstring descriptionValue =
@@ -416,12 +425,6 @@ jobject toJavaEvent(
         toJavaString(env, value.event_namespace);
     jstring event_nameValue =
         toJavaString(env, value.event_name);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$Event");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jint>(value.compid)
         , messageValue
@@ -430,7 +433,6 @@ jobject toJavaEvent(
         , event_namespaceValue
         , event_nameValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(messageValue);
     env->DeleteLocalRef(descriptionValue);
     env->DeleteLocalRef(event_namespaceValue);
@@ -442,37 +444,41 @@ jobjectArray toJavaEventArray(
     JNIEnv* env,
     const mavsdk_events_event_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$Event");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$Event");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaEvent(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaHealthAndArmingCheckProblem(
     JNIEnv* env, const mavsdk_events_health_and_arming_check_problem_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckProblem");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jstring messageValue =
         toJavaString(env, value.message);
     jstring descriptionValue =
         toJavaString(env, value.description);
     jstring health_componentValue =
         toJavaString(env, value.health_component);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckProblem");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , messageValue
         , descriptionValue
         , static_cast<jint>(value.log_level)
         , health_componentValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(messageValue);
     env->DeleteLocalRef(descriptionValue);
     env->DeleteLocalRef(health_componentValue);
@@ -483,35 +489,39 @@ jobjectArray toJavaHealthAndArmingCheckProblemArray(
     JNIEnv* env,
     const mavsdk_events_health_and_arming_check_problem_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckProblem");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckProblem");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaHealthAndArmingCheckProblem(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaHealthAndArmingCheckMode(
     JNIEnv* env, const mavsdk_events_health_and_arming_check_mode_t& value) {
-    jstring mode_nameValue =
-        toJavaString(env, value.mode_name);
-    jobjectArray problemsValue =
-        toJavaHealthAndArmingCheckProblemArray(
-            env, value.problems, value.problems_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckMode");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckMode");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;Z[Lio/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckProblem;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring mode_nameValue =
+        toJavaString(env, value.mode_name);
+    jobjectArray problemsValue =
+        toJavaHealthAndArmingCheckProblemArray(
+            env, value.problems, value.problems_size);
     jobject result = env->NewObject(carrierClass, constructor
         , mode_nameValue
         , static_cast<jboolean>(value.can_arm_or_run)
         , problemsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(mode_nameValue);
     env->DeleteLocalRef(problemsValue);
     return result;
@@ -521,28 +531,33 @@ jobjectArray toJavaHealthAndArmingCheckModeArray(
     JNIEnv* env,
     const mavsdk_events_health_and_arming_check_mode_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckMode");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckMode");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaHealthAndArmingCheckMode(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaHealthComponentReport(
     JNIEnv* env, const mavsdk_events_health_component_report_t& value) {
-    jstring nameValue =
-        toJavaString(env, value.name);
-    jstring labelValue =
-        toJavaString(env, value.label);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$HealthComponentReport");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$HealthComponentReport");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;ZZZ)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring nameValue =
+        toJavaString(env, value.name);
+    jstring labelValue =
+        toJavaString(env, value.label);
     jobject result = env->NewObject(carrierClass, constructor
         , nameValue
         , labelValue
@@ -550,7 +565,6 @@ jobject toJavaHealthComponentReport(
         , static_cast<jboolean>(value.has_error)
         , static_cast<jboolean>(value.has_warning)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(nameValue);
     env->DeleteLocalRef(labelValue);
     return result;
@@ -560,18 +574,29 @@ jobjectArray toJavaHealthComponentReportArray(
     JNIEnv* env,
     const mavsdk_events_health_component_report_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$HealthComponentReport");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$HealthComponentReport");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaHealthComponentReport(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaHealthAndArmingCheckReport(
     JNIEnv* env, const mavsdk_events_health_and_arming_check_report_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckReport");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckMode;[Lio/mavsdk/jni/plugins/events/NativeEvents$HealthComponentReport;[Lio/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckProblem;)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject current_mode_intentionValue =
         toJavaHealthAndArmingCheckMode(env, value.current_mode_intention);
     jobjectArray health_componentsValue =
@@ -580,18 +605,11 @@ jobject toJavaHealthAndArmingCheckReport(
     jobjectArray all_problemsValue =
         toJavaHealthAndArmingCheckProblemArray(
             env, value.all_problems, value.all_problems_size);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckReport");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(Lio/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckMode;[Lio/mavsdk/jni/plugins/events/NativeEvents$HealthComponentReport;[Lio/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckProblem;)V");
     jobject result = env->NewObject(carrierClass, constructor
         , current_mode_intentionValue
         , health_componentsValue
         , all_problemsValue
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(current_mode_intentionValue);
     env->DeleteLocalRef(health_componentsValue);
     env->DeleteLocalRef(all_problemsValue);
@@ -602,14 +620,16 @@ jobjectArray toJavaHealthAndArmingCheckReportArray(
     JNIEnv* env,
     const mavsdk_events_health_and_arming_check_report_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckReport");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/events/NativeEvents$HealthAndArmingCheckReport");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaHealthAndArmingCheckReport(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -629,6 +649,13 @@ struct EventsCallbackWrapper {
     void operator()(
         const mavsdk_events_event_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_events_event_t value;
+            ~ValueGuard() {
+                mavsdk_events_event_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -665,6 +692,13 @@ struct HealthAndArmingChecksCallbackWrapper {
     void operator()(
         const mavsdk_events_health_and_arming_check_report_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_events_health_and_arming_check_report_t value;
+            ~ValueGuard() {
+                mavsdk_events_health_and_arming_check_report_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

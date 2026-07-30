@@ -74,18 +74,20 @@ jobjectArray toJavaLogStreamingRawArray(
 
 jobject toJavaLogStreamingRaw(
     JNIEnv* env, const mavsdk_log_streaming_log_streaming_raw_t& value) {
-    jstring data_base64Value =
-        toJavaString(env, value.data_base64);
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/log_streaming/NativeLogStreaming$LogStreamingRaw");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/log_streaming/NativeLogStreaming$LogStreamingRaw");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(Ljava/lang/String;)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring data_base64Value =
+        toJavaString(env, value.data_base64);
     jobject result = env->NewObject(carrierClass, constructor
         , data_base64Value
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(data_base64Value);
     return result;
 }
@@ -94,14 +96,16 @@ jobjectArray toJavaLogStreamingRawArray(
     JNIEnv* env,
     const mavsdk_log_streaming_log_streaming_raw_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/log_streaming/NativeLogStreaming$LogStreamingRaw");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/log_streaming/NativeLogStreaming$LogStreamingRaw");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaLogStreamingRaw(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -120,6 +124,7 @@ struct StartLogStreamingCallbackWrapper {
 
     void operator()(
         const mavsdk_log_streaming_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -152,6 +157,7 @@ struct StopLogStreamingCallbackWrapper {
 
     void operator()(
         const mavsdk_log_streaming_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -185,6 +191,13 @@ struct LogStreamingRawCallbackWrapper {
     void operator()(
         const mavsdk_log_streaming_log_streaming_raw_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_log_streaming_log_streaming_raw_t value;
+            ~ValueGuard() {
+                mavsdk_log_streaming_log_streaming_raw_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

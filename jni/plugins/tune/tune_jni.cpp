@@ -90,6 +90,15 @@ jobjectArray toJavaTuneDescriptionArray(
 
 jobject toJavaTuneDescription(
     JNIEnv* env, const mavsdk_tune_tune_description_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/tune/NativeTune$TuneDescription");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "([II)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jintArray song_elementsValue =
         env->NewIntArray(
             static_cast<jsize>(value.song_elements_size));
@@ -105,17 +114,10 @@ jobject toJavaTuneDescription(
             static_cast<jsize>(song_elementsJavaValues.size()),
             song_elementsJavaValues.data());
     }
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/tune/NativeTune$TuneDescription");
-    if (!carrierClass) {
-        return nullptr;
-    }
-    jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([II)V");
     jobject result = env->NewObject(carrierClass, constructor
         , song_elementsValue
         , static_cast<jint>(value.tempo)
     );
-    env->DeleteLocalRef(carrierClass);
     env->DeleteLocalRef(song_elementsValue);
     return result;
 }
@@ -124,14 +126,16 @@ jobjectArray toJavaTuneDescriptionArray(
     JNIEnv* env,
     const mavsdk_tune_tune_description_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/tune/NativeTune$TuneDescription");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/tune/NativeTune$TuneDescription");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaTuneDescription(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -150,6 +154,7 @@ struct PlayTuneCallbackWrapper {
 
     void operator()(
         const mavsdk_tune_result_t result    ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }

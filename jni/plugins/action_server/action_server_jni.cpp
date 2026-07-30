@@ -141,12 +141,15 @@ jobjectArray toJavaArmDisarmArray(
 
 jobject toJavaAllowableFlightModes(
     JNIEnv* env, const mavsdk_action_server_allowable_flight_modes_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/action_server/NativeActionServer$AllowableFlightModes");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/action_server/NativeActionServer$AllowableFlightModes");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ZZZZZZZ)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jboolean>(value.can_auto_mode)
         , static_cast<jboolean>(value.can_guided_mode)
@@ -156,7 +159,6 @@ jobject toJavaAllowableFlightModes(
         , static_cast<jboolean>(value.can_auto_land_mode)
         , static_cast<jboolean>(value.can_auto_loiter_mode)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -164,29 +166,33 @@ jobjectArray toJavaAllowableFlightModesArray(
     JNIEnv* env,
     const mavsdk_action_server_allowable_flight_modes_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/action_server/NativeActionServer$AllowableFlightModes");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/action_server/NativeActionServer$AllowableFlightModes");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaAllowableFlightModes(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 jobject toJavaArmDisarm(
     JNIEnv* env, const mavsdk_action_server_arm_disarm_t& value) {
-    jclass carrierClass = env->FindClass("io/mavsdk/jni/plugins/action_server/NativeActionServer$ArmDisarm");
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/action_server/NativeActionServer$ArmDisarm");
     if (!carrierClass) {
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
         carrierClass, "<init>", "(ZZ)V");
+    if (!constructor) {
+        return nullptr;
+    }
     jobject result = env->NewObject(carrierClass, constructor
         , static_cast<jboolean>(value.arm)
         , static_cast<jboolean>(value.force)
     );
-    env->DeleteLocalRef(carrierClass);
     return result;
 }
 
@@ -194,14 +200,16 @@ jobjectArray toJavaArmDisarmArray(
     JNIEnv* env,
     const mavsdk_action_server_arm_disarm_t* values,
     size_t count) {
-    jclass elementClass = env->FindClass("io/mavsdk/jni/plugins/action_server/NativeActionServer$ArmDisarm");
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/action_server/NativeActionServer$ArmDisarm");
+    if (!elementClass) {
+        return nullptr;
+    }
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaArmDisarm(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
-    env->DeleteLocalRef(elementClass);
     return result;
 }
 
@@ -221,6 +229,13 @@ struct ArmDisarmCallbackWrapper {
     void operator()(
         const mavsdk_action_server_result_t result,        const mavsdk_action_server_arm_disarm_t value
     ) const {
+        struct ValueGuard {
+            mavsdk_action_server_arm_disarm_t value;
+            ~ValueGuard() {
+                mavsdk_action_server_arm_disarm_destroy(&value);
+            }
+        } valueGuard{value};
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -258,6 +273,7 @@ struct FlightModeChangeCallbackWrapper {
     void operator()(
         const mavsdk_action_server_result_t result,        const mavsdk_action_server_flight_mode_t value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -292,6 +308,7 @@ struct TakeoffCallbackWrapper {
     void operator()(
         const mavsdk_action_server_result_t result,        const bool value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -326,6 +343,7 @@ struct LandCallbackWrapper {
     void operator()(
         const mavsdk_action_server_result_t result,        const bool value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -360,6 +378,7 @@ struct RebootCallbackWrapper {
     void operator()(
         const mavsdk_action_server_result_t result,        const bool value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -394,6 +413,7 @@ struct ShutdownCallbackWrapper {
     void operator()(
         const mavsdk_action_server_result_t result,        const bool value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
@@ -428,6 +448,7 @@ struct TerminateCallbackWrapper {
     void operator()(
         const mavsdk_action_server_result_t result,        const bool value
     ) const {
+
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
         }
