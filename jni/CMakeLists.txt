@@ -14,7 +14,7 @@ set(CORE_SOURCES
     system_jni.cpp
 )
 
-find_package(CMAVSDK REQUIRED)
+find_package(cmavsdk REQUIRED)
 
 add_library(mavsdk_jni SHARED
     ${CORE_SOURCES}
