@@ -4,7 +4,7 @@
 
 #include "gimbal.h"
 
-#include <mavsdk/plugins/gimbal/gimbal.h>
+#include <mavsdk/plugins/gimbal/gimbal.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

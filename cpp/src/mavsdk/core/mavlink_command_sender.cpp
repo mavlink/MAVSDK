@@ -1,18 +1,20 @@
-#include "mavlink_command_sender.h"
-#include "mavlink_address.h"
-#include "system_impl.h"
-#include "unused.h"
+#include "mavlink_command_sender.hpp"
+#include "mavlink_address.hpp"
+#include "system_impl.hpp"
+#include "unused.hpp"
 #include <cmath>
 #include <future>
 #include <memory>
 
 namespace mavsdk {
 
-MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _system_impl(system_impl)
+MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) :
+    _system_impl(system_impl),
+    _io_context(system_impl.io_context())
 {
     if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Command debugging is on.";
+            LogDebug("Command debugging is on.");
             _command_debugging = true;
         }
     }
@@ -26,11 +28,10 @@ MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _system_im
 MavlinkCommandSender::~MavlinkCommandSender()
 {
     if (_command_debugging) {
-        LogDebug() << "CommandSender destroyed";
+        LogDebug("CommandSender destroyed");
     }
     _system_impl.unregister_all_mavlink_message_handlers(this);
 
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
     for (const auto& work : _work_queue) {
         _system_impl.unregister_timeout_handler(work->timeout_cookie);
     }
@@ -87,67 +88,73 @@ void MavlinkCommandSender::queue_command_async(
     const CommandInt& command, const CommandResultCallback& callback, unsigned retries)
 {
     if (_command_debugging) {
-        LogDebug() << "COMMAND_INT " << static_cast<int>(command.command) << " to send to "
-                   << static_cast<int>(command.target_system_id) << ", "
-                   << static_cast<int>(command.target_component_id);
-    }
-
-    CommandIdentification identification = identification_from_command(command);
-
-    {
-        LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-        for (const auto& work : _work_queue) {
-            if (work->identification == identification && callback == nullptr) {
-                if (_command_debugging) {
-                    LogDebug() << "Dropping command " << static_cast<int>(identification.command)
-                               << " that is already being sent";
-                }
-                return;
-            }
-        }
+        LogDebug(
+            "COMMAND_INT {} to send to {}, {}",
+            static_cast<int>(command.command),
+            static_cast<int>(command.target_system_id),
+            static_cast<int>(command.target_component_id));
     }
 
     auto new_work = std::make_shared<Work>();
     new_work->timeout_s = _system_impl.timeout_s();
     new_work->command = command;
-    new_work->identification = identification;
+    new_work->identification = identification_from_command(command);
     new_work->callback = callback;
     new_work->retries_to_do = retries;
-    _work_queue.push_back(new_work);
+    asio::post(_io_context, [this, new_work]() {
+        for (const auto& work : _work_queue) {
+            if (work->identification == new_work->identification && new_work->callback == nullptr) {
+                if (_command_debugging) {
+                    LogDebug(
+                        "Dropping command {} that is already being sent",
+                        static_cast<int>(new_work->identification.command));
+                }
+                return;
+            }
+        }
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkCommandSender::queue_command_async(
     const CommandLong& command, const CommandResultCallback& callback, unsigned retries)
 {
     if (_command_debugging) {
-        LogDebug() << "COMMAND_LONG " << static_cast<int>(command.command) << " to send to "
-                   << static_cast<int>(command.target_system_id) << ", "
-                   << static_cast<int>(command.target_component_id);
-    }
-
-    CommandIdentification identification = identification_from_command(command);
-
-    {
-        LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-        for (const auto& work : _work_queue) {
-            if (work->identification == identification && callback == nullptr) {
-                if (_command_debugging) {
-                    LogDebug() << "Dropping command " << static_cast<int>(identification.command)
-                               << " that is already being sent";
-                }
-                return;
-            }
-        }
+        LogDebug(
+            "COMMAND_LONG {} to send to {}, {}",
+            static_cast<int>(command.command),
+            static_cast<int>(command.target_system_id),
+            static_cast<int>(command.target_component_id));
     }
 
     auto new_work = std::make_shared<Work>();
     new_work->timeout_s = _system_impl.timeout_s();
     new_work->command = command;
-    new_work->identification = identification;
+    new_work->identification = identification_from_command(command);
     new_work->callback = callback;
     new_work->time_started = _system_impl.get_time().steady_time();
     new_work->retries_to_do = retries;
-    _work_queue.push_back(new_work);
+    asio::post(_io_context, [this, new_work]() {
+        for (const auto& work : _work_queue) {
+            if (work->identification == new_work->identification && new_work->callback == nullptr) {
+                if (_command_debugging) {
+                    LogDebug(
+                        "Dropping command {} that is already being sent",
+                        static_cast<int>(new_work->identification.command));
+                }
+                return;
+            }
+        }
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
@@ -160,22 +167,24 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
         (command_ack.target_component &&
          command_ack.target_component != _system_impl.get_own_component_id())) {
         if (_command_debugging) {
-            LogDebug() << "Ignoring command ack for command "
-                       << static_cast<int>(command_ack.command) << " from "
-                       << static_cast<int>(message.sysid) << '/' << static_cast<int>(message.compid)
-                       << " to " << static_cast<int>(command_ack.target_system) << '/'
-                       << static_cast<int>(command_ack.target_component);
+            LogDebug(
+                "Ignoring command ack for command {} from {}{}{} to {}{}{}",
+                static_cast<int>(command_ack.command),
+                static_cast<int>(message.sysid),
+                '/',
+                static_cast<int>(message.compid),
+                static_cast<int>(command_ack.target_system),
+                '/',
+                static_cast<int>(command_ack.target_component));
         }
         return;
     }
-
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
         const auto& work = *it;
 
         if (!work) {
-            LogErr() << "No work available! (should not happen #1)";
+            LogErr("No work available! (should not happen #1)");
             return;
         }
 
@@ -185,22 +194,25 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
             (work->identification.target_component_id != 0 &&
              work->identification.target_component_id != message.compid)) {
             if (_command_debugging) {
-                LogDebug() << "Command ack for " << command_ack.command
-                           << " (from: " << std::to_string(message.sysid) << "/"
-                           << std::to_string(message.compid) << ")" << " does not match command "
-                           << work->identification.command
-                           << " (to: " << std::to_string(work->identification.target_system_id)
-                           << "/" << std::to_string(work->identification.target_component_id) << ")"
-                           << " after "
-                           << _system_impl.get_time().elapsed_since_s(work->time_started) << " s";
+                LogDebug(
+                    "Command ack for {} (from: {}/{}) does not match command {} (to: {}/{}) after {} s",
+                    command_ack.command,
+                    message.sysid,
+                    message.compid,
+                    work->identification.command,
+                    work->identification.target_system_id,
+                    work->identification.target_component_id,
+                    static_cast<int>(_system_impl.get_time().elapsed_since_s(work->time_started)));
             }
             continue;
         }
 
         if (_command_debugging) {
-            LogDebug() << "Received command ack for " << command_ack.command << " with result "
-                       << static_cast<int>(command_ack.result) << " after "
-                       << _system_impl.get_time().elapsed_since_s(work->time_started) << " s";
+            LogDebug(
+                "Received command ack for {} with result {} after {} s",
+                command_ack.command,
+                static_cast<int>(command_ack.result),
+                static_cast<int>(_system_impl.get_time().elapsed_since_s(work->time_started)));
         }
 
         CommandResultCallback temp_callback = work->callback;
@@ -215,9 +227,9 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_DENIED:
                 if (_command_debugging) {
-                    LogDebug() << "command denied (" << work->identification.command << ").";
+                    LogDebug("Command denied ({}).", work->identification.command);
                     if (work->identification.command == 512) {
-                        LogDebug() << "(message " << work->identification.maybe_param1 << ")";
+                        LogDebug("(message {})", work->identification.maybe_param1);
                     }
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
@@ -227,7 +239,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_UNSUPPORTED:
                 if (_command_debugging) {
-                    LogDebug() << "command unsupported (" << work->identification.command << ").";
+                    LogDebug("Command unsupported ({}).", work->identification.command);
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Unsupported, NAN};
@@ -236,8 +248,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_TEMPORARILY_REJECTED:
                 if (_command_debugging) {
-                    LogDebug() << "command temporarily rejected (" << work->identification.command
-                               << ").";
+                    LogDebug("Command temporarily rejected ({}).", work->identification.command);
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::TemporarilyRejected, NAN};
@@ -246,7 +257,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_FAILED:
                 if (_command_debugging) {
-                    LogDebug() << "command failed (" << work->identification.command << ").";
+                    LogDebug("Command failed ({}).", work->identification.command);
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Failed, NAN};
@@ -256,8 +267,10 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
             case MAV_RESULT_IN_PROGRESS:
                 if (_command_debugging) {
                     if (static_cast<int>(command_ack.progress) != 255) {
-                        LogDebug() << "progress: " << static_cast<int>(command_ack.progress)
-                                   << " % (" << work->identification.command << ").";
+                        LogDebug(
+                            "progress: {} % ({}).",
+                            static_cast<int>(command_ack.progress),
+                            work->identification.command);
                     }
                 }
                 // If we get a progress update, we can raise the timeout
@@ -276,7 +289,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_CANCELLED:
                 if (_command_debugging) {
-                    LogDebug() << "command cancelled (" << work->identification.command << ").";
+                    LogDebug("Command cancelled ({}).", work->identification.command);
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Cancelled, NAN};
@@ -284,7 +297,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
                 break;
 
             default:
-                LogWarn() << "Received unknown ack.";
+                LogWarn("Received unknown ack.");
                 break;
         }
 
@@ -296,32 +309,33 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
     }
 
     if (_command_debugging) {
-        LogDebug() << "Received ack from " << static_cast<int>(message.sysid) << '/'
-                   << static_cast<int>(message.compid)
-                   << " for not-existing command: " << static_cast<int>(command_ack.command)
-                   << "! Ignoring...";
+        LogDebug(
+            "Received ack from {}{}{} for not-existing command: {}! Ignoring...",
+            static_cast<int>(message.sysid),
+            '/',
+            static_cast<int>(message.compid),
+            static_cast<int>(command_ack.command));
     } else {
-        LogWarn() << "Received ack for not-existing command: "
-                  << static_cast<int>(command_ack.command) << "! Ignoring...";
+        LogWarn(
+            "Received ack for not-existing command: {}! Ignoring...",
+            static_cast<int>(command_ack.command));
     }
 }
 
 void MavlinkCommandSender::receive_timeout(const CommandIdentification& identification)
 {
     if (_command_debugging) {
-        LogDebug() << "Got timeout!";
+        LogDebug("Got timeout!");
     }
     bool found_command = false;
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};
 
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
         const auto& work = *it;
 
         if (!work) {
-            LogErr() << "No work available! (should not happen #2)";
+            LogErr("No work available! (should not happen #2)");
             return;
         }
 
@@ -334,19 +348,19 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
         if (work->retries_to_do > 0) {
             // We're not sure the command arrived, let's retransmit.
             if (_command_debugging) {
-                LogWarn() << "sending again after "
-                          << _system_impl.get_time().elapsed_since_s(work->time_started)
-                          << " s, retries to do: " << work->retries_to_do << "  ("
-                          << work->identification.command << ").";
+                LogWarn(
+                    "sending again after {} s, retries to do: {}  ({}).",
+                    static_cast<int>(_system_impl.get_time().elapsed_since_s(work->time_started)),
+                    work->retries_to_do,
+                    work->identification.command);
 
                 if (work->identification.command == MAV_CMD_REQUEST_MESSAGE) {
-                    LogWarn() << "Request was for msg ID: " << work->identification.maybe_param1;
+                    LogWarn("Request was for msg ID: {}", work->identification.maybe_param1);
                 }
             }
 
             if (!send_mavlink_message(work->command)) {
-                LogErr() << "connection send error in retransmit (" << work->identification.command
-                         << ").";
+                LogErr("Connection send error in retransmit ({}).", work->identification.command);
                 temp_callback = work->callback;
                 temp_result = {Result::ConnectionError, NAN};
                 _work_queue.erase(it);
@@ -371,19 +385,19 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
                     target_sysid = command_long->target_system_id;
                     target_compid = command_long->target_component_id;
                 } else {
-                    LogErr() << "No command, that's awkward";
+                    LogErr("No command, that's awkward");
                     continue;
                 }
                 if (_command_debugging) {
-                    LogWarn() << "Retrying failed for REQUEST_MESSAGE command for message: "
-                              << work->identification.maybe_param1 << ", to ("
-                              << std::to_string(target_sysid) << "/"
-                              << std::to_string(target_compid) << ")";
+                    LogWarn(
+                        "Retrying failed for REQUEST_MESSAGE command for message: {}, to ({}/{})",
+                        work->identification.maybe_param1,
+                        target_sysid,
+                        target_compid);
                 }
             } else {
                 if (_command_debugging) {
-                    LogWarn() << "Retrying failed for command: " << work->identification.command
-                              << ")";
+                    LogWarn("Retrying failed for command: {})", work->identification.command);
                 }
             }
 
@@ -399,15 +413,14 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
     }
 
     if (!found_command) {
-        LogWarn() << "Timeout for not-existing command: "
-                  << static_cast<int>(identification.command) << "! Ignoring...";
+        LogWarn(
+            "Timeout for not-existing command: {}! Ignoring...",
+            static_cast<int>(identification.command));
     }
 }
 
 void MavlinkCommandSender::do_work()
 {
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-
     for (const auto& work : _work_queue) {
         if (work->already_sent) {
             continue;
@@ -424,8 +437,9 @@ void MavlinkCommandSender::do_work()
             if (other_work->already_sent &&
                 other_work->identification.command == work->identification.command) {
                 if (_command_debugging) {
-                    LogDebug() << "Command " << static_cast<int>(work->identification.command)
-                               << " is already being sent, waiting...";
+                    LogDebug(
+                        "Command {} is already being sent, waiting...",
+                        static_cast<int>(work->identification.command));
                 }
                 already_being_sent = true;
                 break;
@@ -441,12 +455,12 @@ void MavlinkCommandSender::do_work()
 
         {
             if (!send_mavlink_message(work->command)) {
-                LogErr() << "connection send error (" << work->identification.command << ")";
+                LogErr("Connection send error ({})", work->identification.command);
                 // In this case we try again after the timeout. Chances are slim it will work next
                 // time though.
             } else {
                 if (_command_debugging) {
-                    LogDebug() << "Sent command " << static_cast<int>(work->identification.command);
+                    LogDebug("Sent command {}", static_cast<int>(work->identification.command));
                 }
             }
         }

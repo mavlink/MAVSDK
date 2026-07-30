@@ -1,8 +1,8 @@
-#include "action_impl.h"
-#include "mavsdk_impl.h"
-#include "math_utils.h"
-#include "flight_mode.h"
-#include "px4_custom_mode.h"
+#include "action_impl.hpp"
+#include "mavsdk_impl.hpp"
+#include "math_utils.hpp"
+#include "flight_mode.hpp"
+#include "px4_custom_mode.hpp"
 #include <cmath>
 #include <future>
 
@@ -923,6 +923,32 @@ Action::Result ActionImpl::set_gps_global_origin(
     if (status == std::future_status::timeout) {
         return Action::Result::Timeout;
     }
+
+    return fut.get();
+}
+
+Action::Result ActionImpl::set_home(
+    bool use_current_location,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m) const
+{
+    auto prom = std::promise<Action::Result>{};
+    auto fut = prom.get_future();
+
+    MavlinkCommandSender::CommandInt command{};
+    command.command = MAV_CMD_DO_SET_HOME;
+    command.target_component_id = _system_impl->get_autopilot_id();
+    command.params.maybe_param1 = use_current_location ? 1.0f : 0.0f;
+    if (!use_current_location) {
+        command.params.x = int32_t(std::round(latitude_deg * 1e7));
+        command.params.y = int32_t(std::round(longitude_deg * 1e7));
+        command.params.maybe_z = absolute_altitude_m;
+    }
+
+    _system_impl->send_command_async(command, [&prom](MavlinkCommandSender::Result result, float) {
+        prom.set_value(action_result_from_command_result(result));
+    });
 
     return fut.get();
 }

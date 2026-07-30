@@ -1,24 +1,29 @@
-#include "mission_impl.h"
-#include "system.h"
-#include "unused.h"
+#include "mission_impl.hpp"
+#include "system.hpp"
+#include "unused.hpp"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 #include <algorithm>
 #include <cmath>
 
 namespace mavsdk {
 
-template class CallbackList<Mission::MissionProgress>;
+template class MAVSDK_TEMPL_INST CallbackList<Mission::MissionProgress>;
 
 using MissionItem = Mission::MissionItem;
 using CameraAction = Mission::MissionItem::CameraAction;
 using VehicleAction = Mission::MissionItem::VehicleAction;
 
-MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
+MissionImpl::MissionImpl(System& system) :
+    PluginImplBase(system),
+    _mission_data(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
 
-MissionImpl::MissionImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
+MissionImpl::MissionImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system)),
+    _mission_data(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
@@ -96,20 +101,23 @@ Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_
 void MissionImpl::upload_mission_async(
     const Mission::MissionPlan& mission_plan, const Mission::ResultCallback& callback)
 {
-    if (_mission_data.last_upload.lock()) {
-        _system_impl->call_user_callback([callback]() {
-            if (callback) {
-                callback(Mission::Result::Busy);
-            }
-        });
-        return;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        if (_mission_data.last_upload.lock()) {
+            _system_impl->call_user_callback([callback]() {
+                if (callback) {
+                    callback(Mission::Result::Busy);
+                }
+            });
+            return;
+        }
     }
 
     reset_mission_progress();
 
     const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-    _mission_data.last_upload = _system_impl->mission_transfer_client().upload_items_async(
+    auto upload = _system_impl->mission_transfer_client().upload_items_async(
         MAV_MISSION_TYPE_MISSION,
         _system_impl->get_system_id(),
         int_items,
@@ -121,26 +129,32 @@ void MissionImpl::upload_mission_async(
                 }
             });
         });
+
+    std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+    _mission_data.last_upload = std::move(upload);
 }
 
 void MissionImpl::upload_mission_with_progress_async(
     const Mission::MissionPlan& mission_plan,
     const Mission::UploadMissionWithProgressCallback callback)
 {
-    if (_mission_data.last_upload.lock()) {
-        _system_impl->call_user_callback([callback]() {
-            if (callback) {
-                callback(Mission::Result::Busy, Mission::ProgressData{});
-            }
-        });
-        return;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        if (_mission_data.last_upload.lock()) {
+            _system_impl->call_user_callback([callback]() {
+                if (callback) {
+                    callback(Mission::Result::Busy, Mission::ProgressData{});
+                }
+            });
+            return;
+        }
     }
 
     reset_mission_progress();
 
     const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-    _mission_data.last_upload = _system_impl->mission_transfer_client().upload_items_async(
+    auto upload = _system_impl->mission_transfer_client().upload_items_async(
         MAV_MISSION_TYPE_MISSION,
         _system_impl->get_system_id(),
         int_items,
@@ -159,15 +173,23 @@ void MissionImpl::upload_mission_with_progress_async(
                 }
             });
         });
+
+    std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+    _mission_data.last_upload = std::move(upload);
 }
 
 Mission::Result MissionImpl::cancel_mission_upload() const
 {
-    auto ptr = _mission_data.last_upload.lock();
+    std::shared_ptr<MavlinkMissionTransferClient::WorkItem> ptr;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        ptr = _mission_data.last_upload.lock();
+    }
+
     if (ptr) {
         ptr->cancel();
     } else {
-        LogWarn() << "No mission upload to cancel... ignoring";
+        LogWarn("No mission upload to cancel... ignoring");
     }
 
     return Mission::Result::Success;
@@ -187,17 +209,20 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
 
 void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback& callback)
 {
-    if (_mission_data.last_download.lock()) {
-        _system_impl->call_user_callback([callback]() {
-            if (callback) {
-                Mission::MissionPlan mission_plan{};
-                callback(Mission::Result::Busy, mission_plan);
-            }
-        });
-        return;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        if (_mission_data.last_download.lock()) {
+            _system_impl->call_user_callback([callback]() {
+                if (callback) {
+                    Mission::MissionPlan mission_plan{};
+                    callback(Mission::Result::Busy, mission_plan);
+                }
+            });
+            return;
+        }
     }
 
-    _mission_data.last_download = _system_impl->mission_transfer_client().download_items_async(
+    auto download = _system_impl->mission_transfer_client().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         _system_impl->get_system_id(),
         [this, callback](
@@ -208,24 +233,30 @@ void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback&
                 callback(result_and_items.first, result_and_items.second);
             });
         });
+
+    std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+    _mission_data.last_download = std::move(download);
 }
 
 void MissionImpl::download_mission_with_progress_async(
     const Mission::DownloadMissionWithProgressCallback callback)
 {
-    if (_mission_data.last_download.lock()) {
-        _system_impl->call_user_callback([callback]() {
-            if (callback) {
-                Mission::ProgressDataOrMission progress_data_or_mission{};
-                progress_data_or_mission.has_mission = false;
-                progress_data_or_mission.has_progress = false;
-                callback(Mission::Result::Busy, progress_data_or_mission);
-            }
-        });
-        return;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        if (_mission_data.last_download.lock()) {
+            _system_impl->call_user_callback([callback]() {
+                if (callback) {
+                    Mission::ProgressDataOrMission progress_data_or_mission{};
+                    progress_data_or_mission.has_mission = false;
+                    progress_data_or_mission.has_progress = false;
+                    callback(Mission::Result::Busy, progress_data_or_mission);
+                }
+            });
+            return;
+        }
     }
 
-    _mission_data.last_download = _system_impl->mission_transfer_client().download_items_async(
+    auto download = _system_impl->mission_transfer_client().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         _system_impl->get_system_id(),
         [this, callback](
@@ -251,15 +282,23 @@ void MissionImpl::download_mission_with_progress_async(
                 callback(Mission::Result::Next, progress_data_or_mission);
             });
         });
+
+    std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+    _mission_data.last_download = std::move(download);
 }
 
 Mission::Result MissionImpl::cancel_mission_download() const
 {
-    auto ptr = _mission_data.last_download.lock();
+    std::shared_ptr<MavlinkMissionTransferClient::WorkItem> ptr;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        ptr = _mission_data.last_download.lock();
+    }
+
     if (ptr) {
         ptr->cancel();
     } else {
-        LogWarn() << "No mission download to cancel... ignoring";
+        LogWarn("No mission download to cancel... ignoring");
     }
 
     return Mission::Result::Success;
@@ -424,7 +463,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             if (!last_position_valid) {
                 // In the case where we get a delay without a previous position, we will have to
                 // ignore it.
-                LogErr() << "Can't set camera action delay without previous position set.";
+                LogErr("Can't set camera action delay without previous position set.");
 
             } else {
                 // Current is the 0th waypoint
@@ -452,7 +491,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
             }
 
             if (item.is_fly_through) {
-                LogWarn() << "Conflicting options set: fly_through=true and loiter_time>0.";
+                LogWarn("Conflicting options set: fly_through=true and loiter_time>0.");
             }
         }
 
@@ -497,7 +536,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                 case CameraAction::StartPhotoDistance:
                     command = MAV_CMD_DO_SET_CAM_TRIGG_DIST;
                     if (std::isfinite(item.camera_photo_distance_m)) {
-                        LogErr() << "No photo distance specified";
+                        LogErr("No photo distance specified");
                     }
                     param1 = item.camera_photo_distance_m; // enable with distance
                     param2 = 0.0f; // ignore
@@ -510,7 +549,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     param3 = 0.0f; // no trigger
                     break;
                 default:
-                    LogErr() << "Camera action not supported";
+                    LogErr("Camera action not supported");
                     break;
             }
 
@@ -561,7 +600,7 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
                     param2 = 0; // Normal transition
                     break;
                 default:
-                    LogErr() << "Error: vehicle action not supported";
+                    LogErr("Error: vehicle action not supported");
                     break;
             }
 
@@ -655,12 +694,12 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
         bool have_set_position = false;
 
         for (const auto& int_item : int_items) {
-            LogDebug() << "Assembling Message: " << int(int_item.seq);
+            LogDebug("Assembling Message: {}", int(int_item.seq));
 
             if (int_item.command == MAV_CMD_NAV_WAYPOINT ||
                 int_item.command == MAV_CMD_NAV_TAKEOFF) {
                 if (int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
-                    LogErr() << "Waypoint frame not supported unsupported";
+                    LogErr("Waypoint frame not supported unsupported");
                     result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
@@ -691,7 +730,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
             } else if (int_item.command == MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW) {
                 if (int_item.x !=
                     (GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK)) {
-                    LogErr() << "Gimbal do pitchyaw flags unsupported";
+                    LogErr("Gimbal do pitchyaw flags unsupported");
                     result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
@@ -710,7 +749,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 } else if (int(int_item.param2) == 0 && int(int_item.param3) == 1) {
                     new_mission_item.camera_action = CameraAction::TakePhoto;
                 } else {
-                    LogErr() << "Mission item START_CAPTURE params unsupported.";
+                    LogErr("Mission item START_CAPTURE params unsupported.");
                     result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
@@ -726,7 +765,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
             } else if (int_item.command == MAV_CMD_DO_SET_CAM_TRIGG_DIST) {
                 if (!std::isfinite(int_item.param1)) {
-                    LogErr() << "Trigger distance in SET_CAM_TRIGG_DIST not finite.";
+                    LogErr("Trigger distance in SET_CAM_TRIGG_DIST not finite.");
                     result_pair.first = Mission::Result::Unsupported;
                     break;
                 } else if (static_cast<int>(int_item.param1) > 0.0f) {
@@ -741,7 +780,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
             } else if (int_item.command == MAV_CMD_NAV_LAND) {
                 new_mission_item.vehicle_action = VehicleAction::Land;
             } else if (int_item.command == MAV_CMD_DO_VTOL_TRANSITION) {
-                if (int_item.param1 == MAV_VTOL_STATE_FW) {
+                if (static_cast<int>(int_item.param1) == MAV_VTOL_STATE_FW) {
                     new_mission_item.vehicle_action = VehicleAction::TransitionToFw;
                 } else {
                     new_mission_item.vehicle_action = VehicleAction::TransitionToMc;
@@ -751,7 +790,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 if (int(int_item.param1) == 1 && int_item.param3 < 0 && int(int_item.param4) == 0) {
                     new_mission_item.speed_m_s = int_item.param2;
                 } else {
-                    LogErr() << "Mission item DO_CHANGE_SPEED params unsupported";
+                    LogErr("Mission item DO_CHANGE_SPEED params unsupported");
                     result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
@@ -770,7 +809,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                     // time of day data to delay in seconds
                     // leaving it out for now because a portable implementation
                     // is not trivial
-                    LogErr() << "Mission item NAV_DELAY params unsupported";
+                    LogErr("Mission item NAV_DELAY params unsupported");
                     result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
@@ -779,7 +818,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 _enable_return_to_launch_after_mission = true;
 
             } else {
-                LogErr() << "UNSUPPORTED mission item command (" << int_item.command << ")";
+                LogErr("UNSUPPORTED mission item command ({})", int_item.command);
                 result_pair.first = Mission::Result::Unsupported;
                 break;
             }
@@ -972,7 +1011,7 @@ void MissionImpl::report_progress_locked()
     if (should_report) {
         _mission_data.mission_progress_callbacks.queue(
             {current, total}, [this](const auto& func) { _system_impl->call_user_callback(func); });
-        LogDebug() << "current: " << current << ", total: " << total;
+        LogDebug("Current: {}, total: {}", current, total);
     }
 }
 

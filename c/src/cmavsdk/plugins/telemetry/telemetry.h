@@ -100,7 +100,7 @@ typedef enum {
  * @brief Flight modes.
  *
  * For more information about flight modes, check out
- * https://docs.px4.io/master/en/config/flight_mode.html.
+ * https://docs.px4.io/main/en/config/flight_mode.html.
  */
 typedef enum {
     /**  Mode not known. */
@@ -321,6 +321,68 @@ CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_destroy(
  */
 CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_array_destroy(
     mavsdk_telemetry_quaternion_t** array,
+    size_t size);
+
+/**
+ * @brief Home position type.
+ * 
+ *  Includes the global GPS position, local NED position, surface quaternion,
+ *  and approach vector from the MAVLink HOME_POSITION message.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_home_position_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Timestamp (UNIX Epoch or since system boot) in microseconds */
+    uint64_t timestamp_us;
+    /**  Latitude in degrees (range: -90 to +90) */
+    double latitude_deg;
+    /**  Longitude in degrees (range: -180 to +180) */
+    double longitude_deg;
+    /**  Altitude AMSL (above mean sea level) in metres */
+    float absolute_altitude_m;
+    /**  Altitude relative to takeoff altitude in metres */
+    float relative_altitude_m;
+    /**  Local North position in NED frame (m) */
+    float local_north_m;
+    /**  Local East position in NED frame (m) */
+    float local_east_m;
+    /**  Local Down position in NED frame (m, positive down) */
+    float local_down_m;
+    /**  Surface quaternion (world-to-surface-normal and heading) */
+    mavsdk_telemetry_quaternion_t q;
+    /**  Local North position of the approach vector end in NED frame (m) */
+    float approach_north_m;
+    /**  Local East position of the approach vector end in NED frame (m) */
+    float approach_east_m;
+    /**  Local Down position of the approach vector end in NED frame (m) */
+    float approach_down_m;
+} mavsdk_telemetry_home_position_t;
+
+/**
+ * @brief Destroy a home_position struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_home_position_destroy(
+    mavsdk_telemetry_home_position_t* target);
+
+/**
+ * @brief Destroy an array of home_position structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_home_position_array_destroy(
+    mavsdk_telemetry_home_position_t** array,
     size_t size);
 
 /**
@@ -1190,6 +1252,8 @@ typedef struct CMAVSDK_EXPORT {
     double longitude_deg;
     /**  Altitude AMSL (above mean sea level) in metres */
     float absolute_altitude_m;
+    /**  Timestamp in microseconds (since system boot) */
+    uint64_t timestamp_us;
 } mavsdk_telemetry_ground_truth_t;
 
 /**
@@ -1493,6 +1557,8 @@ typedef struct CMAVSDK_EXPORT {
     float altitude_terrain_m;
     /**  This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters. */
     float bottom_clearance_m;
+    /**  Timestamp in microseconds (since system boot) */
+    uint64_t timestamp_us;
 } mavsdk_telemetry_altitude_t;
 
 /**
@@ -1674,7 +1740,7 @@ CMAVSDK_EXPORT void mavsdk_telemetry_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_telemetry_position_callback_t)(const mavsdk_telemetry_position_t position, void* user_data);
-typedef void (*mavsdk_telemetry_home_callback_t)(const mavsdk_telemetry_position_t home, void* user_data);
+typedef void (*mavsdk_telemetry_home_callback_t)(const mavsdk_telemetry_home_position_t home, void* user_data);
 typedef void (*mavsdk_telemetry_in_air_callback_t)(const bool is_in_air, void* user_data);
 typedef void (*mavsdk_telemetry_landed_state_callback_t)(const mavsdk_telemetry_landed_state_t landed_state, void* user_data);
 typedef void (*mavsdk_telemetry_armed_callback_t)(const bool is_armed, void* user_data);
@@ -1715,6 +1781,7 @@ typedef void (*mavsdk_telemetry_set_rate_attitude_quaternion_callback_t)(const m
 typedef void (*mavsdk_telemetry_set_rate_attitude_euler_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_velocity_ned_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_gps_info_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
+typedef void (*mavsdk_telemetry_set_rate_raw_gps_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_battery_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_rc_status_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_actuator_control_target_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
@@ -1742,6 +1809,7 @@ CMAVSDK_EXPORT void mavsdk_telemetry_destroy(mavsdk_telemetry_t telemetry);
  * @brief Subscribe to 'position' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_position() to unsubscribe.
@@ -1782,6 +1850,7 @@ mavsdk_telemetry_position(
  * @brief Subscribe to 'home position' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_home() to unsubscribe.
@@ -1815,13 +1884,14 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_home(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_position_t* home_out);
+    mavsdk_telemetry_home_position_t* home_out);
 
 
 /**
  * @brief Subscribe to in-air updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_in_air() to unsubscribe.
@@ -1862,6 +1932,7 @@ mavsdk_telemetry_in_air(
  * @brief Subscribe to landed state updates
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_landed_state() to unsubscribe.
@@ -1902,6 +1973,7 @@ mavsdk_telemetry_landed_state(
  * @brief Subscribe to armed updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_armed() to unsubscribe.
@@ -1942,6 +2014,7 @@ mavsdk_telemetry_armed(
  * @brief subscribe to vtol state Updates
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_vtol_state() to unsubscribe.
@@ -1982,6 +2055,7 @@ mavsdk_telemetry_vtol_state(
  * @brief Subscribe to 'attitude' updates (quaternion).
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_attitude_quaternion() to unsubscribe.
@@ -2022,6 +2096,7 @@ mavsdk_telemetry_attitude_quaternion(
  * @brief Subscribe to 'attitude' updates (Euler).
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_attitude_euler() to unsubscribe.
@@ -2062,6 +2137,7 @@ mavsdk_telemetry_attitude_euler(
  * @brief Subscribe to 'attitude' updates (angular velocity)
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body() to unsubscribe.
@@ -2102,6 +2178,7 @@ mavsdk_telemetry_attitude_angular_velocity_body(
  * @brief Subscribe to 'ground speed' updates (NED).
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_velocity_ned() to unsubscribe.
@@ -2142,6 +2219,7 @@ mavsdk_telemetry_velocity_ned(
  * @brief Subscribe to 'GPS info' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_gps_info() to unsubscribe.
@@ -2182,6 +2260,7 @@ mavsdk_telemetry_gps_info(
  * @brief Subscribe to 'Raw GPS' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_raw_gps() to unsubscribe.
@@ -2222,6 +2301,7 @@ mavsdk_telemetry_raw_gps(
  * @brief Subscribe to 'battery' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_battery() to unsubscribe.
@@ -2262,6 +2342,7 @@ mavsdk_telemetry_battery(
  * @brief Subscribe to 'flight mode' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_flight_mode() to unsubscribe.
@@ -2302,6 +2383,7 @@ mavsdk_telemetry_flight_mode(
  * @brief Subscribe to 'health' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_health() to unsubscribe.
@@ -2342,6 +2424,7 @@ mavsdk_telemetry_health(
  * @brief Subscribe to 'RC status' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_rc_status() to unsubscribe.
@@ -2382,6 +2465,7 @@ mavsdk_telemetry_rc_status(
  * @brief Subscribe to 'status text' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_status_text() to unsubscribe.
@@ -2422,6 +2506,7 @@ mavsdk_telemetry_status_text(
  * @brief Subscribe to 'actuator control target' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_actuator_control_target() to unsubscribe.
@@ -2462,6 +2547,7 @@ mavsdk_telemetry_actuator_control_target(
  * @brief Subscribe to 'actuator output status' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_actuator_output_status() to unsubscribe.
@@ -2502,6 +2588,7 @@ mavsdk_telemetry_actuator_output_status(
  * @brief Subscribe to 'odometry' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_odometry() to unsubscribe.
@@ -2542,6 +2629,7 @@ mavsdk_telemetry_odometry(
  * @brief Subscribe to 'position velocity' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_position_velocity_ned() to unsubscribe.
@@ -2582,6 +2670,7 @@ mavsdk_telemetry_position_velocity_ned(
  * @brief Subscribe to 'ground truth' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_ground_truth() to unsubscribe.
@@ -2622,6 +2711,7 @@ mavsdk_telemetry_ground_truth(
  * @brief Subscribe to 'fixedwing metrics' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_fixedwing_metrics() to unsubscribe.
@@ -2662,6 +2752,7 @@ mavsdk_telemetry_fixedwing_metrics(
  * @brief Subscribe to 'IMU' updates (in SI units in NED body frame).
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_imu() to unsubscribe.
@@ -2702,6 +2793,7 @@ mavsdk_telemetry_imu(
  * @brief Subscribe to 'Scaled IMU' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_scaled_imu() to unsubscribe.
@@ -2742,6 +2834,7 @@ mavsdk_telemetry_scaled_imu(
  * @brief Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_raw_imu() to unsubscribe.
@@ -2782,6 +2875,7 @@ mavsdk_telemetry_raw_imu(
  * @brief Subscribe to 'HealthAllOk' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_health_all_ok() to unsubscribe.
@@ -2822,6 +2916,7 @@ mavsdk_telemetry_health_all_ok(
  * @brief Subscribe to 'unix epoch time' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_unix_epoch_time() to unsubscribe.
@@ -2862,6 +2957,7 @@ mavsdk_telemetry_unix_epoch_time(
  * @brief Subscribe to 'Distance Sensor' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_distance_sensor() to unsubscribe.
@@ -2902,6 +2998,7 @@ mavsdk_telemetry_distance_sensor(
  * @brief Subscribe to 'Scaled Pressure' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_scaled_pressure() to unsubscribe.
@@ -2942,6 +3039,7 @@ mavsdk_telemetry_scaled_pressure(
  * @brief Subscribe to 'Heading' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_heading() to unsubscribe.
@@ -2982,6 +3080,7 @@ mavsdk_telemetry_heading(
  * @brief Subscribe to 'Altitude' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_altitude() to unsubscribe.
@@ -3022,6 +3121,7 @@ mavsdk_telemetry_altitude(
  * @brief Subscribe to 'Wind Estimated' updates.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_wind() to unsubscribe.
@@ -3062,8 +3162,9 @@ mavsdk_telemetry_wind(
  * @brief Set rate to 'position' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3093,8 +3194,9 @@ mavsdk_telemetry_set_rate_position(
  * @brief Set rate to 'home position' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3124,8 +3226,9 @@ mavsdk_telemetry_set_rate_home(
  * @brief Set rate to in-air updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3155,8 +3258,9 @@ mavsdk_telemetry_set_rate_in_air(
  * @brief Set rate to landed state updates
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3186,8 +3290,9 @@ mavsdk_telemetry_set_rate_landed_state(
  * @brief Set rate to VTOL state updates
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3217,8 +3322,9 @@ mavsdk_telemetry_set_rate_vtol_state(
  * @brief Set rate to 'attitude euler angle' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3248,8 +3354,9 @@ mavsdk_telemetry_set_rate_attitude_quaternion(
  * @brief Set rate to 'attitude quaternion' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3280,8 +3387,9 @@ mavsdk_telemetry_set_rate_attitude_euler(
  *  Set rate to 'ground speed' updates (NED).
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3311,8 +3419,9 @@ mavsdk_telemetry_set_rate_velocity_ned(
  * @brief Set rate to 'GPS info' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3339,11 +3448,44 @@ mavsdk_telemetry_set_rate_gps_info(
 
 
 /**
+ * @brief Set rate to 'Raw GPS' updates.
+ *
+ * @param telemetry The telemetry instance.
+ * @param rate_hz  The requested rate (in Hertz)
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_raw_gps_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_raw_gps_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current set rate raw gps (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_rate_raw_gps_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_raw_gps(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz);
+
+
+/**
  * @brief Set rate to 'battery' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3373,8 +3515,9 @@ mavsdk_telemetry_set_rate_battery(
  * @brief Set rate to 'RC status' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3404,8 +3547,9 @@ mavsdk_telemetry_set_rate_rc_status(
  * @brief Set rate to 'actuator control target' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3435,8 +3579,9 @@ mavsdk_telemetry_set_rate_actuator_control_target(
  * @brief Set rate to 'actuator output status' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3466,8 +3611,9 @@ mavsdk_telemetry_set_rate_actuator_output_status(
  * @brief Set rate to 'odometry' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3497,8 +3643,9 @@ mavsdk_telemetry_set_rate_odometry(
  * @brief Set rate to 'position velocity' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3528,8 +3675,9 @@ mavsdk_telemetry_set_rate_position_velocity_ned(
  * @brief Set rate to 'ground truth' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3559,8 +3707,9 @@ mavsdk_telemetry_set_rate_ground_truth(
  * @brief Set rate to 'fixedwing metrics' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3590,8 +3739,9 @@ mavsdk_telemetry_set_rate_fixedwing_metrics(
  * @brief Set rate to 'IMU' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3621,8 +3771,9 @@ mavsdk_telemetry_set_rate_imu(
  * @brief Set rate to 'Scaled IMU' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3652,8 +3803,9 @@ mavsdk_telemetry_set_rate_scaled_imu(
  * @brief Set rate to 'Raw IMU' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3683,8 +3835,9 @@ mavsdk_telemetry_set_rate_raw_imu(
  * @brief Set rate to 'unix epoch time' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3714,8 +3867,9 @@ mavsdk_telemetry_set_rate_unix_epoch_time(
  * @brief Set rate to 'Distance Sensor' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3745,8 +3899,9 @@ mavsdk_telemetry_set_rate_distance_sensor(
  * @brief Set rate to 'Altitude' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3776,8 +3931,9 @@ mavsdk_telemetry_set_rate_altitude(
  * @brief Set rate to 'Health' updates.
  *
  * @param telemetry The telemetry instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -3807,6 +3963,7 @@ mavsdk_telemetry_set_rate_health(
  * @brief Get the GPS location of where the estimator has been initialized.
  *
  * @param telemetry The telemetry instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

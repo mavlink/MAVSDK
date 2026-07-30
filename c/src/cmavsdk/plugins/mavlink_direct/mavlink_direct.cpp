@@ -4,7 +4,7 @@
 
 #include "mavlink_direct.h"
 
-#include <mavsdk/plugins/mavlink_direct/mavlink_direct.h>
+#include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

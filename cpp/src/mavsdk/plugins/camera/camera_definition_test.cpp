@@ -1,5 +1,5 @@
-#include "camera_definition.h"
-#include "log.h"
+#include "camera_definition.hpp"
+#include "log.hpp"
 #include <gtest/gtest.h>
 #include <vector>
 #include <unordered_map>
@@ -324,7 +324,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 0);
         for (const auto& param : params) {
-            LogInfo() << param.first;
+            LogInfo("{}", param.first);
         }
     }
 

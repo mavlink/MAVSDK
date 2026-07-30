@@ -1,9 +1,10 @@
-#include "transponder_impl.h"
+#include "transponder_impl.hpp"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<Transponder::AdsbVehicle>;
+template class MAVSDK_TEMPL_INST CallbackList<Transponder::AdsbVehicle>;
 
 TransponderImpl::TransponderImpl(System& system) : PluginImplBase(system)
 {
@@ -63,13 +64,11 @@ Transponder::AdsbVehicle TransponderImpl::transponder() const
 Transponder::TransponderHandle
 TransponderImpl::subscribe_transponder(const Transponder::TransponderCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _transponder_subscriptions.subscribe(callback);
 }
 
 void TransponderImpl::unsubscribe_transponder(Transponder::TransponderHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _transponder_subscriptions.unsubscribe(handle);
 }
 

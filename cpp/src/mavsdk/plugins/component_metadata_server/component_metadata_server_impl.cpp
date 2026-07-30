@@ -1,13 +1,13 @@
-#include "component_metadata_server_impl.h"
-#include "mavlink_address.h"
-#include "mavlink_request_message_handler.h"
+#include "component_metadata_server_impl.hpp"
+#include "mavlink_address.hpp"
+#include "mavlink_request_message_handler.hpp"
 #include "callback_list.tpp"
-#include "unused.h"
-#include "fs_utils.h"
-#include "crc32.h"
+#include "unused.hpp"
+#include "fs_utils.hpp"
+#include "crc32.hpp"
 
 #include <string>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 namespace mavsdk {
 
@@ -17,7 +17,7 @@ ComponentMetadataServerImpl::ComponentMetadataServerImpl(
 {
     if (const char* env_p = std::getenv("MAVSDK_COMPONENT_METADATA_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Verbose component metadata logging is on";
+            LogDebug("Verbose component metadata logging is o");
             _verbose_debugging = true;
         }
     }
@@ -32,7 +32,7 @@ ComponentMetadataServerImpl::~ComponentMetadataServerImpl()
         std::error_code ec;
         std::filesystem::remove_all(_tmp_path, ec);
         if (ec) {
-            LogErr() << "Error removing " << _tmp_path << ": " << ec.message();
+            LogErr("Error removing {}: {}", _tmp_path.string(), ec.message());
         }
     }
 }
@@ -58,7 +58,7 @@ void ComponentMetadataServerImpl::deinit()
 std::optional<MAV_RESULT> ComponentMetadataServerImpl::process_component_metadata_requested()
 {
     if (_verbose_debugging) {
-        LogDebug() << "MAVLINK_MSG_ID_COMPONENT_METADATA request received";
+        LogDebug("MAVLINK_MSG_ID_COMPONENT_METADATA request received");
     }
 
     const std::lock_guard lg{_mutex};
@@ -90,20 +90,20 @@ void ComponentMetadataServerImpl::set_metadata(
 {
     const std::lock_guard lg{_mutex};
     if (_metadata_set) {
-        LogErr() << "metadata already set";
+        LogErr("Metadata already set");
         return;
     }
 
     // Create tmp directory as ftp root directory
     const auto tmp_option = create_tmp_directory("mavsdk-component-metadata-server");
     if (!tmp_option) {
-        LogErr() << "Failed to create tmp directory";
+        LogErr("Failed to create tmp directory");
         return;
     }
     _tmp_path = *tmp_option;
 
     if (_verbose_debugging) {
-        LogDebug() << "Storing metadata under " << _tmp_path;
+        LogDebug("Storing metadata under {}", _tmp_path.string());
     }
 
     // Write files
@@ -117,7 +117,7 @@ void ComponentMetadataServerImpl::set_metadata(
         const std::filesystem::path path = _tmp_path / _metadata.back().filename;
         std::ofstream file(path, std::fstream::trunc | std::fstream::binary | std::fstream::out);
         if (!file) {
-            LogErr() << "Failed to open " << path;
+            LogErr("Failed to open {}", path.string());
             continue;
         }
         file.write(single_metadata.json_metadata.data(), single_metadata.json_metadata.length());
@@ -133,25 +133,28 @@ void ComponentMetadataServerImpl::set_metadata(
 
 bool ComponentMetadataServerImpl::generate_component_metadata_general_file()
 {
-    Json::Value root;
+    // ordered_json keeps the human-readable key order (version, then
+    // metadataTypes); the parser reads keys by name so order is not required.
+    nlohmann::ordered_json root;
     root["version"] = 1;
-    Json::Value metadata_types = Json::arrayValue;
+    auto metadata_types = nlohmann::ordered_json::array();
     for (const auto& metadata : _metadata) {
-        Json::Value metadata_type;
-        metadata_type["type"] = Json::Int{metadata.type};
+        nlohmann::ordered_json metadata_type;
+        metadata_type["type"] = static_cast<int>(metadata.type);
         metadata_type["uri"] = "mftp://" + metadata.filename;
-        metadata_type["fileCrc"] = Json::UInt{metadata.crc};
-        metadata_types.append(metadata_type);
+        metadata_type["fileCrc"] = metadata.crc;
+        metadata_types.push_back(metadata_type);
     }
     root["metadataTypes"] = metadata_types;
 
     const std::filesystem::path path = _tmp_path / kComponentGeneralFilename;
     std::ofstream file(path, std::fstream::trunc | std::fstream::binary | std::fstream::out);
     if (!file) {
-        LogErr() << "Failed to open " << path;
+        LogErr("Failed to open {}", path.string());
         return false;
     }
-    const std::string json_data = root.toStyledString();
+    const std::string json_data =
+        root.dump(4, ' ', false, nlohmann::ordered_json::error_handler_t::replace);
     Crc32 crc{};
     crc.add(reinterpret_cast<const uint8_t*>(json_data.data()), json_data.length());
     _comp_info_general_crc = crc.get();

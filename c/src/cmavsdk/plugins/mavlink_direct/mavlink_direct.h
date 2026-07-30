@@ -207,8 +207,9 @@ mavsdk_mavlink_direct_send_message(
  *  (e.g., "HEARTBEAT") to filter for specific message types.
  *
  * @param mavlink_direct The mavlink_direct instance.
-* @param message_name  MAVLink message name to filter for (e.g., "HEARTBEAT"), empty string = all messages
+ * @param message_name  MAVLink message name to filter for (e.g., "HEARTBEAT"), empty string = all messages
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mavlink_direct_unsubscribe_message() to unsubscribe.

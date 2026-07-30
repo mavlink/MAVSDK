@@ -1,10 +1,11 @@
-#include "winch_impl.h"
-#include "system.h"
+#include "winch_impl.hpp"
+#include "system.hpp"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<Winch::Status>;
+template class MAVSDK_TEMPL_INST CallbackList<Winch::Status>;
 
 WinchImpl::WinchImpl(System& system) : PluginImplBase(system)
 {
@@ -31,13 +32,11 @@ void WinchImpl::init()
 
 Winch::StatusHandle WinchImpl::subscribe_status(const Winch::StatusCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _status_subscriptions.subscribe(callback);
 }
 
 void WinchImpl::unsubscribe_status(Winch::StatusHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _status_subscriptions.unsubscribe(handle);
 }
 
@@ -101,7 +100,6 @@ void WinchImpl::process_status(const mavlink_message_t& message)
     set_status(new_status);
 
     {
-        std::lock_guard<std::mutex> lock(_subscription_mutex);
         _status_subscriptions.queue(
             status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
     }

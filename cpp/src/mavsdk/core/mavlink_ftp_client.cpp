@@ -1,24 +1,28 @@
-#include "mavlink_ftp_client.h"
-#include "system_impl.h"
-#include "overloaded.h"
-#include "unused.h"
+#include "mavlink_ftp_client.hpp"
+#include "system_impl.hpp"
+#include "overloaded.hpp"
+#include "unused.hpp"
 #include <algorithm>
+#include <charconv>
 #include <fstream>
 #include <filesystem>
 #include <algorithm>
+#include <future>
 #include <numeric>
 
-#include "crc32.h"
+#include "crc32.hpp"
 
 namespace mavsdk {
 
 namespace fs = std::filesystem;
 
-MavlinkFtpClient::MavlinkFtpClient(SystemImpl& system_impl) : _system_impl(system_impl)
+MavlinkFtpClient::MavlinkFtpClient(SystemImpl& system_impl) :
+    _system_impl(system_impl),
+    _io_context(system_impl.io_context())
 {
     if (const char* env_p = std::getenv("MAVSDK_FTP_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Ftp debugging is on.";
+            LogDebug("Ftp debugging is on.");
             _debugging = true;
         }
     }
@@ -37,12 +41,10 @@ MavlinkFtpClient::~MavlinkFtpClient()
 
 void MavlinkFtpClient::do_work()
 {
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-
-    auto work = work_queue_guard.get_front();
-    if (!work) {
+    if (_work_queue.empty()) {
         return;
     }
+    auto work = _work_queue.front();
 
     if (work->started) {
         return;
@@ -56,47 +58,74 @@ void MavlinkFtpClient::do_work()
         overloaded{
             [&](DownloadItem& item) {
                 if (!download_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](DownloadBurstItem& item) {
                 if (!download_burst_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](UploadItem& item) {
                 if (!upload_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](RemoveItem& item) {
                 if (!remove_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](RenameItem& item) {
                 if (!rename_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](CreateDirItem& item) {
                 if (!create_dir_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](RemoveDirItem& item) {
                 if (!remove_dir_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](CompareFilesItem& item) {
                 if (!compare_files_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](ListDirItem& item) {
                 if (!list_dir_start(*work, item)) {
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             }},
         work->item);
@@ -109,7 +138,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
     if (ftp_req.target_system != 0 && ftp_req.target_system != _system_impl.get_own_system_id()) {
         if (_debugging) {
-            LogDebug() << "Received FTP message with wrong target system ID";
+            LogDebug("Received FTP message with wrong target system ID");
         }
         return;
     }
@@ -117,7 +146,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     if (ftp_req.target_component != 0 &&
         ftp_req.target_component != _system_impl.get_own_component_id()) {
         if (_debugging) {
-            LogDebug() << "Received FTP message with wrong target component ID";
+            LogDebug("Received FTP message with wrong target component ID");
         }
         return;
     }
@@ -125,36 +154,58 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     PayloadHeader* payload = reinterpret_cast<PayloadHeader*>(&ftp_req.payload[0]);
 
     if (payload->size > max_data_length) {
-        LogWarn() << "Received FTP payload with invalid size";
+        LogWarn("Received FTP payload with invalid size");
         return;
     } else {
         if (_debugging) {
-            LogDebug() << "FTP: opcode: " << (int)payload->opcode
-                       << ", req_opcode: " << (int)payload->req_opcode
-                       << ", size: " << (int)payload->size << ", offset: " << (int)payload->offset
-                       << ", seq: " << payload->seq_number << " from: " << (int)msg.sysid << "/"
-                       << (int)msg.compid;
+            LogDebug(
+                "FTP: opcode: {}, req_opcode: {}, size: {}, offset: {}, seq: {} from: {}/{}",
+                (int)payload->opcode,
+                (int)payload->req_opcode,
+                (int)payload->size,
+                (int)payload->offset,
+                (int)payload->seq_number,
+                (int)msg.sysid,
+                (int)msg.compid);
         }
     }
 
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-
-    auto work = work_queue_guard.get_front();
-    if (!work) {
+    if (_work_queue.empty()) {
         return;
     }
+    auto work = _work_queue.front();
 
     if (work->last_opcode != payload->req_opcode) {
         // Ignore
-        LogWarn() << "Ignore: last: " << (int)work->last_opcode
-                  << ", req: " << (int)payload->req_opcode;
+        LogWarn("Ignore: last: {}, req: {}", (int)work->last_opcode, (int)payload->req_opcode);
         return;
     }
-    if (work->last_received_seq_number != 0 &&
-        work->last_received_seq_number == payload->seq_number) {
-        // We have already seen this ack/nak.
-        LogWarn() << "Already seen";
-        return;
+    // For non-burst transfers, strictly check the expected seq_number.
+    // work->payload.seq_number is the seq_number of the most-recently sent
+    // request; the server echoes back seq_number + 1.  Accepting any other
+    // value would allow stale/duplicate UDP datagrams from a previous request
+    // to corrupt the transfer (e.g. writing a full 239-byte chunk when only
+    // the final 49 bytes remain).
+    //
+    // For burst transfers we cannot use a strict check: the server sends
+    // multiple packets per CMD_BURST_READ_FILE request, each with an
+    // incrementing seq_number, and packets may arrive out of order or with
+    // gaps that are filled by a subsequent re-request.  For burst we fall back
+    // to the original duplicate-rejection approach.
+    const bool is_burst = std::holds_alternative<DownloadBurstItem>(work->item);
+    if (!is_burst) {
+        const auto expected_seq = static_cast<uint16_t>(work->payload.seq_number + 1);
+        if (payload->seq_number != expected_seq) {
+            LogWarn(
+                "Unexpected seq: got {}, expected {}", (int)payload->seq_number, (int)expected_seq);
+            return;
+        }
+    } else {
+        if (work->last_received_seq_number != 0 &&
+            work->last_received_seq_number == payload->seq_number) {
+            LogWarn("Already seen seq: {}", (int)payload->seq_number);
+            return;
+        }
     }
 
     std::visit(
@@ -169,23 +220,32 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
                         if (!download_continue(*work, item, payload)) {
                             stop_timer();
-                            work_queue_guard.pop_front();
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                         }
                     } else if (payload->req_opcode == CMD_TERMINATE_SESSION) {
                         stop_timer();
                         item.ofstream.close();
                         item.callback(ClientResult::Success, {});
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
 
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload), {});
                     terminate_session(*work);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](DownloadBurstItem& item) {
@@ -199,16 +259,22 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
                         if (!download_burst_continue(*work, item, payload)) {
                             stop_timer();
-                            work_queue_guard.pop_front();
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                         }
                     } else if (payload->req_opcode == CMD_TERMINATE_SESSION) {
                         stop_timer();
                         item.ofstream.close();
                         item.callback(ClientResult::Success, {});
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
 
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
@@ -218,13 +284,16 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     if (sr == ERR_NO_SESSIONS_AVAILABLE) {
                         payload->seq_number = 0; // Ignore this response
                         start_timer(3.0);
-                        LogDebug() << "No session available, retrying...";
+                        LogDebug("No session available, retrying...");
                     } else {
-                        LogWarn() << "FTP: NAK received";
+                        LogWarn("FTP: NAK received");
                         stop_timer();
                         item.callback(result_from_nak(payload), {});
                         terminate_session(*work);
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                     }
                 }
             },
@@ -239,23 +308,32 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
                         if (!upload_continue(*work, item)) {
                             stop_timer();
-                            work_queue_guard.pop_front();
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                         }
                     } else if (payload->req_opcode == CMD_TERMINATE_SESSION) {
                         stop_timer();
                         item.ifstream.close();
                         item.callback(ClientResult::Success, {});
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
 
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload), {});
                     terminate_session(*work);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](RemoveItem& item) {
@@ -263,17 +341,23 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     if (payload->req_opcode == CMD_REMOVE_FILE) {
                         stop_timer();
                         item.callback(ClientResult::Success);
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
 
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload));
                     terminate_session(*work);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](RenameItem& item) {
@@ -281,17 +365,23 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     if (payload->req_opcode == CMD_RENAME) {
                         stop_timer();
                         item.callback(ClientResult::Success);
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
 
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload));
                     terminate_session(*work);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](CreateDirItem& item) {
@@ -299,17 +389,23 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     if (payload->req_opcode == CMD_CREATE_DIRECTORY) {
                         stop_timer();
                         item.callback(ClientResult::Success);
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
 
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload));
                     terminate_session(*work);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](RemoveDirItem& item) {
@@ -317,17 +413,23 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     if (payload->req_opcode == CMD_REMOVE_DIRECTORY) {
                         stop_timer();
                         item.callback(ClientResult::Success);
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
 
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload));
                     terminate_session(*work);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](CompareFilesItem& item) {
@@ -336,49 +438,89 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                         stop_timer();
                         uint32_t remote_crc = *reinterpret_cast<uint32_t*>(payload->data);
                         item.callback(ClientResult::Success, remote_crc == item.local_crc);
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
 
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload), false);
                     terminate_session(*work);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             },
             [&](ListDirItem& item) {
                 if (payload->opcode == RSP_ACK) {
-                    if (payload->req_opcode == CMD_LIST_DIRECTORY) {
+                    if (payload->req_opcode == CMD_LIST_DIRECTORY ||
+                        payload->req_opcode == CMD_LIST_DIRECTORY_WITH_TIME) {
                         // Whenever we do get an ack, reset the retry counter.
                         work->retries = RETRIES;
 
                         if (!list_dir_continue(*work, item, payload)) {
                             stop_timer();
-                            work_queue_guard.pop_front();
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                         }
                     } else {
-                        LogWarn() << "Unexpected ack";
+                        LogWarn("Unexpected ack");
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
-                    stop_timer();
-                    if (payload->data[0] == ERR_EOF) {
-                        std::sort(item.dirs.begin(), item.dirs.end());
-                        std::sort(item.files.begin(), item.files.end());
-                        item.callback(ClientResult::Success, item.dirs, item.files);
+                    const ServerResult sr = static_cast<ServerResult>(payload->data[0]);
+
+                    if (sr == ERR_EOF) {
+                        // Completion is indicated by a NAK with EOF.
+                        stop_timer();
+                        list_dir_finish(item);
+                        terminate_session(*work);
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
+                    } else if (sr == ERR_UNKOWN_COMMAND && item.with_time) {
+                        // The server does not support CMD_LIST_DIRECTORY_WITH_TIME, fall back
+                        // to CMD_LIST_DIRECTORY and start over.
+                        stop_timer();
+                        if (_debugging) {
+                            LogDebug("ListDirectoryWithTime unsupported, falling back to "
+                                     "ListDirectory");
+                        }
+                        item.with_time = false;
+                        item.offset = 0;
+                        item.entries.clear();
+                        if (!list_dir_start(*work, item)) {
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
+                        }
                     } else {
-                        item.callback(result_from_nak(payload), {}, {});
+                        stop_timer();
+                        item.callback(result_from_nak(payload), {});
+                        terminate_session(*work);
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                     }
-                    terminate_session(*work);
-                    work_queue_guard.pop_front();
                 }
             }},
         work->item);
 
-    work->last_received_seq_number = payload->seq_number;
+    // Track the last received seq for burst duplicate detection.
+    if (is_burst) {
+        work->last_received_seq_number = payload->seq_number;
+    }
 }
 
 bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
@@ -387,12 +529,12 @@ bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
     fs::create_directories(fs::path(item.local_folder));
 
     if (_debugging) {
-        LogDebug() << "Trying to open write to local path: " << local_path.string();
+        LogDebug("Trying to open write to local path: {}", local_path.string());
     }
 
     item.ofstream.open(local_path, std::fstream::trunc | std::fstream::binary);
     if (!item.ofstream) {
-        LogErr() << "Could not open it!";
+        LogErr("Could not open it!");
         item.callback(ClientResult::FileIoError, {});
         return false;
     }
@@ -419,12 +561,12 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
         item.file_size = *(reinterpret_cast<uint32_t*>(payload->data));
 
         if (_debugging) {
-            LogWarn() << "Download continue, got file size: " << item.file_size;
+            LogWarn("Download continue, got file size: {}", item.file_size);
         }
 
     } else if (payload->req_opcode == CMD_READ_FILE) {
         if (_debugging) {
-            LogWarn() << "Download continue, write: " << std::to_string(payload->size);
+            LogWarn("Download continue, write: {}", payload->size);
         }
 
         if (item.bytes_transferred < item.file_size) {
@@ -436,8 +578,7 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
             item.bytes_transferred += payload->size;
 
             if (_debugging) {
-                LogDebug() << "Written " << item.bytes_transferred << " of " << item.file_size
-                           << " bytes";
+                LogDebug("Written {} of {} bytes", item.bytes_transferred, item.file_size);
             }
         }
         item.callback(
@@ -459,8 +600,10 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
             std::min(static_cast<size_t>(max_data_length), item.file_size - item.bytes_transferred);
 
         if (_debugging) {
-            LogWarn() << "Request size: " << std::to_string(work.payload.size) << " of left "
-                      << int(item.file_size - item.bytes_transferred);
+            LogWarn(
+                "Request size: {} of left {}",
+                work.payload.size,
+                int(item.file_size - item.bytes_transferred));
         }
 
         start_timer();
@@ -469,7 +612,7 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
         return true;
     } else {
         if (_debugging) {
-            LogDebug() << "All bytes written, terminating session";
+            LogDebug("All bytes written, terminating sessio");
         }
 
         start_timer();
@@ -485,12 +628,12 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
     fs::path local_path = fs::path(item.local_folder) / fs::path(item.remote_path).filename();
 
     if (_debugging) {
-        LogDebug() << "Trying to open write to local path: " << local_path.string();
+        LogDebug("Trying to open write to local path: {}", local_path.string());
     }
 
     item.ofstream.open(local_path, std::fstream::trunc | std::fstream::binary);
     if (!item.ofstream) {
-        LogErr() << "Could not open it!";
+        LogErr("Could not open it!");
         item.callback(ClientResult::FileIoError, {});
         return false;
     }
@@ -518,23 +661,39 @@ bool MavlinkFtpClient::download_burst_continue(
         std::memcpy(&(item.file_size), payload->data, sizeof(uint32_t));
 
         if (_debugging) {
-            LogDebug() << "Burst Download continue, got file size: " << item.file_size;
+            LogDebug("Burst Download continue, got file size: {}", item.file_size);
         }
 
         request_burst(work, item);
 
     } else if (payload->req_opcode == CMD_BURST_READ_FILE) {
         if (_debugging) {
-            LogDebug() << "Burst download continue, at: " << std::to_string(payload->offset)
-                       << " write: " << std::to_string(payload->size);
+            LogDebug(
+                "Burst download continue, at: {} write: {}",
+                (uint32_t)payload->offset,
+                (int)payload->size);
         }
 
         if (payload->offset != item.current_offset) {
             if (payload->offset < item.current_offset) {
                 // Not sure why this would happen but we don't know how to deal with it and ignore
                 // it.
-                LogWarn() << "Got payload offset: " << payload->offset
-                          << ", next offset: " << item.current_offset;
+                LogWarn(
+                    "Got payload offset: {}, next offset: {}",
+                    (uint32_t)payload->offset,
+                    item.current_offset);
+                return false;
+            }
+
+            if (payload->offset > item.file_size) {
+                // The server should never point us past the end of the file. Reject rather
+                // than allocating/zero-filling a gap of up to ~4 GB from a bad offset.
+                LogWarn(
+                    "Got payload offset {} past file size {}",
+                    (uint32_t)payload->offset,
+                    item.file_size);
+                item.callback(ClientResult::ProtocolError, {});
+                download_burst_end(work);
                 return false;
             }
 
@@ -545,7 +704,7 @@ bool MavlinkFtpClient::download_burst_continue(
             std::vector<char> empty(payload->offset - item.current_offset);
             item.ofstream.write(empty.data(), empty.size());
             if (!item.ofstream) {
-                LogWarn() << "Write failed";
+                LogWarn("Write failed");
                 item.callback(ClientResult::FileIoError, {});
                 download_burst_end(work);
                 return false;
@@ -555,7 +714,7 @@ bool MavlinkFtpClient::download_burst_continue(
         // Write actual data to file.
         item.ofstream.write(reinterpret_cast<const char*>(payload->data), payload->size);
         if (!item.ofstream) {
-            LogWarn() << "Write failed";
+            LogWarn("Write failed");
             item.callback(ClientResult::FileIoError, {});
             download_burst_end(work);
             return false;
@@ -565,13 +724,13 @@ bool MavlinkFtpClient::download_burst_continue(
         item.current_offset = payload->offset + payload->size;
 
         if (_debugging) {
-            LogDebug() << "Received " << payload->offset << " to "
-                       << payload->size + payload->offset;
+            LogDebug(
+                "Received {} to {}", (uint32_t)payload->offset, payload->size + payload->offset);
         }
 
         if (payload->size + payload->offset >= item.file_size) {
             if (_debugging) {
-                LogDebug() << "Burst complete";
+                LogDebug("Burst complete");
             }
 
             if (item.missing_data.empty()) {
@@ -602,13 +761,15 @@ bool MavlinkFtpClient::download_burst_continue(
         }
     } else if (payload->req_opcode == CMD_READ_FILE) {
         if (_debugging) {
-            LogWarn() << "Burst download continue missing pieces, write at " << payload->offset
-                      << " for " << std::to_string(payload->size);
+            LogWarn(
+                "Burst download continue missing pieces, write at {} for {}",
+                (uint32_t)payload->offset,
+                (int)payload->size);
         }
 
         item.ofstream.seekp(payload->offset);
         if (item.ofstream.fail()) {
-            LogWarn() << "Seek failed";
+            LogWarn("Seek failed");
             item.callback(ClientResult::FileIoError, {});
             download_burst_end(work);
             return false;
@@ -623,7 +784,7 @@ bool MavlinkFtpClient::download_burst_continue(
 
         auto& missing = item.missing_data.front();
         if (missing.offset != payload->offset) {
-            LogErr() << "Offset mismatch";
+            LogErr("Offset mismatch");
             item.callback(ClientResult::ProtocolError, {});
             download_burst_end(work);
             return false;
@@ -645,7 +806,7 @@ bool MavlinkFtpClient::download_burst_continue(
         const size_t bytes_transferred = burst_bytes_transferred(item);
 
         if (_debugging) {
-            LogDebug() << "Written " << bytes_transferred << " of " << item.file_size << " bytes";
+            LogDebug("Written {} of {} bytes", bytes_transferred, item.file_size);
         }
 
         if (item.missing_data.empty() && bytes_transferred == item.file_size) {
@@ -662,7 +823,7 @@ bool MavlinkFtpClient::download_burst_continue(
         }
 
     } else {
-        LogErr() << "Unexpected req_opcode";
+        LogErr("Unexpected req_opcode");
         download_burst_end(work);
         return false;
     }
@@ -710,7 +871,7 @@ void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
     size_t size = std::min(missing.size, size_t(max_data_length));
 
     if (_debugging) {
-        LogDebug() << "Re-requesting from " << missing.offset << " with size " << size;
+        LogDebug("Re-requesting from {} with size {}", missing.offset, size);
     }
 
     work.last_opcode = CMD_READ_FILE;
@@ -753,8 +914,7 @@ bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
 
     item.file_size = fs::file_size(item.local_file_path, ec);
     if (ec) {
-        LogWarn() << "Could not get file size of '" << item.local_file_path
-                  << "': " << ec.message();
+        LogWarn("Could not get file size of '{}': {}", item.local_file_path, ec.message());
         return false;
     }
 
@@ -965,16 +1125,16 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
 bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
 {
     if (item.path.length() + 1 >= max_data_length) {
-        item.callback(ClientResult::InvalidParameter, {}, {});
+        item.callback(ClientResult::InvalidParameter, {});
         return false;
     }
 
-    work.last_opcode = CMD_LIST_DIRECTORY;
+    work.last_opcode = item.with_time ? CMD_LIST_DIRECTORY_WITH_TIME : CMD_LIST_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
-    work.payload.offset = 0;
+    work.payload.offset = item.offset;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
     work.payload.size = item.path.length() + 1;
     start_timer();
@@ -987,23 +1147,32 @@ bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
 bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadHeader* payload)
 {
     if (_debugging) {
-        LogDebug() << "List dir response received, got " << (int)payload->size << " chars";
+        LogDebug("List dir response received, got {} chars", (int)payload->size);
     }
 
     if (payload->size > max_data_length) {
-        LogWarn() << "Received FTP payload with invalid size";
+        LogWarn("Received FTP payload with invalid size");
         return false;
     }
 
     if (payload->size == 0) {
-        std::sort(item.dirs.begin(), item.dirs.end());
-        std::sort(item.files.begin(), item.files.end());
-        item.callback(ClientResult::Success, item.dirs, item.files);
+        list_dir_finish(item);
         return false;
     }
 
     // Make sure there is a zero termination.
     payload->data[payload->size - 1] = '\0';
+
+    const auto parse_u64 = [](const std::string& field) -> uint64_t {
+        uint64_t value = 0;
+        const auto* begin = field.data();
+        const auto* end = field.data() + field.size();
+        const auto [ptr, ec] = std::from_chars(begin, end, value);
+        if (ec != std::errc()) {
+            return 0;
+        }
+        return value;
+    };
 
     size_t i = 0;
     while (i + 1 < payload->size) {
@@ -1017,26 +1186,68 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
 
         ++item.offset;
 
-        if (entry[0] == 'S') {
-            // Skip skip for now
+        if (_debugging) {
+            LogDebug("Raw entry from list_dir: '{}'", entry);
+        }
+
+        if (entry.empty()) {
             continue;
         }
 
-        auto tab = entry.find('\t');
-        if (tab != std::string::npos) {
-            entry = entry.substr(0, tab);
+        const char type_char = entry[0];
+
+        if (type_char == 'S') {
+            // Skip entry.
+            continue;
         }
 
-        if (entry[0] == 'D') {
-            item.dirs.push_back(entry.substr(1, entry.size() - 1));
-        } else if (entry[0] == 'F') {
-            item.files.push_back(entry.substr(1, entry.size() - 1));
-        } else {
-            LogErr() << "Unknown list_dir entry: " << entry;
+        if (type_char != 'F' && type_char != 'D') {
+            LogErr("Unknown list_dir entry: {}", entry);
+            continue;
         }
+
+        // The entry body after the type character is tab-separated:
+        // <name>[\t<size_bytes>[\t<modification_time_s>]]
+        // Only CMD_LIST_DIRECTORY_WITH_TIME includes the modification time, and only files
+        // include the size, so trailing fields may be absent.
+        const std::string body = entry.substr(1);
+
+        ListDirEntry list_entry{};
+        list_entry.type = (type_char == 'D') ? ListDirEntry::Type::Dir : ListDirEntry::Type::File;
+
+        size_t field_start = 0;
+        int field_index = 0;
+        while (field_start <= body.size()) {
+            const auto tab = body.find('\t', field_start);
+            const std::string field = (tab == std::string::npos) ?
+                                          body.substr(field_start) :
+                                          body.substr(field_start, tab - field_start);
+
+            switch (field_index) {
+                case 0:
+                    list_entry.name = field;
+                    break;
+                case 1:
+                    list_entry.size_bytes = parse_u64(field);
+                    break;
+                case 2:
+                    list_entry.modification_time_s = parse_u64(field);
+                    break;
+                default:
+                    break;
+            }
+
+            ++field_index;
+            if (tab == std::string::npos) {
+                break;
+            }
+            field_start = tab + 1;
+        }
+
+        item.entries.push_back(std::move(list_entry));
     }
 
-    work.last_opcode = CMD_LIST_DIRECTORY;
+    work.last_opcode = item.with_time ? CMD_LIST_DIRECTORY_WITH_TIME : CMD_LIST_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
@@ -1049,6 +1260,15 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
     send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
+}
+
+void MavlinkFtpClient::list_dir_finish(ListDirItem& item)
+{
+    std::sort(
+        item.entries.begin(), item.entries.end(), [](const ListDirEntry& a, const ListDirEntry& b) {
+            return a.name < b.name;
+        });
+    item.callback(ClientResult::Success, item.entries);
 }
 
 MavlinkFtpClient::ClientResult MavlinkFtpClient::result_from_nak(PayloadHeader* payload)
@@ -1093,9 +1313,20 @@ MavlinkFtpClient::ClientResult MavlinkFtpClient::translate(ServerResult result)
         case ServerResult::ERR_FILE_IO_ERROR:
             return ClientResult::FileIoError;
         default:
-            LogInfo() << "Unknown error code: " << (int)result;
+            LogInfo("Unknown error code: {}", (int)result);
             return ClientResult::ProtocolError;
     }
+}
+
+void MavlinkFtpClient::enqueue_work(std::shared_ptr<Work> new_work)
+{
+    asio::post(_io_context, [this, new_work = std::move(new_work)]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkFtpClient::download_async(
@@ -1110,18 +1341,15 @@ void MavlinkFtpClient::download_async(
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        auto new_work =
-            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())};
-        _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
-
+        enqueue_work(std::make_shared<Work>(
+            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())}));
     } else {
         auto item = DownloadItem{};
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        auto new_work =
-            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())};
-        _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+        enqueue_work(std::make_shared<Work>(
+            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())}));
     }
 }
 
@@ -1132,9 +1360,7 @@ void MavlinkFtpClient::upload_async(
     item.local_file_path = local_file_path;
     item.remote_folder = remote_folder;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::list_directory_async(const std::string& path, ListDirectoryCallback callback)
@@ -1142,9 +1368,7 @@ void MavlinkFtpClient::list_directory_async(const std::string& path, ListDirecto
     auto item = ListDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::create_directory_async(const std::string& path, ResultCallback callback)
@@ -1152,9 +1376,7 @@ void MavlinkFtpClient::create_directory_async(const std::string& path, ResultCal
     auto item = CreateDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::remove_directory_async(const std::string& path, ResultCallback callback)
@@ -1162,9 +1384,7 @@ void MavlinkFtpClient::remove_directory_async(const std::string& path, ResultCal
     auto item = RemoveDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::remove_file_async(const std::string& path, ResultCallback callback)
@@ -1172,9 +1392,7 @@ void MavlinkFtpClient::remove_file_async(const std::string& path, ResultCallback
     auto item = RemoveItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::rename_async(
@@ -1184,9 +1402,7 @@ void MavlinkFtpClient::rename_async(
     item.from_path = from_path;
     item.to_path = to_path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::are_files_identical_async(
@@ -1198,16 +1414,18 @@ void MavlinkFtpClient::are_files_identical_async(
     item.local_path = local_path;
     item.remote_path = remote_path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload, uint8_t target_compid)
 {
     if (_debugging) {
-        LogDebug() << "FTP send: opcode: " << (int)payload.opcode << ", seq: " << payload.seq_number
-                   << " to: " << (int)_system_impl.get_system_id() << "/" << (int)target_compid;
+        LogDebug(
+            "FTP send: opcode: {}, seq: {} to: {}/{}",
+            (int)payload.opcode,
+            payload.seq_number,
+            (int)_system_impl.get_system_id(),
+            (int)target_compid);
     }
     _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
@@ -1239,25 +1457,27 @@ void MavlinkFtpClient::stop_timer()
 void MavlinkFtpClient::timeout()
 {
     if (_debugging) {
-        LogDebug() << "Timeout!";
+        LogDebug("Timeout!");
     }
 
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
-    if (!work) {
+    if (_work_queue.empty()) {
         return;
     }
+    auto work = _work_queue.front();
 
     std::visit(
         overloaded{
             [&](DownloadItem& item) {
                 if (--work->retries == 0) {
                     item.callback(ClientResult::Timeout, {});
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1267,11 +1487,14 @@ void MavlinkFtpClient::timeout()
             [&](DownloadBurstItem& item) {
                 if (--work->retries == 0) {
                     item.callback(ClientResult::Timeout, {});
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 {
@@ -1285,7 +1508,10 @@ void MavlinkFtpClient::timeout()
                             item.ofstream.close();
                             item.callback(ClientResult::Success, {});
                             download_burst_end(*work);
-                            work_queue_guard.pop_front();
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                         } else {
                             // The burst is supposedly complete but we still need data because
                             // we missed some, so request next without burst.
@@ -1295,8 +1521,10 @@ void MavlinkFtpClient::timeout()
                                     item.current_offset, item.file_size - item.current_offset});
                                 item.current_offset = item.file_size;
                                 if (_debugging) {
-                                    LogDebug() << "Adding " << item.current_offset << " with size "
-                                               << item.file_size - item.current_offset;
+                                    LogDebug(
+                                        "Adding {} with size {}",
+                                        item.current_offset,
+                                        item.file_size - item.current_offset);
                                 }
                             }
                             request_next_rest(*work, item);
@@ -1311,11 +1539,14 @@ void MavlinkFtpClient::timeout()
             [&](UploadItem& item) {
                 if (--work->retries == 0) {
                     item.callback(ClientResult::Timeout, {});
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1325,11 +1556,14 @@ void MavlinkFtpClient::timeout()
             [&](RemoveItem& item) {
                 if (--work->retries == 0) {
                     item.callback(ClientResult::Timeout);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1339,11 +1573,14 @@ void MavlinkFtpClient::timeout()
             [&](RenameItem& item) {
                 if (--work->retries == 0) {
                     item.callback(ClientResult::Timeout);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1353,11 +1590,14 @@ void MavlinkFtpClient::timeout()
             [&](CreateDirItem& item) {
                 if (--work->retries == 0) {
                     item.callback(ClientResult::Timeout);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1367,11 +1607,14 @@ void MavlinkFtpClient::timeout()
             [&](RemoveDirItem& item) {
                 if (--work->retries == 0) {
                     item.callback(ClientResult::Timeout);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1381,11 +1624,14 @@ void MavlinkFtpClient::timeout()
             [&](CompareFilesItem& item) {
                 if (--work->retries == 0) {
                     item.callback(ClientResult::Timeout, false);
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1394,12 +1640,15 @@ void MavlinkFtpClient::timeout()
             },
             [&](ListDirItem& item) {
                 if (--work->retries == 0) {
-                    item.callback(ClientResult::Timeout, {}, {});
-                    work_queue_guard.pop_front();
+                    item.callback(ClientResult::Timeout, {});
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
                 if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
+                    LogDebug("Retries left: {}", work->retries);
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1506,15 +1755,19 @@ std::ostream& operator<<(std::ostream& str, MavlinkFtpClient::ClientResult const
 
 void MavlinkFtpClient::cancel_all_operations()
 {
-    // Stop any pending timeout timers
-    stop_timer();
-
-    // Clear the work queue to cancel all pending operations
-    // This prevents callbacks from being executed
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-    while (work_queue_guard.get_front() != nullptr) {
-        work_queue_guard.pop_front();
+    if (_io_context.stopped()) {
+        // io_context is stopped and its thread is dead — safe to access directly.
+        stop_timer();
+        _work_queue.clear();
+        return;
     }
+    std::promise<void> done;
+    asio::post(_io_context, [this, &done]() {
+        stop_timer();
+        _work_queue.clear();
+        done.set_value();
+    });
+    done.get_future().wait();
 }
 
 } // namespace mavsdk

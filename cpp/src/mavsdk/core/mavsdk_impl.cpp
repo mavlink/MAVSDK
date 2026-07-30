@@ -1,40 +1,61 @@
-#include "mavsdk_impl.h"
+#include "mavsdk_impl.hpp"
+
+#include <asio/post.hpp>
 
 #include <algorithm>
+#include <array>
+#include <chrono>
+#include <fstream>
 #include <mutex>
-#include <tcp_server_connection.h>
-
-#include "connection.h"
-#include "log.h"
-#include "tcp_client_connection.h"
-#include "tcp_server_connection.h"
-#include "udp_connection.h"
-#include "raw_connection.h"
-#include "system.h"
-#include "system_impl.h"
-#include "serial_connection.h"
-#include "version.h"
-#include "server_component_impl.h"
-#include "overloaded.h"
-#include "mavlink_channels.h"
+#include <thread>
+#include "connection.hpp"
+#include "log.hpp"
+#include "tcp_client_connection.hpp"
+#include "tcp_server_connection.hpp"
+#include "udp_connection.hpp"
+#include "raw_connection.hpp"
+#include "system.hpp"
+#include "system_impl.hpp"
+#include "serial_connection.hpp"
+#include "version.hpp"
+#include "server_component_impl.hpp"
+#include "overloaded.hpp"
+#include "mavlink_address.hpp"
+#include "mavlink_channels.hpp"
+#include "mavlink_command_receiver.hpp"
 #include "callback_list.tpp"
-#include "hostname_to_ip.h"
-#include "embedded_mavlink_xml.h"
+#include "hostname_to_ip.hpp"
+#include "libmav_receiver.hpp"
+#include "embedded_mavlink_xml.hpp"
+#include <mav/BufferParser.h>
 #include <mav/MessageSet.h>
+
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<>;
+struct TlogFile {
+    std::ofstream stream;
+    ~TlogFile()
+    {
+        if (stream.is_open()) {
+            stream.flush();
+            stream.close();
+        }
+    }
+};
+
+template class MAVSDK_TEMPL_INST CallbackList<>;
 
 MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     timeout_handler(time),
     call_every_handler(time)
 {
-    LogInfo() << "MAVSDK version: " << mavsdk_version;
+    LogInfo("MAVSDK version: {}", mavsdk_version);
 
     if (const char* env_p = std::getenv("MAVSDK_CALLBACK_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Callback debugging is on.";
+            LogDebug("Callback debugging is on.");
             _callback_debugging = true;
             _callback_tracker = std::make_unique<CallbackTracker>();
         }
@@ -42,14 +63,14 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
 
     if (const char* env_p = std::getenv("MAVSDK_MESSAGE_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Message debugging is on.";
+            LogDebug("Message debugging is on.");
             _message_logging_on = true;
         }
     }
 
     if (const char* env_p = std::getenv("MAVSDK_SYSTEM_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "System debugging is on.";
+            LogDebug("System debugging is on.");
             _system_debugging = true;
         }
     }
@@ -73,7 +94,16 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     _process_user_callbacks_thread =
         std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
 
-    _work_thread = std::make_unique<std::thread>(&MavsdkImpl::work_thread, this);
+    // Start the recurring timer that drives TimeoutHandler and CallEveryHandler
+    // on the io_context thread every 5 ms.
+    schedule_timers_poll();
+
+    // Start the recurring timer that drives ServerComponent::do_work() on the io_context thread.
+    schedule_do_work();
+
+    // Start the Asio io_context on its own thread.  All async I/O completions,
+    // message dispatch, and timer callbacks are dispatched here.
+    _io_thread = std::make_unique<std::thread>([this]() { _io_context.run(); });
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -85,13 +115,17 @@ MavsdkImpl::~MavsdkImpl()
 
     _should_exit = true;
 
-    // Stop work first because we don't want to trigger anything that would
-    // potentially want to call into user code.
-
-    if (_work_thread) {
-        _work_thread->join();
-        _work_thread.reset();
+    // Stop the Asio io_context so _io_thread exits io_context::run().
+    // This also cancels any pending async_receive_from operations on UdpConnection sockets.
+    _io_work_guard.reset();
+    _io_context.stop();
+    if (_io_thread) {
+        _io_thread->join();
+        _io_thread.reset();
     }
+
+    // Flush and close any open tlog file now that no more messages can arrive.
+    stop_tlog_recording();
 
     if (_process_user_callbacks_thread) {
         _user_callback_queue.stop();
@@ -208,7 +242,7 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
 {
     std::lock_guard lock(_mutex);
 
-    auto component_type = _configuration.get_component_type();
+    auto component_type = get_component_type();
     switch (component_type) {
         case ComponentType::Autopilot:
         case ComponentType::GroundStation:
@@ -219,7 +253,7 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
         case ComponentType::Custom:
             return server_component_by_type(component_type, instance);
         default:
-            LogErr() << "Unknown component type";
+            LogErr("Unknown component type");
             return {};
     }
 }
@@ -234,7 +268,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_AUTOPILOT1, mav_type);
             } else {
-                LogErr() << "Only autopilot instance 0 is valid";
+                LogErr("Only autopilot instance 0 is valid");
                 return {};
             }
 
@@ -242,7 +276,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_MISSIONPLANNER, mav_type);
             } else {
-                LogErr() << "Only one ground station supported at this time";
+                LogErr("Only one ground station supported at this time");
                 return {};
             }
 
@@ -256,7 +290,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             } else if (instance == 3) {
                 return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER4, mav_type);
             } else {
-                LogErr() << "Only companion computer 0..3 are supported";
+                LogErr("Only companion computer 0..3 are supported");
                 return {};
             }
 
@@ -274,7 +308,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             } else if (instance == 5) {
                 return server_component_by_id(MAV_COMP_ID_CAMERA6, mav_type);
             } else {
-                LogErr() << "Only camera 0..5 are supported";
+                LogErr("Only camera 0..5 are supported");
                 return {};
             }
 
@@ -282,7 +316,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_GIMBAL, mav_type);
             } else {
-                LogErr() << "Only gimbal instance 0 is valid";
+                LogErr("Only gimbal instance 0 is valid");
                 return {};
             }
 
@@ -290,16 +324,16 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_ODID_TXRX_1, mav_type);
             } else {
-                LogErr() << "Only remote ID instance 0 is valid";
+                LogErr("Only remote ID instance 0 is valid");
                 return {};
             }
 
         case ComponentType::Custom:
-            LogErr() << "Custom component type requires explicit component ID";
+            LogErr("Custom component type requires explicit component ID");
             return {};
 
         default:
-            LogErr() << "Unknown server component type";
+            LogErr("Unknown server component type");
             return {};
     }
 }
@@ -308,7 +342,7 @@ std::shared_ptr<ServerComponent>
 MavsdkImpl::server_component_by_id(uint8_t component_id, uint8_t mav_type)
 {
     if (component_id == 0) {
-        LogErr() << "Server component with component ID 0 not allowed";
+        LogErr("Server component with component ID 0 not allowed");
         return nullptr;
     }
 
@@ -373,7 +407,7 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
         }
         if (successful_emissions == 0) {
             if (_system_debugging) {
-                LogErr() << "Message forwarding failed";
+                LogErr("Message forwarding failed");
             }
         }
     }
@@ -383,13 +417,12 @@ void MavsdkImpl::receive_message(
     MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection)
 {
     if (result == MavlinkReceiver::ParseResult::MessageParsed) {
-        // Valid message: queue for full processing (which includes forwarding)
-        {
-            std::lock_guard lock(_received_messages_mutex);
-            _received_messages.emplace(ReceivedMessage{std::move(message), connection});
-        }
-        _received_messages_cv.notify_one();
-
+        // Post directly to the io_context — no intermediate queue needed.
+        // The io_context thread already owns all connection callbacks, so this
+        // keeps message processing single-threaded on that same executor.
+        asio::post(_io_context, [this, msg = message, conn = connection]() mutable {
+            process_message(msg, conn);
+        });
     } else if (result == MavlinkReceiver::ParseResult::BadCrc) {
         // Unknown message: forward only, don't process locally
         forward_message(message, connection);
@@ -399,45 +432,61 @@ void MavsdkImpl::receive_message(
 void MavsdkImpl::receive_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* connection)
 {
-    {
-        std::lock_guard lock(_received_libmav_messages_mutex);
-        _received_libmav_messages.emplace(ReceivedLibmavMessage{message, connection});
-    }
-    _received_libmav_messages_cv.notify_one();
+    // Post directly to the io_context — no intermediate queue needed.
+    asio::post(_io_context, [this, message, conn = connection]() {
+        process_libmav_message(message, conn);
+    });
 }
 
-void MavsdkImpl::process_messages()
-{
-    std::lock_guard lock(_received_messages_mutex);
-    while (!_received_messages.empty()) {
-        auto message_copied = _received_messages.front();
-        process_message(message_copied.message, message_copied.connection_ptr);
-        _received_messages.pop();
-    }
-}
-
-void MavsdkImpl::process_libmav_messages()
-{
-    std::lock_guard lock(_received_libmav_messages_mutex);
-    while (!_received_libmav_messages.empty()) {
-        auto message_copied = _received_libmav_messages.front();
-        process_libmav_message(message_copied.message, message_copied.connection_ptr);
-        _received_libmav_messages.pop();
-    }
-}
+// process_messages() and process_libmav_messages() removed:
+// messages are now dispatched directly via asio::post() in receive_message()
+// and receive_libmav_message(), so no drain loop is needed.
 
 void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connection)
 {
-    // Assumes _received_messages_mutex
-
     if (_message_logging_on) {
-        LogDebug() << "Processing message " << message.msgid << " from "
-                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
+        LogDebug(
+            "Processing message {} from {}/{}",
+            static_cast<unsigned int>(message.msgid),
+            static_cast<int>(message.sysid),
+            static_cast<int>(message.compid));
     }
 
     if (_should_exit) {
         // If we're meant to clean up, let's not try to acquire any more locks but bail.
         return;
+    }
+
+    // Record to tlog before any intercept/drop logic so all received traffic is captured.
+    {
+        std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
+        if (_tlog_file && _tlog_file->stream.is_open()) {
+            constexpr size_t timestamp_bytes = 8;
+            // Big-endian microsecond Unix timestamp.
+            const auto now_us =
+                static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
+                                          std::chrono::system_clock::now().time_since_epoch())
+                                          .count());
+            std::array<uint8_t, timestamp_bytes> ts{};
+            uint64_t v = now_us;
+            for (int i = static_cast<int>(timestamp_bytes) - 1; i >= 0; --i) {
+                ts.at(static_cast<size_t>(i)) = static_cast<uint8_t>(v & 0xFFu);
+                v >>= 8u;
+            }
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(ts.data()),
+                static_cast<std::streamsize>(timestamp_bytes));
+
+            std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
+            const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
+            _tlog_file->stream.write(reinterpret_cast<const char*>(wire.data()), wire_len);
+            _tlog_file->stream.flush();
+
+            if (!_tlog_file->stream.good()) {
+                LogErr("Tlog: write failed, stopping recording");
+                _tlog_file.reset();
+            }
+        }
     }
 
     {
@@ -456,7 +505,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             }
 
             if (!keep) {
-                LogDebug() << "Dropped incoming message: " << int(message.msgid);
+                LogDebug("Dropped incoming message: {}", int(message.msgid));
                 return;
             }
         }
@@ -482,9 +531,11 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             (mavsdk::Connection::forwarding_connections_count() > 1 ||
              !connection->should_forward_messages())) {
             if (_message_logging_on) {
-                LogDebug() << "Forwarding message " << message.msgid << " from "
-                           << static_cast<int>(message.sysid) << "/"
-                           << static_cast<int>(message.compid);
+                LogDebug(
+                    "Forwarding message {} from {}/{}",
+                    static_cast<unsigned int>(message.msgid),
+                    static_cast<int>(message.sysid),
+                    static_cast<int>(message.compid));
             }
             forward_message(message, connection);
         }
@@ -492,7 +543,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         // Don't ever create a system with sysid 0.
         if (message.sysid == 0) {
             if (_message_logging_on) {
-                LogDebug() << "Ignoring message with sysid == 0";
+                LogDebug("Ignoring message with sysid == 0");
             }
             return;
         }
@@ -506,10 +557,10 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         // examples and integration tests) to connect to QGroundControl by accident
         // instead of PX4 because the check `has_autopilot()` is not used.
 
-        if (_configuration.get_component_type() == ComponentType::GroundStation &&
-            message.sysid == 255 && message.compid == MAV_COMP_ID_MISSIONPLANNER) {
+        if (get_component_type() == ComponentType::GroundStation && message.sysid == 255 &&
+            message.compid == MAV_COMP_ID_MISSIONPLANNER) {
             if (_message_logging_on) {
-                LogDebug() << "Ignoring messages from QGC as we are also a ground station";
+                LogDebug("Ignoring messages from QGC as we are also a ground statio");
             }
             return;
         }
@@ -525,15 +576,14 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
 
         if (!found_system) {
             if (_system_debugging) {
-                LogWarn() << "Create new system/component " << (int)message.sysid << "/"
-                          << (int)message.compid;
-                LogWarn() << "From message " << (int)message.msgid << " with len "
-                          << (int)message.len;
+                LogWarn(
+                    "Create new system/component {}/{}", (int)message.sysid, (int)message.compid);
+                LogWarn("From message {} with len {}", (int)message.msgid, (int)message.len);
                 std::string bytes = "";
                 for (unsigned i = 0; i < 12 + message.len; ++i) {
                     bytes += std::to_string(reinterpret_cast<uint8_t*>(&message)[i]) + ' ';
                 }
-                LogWarn() << "Bytes: " << bytes;
+                LogWarn("Bytes: {}", bytes);
             }
             make_system_with_component(message.sysid, message.compid);
 
@@ -545,6 +595,55 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             // Don't try to call at() if systems have already been destroyed
             // in destructor.
             return;
+        }
+    }
+
+    // JSON message interception for incoming messages — runs after forwarding so that the
+    // message is still relayed to connected peers, but before plugin delivery so that local
+    // plugins only see messages the subscriber allows through.
+    {
+        uint8_t buf[MAVLINK_MAX_PACKET_LEN];
+        uint16_t len = mavlink_msg_to_send_buffer(buf, &message);
+        size_t bytes_consumed = 0;
+        auto libmav_msg_opt = parse_message_safe(buf, len, bytes_consumed);
+        if (libmav_msg_opt) {
+            Mavsdk::MavlinkMessage json_msg;
+            json_msg.message_name = libmav_msg_opt.value().name();
+            json_msg.system_id = message.sysid;
+            json_msg.component_id = message.compid;
+            json_msg.raw_bytes.assign(buf, buf + len);
+
+            {
+                std::lock_guard lock(_mutex);
+                if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
+                    json_msg.fields_json =
+                        _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
+                            libmav_msg_opt.value());
+                } else {
+                    json_msg.fields_json =
+                        "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
+                        ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+                }
+            }
+
+            uint8_t target_sys = 0;
+            uint8_t target_comp = 0;
+            if (libmav_msg_opt.value().get("target_system", target_sys) ==
+                mav::MessageResult::Success) {
+                json_msg.target_system_id = target_sys;
+            }
+            if (libmav_msg_opt.value().get("target_component", target_comp) ==
+                mav::MessageResult::Success) {
+                json_msg.target_component_id = target_comp;
+            }
+
+            if (!call_json_interception_callbacks(json_msg, _incoming_json_message_subscriptions)) {
+                if (_message_logging_on) {
+                    LogDebug(
+                        "Incoming JSON message {} dropped by intercept", json_msg.message_name);
+                }
+                return;
+            }
         }
     }
 
@@ -561,33 +660,60 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
 void MavsdkImpl::process_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* /* connection */)
 {
-    // Assumes _received_libmav_messages_mutex
-
     if (_message_logging_on) {
-        LogDebug() << "MavsdkImpl::process_libmav_message: " << message.message_name << " from "
-                   << static_cast<int>(message.system_id) << "/"
-                   << static_cast<int>(message.component_id);
+        LogDebug(
+            "MavsdkImpl::process_libmav_message: {} from {}/{}",
+            message.message_name,
+            static_cast<int>(message.system_id),
+            static_cast<int>(message.component_id));
     }
 
-    // JSON message interception for incoming messages
-    if (!call_json_interception_callbacks(message, _incoming_json_message_subscriptions)) {
-        // Message was dropped by interception callback
-        if (_message_logging_on) {
-            LogDebug() << "Incoming JSON message " << message.message_name
-                       << " dropped by interception";
-        }
-        return;
-    }
+    // JSON interception is handled in process_message (old-MAVLink path) which is
+    // called for every packet before process_libmav_message.  Checking here again
+    // would invoke each callback twice for the same physical packet.
 
     if (_message_logging_on) {
-        LogDebug() << "Processing libmav message " << message.message_name << " from "
-                   << static_cast<int>(message.system_id) << "/"
-                   << static_cast<int>(message.component_id);
+        LogDebug(
+            "Processing libmav message {} from {}/{}",
+            message.message_name,
+            static_cast<int>(message.system_id),
+            static_cast<int>(message.component_id));
     }
 
     if (_should_exit) {
         // If we're meant to clean up, let's not try to acquire any more locks but bail.
         return;
+    }
+
+    // Record to tlog before any processing so all received traffic is captured.
+    if (!message.raw_bytes.empty()) {
+        std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
+        if (_tlog_file && _tlog_file->stream.is_open()) {
+            constexpr size_t timestamp_bytes = 8;
+            // Big-endian microsecond Unix timestamp.
+            const auto now_us =
+                static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
+                                          std::chrono::system_clock::now().time_since_epoch())
+                                          .count());
+            std::array<uint8_t, timestamp_bytes> ts{};
+            uint64_t v = now_us;
+            for (int i = static_cast<int>(timestamp_bytes) - 1; i >= 0; --i) {
+                ts.at(static_cast<size_t>(i)) = static_cast<uint8_t>(v & 0xFFu);
+                v >>= 8u;
+            }
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(ts.data()),
+                static_cast<std::streamsize>(timestamp_bytes));
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(message.raw_bytes.data()),
+                static_cast<std::streamsize>(message.raw_bytes.size()));
+            _tlog_file->stream.flush();
+
+            if (!_tlog_file->stream.good()) {
+                LogErr("Tlog: write failed, stopping recording");
+                _tlog_file.reset();
+            }
+        }
     }
 
     {
@@ -596,16 +722,16 @@ void MavsdkImpl::process_libmav_message(
         // Don't ever create a system with sysid 0.
         if (message.system_id == 0) {
             if (_message_logging_on) {
-                LogDebug() << "Ignoring libmav message with sysid == 0";
+                LogDebug("Ignoring libmav message with sysid == 0");
             }
             return;
         }
 
         // Filter out QGroundControl messages similar to regular mavlink processing
-        if (_configuration.get_component_type() == ComponentType::GroundStation &&
-            message.system_id == 255 && message.component_id == MAV_COMP_ID_MISSIONPLANNER) {
+        if (get_component_type() == ComponentType::GroundStation && message.system_id == 255 &&
+            message.component_id == MAV_COMP_ID_MISSIONPLANNER) {
             if (_message_logging_on) {
-                LogDebug() << "Ignoring libmav messages from QGC as we are also a ground station";
+                LogDebug("Ignoring libmav messages from QGC as we are also a ground statio");
             }
             return;
         }
@@ -621,8 +747,10 @@ void MavsdkImpl::process_libmav_message(
 
         if (!found_system) {
             if (_system_debugging) {
-                LogWarn() << "Create new system/component from libmav " << (int)message.system_id
-                          << "/" << (int)message.component_id;
+                LogWarn(
+                    "Create new system/component from libmav {}/{}",
+                    (int)message.system_id,
+                    (int)message.component_id);
             }
             make_system_with_component(message.system_id, message.component_id);
 
@@ -642,8 +770,10 @@ void MavsdkImpl::process_libmav_message(
     for (auto& system : _systems) {
         if (system.first == message.system_id) {
             if (_message_logging_on) {
-                LogDebug() << "Distributing libmav message " << message.message_name
-                           << " to SystemImpl for system " << system.first;
+                LogDebug(
+                    "Distributing libmav message {} to SystemImpl for system {}",
+                    message.message_name,
+                    system.first);
             }
             system.second->system_impl()->process_libmav_message(message);
             found_system = true;
@@ -652,55 +782,45 @@ void MavsdkImpl::process_libmav_message(
     }
 
     if (!found_system) {
-        LogWarn() << "No system found for libmav message " << message.message_name
-                  << " from system " << message.system_id;
+        LogWarn(
+            "No system found for libmav message {} from system {}",
+            message.message_name,
+            message.system_id);
+    }
+
+    // Also distribute to server components (e.g. the MavlinkDirectServer plugin).
+    // Unlike systems, this is not scoped by system_id: a server component sees
+    // matching messages from all systems.
+    {
+        std::lock_guard lock(_server_components_mutex);
+        for (auto& server_component : _server_components) {
+            if (server_component.second) {
+                server_component.second->_impl->process_libmav_message(message);
+            }
+        }
     }
 }
 
 bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
-    // Create a copy of the message to avoid reference issues
-    mavlink_message_t message_copy = message;
-
-    {
-        std::lock_guard lock(_messages_to_send_mutex);
-        _messages_to_send.push(std::move(message_copy));
-    }
-
-    // For heartbeat messages, we want to process them immediately to speed up system discovery
-    if (message.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
-        // Trigger message processing in the work thread
-        // This is a hint to process messages sooner, but doesn't block
-        std::this_thread::yield();
-    }
+    // Post directly to the io_context — no intermediate queue needed.
+    // deliver_message() always runs on the io_context thread, so ordering
+    // is preserved (posts are executed FIFO) and no mutex is required.
+    asio::post(_io_context, [this, msg = message]() mutable { deliver_message(msg); });
 
     return true;
-}
-
-void MavsdkImpl::deliver_messages()
-{
-    // Process messages one at a time to avoid holding the mutex while delivering
-    while (true) {
-        mavlink_message_t message;
-        {
-            std::lock_guard lock(_messages_to_send_mutex);
-            if (_messages_to_send.empty()) {
-                break;
-            }
-            message = _messages_to_send.front();
-            _messages_to_send.pop();
-        }
-        deliver_message(message);
-    }
 }
 
 void MavsdkImpl::deliver_message(mavlink_message_t& message)
 {
     if (_message_logging_on) {
-        LogDebug() << "Sending message " << message.msgid << " from "
-                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid)
-                   << " to " << static_cast<int>(get_target_system_id(message)) << "/"
-                   << static_cast<int>(get_target_component_id(message));
+        LogDebug(
+            "Sending message {} from {}/{} to {}/{}",
+            static_cast<unsigned int>(message.msgid),
+            static_cast<int>(message.sysid),
+            static_cast<int>(message.compid),
+            static_cast<int>(get_target_system_id(message)),
+            static_cast<int>(get_target_component_id(message)));
     }
 
     // This is a low level interface where outgoing messages can be tampered
@@ -717,7 +837,7 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         // We fake that everything was sent as instructed because
         // a potential loss would happen later, and we would not be informed
         // about it.
-        LogDebug() << "Dropped outgoing message: " << int(message.msgid);
+        LogDebug("Dropped outgoing message: {}", int(message.msgid));
         return;
     }
 
@@ -752,24 +872,28 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
             json_message.target_component_id = 0;
         }
 
-        // Generate JSON using LibmavReceiver's public method
-        auto connections = get_connections();
-        if (!connections.empty() && connections[0]->get_libmav_receiver()) {
-            json_message.fields_json =
-                connections[0]->get_libmav_receiver()->libmav_message_to_json(
-                    libmav_msg_opt.value());
-        } else {
-            // Fallback: create minimal JSON if no receiver available
-            json_message.fields_json =
-                "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
-                ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+        // Generate JSON using LibmavReceiver's public method.
+        // Access _connections under _mutex so remove_connection() cannot destroy
+        // the Connection object (and its _libmav_receiver) while we're using it.
+        {
+            std::lock_guard lock(_mutex);
+            if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
+                json_message.fields_json =
+                    _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
+                        libmav_msg_opt.value());
+            } else {
+                // Fallback: create minimal JSON if no receiver available
+                json_message.fields_json =
+                    "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
+                    ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+            }
         }
 
         if (!call_json_interception_callbacks(json_message, _outgoing_json_message_subscriptions)) {
             // Message was dropped by JSON interception callback
             if (_message_logging_on) {
-                LogDebug() << "Outgoing JSON message " << json_message.message_name
-                           << " dropped by interception";
+                LogDebug(
+                    "Outgoing JSON message {} dropped by interceptio", json_message.message_name);
             }
             return;
         }
@@ -801,7 +925,7 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
     }
 
     if (successful_emissions == 0) {
-        LogErr() << "Sending message failed";
+        LogErr("Sending message failed");
     }
 }
 
@@ -981,7 +1105,7 @@ MavsdkImpl::add_raw_connection(ForwardingOption forwarding_option)
 {
     // Check if a raw connection already exists
     if (find_raw_connection() != nullptr) {
-        LogErr() << "Raw connection already exists. Only one raw connection is allowed.";
+        LogErr("Raw connection already exists. Only one raw connection is allowed.");
         return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
     }
 
@@ -1026,17 +1150,37 @@ Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&
 
 void MavsdkImpl::remove_connection(Mavsdk::ConnectionHandle handle)
 {
-    std::lock_guard lock(_mutex);
-
-    _connections.erase(std::remove_if(_connections.begin(), _connections.end(), [&](auto&& entry) {
-        return (entry.handle == handle);
-    }));
+    // Extract the connection from _connections while holding _mutex, but let
+    // it be destroyed *after* releasing _mutex.  This avoids a deadlock where:
+    //   - main thread holds _mutex and waits inside Connection::stop() for the
+    //     io_context fence to execute, and
+    //   - the io_context thread is blocked trying to acquire _mutex (e.g. for
+    //     the periodic send_message() heartbeat call).
+    std::unique_ptr<Connection> conn_to_stop;
+    {
+        std::lock_guard lock(_mutex);
+        for (auto it = _connections.begin(); it != _connections.end(); ++it) {
+            if (it->handle == handle) {
+                conn_to_stop = std::move(it->connection);
+                _connections.erase(it);
+                break;
+            }
+        }
+    }
+    // conn_to_stop is destroyed here, outside _mutex, so stop() / the
+    // io_context fence can complete without hitting the lock.
 }
 
 Mavsdk::Configuration MavsdkImpl::get_configuration() const
 {
-    std::lock_guard configuration_lock(_mutex);
+    std::lock_guard configuration_lock(_configuration_mutex);
     return _configuration;
+}
+
+ComponentType MavsdkImpl::get_component_type() const
+{
+    std::lock_guard configuration_lock(_configuration_mutex);
+    return _configuration.get_component_type();
 }
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
@@ -1048,16 +1192,23 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
     _default_server_component = server_component_by_id_with_lock(
         new_configuration.get_component_id(), new_configuration.get_mav_type());
 
-    if (new_configuration.get_always_send_heartbeats() &&
-        !_configuration.get_always_send_heartbeats()) {
+    const bool was_always_sending_heartbeats = [this] {
+        std::lock_guard configuration_lock(_configuration_mutex);
+        return _configuration.get_always_send_heartbeats();
+    }();
+
+    if (new_configuration.get_always_send_heartbeats() && !was_always_sending_heartbeats) {
         start_sending_heartbeats();
     } else if (
-        !new_configuration.get_always_send_heartbeats() &&
-        _configuration.get_always_send_heartbeats() && !is_any_system_connected()) {
+        !new_configuration.get_always_send_heartbeats() && was_always_sending_heartbeats &&
+        !is_any_system_connected()) {
         stop_sending_heartbeats();
     }
 
-    _configuration = new_configuration;
+    {
+        std::lock_guard configuration_lock(_configuration_mutex);
+        _configuration = new_configuration;
+    }
     // We cache these values as atomic to avoid having to lock any mutex for them.
     _our_system_id = new_configuration.get_system_id();
     _our_component_id = new_configuration.get_component_id();
@@ -1075,16 +1226,19 @@ uint8_t MavsdkImpl::get_own_component_id() const
 
 uint8_t MavsdkImpl::get_mav_type() const
 {
+    std::lock_guard configuration_lock(_configuration_mutex);
     return _configuration.get_mav_type();
 }
 
 Autopilot MavsdkImpl::get_autopilot() const
 {
+    std::lock_guard configuration_lock(_configuration_mutex);
     return _configuration.get_autopilot();
 }
 
 uint8_t MavsdkImpl::get_mav_autopilot() const
 {
+    std::lock_guard configuration_lock(_configuration_mutex);
     switch (_configuration.get_autopilot()) {
         case Autopilot::Px4:
             return MAV_AUTOPILOT_PX4;
@@ -1098,12 +1252,18 @@ uint8_t MavsdkImpl::get_mav_autopilot() const
 
 CompatibilityMode MavsdkImpl::get_compatibility_mode() const
 {
+    std::lock_guard configuration_lock(_configuration_mutex);
     return _configuration.get_compatibility_mode();
 }
 
 Autopilot MavsdkImpl::effective_autopilot(Autopilot detected) const
 {
-    switch (_configuration.get_compatibility_mode()) {
+    CompatibilityMode compatibility_mode;
+    {
+        std::lock_guard configuration_lock(_configuration_mutex);
+        compatibility_mode = _configuration.get_compatibility_mode();
+    }
+    switch (compatibility_mode) {
         case CompatibilityMode::Auto:
             return detected;
         case CompatibilityMode::Pure:
@@ -1149,7 +1309,7 @@ void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
     }
 
     if (static_cast<int>(system_id) == 0 && static_cast<int>(comp_id) == 0) {
-        LogDebug() << "Initializing connection to remote system...";
+        LogDebug("Initializing connection to remote system...");
     }
 
     // Make a system with its first component
@@ -1198,20 +1358,18 @@ bool MavsdkImpl::is_any_system_connected() const
     });
 }
 
-void MavsdkImpl::work_thread()
+void MavsdkImpl::schedule_do_work()
 {
-    while (!_should_exit) {
-        // Process incoming messages
-        process_messages();
-
-        // Process incoming libmav messages
-        process_libmav_messages();
-
-        // Run timers
-        timeout_handler.run_once();
-        call_every_handler.run_once();
-
-        // Do component work
+    // Drive ServerComponent protocol-handler state machines (command sender, parameter client,
+    // mission transfer, FTP client, …) on the io_context thread every 10 ms.
+    // Using dispatch() would execute immediately on first call but we want a timer-driven cadence,
+    // so async_wait is correct here — same pattern as schedule_timers_poll().
+    _do_work_timer.expires_after(std::chrono::milliseconds(10));
+    _do_work_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Cancelled (e.g. during shutdown) — do not reschedule.
+            return;
+        }
         {
             std::lock_guard lock(_server_components_mutex);
             for (auto& it : _server_components) {
@@ -1220,19 +1378,24 @@ void MavsdkImpl::work_thread()
                 }
             }
         }
+        schedule_do_work();
+    });
+}
 
-        // Deliver outgoing messages
-        deliver_messages();
-
-        // If no messages to send, check if there are messages to receive
-        std::unique_lock lock_received(_received_messages_mutex);
-        if (_received_messages.empty()) {
-            // No messages to process, wait for a signal or timeout
-            _received_messages_cv.wait_for(lock_received, std::chrono::milliseconds(10), [this]() {
-                return !_received_messages.empty() || _should_exit;
-            });
+void MavsdkImpl::schedule_timers_poll()
+{
+    // Run TimeoutHandler and CallEveryHandler on the io_context thread every 5 ms.
+    // This gives ~5 ms timer resolution without a separate polling thread.
+    _timers_poll_timer.expires_after(std::chrono::milliseconds(5));
+    _timers_poll_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Cancelled (e.g. during shutdown) — do not reschedule.
+            return;
         }
-    }
+        timeout_handler.run_once();
+        call_every_handler.run_once();
+        schedule_timers_poll();
+    });
 }
 
 void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)> executor)
@@ -1300,16 +1463,14 @@ void MavsdkImpl::call_user_callback_located(
         return;
 
     } else if (callback_size == 99) {
-        LogErr()
-            << "User callback queue overflown\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+        LogErr(
+            "User callback queue overflown\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks");
         return;
 
     } else if (callback_size >= 10) {
-        LogWarn()
-            << "User callback queue slow (queue size: " << callback_size
-            << ").\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+        LogWarn(
+            "User callback queue slow (queue size: {}).\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
+            callback_size);
     }
 
     // We only need to keep track of filename and linenumber if we're actually debugging this.
@@ -1340,19 +1501,24 @@ void MavsdkImpl::process_user_callbacks_thread()
         }
 
         const double timeout_s = 1.0;
+        // Capture the fields we need by value: this watchdog runs on the io thread and
+        // can fire while (or just after) callback.func() runs here, so referencing the
+        // loop-local 'callback' would race with its destruction at the next iteration.
         auto cookie = timeout_handler.add(
-            [&]() {
+            [this, timeout_s, filename = callback.filename, linenumber = callback.linenumber]() {
                 if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << callback.filename << ":"
-                              << callback.linenumber << " took more than " << timeout_s
-                              << " second to run.";
+                    LogWarn(
+                        "Callback called from {}:{} took more than {} second to run.",
+                        filename,
+                        linenumber,
+                        static_cast<int>(timeout_s));
                     fflush(stdout);
                     fflush(stderr);
                     abort();
                 } else {
-                    LogWarn()
-                        << "Callback took more than " << timeout_s << " second to run.\n"
-                        << "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+                    LogWarn(
+                        "Callback took more than {} second to run.\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
+                        static_cast<int>(timeout_s));
                 }
             },
             timeout_s);
@@ -1392,7 +1558,11 @@ void MavsdkImpl::start_sending_heartbeats()
 
 void MavsdkImpl::stop_sending_heartbeats()
 {
-    if (!_configuration.get_always_send_heartbeats()) {
+    const bool always_send_heartbeats = [this] {
+        std::lock_guard configuration_lock(_configuration_mutex);
+        return _configuration.get_always_send_heartbeats();
+    }();
+    if (!always_send_heartbeats) {
         std::lock_guard<std::mutex> lock(_heartbeat_mutex);
         call_every_handler.remove(_heartbeat_send_cookie);
     }
@@ -1434,6 +1604,28 @@ void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_me
 {
     std::lock_guard<std::mutex> lock(_intercept_callbacks_mutex);
     _intercept_outgoing_messages_callback = callback;
+}
+
+bool MavsdkImpl::start_tlog_recording(const std::string& path)
+{
+    std::lock_guard<std::mutex> lock(_tlog_mutex);
+    if (_tlog_file && _tlog_file->stream.is_open()) {
+        _tlog_file->stream.flush();
+        _tlog_file->stream.close();
+    }
+    _tlog_file = std::make_unique<TlogFile>();
+    _tlog_file->stream.open(path, std::ios::binary | std::ios::trunc);
+    return _tlog_file->stream.is_open();
+}
+
+void MavsdkImpl::stop_tlog_recording()
+{
+    std::lock_guard<std::mutex> lock(_tlog_mutex);
+    if (_tlog_file && _tlog_file->stream.is_open()) {
+        _tlog_file->stream.flush();
+        _tlog_file->stream.close();
+    }
+    _tlog_file.reset();
 }
 
 bool MavsdkImpl::call_json_interception_callbacks(
@@ -1512,8 +1704,7 @@ void MavsdkImpl::pass_received_raw_bytes(const char* bytes, size_t length)
 {
     auto* raw_conn = find_raw_connection();
     if (raw_conn == nullptr) {
-        LogErr()
-            << "No raw connection available. Please add one using add_any_connection(\"raw://\")";
+        LogErr("No raw connection available. Please add one using add_any_connection(\"raw://\")");
         return;
     }
 
@@ -1524,8 +1715,8 @@ Mavsdk::RawBytesHandle
 MavsdkImpl::subscribe_raw_bytes_to_be_sent(const Mavsdk::RawBytesCallback& callback)
 {
     if (find_raw_connection() == nullptr) {
-        LogWarn() << "No raw connection available. Subscription will only receive bytes after you "
-                     "add a connection using add_any_connection(\"raw://\")";
+        LogWarn("No raw connection available. Subscription will only receive bytes after you "
+                "add a connection using add_any_connection(\"raw://\")");
     }
     return _raw_bytes_subscriptions.subscribe(callback);
 }

@@ -1,6 +1,6 @@
 #include "mavsdk.h"
 
-#include <mavsdk/mavsdk.h>
+#include <mavsdk/mavsdk.hpp>
 #include <memory>
 #include <string>
 #include <vector>
@@ -502,6 +502,50 @@ void mavsdk_unsubscribe_outgoing_messages_json(
     auto* pair = reinterpret_cast<std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>*>(handle);
 
     cpp_mavsdk->unsubscribe_outgoing_messages_json(pair->first);
+    delete pair->second;
+    delete pair;
+}
+
+// --- Raw Bytes ---
+void mavsdk_pass_received_raw_bytes(mavsdk_t mavsdk, const uint8_t* bytes, size_t length) {
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+    cpp_mavsdk->pass_received_raw_bytes(reinterpret_cast<const char*>(bytes), length);
+}
+
+mavsdk_raw_bytes_handle_t mavsdk_subscribe_raw_bytes_to_be_sent(
+    mavsdk_t mavsdk,
+    mavsdk_raw_bytes_callback_t callback,
+    void* user_data
+) {
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+
+    struct CallbackContext {
+        mavsdk_raw_bytes_callback_t callback;
+        void* user_data;
+    };
+
+    auto* ctx = new CallbackContext{callback, user_data};
+
+    auto handle = cpp_mavsdk->subscribe_raw_bytes_to_be_sent(
+        [ctx](const char* bytes, size_t length) {
+            ctx->callback(reinterpret_cast<const uint8_t*>(bytes), length, ctx->user_data);
+        }
+    );
+
+    auto* result = new std::pair<Mavsdk::RawBytesHandle, CallbackContext*>(
+        std::move(handle), ctx
+    );
+    return reinterpret_cast<mavsdk_raw_bytes_handle_t>(result);
+}
+
+void mavsdk_unsubscribe_raw_bytes_to_be_sent(
+    mavsdk_t mavsdk,
+    mavsdk_raw_bytes_handle_t handle
+) {
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+    auto* pair = reinterpret_cast<std::pair<Mavsdk::RawBytesHandle, CallbackContext*>*>(handle);
+
+    cpp_mavsdk->unsubscribe_raw_bytes_to_be_sent(pair->first);
     delete pair->second;
     delete pair;
 }

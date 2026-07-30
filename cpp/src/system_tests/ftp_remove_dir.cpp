@@ -1,8 +1,8 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/ftp/ftp.h"
-#include "plugins/ftp_server/ftp_server.h"
-#include "fs_helpers.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/ftp/ftp.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
+#include "fs_helpers.hpp"
 
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -20,7 +20,7 @@ static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/prov
 static const fs::path temp_dir = "folder";
 static const fs::path temp_file = "file.bin";
 
-TEST(SystemTest, FtpRemoveDir)
+TEST(Ftp, RemoveDir)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -60,7 +60,7 @@ TEST(SystemTest, FtpRemoveDir)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpRemoveDirNotEmpty)
+TEST(Ftp, RemoveDirNotEmpty)
 {
     ASSERT_TRUE(reset_directories(temp_dir_provided / temp_dir));
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_dir / temp_file, 100));

@@ -1,7 +1,7 @@
-#include "arm_authorizer_server_impl.h"
+#include "arm_authorizer_server_impl.hpp"
 
 #include <utility>
-#include "log.h"
+#include "log.hpp"
 
 namespace mavsdk {
 
@@ -45,7 +45,7 @@ std::optional<mavlink_command_ack_t> ArmAuthorizerServerImpl::process_arm_author
     const MavlinkCommandReceiver::CommandLong& command)
 {
     if (_arm_authorization_callbacks.empty()) {
-        LogDebug() << "Set mode requested with no user callback";
+        LogDebug("Set mode requested with no user callback");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }

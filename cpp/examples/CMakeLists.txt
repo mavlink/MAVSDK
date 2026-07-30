@@ -3,8 +3,14 @@ project(mavsdk_examples)
 
 # This allows to build all examples at once.
 
+# Ensure C++20 is used for all examples
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 if (WERROR)
-    add_compile_options(-Werror)
+    # Examples intentionally use deprecated APIs to document migration paths,
+    # so we allow deprecated-declarations warnings but keep all other errors.
+    add_compile_options(-Werror -Wno-error=deprecated-declarations)
 endif()
 
 add_subdirectory(arm_authorizer_server)
@@ -30,8 +36,19 @@ add_subdirectory(ftp_client)
 add_subdirectory(ftp_server)
 add_subdirectory(geofence)
 add_subdirectory(gimbal)
-add_subdirectory(gimbal_device_tester)
+
+# Require nlohmann_json, so we're skipping these if not found
+find_package(nlohmann_json QUIET)
+if(nlohmann_json_FOUND)
+    add_subdirectory(gimbal_device_tester)
+    add_subdirectory(gimbal_manager)
+    add_subdirectory(gimbal_device)
+    add_subdirectory(parachute)
+else()
+    message(STATUS "nlohmann_json not found, skipping gimbal_device_tester, gimbal_manager, gimbal_device, and parachute examples")
+endif()
 add_subdirectory(goto_location)
+add_subdirectory(goto_location_with_terrain)
 add_subdirectory(hold)
 add_subdirectory(log_callback)
 add_subdirectory(logfile_download)
@@ -42,9 +59,9 @@ add_subdirectory(mavlink_direct_sender_custom)
 add_subdirectory(mavshell)
 add_subdirectory(multiple_drones)
 add_subdirectory(offboard)
-add_subdirectory(parachute)
 add_subdirectory(params)
 add_subdirectory(set_actuator)
+add_subdirectory(statustext_hello)
 add_subdirectory(set_gps_origin)
 add_subdirectory(set_relay)
 add_subdirectory(sniffer)
@@ -56,10 +73,16 @@ add_subdirectory(tune)
 add_subdirectory(vtol_transition)
 add_subdirectory(winch)
 add_subdirectory(wind)
+add_subdirectory(write_tlog)
 # Disabled, requires mavsdk_server library.
 #add_subdirectory(start_stop_server)
 
 if(NOT MSVC)
-    # Requires sdl2, so we're skipping it on Windows.
-    add_subdirectory(manual_control)
+    # Requires SDL2, so we're skipping it on Windows and if SDL2 is not found
+    find_package(SDL2 QUIET)
+    if(SDL2_FOUND)
+        add_subdirectory(manual_control)
+    else()
+        message(STATUS "SDL2 not found, skipping manual_control example")
+    endif()
 endif()

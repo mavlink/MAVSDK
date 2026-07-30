@@ -1,4 +1,4 @@
-#include "compatibility_mode.h"
+#include "compatibility_mode.hpp"
 
 namespace mavsdk {
 

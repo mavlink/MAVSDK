@@ -1,10 +1,10 @@
 
-#include "autopilot.h"
-#include "flight_mode.h"
-#include "mavlink_include.h"
-#include "ardupilot_custom_mode.h"
-#include "px4_custom_mode.h"
-#include "mavlink_command_sender.h"
+#include "autopilot.hpp"
+#include "flight_mode.hpp"
+#include "mavlink_include.hpp"
+#include "ardupilot_custom_mode.hpp"
+#include "px4_custom_mode.hpp"
+#include "mavlink_command_sender.hpp"
 
 namespace mavsdk {
 

@@ -202,6 +202,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_destroy(mavsdk_calibration_t calibration)
  * @brief Perform gyro calibration.
  *
  * @param calibration The calibration instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -216,6 +217,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_gyro_async(
  * @brief Perform accelerometer calibration.
  *
  * @param calibration The calibration instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -230,6 +232,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_accelerometer_async(
  * @brief Perform magnetometer calibration.
  *
  * @param calibration The calibration instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -244,6 +247,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_magnetometer_async(
  * @brief Perform board level horizon calibration.
  *
  * @param calibration The calibration instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -258,6 +262,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_level_horizon_async(
  * @brief Perform gimbal accelerometer calibration.
  *
  * @param calibration The calibration instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

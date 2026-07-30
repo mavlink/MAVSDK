@@ -2,13 +2,14 @@
 #include <functional>
 #include <future>
 #include <numeric>
-#include "info_impl.h"
-#include "system.h"
+#include "info_impl.hpp"
+#include "system.hpp"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<Info::FlightInfo>;
+template class MAVSDK_TEMPL_INST CallbackList<Info::FlightInfo>;
 
 InfoImpl::InfoImpl(System& system) : PluginImplBase(system)
 {

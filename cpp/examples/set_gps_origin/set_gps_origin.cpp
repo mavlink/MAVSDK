@@ -10,10 +10,10 @@
 #include <iostream>
 #include <thread>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/offboard/offboard.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/offboard/offboard.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 
 using namespace mavsdk;
 using std::chrono::seconds;

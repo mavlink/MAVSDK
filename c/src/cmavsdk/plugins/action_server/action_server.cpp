@@ -4,7 +4,7 @@
 
 #include "action_server.h"
 
-#include <mavsdk/plugins/action_server/action_server.h>
+#include <mavsdk/plugins/action_server/action_server.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

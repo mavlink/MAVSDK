@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/param/param.h"
-#include "plugins/param_server/param_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/param/param.hpp"
+#include "plugins/param_server/param_server.hpp"
 #include <atomic>
 #include <thread>
 #include <gtest/gtest.h>
@@ -28,7 +28,7 @@ static std::string generate_uppercase_ascii(size_t length)
     return data;
 }
 
-TEST(SystemTest, ParamCustomSetAndGet)
+TEST(Param, CustomSetAndGet)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -82,7 +82,7 @@ TEST(SystemTest, ParamCustomSetAndGet)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, ParamCustomSetAndGetLossy)
+TEST(Param, CustomSetAndGetLossy)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -92,10 +92,9 @@ TEST(SystemTest, ParamCustomSetAndGetLossy)
 
     // Drop every third message
     std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 3; };
+    auto drop_some = [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 3 != 0; };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
+    auto drop_some_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_some);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -142,8 +141,7 @@ TEST(SystemTest, ParamCustomSetAndGetLossy)
 
     // Before going out of scope, we need to make sure to no longer access the
     // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_some_handle);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

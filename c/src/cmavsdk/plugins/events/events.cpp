@@ -4,7 +4,7 @@
 
 #include "events.h"
 
-#include <mavsdk/plugins/events/events.h>
+#include <mavsdk/plugins/events/events.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "component_metadata_server_impl.h"
-#include "plugins/component_metadata_server/component_metadata_server.h"
+#include "component_metadata_server_impl.hpp"
+#include "plugins/component_metadata_server/component_metadata_server.hpp"
 
 namespace mavsdk {
 
@@ -25,13 +25,14 @@ void ComponentMetadataServer::set_metadata(std::vector<Metadata> metadata) const
     _impl->set_metadata(metadata);
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const ComponentMetadataServer::Metadata& lhs, const ComponentMetadataServer::Metadata& rhs)
 {
     return (rhs.type == lhs.type) && (rhs.json_metadata == lhs.json_metadata);
 }
 
-std::ostream& operator<<(std::ostream& str, ComponentMetadataServer::Metadata const& metadata)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ComponentMetadataServer::Metadata const& metadata)
 {
     str << std::setprecision(15);
     str << "metadata:" << '\n' << "{\n";
@@ -41,19 +42,24 @@ std::ostream& operator<<(std::ostream& str, ComponentMetadataServer::Metadata co
     return str;
 }
 
-std::ostream&
-operator<<(std::ostream& str, ComponentMetadataServer::MetadataType const& metadata_type)
+MAVSDK_PUBLIC std::string_view to_string(ComponentMetadataServer::MetadataType const& metadata_type)
 {
     switch (metadata_type) {
         case ComponentMetadataServer::MetadataType::Parameter:
-            return str << "Parameter";
+            return "Parameter";
         case ComponentMetadataServer::MetadataType::Events:
-            return str << "Events";
+            return "Events";
         case ComponentMetadataServer::MetadataType::Actuators:
-            return str << "Actuators";
+            return "Actuators";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ComponentMetadataServer::MetadataType const& metadata_type)
+{
+    return str << to_string(metadata_type);
 }
 
 } // namespace mavsdk

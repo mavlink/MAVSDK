@@ -7,14 +7,18 @@ on:
     tags:
     - 'v*'
     paths-ignore:
-    - 'cpp/docs/**'
+    - 'docs/**'
   pull_request:
     branches:
     - '*'
     paths-ignore:
-    - 'cpp/docs/**'
+    - 'docs/**'
     - '.github/workflows/docs_deploy.yml'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 defaults:
   run:
@@ -28,12 +32,12 @@ jobs:
       docker_changed: ${{ steps.set-any-changed.outputs.docker_changed }}
       docker_tag: ${{ steps.set-docker-tag.outputs.docker_tag}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Get changed files
         id: check-changes
-        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
           files: ../docker/**
           since_last_remote_commit: true
@@ -65,7 +69,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -75,11 +79,11 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/debug/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -93,6 +97,7 @@ jobs:
         run: ./build/debug/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/debug/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-asan:
     name: Ubuntu 24.04 (AddressSanitizer)
@@ -102,7 +107,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -112,11 +117,11 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/asan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -133,6 +138,7 @@ jobs:
         run: ./build/asan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/asan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-tsan:
     name: Ubuntu 24.04 (ThreadSanitizer)
@@ -142,7 +148,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -152,11 +158,11 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/tsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -173,6 +179,7 @@ jobs:
         run: ./build/tsan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/tsan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-ubsan:
     name: Ubuntu 24.04 (UndefinedBehaviour)
@@ -182,7 +189,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -192,11 +199,11 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/ubsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -215,6 +222,7 @@ jobs:
         run: ./build/ubsan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/ubsan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-superbuild:
     name: ${{ matrix.description }}
@@ -241,7 +249,7 @@ jobs:
             cxx: clang++-19
             description: Ubuntu 24.04 (clang 19)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -260,12 +268,13 @@ jobs:
       - name: install dependencies for examples
         run: |
           sudo apt-get update && sudo apt-get install -y \
-            libsdl2-dev
-      - uses: actions/cache@v4
+            libsdl2-dev \
+            nlohmann-json3-dev
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -288,11 +297,12 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: upload core dumps
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: core-dumps-${{ matrix.description }}-${{ github.run_id }}
           path: /tmp/core.*
@@ -300,7 +310,7 @@ jobs:
           if-no-files-found: ignore
       - name: upload test binaries for core dump analysis
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-binaries-${{ matrix.description }}-${{ github.run_id }}
           path: |
@@ -319,15 +329,15 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -343,20 +353,21 @@ jobs:
     name: Ubuntu 24.04 (SUPERBUILD=OFF)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y liblzma-dev libtinyxml2-dev libjsoncpp-dev libcurl4-openssl-dev libssl-dev
+          sudo apt-get install -y liblzma-dev libtinyxml2-dev nlohmann-json3-dev libcurl4-openssl-dev libssl-dev libasio-dev libfmt-dev
       - name: Build with system dependencies
         run: ./tools/build-with-system-deps.sh
       - name: unit tests
         run: ./build-release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build-release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
@@ -366,35 +377,42 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: Install tools
         run: |
           sudo apt-get update && sudo apt-get install -y \
-            python3-venv
+            python3-venv \
+            libasio-dev \
+            libfmt-dev \
+            nlohmann-json3-dev
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
-          path: ./cpp/build/default/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
-      - name: disable superbuild on cache hit
-        if: steps.cache.outputs.cache-hit == 'true'
+          path: ./cpp/build/release/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          restore-keys: |
+            ubuntu-superbuild-24.04-gcc-13-${{ hashFiles('./cpp/third_party/**') }}-
+            ubuntu-superbuild-
+      - name: disable superbuild on cache restore
         run: |
-          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
-          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
+          if [ -f "build/release/third_party/install/bin/protoc" ]; then
+            echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
+          fi
       - name: build necessary protoc tooling
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/release -H.
       - name: generate code from protos
         working-directory: .
-        run: PATH="$PATH:$HOME/.local/bin:$(pwd)/cpp/build/default/third_party/install/bin" tools/generate_from_protos.bash
+        run: PATH="$PATH:$HOME/.local/bin:$(pwd)/cpp/build/release/third_party/install/bin" tools/generate_from_protos.bash
       - name: fix style
         run: tools/fix_style.py . || true
       - name: check for diff
@@ -408,7 +426,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -437,9 +455,6 @@ jobs:
         include:
           - os_type: ubuntu
             os_name: Ubuntu
-            os_version: "20.04"
-          - os_type: ubuntu
-            os_name: Ubuntu
             os_version: "22.04"
           - os_type: ubuntu
             os_name: Ubuntu
@@ -454,7 +469,7 @@ jobs:
             os_name: Debian
             os_version: "13"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -470,17 +485,31 @@ jobs:
           echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
           echo 'Core dump pattern set to:'
           cat /proc/sys/kernel/core_pattern
+      - uses: actions/cache@v5
+        id: cache
+        with:
+          path: ./cpp/build/release/third_party/install
+          key: ${{ github.job }}-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ hashFiles('./cpp/third_party/**') }}-1
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
+      - name: install asio (non-superbuild fallback)
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: sudo apt-get update && sudo apt-get install -y libasio-dev
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -- -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: upload core dumps
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: core-dumps-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ github.run_id }}
           path: /tmp/core.*
@@ -488,7 +517,7 @@ jobs:
           if-no-files-found: ignore
       - name: upload test binaries for core dump analysis
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-binaries-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ github.run_id }}
           path: |
@@ -502,9 +531,11 @@ jobs:
       - name: install
         run: cmake --build build/release --target install
       - name: Package
+        if: startsWith(github.ref, 'refs/tags/v')
         run: tools/create_packages.sh ./install . amd64 libmavsdk-dev
       - name: Upload as artifact
-        uses: actions/upload-artifact@v4
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v7
         with:
           name: libmavsdk-dev-${{ matrix.os_type }}-${{ matrix.os_version }}
           path: '*.deb'
@@ -536,11 +567,8 @@ jobs:
             arch_name: armv7
           - docker_name: arm64
             arch_name: arm64
-          - docker_name: arm64-lts
-            arch_name: arm64
-            rename_distro: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -549,11 +577,11 @@ jobs:
         continue-on-error: true
       - name: setup dockcross
         run: docker run --rm ${{ env.ARG_IMAGE }} > ./dockcross-linux-${{ matrix.docker_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/linux-${{ matrix.docker_name }}/third_party/install
-          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -564,9 +592,10 @@ jobs:
       - name: build
         run: ./dockcross-linux-${{ matrix.docker_name }}-custom cmake --build build/linux-${{ matrix.docker_name }} -j$(nproc) --target install
       - name: create deb packages
+        if: startsWith(github.ref, 'refs/tags/v')
         working-directory: .
         run: ./cpp/dockcross-linux-${{ matrix.docker_name }}-custom cpp/tools/create_packages.sh ./cpp/build/linux-${{ matrix.docker_name }}/install . ${{ matrix.arch_name }} libmavsdk-dev
-      - if: ${{ matrix.rename_distro }}
+      - if: startsWith(github.ref, 'refs/tags/v') && matrix.rename_distro
         name: Rename LTS versions from debian12 to debian11
         run: |
           sudo apt update && sudo apt install -y \
@@ -590,7 +619,7 @@ jobs:
       - name: install tools
         working-directory: .
         run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip rust cargo
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -600,11 +629,11 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -618,6 +647,7 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: build C wrapper
@@ -626,13 +656,13 @@ jobs:
           cmake -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_PREFIX_PATH="$(pwd)/../cpp/install;$(pwd)/../cpp/build/release/third_party/install" -DBUILD_SHARED_LIBS=ON -Bbuild -S.
           cmake --build build --target install
       - name: Upload as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server_musl_x86_64
           path: ./cpp/install/bin/mavsdk_server
           retention-days: 2
       - name: Upload C wrapper as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: libcmavsdk_musl_x86_64
           path: ./c/build/install/lib/
@@ -655,17 +685,17 @@ jobs:
       matrix:
         arch_name: [linux-armv6-musl, linux-armv7l-musl, linux-arm64-musl]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }}:20250818-0a27819 > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -676,7 +706,7 @@ jobs:
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j$(nproc) --target install
       - name: Upload as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server_${{ matrix.arch_name }}
           path: 'cpp/build/${{ matrix.arch_name }}/install/bin/mavsdk_server'
@@ -713,18 +743,18 @@ jobs:
             python_plat_name_arg: "--plat-name linux_aarch64"
             auditwheel_plat: manylinux2014_aarch64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: setup dockcross
         working-directory: .
         run: docker run --rm dockcross/${{ matrix.arch_name }}:latest > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/manylinux/cpp/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-1
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./cpp/third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -743,7 +773,7 @@ jobs:
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/c -j$(nproc) --target install
       - name: upload libcmavsdk artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: libcmavsdk_${{ matrix.arch_name }}
           path: 'build/manylinux/c/install/lib/libcmavsdk.so'
@@ -759,7 +789,7 @@ jobs:
           ${{ matrix.python_exec }} setup.py bdist_wheel ${{ matrix.python_plat_name_arg }} &&
           ${{ matrix.python_exec_auditwheel }} -m auditwheel repair --plat ${{ matrix.auditwheel_plat }} dist/mavsdk4-*-linux_*.whl"
       - name: upload mavsdk wheel
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_wheel_${{ matrix.arch_name }}
           path: py/mavsdk/wheelhouse/*.whl
@@ -774,7 +804,7 @@ jobs:
           ${{ matrix.python_exec }} setup.py bdist_wheel"
       - name: upload aiomavsdk wheel
         if: matrix.artifact_arch == 'x86_64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: aiomavsdk_wheel
           path: py/aiomavsdk/dist/*.whl
@@ -796,7 +826,7 @@ jobs:
           - name: android-x86_64
             arch: x86_64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -805,11 +835,11 @@ jobs:
         continue-on-error: true
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }}:20250818-0a27819 > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -822,7 +852,7 @@ jobs:
       - name: create tar with header and library
         run: mkdir -p build/${{ matrix.name }}/export/include; cp build/${{ matrix.name }}/install/include/mavsdk/mavsdk_server/mavsdk_server_api.h build/${{ matrix.name }}/export/include; mkdir -p build/${{ matrix.name }}/export/${{ matrix.arch }}; cp build/${{ matrix.name }}/install/lib/libmavsdk_server.so build/${{ matrix.name }}/export/${{ matrix.arch }}; tar -C build/${{ matrix.name }}/export -cf build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar ${{ matrix.arch }} include;
       - name: Upload as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server_${{ matrix.name }}.tar
           path: 'cpp/build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar'

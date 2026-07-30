@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h
+    include/plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/{{ plugin_name.lower_snake_case }}
 )

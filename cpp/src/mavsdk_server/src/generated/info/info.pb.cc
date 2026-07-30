@@ -245,24 +245,6 @@ struct GetIdentificationRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetIdentificationRequestDefaultTypeInternal _GetIdentificationRequest_default_instance_;
-              template <typename>
-PROTOBUF_CONSTEXPR GetFlightInformationRequest::GetFlightInformationRequest(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase() {
-}
-#endif  // PROTOBUF_CUSTOM_VTABLE
-struct GetFlightInformationRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetFlightInformationRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetFlightInformationRequestDefaultTypeInternal() {}
-  union {
-    GetFlightInformationRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetFlightInformationRequestDefaultTypeInternal _GetFlightInformationRequest_default_instance_;
 
 inline constexpr FlightInfo::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -396,32 +378,6 @@ struct GetIdentificationResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetIdentificationResponseDefaultTypeInternal _GetIdentificationResponse_default_instance_;
 
-inline constexpr GetFlightInformationResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        info_result_{nullptr},
-        flight_info_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR GetFlightInformationResponse::GetFlightInformationResponse(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct GetFlightInformationResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetFlightInformationResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetFlightInformationResponseDefaultTypeInternal() {}
-  union {
-    GetFlightInformationResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetFlightInformationResponseDefaultTypeInternal _GetFlightInformationResponse_default_instance_;
-
 inline constexpr FlightInformationResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -455,26 +411,6 @@ static constexpr const ::_pb::ServiceDescriptor**
 const ::uint32_t
     TableStruct_info_2finfo_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::GetFlightInformationRequest, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::GetFlightInformationResponse, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::GetFlightInformationResponse, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::GetFlightInformationResponse, _impl_.info_result_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::GetFlightInformationResponse, _impl_.flight_info_),
-        0,
-        1,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::GetIdentificationRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -641,27 +577,23 @@ const ::uint32_t
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, -1, -1, sizeof(::mavsdk::rpc::info::GetFlightInformationRequest)},
-        {8, 18, -1, sizeof(::mavsdk::rpc::info::GetFlightInformationResponse)},
-        {20, -1, -1, sizeof(::mavsdk::rpc::info::GetIdentificationRequest)},
-        {28, 38, -1, sizeof(::mavsdk::rpc::info::GetIdentificationResponse)},
-        {40, -1, -1, sizeof(::mavsdk::rpc::info::GetProductRequest)},
-        {48, 58, -1, sizeof(::mavsdk::rpc::info::GetProductResponse)},
-        {60, -1, -1, sizeof(::mavsdk::rpc::info::GetVersionRequest)},
-        {68, 78, -1, sizeof(::mavsdk::rpc::info::GetVersionResponse)},
-        {80, -1, -1, sizeof(::mavsdk::rpc::info::GetSpeedFactorRequest)},
-        {88, 98, -1, sizeof(::mavsdk::rpc::info::GetSpeedFactorResponse)},
-        {100, -1, -1, sizeof(::mavsdk::rpc::info::SubscribeFlightInformationRequest)},
-        {108, 117, -1, sizeof(::mavsdk::rpc::info::FlightInformationResponse)},
-        {118, -1, -1, sizeof(::mavsdk::rpc::info::FlightInfo)},
-        {130, -1, -1, sizeof(::mavsdk::rpc::info::Identification)},
-        {140, -1, -1, sizeof(::mavsdk::rpc::info::Product)},
-        {152, -1, -1, sizeof(::mavsdk::rpc::info::Version)},
-        {172, -1, -1, sizeof(::mavsdk::rpc::info::InfoResult)},
+        {0, -1, -1, sizeof(::mavsdk::rpc::info::GetIdentificationRequest)},
+        {8, 18, -1, sizeof(::mavsdk::rpc::info::GetIdentificationResponse)},
+        {20, -1, -1, sizeof(::mavsdk::rpc::info::GetProductRequest)},
+        {28, 38, -1, sizeof(::mavsdk::rpc::info::GetProductResponse)},
+        {40, -1, -1, sizeof(::mavsdk::rpc::info::GetVersionRequest)},
+        {48, 58, -1, sizeof(::mavsdk::rpc::info::GetVersionResponse)},
+        {60, -1, -1, sizeof(::mavsdk::rpc::info::GetSpeedFactorRequest)},
+        {68, 78, -1, sizeof(::mavsdk::rpc::info::GetSpeedFactorResponse)},
+        {80, -1, -1, sizeof(::mavsdk::rpc::info::SubscribeFlightInformationRequest)},
+        {88, 97, -1, sizeof(::mavsdk::rpc::info::FlightInformationResponse)},
+        {98, -1, -1, sizeof(::mavsdk::rpc::info::FlightInfo)},
+        {110, -1, -1, sizeof(::mavsdk::rpc::info::Identification)},
+        {120, -1, -1, sizeof(::mavsdk::rpc::info::Product)},
+        {132, -1, -1, sizeof(::mavsdk::rpc::info::Version)},
+        {152, -1, -1, sizeof(::mavsdk::rpc::info::InfoResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::mavsdk::rpc::info::_GetFlightInformationRequest_default_instance_._instance,
-    &::mavsdk::rpc::info::_GetFlightInformationResponse_default_instance_._instance,
     &::mavsdk::rpc::info::_GetIdentificationRequest_default_instance_._instance,
     &::mavsdk::rpc::info::_GetIdentificationResponse_default_instance_._instance,
     &::mavsdk::rpc::info::_GetProductRequest_default_instance_._instance,
@@ -681,74 +613,67 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_info_2finfo_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\017info/info.proto\022\017mavsdk.rpc.info\032\024mavs"
-    "dk_options.proto\"\035\n\033GetFlightInformation"
-    "Request\"\202\001\n\034GetFlightInformationResponse"
+    "dk_options.proto\"\032\n\030GetIdentificationReq"
+    "uest\"\206\001\n\031GetIdentificationResponse\0220\n\013in"
+    "fo_result\030\001 \001(\0132\033.mavsdk.rpc.info.InfoRe"
+    "sult\0227\n\016identification\030\002 \001(\0132\037.mavsdk.rp"
+    "c.info.Identification\"\023\n\021GetProductReque"
+    "st\"q\n\022GetProductResponse\0220\n\013info_result\030"
+    "\001 \001(\0132\033.mavsdk.rpc.info.InfoResult\022)\n\007pr"
+    "oduct\030\002 \001(\0132\030.mavsdk.rpc.info.Product\"\023\n"
+    "\021GetVersionRequest\"q\n\022GetVersionResponse"
     "\0220\n\013info_result\030\001 \001(\0132\033.mavsdk.rpc.info."
-    "InfoResult\0220\n\013flight_info\030\002 \001(\0132\033.mavsdk"
-    ".rpc.info.FlightInfo\"\032\n\030GetIdentificatio"
-    "nRequest\"\206\001\n\031GetIdentificationResponse\0220"
-    "\n\013info_result\030\001 \001(\0132\033.mavsdk.rpc.info.In"
-    "foResult\0227\n\016identification\030\002 \001(\0132\037.mavsd"
-    "k.rpc.info.Identification\"\023\n\021GetProductR"
-    "equest\"q\n\022GetProductResponse\0220\n\013info_res"
-    "ult\030\001 \001(\0132\033.mavsdk.rpc.info.InfoResult\022)"
-    "\n\007product\030\002 \001(\0132\030.mavsdk.rpc.info.Produc"
-    "t\"\023\n\021GetVersionRequest\"q\n\022GetVersionResp"
-    "onse\0220\n\013info_result\030\001 \001(\0132\033.mavsdk.rpc.i"
-    "nfo.InfoResult\022)\n\007version\030\002 \001(\0132\030.mavsdk"
-    ".rpc.info.Version\"\027\n\025GetSpeedFactorReque"
-    "st\"`\n\026GetSpeedFactorResponse\0220\n\013info_res"
-    "ult\030\001 \001(\0132\033.mavsdk.rpc.info.InfoResult\022\024"
-    "\n\014speed_factor\030\002 \001(\001\"#\n!SubscribeFlightI"
-    "nformationRequest\"M\n\031FlightInformationRe"
-    "sponse\0220\n\013flight_info\030\001 \001(\0132\033.mavsdk.rpc"
-    ".info.FlightInfo\"{\n\nFlightInfo\022\024\n\014time_b"
-    "oot_ms\030\001 \001(\r\022\022\n\nflight_uid\030\002 \001(\004\022 \n\030dura"
-    "tion_since_arming_ms\030\003 \001(\r\022!\n\031duration_s"
-    "ince_takeoff_ms\030\004 \001(\r\":\n\016Identification\022"
-    "\024\n\014hardware_uid\030\001 \001(\t\022\022\n\nlegacy_uid\030\002 \001("
-    "\004\"[\n\007Product\022\021\n\tvendor_id\030\001 \001(\005\022\023\n\013vendo"
-    "r_name\030\002 \001(\t\022\022\n\nproduct_id\030\003 \001(\005\022\024\n\014prod"
-    "uct_name\030\004 \001(\t\"\207\005\n\007Version\022\027\n\017flight_sw_"
-    "major\030\001 \001(\005\022\027\n\017flight_sw_minor\030\002 \001(\005\022\027\n\017"
-    "flight_sw_patch\030\003 \001(\005\022\036\n\026flight_sw_vendo"
-    "r_major\030\004 \001(\005\022\036\n\026flight_sw_vendor_minor\030"
-    "\005 \001(\005\022\036\n\026flight_sw_vendor_patch\030\006 \001(\005\022\023\n"
-    "\013os_sw_major\030\007 \001(\005\022\023\n\013os_sw_minor\030\010 \001(\005\022"
-    "\023\n\013os_sw_patch\030\t \001(\005\022\032\n\022flight_sw_git_ha"
-    "sh\030\n \001(\t\022\026\n\016os_sw_git_hash\030\013 \001(\t\022R\n\026flig"
-    "ht_sw_version_type\030\014 \001(\01622.mavsdk.rpc.in"
-    "fo.Version.FlightSoftwareVersionType\"\211\002\n"
-    "\031FlightSoftwareVersionType\022(\n$FLIGHT_SOF"
-    "TWARE_VERSION_TYPE_UNKNOWN\020\000\022$\n FLIGHT_S"
-    "OFTWARE_VERSION_TYPE_DEV\020\001\022&\n\"FLIGHT_SOF"
-    "TWARE_VERSION_TYPE_ALPHA\020\002\022%\n!FLIGHT_SOF"
-    "TWARE_VERSION_TYPE_BETA\020\003\022#\n\037FLIGHT_SOFT"
-    "WARE_VERSION_TYPE_RC\020\004\022(\n$FLIGHT_SOFTWAR"
-    "E_VERSION_TYPE_RELEASE\020\005\"\305\001\n\nInfoResult\022"
-    "2\n\006result\030\001 \001(\0162\".mavsdk.rpc.info.InfoRe"
-    "sult.Result\022\022\n\nresult_str\030\002 \001(\t\"o\n\006Resul"
-    "t\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020"
-    "\001\022\'\n#RESULT_INFORMATION_NOT_RECEIVED_YET"
-    "\020\002\022\024\n\020RESULT_NO_SYSTEM\020\0032\244\005\n\013InfoService"
-    "\022y\n\024GetFlightInformation\022,.mavsdk.rpc.in"
-    "fo.GetFlightInformationRequest\032-.mavsdk."
-    "rpc.info.GetFlightInformationResponse\"\004\200"
-    "\265\030\001\022p\n\021GetIdentification\022).mavsdk.rpc.in"
-    "fo.GetIdentificationRequest\032*.mavsdk.rpc"
-    ".info.GetIdentificationResponse\"\004\200\265\030\001\022[\n"
-    "\nGetProduct\022\".mavsdk.rpc.info.GetProduct"
-    "Request\032#.mavsdk.rpc.info.GetProductResp"
-    "onse\"\004\200\265\030\001\022[\n\nGetVersion\022\".mavsdk.rpc.in"
-    "fo.GetVersionRequest\032#.mavsdk.rpc.info.G"
-    "etVersionResponse\"\004\200\265\030\001\022g\n\016GetSpeedFacto"
-    "r\022&.mavsdk.rpc.info.GetSpeedFactorReques"
-    "t\032\'.mavsdk.rpc.info.GetSpeedFactorRespon"
-    "se\"\004\200\265\030\001\022\204\001\n\032SubscribeFlightInformation\022"
-    "2.mavsdk.rpc.info.SubscribeFlightInforma"
-    "tionRequest\032*.mavsdk.rpc.info.FlightInfo"
-    "rmationResponse\"\004\200\265\030\0000\001B\033\n\016io.mavsdk.inf"
-    "oB\tInfoProtob\006proto3"
+    "InfoResult\022)\n\007version\030\002 \001(\0132\030.mavsdk.rpc"
+    ".info.Version\"\027\n\025GetSpeedFactorRequest\"`"
+    "\n\026GetSpeedFactorResponse\0220\n\013info_result\030"
+    "\001 \001(\0132\033.mavsdk.rpc.info.InfoResult\022\024\n\014sp"
+    "eed_factor\030\002 \001(\001\"#\n!SubscribeFlightInfor"
+    "mationRequest\"M\n\031FlightInformationRespon"
+    "se\0220\n\013flight_info\030\001 \001(\0132\033.mavsdk.rpc.inf"
+    "o.FlightInfo\"{\n\nFlightInfo\022\024\n\014time_boot_"
+    "ms\030\001 \001(\r\022\022\n\nflight_uid\030\002 \001(\004\022 \n\030duration"
+    "_since_arming_ms\030\003 \001(\r\022!\n\031duration_since"
+    "_takeoff_ms\030\004 \001(\r\":\n\016Identification\022\024\n\014h"
+    "ardware_uid\030\001 \001(\t\022\022\n\nlegacy_uid\030\002 \001(\004\"[\n"
+    "\007Product\022\021\n\tvendor_id\030\001 \001(\005\022\023\n\013vendor_na"
+    "me\030\002 \001(\t\022\022\n\nproduct_id\030\003 \001(\005\022\024\n\014product_"
+    "name\030\004 \001(\t\"\207\005\n\007Version\022\027\n\017flight_sw_majo"
+    "r\030\001 \001(\005\022\027\n\017flight_sw_minor\030\002 \001(\005\022\027\n\017flig"
+    "ht_sw_patch\030\003 \001(\005\022\036\n\026flight_sw_vendor_ma"
+    "jor\030\004 \001(\005\022\036\n\026flight_sw_vendor_minor\030\005 \001("
+    "\005\022\036\n\026flight_sw_vendor_patch\030\006 \001(\005\022\023\n\013os_"
+    "sw_major\030\007 \001(\005\022\023\n\013os_sw_minor\030\010 \001(\005\022\023\n\013o"
+    "s_sw_patch\030\t \001(\005\022\032\n\022flight_sw_git_hash\030\n"
+    " \001(\t\022\026\n\016os_sw_git_hash\030\013 \001(\t\022R\n\026flight_s"
+    "w_version_type\030\014 \001(\01622.mavsdk.rpc.info.V"
+    "ersion.FlightSoftwareVersionType\"\211\002\n\031Fli"
+    "ghtSoftwareVersionType\022(\n$FLIGHT_SOFTWAR"
+    "E_VERSION_TYPE_UNKNOWN\020\000\022$\n FLIGHT_SOFTW"
+    "ARE_VERSION_TYPE_DEV\020\001\022&\n\"FLIGHT_SOFTWAR"
+    "E_VERSION_TYPE_ALPHA\020\002\022%\n!FLIGHT_SOFTWAR"
+    "E_VERSION_TYPE_BETA\020\003\022#\n\037FLIGHT_SOFTWARE"
+    "_VERSION_TYPE_RC\020\004\022(\n$FLIGHT_SOFTWARE_VE"
+    "RSION_TYPE_RELEASE\020\005\"\305\001\n\nInfoResult\0222\n\006r"
+    "esult\030\001 \001(\0162\".mavsdk.rpc.info.InfoResult"
+    ".Result\022\022\n\nresult_str\030\002 \001(\t\"o\n\006Result\022\022\n"
+    "\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\'\n"
+    "#RESULT_INFORMATION_NOT_RECEIVED_YET\020\002\022\024"
+    "\n\020RESULT_NO_SYSTEM\020\0032\251\004\n\013InfoService\022p\n\021"
+    "GetIdentification\022).mavsdk.rpc.info.GetI"
+    "dentificationRequest\032*.mavsdk.rpc.info.G"
+    "etIdentificationResponse\"\004\200\265\030\001\022[\n\nGetPro"
+    "duct\022\".mavsdk.rpc.info.GetProductRequest"
+    "\032#.mavsdk.rpc.info.GetProductResponse\"\004\200"
+    "\265\030\001\022[\n\nGetVersion\022\".mavsdk.rpc.info.GetV"
+    "ersionRequest\032#.mavsdk.rpc.info.GetVersi"
+    "onResponse\"\004\200\265\030\001\022g\n\016GetSpeedFactor\022&.mav"
+    "sdk.rpc.info.GetSpeedFactorRequest\032\'.mav"
+    "sdk.rpc.info.GetSpeedFactorResponse\"\004\200\265\030"
+    "\001\022\204\001\n\032SubscribeFlightInformation\0222.mavsd"
+    "k.rpc.info.SubscribeFlightInformationReq"
+    "uest\032*.mavsdk.rpc.info.FlightInformation"
+    "Response\"\004\200\265\030\0000\001B\033\n\016io.mavsdk.infoB\tInfo"
+    "Protob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_info_2finfo_2eproto_deps[1] =
     {
@@ -758,13 +683,13 @@ static ::absl::once_flag descriptor_table_info_2finfo_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_info_2finfo_2eproto = {
     false,
     false,
-    2740,
+    2453,
     descriptor_table_protodef_info_2finfo_2eproto,
     "info/info.proto",
     &descriptor_table_info_2finfo_2eproto_once,
     descriptor_table_info_2finfo_2eproto_deps,
     1,
-    17,
+    15,
     schemas,
     file_default_instances,
     TableStruct_info_2finfo_2eproto::offsets,
@@ -820,410 +745,6 @@ constexpr int InfoResult::Result_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-// ===================================================================
-
-class GetFlightInformationRequest::_Internal {
- public:
-};
-
-GetFlightInformationRequest::GetFlightInformationRequest(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.info.GetFlightInformationRequest)
-}
-GetFlightInformationRequest::GetFlightInformationRequest(
-    ::google::protobuf::Arena* arena,
-    const GetFlightInformationRequest& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  GetFlightInformationRequest* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.info.GetFlightInformationRequest)
-}
-
-inline void* GetFlightInformationRequest::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) GetFlightInformationRequest(arena);
-}
-constexpr auto GetFlightInformationRequest::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GetFlightInformationRequest),
-                                            alignof(GetFlightInformationRequest));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull GetFlightInformationRequest::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_GetFlightInformationRequest_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &GetFlightInformationRequest::MergeImpl,
-        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<GetFlightInformationRequest>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &GetFlightInformationRequest::SharedDtor,
-        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<GetFlightInformationRequest>(), &GetFlightInformationRequest::ByteSizeLong,
-            &GetFlightInformationRequest::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(GetFlightInformationRequest, _impl_._cached_size_),
-        false,
-    },
-    &GetFlightInformationRequest::kDescriptorMethods,
-    &descriptor_table_info_2finfo_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* GetFlightInformationRequest::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2> GetFlightInformationRequest::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    0, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967295,  // skipmap
-    offsetof(decltype(_table_), field_names),  // no field_entries
-    0,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::mavsdk::rpc::info::GetFlightInformationRequest>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-  }}, {{
-    65535, 65535
-  }},
-  // no field_entries, or aux_entries
-  {{
-  }},
-};
-
-
-
-
-
-
-
-
-::google::protobuf::Metadata GetFlightInformationRequest::GetMetadata() const {
-  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class GetFlightInformationResponse::_Internal {
- public:
-  using HasBits =
-      decltype(std::declval<GetFlightInformationResponse>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_._has_bits_);
-};
-
-GetFlightInformationResponse::GetFlightInformationResponse(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.info.GetFlightInformationResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE GetFlightInformationResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::mavsdk::rpc::info::GetFlightInformationResponse& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-GetFlightInformationResponse::GetFlightInformationResponse(
-    ::google::protobuf::Arena* arena,
-    const GetFlightInformationResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  GetFlightInformationResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.info_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::info::InfoResult>(
-                              arena, *from._impl_.info_result_)
-                        : nullptr;
-  _impl_.flight_info_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::info::FlightInfo>(
-                              arena, *from._impl_.flight_info_)
-                        : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.info.GetFlightInformationResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE GetFlightInformationResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void GetFlightInformationResponse::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, info_result_),
-           0,
-           offsetof(Impl_, flight_info_) -
-               offsetof(Impl_, info_result_) +
-               sizeof(Impl_::flight_info_));
-}
-GetFlightInformationResponse::~GetFlightInformationResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.info.GetFlightInformationResponse)
-  SharedDtor(*this);
-}
-inline void GetFlightInformationResponse::SharedDtor(MessageLite& self) {
-  GetFlightInformationResponse& this_ = static_cast<GetFlightInformationResponse&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  delete this_._impl_.info_result_;
-  delete this_._impl_.flight_info_;
-  this_._impl_.~Impl_();
-}
-
-inline void* GetFlightInformationResponse::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) GetFlightInformationResponse(arena);
-}
-constexpr auto GetFlightInformationResponse::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GetFlightInformationResponse),
-                                            alignof(GetFlightInformationResponse));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull GetFlightInformationResponse::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_GetFlightInformationResponse_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &GetFlightInformationResponse::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<GetFlightInformationResponse>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &GetFlightInformationResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<GetFlightInformationResponse>(), &GetFlightInformationResponse::ByteSizeLong,
-            &GetFlightInformationResponse::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_._cached_size_),
-        false,
-    },
-    &GetFlightInformationResponse::kDescriptorMethods,
-    &descriptor_table_info_2finfo_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* GetFlightInformationResponse::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 2, 0, 2> GetFlightInformationResponse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_._has_bits_),
-    0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    2,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::mavsdk::rpc::info::GetFlightInformationResponse>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // .mavsdk.rpc.info.FlightInfo flight_info = 2;
-    {::_pbi::TcParser::FastMtS1,
-     {18, 1, 1, PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_.flight_info_)}},
-    // .mavsdk.rpc.info.InfoResult info_result = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_.info_result_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.info.InfoResult info_result = 1;
-    {PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_.info_result_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // .mavsdk.rpc.info.FlightInfo flight_info = 2;
-    {PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_.flight_info_), _Internal::kHasBitsOffset + 1, 1,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::info::InfoResult>()},
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::info::FlightInfo>()},
-  }}, {{
-  }},
-};
-
-PROTOBUF_NOINLINE void GetFlightInformationResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.info.GetFlightInformationResponse)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    if (cached_has_bits & 0x00000001u) {
-      ABSL_DCHECK(_impl_.info_result_ != nullptr);
-      _impl_.info_result_->Clear();
-    }
-    if (cached_has_bits & 0x00000002u) {
-      ABSL_DCHECK(_impl_.flight_info_ != nullptr);
-      _impl_.flight_info_->Clear();
-    }
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* GetFlightInformationResponse::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const GetFlightInformationResponse& this_ = static_cast<const GetFlightInformationResponse&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* GetFlightInformationResponse::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const GetFlightInformationResponse& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.info.GetFlightInformationResponse)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          cached_has_bits = this_._impl_._has_bits_[0];
-          // .mavsdk.rpc.info.InfoResult info_result = 1;
-          if (cached_has_bits & 0x00000001u) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                1, *this_._impl_.info_result_, this_._impl_.info_result_->GetCachedSize(), target,
-                stream);
-          }
-
-          // .mavsdk.rpc.info.FlightInfo flight_info = 2;
-          if (cached_has_bits & 0x00000002u) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                2, *this_._impl_.flight_info_, this_._impl_.flight_info_->GetCachedSize(), target,
-                stream);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.info.GetFlightInformationResponse)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t GetFlightInformationResponse::ByteSizeLong(const MessageLite& base) {
-          const GetFlightInformationResponse& this_ = static_cast<const GetFlightInformationResponse&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t GetFlightInformationResponse::ByteSizeLong() const {
-          const GetFlightInformationResponse& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.info.GetFlightInformationResponse)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-          cached_has_bits = this_._impl_._has_bits_[0];
-          if (cached_has_bits & 0x00000003u) {
-            // .mavsdk.rpc.info.InfoResult info_result = 1;
-            if (cached_has_bits & 0x00000001u) {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.info_result_);
-            }
-            // .mavsdk.rpc.info.FlightInfo flight_info = 2;
-            if (cached_has_bits & 0x00000002u) {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.flight_info_);
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void GetFlightInformationResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<GetFlightInformationResponse*>(&to_msg);
-  auto& from = static_cast<const GetFlightInformationResponse&>(from_msg);
-  ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.info.GetFlightInformationResponse)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    if (cached_has_bits & 0x00000001u) {
-      ABSL_DCHECK(from._impl_.info_result_ != nullptr);
-      if (_this->_impl_.info_result_ == nullptr) {
-        _this->_impl_.info_result_ =
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::info::InfoResult>(arena, *from._impl_.info_result_);
-      } else {
-        _this->_impl_.info_result_->MergeFrom(*from._impl_.info_result_);
-      }
-    }
-    if (cached_has_bits & 0x00000002u) {
-      ABSL_DCHECK(from._impl_.flight_info_ != nullptr);
-      if (_this->_impl_.flight_info_ == nullptr) {
-        _this->_impl_.flight_info_ =
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::info::FlightInfo>(arena, *from._impl_.flight_info_);
-      } else {
-        _this->_impl_.flight_info_->MergeFrom(*from._impl_.flight_info_);
-      }
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void GetFlightInformationResponse::CopyFrom(const GetFlightInformationResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.info.GetFlightInformationResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void GetFlightInformationResponse::InternalSwap(GetFlightInformationResponse* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_.flight_info_)
-      + sizeof(GetFlightInformationResponse::_impl_.flight_info_)
-      - PROTOBUF_FIELD_OFFSET(GetFlightInformationResponse, _impl_.info_result_)>(
-          reinterpret_cast<char*>(&_impl_.info_result_),
-          reinterpret_cast<char*>(&other->_impl_.info_result_));
-}
-
-::google::protobuf::Metadata GetFlightInformationResponse::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
 // ===================================================================
 
 class GetIdentificationRequest::_Internal {

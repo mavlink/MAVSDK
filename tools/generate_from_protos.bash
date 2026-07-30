@@ -2,10 +2,42 @@
 
 set -e  # Exit on any error
 
+usage() {
+    cat << EOF
+    Usage: ./generate_from_protos.bash [options]
+
+    -h, --help                   Show help
+    -b, --build-dir BUILD_DIR    C++ build directory (passed to C++ generation script)
+EOF
+}
+
 # Get the directory where this script is located
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/.." && pwd)"
 proto_dir="$project_root/../proto/protos"
+
+build_dir_args=()
+options=$(getopt -l "help,build-dir:" -o "hb:" -a -- "$@")
+
+eval set -- "$options"
+
+while true
+do
+    case $1 in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -b|--build-dir)
+            shift
+            build_dir_args=("--build-dir" "$(cd "$1" && pwd)")
+            ;;
+        --)
+            shift
+            break;;
+    esac
+shift
+done
 
 # Function to setup and activate virtual environment
 setup_venv() {
@@ -40,7 +72,7 @@ main() {
     echo "Generating C++"
     echo "------------------"
     pushd cpp
-    ./tools/generate_from_protos.sh
+    ./tools/generate_from_protos.sh "${build_dir_args[@]}"
     popd
 
     echo "------------------"

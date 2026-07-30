@@ -1,10 +1,10 @@
-find_package(jsoncpp REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 add_executable(unit_tests_runner
     ${UNIT_TEST_SOURCES}
 )
 
-target_compile_definitions(unit_tests_runner PRIVATE FAKE_TIME=1 TESTING=1)
+target_compile_definitions(unit_tests_runner PRIVATE FAKE_TIME=1 TESTING=1 ASIO_NO_EXCEPTIONS=1)
 
 set_target_properties(unit_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
@@ -12,14 +12,16 @@ set_target_properties(unit_tests_runner
 
 find_package(GTest REQUIRED)
 find_package(tinyxml2 REQUIRED)
+find_package(fmt REQUIRED)
 
 target_link_libraries(unit_tests_runner
     mavsdk
-    JsonCpp::JsonCpp
+    nlohmann_json::nlohmann_json
     tinyxml2::tinyxml2
     GTest::gtest
     GTest::gtest_main
     GTest::gmock
+    fmt::fmt
 )
 
 target_include_directories(unit_tests_runner
@@ -28,4 +30,7 @@ target_include_directories(unit_tests_runner
 )
 
 
-add_test(unit_tests unit_tests_runner)
+add_test(NAME unit_tests
+    COMMAND unit_tests_runner
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)

@@ -4,7 +4,7 @@ endif()
 
 if(MSVC)
     add_definitions(-DWINDOWS -D_USE_MATH_DEFINES -DNOMINMAX -DWIN32_LEAN_AND_MEAN)
-    set(warnings "-W2")
+    set(warnings "-W2 -wd4251")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
     # Needed by gRPC headers
@@ -13,9 +13,8 @@ if(MSVC)
     # Needed by big auto-generated grpc/protobuf header files
     add_definitions(-bigobj)
 
-    # We need this so Windows links to e.g. mavsdk_telemetry.dll.
-    # Without this option it will look for mavsdk_telemetry.lib and fail.
-    option(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS "Export all symbols on Windows" ON)
+    # Enable UTF-8 support (required by fmtlib Unicode features)
+    add_compile_options(/utf-8)
 
     if(NOT BUILD_SHARED_LIBS)
         add_definitions(-DCURL_STATICLIB)
@@ -28,6 +27,7 @@ else()
         add_definitions(-fno-exceptions)
         set(warnings "-Wall -Wextra -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2 -Wno-address-of-packed-member")
     endif()
+
 
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")

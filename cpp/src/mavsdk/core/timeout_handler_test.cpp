@@ -1,5 +1,5 @@
-#include "timeout_handler.h"
-#include "unused.h"
+#include "timeout_handler.hpp"
+#include "unused.hpp"
 #include <gtest/gtest.h>
 
 #ifdef FAKE_TIME
@@ -144,4 +144,59 @@ TEST(TimeoutHandler, NextTimeoutRemovedDuringCallback)
     th.run_once();
 
     UNUSED(cookie1);
+}
+
+TEST(TimeoutHandler, AllTimeoutsRemovedDuringCallback)
+{
+    Time time{};
+    TimeoutHandler th(time);
+
+    TimeoutHandler::Cookie cookie1{};
+    TimeoutHandler::Cookie cookie2{};
+    TimeoutHandler::Cookie cookie3{};
+
+    cookie1 = th.add(
+        [&th, &cookie1, &cookie2, &cookie3]() {
+            // Mirror CallEveryHandler stress: remove every cookie including self
+            // while the first timeout fires.
+            th.remove(cookie1);
+            th.remove(cookie2);
+            th.remove(cookie3);
+        },
+        0.5);
+
+    cookie2 = th.add([]() {}, 0.5);
+    cookie3 = th.add([]() {}, 0.5);
+
+    time.sleep_for(std::chrono::milliseconds(1000));
+    th.run_once();
+}
+
+TEST(TimeoutHandler, RemoveUnknownCookieIsNoOp)
+{
+    Time time{};
+    TimeoutHandler th(time);
+    bool fired = false;
+    auto cookie = th.add([&fired]() { fired = true; }, 0.2);
+    th.remove(static_cast<TimeoutHandler::Cookie>(999999));
+    time.sleep_for(std::chrono::milliseconds(400));
+    th.run_once();
+    EXPECT_TRUE(fired);
+    UNUSED(cookie);
+}
+
+TEST(TimeoutHandler, RefreshAfterFireDoesNotResurrect)
+{
+    Time time{};
+    TimeoutHandler th(time);
+    int fires = 0;
+    auto cookie = th.add([&fires]() { ++fires; }, 0.2);
+    time.sleep_for(std::chrono::milliseconds(400));
+    th.run_once();
+    EXPECT_EQ(fires, 1);
+    // Cookie already consumed; refresh must not re-arm a timeout.
+    th.refresh(cookie);
+    time.sleep_for(std::chrono::milliseconds(400));
+    th.run_once();
+    EXPECT_EQ(fires, 1);
 }

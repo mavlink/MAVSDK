@@ -4,14 +4,17 @@
 
 #include <iomanip>
 
-#include "mission_raw_impl.h"
-#include "plugins/mission_raw/mission_raw.h"
+#include "mission_raw_impl.hpp"
+#include "plugins/mission_raw/mission_raw.hpp"
 
 namespace mavsdk {
 
-using MissionProgress = MissionRaw::MissionProgress;
 using MissionItem = MissionRaw::MissionItem;
+using MissionPlan = MissionRaw::MissionPlan;
+using MissionProgress = MissionRaw::MissionProgress;
 using MissionImportData = MissionRaw::MissionImportData;
+
+using ProgressData = MissionRaw::ProgressData;
 
 MissionRaw::MissionRaw(System& system) :
     PluginBase(),
@@ -34,6 +37,12 @@ void MissionRaw::upload_mission_async(
 MissionRaw::Result MissionRaw::upload_mission(std::vector<MissionItem> mission_items) const
 {
     return _impl->upload_mission(mission_items);
+}
+
+void MissionRaw::upload_mission_with_progress_async(
+    MissionPlan mission_plan, const UploadMissionWithProgressCallback& callback)
+{
+    _impl->upload_mission_with_progress_async(mission_plan, callback);
 }
 
 void MissionRaw::upload_geofence_async(
@@ -197,22 +206,8 @@ std::pair<MissionRaw::Result, bool> MissionRaw::is_mission_finished() const
     return _impl->is_mission_finished();
 }
 
-bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
-{
-    return (rhs.current == lhs.current) && (rhs.total == lhs.total);
-}
-
-std::ostream& operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress)
-{
-    str << std::setprecision(15);
-    str << "mission_progress:" << '\n' << "{\n";
-    str << "    current: " << mission_progress.current << '\n';
-    str << "    total: " << mission_progress.total << '\n';
-    str << '}';
-    return str;
-}
-
-bool operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionItem& rhs)
+MAVSDK_PUBLIC bool
+operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionItem& rhs)
 {
     return (rhs.seq == lhs.seq) && (rhs.frame == lhs.frame) && (rhs.command == lhs.command) &&
            (rhs.current == lhs.current) && (rhs.autocontinue == lhs.autocontinue) &&
@@ -225,7 +220,8 @@ bool operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionIte
            (rhs.mission_type == lhs.mission_type);
 }
 
-std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item)
 {
     str << std::setprecision(15);
     str << "mission_item:" << '\n' << "{\n";
@@ -246,13 +242,52 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& missi
     return str;
 }
 
-bool operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs)
+MAVSDK_PUBLIC bool
+operator==(const MissionRaw::MissionPlan& lhs, const MissionRaw::MissionPlan& rhs)
+{
+    return (rhs.mission_items == lhs.mission_items);
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MissionRaw::MissionPlan const& mission_plan)
+{
+    str << std::setprecision(15);
+    str << "mission_plan:" << '\n' << "{\n";
+    str << "    mission_items: [";
+    for (auto it = mission_plan.mission_items.begin(); it != mission_plan.mission_items.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != mission_plan.mission_items.end() ? ", " : "]\n");
+    }
+    str << '}';
+    return str;
+}
+
+MAVSDK_PUBLIC bool
+operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
+{
+    return (rhs.current == lhs.current) && (rhs.total == lhs.total);
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress)
+{
+    str << std::setprecision(15);
+    str << "mission_progress:" << '\n' << "{\n";
+    str << "    current: " << mission_progress.current << '\n';
+    str << "    total: " << mission_progress.total << '\n';
+    str << '}';
+    return str;
+}
+
+MAVSDK_PUBLIC bool
+operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs)
 {
     return (rhs.mission_items == lhs.mission_items) && (rhs.geofence_items == lhs.geofence_items) &&
            (rhs.rally_items == lhs.rally_items);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_import_data)
 {
     str << std::setprecision(15);
@@ -282,54 +317,77 @@ operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_impor
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(MissionRaw::Result const& result)
 {
     switch (result) {
         case MissionRaw::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case MissionRaw::Result::Success:
-            return str << "Success";
+            return "Success";
         case MissionRaw::Result::Error:
-            return str << "Error";
+            return "Error";
         case MissionRaw::Result::TooManyMissionItems:
-            return str << "Too Many Mission Items";
+            return "Too Many Mission Items";
         case MissionRaw::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case MissionRaw::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case MissionRaw::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         case MissionRaw::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case MissionRaw::Result::NoMissionAvailable:
-            return str << "No Mission Available";
+            return "No Mission Available";
         case MissionRaw::Result::TransferCancelled:
-            return str << "Transfer Cancelled";
+            return "Transfer Cancelled";
         case MissionRaw::Result::FailedToOpenQgcPlan:
-            return str << "Failed To Open Qgc Plan";
+            return "Failed To Open Qgc Plan";
         case MissionRaw::Result::FailedToParseQgcPlan:
-            return str << "Failed To Parse Qgc Plan";
+            return "Failed To Parse Qgc Plan";
         case MissionRaw::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case MissionRaw::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case MissionRaw::Result::MissionTypeNotConsistent:
-            return str << "Mission Type Not Consistent";
+            return "Mission Type Not Consistent";
         case MissionRaw::Result::InvalidSequence:
-            return str << "Invalid Sequence";
+            return "Invalid Sequence";
         case MissionRaw::Result::CurrentInvalid:
-            return str << "Current Invalid";
+            return "Current Invalid";
         case MissionRaw::Result::ProtocolError:
-            return str << "Protocol Error";
+            return "Protocol Error";
         case MissionRaw::Result::IntMessagesNotSupported:
-            return str << "Int Messages Not Supported";
+            return "Int Messages Not Supported";
         case MissionRaw::Result::FailedToOpenMissionPlannerPlan:
-            return str << "Failed To Open Mission Planner Plan";
+            return "Failed To Open Mission Planner Plan";
         case MissionRaw::Result::FailedToParseMissionPlannerPlan:
-            return str << "Failed To Parse Mission Planner Plan";
+            return "Failed To Parse Mission Planner Plan";
+        case MissionRaw::Result::Next:
+            return "Next";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC bool
+operator==(const MissionRaw::ProgressData& lhs, const MissionRaw::ProgressData& rhs)
+{
+    return ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) || rhs.progress == lhs.progress);
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MissionRaw::ProgressData const& progress_data)
+{
+    str << std::setprecision(15);
+    str << "progress_data:" << '\n' << "{\n";
+    str << "    progress: " << progress_data.progress << '\n';
+    str << '}';
+    return str;
 }
 
 } // namespace mavsdk

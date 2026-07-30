@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "log_streaming_impl.h"
-#include "plugins/log_streaming/log_streaming.h"
+#include "log_streaming_impl.hpp"
+#include "plugins/log_streaming/log_streaming.hpp"
 
 namespace mavsdk {
 
@@ -55,12 +55,14 @@ void LogStreaming::unsubscribe_log_streaming_raw(LogStreamingRawHandle handle)
     _impl->unsubscribe_log_streaming_raw(handle);
 }
 
-bool operator==(const LogStreaming::LogStreamingRaw& lhs, const LogStreaming::LogStreamingRaw& rhs)
+MAVSDK_PUBLIC bool
+operator==(const LogStreaming::LogStreamingRaw& lhs, const LogStreaming::LogStreamingRaw& rhs)
 {
     return (rhs.data_base64 == lhs.data_base64);
 }
 
-std::ostream& operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming_raw)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming_raw)
 {
     str << std::setprecision(15);
     str << "log_streaming_raw:" << '\n' << "{\n";
@@ -69,28 +71,33 @@ std::ostream& operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const&
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, LogStreaming::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(LogStreaming::Result const& result)
 {
     switch (result) {
         case LogStreaming::Result::Success:
-            return str << "Success";
+            return "Success";
         case LogStreaming::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case LogStreaming::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case LogStreaming::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case LogStreaming::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case LogStreaming::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case LogStreaming::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case LogStreaming::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogStreaming::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

@@ -334,22 +334,6 @@ class Info:
 
         atexit.register(self.destroy)
 
-    def get_flight_information(self):
-        """Get get_flight_information (blocking)"""
-
-        result_out = FlightInfoCStruct()
-
-        result_code = self._lib.mavsdk_info_get_flight_information(
-            self._handle, ctypes.byref(result_out)
-        )
-        result = InfoResult(result_code)
-        if result != InfoResult.SUCCESS:
-            raise Exception(f"get_flight_information failed: {result}")
-
-        py_result = FlightInfo.from_c_struct(result_out)
-        self._lib.mavsdk_info_flight_info_destroy(ctypes.byref(result_out))
-        return py_result
-
     def get_identification(self):
         """Get get_identification (blocking)"""
 
@@ -473,13 +457,6 @@ _cmavsdk_lib.mavsdk_info_product_destroy.restype = None
 _cmavsdk_lib.mavsdk_info_version_destroy.argtypes = [ctypes.POINTER(VersionCStruct)]
 _cmavsdk_lib.mavsdk_info_version_destroy.restype = None
 
-
-_cmavsdk_lib.mavsdk_info_get_flight_information.argtypes = [
-    ctypes.c_void_p,
-    ctypes.POINTER(FlightInfoCStruct),
-]
-
-_cmavsdk_lib.mavsdk_info_get_flight_information.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_info_get_identification.argtypes = [
     ctypes.c_void_p,

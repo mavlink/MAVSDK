@@ -2,10 +2,10 @@
 // Demonstrates how to add and fly Waypoint missions using the MAVSDK.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/mission/mission.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/mission/mission.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 
 #include <chrono>
 #include <functional>

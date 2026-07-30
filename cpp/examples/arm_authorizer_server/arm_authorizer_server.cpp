@@ -1,8 +1,8 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/arm_authorizer_server/arm_authorizer_server.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/arm_authorizer_server/arm_authorizer_server.hpp>
 #include <chrono>
 
 constexpr uint32_t ARM_AUTHORIZATION_DELAY_S = 5;

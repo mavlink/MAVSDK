@@ -2,25 +2,26 @@ add_library(mavsdk)
 
 cmake_policy(SET CMP0076 NEW)
 
-add_subdirectory(core)
-add_subdirectory(plugins)
-
-find_package(jsoncpp REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 find_package(tinyxml2 REQUIRED)
 
 find_package(libevents REQUIRED)
 find_package(picosha2 REQUIRED)
 find_package(mav REQUIRED)
+find_package(asio REQUIRED)
+find_package(fmt REQUIRED)
 
 target_link_libraries(mavsdk
     PUBLIC
     ${CMAKE_DL_LIBS}
     PRIVATE
-    JsonCpp::JsonCpp
+    nlohmann_json::nlohmann_json
     tinyxml2::tinyxml2
     LibEvents::LibEvents
     mav::mav
+    $<BUILD_INTERFACE:asio::asio>
+    fmt::fmt
 )
 
 if (NOT APPLE AND NOT ANDROID AND NOT MSVC
@@ -30,5 +31,8 @@ if (NOT APPLE AND NOT ANDROID AND NOT MSVC
         stdc++fs
     )
 endif()
+
+add_subdirectory(core)
+add_subdirectory(plugins)
 
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

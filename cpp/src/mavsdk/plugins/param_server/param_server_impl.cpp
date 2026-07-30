@@ -1,13 +1,14 @@
-#include "param_server_impl.h"
+#include "param_server_impl.hpp"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 #include <thread>
 #include <chrono>
 
 namespace mavsdk {
 
-template class CallbackList<ParamServer::IntParam>;
-template class CallbackList<ParamServer::FloatParam>;
-template class CallbackList<ParamServer::CustomParam>;
+template class MAVSDK_TEMPL_INST CallbackList<ParamServer::IntParam>;
+template class MAVSDK_TEMPL_INST CallbackList<ParamServer::FloatParam>;
+template class MAVSDK_TEMPL_INST CallbackList<ParamServer::CustomParam>;
 
 ParamServerImpl::ParamServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)
@@ -25,13 +26,10 @@ void ParamServerImpl::init() {}
 
 void ParamServerImpl::deinit()
 {
-    // Ensure synchronous cleanup - keep trying until all callbacks are unregistered
+    // Remove our subscriptions synchronously on the io_context thread, so no callback
+    // can fire after we return (and before we clear our callback lists below).
     auto& param_server = _server_component_impl->mavlink_parameter_server();
-    param_server.unsubscribe_all_params_changed(this);
-
-    // Give a brief moment for any deferred unsubscriptions to be processed
-    // This prevents use-after-free if callbacks are still executing
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    param_server.unsubscribe_all_params_changed_blocking(this);
 
     // Clear our callback lists to ensure no pending callbacks exist
     _changed_param_int_callbacks.clear();
@@ -63,10 +61,6 @@ ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t
         return ParamServer::Result::ParamNameTooLong;
     }
 
-    if (_server_component_impl->mavlink_parameter_server().params_locked_down()) {
-        return ParamServer::Result::ParamProvidedTooLate;
-    }
-
     const auto ret =
         _server_component_impl->mavlink_parameter_server().provide_server_param_int(name, value);
     if (ret == MavlinkParameterServer::Result::Ok) {
@@ -94,10 +88,6 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
 {
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
-    }
-
-    if (_server_component_impl->mavlink_parameter_server().params_locked_down()) {
-        return ParamServer::Result::ParamProvidedTooLate;
     }
 
     const auto ret =
@@ -215,8 +205,10 @@ ParamServerImpl::result_from_mavlink_parameter_server_result(MavlinkParameterSer
             return ParamServer::Result::WrongType;
         case MavlinkParameterServer::Result::ParamValueTooLong:
             return ParamServer::Result::ParamValueTooLong;
+        case MavlinkParameterServer::Result::ParamProvidedTooLate:
+            return ParamServer::Result::ParamProvidedTooLate;
         default:
-            LogErr() << "Unknown param error";
+            LogErr("Unknown param error");
             return ParamServer::Result::Unknown;
     }
 }

@@ -77,7 +77,7 @@ class OffboardAsync:
         """
                Stop offboard control.
 
-        The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
+        The vehicle will be put into Hold mode: https://docs.px4.io/main/en/flight_modes_mc/hold.html
 
                Raises
                ------

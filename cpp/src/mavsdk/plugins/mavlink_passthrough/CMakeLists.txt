@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/mavlink_passthrough/mavlink_passthrough.h
+    include/plugins/mavlink_passthrough/mavlink_passthrough.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mavlink_passthrough
 )

@@ -8,12 +8,16 @@ on:
     #tags:
     #  - 'v*'
     paths:
-      - 'cpp/docs/**'
+      - 'docs/**'
   pull_request:
     paths:
-      - 'cpp/docs/**'
+      - 'docs/**'
 
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -23,7 +27,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -31,22 +35,22 @@ jobs:
           node-version: 20
           cache: npm
           # Specify the path to lock file for correct caching
-          cache-dependency-path: ./cpp/docs/yarn.lock
+          cache-dependency-path: ./docs/yarn.lock
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --cwd ./cpp/docs
+        run: yarn install --frozen-lockfile --cwd ./docs
 
       - name: Build with VitePress
-        working-directory: ./cpp/docs
+        working-directory: ./docs
         run: |
           npm run docs:build
           touch .vitepress/dist/.nojekyll
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_docs_build
-          path: cpp/docs/.vitepress/dist/
+          path: docs/.vitepress/dist/
           retention-days: 1
 
   deploy:
@@ -56,7 +60,7 @@ jobs:
 
     steps:
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: mavsdk_docs_build
           path: ~/_book

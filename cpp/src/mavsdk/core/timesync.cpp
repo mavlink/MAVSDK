@@ -1,7 +1,7 @@
-#include "timesync.h"
-#include "log.h"
-#include "mavlink_address.h"
-#include "system_impl.h"
+#include "timesync.hpp"
+#include "log.hpp"
+#include "mavlink_address.hpp"
+#include "system_impl.hpp"
 
 // Partially based on: https://github.com/mavlink/mavros/blob/master/mavros/src/plugins/sys_time.cpp
 
@@ -103,8 +103,7 @@ void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_lo
 
         if (_high_rtt_count > MAX_CONS_HIGH_RTT) {
             // Issue a warning to the user if the RTT is constantly high
-            LogWarn() << "RTT too high for timesync: " << static_cast<double>(rtt_ns) / 1000000.0
-                      << " ms.";
+            LogWarn("RTT too high for timesync: {} ms.", rtt_ns / 1000000ULL);
 
             // Reset counter
             _high_rtt_count = 0;

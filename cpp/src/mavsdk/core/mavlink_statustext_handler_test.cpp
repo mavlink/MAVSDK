@@ -1,5 +1,5 @@
 
-#include "mavlink_statustext_handler.h"
+#include "mavlink_statustext_handler.hpp"
 #include <algorithm>
 #include <gtest/gtest.h>
 #include <cstring>

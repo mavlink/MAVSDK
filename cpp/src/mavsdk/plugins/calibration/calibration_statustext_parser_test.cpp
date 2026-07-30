@@ -1,4 +1,4 @@
-#include "calibration_statustext_parser.h"
+#include "calibration_statustext_parser.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;

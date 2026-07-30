@@ -3,8 +3,8 @@
 #include <iostream>
 #include <thread>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/camera/camera.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/camera/camera.hpp>
 
 static void do_camera_operation(int32_t component_id, mavsdk::Camera& camera);
 

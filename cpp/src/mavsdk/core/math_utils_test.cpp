@@ -1,7 +1,8 @@
-#include "math_utils.h"
-#include "mavlink_include.h"
+#include "math_utils.hpp"
+#include "mavlink_include.hpp"
 #include <gtest/gtest.h>
 #include <cmath>
+#include <limits>
 
 using namespace mavsdk;
 
@@ -111,6 +112,34 @@ TEST(MathUtils, QuaternionToEulerAndBackSomeCase)
     EXPECT_NEAR(q2.z, q2_mavlink[3], 0.01f);
 }
 
+// Regression test for the constrain added to to_euler_angle_from_quaternion:
+// when 2*(q.w*q.y - q.z*q.x) is driven slightly outside [-1, 1] by
+// floating-point rounding, asinf would otherwise return NaN. The constrain
+// clamps the argument so pitch stays finite at gimbal lock.
+TEST(MathUtils, QuaternionToEulerNoNaNAtGimbalLock)
+{
+    // Quaternion deliberately constructed so 2*(q.w*q.y - q.z*q.x) = 1.2 > 1.
+    // Without the constrain, asinf(1.2f) returns NaN.
+    Quaternion q_pos;
+    q_pos.w = 1.0f;
+    q_pos.x = 0.0f;
+    q_pos.y = 0.6f;
+    q_pos.z = 0.0f;
+    EulerAngle e_pos = to_euler_angle_from_quaternion(q_pos);
+    EXPECT_FALSE(std::isnan(e_pos.pitch_deg));
+    EXPECT_FLOAT_EQ(e_pos.pitch_deg, 90.0f);
+
+    // Symmetric negative side: 2*(q.w*q.y - q.z*q.x) = -1.2.
+    Quaternion q_neg;
+    q_neg.w = 1.0f;
+    q_neg.x = 0.0f;
+    q_neg.y = -0.6f;
+    q_neg.z = 0.0f;
+    EulerAngle e_neg = to_euler_angle_from_quaternion(q_neg);
+    EXPECT_FALSE(std::isnan(e_neg.pitch_deg));
+    EXPECT_FLOAT_EQ(e_neg.pitch_deg, -90.0f);
+}
+
 TEST(MathUtils, QuaternionRotation)
 {
     // Define a sample quaternion
@@ -163,4 +192,91 @@ TEST(MathUtils, RadDegFloat)
     ASSERT_FLOAT_EQ(180.0f, to_deg_from_rad(M_PI_F));
     ASSERT_FLOAT_EQ(-180.0f, to_deg_from_rad(-M_PI_F));
     ASSERT_FLOAT_EQ(360.0f, to_deg_from_rad(2.0f * M_PI_F));
+}
+
+TEST(MathUtils, QuaternionEqualityNaNAware)
+{
+    const float nan = std::numeric_limits<float>::quiet_NaN();
+    Quaternion a{1.f, 0.f, 0.f, 0.f};
+    Quaternion b{1.f, 0.f, 0.f, 0.f};
+    EXPECT_TRUE(a == b);
+
+    Quaternion c{1.f, nan, 0.f, 0.f};
+    Quaternion d{1.f, nan, 0.f, 0.f};
+    EXPECT_TRUE(c == d); // NaN components compare equal by design
+
+    Quaternion e{1.f, 0.f, 0.f, 0.f};
+    Quaternion f{0.f, 0.f, 0.f, 1.f};
+    EXPECT_FALSE(e == f);
+
+    Quaternion g{1.f, nan, 0.f, 0.f};
+    Quaternion h{1.f, 0.f, 0.f, 0.f};
+    EXPECT_FALSE(g == h);
+}
+
+TEST(MathUtils, EulerAngleEqualityNaNAware)
+{
+    const float nan = std::numeric_limits<float>::quiet_NaN();
+    EulerAngle a{0.f, 0.f, 0.f};
+    EulerAngle b{0.f, 0.f, 0.f};
+    EXPECT_TRUE(a == b);
+
+    EulerAngle c{nan, 10.f, -5.f};
+    EulerAngle d{nan, 10.f, -5.f};
+    EXPECT_TRUE(c == d);
+
+    EulerAngle e{0.f, 0.f, 0.f};
+    EulerAngle f{1.f, 0.f, 0.f};
+    EXPECT_FALSE(e == f);
+}
+
+TEST(MathUtils, QuaternionIdentityMultiply)
+{
+    Quaternion id{1.f, 0.f, 0.f, 0.f};
+    Quaternion q = to_quaternion_from_euler_angle(EulerAngle{10.f, -20.f, 30.f});
+    Quaternion left = id * q;
+    Quaternion right = q * id;
+    EXPECT_NEAR(left.w, q.w, 1e-5);
+    EXPECT_NEAR(left.x, q.x, 1e-5);
+    EXPECT_NEAR(left.y, q.y, 1e-5);
+    EXPECT_NEAR(left.z, q.z, 1e-5);
+    EXPECT_NEAR(right.w, q.w, 1e-5);
+    EXPECT_NEAR(right.x, q.x, 1e-5);
+    EXPECT_NEAR(right.y, q.y, 1e-5);
+    EXPECT_NEAR(right.z, q.z, 1e-5);
+}
+
+TEST(MathUtils, EulerZeroRoundTrip)
+{
+    EulerAngle z{0.f, 0.f, 0.f};
+    auto q = to_quaternion_from_euler_angle(z);
+    EXPECT_NEAR(q.w, 1.f, 1e-5);
+    EXPECT_NEAR(q.x, 0.f, 1e-5);
+    EXPECT_NEAR(q.y, 0.f, 1e-5);
+    EXPECT_NEAR(q.z, 0.f, 1e-5);
+    auto back = to_euler_angle_from_quaternion(q);
+    EXPECT_NEAR(back.roll_deg, 0.f, 1e-4);
+    EXPECT_NEAR(back.pitch_deg, 0.f, 1e-4);
+    EXPECT_NEAR(back.yaw_deg, 0.f, 1e-4);
+}
+
+TEST(MathUtils, ConstrainInsideAndOutside)
+{
+    EXPECT_EQ(constrain(5, 0, 10), 5);
+    EXPECT_EQ(constrain(-3, 0, 10), 0);
+    EXPECT_EQ(constrain(15, 0, 10), 10);
+    EXPECT_FLOAT_EQ(constrain(0.5f, 0.0f, 1.0f), 0.5f);
+    EXPECT_FLOAT_EQ(constrain(-1.0f, 0.0f, 1.0f), 0.0f);
+    EXPECT_FLOAT_EQ(constrain(2.0f, 0.0f, 1.0f), 1.0f);
+}
+
+TEST(MathUtils, ConstrainKeepsAsinDomain)
+{
+    // Euler pitch path clamps the asinf argument to [-1, 1].
+    const float over = constrain(1.5f, -1.0f, 1.0f);
+    const float under = constrain(-1.5f, -1.0f, 1.0f);
+    EXPECT_FLOAT_EQ(over, 1.0f);
+    EXPECT_FLOAT_EQ(under, -1.0f);
+    EXPECT_FALSE(std::isnan(asinf(over)));
+    EXPECT_FALSE(std::isnan(asinf(under)));
 }

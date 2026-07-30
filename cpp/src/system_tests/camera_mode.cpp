@@ -1,7 +1,7 @@
-#include "mavsdk.h"
-#include "plugins/camera/camera.h"
-#include "plugins/camera_server/camera_server.h"
-#include "log.h"
+#include "mavsdk.hpp"
+#include "plugins/camera/camera.hpp"
+#include "plugins/camera_server/camera_server.hpp"
+#include "log.hpp"
 #include <future>
 #include <mutex>
 #include <thread>
@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraMode)
+TEST(Camera, Mode)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
@@ -37,7 +37,7 @@ TEST(SystemTest, CameraMode)
     bool mode_updated = false;
 
     auto mode_handle = camera_server.subscribe_set_mode([&](CameraServer::Mode new_mode) {
-        LogInfo() << "Set mode to " << new_mode;
+        LogInfo("Set mode to {}", to_string(new_mode));
         {
             std::lock_guard<std::mutex> lock(mode_mutex);
             mode = new_mode;

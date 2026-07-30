@@ -9,11 +9,13 @@ from .cmavsdk_loader import _cmavsdk_lib
 from .connection_result import ConnectionResult
 from .component_type import ComponentType
 from .exceptions import ConnectionError
+from .enums import ForwardingOption
 from .server_component import ServerComponent
 from .system import System
 from .types import (
     ConnectionResultWithHandle,
     NewSystemCallback,
+    RawBytesCallback,
 )
 
 
@@ -100,10 +102,36 @@ class Mavsdk:
         )
         return ConnectionResult(result)
 
+    def add_any_connection_with_forwarding(
+        self, connection_url: str, forwarding_option: ForwardingOption
+    ) -> ConnectionResult:
+        """Add a connection with forwarding option"""
+        result = self._lib.mavsdk_add_any_connection_with_forwarding(
+            self._handle,
+            connection_url.encode("utf-8"),
+            ctypes.c_int(forwarding_option.value),
+        )
+        return ConnectionResult(result)
+
     def add_any_connection_with_handle(self, connection_url: str):
         """Add a connection and get handle"""
         result = self._lib.mavsdk_add_any_connection_with_handle(
             self._handle, connection_url.encode("utf-8")
+        )
+        if result.result != ConnectionResult.SUCCESS:
+            raise ConnectionError(
+                f"Connection failed: {ConnectionResult(result.result).name}"
+            )
+        return result.handle
+
+    def add_any_connection_with_handle_and_forwarding(
+        self, connection_url: str, forwarding_option: ForwardingOption
+    ):
+        """Add a connection with forwarding option and get handle"""
+        result = self._lib.mavsdk_add_any_connection_with_handle_and_forwarding(
+            self._handle,
+            connection_url.encode("utf-8"),
+            ctypes.c_int(forwarding_option.value),
         )
         if result.result != ConnectionResult.SUCCESS:
             raise ConnectionError(
@@ -183,6 +211,33 @@ class Mavsdk:
             return ServerComponent(self._lib, handle)
         return None
 
+    def pass_received_raw_bytes(self, data: bytes):
+        """Pass received raw MAVLink bytes into MAVSDK for processing.
+        Requires a 'raw://' connection."""
+        buf = (ctypes.c_uint8 * len(data)).from_buffer_copy(data)
+        self._lib.mavsdk_pass_received_raw_bytes(self._handle, buf, len(data))
+
+    def subscribe_raw_bytes_to_be_sent(self, callback: Callable[[bytes], None]):
+        """Subscribe to raw bytes to be sent out.
+        Requires a 'raw://' connection.
+        Returns a handle for unsubscribing."""
+
+        def _wrapper(bytes_ptr, length, user_data):
+            data = bytes(bytes_ptr[:length])
+            callback(data)
+
+        c_callback = RawBytesCallback(_wrapper)
+        handle = self._lib.mavsdk_subscribe_raw_bytes_to_be_sent(
+            self._handle, c_callback, None
+        )
+        self._callbacks[handle] = c_callback
+        return handle
+
+    def unsubscribe_raw_bytes_to_be_sent(self, handle):
+        """Unsubscribe from raw bytes to be sent."""
+        self._lib.mavsdk_unsubscribe_raw_bytes_to_be_sent(self._handle, handle)
+        self._callbacks.pop(handle, None)
+
     def destroy(self):
         """Destroy the Mavsdk instance"""
         if not self._destroyed and self._handle:
@@ -261,11 +316,27 @@ _cmavsdk_lib.mavsdk_version.restype = ctypes.c_char_p
 _cmavsdk_lib.mavsdk_add_any_connection.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
 _cmavsdk_lib.mavsdk_add_any_connection.restype = ctypes.c_int
 
+_cmavsdk_lib.mavsdk_add_any_connection_with_forwarding.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_int,
+]
+_cmavsdk_lib.mavsdk_add_any_connection_with_forwarding.restype = ctypes.c_int
+
 _cmavsdk_lib.mavsdk_add_any_connection_with_handle.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
 ]
 _cmavsdk_lib.mavsdk_add_any_connection_with_handle.restype = ConnectionResultWithHandle
+
+_cmavsdk_lib.mavsdk_add_any_connection_with_handle_and_forwarding.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_int,
+]
+_cmavsdk_lib.mavsdk_add_any_connection_with_handle_and_forwarding.restype = (
+    ConnectionResultWithHandle
+)
 
 _cmavsdk_lib.mavsdk_remove_connection.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_remove_connection.restype = None
@@ -299,3 +370,24 @@ _cmavsdk_lib.mavsdk_unsubscribe_on_new_system.argtypes = [
     ctypes.c_void_p,
 ]
 _cmavsdk_lib.mavsdk_unsubscribe_on_new_system.restype = None
+
+# Raw bytes functions
+_cmavsdk_lib.mavsdk_pass_received_raw_bytes.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_uint8),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_pass_received_raw_bytes.restype = None
+
+_cmavsdk_lib.mavsdk_subscribe_raw_bytes_to_be_sent.argtypes = [
+    ctypes.c_void_p,
+    RawBytesCallback,
+    ctypes.c_void_p,
+]
+_cmavsdk_lib.mavsdk_subscribe_raw_bytes_to_be_sent.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_unsubscribe_raw_bytes_to_be_sent.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+_cmavsdk_lib.mavsdk_unsubscribe_raw_bytes_to_be_sent.restype = None

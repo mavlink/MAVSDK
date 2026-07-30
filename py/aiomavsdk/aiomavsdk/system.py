@@ -46,6 +46,10 @@ class System:
         """Get system ID."""
         return self._system.get_system_id()
 
+    async def enable_timesync(self) -> None:
+        """Enable time synchronization using the TIMESYNC messages."""
+        self._system.enable_timesync()
+
     # ------------------------------------------------------------------
     # Potentially blocking accessors — offloaded to executor
     # ------------------------------------------------------------------

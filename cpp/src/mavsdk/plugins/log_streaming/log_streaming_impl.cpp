@@ -1,15 +1,16 @@
 #include <future>
 
-#include "log_streaming_impl.h"
-#include "log_streaming_backend_px4.h"
-#include "log_streaming_backend_ardupilot.h"
-#include "plugins/log_streaming/log_streaming.h"
+#include "log_streaming_impl.hpp"
+#include "log_streaming_backend_px4.hpp"
+#include "log_streaming_backend_ardupilot.hpp"
+#include "plugins/log_streaming/log_streaming.hpp"
 #include "callback_list.tpp"
-#include "base64.h"
+#include "mavsdk_export.h"
+#include "base64.hpp"
 
 namespace mavsdk {
 
-template class CallbackList<LogStreaming::LogStreamingRaw>;
+template class MAVSDK_TEMPL_INST CallbackList<LogStreaming::LogStreamingRaw>;
 
 LogStreamingImpl::LogStreamingImpl(System& system) : PluginImplBase(system)
 {
@@ -31,7 +32,7 @@ void LogStreamingImpl::init()
 {
     if (const char* env_p = std::getenv("MAVSDK_LOG_STREAMING_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Log streaming debugging is on.";
+            LogDebug("Log streaming debugging is on.");
             _debugging = true;
         }
     }
@@ -39,18 +40,25 @@ void LogStreamingImpl::init()
 
 void LogStreamingImpl::deinit()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    std::unique_ptr<LogStreamingBackend> backend;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
 
-    // Cancel any pending autopilot type polling
-    if (_check_autopilot_cookie) {
-        _system_impl->remove_call_every(_check_autopilot_cookie);
-        _check_autopilot_cookie = {};
+        // Cancel any pending autopilot type polling
+        if (_check_autopilot_cookie) {
+            _system_impl->remove_call_every(_check_autopilot_cookie);
+            _check_autopilot_cookie = {};
+        }
+        _start_callback = nullptr;
+
+        backend = std::move(_backend);
     }
-    _start_callback = nullptr;
 
-    if (_backend) {
-        _backend->deinit();
-        _backend.reset();
+    // Deinit (and destroy) the backend outside of _mutex: its blocking unregister can wait
+    // for an in-flight message callback to finish, and that callback may be in
+    // process_data() waiting for _mutex.
+    if (backend) {
+        backend->deinit();
     }
 }
 
@@ -58,10 +66,15 @@ void LogStreamingImpl::enable() {}
 
 void LogStreamingImpl::disable()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-    if (_backend) {
-        _backend->deinit();
-        _backend.reset();
+    std::unique_ptr<LogStreamingBackend> backend;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        backend = std::move(_backend);
+    }
+
+    // Deinit (and destroy) the backend outside of _mutex, see deinit() above.
+    if (backend) {
+        backend->deinit();
     }
 }
 
@@ -77,19 +90,19 @@ bool LogStreamingImpl::maybe_create_backend()
     // Don't create backend yet if autopilot type is unknown
     if (autopilot == Autopilot::Unknown) {
         if (_debugging) {
-            LogDebug() << "Autopilot type unknown, cannot create backend yet";
+            LogDebug("Autopilot type unknown, cannot create backend yet");
         }
         return false;
     }
 
     if (autopilot == Autopilot::ArduPilot) {
         if (_debugging) {
-            LogDebug() << "Creating ArduPilot log streaming backend";
+            LogDebug("Creating ArduPilot log streaming backend");
         }
         _backend = std::make_unique<LogStreamingBackendArdupilot>();
     } else {
         if (_debugging) {
-            LogDebug() << "Creating PX4 log streaming backend";
+            LogDebug("Creating PX4 log streaming backend");
         }
         _backend = std::make_unique<LogStreamingBackendPx4>();
     }
@@ -105,7 +118,7 @@ void LogStreamingImpl::process_data(const std::vector<uint8_t>& data)
     std::lock_guard<std::mutex> lock(_mutex);
 
     if (_debugging) {
-        LogDebug() << "Processing log data with size " << data.size();
+        LogDebug("Processing log data with size {}", data.size());
     }
 
     // Convert to base64

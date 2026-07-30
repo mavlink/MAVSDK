@@ -11,9 +11,11 @@ from typing import AsyncGenerator
 from mavsdk.plugins.mission_raw import (
     MissionRaw,
     MissionRawResult,
-    MissionProgress,
     MissionItem,
+    MissionPlan,
+    MissionProgress,
     MissionImportData,
+    ProgressData,
 )
 
 
@@ -60,6 +62,23 @@ class MissionRawAsync:
         return await loop.run_in_executor(
             None, lambda: self._plugin.upload_mission(mission_items)
         )
+
+    async def upload_mission_with_progress(self, mission_plan) -> AsyncGenerator:
+        """
+        Upload a list of raw mission items and report upload progress.
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(result, data, _user_data=None):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
+
+        self._plugin.upload_mission_with_progress_async(callback)
+        while True:
+            result, data = await queue.get()
+            yield result, data
+            if result != MissionRawResult.NEXT:
+                break
 
     async def upload_geofence(self, mission_items):
         """
@@ -191,7 +210,7 @@ class MissionRawAsync:
                Pause the mission.
 
         Pausing the mission puts the vehicle into
-        [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+        [HOLD mode](https://docs.px4.io/main/en/flight_modes_mc/hold.html).
         A multicopter should just hover at the spot while a fixedwing vehicle should loiter
         around the location where it paused.
 

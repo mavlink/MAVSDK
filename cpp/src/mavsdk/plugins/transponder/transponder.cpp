@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "transponder_impl.h"
-#include "plugins/transponder/transponder.h"
+#include "transponder_impl.hpp"
+#include "plugins/transponder/transponder.hpp"
 
 namespace mavsdk {
 
@@ -49,7 +49,8 @@ Transponder::Result Transponder::set_rate_transponder(double rate_hz) const
     return _impl->set_rate_transponder(rate_hz);
 }
 
-bool operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehicle& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehicle& rhs)
 {
     return (rhs.icao_address == lhs.icao_address) &&
            ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
@@ -69,7 +70,8 @@ bool operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehi
            (rhs.squawk == lhs.squawk) && (rhs.tslc_s == lhs.tslc_s);
 }
 
-std::ostream& operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle)
 {
     str << std::setprecision(15);
     str << "adsb_vehicle:" << '\n' << "{\n";
@@ -89,86 +91,103 @@ std::ostream& operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Transponder::Result const& result)
 {
     switch (result) {
         case Transponder::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Transponder::Result::Success:
-            return str << "Success";
+            return "Success";
         case Transponder::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Transponder::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Transponder::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Transponder::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case Transponder::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Transponder::AdsbEmitterType const& adsb_emitter_type)
 {
     switch (adsb_emitter_type) {
         case Transponder::AdsbEmitterType::NoInfo:
-            return str << "No Info";
+            return "No Info";
         case Transponder::AdsbEmitterType::Light:
-            return str << "Light";
+            return "Light";
         case Transponder::AdsbEmitterType::Small:
-            return str << "Small";
+            return "Small";
         case Transponder::AdsbEmitterType::Large:
-            return str << "Large";
+            return "Large";
         case Transponder::AdsbEmitterType::HighVortexLarge:
-            return str << "High Vortex Large";
+            return "High Vortex Large";
         case Transponder::AdsbEmitterType::Heavy:
-            return str << "Heavy";
+            return "Heavy";
         case Transponder::AdsbEmitterType::HighlyManuv:
-            return str << "Highly Manuv";
+            return "Highly Manuv";
         case Transponder::AdsbEmitterType::Rotocraft:
-            return str << "Rotocraft";
+            return "Rotocraft";
         case Transponder::AdsbEmitterType::Unassigned:
-            return str << "Unassigned";
+            return "Unassigned";
         case Transponder::AdsbEmitterType::Glider:
-            return str << "Glider";
+            return "Glider";
         case Transponder::AdsbEmitterType::LighterAir:
-            return str << "Lighter Air";
+            return "Lighter Air";
         case Transponder::AdsbEmitterType::Parachute:
-            return str << "Parachute";
+            return "Parachute";
         case Transponder::AdsbEmitterType::UltraLight:
-            return str << "Ultra Light";
+            return "Ultra Light";
         case Transponder::AdsbEmitterType::Unassigned2:
-            return str << "Unassigned2";
+            return "Unassigned2";
         case Transponder::AdsbEmitterType::Uav:
-            return str << "Uav";
+            return "Uav";
         case Transponder::AdsbEmitterType::Space:
-            return str << "Space";
+            return "Space";
         case Transponder::AdsbEmitterType::Unassgined3:
-            return str << "Unassgined3";
+            return "Unassgined3";
         case Transponder::AdsbEmitterType::EmergencySurface:
-            return str << "Emergency Surface";
+            return "Emergency Surface";
         case Transponder::AdsbEmitterType::ServiceSurface:
-            return str << "Service Surface";
+            return "Service Surface";
         case Transponder::AdsbEmitterType::PointObstacle:
-            return str << "Point Obstacle";
+            return "Point Obstacle";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Transponder::AdsbAltitudeType const& adsb_altitude_type)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type)
+{
+    return str << to_string(adsb_emitter_type);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Transponder::AdsbAltitudeType const& adsb_altitude_type)
 {
     switch (adsb_altitude_type) {
         case Transponder::AdsbAltitudeType::PressureQnh:
-            return str << "Pressure Qnh";
+            return "Pressure Qnh";
         case Transponder::AdsbAltitudeType::Geometric:
-            return str << "Geometric";
+            return "Geometric";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Transponder::AdsbAltitudeType const& adsb_altitude_type)
+{
+    return str << to_string(adsb_altitude_type);
 }
 
 } // namespace mavsdk

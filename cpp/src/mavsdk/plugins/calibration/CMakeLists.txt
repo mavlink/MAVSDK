@@ -11,7 +11,7 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/calibration/calibration.h
+    include/plugins/calibration/calibration.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/calibration
 )
 

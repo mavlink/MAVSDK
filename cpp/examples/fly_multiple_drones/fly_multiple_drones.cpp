@@ -45,10 +45,10 @@
 //       waiting for the system to be disarmed.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/mission_raw/mission_raw.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/mission_raw/mission_raw.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 
 #include <cstdint>
 #include <iostream>

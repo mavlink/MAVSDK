@@ -58,7 +58,7 @@ class OffboardService final {
     //
     // Stop offboard control.
     //
-    // The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
+    // The vehicle will be put into Hold mode: https://docs.px4.io/main/en/flight_modes_mc/hold.html
     virtual ::grpc::Status Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest& request, ::mavsdk::rpc::offboard::StopResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::StopResponse>> AsyncStop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::offboard::StopResponse>>(AsyncStopRaw(context, request, cq));
@@ -181,7 +181,7 @@ class OffboardService final {
       //
       // Stop offboard control.
       //
-      // The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
+      // The vehicle will be put into Hold mode: https://docs.px4.io/main/en/flight_modes_mc/hold.html
       virtual void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Stop(::grpc::ClientContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
@@ -452,7 +452,7 @@ class OffboardService final {
     //
     // Stop offboard control.
     //
-    // The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
+    // The vehicle will be put into Hold mode: https://docs.px4.io/main/en/flight_modes_mc/hold.html
     virtual ::grpc::Status Stop(::grpc::ServerContext* context, const ::mavsdk::rpc::offboard::StopRequest* request, ::mavsdk::rpc::offboard::StopResponse* response);
     //
     // Check if offboard control is active.

@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "events_impl.h"
-#include "plugins/events/events.h"
+#include "events_impl.hpp"
+#include "plugins/events/events.hpp"
 
 namespace mavsdk {
 
@@ -51,14 +51,14 @@ Events::get_health_and_arming_checks_report() const
     return _impl->get_health_and_arming_checks_report();
 }
 
-bool operator==(const Events::Event& lhs, const Events::Event& rhs)
+MAVSDK_PUBLIC bool operator==(const Events::Event& lhs, const Events::Event& rhs)
 {
     return (rhs.compid == lhs.compid) && (rhs.message == lhs.message) &&
            (rhs.description == lhs.description) && (rhs.log_level == lhs.log_level) &&
            (rhs.event_namespace == lhs.event_namespace) && (rhs.event_name == lhs.event_name);
 }
 
-std::ostream& operator<<(std::ostream& str, Events::Event const& event)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::Event const& event)
 {
     str << std::setprecision(15);
     str << "event:" << '\n' << "{\n";
@@ -72,14 +72,14 @@ std::ostream& operator<<(std::ostream& str, Events::Event const& event)
     return str;
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const Events::HealthAndArmingCheckProblem& lhs, const Events::HealthAndArmingCheckProblem& rhs)
 {
     return (rhs.message == lhs.message) && (rhs.description == lhs.description) &&
            (rhs.log_level == lhs.log_level) && (rhs.health_component == lhs.health_component);
 }
 
-std::ostream& operator<<(
+MAVSDK_PUBLIC std::ostream& operator<<(
     std::ostream& str, Events::HealthAndArmingCheckProblem const& health_and_arming_check_problem)
 {
     str << std::setprecision(15);
@@ -92,14 +92,14 @@ std::ostream& operator<<(
     return str;
 }
 
-bool operator==(
-    const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs)
 {
     return (rhs.mode_name == lhs.mode_name) && (rhs.can_arm_or_run == lhs.can_arm_or_run) &&
            (rhs.problems == lhs.problems);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Events::HealthAndArmingCheckMode const& health_and_arming_check_mode)
 {
     str << std::setprecision(15);
@@ -117,14 +117,15 @@ operator<<(std::ostream& str, Events::HealthAndArmingCheckMode const& health_and
     return str;
 }
 
-bool operator==(const Events::HealthComponentReport& lhs, const Events::HealthComponentReport& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Events::HealthComponentReport& lhs, const Events::HealthComponentReport& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.label == lhs.label) &&
            (rhs.is_present == lhs.is_present) && (rhs.has_error == lhs.has_error) &&
            (rhs.has_warning == lhs.has_warning);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Events::HealthComponentReport const& health_component_report)
 {
     str << std::setprecision(15);
@@ -138,7 +139,7 @@ operator<<(std::ostream& str, Events::HealthComponentReport const& health_compon
     return str;
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const Events::HealthAndArmingCheckReport& lhs, const Events::HealthAndArmingCheckReport& rhs)
 {
     return (rhs.current_mode_intention == lhs.current_mode_intention) &&
@@ -146,7 +147,7 @@ bool operator==(
            (rhs.all_problems == lhs.all_problems);
 }
 
-std::ostream& operator<<(
+MAVSDK_PUBLIC std::ostream& operator<<(
     std::ostream& str, Events::HealthAndArmingCheckReport const& health_and_arming_check_report)
 {
     str << std::setprecision(15);
@@ -171,54 +172,64 @@ std::ostream& operator<<(
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Events::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Events::Result const& result)
 {
     switch (result) {
         case Events::Result::Success:
-            return str << "Success";
+            return "Success";
         case Events::Result::NotAvailable:
-            return str << "Not Available";
+            return "Not Available";
         case Events::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Events::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Events::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case Events::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         case Events::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Events::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Events::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Events::LogLevel const& log_level)
 {
     switch (log_level) {
         case Events::LogLevel::Emergency:
-            return str << "Emergency";
+            return "Emergency";
         case Events::LogLevel::Alert:
-            return str << "Alert";
+            return "Alert";
         case Events::LogLevel::Critical:
-            return str << "Critical";
+            return "Critical";
         case Events::LogLevel::Error:
-            return str << "Error";
+            return "Error";
         case Events::LogLevel::Warning:
-            return str << "Warning";
+            return "Warning";
         case Events::LogLevel::Notice:
-            return str << "Notice";
+            return "Notice";
         case Events::LogLevel::Info:
-            return str << "Info";
+            return "Info";
         case Events::LogLevel::Debug:
-            return str << "Debug";
+            return "Debug";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level)
+{
+    return str << to_string(log_level);
 }
 
 } // namespace mavsdk

@@ -1,9 +1,9 @@
-#include "connection.h"
+#include "connection.hpp"
 
 #include <memory>
 #include <utility>
-#include "mavsdk_impl.h"
-#include "log.h"
+#include "mavsdk_impl.hpp"
+#include "log.hpp"
 
 #ifdef WINDOWS
 #include <winsock2.h>
@@ -63,37 +63,42 @@ void Connection::stop_mavlink_receiver()
 
 bool Connection::start_libmav_receiver()
 {
-    _libmav_receiver = std::make_unique<LibmavReceiver>(_mavsdk_impl);
+    std::lock_guard<std::mutex> lock(_libmav_receiver_mutex);
+    _libmav_receiver = std::make_shared<LibmavReceiver>(_mavsdk_impl);
     return true;
 }
 
 void Connection::stop_libmav_receiver()
 {
-    if (_libmav_receiver) {
-        _libmav_receiver.reset();
-    }
+    std::lock_guard<std::mutex> lock(_libmav_receiver_mutex);
+    // Reset under the mutex so that concurrent get_libmav_receiver() calls
+    // either see a valid shared_ptr before the reset or nullptr after.
+    _libmav_receiver.reset();
 }
 
 void Connection::receive_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* connection)
 {
     // Register system ID when receiving a message from a new system.
-    if (_system_ids.find(message.system_id) == _system_ids.end()) {
+    {
+        std::lock_guard<std::mutex> lock(_system_ids_mutex);
         _system_ids.insert(message.system_id);
     }
 
     if (_debugging) {
-        LogDebug() << "Connection::receive_libmav_message: " << message.message_name
-                   << " from system " << message.system_id;
+        LogDebug(
+            "Connection::receive_libmav_message: {} from system {}",
+            message.message_name,
+            message.system_id);
     }
 
     if (_libmav_receiver_callback) {
         if (_debugging) {
-            LogDebug() << "Calling libmav receiver callback for: " << message.message_name;
+            LogDebug("Calling libmav receiver callback for: {}", message.message_name);
         }
         _libmav_receiver_callback(message, connection);
     } else {
-        LogWarn() << "No libmav receiver callback set!";
+        LogWarn("No libmav receiver callback set!");
     }
 }
 
@@ -102,9 +107,8 @@ void Connection::receive_message(
 {
     // Register system ID for valid messages
     if (result == MavlinkReceiver::ParseResult::MessageParsed) {
-        if (_system_ids.find(message.sysid) == _system_ids.end()) {
-            _system_ids.insert(message.sysid);
-        }
+        std::lock_guard<std::mutex> lock(_system_ids_mutex);
+        _system_ids.insert(message.sysid);
     }
     // Let MavsdkImpl handle the ParseResult (queue for processing or forward-only)
     _receiver_callback(result, message, connection);
@@ -122,6 +126,7 @@ unsigned Connection::forwarding_connections_count()
 
 bool Connection::has_system_id(uint8_t system_id)
 {
+    std::lock_guard<std::mutex> lock(_system_ids_mutex);
     return _system_ids.find(system_id) != _system_ids.end();
 }
 

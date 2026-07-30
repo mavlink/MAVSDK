@@ -1,5 +1,5 @@
-#include "log.h"
-#include "mavsdk.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
 #include <atomic>
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -7,10 +7,10 @@
 #include <future>
 #include <fstream>
 #include <thread>
-#include "plugins/ftp/ftp.h"
-#include "plugins/ftp_server/ftp_server.h"
-#include "fs_helpers.h"
-#include "unused.h"
+#include "plugins/ftp/ftp.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
+#include "fs_helpers.hpp"
+#include "unused.hpp"
 
 using namespace mavsdk;
 
@@ -23,7 +23,7 @@ static const fs::path temp_dir_downloaded = "/tmp/mavsdk_systemtest_temp_data/do
 
 static const fs::path temp_file = "data.bin";
 
-TEST(SystemTest, FtpDownloadFile)
+TEST(Ftp, DownloadFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -80,8 +80,10 @@ TEST(SystemTest, FtpDownloadFile)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -96,7 +98,7 @@ TEST(SystemTest, FtpDownloadFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBigFile)
+TEST(Ftp, DownloadBigFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -135,8 +137,10 @@ TEST(SystemTest, FtpDownloadBigFile)
             if (result != Ftp::Result::Next) {
                 prom.set_value(result);
             } else {
-                LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                           << progress_data.total_bytes << " bytes";
+                LogDebug(
+                    "Download progress: {}/{} bytes",
+                    progress_data.bytes_transferred,
+                    progress_data.total_bytes);
             }
         });
 
@@ -150,7 +154,7 @@ TEST(SystemTest, FtpDownloadBigFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBigFileLossy)
+TEST(Ftp, DownloadBigFileLossy)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 10000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -162,10 +166,10 @@ TEST(SystemTest, FtpDownloadBigFileLossy)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 5; };
+    auto drop_some = [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 5 != 0; };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
-    mavsdk_groundstation.intercept_outgoing_messages_async(drop_some);
+    auto drop_some_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_some);
+    auto drop_some_out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(drop_some);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -197,8 +201,10 @@ TEST(SystemTest, FtpDownloadBigFileLossy)
                 prom.set_value(result);
             } else {
                 if (slow_down_counter++ % 10 == 0) {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             }
         });
@@ -212,11 +218,11 @@ TEST(SystemTest, FtpDownloadBigFileLossy)
 
     // Before going out of scope, we need to make sure to no longer access the
     // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_some_in_handle);
+    mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_some_out_handle);
 }
 
-TEST(SystemTest, FtpDownloadStopAndTryAgain)
+TEST(Ftp, DownloadStopAndTryAgain)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 5000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -229,10 +235,12 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
 
     // Once we received some, we want to stop all traffic.
     std::atomic<bool> got_some = false;
-    auto drop_at_some_point = [&got_some](mavlink_message_t&) { return !got_some; };
+    auto drop_at_some_point = [&got_some](Mavsdk::MavlinkMessage) -> bool { return !got_some; };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point);
-    mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point);
+    auto drop_at_in_handle =
+        mavsdk_groundstation.subscribe_incoming_messages_json(drop_at_some_point);
+    auto drop_at_out_handle =
+        mavsdk_groundstation.subscribe_outgoing_messages_json(drop_at_some_point);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -264,11 +272,13 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
                     got_some = true;
                 }
                 if (result != Ftp::Result::Next) {
-                    LogDebug() << "Got result: " << result;
+                    LogDebug("Got result: {}", to_string(result));
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -278,9 +288,9 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
     }
 
     // Before going out of scope, we need to make sure to no longer access the
-    // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+    // drop_at_some_point callback which accesses the local got_some variable.
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_at_in_handle);
+    mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_at_out_handle);
 
     {
         // Now try again
@@ -294,8 +304,10 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -307,7 +319,7 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadFileOutsideOfRoot)
+TEST(Ftp, DownloadFileOutsideOfRoot)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));

@@ -1,8 +1,8 @@
-#include "mavlink_request_message_handler.h"
-#include "mavsdk_impl.h"
-#include "server_component_impl.h"
-#include "mavlink_command_receiver.h"
-#include "log.h"
+#include "mavlink_request_message_handler.hpp"
+#include "mavsdk_impl.hpp"
+#include "server_component_impl.hpp"
+#include "mavlink_command_receiver.hpp"
+#include "log.hpp"
 #include <algorithm>
 
 namespace mavsdk {
@@ -36,7 +36,7 @@ bool MavlinkRequestMessageHandler::register_handler(
     if (std::find_if(_table.begin(), _table.end(), [message_id](const Entry& entry) {
             return entry.message_id == message_id;
         }) != _table.end()) {
-        LogErr() << "message id " << message_id << " already registered, registration ignored";
+        LogErr("Message id {} already registered, registration ignored", message_id);
         return false;
     }
 

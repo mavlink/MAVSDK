@@ -5,9 +5,9 @@
 // 2. Uploads the geofence mission.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
-#include <mavsdk/plugins/geofence/geofence.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
+#include <mavsdk/plugins/geofence/geofence.hpp>
 
 #include <chrono>
 #include <functional>

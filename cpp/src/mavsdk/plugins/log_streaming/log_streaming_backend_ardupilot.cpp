@@ -1,4 +1,4 @@
-#include "log_streaming_backend_ardupilot.h"
+#include "log_streaming_backend_ardupilot.hpp"
 
 // ArduPilot uses REMOTE_LOG_DATA_BLOCK (ID 184) for real-time log streaming.
 // This is different from PX4's LOGGING_DATA protocol.
@@ -15,10 +15,12 @@ void LogStreamingBackendArdupilot::init(SystemImpl* system_impl)
 {
     _system_impl = system_impl;
 
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
     _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK,
         [this](const mavlink_message_t& message) { process_remote_log_data_block(message); },
         this);
+#endif
 }
 
 void LogStreamingBackendArdupilot::deinit()
@@ -34,7 +36,10 @@ void LogStreamingBackendArdupilot::deinit()
     }
 
     if (_system_impl) {
-        _system_impl->unregister_all_mavlink_message_handlers(this);
+        // Blocking, so that no message callback can fire into this backend anymore once
+        // deinit() returns -- the backend is destroyed right afterwards. This is safe from
+        // both the user thread (plugin destructor) and the io thread (disconnect).
+        _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
     }
 }
 
@@ -52,6 +57,7 @@ void LogStreamingBackendArdupilot::set_debugging(bool debugging)
 void LogStreamingBackendArdupilot::start_log_streaming_async(
     const LogStreaming::ResultCallback& callback)
 {
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
     {
         std::lock_guard<std::mutex> lock(_mutex);
         _active = true;
@@ -63,9 +69,10 @@ void LogStreamingBackendArdupilot::start_log_streaming_async(
     send_remote_log_block_status(MAV_REMOTE_LOG_DATA_BLOCK_START, MAV_REMOTE_LOG_DATA_BLOCK_ACK);
 
     if (_debugging) {
-        LogDebug() << "Sent REMOTE_LOG_BLOCK_STATUS with seqno=START to "
-                   << static_cast<int>(_system_impl->get_system_id()) << "/"
-                   << static_cast<int>(_system_impl->get_autopilot_id());
+        LogDebug(
+            "Sent REMOTE_LOG_BLOCK_STATUS with seqno=START to {}/{}",
+            static_cast<int>(_system_impl->get_system_id()),
+            static_cast<int>(_system_impl->get_autopilot_id()));
     }
 
     // ArduPilot doesn't acknowledge the start command,
@@ -73,16 +80,24 @@ void LogStreamingBackendArdupilot::start_log_streaming_async(
     if (callback) {
         _system_impl->call_user_callback([callback]() { callback(LogStreaming::Result::Success); });
     }
+#else
+    LogWarn("ArduPilot log streaming requires ardupilotmega MAVLink dialect");
+    if (callback) {
+        _system_impl->call_user_callback(
+            [callback]() { callback(LogStreaming::Result::Unsupported); });
+    }
+#endif
 }
 
 void LogStreamingBackendArdupilot::stop_log_streaming_async(
     const LogStreaming::ResultCallback& callback)
 {
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
     // Send STOP command via REMOTE_LOG_BLOCK_STATUS
     send_remote_log_block_status(MAV_REMOTE_LOG_DATA_BLOCK_STOP, MAV_REMOTE_LOG_DATA_BLOCK_ACK);
 
     if (_debugging) {
-        LogDebug() << "Sent REMOTE_LOG_DATA_BLOCK_STOP";
+        LogDebug("Sent REMOTE_LOG_DATA_BLOCK_STOP");
     }
 
     {
@@ -95,18 +110,28 @@ void LogStreamingBackendArdupilot::stop_log_streaming_async(
     if (callback) {
         _system_impl->call_user_callback([callback]() { callback(LogStreaming::Result::Success); });
     }
+#else
+    LogWarn("ArduPilot log streaming requires ardupilotmega MAVLink dialect");
+    if (callback) {
+        _system_impl->call_user_callback(
+            [callback]() { callback(LogStreaming::Result::Unsupported); });
+    }
+#endif
 }
 
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
 void LogStreamingBackendArdupilot::send_remote_log_block_status(uint32_t seqno, uint8_t status)
 {
     auto target_sysid = _system_impl->get_system_id();
     auto target_compid = _system_impl->get_autopilot_id();
 
     if (_debugging) {
-        LogDebug() << "Sending REMOTE_LOG_BLOCK_STATUS: seqno=" << seqno
-                   << " status=" << static_cast<int>(status)
-                   << " target=" << static_cast<int>(target_sysid) << "/"
-                   << static_cast<int>(target_compid);
+        LogDebug(
+            "Sending REMOTE_LOG_BLOCK_STATUS: seqno={} status={} target={}/{}",
+            seqno,
+            static_cast<int>(status),
+            static_cast<int>(target_sysid),
+            static_cast<int>(target_compid));
     }
 
     _system_impl->queue_message([target_sysid, target_compid, seqno, status](
@@ -128,15 +153,17 @@ void LogStreamingBackendArdupilot::send_remote_log_block_status(uint32_t seqno, 
 void LogStreamingBackendArdupilot::process_remote_log_data_block(const mavlink_message_t& message)
 {
     if (_debugging) {
-        LogDebug() << "Received REMOTE_LOG_DATA_BLOCK from " << static_cast<int>(message.sysid)
-                   << "/" << static_cast<int>(message.compid);
+        LogDebug(
+            "Received REMOTE_LOG_DATA_BLOCK from {}/{}",
+            static_cast<int>(message.sysid),
+            static_cast<int>(message.compid));
     }
 
     std::lock_guard<std::mutex> lock(_mutex);
 
     if (!_active) {
         if (_debugging) {
-            LogDebug() << "Ignoring remote log data block because we're not active";
+            LogDebug("Ignoring remote log data block because we're not active");
         }
         return;
     }
@@ -148,17 +175,20 @@ void LogStreamingBackendArdupilot::process_remote_log_data_block(const mavlink_m
     if (block.target_system != _system_impl->get_own_system_id() ||
         block.target_component != _system_impl->get_own_component_id()) {
         if (_debugging) {
-            LogDebug() << "Remote log data block with wrong target "
-                       << std::to_string(block.target_system) << '/'
-                       << std::to_string(block.target_component) << " instead of "
-                       << std::to_string(_system_impl->get_own_system_id()) << '/'
-                       << std::to_string(_system_impl->get_own_component_id());
+            LogDebug(
+                "Remote log data block with wrong target {}{}{} instead of {}{}{}",
+                block.target_system,
+                '/',
+                block.target_component,
+                _system_impl->get_own_system_id(),
+                '/',
+                _system_impl->get_own_component_id());
         }
         return;
     }
 
     if (_debugging) {
-        LogDebug() << "Received remote log data block with seqno: " << block.seqno;
+        LogDebug("Received remote log data block with seqno: {}", block.seqno);
     }
 
     // Check for dropped blocks
@@ -167,8 +197,11 @@ void LogStreamingBackendArdupilot::process_remote_log_data_block(const mavlink_m
         if (block.seqno != expected_seqno) {
             uint32_t dropped = block.seqno - expected_seqno;
             if (_debugging) {
-                LogDebug() << "Dropped " << dropped << " blocks (expected " << expected_seqno
-                           << ", got " << block.seqno << ")";
+                LogDebug(
+                    "Dropped {} blocks (expected {}, got {})",
+                    dropped,
+                    expected_seqno,
+                    block.seqno);
             }
             // We could potentially NACK the missing blocks to request retransmission,
             // but for now we just note the drop and continue
@@ -189,5 +222,6 @@ void LogStreamingBackendArdupilot::process_remote_log_data_block(const mavlink_m
         _system_impl->call_user_callback([this, data]() { _data_callback(data); });
     }
 }
+#endif
 
 } // namespace mavsdk

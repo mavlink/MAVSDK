@@ -2,9 +2,9 @@
 // Simple example to demonstrate how to use the events plugin.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/events/events.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/events/events.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 #include <iostream>
 #include <thread>
 #include <future>

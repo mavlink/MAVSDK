@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "action_impl.h"
-#include "plugins/action/action.h"
+#include "action_impl.hpp"
+#include "plugins/action/action.hpp"
 
 namespace mavsdk {
 
@@ -272,72 +272,97 @@ Action::Result Action::set_gps_global_origin(
     return _impl->set_gps_global_origin(latitude_deg, longitude_deg, absolute_altitude_m);
 }
 
-std::ostream& operator<<(std::ostream& str, Action::Result const& result)
+Action::Result Action::set_home(
+    bool use_current_location,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m) const
+{
+    return _impl->set_home(use_current_location, latitude_deg, longitude_deg, absolute_altitude_m);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Action::Result const& result)
 {
     switch (result) {
         case Action::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Action::Result::Success:
-            return str << "Success";
+            return "Success";
         case Action::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Action::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Action::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Action::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case Action::Result::CommandDeniedLandedStateUnknown:
-            return str << "Command Denied Landed State Unknown";
+            return "Command Denied Landed State Unknown";
         case Action::Result::CommandDeniedNotLanded:
-            return str << "Command Denied Not Landed";
+            return "Command Denied Not Landed";
         case Action::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Action::Result::VtolTransitionSupportUnknown:
-            return str << "Vtol Transition Support Unknown";
+            return "Vtol Transition Support Unknown";
         case Action::Result::NoVtolTransitionSupport:
-            return str << "No Vtol Transition Support";
+            return "No Vtol Transition Support";
         case Action::Result::ParameterError:
-            return str << "Parameter Error";
+            return "Parameter Error";
         case Action::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Action::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         case Action::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Action::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Action::OrbitYawBehavior const& orbit_yaw_behavior)
 {
     switch (orbit_yaw_behavior) {
         case Action::OrbitYawBehavior::HoldFrontToCircleCenter:
-            return str << "Hold Front To Circle Center";
+            return "Hold Front To Circle Center";
         case Action::OrbitYawBehavior::HoldInitialHeading:
-            return str << "Hold Initial Heading";
+            return "Hold Initial Heading";
         case Action::OrbitYawBehavior::Uncontrolled:
-            return str << "Uncontrolled";
+            return "Uncontrolled";
         case Action::OrbitYawBehavior::HoldFrontTangentToCircle:
-            return str << "Hold Front Tangent To Circle";
+            return "Hold Front Tangent To Circle";
         case Action::OrbitYawBehavior::RcControlled:
-            return str << "Rc Controlled";
+            return "Rc Controlled";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Action::RelayCommand const& relay_command)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior)
+{
+    return str << to_string(orbit_yaw_behavior);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Action::RelayCommand const& relay_command)
 {
     switch (relay_command) {
         case Action::RelayCommand::On:
-            return str << "On";
+            return "On";
         case Action::RelayCommand::Off:
-            return str << "Off";
+            return "Off";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Action::RelayCommand const& relay_command)
+{
+    return str << to_string(relay_command);
 }
 
 } // namespace mavsdk

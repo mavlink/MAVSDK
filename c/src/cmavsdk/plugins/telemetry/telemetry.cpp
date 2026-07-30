@@ -4,7 +4,7 @@
 
 #include "telemetry.h"
 
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>
@@ -406,6 +406,61 @@ void mavsdk_telemetry_quaternion_array_destroy(
 
     for (size_t i = 0; i < size; i++) {
         mavsdk_telemetry_quaternion_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
+
+
+static mavsdk::Telemetry::HomePosition
+translate_home_position_from_c(const mavsdk_telemetry_home_position_t& c_struct) {
+    mavsdk::Telemetry::HomePosition cpp_struct{};
+    cpp_struct.timestamp_us = c_struct.timestamp_us;
+    cpp_struct.latitude_deg = c_struct.latitude_deg;
+    cpp_struct.longitude_deg = c_struct.longitude_deg;
+    cpp_struct.absolute_altitude_m = c_struct.absolute_altitude_m;
+    cpp_struct.relative_altitude_m = c_struct.relative_altitude_m;
+    cpp_struct.local_north_m = c_struct.local_north_m;
+    cpp_struct.local_east_m = c_struct.local_east_m;
+    cpp_struct.local_down_m = c_struct.local_down_m;
+    cpp_struct.q = translate_quaternion_from_c(c_struct.q);
+    cpp_struct.approach_north_m = c_struct.approach_north_m;
+    cpp_struct.approach_east_m = c_struct.approach_east_m;
+    cpp_struct.approach_down_m = c_struct.approach_down_m;
+    return cpp_struct;
+}
+
+static mavsdk_telemetry_home_position_t
+translate_home_position_to_c(const mavsdk::Telemetry::HomePosition& cpp_struct) {
+    mavsdk_telemetry_home_position_t c_struct{};
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
+    c_struct.latitude_deg = cpp_struct.latitude_deg;
+    c_struct.longitude_deg = cpp_struct.longitude_deg;
+    c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
+    c_struct.relative_altitude_m = cpp_struct.relative_altitude_m;
+    c_struct.local_north_m = cpp_struct.local_north_m;
+    c_struct.local_east_m = cpp_struct.local_east_m;
+    c_struct.local_down_m = cpp_struct.local_down_m;
+    c_struct.q = translate_quaternion_to_c(cpp_struct.q);
+    c_struct.approach_north_m = cpp_struct.approach_north_m;
+    c_struct.approach_east_m = cpp_struct.approach_east_m;
+    c_struct.approach_down_m = cpp_struct.approach_down_m;
+    return c_struct;
+}
+
+void mavsdk_telemetry_home_position_destroy(
+    mavsdk_telemetry_home_position_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_telemetry_home_position_array_destroy(
+    mavsdk_telemetry_home_position_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_telemetry_home_position_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1233,6 +1288,7 @@ translate_ground_truth_from_c(const mavsdk_telemetry_ground_truth_t& c_struct) {
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
     cpp_struct.absolute_altitude_m = c_struct.absolute_altitude_m;
+    cpp_struct.timestamp_us = c_struct.timestamp_us;
     return cpp_struct;
 }
 
@@ -1242,6 +1298,7 @@ translate_ground_truth_to_c(const mavsdk::Telemetry::GroundTruth& cpp_struct) {
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
     return c_struct;
 }
 
@@ -1505,6 +1562,7 @@ translate_altitude_from_c(const mavsdk_telemetry_altitude_t& c_struct) {
     cpp_struct.altitude_relative_m = c_struct.altitude_relative_m;
     cpp_struct.altitude_terrain_m = c_struct.altitude_terrain_m;
     cpp_struct.bottom_clearance_m = c_struct.bottom_clearance_m;
+    cpp_struct.timestamp_us = c_struct.timestamp_us;
     return cpp_struct;
 }
 
@@ -1517,6 +1575,7 @@ translate_altitude_to_c(const mavsdk::Telemetry::Altitude& cpp_struct) {
     c_struct.altitude_relative_m = cpp_struct.altitude_relative_m;
     c_struct.altitude_terrain_m = cpp_struct.altitude_terrain_m;
     c_struct.bottom_clearance_m = cpp_struct.bottom_clearance_m;
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
     return c_struct;
 }
 
@@ -1951,10 +2010,10 @@ mavsdk_telemetry_home_handle_t mavsdk_telemetry_subscribe_home(
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_home(
         [callback, user_data](
-            mavsdk::Telemetry::Position value) {
+            mavsdk::Telemetry::HomePosition value) {
                 if (callback) {
                     callback(
-                        translate_position_to_c(value),
+                        translate_home_position_to_c(value),
                         user_data);
                 }
         });
@@ -1992,14 +2051,14 @@ void mavsdk_telemetry_unsubscribe_home(
 void
 mavsdk_telemetry_home(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_position_t* home_out)
+    mavsdk_telemetry_home_position_t* home_out)
 {
     auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->home();
 
     if (home_out != nullptr) {
-        *home_out = translate_position_to_c(ret_value);
+        *home_out = translate_home_position_to_c(ret_value);
     }
 }
 
@@ -4228,6 +4287,41 @@ mavsdk_telemetry_set_rate_gps_info(
     auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_gps_info(        rate_hz);
+
+    return translate_result(ret_value);
+}
+
+// SetRateRawGps async
+void mavsdk_telemetry_set_rate_raw_gps_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_raw_gps_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+
+    wrapper->cpp_plugin->set_rate_raw_gps_async(
+        rate_hz,
+        [callback, user_data](
+            mavsdk::Telemetry::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// SetRateRawGps sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_raw_gps(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+
+    auto ret_value = wrapper->cpp_plugin->set_rate_raw_gps(        rate_hz);
 
     return translate_result(ret_value);
 }

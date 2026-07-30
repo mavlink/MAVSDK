@@ -1,9 +1,10 @@
-#include "log.h"
-#include "curl_wrapper.h"
-#include "unused.h"
+#include "log.hpp"
+#include "curl_wrapper.hpp"
+#include "unused.hpp"
 #include <iostream>
 #include <cstdio>
 #include <fstream>
+#include <sstream>
 #include <string>
 
 namespace mavsdk {
@@ -37,12 +38,11 @@ bool CurlWrapper::download_text(const std::string& url, std::string& content)
         if (res == CURLcode::CURLE_OK) {
             return true;
         } else {
-            LogErr() << "Error while downloading text, curl error code: "
-                     << curl_easy_strerror(res);
+            LogErr("Error while downloading text, curl error code: {}", curl_easy_strerror(res));
             return false;
         }
     } else {
-        LogErr() << "Error: cannot start uploading because of curl initialization error. ";
+        LogErr("Error: cannot start uploading because of curl initialization error. ");
         return false;
     }
 }
@@ -103,6 +103,13 @@ bool CurlWrapper::download_file_to_path(
         progress.progress_callback = progress_callback;
 
         fp = fopen(path.c_str(), "wb");
+        if (fp == nullptr) {
+            LogErr("Error: cannot open file for writing: {}", path);
+            if (nullptr != progress_callback) {
+                progress_callback(0, HttpStatus::Error, CURLcode::CURLE_WRITE_ERROR);
+            }
+            return false;
+        }
         curl_easy_setopt(curl.get(), CURLOPT_CONNECTTIMEOUT, 5L);
         curl_easy_setopt(curl.get(), CURLOPT_XFERINFOFUNCTION, download_progress_update);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &progress);
@@ -125,12 +132,11 @@ bool CurlWrapper::download_file_to_path(
                 progress_callback(0, HttpStatus::Error, res);
             }
             remove(path.c_str());
-            LogErr() << "Error while downloading file, curl error code: "
-                     << curl_easy_strerror(res);
+            LogErr("Error while downloading file, curl error code: {}", curl_easy_strerror(res));
             return false;
         }
     } else {
-        LogErr() << "Error: cannot start downloading file because of curl initialization error. ";
+        LogErr("Error: cannot start downloading file because of curl initialization error. ");
         return false;
     }
 }

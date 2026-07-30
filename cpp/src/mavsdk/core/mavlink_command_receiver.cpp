@@ -1,7 +1,7 @@
-#include "mavlink_command_receiver.h"
-#include "mavsdk_impl.h"
-#include "log.h"
-#include "server_component_impl.h"
+#include "mavlink_command_receiver.hpp"
+#include "mavsdk_impl.hpp"
+#include "log.hpp"
+#include "server_component_impl.hpp"
 #include <cmath>
 #include <future>
 #include <memory>
@@ -23,7 +23,7 @@ MavlinkCommandReceiver::MavlinkCommandReceiver(ServerComponentImpl& server_compo
 
     if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Command debugging is on.";
+            LogDebug("Command debugging is on.");
             _debugging = true;
         }
     }
@@ -40,15 +40,16 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
     MavlinkCommandReceiver::CommandInt cmd(message);
 
     if (_debugging) {
-        LogDebug() << "Received command int " << std::to_string(cmd.command);
+        LogDebug("Received command int {}", cmd.command);
     }
 
     if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
         cmd.target_component_id != MAV_COMP_ID_ALL) {
         if (_debugging) {
-            LogDebug() << "Ignored command int to component "
-                       << std::to_string(cmd.target_component_id) << " instead of "
-                       << std::to_string(_server_component_impl.get_own_component_id());
+            LogDebug(
+                "Ignored command int to component {} instead of {}",
+                cmd.target_component_id,
+                _server_component_impl.get_own_component_id());
         }
         return;
     }
@@ -58,27 +59,30 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
     for (auto& handler : _mavlink_command_int_handler_table) {
         if (handler.cmd_id == cmd.command) {
             if (_debugging) {
-                LogDebug() << "Handling command int " << std::to_string(cmd.command);
+                LogDebug("Handling command int {}", cmd.command);
             }
 
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
             auto maybe_command_ack = handler.callback(cmd);
             if (maybe_command_ack) {
                 _server_component_impl.queue_message(
-                    [&, this](MavlinkAddress mavlink_address, uint8_t channel) {
+                    [ack = maybe_command_ack.value()](
+                        MavlinkAddress mavlink_address, uint8_t channel) {
                         mavlink_message_t response_message;
                         mavlink_msg_command_ack_encode_chan(
                             mavlink_address.system_id,
                             mavlink_address.component_id,
                             channel,
                             &response_message,
-                            &maybe_command_ack.value());
+                            &ack);
                         return response_message;
                     });
 
                 if (_debugging) {
-                    LogDebug() << "Acked command int " << std::to_string(cmd.command) << " with "
-                               << std::to_string(maybe_command_ack.value().result);
+                    LogDebug(
+                        "Acked command int {} with {}",
+                        cmd.command,
+                        maybe_command_ack.value().result);
                 }
             }
         }
@@ -90,15 +94,16 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
     MavlinkCommandReceiver::CommandLong cmd(message);
 
     if (_debugging) {
-        LogDebug() << "Received command long " << std::to_string(cmd.command);
+        LogDebug("Received command long {}", cmd.command);
     }
 
     if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
         cmd.target_component_id != MAV_COMP_ID_ALL) {
         if (_debugging) {
-            LogDebug() << "Ignored command long to component "
-                       << std::to_string(cmd.target_component_id) << " instead of "
-                       << std::to_string(_server_component_impl.get_own_component_id());
+            LogDebug(
+                "Ignored command long to component {} instead of {}",
+                cmd.target_component_id,
+                _server_component_impl.get_own_component_id());
         }
         return;
     }
@@ -108,26 +113,29 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
     for (auto& handler : _mavlink_command_long_handler_table) {
         if (handler.cmd_id == cmd.command) {
             if (_debugging) {
-                LogDebug() << "Handling command long " << std::to_string(cmd.command);
+                LogDebug("Handling command long {}", cmd.command);
             }
 
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
             auto maybe_command_ack = handler.callback(cmd);
             if (maybe_command_ack) {
                 _server_component_impl.queue_message(
-                    [&, this](MavlinkAddress mavlink_address, uint8_t channel) {
+                    [ack = maybe_command_ack.value()](
+                        MavlinkAddress mavlink_address, uint8_t channel) {
                         mavlink_message_t response_message;
                         mavlink_msg_command_ack_encode_chan(
                             mavlink_address.system_id,
                             mavlink_address.component_id,
                             channel,
                             &response_message,
-                            &maybe_command_ack.value());
+                            &ack);
                         return response_message;
                     });
                 if (_debugging) {
-                    LogDebug() << "Acked command long " << std::to_string(cmd.command) << " with "
-                               << std::to_string(maybe_command_ack.value().result);
+                    LogDebug(
+                        "Acked command long {} with {}",
+                        cmd.command,
+                        maybe_command_ack.value().result);
                 }
             }
         }

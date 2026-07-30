@@ -1,5 +1,5 @@
-#include "log.h"
-#include "mavsdk.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
 #include <atomic>
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -7,10 +7,10 @@
 #include <future>
 #include <fstream>
 #include <thread>
-#include "plugins/ftp/ftp.h"
-#include "plugins/ftp_server/ftp_server.h"
-#include "fs_helpers.h"
-#include "unused.h"
+#include "plugins/ftp/ftp.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
+#include "fs_helpers.hpp"
+#include "unused.hpp"
 
 using namespace mavsdk;
 
@@ -25,7 +25,7 @@ static const fs::path temp_dir_to_upload = "/tmp/mavsdk_systemtest_temp_data/to_
 
 static const fs::path temp_file = "data.bin";
 
-TEST(SystemTest, FtpUploadFile)
+TEST(Ftp, UploadFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
@@ -80,8 +80,10 @@ TEST(SystemTest, FtpUploadFile)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Upload progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Upload progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -96,9 +98,10 @@ TEST(SystemTest, FtpUploadFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpUploadBigFile)
+TEST(Ftp, UploadBigFile)
 {
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
+    static constexpr std::size_t file_size_kb = 10000;
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, file_size_kb));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
@@ -128,6 +131,9 @@ TEST(SystemTest, FtpUploadBigFile)
     {
         auto prom = std::promise<Ftp::Result>();
         auto fut = prom.get_future();
+
+        const auto t_start = std::chrono::steady_clock::now();
+
         ftp.upload_async(
             (temp_dir_to_upload / temp_file).string(),
             "",
@@ -135,14 +141,27 @@ TEST(SystemTest, FtpUploadBigFile)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Upload progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Upload progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
         auto future_status = fut.wait_for(std::chrono::seconds(10));
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::Success);
+
+        const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                                    std::chrono::steady_clock::now() - t_start)
+                                    .count();
+        const double throughput_kbps =
+            static_cast<double>(file_size_kb) / (static_cast<double>(elapsed_ms) / 1000.0);
+        LogInfo(
+            "FTP upload: {} KB in {} ms  ({} KB/s)",
+            file_size_kb,
+            elapsed_ms,
+            static_cast<int>(throughput_kbps));
 
         EXPECT_TRUE(
             are_files_identical(temp_dir_to_upload / temp_file, temp_dir_provided / temp_file));
@@ -151,7 +170,7 @@ TEST(SystemTest, FtpUploadBigFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpUploadBigFileLossy)
+TEST(Ftp, UploadBigFileLossy)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
@@ -163,10 +182,10 @@ TEST(SystemTest, FtpUploadBigFileLossy)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 5; };
+    auto drop_some = [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 5 != 0; };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
-    mavsdk_groundstation.intercept_outgoing_messages_async(drop_some);
+    auto drop_some_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_some);
+    auto drop_some_out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(drop_some);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -196,8 +215,10 @@ TEST(SystemTest, FtpUploadBigFileLossy)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Upload progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Upload progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -209,13 +230,13 @@ TEST(SystemTest, FtpUploadBigFileLossy)
             are_files_identical(temp_dir_to_upload / temp_file, temp_dir_provided / temp_file));
     }
 
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_some_in_handle);
+    mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_some_out_handle);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpUploadStopAndTryAgain)
+TEST(Ftp, UploadStopAndTryAgain)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 2000));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
@@ -228,10 +249,12 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
 
     // Once we received some, we want to stop all traffic.
     std::atomic<bool> got_some = false;
-    auto drop_at_some_point = [&got_some](mavlink_message_t&) { return !got_some; };
+    auto drop_at_some_point = [&got_some](Mavsdk::MavlinkMessage) -> bool { return !got_some; };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point);
-    mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point);
+    auto drop_at_in_handle =
+        mavsdk_groundstation.subscribe_incoming_messages_json(drop_at_some_point);
+    auto drop_at_out_handle =
+        mavsdk_groundstation.subscribe_outgoing_messages_json(drop_at_some_point);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -264,8 +287,10 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -275,9 +300,9 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
     }
 
     // Before going out of scope, we need to make sure to no longer access the
-    // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+    // drop_at_some_point callback which accesses the local got_some variable.
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_at_in_handle);
+    mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_at_out_handle);
 
     {
         // Now try again
@@ -290,8 +315,10 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -303,7 +330,7 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpUploadFileOutsideOfRoot)
+TEST(Ftp, UploadFileOutsideOfRoot)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_provided));

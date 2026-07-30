@@ -1020,8 +1020,9 @@ CMAVSDK_EXPORT void mavsdk_camera_destroy(mavsdk_camera_t camera);
  * @brief Take one photo.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1051,10 +1052,11 @@ mavsdk_camera_take_photo(
  * @brief Start photo timelapse with a given interval.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param interval_s  Interval between photos (in seconds)
+ * @param interval_s  Interval between photos (in seconds)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1086,8 +1088,9 @@ mavsdk_camera_start_photo_interval(
  * @brief Stop a running photo timelapse.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1117,8 +1120,9 @@ mavsdk_camera_stop_photo_interval(
  * @brief Start a video recording.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1148,8 +1152,9 @@ mavsdk_camera_start_video(
  * @brief Stop a running video recording.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1211,10 +1216,11 @@ mavsdk_camera_stop_video_streaming(
  * @brief Set camera mode.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param mode  Camera mode to set
+ * @param mode  Camera mode to set
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1250,10 +1256,11 @@ mavsdk_camera_set_mode(
  *  images over time.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param photos_range  Which photos should be listed (all or since connection)
+ * @param photos_range  Which photos should be listed (all or since connection)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1290,6 +1297,7 @@ mavsdk_camera_list_photos(
  *  Based on the camera ID, we can then address a specific camera.
  *
  * @param camera The camera instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_unsubscribe_camera_list() to unsubscribe.
@@ -1330,6 +1338,7 @@ mavsdk_camera_camera_list(
  * @brief Subscribe to camera mode updates.
  *
  * @param camera The camera instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_unsubscribe_mode() to unsubscribe.
@@ -1372,6 +1381,7 @@ mavsdk_camera_get_mode(
  * @brief Subscribe to video stream info updates.
  *
  * @param camera The camera instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_unsubscribe_video_stream_info() to unsubscribe.
@@ -1414,6 +1424,7 @@ mavsdk_camera_get_video_stream_info(
  * @brief Subscribe to capture info updates.
  *
  * @param camera The camera instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_unsubscribe_capture_info() to unsubscribe.
@@ -1440,6 +1451,7 @@ CMAVSDK_EXPORT void mavsdk_camera_unsubscribe_capture_info(
  * @brief Subscribe to camera's storage status updates.
  *
  * @param camera The camera instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_unsubscribe_storage() to unsubscribe.
@@ -1482,6 +1494,7 @@ mavsdk_camera_get_storage(
  * @brief Get the list of current camera settings.
  *
  * @param camera The camera instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_unsubscribe_current_settings() to unsubscribe.
@@ -1525,6 +1538,7 @@ mavsdk_camera_get_current_settings(
  * @brief Get the list of settings that can be changed.
  *
  * @param camera The camera instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_unsubscribe_possible_setting_options() to unsubscribe.
@@ -1570,10 +1584,11 @@ mavsdk_camera_get_possible_setting_options(
  *  Only setting_id of setting and option_id of option needs to be set.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param setting  Desired setting
+ * @param setting  Desired setting
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1607,10 +1622,11 @@ mavsdk_camera_set_setting(
  *  Only setting_id of setting needs to be set.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID (0/all not available)
+ * @param component_id  Component ID (0/all not available)
  * 
-* @param setting  Requested setting
+ * @param setting  Requested setting
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1645,10 +1661,11 @@ mavsdk_camera_get_setting(
  *  This will delete all content of the camera storage!
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param storage_id Storage identify to be format
+ * @param storage_id Storage identify to be format
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1682,8 +1699,9 @@ mavsdk_camera_format_storage(
  *  This will reset all camera settings to default value
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1713,8 +1731,9 @@ mavsdk_camera_reset_settings(
  * @brief Start zooming in.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1744,8 +1763,9 @@ mavsdk_camera_zoom_in_start(
  * @brief Start zooming out.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1775,8 +1795,9 @@ mavsdk_camera_zoom_out_start(
  * @brief Stop zooming.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1806,10 +1827,11 @@ mavsdk_camera_zoom_stop(
  * @brief Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param range  Range must be between 0.0 and 100.0
+ * @param range  Range must be between 0.0 and 100.0
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1841,14 +1863,15 @@ mavsdk_camera_zoom_range(
  * @brief Track point.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param point_x  Point in X axis (0..1, 0 is left, 1 is right)
+ * @param point_x  Point in X axis (0..1, 0 is left, 1 is right)
  * 
-* @param point_y  Point in Y axis (0..1, 0 is top, 1 is bottom)
+ * @param point_y  Point in Y axis (0..1, 0 is top, 1 is bottom)
  * 
-* @param radius  Radius (0 is one pixel, 1 is full image width)
+ * @param radius  Radius (0 is one pixel, 1 is full image width)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1884,16 +1907,17 @@ mavsdk_camera_track_point(
  * @brief Track rectangle.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param top_left_x  Top left corner of rectangle x value (normalized 0..1, 0 is left, 1 is right)
+ * @param top_left_x  Top left corner of rectangle x value (normalized 0..1, 0 is left, 1 is right)
  * 
-* @param top_left_y  Top left corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom)
+ * @param top_left_y  Top left corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom)
  * 
-* @param bottom_right_x  Bottom right corner of rectangle x value (normalized 0..1, 0 is left, 1 is right)
+ * @param bottom_right_x  Bottom right corner of rectangle x value (normalized 0..1, 0 is left, 1 is right)
  * 
-* @param bottom_right_y  Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom)
+ * @param bottom_right_y  Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1931,8 +1955,9 @@ mavsdk_camera_track_rectangle(
  * @brief Stop tracking.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1962,8 +1987,9 @@ mavsdk_camera_track_stop(
  * @brief Start focusing in.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -1993,8 +2019,9 @@ mavsdk_camera_focus_in_start(
  * @brief Start focusing out.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -2024,8 +2051,9 @@ mavsdk_camera_focus_out_start(
  * @brief Stop focus.
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -2055,10 +2083,11 @@ mavsdk_camera_focus_stop(
  * @brief Focus with range value of full range (value between 0.0 and 100.0).
  *
  * @param camera The camera instance.
-* @param component_id  Component ID
+ * @param component_id  Component ID
  * 
-* @param range  Range must be between 0.0 - 100.0
+ * @param range  Range must be between 0.0 - 100.0
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

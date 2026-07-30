@@ -1,7 +1,7 @@
-#include "mavsdk.h"
-#include "plugins/camera/camera.h"
-#include "plugins/camera_server/camera_server.h"
-#include "log.h"
+#include "mavsdk.hpp"
+#include "plugins/camera/camera.hpp"
+#include "plugins/camera_server/camera_server.hpp"
+#include "log.hpp"
 #include <future>
 #include <mutex>
 #include <thread>
@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraFormatStorage)
+TEST(Camera, FormatStorage)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
@@ -33,7 +33,7 @@ TEST(SystemTest, CameraFormatStorage)
 
     auto format_storage_handle =
         camera_server.subscribe_format_storage([&camera_server](int32_t index) {
-            LogInfo() << "Let's format " << index;
+            LogInfo("Let's format {}", index);
 
             camera_server.respond_format_storage(CameraServer::CameraFeedback::Ok);
         });

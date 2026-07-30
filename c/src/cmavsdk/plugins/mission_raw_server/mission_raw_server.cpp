@@ -4,7 +4,7 @@
 
 #include "mission_raw_server.h"
 
-#include <mavsdk/plugins/mission_raw_server/mission_raw_server.h>
+#include <mavsdk/plugins/mission_raw_server/mission_raw_server.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

@@ -6,10 +6,10 @@
 #include <string>
 #include <gtest/gtest.h>
 
-#include "log.h"
-#include "mavlink_include.h"
-#include "plugins/mission_raw/mission_raw.h"
-#include "mission_import.h"
+#include "log.hpp"
+#include "mavlink_include.hpp"
+#include "plugins/mission_raw/mission_raw.hpp"
+#include "mission_import.hpp"
 
 using namespace mavsdk;
 
@@ -427,7 +427,16 @@ TEST(MissionRaw, ImportSamplePlanWithArduPilot)
         488.93101752001763f,
         MAV_MISSION_TYPE_MISSION};
 
+    // GCC 12/13 emits a false-positive -Wnull-dereference on placement-new
+    // inside std::vector::insert when optimising. Suppress it here.
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+#endif
     reference_items.insert(reference_items.begin(), home_item);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
     std::ifstream file{path_prefix("qgroundcontrol_sample.plan")};
     ASSERT_TRUE(file);

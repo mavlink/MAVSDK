@@ -1,4 +1,4 @@
-#include "mavlink_parameter_cache.h"
+#include "mavlink_parameter_cache.hpp"
 
 #include <algorithm>
 
@@ -56,6 +56,15 @@ MavlinkParameterCache::all_parameters(bool including_extended) const
             std::back_inserter(params_without_extended),
             [](auto& entry) { return !entry.value.needs_extended(); });
 
+        // The non-extended protocol only advertises these parameters, so their indices
+        // must be contiguous 0..N-1 to stay consistent with count(false). Otherwise, when
+        // extended-only params are interspersed, the stored (full-set) index no longer
+        // matches the position in this filtered view: param_by_index() would return the
+        // wrong param (or trip its assert) and broadcasts would send an index >= count.
+        for (uint16_t i = 0; i < params_without_extended.size(); ++i) {
+            params_without_extended[i].index = i;
+        }
+
         return params_without_extended;
     }
 }
@@ -100,7 +109,7 @@ MavlinkParameterCache::param_by_index(uint16_t param_index, bool including_exten
 {
     const auto& params = all_parameters(including_extended);
     if (param_index >= params.size()) {
-        LogErr() << "param at " << (int)param_index << " out of bounds (" << params.size() << ")";
+        LogErr("Param at {} out of bounds ({})", (int)param_index, params.size());
         return {};
     }
 
@@ -187,23 +196,23 @@ void MavlinkParameterCache::print_missing(uint16_t count)
         return lhs.index < rhs.index;
     });
 
-    LogDebug() << "Available: ";
+    LogDebug("Available: ");
     for (auto param : _all_params) {
-        LogDebug() << param.index << ": " << param.id;
+        LogDebug("{}: {}", param.index, param.id);
     }
-    LogDebug() << "Available count: " << _all_params.size();
+    LogDebug("Available count: {}", _all_params.size());
 
     unsigned missing = 0;
-    LogDebug() << "Missing: ";
+    LogDebug("Missing: ");
     for (unsigned i = 0; i < count; ++i) {
         if (!exists(i)) {
             // We have reached the end but it's not complete yet.
-            LogDebug() << i;
+            LogDebug("{}", i);
             ++missing;
         }
     }
 
-    LogDebug() << "Missing count: " << missing;
+    LogDebug("Missing count: {}", missing);
 }
 
 } // namespace mavsdk

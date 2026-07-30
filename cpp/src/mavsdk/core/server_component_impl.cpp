@@ -1,6 +1,7 @@
-#include "server_component_impl.h"
-#include "server_plugin_impl_base.h"
-#include "mavsdk_impl.h"
+#include "server_component_impl.hpp"
+#include "server_plugin_impl_base.hpp"
+#include "mavsdk_impl.hpp"
+#include "callback_list.tpp"
 
 namespace mavsdk {
 
@@ -16,7 +17,8 @@ ServerComponentImpl::ServerComponentImpl(
         mavsdk_impl.mavlink_message_handler,
         mavsdk_impl.timeout_handler,
         [this]() { return _mavsdk_impl.timeout_s(); }),
-    _mavlink_parameter_server(_our_sender, mavsdk_impl.mavlink_message_handler),
+    _mavlink_parameter_server(
+        _our_sender, mavsdk_impl.mavlink_message_handler, mavsdk_impl.io_context()),
     _mavlink_request_message_handler(mavsdk_impl, *this, _mavlink_command_receiver),
     _mavlink_ftp_server(*this)
 {
@@ -26,7 +28,7 @@ ServerComponentImpl::ServerComponentImpl(
         // We use a default of channel 0 which will still work but not track
         // seq correctly.
         _channel = 0;
-        LogErr() << "Could not get a MAVLink channel, using default 0";
+        LogErr("Could not get a MAVLink channel, using default 0");
     }
 
     register_mavlink_command_handler(
@@ -129,6 +131,36 @@ void ServerComponentImpl::unregister_all_mavlink_message_handlers_blocking(const
     _mavsdk_impl.mavlink_message_handler.unregister_all_blocking(cookie);
 }
 
+Handle<Mavsdk::MavlinkMessage> ServerComponentImpl::register_libmav_message_handler(
+    const std::string& message_name, const LibmavMessageCallback& callback)
+{
+    // Filter by message name (empty string means all messages). This is not scoped
+    // to a single system, so messages from any system are delivered.
+    auto filtering_callback = [message_name, callback](const Mavsdk::MavlinkMessage& message) {
+        if (!message_name.empty() && message_name != message.message_name) {
+            return;
+        }
+        callback(message);
+    };
+
+    return _libmav_message_callbacks.subscribe(filtering_callback);
+}
+
+void ServerComponentImpl::unregister_libmav_message_handler(Handle<Mavsdk::MavlinkMessage> handle)
+{
+    // Blocking: once this returns the io thread can no longer invoke the callback. Plugin
+    // deinit() relies on that to destroy the object that owns the callback (which captures
+    // its 'this') without a use-after-free on the io thread.
+    _libmav_message_callbacks.unsubscribe_blocking(handle);
+}
+
+void ServerComponentImpl::process_libmav_message(const Mavsdk::MavlinkMessage& message)
+{
+    // CallbackList handles thread safety; registered handlers filter by name themselves.
+    _libmav_message_callbacks.queue(
+        message, [this](const std::function<void()>& callback) { callback(); });
+}
+
 void ServerComponentImpl::do_work()
 {
     _mavlink_parameter_server.do_work();
@@ -185,6 +217,16 @@ bool ServerComponentImpl::queue_message(
     MavlinkAddress mavlink_address{get_own_system_id(), get_own_component_id()};
     mavlink_message_t message = fun(mavlink_address, _channel);
     return _mavsdk_impl.send_message(message);
+}
+
+mav::MessageSet& ServerComponentImpl::get_message_set() const
+{
+    return _mavsdk_impl.get_message_set();
+}
+
+bool ServerComponentImpl::load_custom_xml_to_message_set(const std::string& xml_content)
+{
+    return _mavsdk_impl.load_custom_xml_to_message_set(xml_content);
 }
 
 CallEveryHandler::Cookie
@@ -441,6 +483,16 @@ uint8_t ServerComponentImpl::OurSender::get_own_component_id() const
 CompatibilityMode ServerComponentImpl::OurSender::compatibility_mode() const
 {
     return _server_component_impl._mavsdk_impl.get_compatibility_mode();
+}
+
+asio::io_context& ServerComponentImpl::OurSender::io_context()
+{
+    return _server_component_impl._mavsdk_impl.io_context();
+}
+
+asio::io_context& ServerComponentImpl::io_context()
+{
+    return _mavsdk_impl.io_context();
 }
 
 } // namespace mavsdk

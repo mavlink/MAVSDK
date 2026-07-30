@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "param_value.h"
-#include "mavlink_parameter_cache.h"
+#include "param_value.hpp"
+#include "mavlink_parameter_cache.hpp"
 
 using namespace mavsdk;
 
@@ -123,4 +123,68 @@ TEST(MavlinkParameterCache, MissingIndicesNotSorted)
     // It should still work when not sorted.
     std::vector<uint16_t> result = {0, 2};
     EXPECT_EQ(cache.next_missing_indices(3, 10), result);
+}
+
+TEST(ParamValue, FloatDoubleAndBoolBasics)
+{
+    ParamValue f1;
+    f1.set(static_cast<float>(1.5f));
+    ParamValue f2;
+    f2.set(static_cast<float>(1.5f));
+    EXPECT_EQ(f1, f2);
+    f2.set(static_cast<float>(2.5f));
+    EXPECT_NE(f1, f2);
+
+    ParamValue d1;
+    d1.set(static_cast<double>(3.25));
+    ParamValue d2;
+    d2.set(static_cast<double>(3.25));
+    EXPECT_EQ(d1, d2);
+
+    // Different numeric kinds should not compare equal even if values match textually.
+    ParamValue as_int;
+    as_int.set(static_cast<int32_t>(1));
+    ParamValue as_float;
+    as_float.set(static_cast<float>(1.0f));
+    EXPECT_FALSE(as_int.is_same_type(as_float));
+    EXPECT_NE(as_int, as_float);
+}
+
+TEST(ParamValue, TypestrAndNeedsExtended)
+{
+    ParamValue i32;
+    i32.set(static_cast<int32_t>(7));
+    EXPECT_EQ(i32.typestr(), "int32_t");
+    EXPECT_FALSE(i32.needs_extended());
+
+    ParamValue f;
+    f.set(1.5f);
+    EXPECT_EQ(f.typestr(), "float");
+    EXPECT_FALSE(f.needs_extended());
+
+    ParamValue d;
+    d.set(2.5);
+    EXPECT_EQ(d.typestr(), "double");
+    EXPECT_TRUE(d.needs_extended());
+
+    ParamValue s;
+    s.set(std::string("hi"));
+    EXPECT_EQ(s.typestr(), "custom");
+    EXPECT_TRUE(s.needs_extended());
+
+    ParamValue u64;
+    u64.set(static_cast<uint64_t>(9));
+    EXPECT_EQ(u64.typestr(), "uint64_t");
+    EXPECT_TRUE(u64.needs_extended());
+}
+
+TEST(ParamValue, GetStringForCommonTypes)
+{
+    ParamValue i;
+    i.set(static_cast<int32_t>(-3));
+    EXPECT_EQ(i.get_string(), "-3");
+
+    ParamValue s;
+    s.set(std::string("abc"));
+    EXPECT_EQ(s.get_string(), "abc");
 }

@@ -1,5 +1,5 @@
-#include "rtk_impl.h"
-#include "base64.h"
+#include "rtk_impl.hpp"
+#include "base64.hpp"
 
 namespace mavsdk {
 

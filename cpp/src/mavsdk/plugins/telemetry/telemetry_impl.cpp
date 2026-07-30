@@ -1,45 +1,47 @@
-#include "telemetry_impl.h"
-#include "system.h"
-#include "math_utils.h"
+#include "telemetry_impl.hpp"
+#include "system.hpp"
+#include "math_utils.hpp"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 #include <cmath>
 #include <functional>
 #include <string>
 #include <array>
 #include <cassert>
-#include <unused.h>
+#include "unused.hpp"
 
 namespace mavsdk {
 
-template class CallbackList<Telemetry::PositionVelocityNed>;
-template class CallbackList<Telemetry::Position>;
-template class CallbackList<bool>;
-template class CallbackList<Telemetry::StatusText>;
-template class CallbackList<Telemetry::Quaternion>;
-template class CallbackList<Telemetry::AngularVelocityBody>;
-template class CallbackList<Telemetry::GroundTruth>;
-template class CallbackList<Telemetry::FixedwingMetrics>;
-template class CallbackList<Telemetry::EulerAngle>;
-template class CallbackList<Telemetry::VelocityNed>;
-template class CallbackList<Telemetry::Imu>;
-template class CallbackList<Telemetry::GpsInfo>;
-template class CallbackList<Telemetry::RawGps>;
-template class CallbackList<Telemetry::Battery>;
-template class CallbackList<Telemetry::FlightMode>;
-template class CallbackList<Telemetry::Health>;
-template class CallbackList<Telemetry::VtolState>;
-template class CallbackList<Telemetry::LandedState>;
-template class CallbackList<Telemetry::RcStatus>;
-template class CallbackList<uint64_t>;
-template class CallbackList<Telemetry::ActuatorControlTarget>;
-template class CallbackList<Telemetry::ActuatorOutputStatus>;
-template class CallbackList<Telemetry::Odometry>;
-template class CallbackList<Telemetry::DistanceSensor>;
-template class CallbackList<Telemetry::ScaledPressure>;
-template class CallbackList<Telemetry::Heading>;
-template class CallbackList<Telemetry::Altitude>;
-template class CallbackList<Telemetry::Wind>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::PositionVelocityNed>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Position>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::HomePosition>;
+template class MAVSDK_TEMPL_INST CallbackList<bool>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::StatusText>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Quaternion>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::AngularVelocityBody>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::GroundTruth>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::FixedwingMetrics>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::EulerAngle>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::VelocityNed>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Imu>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::GpsInfo>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::RawGps>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Battery>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::FlightMode>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Health>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::VtolState>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::LandedState>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::RcStatus>;
+template class MAVSDK_TEMPL_INST CallbackList<uint64_t>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::ActuatorControlTarget>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::ActuatorOutputStatus>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Odometry>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::DistanceSensor>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::ScaledPressure>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Heading>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Altitude>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Wind>;
 
 TelemetryImpl::TelemetryImpl(System& system) : PluginImplBase(system)
 {
@@ -316,8 +318,18 @@ Telemetry::Result TelemetryImpl::set_rate_ground_truth(double rate_hz)
 
 Telemetry::Result TelemetryImpl::set_rate_gps_info(double rate_hz)
 {
+    _gps_info_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_gps_info_rate_hz, _raw_gps_rate_hz);
     return telemetry_result_from_command_result(
-        _system_impl->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, max_rate_hz));
+}
+
+Telemetry::Result TelemetryImpl::set_rate_raw_gps(double rate_hz)
+{
+    _raw_gps_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_gps_info_rate_hz, _raw_gps_rate_hz);
+    return telemetry_result_from_command_result(
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, max_rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
@@ -328,9 +340,27 @@ Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
 
 Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
 {
-    UNUSED(rate_hz);
-    LogWarn() << "System status is usually fixed at 1 Hz";
-    return Telemetry::Result::Unsupported;
+    _rc_status_rate_hz = rate_hz;
+
+    // On PX4, RC data comes via RC_CHANNELS. On ArduPilot, it comes via SYS_STATUS.
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        return set_rate_sys_status();
+    }
+
+    // For PX4 (or unknown), request RC_CHANNELS and also update SYS_STATUS if needed.
+    auto result = telemetry_result_from_command_result(
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
+    if (result != Telemetry::Result::Success) {
+        return result;
+    }
+    return set_rate_sys_status();
+}
+
+Telemetry::Result TelemetryImpl::set_rate_sys_status()
+{
+    double max_rate_hz = std::max(_health_rate_hz, _rc_status_rate_hz);
+    return telemetry_result_from_command_result(
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, max_rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_actuator_control_target(double rate_hz)
@@ -377,8 +407,8 @@ Telemetry::Result TelemetryImpl::set_rate_altitude(double rate_hz)
 
 Telemetry::Result TelemetryImpl::set_rate_health(double rate_hz)
 {
-    return telemetry_result_from_command_result(
-        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
+    _health_rate_hz = rate_hz;
+    return set_rate_sys_status();
 }
 
 void TelemetryImpl::set_rate_position_velocity_ned_async(
@@ -447,9 +477,11 @@ void TelemetryImpl::set_rate_altitude_async(double rate_hz, Telemetry::ResultCal
 
 void TelemetryImpl::set_rate_health_async(double rate_hz, Telemetry::ResultCallback callback)
 {
+    _health_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_health_rate_hz, _rc_status_rate_hz);
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_SYS_STATUS,
-        rate_hz,
+        max_rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
         });
@@ -543,9 +575,23 @@ void TelemetryImpl::set_rate_ground_truth_async(double rate_hz, Telemetry::Resul
 
 void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback)
 {
+    _gps_info_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_gps_info_rate_hz, _raw_gps_rate_hz);
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_GPS_RAW_INT,
-        rate_hz,
+        max_rate_hz,
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
+}
+
+void TelemetryImpl::set_rate_raw_gps_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _raw_gps_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_gps_info_rate_hz, _raw_gps_rate_hz);
+    _system_impl->set_msg_rate_async(
+        MAVLINK_MSG_ID_GPS_RAW_INT,
+        max_rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
         });
@@ -563,9 +609,36 @@ void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCall
 
 void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    UNUSED(rate_hz);
-    LogWarn() << "System status is usually fixed at 1 Hz";
-    _system_impl->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
+    _rc_status_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_health_rate_hz, _rc_status_rate_hz);
+
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        // ArduPilot reports RC status via SYS_STATUS
+        _system_impl->set_msg_rate_async(
+            MAVLINK_MSG_ID_SYS_STATUS,
+            max_rate_hz,
+            [callback](MavlinkCommandSender::Result command_result, float) {
+                command_result_callback(command_result, callback);
+            });
+    } else {
+        // PX4 reports RC data via RC_CHANNELS
+        _system_impl->set_msg_rate_async(
+            MAVLINK_MSG_ID_RC_CHANNELS,
+            rate_hz,
+            [this, callback, max_rate_hz](MavlinkCommandSender::Result command_result, float) {
+                if (command_result != MavlinkCommandSender::Result::Success) {
+                    command_result_callback(command_result, callback);
+                    return;
+                }
+                // Also update SYS_STATUS rate
+                _system_impl->set_msg_rate_async(
+                    MAVLINK_MSG_ID_SYS_STATUS,
+                    max_rate_hz,
+                    [callback](MavlinkCommandSender::Result command_result2, float) {
+                        command_result_callback(command_result2, callback);
+                    });
+            });
+    }
 }
 
 void TelemetryImpl::set_rate_unix_epoch_time_async(
@@ -681,7 +754,6 @@ void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t& messa
 
     set_position_velocity_ned(position_velocity);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _position_velocity_ned_subscriptions.queue(position_velocity_ned(), [this](const auto& func) {
         _system_impl->call_user_callback(func);
     });
@@ -719,7 +791,6 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
         set_heading(heading);
     }
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _position_subscriptions.queue(
         position(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
@@ -734,17 +805,28 @@ void TelemetryImpl::process_home_position(const mavlink_message_t& message)
 {
     mavlink_home_position_t home_position;
     mavlink_msg_home_position_decode(&message, &home_position);
-    Telemetry::Position new_pos;
-    new_pos.latitude_deg = home_position.latitude * 1e-7;
-    new_pos.longitude_deg = home_position.longitude * 1e-7;
-    new_pos.absolute_altitude_m = home_position.altitude * 1e-3f;
-    new_pos.relative_altitude_m = 0.0f; // 0 by definition.
 
-    set_home_position(new_pos);
+    Telemetry::HomePosition new_home;
+    new_home.latitude_deg = home_position.latitude * 1e-7;
+    new_home.longitude_deg = home_position.longitude * 1e-7;
+    new_home.absolute_altitude_m = home_position.altitude * 1e-3f;
+    new_home.relative_altitude_m = 0.0f; // 0 by definition.
+    new_home.local_north_m = home_position.x;
+    new_home.local_east_m = home_position.y;
+    new_home.local_down_m = home_position.z;
+    new_home.q.w = home_position.q[0];
+    new_home.q.x = home_position.q[1];
+    new_home.q.y = home_position.q[2];
+    new_home.q.z = home_position.q[3];
+    new_home.approach_north_m = home_position.approach_x;
+    new_home.approach_east_m = home_position.approach_y;
+    new_home.approach_down_m = home_position.approach_z;
+    new_home.timestamp_us = home_position.time_usec;
+
+    set_home_position(new_home);
 
     set_health_home_position(true);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _home_position_subscriptions.queue(
         home(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -797,7 +879,6 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
 
     set_attitude_angular_velocity_body(angular_velocity_body);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _attitude_quaternion_angle_subscriptions.queue(attitude_quaternion(), [this](const auto& func) {
         _system_impl->call_user_callback(func);
     });
@@ -819,10 +900,10 @@ void TelemetryImpl::process_altitude(const mavlink_message_t& message)
     new_altitude.altitude_relative_m = mavlink_altitude.altitude_relative;
     new_altitude.altitude_terrain_m = mavlink_altitude.altitude_terrain;
     new_altitude.bottom_clearance_m = mavlink_altitude.bottom_clearance;
+    new_altitude.timestamp_us = mavlink_altitude.time_usec;
 
     set_altitude(new_altitude);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _altitude_subscriptions.queue(
         altitude(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -844,7 +925,6 @@ void TelemetryImpl::process_wind(const mavlink_message_t& message)
 
     set_wind(new_wind);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _wind_subscriptions.queue(
         wind(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -868,7 +948,6 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
 
     set_imu_reading_ned(new_imu);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _imu_reading_ned_subscriptions.queue(
         imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -895,7 +974,6 @@ void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
 
     set_scaled_imu(new_imu);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _scaled_imu_subscriptions.queue(
         scaled_imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -919,7 +997,6 @@ void TelemetryImpl::process_raw_imu(const mavlink_message_t& message)
 
     set_raw_imu(new_imu);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _raw_imu_subscriptions.queue(
         raw_imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -954,7 +1031,7 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
             break;
 
         default:
-            LogErr() << "Received unknown GPS fix type!";
+            LogErr("Received unknown GPS fix type!");
             fix_type = Telemetry::FixType::NoGps;
             break;
     }
@@ -982,7 +1059,6 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     set_raw_gps(raw_gps_info);
 
     {
-        std::lock_guard<std::mutex> lock(_subscription_mutex);
         _gps_info_subscriptions.queue(
             gps_info(), [this](const auto& func) { _system_impl->call_user_callback(func); });
         _raw_gps_subscriptions.queue(
@@ -999,10 +1075,10 @@ void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)
     new_ground_truth.latitude_deg = hil_state_quaternion.lat * 1e-7;
     new_ground_truth.longitude_deg = hil_state_quaternion.lon * 1e-7;
     new_ground_truth.absolute_altitude_m = hil_state_quaternion.alt * 1e-3f;
+    new_ground_truth.timestamp_us = hil_state_quaternion.time_usec;
 
     set_ground_truth(new_ground_truth);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _ground_truth_subscriptions.queue(
         ground_truth(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -1020,7 +1096,6 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
         set_vtol_state(vtol_state);
     }
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _landed_state_subscriptions.queue(
         landed_state(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
@@ -1054,7 +1129,6 @@ void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
 
     set_fixedwing_metrics(new_fixedwing_metrics);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _fixedwing_metrics_subscriptions.queue(
         fixedwing_metrics(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -1072,7 +1146,6 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
         set_battery(new_battery);
 
         {
-            std::lock_guard<std::mutex> lock(_subscription_mutex);
             _battery_subscriptions.queue(
                 battery(), [this](const auto& func) { _system_impl->call_user_callback(func); });
         }
@@ -1117,7 +1190,6 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 
     set_rc_status({rc_ok}, std::nullopt);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _rc_status_subscriptions.queue(
         rc_status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
@@ -1202,7 +1274,6 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
     set_battery(new_battery);
 
     {
-        std::lock_guard<std::mutex> lock(_subscription_mutex);
         _battery_subscriptions.queue(
             battery(), [this](const auto& func) { _system_impl->call_user_callback(func); });
     }
@@ -1219,7 +1290,6 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t& message)
 
     set_armed(((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false));
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _armed_subscriptions.queue(
         armed(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
@@ -1264,7 +1334,7 @@ void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustex
             new_status_text.type = Telemetry::StatusTextType::Debug;
             break;
         default:
-            LogWarn() << "Unknown StatusText severity";
+            LogWarn("Unknown StatusText severity");
             new_status_text.type = Telemetry::StatusTextType::Info;
             break;
     }
@@ -1273,7 +1343,6 @@ void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustex
 
     set_status_text(new_status_text);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _status_text_subscriptions.queue(
         status_text(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -1287,7 +1356,6 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
         set_rc_status(std::nullopt, {rc_channels.rssi});
     }
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _rc_status_subscriptions.queue(
         rc_status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -1299,7 +1367,6 @@ void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
 
     set_unix_epoch_time_us(system_time.time_unix_usec);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _unix_epoch_time_subscriptions.queue(
         unix_epoch_time(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -1320,7 +1387,6 @@ void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& mes
 
     set_actuator_control_target(group, controls);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _actuator_control_target_subscriptions.queue(
         actuator_control_target(),
         [this](const auto& func) { _system_impl->call_user_callback(func); });
@@ -1342,7 +1408,6 @@ void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& mess
 
     set_actuator_output_status(active, actuators);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _actuator_output_status_subscriptions.queue(actuator_output_status(), [this](const auto& func) {
         _system_impl->call_user_callback(func);
     });
@@ -1393,7 +1458,6 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
 
     set_odometry(odometry_struct);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _odometry_subscriptions.queue(
         odometry(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -1415,7 +1479,6 @@ void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
 
     set_distance_sensor(distance_sensor_struct);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _distance_sensor_subscriptions.queue(
         distance_sensor(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -1648,7 +1711,6 @@ void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
 
     set_scaled_pressure(scaled_pressure_struct);
 
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _scaled_pressure_subscriptions.queue(
         scaled_pressure(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
@@ -1782,13 +1844,13 @@ void TelemetryImpl::set_wind(Telemetry::Wind wind)
     _wind = wind;
 }
 
-Telemetry::Position TelemetryImpl::home() const
+Telemetry::HomePosition TelemetryImpl::home() const
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
     return _home_position;
 }
 
-void TelemetryImpl::set_home_position(Telemetry::Position home_position)
+void TelemetryImpl::set_home_position(Telemetry::HomePosition home_position)
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
     _home_position = home_position;
@@ -2160,101 +2222,85 @@ void TelemetryImpl::set_scaled_pressure(Telemetry::ScaledPressure& scaled_pressu
 Telemetry::PositionVelocityNedHandle TelemetryImpl::subscribe_position_velocity_ned(
     const Telemetry::PositionVelocityNedCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _position_velocity_ned_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_position_velocity_ned(Telemetry::PositionVelocityNedHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _position_velocity_ned_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::PositionHandle
 TelemetryImpl::subscribe_position(const Telemetry::PositionCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _position_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_position(Telemetry::PositionHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _position_subscriptions.unsubscribe(handle);
 }
 
-Telemetry::HomeHandle TelemetryImpl::subscribe_home(const Telemetry::PositionCallback& callback)
+Telemetry::HomeHandle TelemetryImpl::subscribe_home(const Telemetry::HomeCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _home_position_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_home(Telemetry::HomeHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _home_position_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::InAirHandle TelemetryImpl::subscribe_in_air(const Telemetry::InAirCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _in_air_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_in_air(Telemetry::InAirHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _in_air_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::StatusTextHandle
 TelemetryImpl::subscribe_status_text(const Telemetry::StatusTextCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _status_text_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_status_text(Handle<Telemetry::StatusText> handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _status_text_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::ArmedHandle TelemetryImpl::subscribe_armed(const Telemetry::ArmedCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _armed_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_armed(Telemetry::ArmedHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _armed_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::AttitudeQuaternionHandle
 TelemetryImpl::subscribe_attitude_quaternion(const Telemetry::AttitudeQuaternionCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _attitude_quaternion_angle_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_attitude_quaternion(Telemetry::AttitudeQuaternionHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _attitude_quaternion_angle_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::AttitudeEulerHandle
 TelemetryImpl::subscribe_attitude_euler(const Telemetry::AttitudeEulerCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _attitude_euler_angle_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_attitude_euler(Telemetry::AttitudeEulerHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _attitude_euler_angle_subscriptions.unsubscribe(handle);
 }
 
@@ -2262,322 +2308,272 @@ Telemetry::AttitudeAngularVelocityBodyHandle
 TelemetryImpl::subscribe_attitude_angular_velocity_body(
     const Telemetry::AttitudeAngularVelocityBodyCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _attitude_angular_velocity_body_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_attitude_angular_velocity_body(
     Telemetry::AttitudeAngularVelocityBodyHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _attitude_angular_velocity_body_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::FixedwingMetricsHandle
 TelemetryImpl::subscribe_fixedwing_metrics(const Telemetry::FixedwingMetricsCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _fixedwing_metrics_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_fixedwing_metrics(Telemetry::FixedwingMetricsHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _fixedwing_metrics_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::GroundTruthHandle
 TelemetryImpl::subscribe_ground_truth(const Telemetry::GroundTruthCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _ground_truth_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_ground_truth(Telemetry::GroundTruthHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _ground_truth_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::VelocityNedHandle
 TelemetryImpl::subscribe_velocity_ned(const Telemetry::VelocityNedCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _velocity_ned_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_velocity_ned(Telemetry::VelocityNedHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _velocity_ned_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::ImuHandle TelemetryImpl::subscribe_imu(const Telemetry::ImuCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _imu_reading_ned_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_imu(Telemetry::ImuHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _imu_reading_ned_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::ScaledImuHandle
 TelemetryImpl::subscribe_scaled_imu(const Telemetry::ScaledImuCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _scaled_imu_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_scaled_imu(Telemetry::ScaledImuHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _scaled_imu_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::RawImuHandle TelemetryImpl::subscribe_raw_imu(const Telemetry::RawImuCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _raw_imu_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_raw_imu(Telemetry::RawImuHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _raw_imu_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::GpsInfoHandle
 TelemetryImpl::subscribe_gps_info(const Telemetry::GpsInfoCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _gps_info_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_gps_info(Telemetry::GpsInfoHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _gps_info_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::RawGpsHandle TelemetryImpl::subscribe_raw_gps(const Telemetry::RawGpsCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _raw_gps_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_raw_gps(Telemetry::RawGpsHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _raw_gps_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::BatteryHandle
 TelemetryImpl::subscribe_battery(const Telemetry::BatteryCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _battery_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_battery(Telemetry::BatteryHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _battery_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::FlightModeHandle
 TelemetryImpl::subscribe_flight_mode(const Telemetry::FlightModeCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _flight_mode_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_flight_mode(Telemetry::FlightModeHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _flight_mode_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::HealthHandle TelemetryImpl::subscribe_health(const Telemetry::HealthCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _health_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_health(Telemetry::HealthHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _health_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::HealthAllOkHandle
 TelemetryImpl::subscribe_health_all_ok(const Telemetry::HealthAllOkCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _health_all_ok_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_health_all_ok(Telemetry::HealthAllOkHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _health_all_ok_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::VtolStateHandle
 TelemetryImpl::subscribe_vtol_state(const Telemetry::VtolStateCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _vtol_state_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_vtol_state(Telemetry::VtolStateHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _vtol_state_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::LandedStateHandle
 TelemetryImpl::subscribe_landed_state(const Telemetry::LandedStateCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _landed_state_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_landed_state(Telemetry::LandedStateHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _landed_state_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::RcStatusHandle
 TelemetryImpl::subscribe_rc_status(const Telemetry::RcStatusCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _rc_status_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_rc_status(Telemetry::RcStatusHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _rc_status_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::UnixEpochTimeHandle
 TelemetryImpl::subscribe_unix_epoch_time(const Telemetry::UnixEpochTimeCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _unix_epoch_time_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_unix_epoch_time(Telemetry::UnixEpochTimeHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _unix_epoch_time_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::ActuatorControlTargetHandle TelemetryImpl::subscribe_actuator_control_target(
     const Telemetry::ActuatorControlTargetCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _actuator_control_target_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_actuator_control_target(
     Telemetry::ActuatorControlTargetHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _actuator_control_target_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::ActuatorOutputStatusHandle TelemetryImpl::subscribe_actuator_output_status(
     const Telemetry::ActuatorOutputStatusCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _actuator_output_status_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_actuator_output_status(Telemetry::ActuatorOutputStatusHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _actuator_output_status_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::OdometryHandle
 TelemetryImpl::subscribe_odometry(const Telemetry::OdometryCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _odometry_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_odometry(Telemetry::OdometryHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _odometry_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::DistanceSensorHandle
 TelemetryImpl::subscribe_distance_sensor(const Telemetry::DistanceSensorCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _distance_sensor_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_distance_sensor(Telemetry::DistanceSensorHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _distance_sensor_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::ScaledPressureHandle
 TelemetryImpl::subscribe_scaled_pressure(const Telemetry::ScaledPressureCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _scaled_pressure_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_scaled_pressure(Telemetry::ScaledPressureHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _scaled_pressure_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::HeadingHandle
 TelemetryImpl::subscribe_heading(const Telemetry::HeadingCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _heading_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_heading(Telemetry::HeadingHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _heading_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::AltitudeHandle
 TelemetryImpl::subscribe_altitude(const Telemetry::AltitudeCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _altitude_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_altitude(Telemetry::AltitudeHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _altitude_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::WindHandle TelemetryImpl::subscribe_wind(const Telemetry::WindCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _wind_subscriptions.subscribe(callback);
 }
 
 void TelemetryImpl::unsubscribe_wind(Telemetry::WindHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _wind_subscriptions.unsubscribe(handle);
 }
 

@@ -4,7 +4,7 @@
 
 #include "winch.h"
 
-#include <mavsdk/plugins/winch/winch.h>
+#include <mavsdk/plugins/winch/winch.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

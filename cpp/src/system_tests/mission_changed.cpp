@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/mission_raw/mission_raw.h"
-#include "plugins/mission_raw_server/mission_raw_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/mission_raw/mission_raw.hpp"
+#include "plugins/mission_raw_server/mission_raw_server.hpp"
 #include <cmath>
 #include <atomic>
 #include <future>
@@ -18,20 +18,22 @@ static constexpr unsigned NUM_SOME_ITEMS = sizeof(SOME_LATITUDES) / sizeof(SOME_
 
 static void validate_items(const std::vector<MissionRaw::MissionItem>& items);
 
-TEST(SystemTest, MissionChanged)
+TEST(Mission, Changed)
 {
     // Create two MAVSDK instances: groundstation and autopilot
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    // Set up the autopilot side with MissionRawServer before connections
+    // so capabilities (MISSION_INT) are available before the first
+    // AUTOPILOT_VERSION exchange.
+    auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
         ConnectionResult::Success);
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
-
-    // Set up the autopilot side with MissionRawServer
-    auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
     // Wait for groundstation to discover autopilot
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
@@ -46,11 +48,11 @@ TEST(SystemTest, MissionChanged)
 
     std::atomic<bool> called_once{false};
 
-    LogInfo() << "Subscribe for mission changed notification";
+    LogInfo("Subscribe for mission changed notificatio");
     mission_raw.subscribe_mission_changed([&prom_changed, &called_once](bool) {
         bool flag = false;
         if (called_once.compare_exchange_strong(flag, true)) {
-            LogInfo() << "Mission changed notification received!";
+            LogInfo("Mission changed notification received!");
             prom_changed.set_value();
         }
     });
@@ -100,13 +102,13 @@ TEST(SystemTest, MissionChanged)
     mission_raw_items[0].current = 1;
 
     {
-        LogInfo() << "Uploading mission...";
+        LogInfo("Uploading mission...");
         std::promise<void> prom{};
         std::future<void> fut = prom.get_future();
         mission_raw.upload_mission_async(mission_raw_items, [&prom](MissionRaw::Result result) {
             ASSERT_EQ(result, MissionRaw::Result::Success);
             prom.set_value();
-            LogInfo() << "Mission uploaded.";
+            LogInfo("Mission uploaded.");
         });
 
         auto status = fut.wait_for(std::chrono::seconds(2));
@@ -116,12 +118,12 @@ TEST(SystemTest, MissionChanged)
 
     // The mission change callback should have triggered now because we have uploaded a mission.
     EXPECT_EQ(fut_changed.wait_for(std::chrono::milliseconds(500)), std::future_status::ready);
-    LogInfo() << "Mission changed notification was triggered as expected.";
+    LogInfo("Mission changed notification was triggered as expected.");
 
     {
         std::promise<void> prom{};
         std::future<void> fut = prom.get_future();
-        LogInfo() << "Download raw mission items.";
+        LogInfo("Download raw mission items.");
         mission_raw.download_mission_async(
             [&prom](MissionRaw::Result result, const std::vector<MissionRaw::MissionItem> items) {
                 EXPECT_EQ(result, MissionRaw::Result::Success);

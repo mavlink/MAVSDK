@@ -2,8 +2,8 @@
 // This is a simple example to reboot the autopilot.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>

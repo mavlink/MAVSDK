@@ -1,5 +1,5 @@
-#include "server_component_impl.h"
-#include "mavsdk_impl.h"
+#include "server_component_impl.hpp"
+#include "mavsdk_impl.hpp"
 
 namespace mavsdk {
 

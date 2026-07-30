@@ -2,8 +2,8 @@
 #include <thread>
 #include <chrono>
 #include <future>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/camera_server/camera_server.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/camera_server/camera_server.hpp>
 
 static void subscribe_camera_operation(mavsdk::CameraServer& camera_server);
 

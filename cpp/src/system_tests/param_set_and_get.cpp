@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/param/param.h"
-#include "plugins/param_server/param_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/param/param.hpp"
+#include "plugins/param_server/param_server.hpp"
 #include <atomic>
 #include <chrono>
 #include <thread>
@@ -17,7 +17,7 @@ static constexpr float param_value_float = 42.0f;
 
 static constexpr double reduced_timeout_s = 0.1;
 
-TEST(SystemTest, ParamSetAndGet)
+TEST(Param, SetAndGet)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -97,17 +97,15 @@ TEST(SystemTest, ParamSetAndGet)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, ParamSetAndGetLossy)
+TEST(Param, SetAndGetLossy)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    // Drop every third message
+    // Drop every third message to simulate a lossy link
     std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 3; };
-
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
+    auto drop_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
+        [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 3 != 0; });
 
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
@@ -175,13 +173,11 @@ TEST(SystemTest, ParamSetAndGetLossy)
     EXPECT_EQ(server_result_all_params.int_params.size(), 1);
     EXPECT_EQ(server_result_all_params.float_params.size(), 1);
 
-    // Before going out of scope, we need to make sure to no longer access the
-    // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+    // Stop dropping before going out of scope
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_handle);
 }
 
-TEST(SystemTest, ParamGetAndChange)
+TEST(Param, GetAndChange)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -248,7 +244,7 @@ TEST(SystemTest, ParamGetAndChange)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, ParamGetAndChangeTooLate)
+TEST(Param, GetAndChangeTooLate)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -292,6 +288,68 @@ TEST(SystemTest, ParamGetAndChangeTooLate)
     EXPECT_EQ(
         param_server.provide_param_int("ANOTHER_ONE", 67),
         ParamServer::Result::ParamProvidedTooLate);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+TEST(Param, ChangeExistingAfterLockdown)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto param_server = ParamServer{mavsdk_autopilot.server_component()};
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto param = Param{system};
+
+    EXPECT_EQ(
+        param_server.provide_param_float(param_name_float, param_value_float),
+        ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_int(param_name_int, param_value_int),
+        ParamServer::Result::Success);
+
+    // Requesting all params locks down the set: indices and count are now fixed.
+    const auto all_params = param.get_all_params();
+    ASSERT_EQ(all_params.float_params.size(), 1);
+    ASSERT_EQ(all_params.int_params.size(), 1);
+
+    // Adding a new parameter is no longer allowed.
+    EXPECT_EQ(
+        param_server.provide_param_int("ANOTHER_ONE", 67),
+        ParamServer::Result::ParamProvidedTooLate);
+
+    // But changing the value of an already-provided parameter still works, since it doesn't
+    // change the indices or count.
+    EXPECT_EQ(
+        param_server.provide_param_float(param_name_float, param_value_float + 1.0f),
+        ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_int(param_name_int, param_value_int + 2),
+        ParamServer::Result::Success);
+
+    // And the ground station reads back the changed values.
+    auto result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_float.second, param_value_float + 1.0f);
+
+    auto result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_int.second, param_value_int + 2);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

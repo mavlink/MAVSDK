@@ -1,16 +1,16 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/mavlink_direct/mavlink_direct.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/mavlink_direct/mavlink_direct.hpp"
 #include <chrono>
 #include <thread>
 #include <future>
 #include <atomic>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
-TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
+TEST(MavlinkDirect, ForwardingKnownMessage)
 {
     // Test 3-instance message forwarding with a known standard message
     // Instance 1 (Sender) -> Instance 2 (Forwarder) -> Instance 3 (Receiver)
@@ -38,7 +38,7 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
     ASSERT_EQ(
         mavsdk_receiver.add_any_connection("udpin://0.0.0.0:17011"), ConnectionResult::Success);
 
-    LogInfo() << "Waiting for connections to establish...";
+    LogInfo("Waiting for connections to establish...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Receiver discovers the sender system (autopilot) through the forwarder
@@ -48,8 +48,13 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
     ASSERT_TRUE(system->has_autopilot());
 
     // Sender waits to discover ground station systems
-    while (mavsdk_sender.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_sender.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for sender to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     // Get sender's view of the receiver systems (for sending)
@@ -65,12 +70,12 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
 
     auto handle = receiver_mavlink_direct.subscribe_message(
         "GLOBAL_POSITION_INT", [&prom](const MavlinkDirect::MavlinkMessage& message) {
-            LogInfo() << "Receiver got forwarded known message: " << message.fields_json;
+            LogInfo("Receiver got forwarded known message: {}", message.fields_json);
             prom.set_value(message);
         });
 
     // Send known message from sender
-    LogInfo() << "Sending known GLOBAL_POSITION_INT message through forwarder...";
+    LogInfo("Sending known GLOBAL_POSITION_INT message through forwarder...");
     MavlinkDirect::MavlinkMessage test_message;
     test_message.message_name = "GLOBAL_POSITION_INT";
     test_message.system_id = 1;
@@ -95,9 +100,9 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
     EXPECT_EQ(received_message.component_id, 1);
 
     // Parse and verify JSON content
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
 
     // The JSON format may vary but should contain the message information
     // For now, just verify it's not empty and contains the message name
@@ -107,7 +112,7 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
     receiver_mavlink_direct.unsubscribe_message(handle);
 }
 
-TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
+TEST(MavlinkDirect, ForwardingUnknownMessage)
 {
     // Test 3-instance message forwarding where intermediate instance doesn't know the custom
     // message Instance 1 (Sender) -> Instance 2 (Forwarder) -> Instance 3 (Receiver) Only Instance
@@ -152,7 +157,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     </messages>
 </mavlink>)";
 
-    LogInfo() << "Waiting for connections to establish...";
+    LogInfo("Waiting for connections to establish...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Receiver discovers the sender system (autopilot) through the forwarder
@@ -162,8 +167,13 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     ASSERT_TRUE(system->has_autopilot());
 
     // Sender waits to discover ground station systems
-    while (mavsdk_sender.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_sender.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for sender to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     // Get sender's view of the receiver systems (for sending)
@@ -186,7 +196,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     auto handle = receiver_mavlink_direct.subscribe_message(
         "CUSTOM_FORWARD_TEST",
         [&prom, &message_received](const MavlinkDirect::MavlinkMessage& message) {
-            LogInfo() << "Receiver got forwarded custom message: " << message.fields_json;
+            LogInfo("Receiver got forwarded custom message: {}", message.fields_json);
             if (!message_received.exchange(true)) {
                 // Only set the promise once, even if we receive the message multiple times
                 prom.set_value(message);
@@ -194,7 +204,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
         });
 
     // Send custom message from sender
-    LogInfo() << "Sending custom message through forwarder...";
+    LogInfo("Sending custom message through forwarder...");
     MavlinkDirect::MavlinkMessage test_message;
     test_message.message_name = "CUSTOM_FORWARD_TEST";
     test_message.system_id = 1;
@@ -207,7 +217,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     EXPECT_EQ(MavlinkDirect::Result::Success, sender_mavlink_direct.send_message(test_message));
 
     // Wait for message to be received through the forwarder
-    LogInfo() << "Waiting for forwarded message...";
+    LogInfo("Waiting for forwarded message...");
     auto wait_result = fut.wait_for(std::chrono::seconds(3));
 
     ASSERT_EQ(wait_result, std::future_status::ready);
@@ -220,14 +230,14 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     EXPECT_EQ(received_message.component_id, 1);
 
     // Parse and verify JSON content
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
 
-    EXPECT_EQ(json["test_id"].asUInt(), 12345u);
-    EXPECT_EQ(json["sequence"].asUInt(), 1u);
-    EXPECT_EQ(json["status"].asUInt(), 42u);
-    EXPECT_EQ(json["message"].asString(), "Hello through forwarder!");
+    EXPECT_EQ(json["test_id"].get<uint32_t>(), 12345u);
+    EXPECT_EQ(json["sequence"].get<uint32_t>(), 1u);
+    EXPECT_EQ(json["status"].get<uint32_t>(), 42u);
+    EXPECT_EQ(json["message"].get<std::string>(), "Hello through forwarder!");
 
     receiver_mavlink_direct.unsubscribe_message(handle);
 }

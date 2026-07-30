@@ -19,6 +19,7 @@ log_files
 log_streaming
 manual_control
 mavlink_direct
+mavlink_direct_server
 mission
 mission_raw
 mission_raw_server

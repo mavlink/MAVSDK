@@ -1418,6 +1418,59 @@ class CameraServer:
 
         return result
 
+    def set_position(self, position):
+        """Get set_position (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_set_position(
+            self._handle,
+            position.to_c_struct(),
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"set_position failed: {result}")
+
+        return result
+
+    def set_attitude_quaternion(self, attitude_quaternion):
+        """Get set_attitude_quaternion (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_set_attitude_quaternion(
+            self._handle,
+            attitude_quaternion.to_c_struct(),
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"set_attitude_quaternion failed: {result}")
+
+        return result
+
+    def set_zoom_factor(self, zoom_factor):
+        """Get set_zoom_factor (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_set_zoom_factor(
+            self._handle,
+            zoom_factor,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"set_zoom_factor failed: {result}")
+
+        return result
+
+    def set_field_of_view(self, horizontal_fov_deg, vertical_fov_deg):
+        """Get set_field_of_view (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_set_field_of_view(
+            self._handle,
+            horizontal_fov_deg,
+            vertical_fov_deg,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"set_field_of_view failed: {result}")
+
+        return result
+
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -1928,3 +1981,32 @@ _cmavsdk_lib.mavsdk_camera_server_respond_tracking_off_command.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_respond_tracking_off_command.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_camera_server_set_position.argtypes = [
+    ctypes.c_void_p,
+    PositionCStruct,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_set_position.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_camera_server_set_attitude_quaternion.argtypes = [
+    ctypes.c_void_p,
+    QuaternionCStruct,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_set_attitude_quaternion.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_camera_server_set_zoom_factor.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_set_zoom_factor.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_camera_server_set_field_of_view.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_set_field_of_view.restype = ctypes.c_int

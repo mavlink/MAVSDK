@@ -1,4 +1,4 @@
-#include "string_utils.h"
+#include "string_utils.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -21,4 +21,22 @@ TEST(StringUtils, StripPrefix)
     EXPECT_EQ(strip_prefix("", ""), "");
     EXPECT_EQ(strip_prefix("", "b"), "");
     EXPECT_EQ(strip_prefix("f", ""), "f");
+}
+
+TEST(StringUtils, StartsWithFullString)
+{
+    EXPECT_TRUE(starts_with("mavsdk", "mavsdk"));
+    EXPECT_FALSE(starts_with("mav", "mavsdk"));
+}
+
+TEST(StringUtils, StripPrefixFullString)
+{
+    EXPECT_EQ(strip_prefix("mavsdk", "mavsdk"), "");
+    EXPECT_EQ(strip_prefix("prefix", "prefixx"), "prefix");
+}
+
+TEST(StringUtils, StartsWithLongerPrefixRejected)
+{
+    EXPECT_FALSE(starts_with("ab", "abc"));
+    EXPECT_EQ(strip_prefix("ab", "abc"), "ab");
 }

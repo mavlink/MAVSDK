@@ -150,6 +150,12 @@ extern SetGpsGlobalOriginRequestDefaultTypeInternal _SetGpsGlobalOriginRequest_d
 class SetGpsGlobalOriginResponse;
 struct SetGpsGlobalOriginResponseDefaultTypeInternal;
 extern SetGpsGlobalOriginResponseDefaultTypeInternal _SetGpsGlobalOriginResponse_default_instance_;
+class SetHomeRequest;
+struct SetHomeRequestDefaultTypeInternal;
+extern SetHomeRequestDefaultTypeInternal _SetHomeRequest_default_instance_;
+class SetHomeResponse;
+struct SetHomeResponseDefaultTypeInternal;
+extern SetHomeResponseDefaultTypeInternal _SetHomeResponse_default_instance_;
 class SetRelayRequest;
 struct SetRelayRequestDefaultTypeInternal;
 extern SetRelayRequestDefaultTypeInternal _SetRelayRequest_default_instance_;
@@ -1637,6 +1643,233 @@ class SetRelayRequest final
                           const SetRelayRequest& from_msg);
     ::int32_t index_;
     int setting_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_action_2faction_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetHomeRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.SetHomeRequest) */ {
+ public:
+  inline SetHomeRequest() : SetHomeRequest(nullptr) {}
+  ~SetHomeRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SetHomeRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetHomeRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetHomeRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SetHomeRequest(const SetHomeRequest& from) : SetHomeRequest(nullptr, from) {}
+  inline SetHomeRequest(SetHomeRequest&& from) noexcept
+      : SetHomeRequest(nullptr, std::move(from)) {}
+  inline SetHomeRequest& operator=(const SetHomeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetHomeRequest& operator=(SetHomeRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetHomeRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetHomeRequest* internal_default_instance() {
+    return reinterpret_cast<const SetHomeRequest*>(
+        &_SetHomeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 46;
+  friend void swap(SetHomeRequest& a, SetHomeRequest& b) { a.Swap(&b); }
+  inline void Swap(SetHomeRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetHomeRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetHomeRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetHomeRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetHomeRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetHomeRequest& from) { SetHomeRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetHomeRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.action.SetHomeRequest"; }
+
+ protected:
+  explicit SetHomeRequest(::google::protobuf::Arena* arena);
+  SetHomeRequest(::google::protobuf::Arena* arena, const SetHomeRequest& from);
+  SetHomeRequest(::google::protobuf::Arena* arena, SetHomeRequest&& from) noexcept
+      : SetHomeRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLatitudeDegFieldNumber = 2,
+    kUseCurrentLocationFieldNumber = 1,
+    kAbsoluteAltitudeMFieldNumber = 4,
+    kLongitudeDegFieldNumber = 3,
+  };
+  // double latitude_deg = 2;
+  void clear_latitude_deg() ;
+  double latitude_deg() const;
+  void set_latitude_deg(double value);
+
+  private:
+  double _internal_latitude_deg() const;
+  void _internal_set_latitude_deg(double value);
+
+  public:
+  // bool use_current_location = 1;
+  void clear_use_current_location() ;
+  bool use_current_location() const;
+  void set_use_current_location(bool value);
+
+  private:
+  bool _internal_use_current_location() const;
+  void _internal_set_use_current_location(bool value);
+
+  public:
+  // float absolute_altitude_m = 4;
+  void clear_absolute_altitude_m() ;
+  float absolute_altitude_m() const;
+  void set_absolute_altitude_m(float value);
+
+  private:
+  float _internal_absolute_altitude_m() const;
+  void _internal_set_absolute_altitude_m(float value);
+
+  public:
+  // double longitude_deg = 3;
+  void clear_longitude_deg() ;
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
+
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.SetHomeRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetHomeRequest& from_msg);
+    double latitude_deg_;
+    bool use_current_location_;
+    float absolute_altitude_m_;
+    double longitude_deg_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4252,7 +4485,7 @@ class ActionResult final
     return reinterpret_cast<const ActionResult*>(
         &_ActionResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 46;
+  static constexpr int kIndexInFileMessages = 48;
   friend void swap(ActionResult& a, ActionResult& b) { a.Swap(&b); }
   inline void Swap(ActionResult* other) {
     if (other == this) return;
@@ -5999,6 +6232,203 @@ class SetRelayResponse final
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const SetRelayResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::action::ActionResult* action_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_action_2faction_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SetHomeResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.SetHomeResponse) */ {
+ public:
+  inline SetHomeResponse() : SetHomeResponse(nullptr) {}
+  ~SetHomeResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SetHomeResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetHomeResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetHomeResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SetHomeResponse(const SetHomeResponse& from) : SetHomeResponse(nullptr, from) {}
+  inline SetHomeResponse(SetHomeResponse&& from) noexcept
+      : SetHomeResponse(nullptr, std::move(from)) {}
+  inline SetHomeResponse& operator=(const SetHomeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetHomeResponse& operator=(SetHomeResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetHomeResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetHomeResponse* internal_default_instance() {
+    return reinterpret_cast<const SetHomeResponse*>(
+        &_SetHomeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 47;
+  friend void swap(SetHomeResponse& a, SetHomeResponse& b) { a.Swap(&b); }
+  inline void Swap(SetHomeResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetHomeResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetHomeResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetHomeResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetHomeResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetHomeResponse& from) { SetHomeResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetHomeResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.action.SetHomeResponse"; }
+
+ protected:
+  explicit SetHomeResponse(::google::protobuf::Arena* arena);
+  SetHomeResponse(::google::protobuf::Arena* arena, const SetHomeResponse& from);
+  SetHomeResponse(::google::protobuf::Arena* arena, SetHomeResponse&& from) noexcept
+      : SetHomeResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kActionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  bool has_action_result() const;
+  void clear_action_result() ;
+  const ::mavsdk::rpc::action::ActionResult& action_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::action::ActionResult* release_action_result();
+  ::mavsdk::rpc::action::ActionResult* mutable_action_result();
+  void set_allocated_action_result(::mavsdk::rpc::action::ActionResult* value);
+  void unsafe_arena_set_allocated_action_result(::mavsdk::rpc::action::ActionResult* value);
+  ::mavsdk::rpc::action::ActionResult* unsafe_arena_release_action_result();
+
+  private:
+  const ::mavsdk::rpc::action::ActionResult& _internal_action_result() const;
+  ::mavsdk::rpc::action::ActionResult* _internal_mutable_action_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.SetHomeResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetHomeResponse& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::mavsdk::rpc::action::ActionResult* action_result_;
@@ -11873,6 +12303,198 @@ inline void SetGpsGlobalOriginResponse::set_allocated_action_result(::mavsdk::rp
 
   _impl_.action_result_ = reinterpret_cast<::mavsdk::rpc::action::ActionResult*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.action.SetGpsGlobalOriginResponse.action_result)
+}
+
+// -------------------------------------------------------------------
+
+// SetHomeRequest
+
+// bool use_current_location = 1;
+inline void SetHomeRequest::clear_use_current_location() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.use_current_location_ = false;
+}
+inline bool SetHomeRequest::use_current_location() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.SetHomeRequest.use_current_location)
+  return _internal_use_current_location();
+}
+inline void SetHomeRequest::set_use_current_location(bool value) {
+  _internal_set_use_current_location(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.SetHomeRequest.use_current_location)
+}
+inline bool SetHomeRequest::_internal_use_current_location() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.use_current_location_;
+}
+inline void SetHomeRequest::_internal_set_use_current_location(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.use_current_location_ = value;
+}
+
+// double latitude_deg = 2;
+inline void SetHomeRequest::clear_latitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = 0;
+}
+inline double SetHomeRequest::latitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.SetHomeRequest.latitude_deg)
+  return _internal_latitude_deg();
+}
+inline void SetHomeRequest::set_latitude_deg(double value) {
+  _internal_set_latitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.SetHomeRequest.latitude_deg)
+}
+inline double SetHomeRequest::_internal_latitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.latitude_deg_;
+}
+inline void SetHomeRequest::_internal_set_latitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = value;
+}
+
+// double longitude_deg = 3;
+inline void SetHomeRequest::clear_longitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = 0;
+}
+inline double SetHomeRequest::longitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.SetHomeRequest.longitude_deg)
+  return _internal_longitude_deg();
+}
+inline void SetHomeRequest::set_longitude_deg(double value) {
+  _internal_set_longitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.SetHomeRequest.longitude_deg)
+}
+inline double SetHomeRequest::_internal_longitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.longitude_deg_;
+}
+inline void SetHomeRequest::_internal_set_longitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = value;
+}
+
+// float absolute_altitude_m = 4;
+inline void SetHomeRequest::clear_absolute_altitude_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = 0;
+}
+inline float SetHomeRequest::absolute_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.SetHomeRequest.absolute_altitude_m)
+  return _internal_absolute_altitude_m();
+}
+inline void SetHomeRequest::set_absolute_altitude_m(float value) {
+  _internal_set_absolute_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.SetHomeRequest.absolute_altitude_m)
+}
+inline float SetHomeRequest::_internal_absolute_altitude_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.absolute_altitude_m_;
+}
+inline void SetHomeRequest::_internal_set_absolute_altitude_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SetHomeResponse
+
+// .mavsdk.rpc.action.ActionResult action_result = 1;
+inline bool SetHomeResponse::has_action_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.action_result_ != nullptr);
+  return value;
+}
+inline void SetHomeResponse::clear_action_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.action_result_ != nullptr) _impl_.action_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::action::ActionResult& SetHomeResponse::_internal_action_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::action::ActionResult* p = _impl_.action_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::action::ActionResult&>(::mavsdk::rpc::action::_ActionResult_default_instance_);
+}
+inline const ::mavsdk::rpc::action::ActionResult& SetHomeResponse::action_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.SetHomeResponse.action_result)
+  return _internal_action_result();
+}
+inline void SetHomeResponse::unsafe_arena_set_allocated_action_result(::mavsdk::rpc::action::ActionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.action_result_);
+  }
+  _impl_.action_result_ = reinterpret_cast<::mavsdk::rpc::action::ActionResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.action.SetHomeResponse.action_result)
+}
+inline ::mavsdk::rpc::action::ActionResult* SetHomeResponse::release_action_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::action::ActionResult* released = _impl_.action_result_;
+  _impl_.action_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::action::ActionResult* SetHomeResponse::unsafe_arena_release_action_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.action.SetHomeResponse.action_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::action::ActionResult* temp = _impl_.action_result_;
+  _impl_.action_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::action::ActionResult* SetHomeResponse::_internal_mutable_action_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.action_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::action::ActionResult>(GetArena());
+    _impl_.action_result_ = reinterpret_cast<::mavsdk::rpc::action::ActionResult*>(p);
+  }
+  return _impl_.action_result_;
+}
+inline ::mavsdk::rpc::action::ActionResult* SetHomeResponse::mutable_action_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::action::ActionResult* _msg = _internal_mutable_action_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.action.SetHomeResponse.action_result)
+  return _msg;
+}
+inline void SetHomeResponse::set_allocated_action_result(::mavsdk::rpc::action::ActionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.action_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.action_result_ = reinterpret_cast<::mavsdk::rpc::action::ActionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.action.SetHomeResponse.action_result)
 }
 
 // -------------------------------------------------------------------

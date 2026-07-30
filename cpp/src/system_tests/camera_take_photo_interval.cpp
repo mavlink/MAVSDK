@@ -1,7 +1,7 @@
-#include "mavsdk.h"
-#include "plugins/camera/camera.h"
-#include "plugins/camera_server/camera_server.h"
-#include "log.h"
+#include "mavsdk.hpp"
+#include "plugins/camera/camera.hpp"
+#include "plugins/camera_server/camera_server.hpp"
+#include "log.hpp"
 #include <atomic>
 #include <future>
 #include <mutex>
@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraTakePhotoInterval)
+TEST(Camera, TakePhotoInterval)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
@@ -33,7 +33,7 @@ TEST(SystemTest, CameraTakePhotoInterval)
     camera_server.set_information(information);
 
     camera_server.subscribe_take_photo([&camera_server](int32_t index) {
-        LogInfo() << "Let's take photo " << index;
+        LogInfo("Let's take photo {}", index);
 
         CameraServer::CaptureInfo info;
         info.index = index;
@@ -68,7 +68,7 @@ TEST(SystemTest, CameraTakePhotoInterval)
 
     auto capture_info_handle =
         camera.subscribe_capture_info([captured](Camera::CaptureInfo capture_info) {
-            LogInfo() << "Received captured info for image: " << capture_info.index;
+            LogInfo("Received captured info for image: {}", capture_info.index);
             ++(*captured);
         });
 

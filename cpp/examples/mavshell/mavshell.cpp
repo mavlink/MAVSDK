@@ -1,6 +1,6 @@
 #include <future>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/shell/shell.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/shell/shell.hpp>
 #include <iostream>
 
 using namespace mavsdk;

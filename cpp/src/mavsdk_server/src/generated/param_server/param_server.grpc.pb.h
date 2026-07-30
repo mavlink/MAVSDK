@@ -67,10 +67,10 @@ class ParamServerService final {
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
     //
-    // Note that all params need to be provided upfront. Once a client has
-    // requested a param list, the indices are locked and no more params
-    // can be added.
-    //
+    // Note that new params have to be provided upfront. Once a client has
+    // requested the param list, the indices are locked and no new params can
+    // be added. Providing an already-existing param still updates its value
+    // and announces the change to connected clients.
     virtual ::grpc::Status ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamIntResponse>> AsyncProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamIntResponse>>(AsyncProvideParamIntRaw(context, request, cq));
@@ -82,10 +82,6 @@ class ParamServerService final {
     // Retrieve a float parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    //
-    // Note that all params need to be provided upfront. Once a client has
-    // requested a param list, the indices are locked and no more params
-    // can be added.
     virtual ::grpc::Status RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>> AsyncRetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamFloatResponse>>(AsyncRetrieveParamFloatRaw(context, request, cq));
@@ -97,6 +93,11 @@ class ParamServerService final {
     // Provide a float parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
+    //
+    // Note that new params have to be provided upfront. Once a client has
+    // requested the param list, the indices are locked and no new params can
+    // be added. Providing an already-existing param still updates its value
+    // and announces the change to connected clients.
     virtual ::grpc::Status ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>> AsyncProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamFloatResponse>>(AsyncProvideParamFloatRaw(context, request, cq));
@@ -108,10 +109,6 @@ class ParamServerService final {
     // Retrieve a custom parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    //
-    // Note that all params need to be provided upfront. Once a client has
-    // requested a param list, the indices are locked and no more params
-    // can be added.
     virtual ::grpc::Status RetrieveParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamCustomRequest& request, ::mavsdk::rpc::param_server::RetrieveParamCustomResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamCustomResponse>> AsyncRetrieveParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamCustomRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::RetrieveParamCustomResponse>>(AsyncRetrieveParamCustomRaw(context, request, cq));
@@ -123,6 +120,11 @@ class ParamServerService final {
     // Provide a custom parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
+    //
+    // Note that new params have to be provided upfront. Once a client has
+    // requested the param list, the indices are locked and no new params can
+    // be added. Providing an already-existing param still updates its value
+    // and announces the change to connected clients.
     virtual ::grpc::Status ProvideParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamCustomRequest& request, ::mavsdk::rpc::param_server::ProvideParamCustomResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamCustomResponse>> AsyncProvideParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamCustomRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::param_server::ProvideParamCustomResponse>>(AsyncProvideParamCustomRaw(context, request, cq));
@@ -191,42 +193,44 @@ class ParamServerService final {
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
       //
-      // Note that all params need to be provided upfront. Once a client has
-      // requested a param list, the indices are locked and no more params
-      // can be added.
-      //
+      // Note that new params have to be provided upfront. Once a client has
+      // requested the param list, the indices are locked and no new params can
+      // be added. Providing an already-existing param still updates its value
+      // and announces the change to connected clients.
       virtual void ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ProvideParamInt(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
       // Retrieve a float parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
-      //
-      // Note that all params need to be provided upfront. Once a client has
-      // requested a param list, the indices are locked and no more params
-      // can be added.
       virtual void RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void RetrieveParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
       // Provide a float parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
+      //
+      // Note that new params have to be provided upfront. Once a client has
+      // requested the param list, the indices are locked and no new params can
+      // be added. Providing an already-existing param still updates its value
+      // and announces the change to connected clients.
       virtual void ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ProvideParamFloat(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
       // Retrieve a custom parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
-      //
-      // Note that all params need to be provided upfront. Once a client has
-      // requested a param list, the indices are locked and no more params
-      // can be added.
       virtual void RetrieveParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamCustomRequest* request, ::mavsdk::rpc::param_server::RetrieveParamCustomResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void RetrieveParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::RetrieveParamCustomRequest* request, ::mavsdk::rpc::param_server::RetrieveParamCustomResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
       // Provide a custom parameter.
       //
       // If the type is wrong, the result will be `WRONG_TYPE`.
+      //
+      // Note that new params have to be provided upfront. Once a client has
+      // requested the param list, the indices are locked and no new params can
+      // be added. Providing an already-existing param still updates its value
+      // and announces the change to connected clients.
       virtual void ProvideParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamCustomRequest* request, ::mavsdk::rpc::param_server::ProvideParamCustomResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ProvideParamCustom(::grpc::ClientContext* context, const ::mavsdk::rpc::param_server::ProvideParamCustomRequest* request, ::mavsdk::rpc::param_server::ProvideParamCustomResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
@@ -449,38 +453,40 @@ class ParamServerService final {
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
     //
-    // Note that all params need to be provided upfront. Once a client has
-    // requested a param list, the indices are locked and no more params
-    // can be added.
-    //
+    // Note that new params have to be provided upfront. Once a client has
+    // requested the param list, the indices are locked and no new params can
+    // be added. Providing an already-existing param still updates its value
+    // and announces the change to connected clients.
     virtual ::grpc::Status ProvideParamInt(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::ProvideParamIntRequest* request, ::mavsdk::rpc::param_server::ProvideParamIntResponse* response);
     //
     // Retrieve a float parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    //
-    // Note that all params need to be provided upfront. Once a client has
-    // requested a param list, the indices are locked and no more params
-    // can be added.
     virtual ::grpc::Status RetrieveParamFloat(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::RetrieveParamFloatRequest* request, ::mavsdk::rpc::param_server::RetrieveParamFloatResponse* response);
     //
     // Provide a float parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
+    //
+    // Note that new params have to be provided upfront. Once a client has
+    // requested the param list, the indices are locked and no new params can
+    // be added. Providing an already-existing param still updates its value
+    // and announces the change to connected clients.
     virtual ::grpc::Status ProvideParamFloat(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::ProvideParamFloatRequest* request, ::mavsdk::rpc::param_server::ProvideParamFloatResponse* response);
     //
     // Retrieve a custom parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
-    //
-    // Note that all params need to be provided upfront. Once a client has
-    // requested a param list, the indices are locked and no more params
-    // can be added.
     virtual ::grpc::Status RetrieveParamCustom(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::RetrieveParamCustomRequest* request, ::mavsdk::rpc::param_server::RetrieveParamCustomResponse* response);
     //
     // Provide a custom parameter.
     //
     // If the type is wrong, the result will be `WRONG_TYPE`.
+    //
+    // Note that new params have to be provided upfront. Once a client has
+    // requested the param list, the indices are locked and no new params can
+    // be added. Providing an already-existing param still updates its value
+    // and announces the change to connected clients.
     virtual ::grpc::Status ProvideParamCustom(::grpc::ServerContext* context, const ::mavsdk::rpc::param_server::ProvideParamCustomRequest* request, ::mavsdk::rpc::param_server::ProvideParamCustomResponse* response);
     //
     // Retrieve all parameters.

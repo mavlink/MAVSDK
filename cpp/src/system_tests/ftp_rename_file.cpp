@@ -1,14 +1,14 @@
-#include "log.h"
-#include "mavsdk.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <chrono>
 #include <future>
 #include <fstream>
 #include <thread>
-#include "plugins/ftp/ftp.h"
-#include "plugins/ftp_server/ftp_server.h"
-#include "fs_helpers.h"
+#include "plugins/ftp/ftp.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
+#include "fs_helpers.hpp"
 
 using namespace mavsdk;
 
@@ -21,7 +21,7 @@ static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/prov
 static const fs::path temp_file = "data.bin";
 static const fs::path temp_file_renamed = "rhubarb.bin";
 
-TEST(SystemTest, FtpRenameFile)
+TEST(Ftp, RenameFile)
 {
     ASSERT_TRUE(reset_directories(temp_dir_provided));
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));

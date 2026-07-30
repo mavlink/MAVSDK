@@ -1,0 +1,184 @@
+#pragma once
+
+#include <optional>
+#include <unordered_map>
+#include "plugins/gimbal/gimbal.hpp"
+#include "plugin_impl_base.hpp"
+#include "system.hpp"
+#include "callback_list.hpp"
+
+namespace mavsdk {
+
+class GimbalImpl : public PluginImplBase {
+public:
+    explicit GimbalImpl(System& system);
+    explicit GimbalImpl(std::shared_ptr<System> system);
+    ~GimbalImpl() override;
+
+    void init() override;
+    void deinit() override;
+
+    void enable() override;
+    void disable() override;
+
+    Gimbal::Result set_angles(
+        int32_t gimbal_id,
+        float roll_deg,
+        float pitch_deg,
+        float yaw_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode);
+    void set_angles_async(
+        int32_t gimbal_id,
+        float roll_deg,
+        float pitch_deg,
+        float yaw_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode,
+        const Gimbal::ResultCallback& callback);
+
+    Gimbal::Result set_angular_rates(
+        int32_t gimbal_id,
+        float roll_rate_deg,
+        float pitch_rate_deg,
+        float yaw_rate_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode);
+    void set_angular_rates_async(
+        int32_t gimbal_id,
+        float roll_rate_deg,
+        float pitch_rate_deg,
+        float yaw_rate_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode,
+        const Gimbal::ResultCallback& callback);
+
+    Gimbal::Result set_roi_location(
+        int32_t gimbal_id, double latitude_deg, double longitude_deg, float altitude_m);
+    void set_roi_location_async(
+        int32_t gimbal_id,
+        double latitude_deg,
+        double longitude_deg,
+        float altitude_m,
+        const Gimbal::ResultCallback& callback);
+
+    Gimbal::Result take_control(int32_t gimbal_id, Gimbal::ControlMode control_mode);
+    void take_control_async(
+        int32_t gimbal_id,
+        Gimbal::ControlMode control_mode,
+        const Gimbal::ResultCallback& callback);
+
+    Gimbal::Result release_control(int32_t gimbal_id);
+    void release_control_async(int32_t gimbal_id, const Gimbal::ResultCallback& callback);
+
+    Gimbal::GimbalListHandle subscribe_gimbal_list(const Gimbal::GimbalListCallback& callback);
+    void unsubscribe_gimbal_list(Gimbal::GimbalListHandle handle);
+    Gimbal::GimbalList gimbal_list();
+
+    Gimbal::ControlStatusHandle
+    subscribe_control_status(const Gimbal::ControlStatusCallback& callback);
+    void unsubscribe_control_status(Gimbal::ControlStatusHandle handle);
+    std::pair<Gimbal::Result, Gimbal::ControlStatus> get_control_status(int32_t gimbal_id);
+
+    Gimbal::AttitudeHandle subscribe_attitude(const Gimbal::AttitudeCallback& callback);
+    void unsubscribe_attitude(Gimbal::AttitudeHandle handle);
+    std::pair<Gimbal::Result, Gimbal::Attitude> get_attitude(int32_t gimbal_id);
+
+    static Gimbal::Result
+    gimbal_result_from_command_result(MavlinkCommandSender::Result command_result);
+
+    static void receive_command_result(
+        MavlinkCommandSender::Result command_result, const Gimbal::ResultCallback& callback);
+
+    // Non-copyable
+    GimbalImpl(const GimbalImpl&) = delete;
+    const GimbalImpl& operator=(const GimbalImpl&) = delete;
+
+private:
+    struct GimbalItem {
+        uint8_t gimbal_manager_compid{0};
+        uint8_t gimbal_device_id{0};
+        std::string vendor_name;
+        std::string model_name;
+        std::string custom_name;
+        Gimbal::ControlStatus control_status{0, Gimbal::ControlMode::None, 0, 0, 0, 0};
+        Gimbal::Attitude attitude{};
+    };
+
+    // Per-compid discovery state. A compid is first seen via heartbeat; we request manager info,
+    // then device info. The gimbal is only promoted to _gimbals (and announced) once we receive
+    // GIMBAL_DEVICE_INFORMATION or GIMBAL_DEVICE_ATTITUDE_STATUS.
+    struct GimbalDiscovery {
+        unsigned manager_info_requests_left{5};
+        // Set to true once GIMBAL_MANAGER_INFORMATION is received.
+        bool has_manager_info{false};
+        // Copied from GIMBAL_MANAGER_INFORMATION.gimbal_device_id once known.
+        uint8_t gimbal_device_id{0};
+        // Remaining device info requests for the pending gimbal.
+        unsigned device_info_requests_left{0};
+    };
+
+    // Keyed by the gimbal manager's component ID (where GIMBAL_MANAGER_INFORMATION arrives).
+    using DiscoveryMap = std::unordered_map<uint8_t, GimbalDiscovery>;
+
+    struct GimbalAddress {
+        uint8_t gimbal_manager_compid{0};
+        uint8_t gimbal_device_id{0};
+    };
+
+    std::optional<GimbalItem> get_gimbal_info_by_id(int32_t gimbal_id) const;
+
+    void request_gimbal_manager_information(uint8_t target_component_id) const;
+    void request_gimbal_device_information(uint8_t target_component_id) const;
+    void
+    try_request_gimbal_device_information(GimbalDiscovery& discovery, uint8_t manager_compid) const;
+
+    // Find the pending discovery entry that owns a GIMBAL_DEVICE_* message. Returns
+    // _discovery.end() if none matches. The entry's key is the manager compid, which may differ
+    // from device_compid.
+    DiscoveryMap::iterator
+    find_pending_discovery_for_device(uint8_t device_compid, uint8_t device_msg_gimbal_device_id);
+
+    void process_heartbeat(const mavlink_message_t& message);
+    void process_gimbal_manager_information(const mavlink_message_t& message);
+    void process_gimbal_manager_status(const mavlink_message_t& message);
+    void process_gimbal_device_information(const mavlink_message_t& message);
+    void process_gimbal_device_attitude_status(const mavlink_message_t& message);
+    void process_attitude(const mavlink_message_t& message);
+
+    void announce_gimbal(GimbalItem item);
+
+    void set_angles_async_internal(
+        int32_t gimbal_id,
+        float roll_deg,
+        float pitch_deg,
+        float yaw_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode,
+        const Gimbal::ResultCallback& callback);
+
+    void set_angular_rates_async_internal(
+        int32_t gimbal_id,
+        float roll_rate_deg,
+        float pitch_rate_deg,
+        float yaw_rate_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode,
+        const Gimbal::ResultCallback& callback);
+
+    Gimbal::GimbalList gimbal_list_with_lock();
+    std::optional<GimbalAddress> maybe_address_for_gimbal_id(int32_t gimbal_id) const;
+
+    mutable std::mutex _mutex{};
+    CallbackList<Gimbal::GimbalList> _gimbal_list_subscriptions{_system_impl->io_context()};
+    CallbackList<Gimbal::ControlStatus> _control_status_subscriptions{_system_impl->io_context()};
+    CallbackList<Gimbal::Attitude> _attitude_subscriptions{_system_impl->io_context()};
+
+    std::vector<GimbalItem> _gimbals;
+    DiscoveryMap _discovery;
+    float _vehicle_yaw_rad{NAN};
+
+    bool _debugging{false};
+};
+
+} // namespace mavsdk

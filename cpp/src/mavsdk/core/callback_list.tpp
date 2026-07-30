@@ -1,18 +1,17 @@
 // Include guard here, just in case
 #pragma once
 
-#include "callback_list.h"
-#include "callback_list_impl.h"
+#include "callback_list.hpp"
+#include "callback_list_impl.hpp"
 
 namespace mavsdk {
 
 template<typename... Args>
-CallbackList<Args...>::CallbackList() :
-    _impl(std::make_unique<CallbackListImpl<Args...>>())
+CallbackList<Args...>::CallbackList(asio::io_context& io_context) :
+    _impl(std::make_unique<CallbackListImpl<Args...>>(io_context))
 {}
 
-template<typename... Args>
-CallbackList<Args...>::~CallbackList() = default;
+template<typename... Args> CallbackList<Args...>::~CallbackList() = default;
 
 template<typename... Args>
 Handle<Args...> CallbackList<Args...>::subscribe(const std::function<void(Args...)>& callback)
@@ -23,6 +22,11 @@ Handle<Args...> CallbackList<Args...>::subscribe(const std::function<void(Args..
 template<typename... Args> void CallbackList<Args...>::unsubscribe(Handle<Args...> handle)
 {
     _impl->unsubscribe(handle);
+}
+
+template<typename... Args> void CallbackList<Args...>::unsubscribe_blocking(Handle<Args...> handle)
+{
+    _impl->unsubscribe_blocking(handle);
 }
 
 template<typename... Args>
@@ -46,7 +50,9 @@ template<typename... Args> void CallbackList<Args...>::clear()
     _impl->clear();
 }
 
-template<typename... Args> void CallbackList<Args...>::queue(Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
+template<typename... Args>
+void CallbackList<Args...>::queue(
+    Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
 {
     _impl->queue(args..., queue_func);
 }

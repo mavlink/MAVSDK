@@ -12,7 +12,7 @@
 #include <thread>
 #include <vector>
 
-#include <mavsdk/mavsdk.h>
+#include <mavsdk/mavsdk.hpp>
 
 using namespace mavsdk;
 

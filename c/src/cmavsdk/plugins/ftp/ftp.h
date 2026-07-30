@@ -30,18 +30,70 @@ typedef struct mavsdk_ftp_upload_handle_s *mavsdk_ftp_upload_handle_t;
 
 // ===== Structs =====
 /**
+ * @brief The type of a file system entry.
+ */
+typedef enum {
+    /**  Unknown entry type. */
+    MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_UNKNOWN = 0,
+    /**  A regular file. */
+    MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_FILE = 1,
+    /**  A directory. */
+    MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_DIRECTORY = 2,
+} mavsdk_ftp_filesystem_entry_entry_type_t;
+
+/**
+ * @brief A file system entry (file or directory) with metadata.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_ftp_filesystem_entry_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  The name of the file or directory. */
+    char* name;
+    /**  Whether the entry is a file or a directory. */
+    mavsdk_ftp_filesystem_entry_entry_type_t entry_type;
+    /**  The size of the file in bytes (0 for directories). */
+    uint64_t size_bytes;
+    /**  Last modification time in seconds since UNIX epoch (UTC), 0 if unknown. */
+    uint64_t modification_time_s;
+} mavsdk_ftp_filesystem_entry_t;
+
+/**
+ * @brief Destroy a filesystem_entry struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_ftp_filesystem_entry_destroy(
+    mavsdk_ftp_filesystem_entry_t* target);
+
+/**
+ * @brief Destroy an array of filesystem_entry structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_ftp_filesystem_entry_array_destroy(
+    mavsdk_ftp_filesystem_entry_t** array,
+    size_t size);
+
+/**
  * @brief The output of a directory list
  *
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_ftp_list_directory_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
-    /**  The found directories. */
-    char** dirs;
-    size_t dirs_size;
-    /**  The found files. */
-    char** files;
-    size_t files_size;
+    /**  The directory entries (files and directories) with their metadata. */
+    mavsdk_ftp_filesystem_entry_t* entries;
+    size_t entries_size;
 } mavsdk_ftp_list_directory_data_t;
 
 /**
@@ -239,12 +291,13 @@ CMAVSDK_EXPORT void mavsdk_ftp_destroy(mavsdk_ftp_t ftp);
  * @brief Downloads a file to local directory.
  *
  * @param ftp The ftp instance.
-* @param remote_file_path  The path of the remote file to download.
+ * @param remote_file_path  The path of the remote file to download.
  * 
-* @param local_dir  The local directory to download to.
+ * @param local_dir  The local directory to download to.
  * 
-* @param use_burst  Use burst for faster downloading.
+ * @param use_burst  Use burst for faster downloading.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -262,10 +315,11 @@ CMAVSDK_EXPORT void mavsdk_ftp_download_async(
  * @brief Uploads local file to remote directory.
  *
  * @param ftp The ftp instance.
-* @param local_file_path  The local file path to upload.
+ * @param local_file_path  The local file path to upload.
  * 
-* @param remote_dir  The remote directory to upload to.
+ * @param remote_dir  The remote directory to upload to.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -282,8 +336,9 @@ CMAVSDK_EXPORT void mavsdk_ftp_upload_async(
  * @brief Lists items from a remote directory.
  *
  * @param ftp The ftp instance.
-* @param remote_dir  The remote directory to list the contents for.
+ * @param remote_dir  The remote directory to list the contents for.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -314,8 +369,9 @@ mavsdk_ftp_list_directory(
  * @brief Creates a remote directory.
  *
  * @param ftp The ftp instance.
-* @param remote_dir  The remote directory to create.
+ * @param remote_dir  The remote directory to create.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -345,8 +401,9 @@ mavsdk_ftp_create_directory(
  * @brief Removes a remote directory.
  *
  * @param ftp The ftp instance.
-* @param remote_dir  The remote directory to remove.
+ * @param remote_dir  The remote directory to remove.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -376,8 +433,9 @@ mavsdk_ftp_remove_directory(
  * @brief Removes a remote file.
  *
  * @param ftp The ftp instance.
-* @param remote_file_path  The path of the remote file to remove.
+ * @param remote_file_path  The path of the remote file to remove.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -407,10 +465,11 @@ mavsdk_ftp_remove_file(
  * @brief Renames a remote file or remote directory.
  *
  * @param ftp The ftp instance.
-* @param remote_from_path  The remote source path.
+ * @param remote_from_path  The remote source path.
  * 
-* @param remote_to_path  The remote destination path.
+ * @param remote_to_path  The remote destination path.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -442,10 +501,11 @@ mavsdk_ftp_rename(
  * @brief Compares a local file to a remote file using a CRC32 checksum.
  *
  * @param ftp The ftp instance.
-* @param local_file_path  The path of the local file.
+ * @param local_file_path  The path of the local file.
  * 
-* @param remote_file_path  The path of the remote file.
+ * @param remote_file_path  The path of the remote file.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

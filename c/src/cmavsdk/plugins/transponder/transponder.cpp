@@ -4,7 +4,7 @@
 
 #include "transponder.h"
 
-#include <mavsdk/plugins/transponder/transponder.h>
+#include <mavsdk/plugins/transponder/transponder.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

@@ -1,13 +1,13 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/action/action.h"
-#include "plugins/action_server/action_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/action/action.hpp"
+#include "plugins/action_server/action_server.hpp"
 #include <gtest/gtest.h>
 #include <thread>
 
 using namespace mavsdk;
 
-TEST(SystemTest, ActionArmDisarm)
+TEST(Action, ArmDisarm)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 

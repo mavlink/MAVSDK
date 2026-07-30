@@ -194,6 +194,34 @@ struct SetRelayRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRelayRequestDefaultTypeInternal _SetRelayRequest_default_instance_;
 
+inline constexpr SetHomeRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : latitude_deg_{0},
+        use_current_location_{false},
+        absolute_altitude_m_{0},
+        longitude_deg_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SetHomeRequest::SetHomeRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SetHomeRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetHomeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetHomeRequestDefaultTypeInternal() {}
+  union {
+    SetHomeRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetHomeRequestDefaultTypeInternal _SetHomeRequest_default_instance_;
+
 inline constexpr SetGpsGlobalOriginRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : latitude_deg_{0},
@@ -737,6 +765,31 @@ struct SetRelayResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRelayResponseDefaultTypeInternal _SetRelayResponse_default_instance_;
+
+inline constexpr SetHomeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        action_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SetHomeResponse::SetHomeResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SetHomeResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetHomeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetHomeResponseDefaultTypeInternal() {}
+  union {
+    SetHomeResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetHomeResponseDefaultTypeInternal _SetHomeResponse_default_instance_;
 
 inline constexpr SetGpsGlobalOriginResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -1562,6 +1615,28 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetGpsGlobalOriginResponse, _impl_.action_result_),
         0,
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetHomeRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetHomeRequest, _impl_.use_current_location_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetHomeRequest, _impl_.latitude_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetHomeRequest, _impl_.longitude_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetHomeRequest, _impl_.absolute_altitude_m_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetHomeResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetHomeResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetHomeResponse, _impl_.action_result_),
+        0,
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::ActionResult, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -1621,7 +1696,9 @@ static const ::_pbi::MigrationSchema
         {407, 416, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedResponse)},
         {417, -1, -1, sizeof(::mavsdk::rpc::action::SetGpsGlobalOriginRequest)},
         {428, 437, -1, sizeof(::mavsdk::rpc::action::SetGpsGlobalOriginResponse)},
-        {438, -1, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
+        {438, -1, -1, sizeof(::mavsdk::rpc::action::SetHomeRequest)},
+        {450, 459, -1, sizeof(::mavsdk::rpc::action::SetHomeResponse)},
+        {460, -1, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::action::_ArmRequest_default_instance_._instance,
@@ -1670,6 +1747,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::action::_SetCurrentSpeedResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_SetGpsGlobalOriginRequest_default_instance_._instance,
     &::mavsdk::rpc::action::_SetGpsGlobalOriginResponse_default_instance_._instance,
+    &::mavsdk::rpc::action::_SetHomeRequest_default_instance_._instance,
+    &::mavsdk::rpc::action::_SetHomeResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_ActionResult_default_instance_._instance,
 };
 const char descriptor_table_protodef_action_2faction_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -1749,86 +1828,93 @@ const char descriptor_table_protodef_action_2faction_2eproto[] ABSL_ATTRIBUTE_SE
     "\002 \001(\001\022\033\n\023absolute_altitude_m\030\003 \001(\002\"T\n\032Se"
     "tGpsGlobalOriginResponse\0226\n\raction_resul"
     "t\030\001 \001(\0132\037.mavsdk.rpc.action.ActionResult"
-    "\"\215\004\n\014ActionResult\0226\n\006result\030\001 \001(\0162&.mavs"
-    "dk.rpc.action.ActionResult.Result\022\022\n\nres"
-    "ult_str\030\002 \001(\t\"\260\003\n\006Result\022\022\n\016RESULT_UNKNO"
-    "WN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SY"
-    "STEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013R"
-    "ESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022"
-    ".\n*RESULT_COMMAND_DENIED_LANDED_STATE_UN"
-    "KNOWN\020\006\022$\n RESULT_COMMAND_DENIED_NOT_LAN"
-    "DED\020\007\022\022\n\016RESULT_TIMEOUT\020\010\022*\n&RESULT_VTOL"
-    "_TRANSITION_SUPPORT_UNKNOWN\020\t\022%\n!RESULT_"
-    "NO_VTOL_TRANSITION_SUPPORT\020\n\022\032\n\026RESULT_P"
-    "ARAMETER_ERROR\020\013\022\026\n\022RESULT_UNSUPPORTED\020\014"
-    "\022\021\n\rRESULT_FAILED\020\r\022\033\n\027RESULT_INVALID_AR"
-    "GUMENT\020\016*\363\001\n\020OrbitYawBehavior\0222\n.ORBIT_Y"
-    "AW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER\020"
-    "\000\022+\n\'ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEA"
-    "DING\020\001\022#\n\037ORBIT_YAW_BEHAVIOR_UNCONTROLLE"
-    "D\020\002\0223\n/ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TAN"
-    "GENT_TO_CIRCLE\020\003\022$\n ORBIT_YAW_BEHAVIOR_R"
-    "C_CONTROLLED\020\004*;\n\014RelayCommand\022\024\n\020RELAY_"
-    "COMMAND_ON\020\000\022\025\n\021RELAY_COMMAND_OFF\020\0012\365\021\n\r"
-    "ActionService\022F\n\003Arm\022\035.mavsdk.rpc.action"
-    ".ArmRequest\032\036.mavsdk.rpc.action.ArmRespo"
-    "nse\"\000\022U\n\010ArmForce\022\".mavsdk.rpc.action.Ar"
-    "mForceRequest\032#.mavsdk.rpc.action.ArmFor"
-    "ceResponse\"\000\022O\n\006Disarm\022 .mavsdk.rpc.acti"
-    "on.DisarmRequest\032!.mavsdk.rpc.action.Dis"
-    "armResponse\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.ac"
-    "tion.TakeoffRequest\032\".mavsdk.rpc.action."
-    "TakeoffResponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.a"
-    "ction.LandRequest\032\037.mavsdk.rpc.action.La"
-    "ndResponse\"\000\022O\n\006Reboot\022 .mavsdk.rpc.acti"
-    "on.RebootRequest\032!.mavsdk.rpc.action.Reb"
-    "ootResponse\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.a"
-    "ction.ShutdownRequest\032#.mavsdk.rpc.actio"
-    "n.ShutdownResponse\"\000\022X\n\tTerminate\022#.mavs"
-    "dk.rpc.action.TerminateRequest\032$.mavsdk."
-    "rpc.action.TerminateResponse\"\000\022I\n\004Kill\022\036"
-    ".mavsdk.rpc.action.KillRequest\032\037.mavsdk."
-    "rpc.action.KillResponse\"\000\022g\n\016ReturnToLau"
-    "nch\022(.mavsdk.rpc.action.ReturnToLaunchRe"
-    "quest\032).mavsdk.rpc.action.ReturnToLaunch"
-    "Response\"\000\022a\n\014GotoLocation\022&.mavsdk.rpc."
-    "action.GotoLocationRequest\032\'.mavsdk.rpc."
-    "action.GotoLocationResponse\"\000\022R\n\007DoOrbit"
-    "\022!.mavsdk.rpc.action.DoOrbitRequest\032\".ma"
-    "vsdk.rpc.action.DoOrbitResponse\"\000\022I\n\004Hol"
-    "d\022\036.mavsdk.rpc.action.HoldRequest\032\037.mavs"
-    "dk.rpc.action.HoldResponse\"\000\022^\n\013SetActua"
-    "tor\022%.mavsdk.rpc.action.SetActuatorReque"
-    "st\032&.mavsdk.rpc.action.SetActuatorRespon"
-    "se\"\000\022U\n\010SetRelay\022\".mavsdk.rpc.action.Set"
-    "RelayRequest\032#.mavsdk.rpc.action.SetRela"
-    "yResponse\"\000\022|\n\025TransitionToFixedwing\022/.m"
-    "avsdk.rpc.action.TransitionToFixedwingRe"
-    "quest\0320.mavsdk.rpc.action.TransitionToFi"
-    "xedwingResponse\"\000\022\202\001\n\027TransitionToMultic"
-    "opter\0221.mavsdk.rpc.action.TransitionToMu"
-    "lticopterRequest\0322.mavsdk.rpc.action.Tra"
-    "nsitionToMulticopterResponse\"\000\022s\n\022GetTak"
-    "eoffAltitude\022,.mavsdk.rpc.action.GetTake"
-    "offAltitudeRequest\032-.mavsdk.rpc.action.G"
-    "etTakeoffAltitudeResponse\"\000\022s\n\022SetTakeof"
-    "fAltitude\022,.mavsdk.rpc.action.SetTakeoff"
-    "AltitudeRequest\032-.mavsdk.rpc.action.SetT"
-    "akeoffAltitudeResponse\"\000\022\210\001\n\031GetReturnTo"
-    "LaunchAltitude\0223.mavsdk.rpc.action.GetRe"
-    "turnToLaunchAltitudeRequest\0324.mavsdk.rpc"
-    ".action.GetReturnToLaunchAltitudeRespons"
-    "e\"\000\022\210\001\n\031SetReturnToLaunchAltitude\0223.mavs"
-    "dk.rpc.action.SetReturnToLaunchAltitudeR"
-    "equest\0324.mavsdk.rpc.action.SetReturnToLa"
-    "unchAltitudeResponse\"\000\022j\n\017SetCurrentSpee"
-    "d\022).mavsdk.rpc.action.SetCurrentSpeedReq"
-    "uest\032*.mavsdk.rpc.action.SetCurrentSpeed"
-    "Response\"\000\022w\n\022SetGpsGlobalOrigin\022,.mavsd"
-    "k.rpc.action.SetGpsGlobalOriginRequest\032-"
-    ".mavsdk.rpc.action.SetGpsGlobalOriginRes"
-    "ponse\"\004\200\265\030\001B\037\n\020io.mavsdk.actionB\013ActionP"
-    "rotob\006proto3"
+    "\"x\n\016SetHomeRequest\022\034\n\024use_current_locati"
+    "on\030\001 \001(\010\022\024\n\014latitude_deg\030\002 \001(\001\022\025\n\rlongit"
+    "ude_deg\030\003 \001(\001\022\033\n\023absolute_altitude_m\030\004 \001"
+    "(\002\"I\n\017SetHomeResponse\0226\n\raction_result\030\001"
+    " \001(\0132\037.mavsdk.rpc.action.ActionResult\"\215\004"
+    "\n\014ActionResult\0226\n\006result\030\001 \001(\0162&.mavsdk."
+    "rpc.action.ActionResult.Result\022\022\n\nresult"
+    "_str\030\002 \001(\t\"\260\003\n\006Result\022\022\n\016RESULT_UNKNOWN\020"
+    "\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTE"
+    "M\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESU"
+    "LT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022.\n*"
+    "RESULT_COMMAND_DENIED_LANDED_STATE_UNKNO"
+    "WN\020\006\022$\n RESULT_COMMAND_DENIED_NOT_LANDED"
+    "\020\007\022\022\n\016RESULT_TIMEOUT\020\010\022*\n&RESULT_VTOL_TR"
+    "ANSITION_SUPPORT_UNKNOWN\020\t\022%\n!RESULT_NO_"
+    "VTOL_TRANSITION_SUPPORT\020\n\022\032\n\026RESULT_PARA"
+    "METER_ERROR\020\013\022\026\n\022RESULT_UNSUPPORTED\020\014\022\021\n"
+    "\rRESULT_FAILED\020\r\022\033\n\027RESULT_INVALID_ARGUM"
+    "ENT\020\016*\363\001\n\020OrbitYawBehavior\0222\n.ORBIT_YAW_"
+    "BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER\020\000\022+"
+    "\n\'ORBIT_YAW_BEHAVIOR_HOLD_INITIAL_HEADIN"
+    "G\020\001\022#\n\037ORBIT_YAW_BEHAVIOR_UNCONTROLLED\020\002"
+    "\0223\n/ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGEN"
+    "T_TO_CIRCLE\020\003\022$\n ORBIT_YAW_BEHAVIOR_RC_C"
+    "ONTROLLED\020\004*;\n\014RelayCommand\022\024\n\020RELAY_COM"
+    "MAND_ON\020\000\022\025\n\021RELAY_COMMAND_OFF\020\0012\315\022\n\rAct"
+    "ionService\022F\n\003Arm\022\035.mavsdk.rpc.action.Ar"
+    "mRequest\032\036.mavsdk.rpc.action.ArmResponse"
+    "\"\000\022U\n\010ArmForce\022\".mavsdk.rpc.action.ArmFo"
+    "rceRequest\032#.mavsdk.rpc.action.ArmForceR"
+    "esponse\"\000\022O\n\006Disarm\022 .mavsdk.rpc.action."
+    "DisarmRequest\032!.mavsdk.rpc.action.Disarm"
+    "Response\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.actio"
+    "n.TakeoffRequest\032\".mavsdk.rpc.action.Tak"
+    "eoffResponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.acti"
+    "on.LandRequest\032\037.mavsdk.rpc.action.LandR"
+    "esponse\"\000\022O\n\006Reboot\022 .mavsdk.rpc.action."
+    "RebootRequest\032!.mavsdk.rpc.action.Reboot"
+    "Response\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.acti"
+    "on.ShutdownRequest\032#.mavsdk.rpc.action.S"
+    "hutdownResponse\"\000\022X\n\tTerminate\022#.mavsdk."
+    "rpc.action.TerminateRequest\032$.mavsdk.rpc"
+    ".action.TerminateResponse\"\000\022I\n\004Kill\022\036.ma"
+    "vsdk.rpc.action.KillRequest\032\037.mavsdk.rpc"
+    ".action.KillResponse\"\000\022g\n\016ReturnToLaunch"
+    "\022(.mavsdk.rpc.action.ReturnToLaunchReque"
+    "st\032).mavsdk.rpc.action.ReturnToLaunchRes"
+    "ponse\"\000\022a\n\014GotoLocation\022&.mavsdk.rpc.act"
+    "ion.GotoLocationRequest\032\'.mavsdk.rpc.act"
+    "ion.GotoLocationResponse\"\000\022R\n\007DoOrbit\022!."
+    "mavsdk.rpc.action.DoOrbitRequest\032\".mavsd"
+    "k.rpc.action.DoOrbitResponse\"\000\022I\n\004Hold\022\036"
+    ".mavsdk.rpc.action.HoldRequest\032\037.mavsdk."
+    "rpc.action.HoldResponse\"\000\022^\n\013SetActuator"
+    "\022%.mavsdk.rpc.action.SetActuatorRequest\032"
+    "&.mavsdk.rpc.action.SetActuatorResponse\""
+    "\000\022U\n\010SetRelay\022\".mavsdk.rpc.action.SetRel"
+    "ayRequest\032#.mavsdk.rpc.action.SetRelayRe"
+    "sponse\"\000\022|\n\025TransitionToFixedwing\022/.mavs"
+    "dk.rpc.action.TransitionToFixedwingReque"
+    "st\0320.mavsdk.rpc.action.TransitionToFixed"
+    "wingResponse\"\000\022\202\001\n\027TransitionToMulticopt"
+    "er\0221.mavsdk.rpc.action.TransitionToMulti"
+    "copterRequest\0322.mavsdk.rpc.action.Transi"
+    "tionToMulticopterResponse\"\000\022s\n\022GetTakeof"
+    "fAltitude\022,.mavsdk.rpc.action.GetTakeoff"
+    "AltitudeRequest\032-.mavsdk.rpc.action.GetT"
+    "akeoffAltitudeResponse\"\000\022s\n\022SetTakeoffAl"
+    "titude\022,.mavsdk.rpc.action.SetTakeoffAlt"
+    "itudeRequest\032-.mavsdk.rpc.action.SetTake"
+    "offAltitudeResponse\"\000\022\210\001\n\031GetReturnToLau"
+    "nchAltitude\0223.mavsdk.rpc.action.GetRetur"
+    "nToLaunchAltitudeRequest\0324.mavsdk.rpc.ac"
+    "tion.GetReturnToLaunchAltitudeResponse\"\000"
+    "\022\210\001\n\031SetReturnToLaunchAltitude\0223.mavsdk."
+    "rpc.action.SetReturnToLaunchAltitudeRequ"
+    "est\0324.mavsdk.rpc.action.SetReturnToLaunc"
+    "hAltitudeResponse\"\000\022j\n\017SetCurrentSpeed\022)"
+    ".mavsdk.rpc.action.SetCurrentSpeedReques"
+    "t\032*.mavsdk.rpc.action.SetCurrentSpeedRes"
+    "ponse\"\000\022w\n\022SetGpsGlobalOrigin\022,.mavsdk.r"
+    "pc.action.SetGpsGlobalOriginRequest\032-.ma"
+    "vsdk.rpc.action.SetGpsGlobalOriginRespon"
+    "se\"\004\200\265\030\001\022V\n\007SetHome\022!.mavsdk.rpc.action."
+    "SetHomeRequest\032\".mavsdk.rpc.action.SetHo"
+    "meResponse\"\004\200\265\030\001B\037\n\020io.mavsdk.actionB\013Ac"
+    "tionProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_action_2faction_2eproto_deps[1] =
     {
@@ -1838,13 +1924,13 @@ static ::absl::once_flag descriptor_table_action_2faction_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_action_2faction_2eproto = {
     false,
     false,
-    6172,
+    6457,
     descriptor_table_protodef_action_2faction_2eproto,
     "action/action.proto",
     &descriptor_table_action_2faction_2eproto_once,
     descriptor_table_action_2faction_2eproto_deps,
     1,
-    47,
+    49,
     schemas,
     file_default_instances,
     TableStruct_action_2faction_2eproto::offsets,
@@ -11228,6 +11314,535 @@ void SetGpsGlobalOriginResponse::InternalSwap(SetGpsGlobalOriginResponse* PROTOB
 }
 
 ::google::protobuf::Metadata SetGpsGlobalOriginResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SetHomeRequest::_Internal {
+ public:
+};
+
+SetHomeRequest::SetHomeRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.SetHomeRequest)
+}
+SetHomeRequest::SetHomeRequest(
+    ::google::protobuf::Arena* arena, const SetHomeRequest& from)
+    : SetHomeRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE SetHomeRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SetHomeRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, latitude_deg_),
+           0,
+           offsetof(Impl_, longitude_deg_) -
+               offsetof(Impl_, latitude_deg_) +
+               sizeof(Impl_::longitude_deg_));
+}
+SetHomeRequest::~SetHomeRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.SetHomeRequest)
+  SharedDtor(*this);
+}
+inline void SetHomeRequest::SharedDtor(MessageLite& self) {
+  SetHomeRequest& this_ = static_cast<SetHomeRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* SetHomeRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetHomeRequest(arena);
+}
+constexpr auto SetHomeRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetHomeRequest),
+                                            alignof(SetHomeRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SetHomeRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SetHomeRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SetHomeRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SetHomeRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SetHomeRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SetHomeRequest>(), &SetHomeRequest::ByteSizeLong,
+            &SetHomeRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_._cached_size_),
+        false,
+    },
+    &SetHomeRequest::kDescriptorMethods,
+    &descriptor_table_action_2faction_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SetHomeRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2> SetHomeRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::action::SetHomeRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // float absolute_altitude_m = 4;
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.absolute_altitude_m_)}},
+    // bool use_current_location = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(SetHomeRequest, _impl_.use_current_location_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.use_current_location_)}},
+    // double latitude_deg = 2;
+    {::_pbi::TcParser::FastF64S1,
+     {17, 63, 0, PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.latitude_deg_)}},
+    // double longitude_deg = 3;
+    {::_pbi::TcParser::FastF64S1,
+     {25, 63, 0, PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.longitude_deg_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool use_current_location = 1;
+    {PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.use_current_location_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // double latitude_deg = 2;
+    {PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.latitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // double longitude_deg = 3;
+    {PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.longitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // float absolute_altitude_m = 4;
+    {PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.absolute_altitude_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SetHomeRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.SetHomeRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.latitude_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.longitude_deg_) -
+      reinterpret_cast<char*>(&_impl_.latitude_deg_)) + sizeof(_impl_.longitude_deg_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SetHomeRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetHomeRequest& this_ = static_cast<const SetHomeRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetHomeRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetHomeRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.SetHomeRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // bool use_current_location = 1;
+          if (this_._internal_use_current_location() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                1, this_._internal_use_current_location(), target);
+          }
+
+          // double latitude_deg = 2;
+          if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+                2, this_._internal_latitude_deg(), target);
+          }
+
+          // double longitude_deg = 3;
+          if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+                3, this_._internal_longitude_deg(), target);
+          }
+
+          // float absolute_altitude_m = 4;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_absolute_altitude_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                4, this_._internal_absolute_altitude_m(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.SetHomeRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetHomeRequest::ByteSizeLong(const MessageLite& base) {
+          const SetHomeRequest& this_ = static_cast<const SetHomeRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetHomeRequest::ByteSizeLong() const {
+          const SetHomeRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.SetHomeRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // double latitude_deg = 2;
+            if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
+              total_size += 9;
+            }
+            // bool use_current_location = 1;
+            if (this_._internal_use_current_location() != 0) {
+              total_size += 2;
+            }
+            // float absolute_altitude_m = 4;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_absolute_altitude_m()) != 0) {
+              total_size += 5;
+            }
+            // double longitude_deg = 3;
+            if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
+              total_size += 9;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SetHomeRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetHomeRequest*>(&to_msg);
+  auto& from = static_cast<const SetHomeRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.SetHomeRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint64_t>(from._internal_latitude_deg()) != 0) {
+    _this->_impl_.latitude_deg_ = from._impl_.latitude_deg_;
+  }
+  if (from._internal_use_current_location() != 0) {
+    _this->_impl_.use_current_location_ = from._impl_.use_current_location_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_absolute_altitude_m()) != 0) {
+    _this->_impl_.absolute_altitude_m_ = from._impl_.absolute_altitude_m_;
+  }
+  if (::absl::bit_cast<::uint64_t>(from._internal_longitude_deg()) != 0) {
+    _this->_impl_.longitude_deg_ = from._impl_.longitude_deg_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetHomeRequest::CopyFrom(const SetHomeRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.SetHomeRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SetHomeRequest::InternalSwap(SetHomeRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.longitude_deg_)
+      + sizeof(SetHomeRequest::_impl_.longitude_deg_)
+      - PROTOBUF_FIELD_OFFSET(SetHomeRequest, _impl_.latitude_deg_)>(
+          reinterpret_cast<char*>(&_impl_.latitude_deg_),
+          reinterpret_cast<char*>(&other->_impl_.latitude_deg_));
+}
+
+::google::protobuf::Metadata SetHomeRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SetHomeResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<SetHomeResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetHomeResponse, _impl_._has_bits_);
+};
+
+SetHomeResponse::SetHomeResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.SetHomeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetHomeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::action::SetHomeResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetHomeResponse::SetHomeResponse(
+    ::google::protobuf::Arena* arena,
+    const SetHomeResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetHomeResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.action_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::action::ActionResult>(
+                              arena, *from._impl_.action_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.SetHomeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetHomeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SetHomeResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.action_result_ = {};
+}
+SetHomeResponse::~SetHomeResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.SetHomeResponse)
+  SharedDtor(*this);
+}
+inline void SetHomeResponse::SharedDtor(MessageLite& self) {
+  SetHomeResponse& this_ = static_cast<SetHomeResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.action_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* SetHomeResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetHomeResponse(arena);
+}
+constexpr auto SetHomeResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetHomeResponse),
+                                            alignof(SetHomeResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SetHomeResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SetHomeResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SetHomeResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SetHomeResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SetHomeResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SetHomeResponse>(), &SetHomeResponse::ByteSizeLong,
+            &SetHomeResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SetHomeResponse, _impl_._cached_size_),
+        false,
+    },
+    &SetHomeResponse::kDescriptorMethods,
+    &descriptor_table_action_2faction_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SetHomeResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetHomeResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetHomeResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::action::SetHomeResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.action.ActionResult action_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetHomeResponse, _impl_.action_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.action.ActionResult action_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SetHomeResponse, _impl_.action_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::action::ActionResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SetHomeResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.SetHomeResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.action_result_ != nullptr);
+    _impl_.action_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SetHomeResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetHomeResponse& this_ = static_cast<const SetHomeResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetHomeResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetHomeResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.SetHomeResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.action.ActionResult action_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.action_result_, this_._impl_.action_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.SetHomeResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetHomeResponse::ByteSizeLong(const MessageLite& base) {
+          const SetHomeResponse& this_ = static_cast<const SetHomeResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetHomeResponse::ByteSizeLong() const {
+          const SetHomeResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.SetHomeResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.action.ActionResult action_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SetHomeResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetHomeResponse*>(&to_msg);
+  auto& from = static_cast<const SetHomeResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.SetHomeResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.action_result_ != nullptr);
+    if (_this->_impl_.action_result_ == nullptr) {
+      _this->_impl_.action_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::action::ActionResult>(arena, *from._impl_.action_result_);
+    } else {
+      _this->_impl_.action_result_->MergeFrom(*from._impl_.action_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetHomeResponse::CopyFrom(const SetHomeResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.SetHomeResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SetHomeResponse::InternalSwap(SetHomeResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.action_result_, other->_impl_.action_result_);
+}
+
+::google::protobuf::Metadata SetHomeResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

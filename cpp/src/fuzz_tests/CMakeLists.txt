@@ -9,6 +9,8 @@ if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     return()
 endif()
 
+find_package(fmt REQUIRED)
+
 # Create the MAVLink fuzzer executable
 add_executable(mavlink_fuzzer
     mavlink_fuzzer.cpp
@@ -28,6 +30,7 @@ target_link_options(mavlink_fuzzer PRIVATE
 # Link against MAVSDK
 target_link_libraries(mavlink_fuzzer
     mavsdk
+    fmt::fmt
 )
 
 # Include MAVSDK headers

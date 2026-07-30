@@ -14,11 +14,12 @@
 #include <vector>
 
 {% if is_server %}
-#include "server_plugin_base.h"
+#include "server_plugin_base.hpp"
 {% else %}
-#include "plugin_base.h"
+#include "plugin_base.hpp"
 {% endif %}
-#include "handle.h"
+#include "handle.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -32,7 +33,7 @@ class {{ plugin_name.upper_camel_case }}Impl;
 /**
  * @brief {{ class_description | replace('\n', '\n *')}}
  */
-class {{ plugin_name.upper_camel_case }} : public {% if is_server %}ServerPluginBase{% else %}PluginBase{% endif %} {
+class MAVSDK_PUBLIC {{ plugin_name.upper_camel_case }} : public {% if is_server %}ServerPluginBase{% else %}PluginBase{% endif %} {
 public:
 {% if is_server %}
     /**

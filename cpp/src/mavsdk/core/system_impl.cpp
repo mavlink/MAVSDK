@@ -1,14 +1,16 @@
-#include "system.h"
-#include "mavsdk_impl.h"
-#include "mavlink_include.h"
-#include "system_impl.h"
+#include "system.hpp"
+#include "mavsdk_impl.hpp"
+#include <asio/post.hpp>
+#include "mavlink_include.hpp"
+#include "system_impl.hpp"
 #include <mav/MessageSet.h>
-#include "server_component_impl.h"
-#include "plugin_impl_base.h"
-#include "px4_custom_mode.h"
-#include "ardupilot_custom_mode.h"
+#include "server_component_impl.hpp"
+#include "plugin_impl_base.hpp"
+#include "px4_custom_mode.hpp"
+#include "ardupilot_custom_mode.hpp"
 #include "callback_list.tpp"
-#include "unused.h"
+#include "unused.hpp"
+#include "mavsdk_export.h"
 #include <cassert>
 #include <cstdlib>
 #include <functional>
@@ -17,12 +19,16 @@
 
 namespace mavsdk {
 
-template class CallbackList<bool>;
-template class CallbackList<ComponentType>;
-template class CallbackList<ComponentType, uint8_t>;
+template class MAVSDK_TEMPL_INST CallbackList<bool>;
+template class MAVSDK_TEMPL_INST CallbackList<ComponentType>;
+template class MAVSDK_TEMPL_INST CallbackList<ComponentType, uint8_t>;
 
 SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
+    // Declared before _mavsdk_impl, so init it first (in declaration order) using the
+    // ctor parameter rather than the not-yet-bound _mavsdk_impl reference.
+    _mavlink_message_handler(mavsdk_impl.io_context()),
     _mavsdk_impl(mavsdk_impl),
+    _system_work_timer(mavsdk_impl.io_context()),
     _command_sender(*this),
     _timesync(*this),
     _ping(*this),
@@ -43,24 +49,19 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         }
     }
 
-    _system_thread = new std::thread(&SystemImpl::system_thread, this);
+    schedule_system_work();
 }
 
 SystemImpl::~SystemImpl()
 {
     _should_exit = true;
+    _system_work_timer.cancel();
     // Use blocking version to ensure any in-flight callbacks complete before destruction.
     _mavlink_message_handler.unregister_all_blocking(this);
     // Clear all libmav message callbacks
     _libmav_message_callbacks.clear();
 
     unregister_timeout_handler(_heartbeat_timeout_cookie);
-
-    if (_system_thread != nullptr) {
-        _system_thread->join();
-        delete _system_thread;
-        _system_thread = nullptr;
-    }
 }
 
 void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
@@ -131,7 +132,7 @@ void SystemImpl::update_component_id_messages_handler(
 void SystemImpl::process_libmav_message(const Mavsdk::MavlinkMessage& message)
 {
     if (_message_debugging) {
-        LogDebug() << "SystemImpl::process_libmav_message: " << message.message_name;
+        LogDebug("SystemImpl::process_libmav_message: {}", message.message_name);
     }
 
     // CallbackList handles thread safety - just call all callbacks and let them filter internally
@@ -146,21 +147,23 @@ Handle<Mavsdk::MavlinkMessage> SystemImpl::register_libmav_message_handler(
     auto filtering_callback =
         [this, message_name, callback](const Mavsdk::MavlinkMessage& message) {
             if (_message_debugging) {
-                LogDebug() << "Checking handler for message: '" << message_name << "' against '"
-                           << message.message_name << "'";
+                LogDebug(
+                    "Checking handler for message: '{}' against '{}'",
+                    message_name,
+                    message.message_name);
             }
 
             // Check if message name matches (empty string means match all messages)
             if (!message_name.empty() && message_name != message.message_name) {
                 if (_message_debugging) {
-                    LogDebug() << "Handler message name mismatch, skipping";
+                    LogDebug("Handler message name mismatch, skipping");
                 }
                 return;
             }
 
             // Call the user callback
             if (_message_debugging) {
-                LogDebug() << "Calling libmav handler for: " << message.message_name;
+                LogDebug("Calling libmav handler for: {}", message.message_name);
             }
             callback(message);
         };
@@ -168,7 +171,7 @@ Handle<Mavsdk::MavlinkMessage> SystemImpl::register_libmav_message_handler(
     auto handle = _libmav_message_callbacks.subscribe(filtering_callback);
 
     if (_message_debugging) {
-        LogDebug() << "Registering libmav handler for message: '" << message_name << "'";
+        LogDebug("Registering libmav handler for message: '{}'", message_name);
     }
 
     return handle;
@@ -181,15 +184,17 @@ Handle<Mavsdk::MavlinkMessage> SystemImpl::register_libmav_message_handler_with_
     auto filtering_callback =
         [this, message_name, cmp_id, callback](const Mavsdk::MavlinkMessage& message) {
             if (_message_debugging) {
-                LogDebug() << "Checking handler for message: '" << message_name << "' against '"
-                           << message.message_name
-                           << "' with component ID: " << static_cast<int>(cmp_id);
+                LogDebug(
+                    "Checking handler for message: '{}' against '{}' with component ID: {}",
+                    message_name,
+                    message.message_name,
+                    static_cast<int>(cmp_id));
             }
 
             // Check if message name matches (empty string means match all messages)
             if (!message_name.empty() && message_name != message.message_name) {
                 if (_message_debugging) {
-                    LogDebug() << "Handler message name mismatch, skipping";
+                    LogDebug("Handler message name mismatch, skipping");
                 }
                 return;
             }
@@ -197,14 +202,14 @@ Handle<Mavsdk::MavlinkMessage> SystemImpl::register_libmav_message_handler_with_
             // Check if component ID matches
             if (cmp_id != message.component_id) {
                 if (_message_debugging) {
-                    LogDebug() << "Handler component ID mismatch, skipping";
+                    LogDebug("Handler component ID mismatch, skipping");
                 }
                 return;
             }
 
             // Call the user callback
             if (_message_debugging) {
-                LogDebug() << "Calling libmav handler for: " << message.message_name;
+                LogDebug("Calling libmav handler for: {}", message.message_name);
             }
             callback(message);
         };
@@ -212,8 +217,10 @@ Handle<Mavsdk::MavlinkMessage> SystemImpl::register_libmav_message_handler_with_
     auto handle = _libmav_message_callbacks.subscribe(filtering_callback);
 
     if (_message_debugging) {
-        LogDebug() << "Registering libmav handler for message: '" << message_name
-                   << "' with component ID: " << static_cast<int>(cmp_id);
+        LogDebug(
+            "Registering libmav handler for message: '{}' with component ID: {}",
+            message_name,
+            static_cast<int>(cmp_id));
     }
 
     return handle;
@@ -221,10 +228,13 @@ Handle<Mavsdk::MavlinkMessage> SystemImpl::register_libmav_message_handler_with_
 
 void SystemImpl::unregister_libmav_message_handler(Handle<Mavsdk::MavlinkMessage> handle)
 {
-    _libmav_message_callbacks.unsubscribe(handle);
+    // Blocking: once this returns the io thread can no longer invoke the callback. Plugin
+    // deinit() relies on that to destroy the object that owns the callback (which captures
+    // its 'this') without a use-after-free on the io thread.
+    _libmav_message_callbacks.unsubscribe_blocking(handle);
 
     if (_message_debugging) {
-        LogDebug() << "Unregistered libmav handler";
+        LogDebug("Unregistered libmav handler");
     }
 }
 
@@ -295,15 +305,19 @@ void SystemImpl::remove_call_every(CallEveryHandler::Cookie cookie)
 void SystemImpl::register_statustext_handler(
     std::function<void(const MavlinkStatustextHandler::Statustext&)> callback, void* cookie)
 {
+    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
     _statustext_handler_callbacks.push_back(StatustextCallback{std::move(callback), cookie});
 }
 
 void SystemImpl::unregister_statustext_handler(void* cookie)
 {
-    _statustext_handler_callbacks.erase(std::remove_if(
-        _statustext_handler_callbacks.begin(),
-        _statustext_handler_callbacks.end(),
-        [&](const auto& entry) { return entry.cookie == cookie; }));
+    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
+    _statustext_handler_callbacks.erase(
+        std::remove_if(
+            _statustext_handler_callbacks.begin(),
+            _statustext_handler_callbacks.end(),
+            [&](const auto& entry) { return entry.cookie == cookie; }),
+        _statustext_handler_callbacks.end());
 }
 
 void SystemImpl::process_heartbeat(const mavlink_message_t& message)
@@ -321,14 +335,15 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     // This check only works if the MAV_TYPE::MAV_TYPE_ENUM_END is actually the
     // last enumerator.
     if (MAV_TYPE::MAV_TYPE_ENUM_END < heartbeat.type) {
-        LogErr() << "type received in HEARTBEAT was not recognized";
+        LogErr("Type received in HEARTBEAT was not recognized");
     } else {
         const auto new_vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
         if (heartbeat.autopilot != MAV_AUTOPILOT_INVALID && new_vehicle_type != MAV_TYPE_GENERIC) {
             if (_vehicle_type_set && _vehicle_type != new_vehicle_type) {
-                LogWarn() << "Vehicle type changed (new type: "
-                          << static_cast<unsigned>(heartbeat.type)
-                          << ", old type: " << static_cast<unsigned>(_vehicle_type) << ")";
+                LogWarn(
+                    "Vehicle type changed (new type: {}, old type: {})",
+                    static_cast<unsigned>(heartbeat.type),
+                    static_cast<unsigned>(_vehicle_type));
             }
             _vehicle_type = new_vehicle_type;
             _vehicle_type_set = true;
@@ -355,11 +370,19 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
     const auto maybe_result = _statustext_handler.process(statustext);
 
     if (maybe_result.has_value()) {
-        LogDebug() << "MAVLink: "
-                   << MavlinkStatustextHandler::severity_str(maybe_result.value().severity) << ": "
-                   << maybe_result.value().text;
+        LogDebug(
+            "MAVLink: {}: {}",
+            MavlinkStatustextHandler::severity_str(maybe_result.value().severity),
+            maybe_result.value().text);
 
-        for (const auto& entry : _statustext_handler_callbacks) {
+        // Copy the callbacks out under the lock and invoke them afterwards, so a
+        // callback that (un)registers a handler can't deadlock or invalidate the vector.
+        std::vector<StatustextCallback> callbacks_copy;
+        {
+            std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
+            callbacks_copy = _statustext_handler_callbacks;
+        }
+        for (const auto& entry : callbacks_copy) {
             entry.callback(maybe_result.value());
         }
     }
@@ -376,15 +399,22 @@ void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
 
 void SystemImpl::heartbeats_timed_out()
 {
-    LogInfo() << "heartbeats timed out";
+    LogInfo("Heartbeats from system {} timed out", int(get_system_id()));
     set_disconnected();
 }
 
-void SystemImpl::system_thread()
+void SystemImpl::schedule_system_work()
 {
-    SteadyTimePoint last_ping_time{};
+    // Run do_work() on all protocol handlers at 100 Hz when connected, 10 Hz otherwise.
+    // By running on the io_context thread we eliminate all data races on the work queues.
+    auto delay = _connected ? std::chrono::milliseconds(10) : std::chrono::milliseconds(100);
+    _system_work_timer.expires_after(delay);
+    _system_work_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Timer was cancelled (shutdown) — stop rescheduling.
+            return;
+        }
 
-    while (!_should_exit) {
         {
             std::lock_guard<std::mutex> lock(_mavlink_parameter_clients_mutex);
             for (auto& entry : _mavlink_parameter_clients) {
@@ -396,21 +426,15 @@ void SystemImpl::system_thread()
         _mission_transfer_client.do_work();
         _mavlink_ftp_client.do_work();
 
-        if (_mavsdk_impl.time.elapsed_since_s(last_ping_time) >= SystemImpl::_ping_interval_s) {
+        if (_mavsdk_impl.time.elapsed_since_s(_last_ping_time) >= SystemImpl::_ping_interval_s) {
             if (_connected && _autopilot != Autopilot::ArduPilot) {
                 _ping.run_once();
             }
-            last_ping_time = _mavsdk_impl.time.steady_time();
+            _last_ping_time = _mavsdk_impl.time.steady_time();
         }
 
-        if (_connected) {
-            // Work fairly fast if we're connected.
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        } else {
-            // Be less aggressive when unconnected.
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
-    }
+        schedule_system_work();
+    });
 }
 
 std::string SystemImpl::component_name(uint8_t component_id)
@@ -493,8 +517,10 @@ void SystemImpl::add_new_component(uint8_t component_id)
             component_type(component_id), component_id, [this](const auto& func) {
                 call_user_callback(func);
             });
-        LogDebug() << "Component " << component_name(component_id)
-                   << " (component ID: " << int(component_id) << ") added.";
+        LogDebug(
+            "Component {} (component ID: {}) added.",
+            component_name(component_id),
+            int(component_id));
     }
 }
 
@@ -612,9 +638,12 @@ void SystemImpl::set_connected()
         if (!_connected) {
             {
                 std::lock_guard<std::mutex> lock(_components_mutex);
-                if (!_components.empty()) {
-                    LogDebug() << "Discovered " << _components.size()
-                               << (_components.size() == 1 ? " component" : " components");
+                for (const auto component_id : _components) {
+                    LogDebug(
+                        "Discovered component {} (system ID: {}, component ID: {})",
+                        component_name(component_id),
+                        int(get_system_id()),
+                        int(component_id));
                 }
             }
 
@@ -622,9 +651,9 @@ void SystemImpl::set_connected()
 
             // Only send heartbeats if we're not shutting down
             if (!_should_exit) {
-                // We call this later to avoid deadlocks on creating the server components.
-                _mavsdk_impl.call_user_callback([this]() {
-                    // Send a heartbeat back immediately.
+                // Post to the io_context thread to avoid deadlocks when creating server
+                // components. This is purely internal work, not a user callback.
+                asio::post(_mavsdk_impl.io_context(), [this]() {
                     _mavsdk_impl.start_sending_heartbeats();
                 });
             }
@@ -718,6 +747,11 @@ uint8_t SystemImpl::get_own_system_id() const
 uint8_t SystemImpl::get_own_component_id() const
 {
     return _mavsdk_impl.get_own_component_id();
+}
+
+asio::io_context& SystemImpl::io_context()
+{
+    return _mavsdk_impl.io_context();
 }
 
 MAV_TYPE SystemImpl::get_vehicle_type() const
@@ -875,9 +909,7 @@ void SystemImpl::get_param_custom_async(
 
 void SystemImpl::cancel_all_param(const void* cookie)
 {
-    UNUSED(cookie);
-    // FIXME: this currently crashes on destruction
-    // param_sender(1, false)->cancel_all_param(cookie);
+    param_sender(1, false)->cancel_all_param(cookie);
 }
 
 MavlinkCommandSender::Result
@@ -937,7 +969,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
         case MAV_TYPE::MAV_TYPE_GROUND_ROVER: {
             const auto new_mode = flight_mode_to_ardupilot_rover_mode(flight_mode);
             if (new_mode == ardupilot::RoverMode::Unknown) {
-                LogErr() << "Cannot translate flight mode to ArduPilot Rover mode.";
+                LogErr("Cannot translate flight mode to ArduPilot Rover mode.");
                 MavlinkCommandSender::CommandLong empty_command{};
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
@@ -954,7 +986,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
         case MAV_TYPE::MAV_TYPE_VTOL_TILTWING: {
             const auto new_mode = flight_mode_to_ardupilot_plane_mode(flight_mode);
             if (new_mode == ardupilot::PlaneMode::Unknown) {
-                LogErr() << "Cannot translate flight mode to ArduPilot Plane mode.";
+                LogErr("Cannot translate flight mode to ArduPilot Plane mode.");
                 MavlinkCommandSender::CommandLong empty_command{};
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
@@ -973,7 +1005,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
         case MAV_TYPE::MAV_TYPE_DECAROTOR: {
             const auto new_mode = flight_mode_to_ardupilot_copter_mode(flight_mode);
             if (new_mode == ardupilot::CopterMode::Unknown) {
-                LogErr() << "Cannot translate flight mode to ArduPilot Copter mode.";
+                LogErr("Cannot translate flight mode to ArduPilot Copter mode.");
                 MavlinkCommandSender::CommandLong empty_command{};
                 return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
             } else {
@@ -983,8 +1015,9 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
         }
 
         default:
-            LogErr() << "Cannot translate flight mode to ArduPilot mode, for MAV_TYPE: "
-                     << _vehicle_type;
+            LogErr(
+                "Cannot translate flight mode to ArduPilot mode, for MAV_TYPE: {}",
+                static_cast<int>(_vehicle_type));
             MavlinkCommandSender::CommandLong empty_command{};
             return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
     }
@@ -1138,7 +1171,7 @@ SystemImpl::make_command_px4_mode(FlightMode flight_mode, uint8_t component_id)
             custom_mode = px4::PX4_CUSTOM_MAIN_MODE_STABILIZED;
             break;
         default:
-            LogErr() << "Unknown Flight mode.";
+            LogErr("Unknown Flight mode.");
             MavlinkCommandSender::CommandLong empty_command{};
             return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
     }
@@ -1358,8 +1391,18 @@ void SystemImpl::call_user_callback_located(
 
 void SystemImpl::param_changed(const std::string& name)
 {
-    for (auto& callback : _param_changed_callbacks) {
-        callback.second(name);
+    // Copy the callbacks out under the lock and invoke them afterwards, so a callback
+    // that (un)registers a handler can't deadlock or invalidate the map.
+    std::vector<ParamChangedCallback> callbacks_copy;
+    {
+        std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
+        callbacks_copy.reserve(_param_changed_callbacks.size());
+        for (const auto& callback : _param_changed_callbacks) {
+            callbacks_copy.push_back(callback.second);
+        }
+    }
+    for (const auto& callback : callbacks_copy) {
+        callback(name);
     }
 }
 
@@ -1367,23 +1410,25 @@ void SystemImpl::register_param_changed_handler(
     const ParamChangedCallback& callback, const void* cookie)
 {
     if (!callback) {
-        LogErr() << "No callback for param_changed_handler supplied.";
+        LogErr("No callback for param_changed_handler supplied.");
         return;
     }
 
     if (!cookie) {
-        LogErr() << "No callback for param_changed_handler supplied.";
+        LogErr("No callback for param_changed_handler supplied.");
         return;
     }
 
+    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
     _param_changed_callbacks[cookie] = callback;
 }
 
 void SystemImpl::unregister_param_changed_handler(const void* cookie)
 {
+    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
     auto it = _param_changed_callbacks.find(cookie);
     if (it == _param_changed_callbacks.end()) {
-        LogWarn() << "param_changed_handler for cookie not found";
+        LogWarn("Handler param_changed_handler for cookie not found");
         return;
     }
     _param_changed_callbacks.erase(it);

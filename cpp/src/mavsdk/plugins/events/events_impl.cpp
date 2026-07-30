@@ -1,16 +1,22 @@
 
-#include "events_impl.h"
+#include "events_impl.hpp"
 #include "callback_list.tpp"
-#include "unused.h"
+#include "unused.hpp"
 
 namespace mavsdk {
 
-EventsImpl::EventsImpl(System& system) : PluginImplBase(system)
+EventsImpl::EventsImpl(System& system) :
+    PluginImplBase(system),
+    _events_callbacks(_system_impl->io_context()),
+    _health_and_arming_checks_callbacks(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
 
-EventsImpl::EventsImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
+EventsImpl::EventsImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system)),
+    _events_callbacks(_system_impl->io_context()),
+    _health_and_arming_checks_callbacks(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
@@ -105,7 +111,7 @@ void EventsImpl::set_metadata(uint8_t compid, const std::string& metadata_json)
         _system_impl->send_command_async(
             command, [this](MavlinkCommandSender::Result result, float) {
                 if (result != MavlinkCommandSender::Result::Success) {
-                    LogWarn() << "command MAV_CMD_RUN_PREARM_CHECKS failed";
+                    LogWarn("Command MAV_CMD_RUN_PREARM_CHECKS failed");
                 }
             });
     }
@@ -259,7 +265,7 @@ EventsImpl::get_health_and_arming_checks_report()
     const uint32_t custom_mode = _maybe_custom_mode_user_intention.value_or(_custom_mode);
     const auto maybe_current_mode_group = event_handler.get_mode_group(custom_mode);
     if (!maybe_current_mode_group) {
-        LogDebug() << "Current mode not available (yet)";
+        LogDebug("Current mode not available (yet)");
         return std::make_pair(Events::Result::NotAvailable, Events::HealthAndArmingCheckReport{});
     }
 

@@ -1,25 +1,33 @@
-#include "mission_raw_impl.h"
-#include "mission_import.h"
-#include "system.h"
+#include "mission_raw_impl.hpp"
+#include "mission_import.hpp"
+#include "system.hpp"
 #include "callback_list.tpp"
 
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
 
+#include "mavsdk_export.h"
+
 namespace mavsdk {
 
-template class CallbackList<MissionRaw::MissionProgress>;
-template class CallbackList<bool>;
+template class MAVSDK_TEMPL_INST CallbackList<MissionRaw::MissionProgress>;
+template class MAVSDK_TEMPL_INST CallbackList<bool>;
 
 // This is an empty item that can be sent to ArduPilot to mimic clearing of mission.
 constexpr MissionRaw::MissionItem empty_item{0, 3, 16, 1};
 
-MissionRawImpl::MissionRawImpl(System& system) : PluginImplBase(system)
+MissionRawImpl::MissionRawImpl(System& system) :
+    PluginImplBase(system),
+    _mission_progress(_system_impl->io_context()),
+    _mission_changed(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
 
-MissionRawImpl::MissionRawImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
+MissionRawImpl::MissionRawImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system)),
+    _mission_progress(_system_impl->io_context()),
+    _mission_changed(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
@@ -112,7 +120,7 @@ void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
 
             _mission_changed.callbacks.queue(
                 true, [this](const auto& func) { _system_impl->call_user_callback(func); });
-            LogDebug() << "Mission changed";
+            LogDebug("Mission changed");
         }
     }
 
@@ -147,7 +155,8 @@ MissionRaw::Result MissionRawImpl::upload_mission_items(
 void MissionRawImpl::upload_mission_items_async(
     const std::vector<MissionRaw::MissionItem>& mission_raw,
     uint8_t type,
-    const MissionRaw::ResultCallback& callback)
+    const MissionRaw::ResultCallback& callback,
+    const MavlinkMissionTransferClient::ProgressCallback& progress_callback)
 {
     auto work_item = _last_upload.lock();
     if (work_item && !work_item->is_done()) {
@@ -181,7 +190,8 @@ void MissionRawImpl::upload_mission_items_async(
                     callback(converted_result);
                 }
             });
-        });
+        },
+        progress_callback);
 }
 
 MissionRaw::Result
@@ -195,6 +205,27 @@ void MissionRawImpl::upload_mission_async(
     const MissionRaw::ResultCallback& callback)
 {
     upload_mission_items_async(mission_raw, MAV_MISSION_TYPE_MISSION, callback);
+}
+
+void MissionRawImpl::upload_mission_with_progress_async(
+    const MissionRaw::MissionPlan& mission_plan,
+    const MissionRaw::UploadMissionWithProgressCallback& callback)
+{
+    upload_mission_items_async(
+        mission_plan.mission_items,
+        MAV_MISSION_TYPE_MISSION,
+        [callback](MissionRaw::Result result) {
+            if (callback) {
+                callback(result, MissionRaw::ProgressData{});
+            }
+        },
+        [this, callback](float progress) {
+            _system_impl->call_user_callback([callback, progress]() {
+                if (callback) {
+                    callback(MissionRaw::Result::Next, MissionRaw::ProgressData{progress});
+                }
+            });
+        });
 }
 
 MissionRaw::Result

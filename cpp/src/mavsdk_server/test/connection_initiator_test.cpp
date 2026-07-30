@@ -1,9 +1,9 @@
 #include <future>
 #include <gmock/gmock.h>
 
-#include "connection_initiator.h"
-#include "mocks/mavsdk_mock.h"
-#include "mocks/system_mock.h"
+#include "connection_initiator.hpp"
+#include "mocks/mavsdk_mock.hpp"
+#include "mocks/system_mock.hpp"
 
 namespace {
 

@@ -1,5 +1,5 @@
-#include "log.h"
-#include "mavsdk.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
 #include <atomic>
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -7,10 +7,10 @@
 #include <future>
 #include <fstream>
 #include <thread>
-#include "plugins/ftp/ftp.h"
-#include "plugins/ftp_server/ftp_server.h"
-#include "fs_helpers.h"
-#include "unused.h"
+#include "plugins/ftp/ftp.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
+#include "fs_helpers.hpp"
+#include "unused.hpp"
 
 using namespace mavsdk;
 
@@ -23,7 +23,7 @@ static const fs::path temp_dir_downloaded = "/tmp/mavsdk_systemtest_temp_data/do
 
 static const fs::path temp_file = "data.bin";
 
-TEST(SystemTest, FtpDownloadBurstFile)
+TEST(Ftp, DownloadBurstFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -80,8 +80,10 @@ TEST(SystemTest, FtpDownloadBurstFile)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -96,7 +98,7 @@ TEST(SystemTest, FtpDownloadBurstFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBurstBigFile)
+TEST(Ftp, DownloadBurstBigFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -137,8 +139,10 @@ TEST(SystemTest, FtpDownloadBurstBigFile)
                 prom.set_value(result);
             } else {
                 if (slow_down_counter++ % 10 == 0) {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             }
         });
@@ -153,7 +157,7 @@ TEST(SystemTest, FtpDownloadBurstBigFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBurstBigFileLossy)
+TEST(Ftp, DownloadBurstBigFileLossy)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 10000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -165,10 +169,10 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 5; };
+    auto drop_some = [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 5 != 0; };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
-    mavsdk_groundstation.intercept_outgoing_messages_async(drop_some);
+    auto drop_some_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_some);
+    auto drop_some_out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(drop_some);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -200,8 +204,10 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
                 prom.set_value(result);
             } else {
                 if (slow_down_counter++ % 10 == 0) {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             }
         });
@@ -215,13 +221,13 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
 
     // Before going out of scope, we need to make sure to no longer access the
     // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_some_in_handle);
+    mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_some_out_handle);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
+TEST(Ftp, DownloadBurstStopAndTryAgain)
 {
     constexpr int file_size = 1000;
     constexpr int msg_count = file_size / 255 + 6; // 6 messages for transfer initialization
@@ -237,8 +243,8 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 
     // Once we received half, we want to stop all traffic.
     int received = 0;
-    auto drop_at_some_point_in = [&received, msg_count](mavlink_message_t& message) {
-        if (message.msgid == MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
+    auto drop_at_some_point_in = [&received, msg_count](Mavsdk::MavlinkMessage message) -> bool {
+        if (message.message_name == "FILE_TRANSFER_PROTOCOL") {
             received++;
         }
         if (received >= msg_count / 2) {
@@ -247,16 +253,17 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
         return true;
     };
 
-    auto drop_at_some_point_out = [&received, msg_count](mavlink_message_t& message) {
-        UNUSED(message);
+    auto drop_at_some_point_out = [&received, msg_count](Mavsdk::MavlinkMessage) -> bool {
         if (received >= msg_count / 2) {
             return false;
         }
         return true;
     };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point_in);
-    mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point_out);
+    auto drop_at_in_handle =
+        mavsdk_groundstation.subscribe_incoming_messages_json(drop_at_some_point_in);
+    auto drop_at_out_handle =
+        mavsdk_groundstation.subscribe_outgoing_messages_json(drop_at_some_point_out);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -287,8 +294,10 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -299,8 +308,8 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 
     // Before going out of scope, we need to make sure to no longer access the
     // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_at_in_handle);
+    mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_at_out_handle);
 
     {
         // Now try again
@@ -314,8 +323,10 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -327,7 +338,7 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBurstFileOutsideOfRoot)
+TEST(Ftp, DownloadBurstFileOutsideOfRoot)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));

@@ -4,11 +4,12 @@
 
 #include <iomanip>
 
-#include "ftp_impl.h"
-#include "plugins/ftp/ftp.h"
+#include "ftp_impl.hpp"
+#include "plugins/ftp/ftp.hpp"
 
 namespace mavsdk {
 
+using FilesystemEntry = Ftp::FilesystemEntry;
 using ListDirectoryData = Ftp::ListDirectoryData;
 using ProgressData = Ftp::ProgressData;
 
@@ -103,35 +104,71 @@ Ftp::Result Ftp::set_target_compid(uint32_t compid) const
     return _impl->set_target_compid(compid);
 }
 
-bool operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs)
+MAVSDK_PUBLIC std::string_view to_string(Ftp::FilesystemEntry::EntryType const& entry_type)
 {
-    return (rhs.dirs == lhs.dirs) && (rhs.files == lhs.files);
+    switch (entry_type) {
+        case Ftp::FilesystemEntry::EntryType::Unknown:
+            return "Unknown";
+        case Ftp::FilesystemEntry::EntryType::File:
+            return "File";
+        case Ftp::FilesystemEntry::EntryType::Directory:
+            return "Directory";
+        default:
+            return "Unknown";
+    }
 }
 
-std::ostream& operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Ftp::FilesystemEntry::EntryType const& entry_type)
+{
+    return str << to_string(entry_type);
+}
+MAVSDK_PUBLIC bool operator==(const Ftp::FilesystemEntry& lhs, const Ftp::FilesystemEntry& rhs)
+{
+    return (rhs.name == lhs.name) && (rhs.entry_type == lhs.entry_type) &&
+           (rhs.size_bytes == lhs.size_bytes) &&
+           (rhs.modification_time_s == lhs.modification_time_s);
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Ftp::FilesystemEntry const& filesystem_entry)
+{
+    str << std::setprecision(15);
+    str << "filesystem_entry:" << '\n' << "{\n";
+    str << "    name: " << filesystem_entry.name << '\n';
+    str << "    entry_type: " << filesystem_entry.entry_type << '\n';
+    str << "    size_bytes: " << filesystem_entry.size_bytes << '\n';
+    str << "    modification_time_s: " << filesystem_entry.modification_time_s << '\n';
+    str << '}';
+    return str;
+}
+
+MAVSDK_PUBLIC bool operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs)
+{
+    return (rhs.entries == lhs.entries);
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data)
 {
     str << std::setprecision(15);
     str << "list_directory_data:" << '\n' << "{\n";
-    str << "    dirs: [";
-    for (auto it = list_directory_data.dirs.begin(); it != list_directory_data.dirs.end(); ++it) {
+    str << "    entries: [";
+    for (auto it = list_directory_data.entries.begin(); it != list_directory_data.entries.end();
+         ++it) {
         str << *it;
-        str << (it + 1 != list_directory_data.dirs.end() ? ", " : "]\n");
-    }
-    str << "    files: [";
-    for (auto it = list_directory_data.files.begin(); it != list_directory_data.files.end(); ++it) {
-        str << *it;
-        str << (it + 1 != list_directory_data.files.end() ? ", " : "]\n");
+        str << (it + 1 != list_directory_data.entries.end() ? ", " : "]\n");
     }
     str << '}';
     return str;
 }
 
-bool operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs)
+MAVSDK_PUBLIC bool operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs)
 {
     return (rhs.bytes_transferred == lhs.bytes_transferred) && (rhs.total_bytes == lhs.total_bytes);
 }
 
-std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_data)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_data)
 {
     str << std::setprecision(15);
     str << "progress_data:" << '\n' << "{\n";
@@ -141,38 +178,43 @@ std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_da
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Ftp::Result const& result)
 {
     switch (result) {
         case Ftp::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Ftp::Result::Success:
-            return str << "Success";
+            return "Success";
         case Ftp::Result::Next:
-            return str << "Next";
+            return "Next";
         case Ftp::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Ftp::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Ftp::Result::FileIoError:
-            return str << "File Io Error";
+            return "File Io Error";
         case Ftp::Result::FileExists:
-            return str << "File Exists";
+            return "File Exists";
         case Ftp::Result::FileDoesNotExist:
-            return str << "File Does Not Exist";
+            return "File Does Not Exist";
         case Ftp::Result::FileProtected:
-            return str << "File Protected";
+            return "File Protected";
         case Ftp::Result::InvalidParameter:
-            return str << "Invalid Parameter";
+            return "Invalid Parameter";
         case Ftp::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Ftp::Result::ProtocolError:
-            return str << "Protocol Error";
+            return "Protocol Error";
         case Ftp::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

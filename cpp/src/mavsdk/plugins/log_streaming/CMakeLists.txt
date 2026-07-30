@@ -12,6 +12,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/log_streaming/log_streaming.h
+    include/plugins/log_streaming/log_streaming.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/log_streaming
 )

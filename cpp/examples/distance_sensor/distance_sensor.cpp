@@ -4,9 +4,8 @@
 //
 // Author: Julian Oes <julian@oes.ch>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>
@@ -58,7 +57,7 @@ int main(int argc, char** argv)
     // subscribe to distance sensor readings
     subscribe_distance_sensor(telemetry);
 
-    // endless loop so that the sensor readings will keep comming
+    // endless loop so that the sensor readings will keep coming
     // will close only with kill or Ctrl+C
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));

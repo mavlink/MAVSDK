@@ -3,20 +3,19 @@
 #include <iostream>
 #include <thread>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/param_server/param_server.h>
-#include <mavsdk/plugins/param/param.h>
-#include <mavsdk/plugins/telemetry_server/telemetry_server.h>
-#include <mavsdk/plugins/action_server/action_server.h>
-#include <mavsdk/plugins/mission_raw_server/mission_raw_server.h>
-#include <mavsdk/plugins/mission/mission.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/param_server/param_server.hpp>
+#include <mavsdk/plugins/param/param.hpp>
+#include <mavsdk/plugins/telemetry_server/telemetry_server.hpp>
+#include <mavsdk/plugins/action_server/action_server.hpp>
+#include <mavsdk/plugins/mission_raw_server/mission_raw_server.hpp>
+#include <mavsdk/plugins/mission/mission.hpp>
 
 /*
  This example runs a MAVLink "autopilot" utilising the MAVSDK server plugins
- on a seperate thread. This uses two MAVSDK instances, one GCS, one autopilot.
+ on a separate thread. This uses two MAVSDK instances, one GCS, one autopilot.
 
  The main thread acts as a GCS and reads telemetry, parameters, transmits across
  a mission, clears the mission, arms the vehicle and then triggers a vehicle takeoff.
@@ -58,7 +57,7 @@ int main(int argc, char** argv)
 {
     std::atomic<bool> _should_exit{false};
 
-    // We run the server plugins on a seperate thread so we can use the main
+    // We run the server plugins on a separate thread so we can use the main
     // thread as a ground station.
     std::thread autopilot_thread([&_should_exit]() {
         mavsdk::Mavsdk mavsdkTester{
@@ -111,7 +110,7 @@ int main(int argc, char** argv)
                     MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
                     std::cout << "Received Uploaded Mission!" << std::endl;
                     std::cout << plan << std::endl;
-                    // Unsubscribe so we only recieve one mission
+                    // Unsubscribe so we only receive one mission
                     missionRawServer.unsubscribe_incoming_mission(handle);
                     mission_prom.set_value(plan);
                 });

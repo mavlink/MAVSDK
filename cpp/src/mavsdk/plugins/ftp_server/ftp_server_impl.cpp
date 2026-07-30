@@ -1,4 +1,4 @@
-#include "ftp_server_impl.h"
+#include "ftp_server_impl.hpp"
 
 namespace mavsdk {
 

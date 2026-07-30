@@ -9,9 +9,9 @@
 #include <thread>
 #include <cmath>
 #include <future>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 
 using std::this_thread::sleep_for;
 using std::chrono::seconds;

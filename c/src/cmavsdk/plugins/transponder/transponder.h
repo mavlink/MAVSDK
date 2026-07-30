@@ -256,6 +256,7 @@ CMAVSDK_EXPORT void mavsdk_transponder_destroy(mavsdk_transponder_t transponder)
  * @brief Subscribe to 'transponder' updates.
  *
  * @param transponder The transponder instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_transponder_unsubscribe_transponder() to unsubscribe.
@@ -296,8 +297,9 @@ mavsdk_transponder_transponder(
  * @brief Set rate to 'transponder' updates.
  *
  * @param transponder The transponder instance.
-* @param rate_hz  The requested rate (in Hertz)
+ * @param rate_hz  The requested rate (in Hertz)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

@@ -3,8 +3,8 @@
 // common.xml MAVLink dialect
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mavlink_direct/mavlink_direct.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
 #include <chrono>
 #include <iostream>
 #include <iomanip>

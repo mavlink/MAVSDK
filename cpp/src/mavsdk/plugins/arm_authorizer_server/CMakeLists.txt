@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/arm_authorizer_server/arm_authorizer_server.h
+    include/plugins/arm_authorizer_server/arm_authorizer_server.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/arm_authorizer_server
 )

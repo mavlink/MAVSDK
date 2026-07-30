@@ -1,10 +1,10 @@
 #pragma once
 
-#include "plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h"
+#include "plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.hpp"
 {% if is_server %}
-#include "server_plugin_impl_base.h"
+#include "server_plugin_impl_base.hpp"
 {% else %}
-#include "plugin_impl_base.h"
+#include "plugin_impl_base.hpp"
 {% endif %}
 
 namespace mavsdk {

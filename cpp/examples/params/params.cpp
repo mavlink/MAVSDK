@@ -2,8 +2,8 @@
 // Simple example to demonstrate how to get and set params.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/param/param.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/param/param.hpp>
 
 #include <charconv>
 #include <chrono>

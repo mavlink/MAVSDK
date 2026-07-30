@@ -1,6 +1,6 @@
-#include "raw_connection.h"
-#include "mavsdk_impl.h"
-#include "log.h"
+#include "raw_connection.hpp"
+#include "mavsdk_impl.hpp"
+#include "log.hpp"
 
 namespace mavsdk {
 

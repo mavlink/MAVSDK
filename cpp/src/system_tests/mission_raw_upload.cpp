@@ -1,27 +1,29 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "example_plan.h"
-#include "plugins/mission_raw/mission_raw.h"
-#include "plugins/mission_raw_server/mission_raw_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "example_plan.hpp"
+#include "plugins/mission_raw/mission_raw.hpp"
+#include "plugins/mission_raw_server/mission_raw_server.hpp"
 #include <string>
 #include <fstream>
 #include <thread>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
-TEST(SystemTest, MissionRawUpload)
+TEST(Mission, RawUpload)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    // Register server plugin before connections so capabilities (MISSION_INT)
+    // are available before the first AUTOPILOT_VERSION exchange.
+    auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
         ConnectionResult::Success);
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
-
-    auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);

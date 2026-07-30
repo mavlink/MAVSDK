@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "camera_impl.h"
-#include "plugins/camera/camera.h"
+#include "camera_impl.hpp"
+#include "plugins/camera/camera.hpp"
 
 namespace mavsdk {
 
@@ -394,12 +394,12 @@ Camera::Result Camera::focus_range(int32_t component_id, float range) const
     return _impl->focus_range(component_id, range);
 }
 
-bool operator==(const Camera::Option& lhs, const Camera::Option& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::Option& lhs, const Camera::Option& rhs)
 {
     return (rhs.option_id == lhs.option_id) && (rhs.option_description == lhs.option_description);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Option const& option)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Option const& option)
 {
     str << std::setprecision(15);
     str << "option:" << '\n' << "{\n";
@@ -409,14 +409,14 @@ std::ostream& operator<<(std::ostream& str, Camera::Option const& option)
     return str;
 }
 
-bool operator==(const Camera::Setting& lhs, const Camera::Setting& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::Setting& lhs, const Camera::Setting& rhs)
 {
     return (rhs.setting_id == lhs.setting_id) &&
            (rhs.setting_description == lhs.setting_description) && (rhs.option == lhs.option) &&
            (rhs.is_range == lhs.is_range);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
 {
     str << std::setprecision(15);
     str << "setting:" << '\n' << "{\n";
@@ -428,14 +428,15 @@ std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
     return str;
 }
 
-bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs)
 {
     return (rhs.component_id == lhs.component_id) && (rhs.setting_id == lhs.setting_id) &&
            (rhs.setting_description == lhs.setting_description) && (rhs.options == lhs.options) &&
            (rhs.is_range == lhs.is_range);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& setting_options)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::SettingOptions const& setting_options)
 {
     str << std::setprecision(15);
     str << "setting_options:" << '\n' << "{\n";
@@ -452,7 +453,8 @@ std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& settin
     return str;
 }
 
-bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs)
 {
     return ((std::isnan(rhs.frame_rate_hz) && std::isnan(lhs.frame_rate_hz)) ||
             rhs.frame_rate_hz == lhs.frame_rate_hz) &&
@@ -464,7 +466,7 @@ bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStrea
             rhs.horizontal_fov_deg == lhs.horizontal_fov_deg);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings)
 {
     str << std::setprecision(15);
@@ -481,40 +483,54 @@ operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_se
     return str;
 }
 
-std::ostream&
-operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
+MAVSDK_PUBLIC std::string_view
+to_string(Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
 {
     switch (video_stream_status) {
         case Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
-            return str << "Not Running";
+            return "Not Running";
         case Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
-            return str << "In Progress";
+            return "In Progress";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(
-    std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
+{
+    return str << to_string(video_stream_status);
+}
+
+MAVSDK_PUBLIC std::string_view
+to_string(Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
 {
     switch (video_stream_spectrum) {
         case Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
-            return str << "Visible Light";
+            return "Visible Light";
         case Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
-            return str << "Infrared";
+            return "Infrared";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
-bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
+
+MAVSDK_PUBLIC std::ostream& operator<<(
+    std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
+{
+    return str << to_string(video_stream_spectrum);
+}
+MAVSDK_PUBLIC bool
+operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
 {
     return (rhs.stream_id == lhs.stream_id) && (rhs.settings == lhs.settings) &&
            (rhs.status == lhs.status) && (rhs.spectrum == lhs.spectrum);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info)
 {
     str << std::setprecision(15);
     str << "video_stream_info:" << '\n' << "{\n";
@@ -526,12 +542,12 @@ std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video
     return str;
 }
 
-bool operator==(const Camera::ModeUpdate& lhs, const Camera::ModeUpdate& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::ModeUpdate& lhs, const Camera::ModeUpdate& rhs)
 {
     return (rhs.component_id == lhs.component_id) && (rhs.mode == lhs.mode);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::ModeUpdate const& mode_update)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::ModeUpdate const& mode_update)
 {
     str << std::setprecision(15);
     str << "mode_update:" << '\n' << "{\n";
@@ -541,13 +557,15 @@ std::ostream& operator<<(std::ostream& str, Camera::ModeUpdate const& mode_updat
     return str;
 }
 
-bool operator==(const Camera::VideoStreamUpdate& lhs, const Camera::VideoStreamUpdate& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Camera::VideoStreamUpdate& lhs, const Camera::VideoStreamUpdate& rhs)
 {
     return (rhs.component_id == lhs.component_id) &&
            (rhs.video_stream_info == lhs.video_stream_info);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::VideoStreamUpdate const& video_stream_update)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamUpdate const& video_stream_update)
 {
     str << std::setprecision(15);
     str << "video_stream_update:" << '\n' << "{\n";
@@ -557,42 +575,54 @@ std::ostream& operator<<(std::ostream& str, Camera::VideoStreamUpdate const& vid
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Storage::StorageStatus const& storage_status)
+MAVSDK_PUBLIC std::string_view to_string(Camera::Storage::StorageStatus const& storage_status)
 {
     switch (storage_status) {
         case Camera::Storage::StorageStatus::NotAvailable:
-            return str << "Not Available";
+            return "Not Available";
         case Camera::Storage::StorageStatus::Unformatted:
-            return str << "Unformatted";
+            return "Unformatted";
         case Camera::Storage::StorageStatus::Formatted:
-            return str << "Formatted";
+            return "Formatted";
         case Camera::Storage::StorageStatus::NotSupported:
-            return str << "Not Supported";
+            return "Not Supported";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Storage::StorageType const& storage_type)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::Storage::StorageStatus const& storage_status)
+{
+    return str << to_string(storage_status);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Camera::Storage::StorageType const& storage_type)
 {
     switch (storage_type) {
         case Camera::Storage::StorageType::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Camera::Storage::StorageType::UsbStick:
-            return str << "Usb Stick";
+            return "Usb Stick";
         case Camera::Storage::StorageType::Sd:
-            return str << "Sd";
+            return "Sd";
         case Camera::Storage::StorageType::Microsd:
-            return str << "Microsd";
+            return "Microsd";
         case Camera::Storage::StorageType::Hd:
-            return str << "Hd";
+            return "Hd";
         case Camera::Storage::StorageType::Other:
-            return str << "Other";
+            return "Other";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
-bool operator==(const Camera::Storage& lhs, const Camera::Storage& rhs)
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::Storage::StorageType const& storage_type)
+{
+    return str << to_string(storage_type);
+}
+MAVSDK_PUBLIC bool operator==(const Camera::Storage& lhs, const Camera::Storage& rhs)
 {
     return (rhs.component_id == lhs.component_id) && (rhs.video_on == lhs.video_on) &&
            (rhs.photo_interval_on == lhs.photo_interval_on) &&
@@ -609,7 +639,7 @@ bool operator==(const Camera::Storage& lhs, const Camera::Storage& rhs)
            (rhs.storage_type == lhs.storage_type);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Storage const& storage)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Storage const& storage)
 {
     str << std::setprecision(15);
     str << "storage:" << '\n' << "{\n";
@@ -628,12 +658,13 @@ std::ostream& operator<<(std::ostream& str, Camera::Storage const& storage)
     return str;
 }
 
-bool operator==(const Camera::StorageUpdate& lhs, const Camera::StorageUpdate& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::StorageUpdate& lhs, const Camera::StorageUpdate& rhs)
 {
     return (rhs.component_id == lhs.component_id) && (rhs.storage == lhs.storage);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::StorageUpdate const& storage_update)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::StorageUpdate const& storage_update)
 {
     str << std::setprecision(15);
     str << "storage_update:" << '\n' << "{\n";
@@ -643,12 +674,13 @@ std::ostream& operator<<(std::ostream& str, Camera::StorageUpdate const& storage
     return str;
 }
 
-bool operator==(const Camera::CurrentSettingsUpdate& lhs, const Camera::CurrentSettingsUpdate& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Camera::CurrentSettingsUpdate& lhs, const Camera::CurrentSettingsUpdate& rhs)
 {
     return (rhs.component_id == lhs.component_id) && (rhs.current_settings == lhs.current_settings);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Camera::CurrentSettingsUpdate const& current_settings_update)
 {
     str << std::setprecision(15);
@@ -665,14 +697,14 @@ operator<<(std::ostream& str, Camera::CurrentSettingsUpdate const& current_setti
     return str;
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const Camera::PossibleSettingOptionsUpdate& lhs,
     const Camera::PossibleSettingOptionsUpdate& rhs)
 {
     return (rhs.component_id == lhs.component_id) && (rhs.setting_options == lhs.setting_options);
 }
 
-std::ostream& operator<<(
+MAVSDK_PUBLIC std::ostream& operator<<(
     std::ostream& str, Camera::PossibleSettingOptionsUpdate const& possible_setting_options_update)
 {
     str << std::setprecision(15);
@@ -689,41 +721,46 @@ std::ostream& operator<<(
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Camera::Result const& result)
 {
     switch (result) {
         case Camera::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Camera::Result::Success:
-            return str << "Success";
+            return "Success";
         case Camera::Result::InProgress:
-            return str << "In Progress";
+            return "In Progress";
         case Camera::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Camera::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case Camera::Result::Error:
-            return str << "Error";
+            return "Error";
         case Camera::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Camera::Result::WrongArgument:
-            return str << "Wrong Argument";
+            return "Wrong Argument";
         case Camera::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Camera::Result::ProtocolUnsupported:
-            return str << "Protocol Unsupported";
+            return "Protocol Unsupported";
         case Camera::Result::Unavailable:
-            return str << "Unavailable";
+            return "Unavailable";
         case Camera::Result::CameraIdInvalid:
-            return str << "Camera Id Invalid";
+            return "Camera Id Invalid";
         case Camera::Result::ActionUnsupported:
-            return str << "Action Unsupported";
+            return "Action Unsupported";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-bool operator==(const Camera::Position& lhs, const Camera::Position& rhs)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC bool operator==(const Camera::Position& lhs, const Camera::Position& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
             rhs.latitude_deg == lhs.latitude_deg) &&
@@ -735,7 +772,7 @@ bool operator==(const Camera::Position& lhs, const Camera::Position& rhs)
             rhs.relative_altitude_m == lhs.relative_altitude_m);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Position const& position)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Position const& position)
 {
     str << std::setprecision(15);
     str << "position:" << '\n' << "{\n";
@@ -747,7 +784,7 @@ std::ostream& operator<<(std::ostream& str, Camera::Position const& position)
     return str;
 }
 
-bool operator==(const Camera::Quaternion& lhs, const Camera::Quaternion& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::Quaternion& lhs, const Camera::Quaternion& rhs)
 {
     return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
            ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
@@ -755,7 +792,7 @@ bool operator==(const Camera::Quaternion& lhs, const Camera::Quaternion& rhs)
            ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Quaternion const& quaternion)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Quaternion const& quaternion)
 {
     str << std::setprecision(15);
     str << "quaternion:" << '\n' << "{\n";
@@ -767,7 +804,7 @@ std::ostream& operator<<(std::ostream& str, Camera::Quaternion const& quaternion
     return str;
 }
 
-bool operator==(const Camera::EulerAngle& lhs, const Camera::EulerAngle& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::EulerAngle& lhs, const Camera::EulerAngle& rhs)
 {
     return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
             rhs.roll_deg == lhs.roll_deg) &&
@@ -776,7 +813,7 @@ bool operator==(const Camera::EulerAngle& lhs, const Camera::EulerAngle& rhs)
            ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::EulerAngle const& euler_angle)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::EulerAngle const& euler_angle)
 {
     str << std::setprecision(15);
     str << "euler_angle:" << '\n' << "{\n";
@@ -787,7 +824,7 @@ std::ostream& operator<<(std::ostream& str, Camera::EulerAngle const& euler_angl
     return str;
 }
 
-bool operator==(const Camera::CaptureInfo& lhs, const Camera::CaptureInfo& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::CaptureInfo& lhs, const Camera::CaptureInfo& rhs)
 {
     return (rhs.component_id == lhs.component_id) && (rhs.position == lhs.position) &&
            (rhs.attitude_quaternion == lhs.attitude_quaternion) &&
@@ -796,7 +833,7 @@ bool operator==(const Camera::CaptureInfo& lhs, const Camera::CaptureInfo& rhs)
            (rhs.index == lhs.index) && (rhs.file_url == lhs.file_url);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_info)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_info)
 {
     str << std::setprecision(15);
     str << "capture_info:" << '\n' << "{\n";
@@ -812,7 +849,7 @@ std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_i
     return str;
 }
 
-bool operator==(const Camera::Information& lhs, const Camera::Information& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::Information& lhs, const Camera::Information& rhs)
 {
     return (rhs.component_id == lhs.component_id) && (rhs.vendor_name == lhs.vendor_name) &&
            (rhs.model_name == lhs.model_name) &&
@@ -827,7 +864,7 @@ bool operator==(const Camera::Information& lhs, const Camera::Information& rhs)
            (rhs.vertical_resolution_px == lhs.vertical_resolution_px);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Information const& information)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Information const& information)
 {
     str << std::setprecision(15);
     str << "information:" << '\n' << "{\n";
@@ -843,12 +880,12 @@ std::ostream& operator<<(std::ostream& str, Camera::Information const& informati
     return str;
 }
 
-bool operator==(const Camera::CameraList& lhs, const Camera::CameraList& rhs)
+MAVSDK_PUBLIC bool operator==(const Camera::CameraList& lhs, const Camera::CameraList& rhs)
 {
     return (rhs.cameras == lhs.cameras);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::CameraList const& camera_list)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::CameraList const& camera_list)
 {
     str << std::setprecision(15);
     str << "camera_list:" << '\n' << "{\n";
@@ -861,30 +898,40 @@ std::ostream& operator<<(std::ostream& str, Camera::CameraList const& camera_lis
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode)
+MAVSDK_PUBLIC std::string_view to_string(Camera::Mode const& mode)
 {
     switch (mode) {
         case Camera::Mode::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Camera::Mode::Photo:
-            return str << "Photo";
+            return "Photo";
         case Camera::Mode::Video:
-            return str << "Video";
+            return "Video";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode)
+{
+    return str << to_string(mode);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Camera::PhotosRange const& photos_range)
 {
     switch (photos_range) {
         case Camera::PhotosRange::All:
-            return str << "All";
+            return "All";
         case Camera::PhotosRange::SinceConnection:
-            return str << "Since Connection";
+            return "Since Connection";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range)
+{
+    return str << to_string(photos_range);
 }
 
 } // namespace mavsdk

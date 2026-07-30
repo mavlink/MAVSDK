@@ -3,9 +3,9 @@
 //./multiple_drones udpin://0.0.0.0:14540 udpin://0.0.0.0:14541
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 #include <cstdint>
 #include <atomic>
 #include <iostream>

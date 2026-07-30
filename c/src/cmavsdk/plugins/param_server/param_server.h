@@ -209,7 +209,7 @@ typedef enum {
     MAVSDK_PARAM_SERVER_RESULT_NO_SYSTEM = 5,
     /**  Parameter name too long (> 128). */
     MAVSDK_PARAM_SERVER_RESULT_PARAM_VALUE_TOO_LONG = 6,
-    /**  All parameters have to be provided upfront. */
+    /**  New params have to be provided before the param set is locked down. */
     MAVSDK_PARAM_SERVER_RESULT_PARAM_PROVIDED_TOO_LATE = 7,
 } mavsdk_param_server_result_t;
 
@@ -432,6 +432,7 @@ mavsdk_param_server_retrieve_all_params(
  * @brief Subscribe to changed int param.
  *
  * @param param_server The param_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_param_server_unsubscribe_changed_param_int() to unsubscribe.
@@ -458,6 +459,7 @@ CMAVSDK_EXPORT void mavsdk_param_server_unsubscribe_changed_param_int(
  * @brief Subscribe to changed float param.
  *
  * @param param_server The param_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_param_server_unsubscribe_changed_param_float() to unsubscribe.
@@ -484,6 +486,7 @@ CMAVSDK_EXPORT void mavsdk_param_server_unsubscribe_changed_param_float(
  * @brief Subscribe to changed custom param.
  *
  * @param param_server The param_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_param_server_unsubscribe_changed_param_custom() to unsubscribe.

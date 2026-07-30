@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "param_impl.h"
-#include "plugins/param/param.h"
+#include "param_impl.hpp"
+#include "plugins/param/param.hpp"
 
 namespace mavsdk {
 
@@ -63,12 +63,12 @@ Param::Result Param::select_component(int32_t component_id, ProtocolVersion prot
     return _impl->select_component(component_id, protocol_version);
 }
 
-bool operator==(const Param::IntParam& lhs, const Param::IntParam& rhs)
+MAVSDK_PUBLIC bool operator==(const Param::IntParam& lhs, const Param::IntParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param)
 {
     str << std::setprecision(15);
     str << "int_param:" << '\n' << "{\n";
@@ -78,13 +78,13 @@ std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param)
     return str;
 }
 
-bool operator==(const Param::FloatParam& lhs, const Param::FloatParam& rhs)
+MAVSDK_PUBLIC bool operator==(const Param::FloatParam& lhs, const Param::FloatParam& rhs)
 {
     return (rhs.name == lhs.name) &&
            ((std::isnan(rhs.value) && std::isnan(lhs.value)) || rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param)
 {
     str << std::setprecision(15);
     str << "float_param:" << '\n' << "{\n";
@@ -94,12 +94,12 @@ std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param
     return str;
 }
 
-bool operator==(const Param::CustomParam& lhs, const Param::CustomParam& rhs)
+MAVSDK_PUBLIC bool operator==(const Param::CustomParam& lhs, const Param::CustomParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_param)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_param)
 {
     str << std::setprecision(15);
     str << "custom_param:" << '\n' << "{\n";
@@ -109,13 +109,13 @@ std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_par
     return str;
 }
 
-bool operator==(const Param::AllParams& lhs, const Param::AllParams& rhs)
+MAVSDK_PUBLIC bool operator==(const Param::AllParams& lhs, const Param::AllParams& rhs)
 {
     return (rhs.int_params == lhs.int_params) && (rhs.float_params == lhs.float_params) &&
            (rhs.custom_params == lhs.custom_params);
 }
 
-std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params)
 {
     str << std::setprecision(15);
     str << "all_params:" << '\n' << "{\n";
@@ -138,58 +138,69 @@ std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params)
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Param::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Param::Result const& result)
 {
     switch (result) {
         case Param::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Param::Result::Success:
-            return str << "Success";
+            return "Success";
         case Param::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Param::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Param::Result::WrongType:
-            return str << "Wrong Type";
+            return "Wrong Type";
         case Param::Result::ParamNameTooLong:
-            return str << "Param Name Too Long";
+            return "Param Name Too Long";
         case Param::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Param::Result::ParamValueTooLong:
-            return str << "Param Value Too Long";
+            return "Param Value Too Long";
         case Param::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         case Param::Result::DoesNotExist:
-            return str << "Does Not Exist";
+            return "Does Not Exist";
         case Param::Result::ValueOutOfRange:
-            return str << "Value Out Of Range";
+            return "Value Out Of Range";
         case Param::Result::PermissionDenied:
-            return str << "Permission Denied";
+            return "Permission Denied";
         case Param::Result::ComponentNotFound:
-            return str << "Component Not Found";
+            return "Component Not Found";
         case Param::Result::ReadOnly:
-            return str << "Read Only";
+            return "Read Only";
         case Param::Result::TypeUnsupported:
-            return str << "Type Unsupported";
+            return "Type Unsupported";
         case Param::Result::TypeMismatch:
-            return str << "Type Mismatch";
+            return "Type Mismatch";
         case Param::Result::ReadFail:
-            return str << "Read Fail";
+            return "Read Fail";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Param::ProtocolVersion const& protocol_version)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Param::ProtocolVersion const& protocol_version)
 {
     switch (protocol_version) {
         case Param::ProtocolVersion::V1:
-            return str << "V1";
+            return "V1";
         case Param::ProtocolVersion::Ext:
-            return str << "Ext";
+            return "Ext";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Param::ProtocolVersion const& protocol_version)
+{
+    return str << to_string(protocol_version);
 }
 
 } // namespace mavsdk

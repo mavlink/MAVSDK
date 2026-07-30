@@ -5,7 +5,7 @@
 
 #include <chrono>
 #include <cstdint>
-#include <mavsdk/mavsdk.h>
+#include <mavsdk/mavsdk.hpp>
 #include <iostream>
 #include <future>
 #include <memory>

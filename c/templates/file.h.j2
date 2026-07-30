@@ -187,14 +187,15 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ 
  * @brief {{ method.method_description | replace('\n', '\n * ') }}
  *
  * @param {{ plugin_name.lower_snake_case }} The {{ plugin_name.lower_snake_case }} instance.
- {% for param in method.params -%}
+{% for param in method.params %}
  * @param {{ param.name.lower_snake_case }} {{ param.description | replace('\n', '\n * ') }}
- {% endfor %}
+{% endfor %}
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
- {% if method.is_stream and not method.is_finite %}
+{% if method.is_stream and not method.is_finite %}
  * @return Handle for this subscription. Use mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}() to unsubscribe.
- {% endif %}
+{% endif %}
  */
 CMAVSDK_EXPORT {% if method.is_stream and not method.is_finite%}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite%}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},

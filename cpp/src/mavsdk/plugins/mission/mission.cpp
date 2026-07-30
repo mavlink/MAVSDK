@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "mission_impl.h"
-#include "plugins/mission/mission.h"
+#include "mission_impl.hpp"
+#include "plugins/mission/mission.hpp"
 
 namespace mavsdk {
 
@@ -138,49 +138,60 @@ Mission::Result Mission::set_return_to_launch_after_mission(bool enable) const
     return _impl->set_return_to_launch_after_mission(enable);
 }
 
-std::ostream& operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action)
+MAVSDK_PUBLIC std::string_view to_string(Mission::MissionItem::CameraAction const& camera_action)
 {
     switch (camera_action) {
         case Mission::MissionItem::CameraAction::None:
-            return str << "None";
+            return "None";
         case Mission::MissionItem::CameraAction::TakePhoto:
-            return str << "Take Photo";
+            return "Take Photo";
         case Mission::MissionItem::CameraAction::StartPhotoInterval:
-            return str << "Start Photo Interval";
+            return "Start Photo Interval";
         case Mission::MissionItem::CameraAction::StopPhotoInterval:
-            return str << "Stop Photo Interval";
+            return "Stop Photo Interval";
         case Mission::MissionItem::CameraAction::StartVideo:
-            return str << "Start Video";
+            return "Start Video";
         case Mission::MissionItem::CameraAction::StopVideo:
-            return str << "Stop Video";
+            return "Stop Video";
         case Mission::MissionItem::CameraAction::StartPhotoDistance:
-            return str << "Start Photo Distance";
+            return "Start Photo Distance";
         case Mission::MissionItem::CameraAction::StopPhotoDistance:
-            return str << "Stop Photo Distance";
+            return "Stop Photo Distance";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream&
-operator<<(std::ostream& str, Mission::MissionItem::VehicleAction const& vehicle_action)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action)
+{
+    return str << to_string(camera_action);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Mission::MissionItem::VehicleAction const& vehicle_action)
 {
     switch (vehicle_action) {
         case Mission::MissionItem::VehicleAction::None:
-            return str << "None";
+            return "None";
         case Mission::MissionItem::VehicleAction::Takeoff:
-            return str << "Takeoff";
+            return "Takeoff";
         case Mission::MissionItem::VehicleAction::Land:
-            return str << "Land";
+            return "Land";
         case Mission::MissionItem::VehicleAction::TransitionToFw:
-            return str << "Transition To Fw";
+            return "Transition To Fw";
         case Mission::MissionItem::VehicleAction::TransitionToMc:
-            return str << "Transition To Mc";
+            return "Transition To Mc";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
-bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs)
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Mission::MissionItem::VehicleAction const& vehicle_action)
+{
+    return str << to_string(vehicle_action);
+}
+MAVSDK_PUBLIC bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
             (std::fabs(rhs.latitude_deg - lhs.latitude_deg) < 1e-07)) &&
@@ -208,7 +219,7 @@ bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs
            (rhs.vehicle_action == lhs.vehicle_action);
 }
 
-std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item)
 {
     str << std::setprecision(15);
     str << "mission_item:" << '\n' << "{\n";
@@ -230,12 +241,12 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_
     return str;
 }
 
-bool operator==(const Mission::MissionPlan& lhs, const Mission::MissionPlan& rhs)
+MAVSDK_PUBLIC bool operator==(const Mission::MissionPlan& lhs, const Mission::MissionPlan& rhs)
 {
     return (rhs.mission_items == lhs.mission_items);
 }
 
-std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan)
 {
     str << std::setprecision(15);
     str << "mission_plan:" << '\n' << "{\n";
@@ -249,12 +260,14 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_
     return str;
 }
 
-bool operator==(const Mission::MissionProgress& lhs, const Mission::MissionProgress& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Mission::MissionProgress& lhs, const Mission::MissionProgress& rhs)
 {
     return (rhs.current == lhs.current) && (rhs.total == lhs.total);
 }
 
-std::ostream& operator<<(std::ostream& str, Mission::MissionProgress const& mission_progress)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Mission::MissionProgress const& mission_progress)
 {
     str << std::setprecision(15);
     str << "mission_progress:" << '\n' << "{\n";
@@ -264,52 +277,58 @@ std::ostream& operator<<(std::ostream& str, Mission::MissionProgress const& miss
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Mission::Result const& result)
 {
     switch (result) {
         case Mission::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Mission::Result::Success:
-            return str << "Success";
+            return "Success";
         case Mission::Result::Error:
-            return str << "Error";
+            return "Error";
         case Mission::Result::TooManyMissionItems:
-            return str << "Too Many Mission Items";
+            return "Too Many Mission Items";
         case Mission::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Mission::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Mission::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         case Mission::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Mission::Result::NoMissionAvailable:
-            return str << "No Mission Available";
+            return "No Mission Available";
         case Mission::Result::UnsupportedMissionCmd:
-            return str << "Unsupported Mission Cmd";
+            return "Unsupported Mission Cmd";
         case Mission::Result::TransferCancelled:
-            return str << "Transfer Cancelled";
+            return "Transfer Cancelled";
         case Mission::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Mission::Result::Next:
-            return str << "Next";
+            return "Next";
         case Mission::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case Mission::Result::ProtocolError:
-            return str << "Protocol Error";
+            return "Protocol Error";
         case Mission::Result::IntMessagesNotSupported:
-            return str << "Int Messages Not Supported";
+            return "Int Messages Not Supported";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-bool operator==(const Mission::ProgressData& lhs, const Mission::ProgressData& rhs)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mission::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC bool operator==(const Mission::ProgressData& lhs, const Mission::ProgressData& rhs)
 {
     return ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) || rhs.progress == lhs.progress);
 }
 
-std::ostream& operator<<(std::ostream& str, Mission::ProgressData const& progress_data)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Mission::ProgressData const& progress_data)
 {
     str << std::setprecision(15);
     str << "progress_data:" << '\n' << "{\n";
@@ -318,8 +337,8 @@ std::ostream& operator<<(std::ostream& str, Mission::ProgressData const& progres
     return str;
 }
 
-bool operator==(
-    const Mission::ProgressDataOrMission& lhs, const Mission::ProgressDataOrMission& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Mission::ProgressDataOrMission& lhs, const Mission::ProgressDataOrMission& rhs)
 {
     return (rhs.has_progress == lhs.has_progress) &&
            ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) ||
@@ -327,7 +346,7 @@ bool operator==(
            (rhs.has_mission == lhs.has_mission) && (rhs.mission_plan == lhs.mission_plan);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Mission::ProgressDataOrMission const& progress_data_or_mission)
 {
     str << std::setprecision(15);

@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "param_server_impl.h"
-#include "plugins/param_server/param_server.h"
+#include "param_server_impl.hpp"
+#include "plugins/param_server/param_server.hpp"
 
 namespace mavsdk {
 
@@ -95,12 +95,12 @@ void ParamServer::unsubscribe_changed_param_custom(ChangedParamCustomHandle hand
     _impl->unsubscribe_changed_param_custom(handle);
 }
 
-bool operator==(const ParamServer::IntParam& lhs, const ParamServer::IntParam& rhs)
+MAVSDK_PUBLIC bool operator==(const ParamServer::IntParam& lhs, const ParamServer::IntParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, ParamServer::IntParam const& int_param)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ParamServer::IntParam const& int_param)
 {
     str << std::setprecision(15);
     str << "int_param:" << '\n' << "{\n";
@@ -110,13 +110,15 @@ std::ostream& operator<<(std::ostream& str, ParamServer::IntParam const& int_par
     return str;
 }
 
-bool operator==(const ParamServer::FloatParam& lhs, const ParamServer::FloatParam& rhs)
+MAVSDK_PUBLIC bool
+operator==(const ParamServer::FloatParam& lhs, const ParamServer::FloatParam& rhs)
 {
     return (rhs.name == lhs.name) &&
            ((std::isnan(rhs.value) && std::isnan(lhs.value)) || rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, ParamServer::FloatParam const& float_param)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ParamServer::FloatParam const& float_param)
 {
     str << std::setprecision(15);
     str << "float_param:" << '\n' << "{\n";
@@ -126,12 +128,14 @@ std::ostream& operator<<(std::ostream& str, ParamServer::FloatParam const& float
     return str;
 }
 
-bool operator==(const ParamServer::CustomParam& lhs, const ParamServer::CustomParam& rhs)
+MAVSDK_PUBLIC bool
+operator==(const ParamServer::CustomParam& lhs, const ParamServer::CustomParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, ParamServer::CustomParam const& custom_param)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ParamServer::CustomParam const& custom_param)
 {
     str << std::setprecision(15);
     str << "custom_param:" << '\n' << "{\n";
@@ -141,13 +145,13 @@ std::ostream& operator<<(std::ostream& str, ParamServer::CustomParam const& cust
     return str;
 }
 
-bool operator==(const ParamServer::AllParams& lhs, const ParamServer::AllParams& rhs)
+MAVSDK_PUBLIC bool operator==(const ParamServer::AllParams& lhs, const ParamServer::AllParams& rhs)
 {
     return (rhs.int_params == lhs.int_params) && (rhs.float_params == lhs.float_params) &&
            (rhs.custom_params == lhs.custom_params);
 }
 
-std::ostream& operator<<(std::ostream& str, ParamServer::AllParams const& all_params)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ParamServer::AllParams const& all_params)
 {
     str << std::setprecision(15);
     str << "all_params:" << '\n' << "{\n";
@@ -170,28 +174,33 @@ std::ostream& operator<<(std::ostream& str, ParamServer::AllParams const& all_pa
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(ParamServer::Result const& result)
 {
     switch (result) {
         case ParamServer::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case ParamServer::Result::Success:
-            return str << "Success";
+            return "Success";
         case ParamServer::Result::NotFound:
-            return str << "Not Found";
+            return "Not Found";
         case ParamServer::Result::WrongType:
-            return str << "Wrong Type";
+            return "Wrong Type";
         case ParamServer::Result::ParamNameTooLong:
-            return str << "Param Name Too Long";
+            return "Param Name Too Long";
         case ParamServer::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case ParamServer::Result::ParamValueTooLong:
-            return str << "Param Value Too Long";
+            return "Param Value Too Long";
         case ParamServer::Result::ParamProvidedTooLate:
-            return str << "Param Provided Too Late";
+            return "Param Provided Too Late";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

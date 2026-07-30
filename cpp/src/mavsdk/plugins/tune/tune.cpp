@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "tune_impl.h"
-#include "plugins/tune/tune.h"
+#include "tune_impl.hpp"
+#include "plugins/tune/tune.hpp"
 
 namespace mavsdk {
 
@@ -28,12 +28,13 @@ Tune::Result Tune::play_tune(TuneDescription tune_description) const
     return _impl->play_tune(tune_description);
 }
 
-bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs)
+MAVSDK_PUBLIC bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs)
 {
     return (rhs.song_elements == lhs.song_elements) && (rhs.tempo == lhs.tempo);
 }
 
-std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_description)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Tune::TuneDescription const& tune_description)
 {
     str << std::setprecision(15);
     str << "tune_description:" << '\n' << "{\n";
@@ -49,74 +50,84 @@ std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_de
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Tune::Result const& result)
 {
     switch (result) {
         case Tune::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Tune::Result::Success:
-            return str << "Success";
+            return "Success";
         case Tune::Result::InvalidTempo:
-            return str << "Invalid Tempo";
+            return "Invalid Tempo";
         case Tune::Result::TuneTooLong:
-            return str << "Tune Too Long";
+            return "Tune Too Long";
         case Tune::Result::Error:
-            return str << "Error";
+            return "Error";
         case Tune::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_element)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Tune::SongElement const& song_element)
 {
     switch (song_element) {
         case Tune::SongElement::StyleLegato:
-            return str << "Style Legato";
+            return "Style Legato";
         case Tune::SongElement::StyleNormal:
-            return str << "Style Normal";
+            return "Style Normal";
         case Tune::SongElement::StyleStaccato:
-            return str << "Style Staccato";
+            return "Style Staccato";
         case Tune::SongElement::Duration1:
-            return str << "Duration 1";
+            return "Duration 1";
         case Tune::SongElement::Duration2:
-            return str << "Duration 2";
+            return "Duration 2";
         case Tune::SongElement::Duration4:
-            return str << "Duration 4";
+            return "Duration 4";
         case Tune::SongElement::Duration8:
-            return str << "Duration 8";
+            return "Duration 8";
         case Tune::SongElement::Duration16:
-            return str << "Duration 16";
+            return "Duration 16";
         case Tune::SongElement::Duration32:
-            return str << "Duration 32";
+            return "Duration 32";
         case Tune::SongElement::NoteA:
-            return str << "Note A";
+            return "Note A";
         case Tune::SongElement::NoteB:
-            return str << "Note B";
+            return "Note B";
         case Tune::SongElement::NoteC:
-            return str << "Note C";
+            return "Note C";
         case Tune::SongElement::NoteD:
-            return str << "Note D";
+            return "Note D";
         case Tune::SongElement::NoteE:
-            return str << "Note E";
+            return "Note E";
         case Tune::SongElement::NoteF:
-            return str << "Note F";
+            return "Note F";
         case Tune::SongElement::NoteG:
-            return str << "Note G";
+            return "Note G";
         case Tune::SongElement::NotePause:
-            return str << "Note Pause";
+            return "Note Pause";
         case Tune::SongElement::Sharp:
-            return str << "Sharp";
+            return "Sharp";
         case Tune::SongElement::Flat:
-            return str << "Flat";
+            return "Flat";
         case Tune::SongElement::OctaveUp:
-            return str << "Octave Up";
+            return "Octave Up";
         case Tune::SongElement::OctaveDown:
-            return str << "Octave Down";
+            return "Octave Down";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_element)
+{
+    return str << to_string(song_element);
 }
 
 } // namespace mavsdk

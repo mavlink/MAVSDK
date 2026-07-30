@@ -5,10 +5,10 @@
 #include <future>
 #include <thread>
 
-#include "mavsdk.h"
-#include "log.h"
-#include "plugins/component_metadata/component_metadata.h"
-#include "plugins/component_metadata_server/component_metadata_server.h"
+#include "mavsdk.hpp"
+#include "log.hpp"
+#include "plugins/component_metadata/component_metadata.hpp"
+#include "plugins/component_metadata_server/component_metadata_server.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -158,7 +158,7 @@ static constexpr const char* events_json_metadata = R"JSON({
 }
 )JSON";
 
-TEST(SystemTest, ComponentInformationConnect)
+TEST(ComponentMetadata, InformationConnect)
 {
     // Enable more debug output
 #ifndef WINDOWS // setenv is not available on Windows
@@ -204,7 +204,7 @@ TEST(SystemTest, ComponentInformationConnect)
     std::atomic_bool all_completed{false};
     client.subscribe_metadata_available([&received_events, &received_parameters, &all_completed](
                                             ComponentMetadata::MetadataUpdate data) {
-        LogInfo() << "Got metadata, type: " << static_cast<int>(data.type);
+        LogInfo("Got metadata, type: {}", to_string(data.type));
         EXPECT_EQ(data.compid, MAV_COMP_ID_ONBOARD_COMPUTER);
         switch (data.type) {
             case ComponentMetadata::MetadataType::Parameter:
@@ -219,7 +219,7 @@ TEST(SystemTest, ComponentInformationConnect)
                 all_completed = true;
                 break;
             default:
-                ASSERT_TRUE(false) << "Unexpected metadata type " << static_cast<int>(data.type);
+                ASSERT_TRUE(false) << "Unexpected metadata type " << data.type;
         }
     });
 

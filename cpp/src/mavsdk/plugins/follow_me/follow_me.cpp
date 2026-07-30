@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "follow_me_impl.h"
-#include "plugins/follow_me/follow_me.h"
+#include "follow_me_impl.hpp"
+#include "plugins/follow_me/follow_me.hpp"
 
 namespace mavsdk {
 
@@ -56,21 +56,27 @@ FollowMe::Result FollowMe::stop() const
     return _impl->stop();
 }
 
-std::ostream&
-operator<<(std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode)
+MAVSDK_PUBLIC std::string_view
+to_string(FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode)
 {
     switch (follow_altitude_mode) {
         case FollowMe::Config::FollowAltitudeMode::Constant:
-            return str << "Constant";
+            return "Constant";
         case FollowMe::Config::FollowAltitudeMode::Terrain:
-            return str << "Terrain";
+            return "Terrain";
         case FollowMe::Config::FollowAltitudeMode::TargetGps:
-            return str << "Target Gps";
+            return "Target Gps";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
-bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs)
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode)
+{
+    return str << to_string(follow_altitude_mode);
+}
+MAVSDK_PUBLIC bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs)
 {
     return ((std::isnan(rhs.follow_height_m) && std::isnan(lhs.follow_height_m)) ||
             rhs.follow_height_m == lhs.follow_height_m) &&
@@ -85,7 +91,7 @@ bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs)
             rhs.follow_angle_deg == lhs.follow_angle_deg);
 }
 
-std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config)
 {
     str << std::setprecision(15);
     str << "config:" << '\n' << "{\n";
@@ -99,7 +105,8 @@ std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config)
     return str;
 }
 
-bool operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocation& rhs)
+MAVSDK_PUBLIC bool
+operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocation& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
             rhs.latitude_deg == lhs.latitude_deg) &&
@@ -115,7 +122,8 @@ bool operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocat
             rhs.velocity_z_m_s == lhs.velocity_z_m_s);
 }
 
-std::ostream& operator<<(std::ostream& str, FollowMe::TargetLocation const& target_location)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, FollowMe::TargetLocation const& target_location)
 {
     str << std::setprecision(15);
     str << "target_location:" << '\n' << "{\n";
@@ -129,30 +137,35 @@ std::ostream& operator<<(std::ostream& str, FollowMe::TargetLocation const& targ
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(FollowMe::Result const& result)
 {
     switch (result) {
         case FollowMe::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case FollowMe::Result::Success:
-            return str << "Success";
+            return "Success";
         case FollowMe::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case FollowMe::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case FollowMe::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case FollowMe::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case FollowMe::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case FollowMe::Result::NotActive:
-            return str << "Not Active";
+            return "Not Active";
         case FollowMe::Result::SetConfigFailed:
-            return str << "Set Config Failed";
+            return "Set Config Failed";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

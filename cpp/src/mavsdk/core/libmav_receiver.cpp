@@ -1,15 +1,56 @@
-#include "libmav_receiver.h"
-#include "mavsdk_impl.h"
+#include "libmav_receiver.hpp"
+#include "mavsdk_impl.hpp"
 #include <mav/MessageSet.h>
 #include <mav/BufferParser.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 #include <variant>
 #include <cstring>
-#include <sstream>
-#include <cmath>
-#include "log.h"
+#include <array>
+#include <string>
+#include <string_view>
+#include <vector>
+#include "log.hpp"
 
 namespace mavsdk {
+
+namespace {
+
+// A handful of MAVLink messages declare a field as char[] but actually use it
+// to carry raw binary data. The most common case is the extended-parameter
+// protocol, which packs a typed parameter value as little-endian bytes into
+// PARAM_EXT_{VALUE,SET,ACK}.param_value (char[128]).
+//
+// Such fields must be represented in JSON as a byte array, not a string:
+//  - libmav's getString() truncates char[] at the first NUL (strnlen), which
+//    corrupts any value containing a zero byte, and
+//  - the bytes are usually not valid UTF-8.
+//
+// This is an explicit, deliberately small allow-list. It intentionally does NOT
+// match PARAM_VALUE.param_value, which is a normal float. New entries should be
+// added only for fields genuinely carrying binary in a char[].
+bool is_binary_char_field(const std::string& message_name, const std::string& field_name)
+{
+    struct BinaryField {
+        std::string_view message;
+        std::string_view field;
+    };
+    // Kept as string-view literals in a constexpr array (no static object with a
+    // runtime destructor and no per-lookup allocation) so it is safe to read
+    // from the message-delivery thread, including during process teardown.
+    static constexpr std::array<BinaryField, 3> binary_fields{{
+        {"PARAM_EXT_VALUE", "param_value"},
+        {"PARAM_EXT_SET", "param_value"},
+        {"PARAM_EXT_ACK", "param_value"},
+    }};
+    for (const auto& binary_field : binary_fields) {
+        if (field_name == binary_field.field && message_name == binary_field.message) {
+            return true;
+        }
+    }
+    return false;
+}
+
+} // namespace
 
 LibmavReceiver::LibmavReceiver(MavsdkImpl& mavsdk_impl) : _mavsdk_impl(mavsdk_impl)
 {
@@ -74,7 +115,7 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
     auto message = message_opt.value();
 
     if (_debugging) {
-        LogDebug() << "Parsed message: " << message.name() << " (ID: " << message.id() << ")";
+        LogDebug("Parsed message: {} (ID: {})", message.name(), message.id());
     }
 
     // Extract system and component IDs from header
@@ -88,6 +129,18 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
     _last_message.message_name = message.name();
     _last_message.system_id = header.systemId();
     _last_message.component_id = header.componentId();
+
+    if (_last_libmav_message) {
+        const uint32_t wire_len = _last_libmav_message->finalizedSize();
+        if (wire_len > 0) {
+            const uint8_t* wire_ptr = _last_libmav_message->data();
+            _last_message.raw_bytes.assign(wire_ptr, wire_ptr + wire_len);
+        } else {
+            _last_message.raw_bytes.clear();
+        }
+    } else {
+        _last_message.raw_bytes.clear();
+    }
 
     // Extract target_system and target_component if present in message fields
     uint8_t target_system_id = 0;
@@ -115,10 +168,12 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
 
 std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) const
 {
-    std::ostringstream json_stream;
-    json_stream << "{";
-    json_stream << "\"message_id\":" << msg.id();
-    json_stream << ",\"message_name\":\"" << msg.name() << "\"";
+    // Use ordered_json so fields keep their MAVLink XML-definition order
+    // (plain nlohmann::json would sort keys alphabetically). nlohmann handles
+    // string escaping and renders NaN/Inf as null on dump().
+    nlohmann::ordered_json json;
+    json["message_id"] = msg.id();
+    json["message_name"] = msg.name();
 
     // Get message definition to iterate through all fields (using thread-safe method)
     auto message_def_opt = _mavsdk_impl.get_message_definition_safe(static_cast<int>(msg.id()));
@@ -129,97 +184,47 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
         // Get field names and iterate through them
         auto field_names = message_def.fieldNames();
         for (const auto& field_name : field_names) {
-            json_stream << ",\"" << field_name << "\":";
+            // Binary char[] fields (see allow-list) are emitted as a byte array
+            // of the full field width, read directly as raw bytes so the value
+            // is not NUL-truncated. The field stays declared as char, so the
+            // message CRC_EXTRA is unaffected.
+            if (is_binary_char_field(msg.name(), field_name)) {
+                std::vector<uint8_t> raw;
+                if (msg.get(field_name, raw) == ::mav::MessageResult::Success) {
+                    json[field_name] = raw;
+                    continue;
+                }
+            }
 
             // Extract field value based on type and convert to JSON
             auto variant_opt = msg.getAsNativeTypeInVariant(field_name);
             if (variant_opt) {
-                const auto& variant = variant_opt.value();
-
-                // Convert variant to JSON string based on the field type
                 std::visit(
-                    [&json_stream](const auto& value) {
+                    [&json, &field_name](const auto& value) {
                         using T = std::decay_t<decltype(value)>;
 
-                        if constexpr (
-                            std::is_same_v<T, uint8_t> || std::is_same_v<T, uint16_t> ||
-                            std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t> ||
-                            std::is_same_v<T, int8_t> || std::is_same_v<T, int16_t> ||
-                            std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t>) {
-                            json_stream << static_cast<int64_t>(value);
-                        } else if constexpr (std::is_same_v<T, char>) {
-                            json_stream << static_cast<int>(value);
-                        } else if constexpr (
-                            std::is_same_v<T, float> || std::is_same_v<T, double>) {
-                            if (!std::isfinite(value)) {
-                                json_stream << "null";
-                            } else {
-                                json_stream << value;
-                            }
-                        } else if constexpr (std::is_same_v<T, std::string>) {
-                            json_stream << "\"" << value << "\"";
-                        } else if constexpr (
-                            std::is_same_v<T, std::vector<uint8_t>> ||
-                            std::is_same_v<T, std::vector<int8_t>>) {
-                            // Handle uint8_t/int8_t vectors specially to avoid character output
-                            json_stream << "[";
-                            bool first = true;
-                            for (const auto& elem : value) {
-                                if (!first)
-                                    json_stream << ",";
-                                first = false;
-                                json_stream << static_cast<int>(elem);
-                            }
-                            json_stream << "]";
-                        } else if constexpr (
-                            std::is_same_v<T, std::vector<uint16_t>> ||
-                            std::is_same_v<T, std::vector<uint32_t>> ||
-                            std::is_same_v<T, std::vector<uint64_t>> ||
-                            std::is_same_v<T, std::vector<int16_t>> ||
-                            std::is_same_v<T, std::vector<int32_t>> ||
-                            std::is_same_v<T, std::vector<int64_t>>) {
-                            // Handle integer vector types
-                            json_stream << "[";
-                            bool first = true;
-                            for (const auto& elem : value) {
-                                if (!first)
-                                    json_stream << ",";
-                                first = false;
-                                json_stream << elem;
-                            }
-                            json_stream << "]";
-                        } else if constexpr (
-                            std::is_same_v<T, std::vector<float>> ||
-                            std::is_same_v<T, std::vector<double>>) {
-                            // Handle float/double vector types with NaN check
-                            json_stream << "[";
-                            bool first = true;
-                            for (const auto& elem : value) {
-                                if (!first)
-                                    json_stream << ",";
-                                first = false;
-                                if (!std::isfinite(elem)) {
-                                    json_stream << "null";
-                                } else {
-                                    json_stream << elem;
-                                }
-                            }
-                            json_stream << "]";
+                        if constexpr (std::is_same_v<T, char>) {
+                            // Represent a scalar char as its numeric value.
+                            json[field_name] = static_cast<int>(value);
                         } else {
-                            // Fallback for unknown types
-                            json_stream << "null";
+                            // Scalars and vectors (incl. uint8/int8, which
+                            // nlohmann serializes as number arrays) assign
+                            // directly; NaN/Inf become null on dump().
+                            json[field_name] = value;
                         }
                     },
-                    variant);
+                    variant_opt.value());
             } else {
                 // Field not present or failed to extract
-                json_stream << "null";
+                json[field_name] = nullptr;
             }
         }
     }
 
-    json_stream << "}";
-    return json_stream.str();
+    // MAVLink char[] fields can carry raw binary (non-UTF-8) bytes. Use the
+    // replace error handler so dump() emits U+FFFD instead of throwing (which,
+    // under -fno-exceptions, would abort).
+    return json.dump(-1, ' ', false, nlohmann::ordered_json::error_handler_t::replace);
 }
 
 std::optional<std::string> LibmavReceiver::message_id_to_name(uint32_t id) const

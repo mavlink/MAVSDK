@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "component_metadata_impl.h"
-#include "plugins/component_metadata/component_metadata.h"
+#include "component_metadata_impl.hpp"
+#include "plugins/component_metadata/component_metadata.hpp"
 
 namespace mavsdk {
 
@@ -53,13 +53,14 @@ ComponentMetadata::get_metadata(uint32_t compid, MetadataType metadata_type) con
     return _impl->get_metadata(compid, metadata_type);
 }
 
-bool operator==(
-    const ComponentMetadata::MetadataData& lhs, const ComponentMetadata::MetadataData& rhs)
+MAVSDK_PUBLIC bool
+operator==(const ComponentMetadata::MetadataData& lhs, const ComponentMetadata::MetadataData& rhs)
 {
     return (rhs.json_metadata == lhs.json_metadata);
 }
 
-std::ostream& operator<<(std::ostream& str, ComponentMetadata::MetadataData const& metadata_data)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ComponentMetadata::MetadataData const& metadata_data)
 {
     str << std::setprecision(15);
     str << "metadata_data:" << '\n' << "{\n";
@@ -68,40 +69,45 @@ std::ostream& operator<<(std::ostream& str, ComponentMetadata::MetadataData cons
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, ComponentMetadata::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(ComponentMetadata::Result const& result)
 {
     switch (result) {
         case ComponentMetadata::Result::Success:
-            return str << "Success";
+            return "Success";
         case ComponentMetadata::Result::NotAvailable:
-            return str << "Not Available";
+            return "Not Available";
         case ComponentMetadata::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case ComponentMetadata::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case ComponentMetadata::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case ComponentMetadata::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         case ComponentMetadata::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case ComponentMetadata::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case ComponentMetadata::Result::NotRequested:
-            return str << "Not Requested";
+            return "Not Requested";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-bool operator==(
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ComponentMetadata::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC bool operator==(
     const ComponentMetadata::MetadataUpdate& lhs, const ComponentMetadata::MetadataUpdate& rhs)
 {
     return (rhs.compid == lhs.compid) && (rhs.type == lhs.type) &&
            (rhs.json_metadata == lhs.json_metadata);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, ComponentMetadata::MetadataUpdate const& metadata_update)
 {
     str << std::setprecision(15);
@@ -113,20 +119,26 @@ operator<<(std::ostream& str, ComponentMetadata::MetadataUpdate const& metadata_
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, ComponentMetadata::MetadataType const& metadata_type)
+MAVSDK_PUBLIC std::string_view to_string(ComponentMetadata::MetadataType const& metadata_type)
 {
     switch (metadata_type) {
         case ComponentMetadata::MetadataType::AllCompleted:
-            return str << "All Completed";
+            return "All Completed";
         case ComponentMetadata::MetadataType::Parameter:
-            return str << "Parameter";
+            return "Parameter";
         case ComponentMetadata::MetadataType::Events:
-            return str << "Events";
+            return "Events";
         case ComponentMetadata::MetadataType::Actuators:
-            return str << "Actuators";
+            return "Actuators";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ComponentMetadata::MetadataType const& metadata_type)
+{
+    return str << to_string(metadata_type);
 }
 
 } // namespace mavsdk

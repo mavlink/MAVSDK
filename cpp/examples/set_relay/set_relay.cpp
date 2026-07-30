@@ -8,8 +8,8 @@
 //   param set SERVO1_FUNCTION -1
 // Equivalent to in mavproxy "relay set 0 0" and "relay set 0 1"
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>

@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 
-#include "offboard/offboard_service_impl.h"
-#include "offboard/mocks/offboard_mock.h"
-#include "mocks/lazy_plugin_mock.h"
+#include "offboard/offboard_service_impl.hpp"
+#include "offboard/mocks/offboard_mock.hpp"
+#include "mocks/lazy_plugin_mock.hpp"
 
 namespace {
 

@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "calibration_impl.h"
-#include "plugins/calibration/calibration.h"
+#include "calibration_impl.hpp"
+#include "plugins/calibration/calibration.hpp"
 
 namespace mavsdk {
 
@@ -54,39 +54,45 @@ Calibration::Result Calibration::cancel() const
     return _impl->cancel();
 }
 
-std::ostream& operator<<(std::ostream& str, Calibration::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Calibration::Result const& result)
 {
     switch (result) {
         case Calibration::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Calibration::Result::Success:
-            return str << "Success";
+            return "Success";
         case Calibration::Result::Next:
-            return str << "Next";
+            return "Next";
         case Calibration::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         case Calibration::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Calibration::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Calibration::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Calibration::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case Calibration::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Calibration::Result::Cancelled:
-            return str << "Cancelled";
+            return "Cancelled";
         case Calibration::Result::FailedArmed:
-            return str << "Failed Armed";
+            return "Failed Armed";
         case Calibration::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-bool operator==(const Calibration::ProgressData& lhs, const Calibration::ProgressData& rhs)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Calibration::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC bool
+operator==(const Calibration::ProgressData& lhs, const Calibration::ProgressData& rhs)
 {
     return (rhs.has_progress == lhs.has_progress) &&
            ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) ||
@@ -94,7 +100,8 @@ bool operator==(const Calibration::ProgressData& lhs, const Calibration::Progres
            (rhs.has_status_text == lhs.has_status_text) && (rhs.status_text == lhs.status_text);
 }
 
-std::ostream& operator<<(std::ostream& str, Calibration::ProgressData const& progress_data)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Calibration::ProgressData const& progress_data)
 {
     str << std::setprecision(15);
     str << "progress_data:" << '\n' << "{\n";

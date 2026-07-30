@@ -4,7 +4,7 @@
 
 #include "component_metadata.h"
 
-#include <mavsdk/plugins/component_metadata/component_metadata.h>
+#include <mavsdk/plugins/component_metadata/component_metadata.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

@@ -66,6 +66,12 @@ extern ClearGeofenceRequestDefaultTypeInternal _ClearGeofenceRequest_default_ins
 class ClearGeofenceResponse;
 struct ClearGeofenceResponseDefaultTypeInternal;
 extern ClearGeofenceResponseDefaultTypeInternal _ClearGeofenceResponse_default_instance_;
+class DownloadGeofenceRequest;
+struct DownloadGeofenceRequestDefaultTypeInternal;
+extern DownloadGeofenceRequestDefaultTypeInternal _DownloadGeofenceRequest_default_instance_;
+class DownloadGeofenceResponse;
+struct DownloadGeofenceResponseDefaultTypeInternal;
+extern DownloadGeofenceResponseDefaultTypeInternal _DownloadGeofenceResponse_default_instance_;
 class GeofenceData;
 struct GeofenceDataDefaultTypeInternal;
 extern GeofenceDataDefaultTypeInternal _GeofenceData_default_instance_;
@@ -436,7 +442,7 @@ class GeofenceResult final
     return reinterpret_cast<const GeofenceResult*>(
         &_GeofenceResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(GeofenceResult& a, GeofenceResult& b) { a.Swap(&b); }
   inline void Swap(GeofenceResult* other) {
     if (other == this) return;
@@ -610,6 +616,152 @@ class GeofenceResult final
 };
 // -------------------------------------------------------------------
 
+class DownloadGeofenceRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.geofence.DownloadGeofenceRequest) */ {
+ public:
+  inline DownloadGeofenceRequest() : DownloadGeofenceRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DownloadGeofenceRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadGeofenceRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadGeofenceRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadGeofenceRequest(const DownloadGeofenceRequest& from) : DownloadGeofenceRequest(nullptr, from) {}
+  inline DownloadGeofenceRequest(DownloadGeofenceRequest&& from) noexcept
+      : DownloadGeofenceRequest(nullptr, std::move(from)) {}
+  inline DownloadGeofenceRequest& operator=(const DownloadGeofenceRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadGeofenceRequest& operator=(DownloadGeofenceRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadGeofenceRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadGeofenceRequest* internal_default_instance() {
+    return reinterpret_cast<const DownloadGeofenceRequest*>(
+        &_DownloadGeofenceRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(DownloadGeofenceRequest& a, DownloadGeofenceRequest& b) { a.Swap(&b); }
+  inline void Swap(DownloadGeofenceRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadGeofenceRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadGeofenceRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<DownloadGeofenceRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const DownloadGeofenceRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const DownloadGeofenceRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.geofence.DownloadGeofenceRequest"; }
+
+ protected:
+  explicit DownloadGeofenceRequest(::google::protobuf::Arena* arena);
+  DownloadGeofenceRequest(::google::protobuf::Arena* arena, const DownloadGeofenceRequest& from);
+  DownloadGeofenceRequest(::google::protobuf::Arena* arena, DownloadGeofenceRequest&& from) noexcept
+      : DownloadGeofenceRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.geofence.DownloadGeofenceRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadGeofenceRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_geofence_2fgeofence_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ClearGeofenceRequest final
     : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.geofence.ClearGeofenceRequest) */ {
@@ -669,7 +821,7 @@ class ClearGeofenceRequest final
     return reinterpret_cast<const ClearGeofenceRequest*>(
         &_ClearGeofenceRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(ClearGeofenceRequest& a, ClearGeofenceRequest& b) { a.Swap(&b); }
   inline void Swap(ClearGeofenceRequest* other) {
     if (other == this) return;
@@ -1223,7 +1375,7 @@ class ClearGeofenceResponse final
     return reinterpret_cast<const ClearGeofenceResponse*>(
         &_ClearGeofenceResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(ClearGeofenceResponse& a, ClearGeofenceResponse& b) { a.Swap(&b); }
   inline void Swap(ClearGeofenceResponse* other) {
     if (other == this) return;
@@ -1993,6 +2145,220 @@ class UploadGeofenceRequest final
   union { Impl_ _impl_; };
   friend struct ::TableStruct_geofence_2fgeofence_2eproto;
 };
+// -------------------------------------------------------------------
+
+class DownloadGeofenceResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.geofence.DownloadGeofenceResponse) */ {
+ public:
+  inline DownloadGeofenceResponse() : DownloadGeofenceResponse(nullptr) {}
+  ~DownloadGeofenceResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(DownloadGeofenceResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadGeofenceResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadGeofenceResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadGeofenceResponse(const DownloadGeofenceResponse& from) : DownloadGeofenceResponse(nullptr, from) {}
+  inline DownloadGeofenceResponse(DownloadGeofenceResponse&& from) noexcept
+      : DownloadGeofenceResponse(nullptr, std::move(from)) {}
+  inline DownloadGeofenceResponse& operator=(const DownloadGeofenceResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadGeofenceResponse& operator=(DownloadGeofenceResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadGeofenceResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadGeofenceResponse* internal_default_instance() {
+    return reinterpret_cast<const DownloadGeofenceResponse*>(
+        &_DownloadGeofenceResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(DownloadGeofenceResponse& a, DownloadGeofenceResponse& b) { a.Swap(&b); }
+  inline void Swap(DownloadGeofenceResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadGeofenceResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadGeofenceResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DownloadGeofenceResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadGeofenceResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DownloadGeofenceResponse& from) { DownloadGeofenceResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DownloadGeofenceResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.geofence.DownloadGeofenceResponse"; }
+
+ protected:
+  explicit DownloadGeofenceResponse(::google::protobuf::Arena* arena);
+  DownloadGeofenceResponse(::google::protobuf::Arena* arena, const DownloadGeofenceResponse& from);
+  DownloadGeofenceResponse(::google::protobuf::Arena* arena, DownloadGeofenceResponse&& from) noexcept
+      : DownloadGeofenceResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kGeofenceResultFieldNumber = 1,
+    kGeofenceDataFieldNumber = 2,
+  };
+  // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
+  bool has_geofence_result() const;
+  void clear_geofence_result() ;
+  const ::mavsdk::rpc::geofence::GeofenceResult& geofence_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::geofence::GeofenceResult* release_geofence_result();
+  ::mavsdk::rpc::geofence::GeofenceResult* mutable_geofence_result();
+  void set_allocated_geofence_result(::mavsdk::rpc::geofence::GeofenceResult* value);
+  void unsafe_arena_set_allocated_geofence_result(::mavsdk::rpc::geofence::GeofenceResult* value);
+  ::mavsdk::rpc::geofence::GeofenceResult* unsafe_arena_release_geofence_result();
+
+  private:
+  const ::mavsdk::rpc::geofence::GeofenceResult& _internal_geofence_result() const;
+  ::mavsdk::rpc::geofence::GeofenceResult* _internal_mutable_geofence_result();
+
+  public:
+  // .mavsdk.rpc.geofence.GeofenceData geofence_data = 2;
+  bool has_geofence_data() const;
+  void clear_geofence_data() ;
+  const ::mavsdk::rpc::geofence::GeofenceData& geofence_data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::geofence::GeofenceData* release_geofence_data();
+  ::mavsdk::rpc::geofence::GeofenceData* mutable_geofence_data();
+  void set_allocated_geofence_data(::mavsdk::rpc::geofence::GeofenceData* value);
+  void unsafe_arena_set_allocated_geofence_data(::mavsdk::rpc::geofence::GeofenceData* value);
+  ::mavsdk::rpc::geofence::GeofenceData* unsafe_arena_release_geofence_data();
+
+  private:
+  const ::mavsdk::rpc::geofence::GeofenceData& _internal_geofence_data() const;
+  ::mavsdk::rpc::geofence::GeofenceData* _internal_mutable_geofence_data();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.geofence.DownloadGeofenceResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadGeofenceResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::geofence::GeofenceResult* geofence_result_;
+    ::mavsdk::rpc::geofence::GeofenceData* geofence_data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_geofence_2fgeofence_2eproto;
+};
 
 // ===================================================================
 
@@ -2573,6 +2939,206 @@ inline void UploadGeofenceResponse::set_allocated_geofence_result(::mavsdk::rpc:
 
   _impl_.geofence_result_ = reinterpret_cast<::mavsdk::rpc::geofence::GeofenceResult*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.geofence.UploadGeofenceResponse.geofence_result)
+}
+
+// -------------------------------------------------------------------
+
+// DownloadGeofenceRequest
+
+// -------------------------------------------------------------------
+
+// DownloadGeofenceResponse
+
+// .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
+inline bool DownloadGeofenceResponse::has_geofence_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.geofence_result_ != nullptr);
+  return value;
+}
+inline void DownloadGeofenceResponse::clear_geofence_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.geofence_result_ != nullptr) _impl_.geofence_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::geofence::GeofenceResult& DownloadGeofenceResponse::_internal_geofence_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::geofence::GeofenceResult* p = _impl_.geofence_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::geofence::GeofenceResult&>(::mavsdk::rpc::geofence::_GeofenceResult_default_instance_);
+}
+inline const ::mavsdk::rpc::geofence::GeofenceResult& DownloadGeofenceResponse::geofence_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_result)
+  return _internal_geofence_result();
+}
+inline void DownloadGeofenceResponse::unsafe_arena_set_allocated_geofence_result(::mavsdk::rpc::geofence::GeofenceResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.geofence_result_);
+  }
+  _impl_.geofence_result_ = reinterpret_cast<::mavsdk::rpc::geofence::GeofenceResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_result)
+}
+inline ::mavsdk::rpc::geofence::GeofenceResult* DownloadGeofenceResponse::release_geofence_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::geofence::GeofenceResult* released = _impl_.geofence_result_;
+  _impl_.geofence_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::geofence::GeofenceResult* DownloadGeofenceResponse::unsafe_arena_release_geofence_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::geofence::GeofenceResult* temp = _impl_.geofence_result_;
+  _impl_.geofence_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::geofence::GeofenceResult* DownloadGeofenceResponse::_internal_mutable_geofence_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.geofence_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::geofence::GeofenceResult>(GetArena());
+    _impl_.geofence_result_ = reinterpret_cast<::mavsdk::rpc::geofence::GeofenceResult*>(p);
+  }
+  return _impl_.geofence_result_;
+}
+inline ::mavsdk::rpc::geofence::GeofenceResult* DownloadGeofenceResponse::mutable_geofence_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::geofence::GeofenceResult* _msg = _internal_mutable_geofence_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_result)
+  return _msg;
+}
+inline void DownloadGeofenceResponse::set_allocated_geofence_result(::mavsdk::rpc::geofence::GeofenceResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.geofence_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.geofence_result_ = reinterpret_cast<::mavsdk::rpc::geofence::GeofenceResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_result)
+}
+
+// .mavsdk.rpc.geofence.GeofenceData geofence_data = 2;
+inline bool DownloadGeofenceResponse::has_geofence_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.geofence_data_ != nullptr);
+  return value;
+}
+inline void DownloadGeofenceResponse::clear_geofence_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.geofence_data_ != nullptr) _impl_.geofence_data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::mavsdk::rpc::geofence::GeofenceData& DownloadGeofenceResponse::_internal_geofence_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::geofence::GeofenceData* p = _impl_.geofence_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::geofence::GeofenceData&>(::mavsdk::rpc::geofence::_GeofenceData_default_instance_);
+}
+inline const ::mavsdk::rpc::geofence::GeofenceData& DownloadGeofenceResponse::geofence_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_data)
+  return _internal_geofence_data();
+}
+inline void DownloadGeofenceResponse::unsafe_arena_set_allocated_geofence_data(::mavsdk::rpc::geofence::GeofenceData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.geofence_data_);
+  }
+  _impl_.geofence_data_ = reinterpret_cast<::mavsdk::rpc::geofence::GeofenceData*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_data)
+}
+inline ::mavsdk::rpc::geofence::GeofenceData* DownloadGeofenceResponse::release_geofence_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::geofence::GeofenceData* released = _impl_.geofence_data_;
+  _impl_.geofence_data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::geofence::GeofenceData* DownloadGeofenceResponse::unsafe_arena_release_geofence_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_data)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::geofence::GeofenceData* temp = _impl_.geofence_data_;
+  _impl_.geofence_data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::geofence::GeofenceData* DownloadGeofenceResponse::_internal_mutable_geofence_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.geofence_data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::geofence::GeofenceData>(GetArena());
+    _impl_.geofence_data_ = reinterpret_cast<::mavsdk::rpc::geofence::GeofenceData*>(p);
+  }
+  return _impl_.geofence_data_;
+}
+inline ::mavsdk::rpc::geofence::GeofenceData* DownloadGeofenceResponse::mutable_geofence_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::geofence::GeofenceData* _msg = _internal_mutable_geofence_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_data)
+  return _msg;
+}
+inline void DownloadGeofenceResponse::set_allocated_geofence_data(::mavsdk::rpc::geofence::GeofenceData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.geofence_data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.geofence_data_ = reinterpret_cast<::mavsdk::rpc::geofence::GeofenceData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.geofence.DownloadGeofenceResponse.geofence_data)
 }
 
 // -------------------------------------------------------------------

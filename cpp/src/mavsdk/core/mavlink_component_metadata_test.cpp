@@ -1,4 +1,4 @@
-#include "mavlink_component_metadata.h"
+#include "mavlink_component_metadata.hpp"
 
 #include <gtest/gtest.h>
 

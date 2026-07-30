@@ -1,5 +1,5 @@
 #include "log.h"
-#include <mavsdk/log_callback.h>
+#include <mavsdk/log_callback.hpp>
 #include <string>
 
 using namespace mavsdk;

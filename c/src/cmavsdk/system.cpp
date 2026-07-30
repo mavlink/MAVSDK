@@ -1,7 +1,7 @@
 #include "system.h" // C wrapper header
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/system.h>
-#include <mavsdk/component_type.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/system.hpp>
+#include <mavsdk/component_type.hpp>
 #include <cstring>
 #include <vector>
 

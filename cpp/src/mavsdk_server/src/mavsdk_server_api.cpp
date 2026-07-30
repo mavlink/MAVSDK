@@ -1,5 +1,5 @@
 #include "mavsdk_server_api.h"
-#include "mavsdk_server.h"
+#include "mavsdk_server.hpp"
 #include <string>
 
 void mavsdk_server_init(MavsdkServer** mavsdk_server)

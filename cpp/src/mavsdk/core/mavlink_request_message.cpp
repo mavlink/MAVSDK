@@ -1,7 +1,8 @@
 
-#include "log.h"
-#include "mavlink_request_message.h"
-#include "system_impl.h"
+#include "log.hpp"
+#include "mavlink_request_message.hpp"
+#include "system_impl.hpp"
+#include <algorithm>
 #include <cstdint>
 #include <string>
 
@@ -19,9 +20,24 @@ MavlinkRequestMessage::MavlinkRequestMessage(
 {
     if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Command debugging is on.";
+            LogDebug("Command debugging is on.");
             _debugging = true;
         }
+    }
+}
+
+MavlinkRequestMessage::~MavlinkRequestMessage()
+{
+    // The message handler holds callbacks capturing 'this', so make sure none of
+    // them can fire after we are gone.
+    _message_handler.unregister_all_blocking(this);
+
+    // In-flight requests schedule timeouts that also capture 'this'. Cancel any that
+    // are still pending, otherwise TimeoutHandler could fire handle_timeout on us
+    // after destruction (use-after-free).
+    std::lock_guard<std::mutex> lock(_mutex);
+    for (const auto& item : _work_items) {
+        _timeout_handler.remove(item.timeout_cookie);
     }
 }
 
@@ -33,12 +49,6 @@ void MavlinkRequestMessage::request(
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
-    // Cleanup previous requests.
-    for (const auto id : _deferred_message_cleanup) {
-        _message_handler.unregister_one(id, this);
-    }
-    _deferred_message_cleanup.clear();
-
     // Respond with 'Busy' if already in progress.
     for (auto& item : _work_items) {
         if (item.message_id == message_id && item.param2 == param2 &&
@@ -48,7 +58,7 @@ void MavlinkRequestMessage::request(
                 callback(MavlinkCommandSender::Result::Busy, {});
             }
             if (_debugging) {
-                LogDebug() << "Message " << item.message_id << " already requested";
+                LogDebug("Message {} already requested", item.message_id);
             }
             return;
         }
@@ -57,11 +67,18 @@ void MavlinkRequestMessage::request(
     // Otherwise, schedule it.
     _work_items.emplace_back(WorkItem{message_id, target_component, callback, param2});
 
-    // Register for message
-    _message_handler.register_one(
-        message_id,
-        [this](const mavlink_message_t& message) { handle_any_message(message); },
-        this);
+    // Register a handler for this message id if we don't have one yet. We keep
+    // it registered for our lifetime; handle_any_message is a no-op when no work
+    // item is waiting, and this avoids the races of registering and
+    // unregistering per request.
+    if (std::find(_registered_message_ids.begin(), _registered_message_ids.end(), message_id) ==
+        _registered_message_ids.end()) {
+        _registered_message_ids.push_back(message_id);
+        _message_handler.register_one(
+            message_id,
+            [this](const mavlink_message_t& message) { handle_any_message(message); },
+            this);
+    }
 
     // And send off command
     send_request(_work_items.back());
@@ -84,10 +101,12 @@ void MavlinkRequestMessage::send_request_using_new_command(WorkItem& item)
 {
     if (_debugging) {
         if (item.retries > 0) {
-            LogDebug() << "Request message " << item.message_id
-                       << " again using REQUEST_MESSAGE (retries: " << item.retries << ")";
+            LogDebug(
+                "Request message {} again using REQUEST_MESSAGE (retries: {})",
+                item.message_id,
+                item.retries);
         } else {
-            LogDebug() << "Request message " << item.message_id << " using REQUEST_MESSAGE";
+            LogDebug("Request message {} using REQUEST_MESSAGE", item.message_id);
         }
     }
 
@@ -181,8 +200,11 @@ bool MavlinkRequestMessage::try_sending_request_using_old_command(WorkItem& item
     }
 
     if (_debugging) {
-        LogDebug() << "Request message " << item.message_id << " again using " << command_name
-                   << " (retries: " << item.retries << ")";
+        LogDebug(
+            "Request message {} again using {} (retries: {})",
+            item.message_id,
+            command_name,
+            item.retries);
     }
 
     _command_sender.queue_command_async(
@@ -202,9 +224,10 @@ void MavlinkRequestMessage::handle_any_message(const mavlink_message_t& message)
     std::unique_lock<std::mutex> lock(_mutex);
 
     for (auto it = _work_items.begin(); it != _work_items.end(); ++it) {
-        // Check if we're waiting for this message.
+        // Check if we're waiting for this message. Skip unless both the message id and
+        // the component it came from match what this work item requested.
         // TODO: check if params are correct.
-        if (it->message_id != message.msgid && it->target_component == message.compid) {
+        if (it->message_id != message.msgid || it->target_component != message.compid) {
             continue;
         }
 
@@ -214,10 +237,9 @@ void MavlinkRequestMessage::handle_any_message(const mavlink_message_t& message)
         // of the command later, we ignore it, and we fake the result to be successful
         // anyway.
         auto temp_callback = it->callback;
-        // We can now get rid of the entry now.
+        // We can now get rid of the entry now. We keep the message handler
+        // registered for next time.
         _work_items.erase(it);
-        // We have to clean up later outside this callback, otherwise we lock ourselves out.
-        _deferred_message_cleanup.push_back(message.msgid);
         lock.unlock();
 
         if (temp_callback) {
@@ -262,7 +284,6 @@ void MavlinkRequestMessage::handle_command_result(
                 if (++it->retries > RETRIES) {
                     // We have already retried, let's give up.
                     auto temp_callback = it->callback;
-                    _message_handler.unregister_one(it->message_id, this);
                     _work_items.erase(it);
                     lock.unlock();
                     if (temp_callback) {
@@ -285,7 +306,6 @@ void MavlinkRequestMessage::handle_command_result(
                 // It looks like this did not work, and we can report the error
                 // No need to try again.
                 auto temp_callback = it->callback;
-                _message_handler.unregister_one(it->message_id, this);
                 _work_items.erase(it);
                 lock.unlock();
                 if (temp_callback) {
@@ -314,7 +334,6 @@ void MavlinkRequestMessage::handle_timeout(uint32_t message_id, uint8_t target_c
         if (++it->retries > RETRIES) {
             // We have already retried, let's give up.
             auto temp_callback = it->callback;
-            _message_handler.unregister_one(it->message_id, this);
             _work_items.erase(it);
             lock.unlock();
             if (temp_callback) {

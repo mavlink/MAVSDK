@@ -1,4 +1,5 @@
 add_executable(system_tests_runner
+    camera_definition.cpp
     camera_mode.cpp
     camera_take_photo.cpp
     camera_take_photo_interval.cpp
@@ -13,8 +14,15 @@ add_executable(system_tests_runner
     param_get_all.cpp
     param_custom_set_and_get.cpp
     param_get_all.cpp
+    param_change_notification.cpp
     mission_raw_upload.cpp
+    mission_raw_upload_empty.cpp
     telemetry_subscription.cpp
+    telemetry_timestamp.cpp
+    telemetry_rc_status.cpp
+    geofence_download.cpp
+    telemetry_home_position.cpp
+    request_message_rapid.cpp
     fs_helpers.cpp
     ftp_download_file.cpp
     ftp_download_file_burst.cpp
@@ -28,6 +36,7 @@ add_executable(system_tests_runner
     intercept.cpp
     mavlink_direct.cpp
     mavlink_direct_forwarding.cpp
+    mavlink_direct_server.cpp
     mavlink_seq.cpp
     mission_cancellation.cpp
     mission_changed.cpp
@@ -44,7 +53,9 @@ target_include_directories(system_tests_runner
 
 find_package(GTest REQUIRED)
 
-find_package(jsoncpp REQUIRED)
+find_package(nlohmann_json REQUIRED)
+
+find_package(fmt REQUIRED)
 
 target_link_libraries(system_tests_runner
     PRIVATE
@@ -52,7 +63,8 @@ target_link_libraries(system_tests_runner
     GTest::gtest
     GTest::gtest_main
     GTest::gmock
-    JsonCpp::JsonCpp
+    nlohmann_json::nlohmann_json
+    fmt::fmt
 )
 
 set_target_properties(system_tests_runner

@@ -295,6 +295,7 @@ CMAVSDK_EXPORT void mavsdk_winch_destroy(mavsdk_winch_t winch);
  * @brief Subscribe to 'winch status' updates.
  *
  * @param winch The winch instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_winch_unsubscribe_status() to unsubscribe.
@@ -335,7 +336,8 @@ mavsdk_winch_status(
  * @brief Allow motor to freewheel.
  *
  * @param winch The winch instance.
-* @param instance 
+ * @param instance 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -365,12 +367,13 @@ mavsdk_winch_relax(
  * @brief Wind or unwind specified length of line, optionally using specified rate.
  *
  * @param winch The winch instance.
-* @param instance  Instance ID of the winch addressed by this request
+ * @param instance  Instance ID of the winch addressed by this request
  * 
-* @param length_m  Length of line to unwind or wind
+ * @param length_m  Length of line to unwind or wind
  * 
-* @param rate_m_s  Rate at which to wind or unwind the line
+ * @param rate_m_s  Rate at which to wind or unwind the line
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -404,9 +407,10 @@ mavsdk_winch_relative_length_control(
  * @brief Wind or unwind line at specified rate.
  *
  * @param winch The winch instance.
-* @param instance 
-* @param rate_m_s  Rate at which to wind or unwind the line
+ * @param instance 
+ * @param rate_m_s  Rate at which to wind or unwind the line
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -438,7 +442,8 @@ mavsdk_winch_rate_control(
  * @brief Perform the locking sequence to relieve motor while in the fully retracted position.
  *
  * @param winch The winch instance.
-* @param instance 
+ * @param instance 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -468,7 +473,8 @@ mavsdk_winch_lock(
  * @brief Sequence of drop, slow down, touch down, reel up, lock.
  *
  * @param winch The winch instance.
-* @param instance 
+ * @param instance 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -498,7 +504,8 @@ mavsdk_winch_deliver(
  * @brief Engage motor and hold current position.
  *
  * @param winch The winch instance.
-* @param instance 
+ * @param instance 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -528,7 +535,8 @@ mavsdk_winch_hold(
  * @brief Return the reel to the fully retracted position.
  *
  * @param winch The winch instance.
-* @param instance 
+ * @param instance 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -560,7 +568,8 @@ mavsdk_winch_retract(
  *  The winch will calculate the total loaded length and stop when the tension exceeds a threshold.
  *
  * @param winch The winch instance.
-* @param instance 
+ * @param instance 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -590,7 +599,8 @@ mavsdk_winch_load_line(
  * @brief Spool out the entire length of the line.
  *
  * @param winch The winch instance.
-* @param instance 
+ * @param instance 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -620,7 +630,8 @@ mavsdk_winch_abandon_line(
  * @brief Spools out just enough to present the hook to the user to load the payload.
  *
  * @param winch The winch instance.
-* @param instance 
+ * @param instance 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

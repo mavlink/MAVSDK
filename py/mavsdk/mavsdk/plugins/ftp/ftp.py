@@ -40,6 +40,20 @@ class FtpResult(IntEnum):
 
 
 # ===== Internal C Structures =====
+class FilesystemEntryCStruct(ctypes.Structure):
+    """
+    Internal C structure for FilesystemEntry.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("name", ctypes.c_char_p),
+        ("entry_type", ctypes.c_int),
+        ("size_bytes", ctypes.c_uint64),
+        ("modification_time_s", ctypes.c_uint64),
+    ]
+
+
 class ListDirectoryDataCStruct(ctypes.Structure):
     """
     Internal C structure for ListDirectoryData.
@@ -47,10 +61,8 @@ class ListDirectoryDataCStruct(ctypes.Structure):
     """
 
     _fields_ = [
-        ("dirs", ctypes.POINTER(ctypes.c_char_p)),
-        ("dirs_size", ctypes.c_size_t),
-        ("files", ctypes.POINTER(ctypes.c_char_p)),
-        ("files_size", ctypes.c_size_t),
+        ("entries", ctypes.POINTER(FilesystemEntryCStruct)),
+        ("entries_size", ctypes.c_size_t),
     ]
 
 
@@ -67,34 +79,89 @@ class ProgressDataCStruct(ctypes.Structure):
 
 
 # ===== Structures =====
-class ListDirectoryData:
+class FilesystemEntry:
     """
-    The output of a directory list
+    A file system entry (file or directory) with metadata.
     """
 
-    def __init__(self, dirs=None, files=None):
-        self.dirs = dirs or []
-        self.files = files or []
+    class EntryType(IntEnum):
+        """The type of a file system entry."""
+
+        UNKNOWN = 0
+        FILE = 1
+        DIRECTORY = 2
+
+    def __init__(
+        self, name=None, entry_type=None, size_bytes=None, modification_time_s=None
+    ):
+        self.name = name
+        self.entry_type = entry_type
+        self.size_bytes = size_bytes
+        self.modification_time_s = modification_time_s
 
     @classmethod
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.dirs = c_struct.dirs.decode("utf-8")
-        instance.files = c_struct.files.decode("utf-8")
+        instance.name = c_struct.name.decode("utf-8")
+        instance.entry_type = FilesystemEntry.EntryType(c_struct.entry_type)
+        instance.size_bytes = c_struct.size_bytes
+        instance.modification_time_s = c_struct.modification_time_s
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = FilesystemEntryCStruct()
+        c_struct.name = self.name.encode("utf-8")
+        c_struct.entry_type = int(self.entry_type)
+        c_struct.size_bytes = self.size_bytes
+        c_struct.modification_time_s = self.modification_time_s
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"name={self.name}")
+        fields.append(f"entry_type={self.entry_type}")
+        fields.append(f"size_bytes={self.size_bytes}")
+        fields.append(f"modification_time_s={self.modification_time_s}")
+        return f"FilesystemEntry({', '.join(fields)})"
+
+
+class ListDirectoryData:
+    """
+    The output of a directory list
+    """
+
+    def __init__(self, entries=None):
+        self.entries = entries or []
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        if c_struct.entries_size > 0:
+            instance.entries = [
+                FilesystemEntry.from_c_struct(c_struct.entries[i])
+                for i in range(c_struct.entries_size)
+            ]
+        else:
+            instance.entries = []
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ListDirectoryDataCStruct()
-        c_struct.dirs = self.dirs.encode("utf-8")
-        c_struct.files = self.files.encode("utf-8")
+        array_type = FilesystemEntryCStruct * len(self.entries)
+        c_array = array_type()
+        for i, item in enumerate(self.entries):
+            c_array[i] = item.to_c_struct()
+        c_struct.entries = ctypes.cast(c_array, ctypes.POINTER(FilesystemEntryCStruct))
+        c_struct.entries_size = len(self.entries)
         return c_struct
 
     def __str__(self):
         fields = []
-        fields.append(f"dirs=[{len(self.dirs)} items]")
-        fields.append(f"files=[{len(self.files)} items]")
+        fields.append(f"entries={self.entries}")
         return f"ListDirectoryData({', '.join(fields)})"
 
 
@@ -538,6 +605,11 @@ _cmavsdk_lib.mavsdk_ftp_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_ftp_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_ftp_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_filesystem_entry_destroy.argtypes = [
+    ctypes.POINTER(FilesystemEntryCStruct)
+]
+_cmavsdk_lib.mavsdk_ftp_filesystem_entry_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_ftp_list_directory_data_destroy.argtypes = [
     ctypes.POINTER(ListDirectoryDataCStruct)

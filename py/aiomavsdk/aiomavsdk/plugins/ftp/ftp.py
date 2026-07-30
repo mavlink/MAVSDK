@@ -11,6 +11,7 @@ from typing import AsyncGenerator
 from mavsdk.plugins.ftp import (
     Ftp,
     FtpResult,
+    FilesystemEntry,
     ListDirectoryData,
     ProgressData,
 )

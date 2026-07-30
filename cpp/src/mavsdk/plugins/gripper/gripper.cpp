@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "gripper_impl.h"
-#include "plugins/gripper/gripper.h"
+#include "gripper_impl.hpp"
+#include "plugins/gripper/gripper.hpp"
 
 namespace mavsdk {
 
@@ -38,38 +38,49 @@ Gripper::Result Gripper::release(uint32_t instance) const
     return _impl->release(instance);
 }
 
-std::ostream& operator<<(std::ostream& str, Gripper::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Gripper::Result const& result)
 {
     switch (result) {
         case Gripper::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Gripper::Result::Success:
-            return str << "Success";
+            return "Success";
         case Gripper::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Gripper::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Gripper::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Gripper::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Gripper::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Gripper::GripperAction const& gripper_action)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gripper::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Gripper::GripperAction const& gripper_action)
 {
     switch (gripper_action) {
         case Gripper::GripperAction::Release:
-            return str << "Release";
+            return "Release";
         case Gripper::GripperAction::Grab:
-            return str << "Grab";
+            return "Grab";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Gripper::GripperAction const& gripper_action)
+{
+    return str << to_string(gripper_action);
 }
 
 } // namespace mavsdk

@@ -11,6 +11,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/mavlink_direct/mavlink_direct.h
+    include/plugins/mavlink_direct/mavlink_direct.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mavlink_direct
 )

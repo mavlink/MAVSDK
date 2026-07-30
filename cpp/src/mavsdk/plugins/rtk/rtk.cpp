@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "rtk_impl.h"
-#include "plugins/rtk/rtk.h"
+#include "rtk_impl.hpp"
+#include "plugins/rtk/rtk.hpp"
 
 namespace mavsdk {
 
@@ -22,12 +22,12 @@ Rtk::Result Rtk::send_rtcm_data(RtcmData rtcm_data) const
     return _impl->send_rtcm_data(rtcm_data);
 }
 
-bool operator==(const Rtk::RtcmData& lhs, const Rtk::RtcmData& rhs)
+MAVSDK_PUBLIC bool operator==(const Rtk::RtcmData& lhs, const Rtk::RtcmData& rhs)
 {
     return (rhs.data_base64 == lhs.data_base64);
 }
 
-std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data)
 {
     str << std::setprecision(15);
     str << "rtcm_data:" << '\n' << "{\n";
@@ -36,22 +36,27 @@ std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data)
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Rtk::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Rtk::Result const& result)
 {
     switch (result) {
         case Rtk::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Rtk::Result::Success:
-            return str << "Success";
+            return "Success";
         case Rtk::Result::TooLong:
-            return str << "Too Long";
+            return "Too Long";
         case Rtk::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Rtk::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

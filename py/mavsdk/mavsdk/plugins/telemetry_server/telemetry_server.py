@@ -378,6 +378,7 @@ class GroundTruthCStruct(ctypes.Structure):
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
         ("absolute_altitude_m", ctypes.c_float),
+        ("timestamp_us", ctypes.c_uint64),
     ]
 
 
@@ -1349,10 +1350,17 @@ class GroundTruth:
     GroundTruth message type.
     """
 
-    def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None):
+    def __init__(
+        self,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        timestamp_us=None,
+    ):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
         self.absolute_altitude_m = absolute_altitude_m
+        self.timestamp_us = timestamp_us
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1361,6 +1369,7 @@ class GroundTruth:
         instance.latitude_deg = c_struct.latitude_deg
         instance.longitude_deg = c_struct.longitude_deg
         instance.absolute_altitude_m = c_struct.absolute_altitude_m
+        instance.timestamp_us = c_struct.timestamp_us
         return instance
 
     def to_c_struct(self):
@@ -1369,6 +1378,7 @@ class GroundTruth:
         c_struct.latitude_deg = self.latitude_deg
         c_struct.longitude_deg = self.longitude_deg
         c_struct.absolute_altitude_m = self.absolute_altitude_m
+        c_struct.timestamp_us = self.timestamp_us
         return c_struct
 
     def __str__(self):
@@ -1376,6 +1386,7 @@ class GroundTruth:
         fields.append(f"latitude_deg={self.latitude_deg}")
         fields.append(f"longitude_deg={self.longitude_deg}")
         fields.append(f"absolute_altitude_m={self.absolute_altitude_m}")
+        fields.append(f"timestamp_us={self.timestamp_us}")
         return f"GroundTruth({', '.join(fields)})"
 
 

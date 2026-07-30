@@ -11,10 +11,10 @@
 #include <memory>
 #include <iostream>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
-#include <mavsdk/plugins/manual_control/manual_control.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
+#include <mavsdk/plugins/manual_control/manual_control.hpp>
 
 #include "joystick.h"
 

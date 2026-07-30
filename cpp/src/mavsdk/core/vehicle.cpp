@@ -1,4 +1,4 @@
-#include "vehicle.h"
+#include "vehicle.hpp"
 
 namespace mavsdk {
 

@@ -2,8 +2,8 @@
 // Example how to download logfiles with MAVSDK.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/log_files/log_files.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/log_files/log_files.hpp>
 
 #include <chrono>
 #include <functional>

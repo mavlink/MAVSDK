@@ -4,7 +4,7 @@
 
 #include "camera_server.h"
 
-#include <mavsdk/plugins/camera_server/camera_server.h>
+#include <mavsdk/plugins/camera_server/camera_server.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>
@@ -1954,6 +1954,63 @@ mavsdk_camera_server_respond_tracking_off_command(
     auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_tracking_off_command(        translate_camera_feedback_from_c(stop_video_feedback));
+
+    return translate_result(ret_value);
+}
+
+
+// SetPosition sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_set_position(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_position_t position)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->set_position(        translate_position_from_c(position));
+
+    return translate_result(ret_value);
+}
+
+
+// SetAttitudeQuaternion sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_set_attitude_quaternion(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_quaternion_t attitude_quaternion)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->set_attitude_quaternion(        translate_quaternion_from_c(attitude_quaternion));
+
+    return translate_result(ret_value);
+}
+
+
+// SetZoomFactor sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_set_zoom_factor(
+    mavsdk_camera_server_t camera_server,
+    float zoom_factor)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->set_zoom_factor(        zoom_factor);
+
+    return translate_result(ret_value);
+}
+
+
+// SetFieldOfView sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_set_field_of_view(
+    mavsdk_camera_server_t camera_server,
+    float horizontal_fov_deg,
+    float vertical_fov_deg)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->set_field_of_view(        horizontal_fov_deg,        vertical_fov_deg);
 
     return translate_result(ret_value);
 }

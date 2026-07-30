@@ -60,6 +60,10 @@ class System:
         )
         self._callbacks.append(c_callback)
 
+    def enable_timesync(self) -> None:
+        """Enable time synchronization using the TIMESYNC messages."""
+        self._lib.mavsdk_system_enable_timesync(self._handle)
+
 
 IsConnectedCallback = ctypes.CFUNCTYPE(None, ctypes.c_bool, ctypes.c_void_p)
 

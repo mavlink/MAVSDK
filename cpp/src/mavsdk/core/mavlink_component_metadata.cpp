@@ -1,10 +1,12 @@
-#include "mavlink_component_metadata.h"
+#include "mavlink_component_metadata.hpp"
 #include "callback_list.tpp"
-#include "fs_utils.h"
-#include "inflate_lzma.h"
-#include "unused.h"
-#include "system_impl.h"
+#include "fs_utils.hpp"
+#include "inflate_lzma.hpp"
+#include "unused.hpp"
+#include "system_impl.hpp"
+#include <asio/post.hpp>
 
+#include <cstdlib>
 #include <utility>
 #include <filesystem>
 #include <fstream>
@@ -20,11 +22,12 @@ namespace mavsdk {
 namespace fs = std::filesystem;
 
 MavlinkComponentMetadata::MavlinkComponentMetadata(SystemImpl& system_impl) :
-    _system_impl(system_impl)
+    _system_impl(system_impl),
+    _notification_callbacks(system_impl.io_context())
 {
     if (const char* env_p = std::getenv("MAVSDK_COMPONENT_METADATA_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Verbose component metadata logging is on";
+            LogDebug("Verbose component metadata logging is o");
             _verbose_debugging = true;
         }
     }
@@ -34,7 +37,7 @@ MavlinkComponentMetadata::MavlinkComponentMetadata(SystemImpl& system_impl) :
         _file_cache.emplace(
             cache_dir_option.value() / "component_metadata", 50, _verbose_debugging);
     } else {
-        LogErr() << "Failed to get cache directory";
+        LogErr("Failed to get cache directory");
     }
 
     const auto tmp_option = create_tmp_directory("mavsdk-component-metadata");
@@ -52,7 +55,7 @@ MavlinkComponentMetadata::~MavlinkComponentMetadata()
     std::error_code ec;
     std::filesystem::remove_all(_tmp_download_path, ec);
     if (ec) {
-        LogErr() << "failed to remove directory: " << ec.message();
+        LogErr("Failed to remove directory: {}", ec.message());
     }
 }
 
@@ -73,7 +76,7 @@ void MavlinkComponentMetadata::receive_component_metadata(
 {
     const std::lock_guard lg{_mavlink_components_mutex};
     if (_mavlink_components.find(message.compid) == _mavlink_components.end()) {
-        LogWarn() << "Unexpected component ID " << static_cast<int>(message.compid);
+        LogWarn("Unexpected component ID {}", static_cast<int>(message.compid));
         return;
     }
 
@@ -96,7 +99,7 @@ void MavlinkComponentMetadata::receive_component_metadata(
                 _mavlink_components[message.compid].result = Result::Failed;
                 break;
         }
-        LogWarn() << "Requesting component metadata failed with " << static_cast<int>(result);
+        LogWarn("Requesting component metadata failed with {}", static_cast<int>(result));
         on_all_types_completed(message.compid);
         return;
     }
@@ -136,7 +139,16 @@ bool MavlinkComponentMetadata::uri_is_mavlinkftp(
         std::regex compid_regex(R"(^(?:\[\;comp\=(\d+)\])(.*))");
         std::smatch match;
         if (std::regex_search(download_path, match, compid_regex)) {
-            target_compid = std::stoi(match[1]);
+            // Parse the component id without throwing (MAVSDK builds with -fno-exceptions,
+            // so std::stoi would terminate() on an out-of-range value from the wire).
+            const std::string compid_str = match[1].str();
+            char* end = nullptr;
+            const long parsed = std::strtol(compid_str.c_str(), &end, 10);
+            if (end == compid_str.c_str() || *end != '\0' || parsed < 0 || parsed > 255) {
+                LogWarn("Ignoring invalid component id in metadata uri: {}", compid_str);
+                return false;
+            }
+            target_compid = static_cast<uint8_t>(parsed);
             download_path = match[2];
         }
         return true;
@@ -147,8 +159,10 @@ bool MavlinkComponentMetadata::uri_is_mavlinkftp(
 void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_TYPE type)
 {
     if (_verbose_debugging) {
-        LogDebug() << "MavlinkComponentMetadata::retrieve_metadata for compid "
-                   << static_cast<int>(compid) << ", type " << static_cast<int>(type);
+        LogDebug(
+            "MavlinkComponentMetadata::retrieve_metadata for compid {}, type {}",
+            static_cast<int>(compid),
+            static_cast<int>(type));
     }
 
     const std::lock_guard lg{_mavlink_components_mutex};
@@ -174,13 +188,13 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
 
         if (cached_file_option) {
             if (_verbose_debugging) {
-                LogDebug() << "Using cached file " << cached_file_option.value();
+                LogDebug("Using cached file {}", cached_file_option.value().string());
             }
             component.current_metadata_path() = cached_file_option.value();
             retrieve_metadata(compid, type);
         } else {
             if (_verbose_debugging) {
-                LogDebug() << "Downloading json " << uri;
+                LogDebug("Downloading json {}", uri);
             }
             std::string download_path;
             uint8_t target_compid = compid;
@@ -198,51 +212,59 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
                 const std::filesystem::path local_path =
                     tmp_download_path / std::filesystem::path(download_path).filename();
 
-                _system_impl.call_user_callback([this,
-                                                 download_path,
-                                                 tmp_download_path,
-                                                 &component,
-                                                 target_compid,
-                                                 local_path,
-                                                 compid,
-                                                 type,
-                                                 file_cache_tag]() {
-                    _system_impl.mavlink_ftp_client().download_async(
-                        download_path,
-                        tmp_download_path.string(),
-                        true,
-                        [this, &component, local_path, compid, type, file_cache_tag](
-                            MavlinkFtpClient::ClientResult download_result,
-                            MavlinkFtpClient::ProgressData progress_data) {
-                            if (download_result == MavlinkFtpClient::ClientResult::Next) {
-                                if (_verbose_debugging) {
-                                    LogDebug() << "File download progress: "
-                                               << progress_data.bytes_transferred << '/'
-                                               << progress_data.total_bytes;
+                // Post to the io_context thread to avoid deadlocks. This is purely
+                // internal work (initiating an FTP download), not a user callback.
+                asio::post(
+                    _system_impl.io_context(),
+                    [this,
+                     download_path,
+                     tmp_download_path,
+                     &component,
+                     target_compid,
+                     local_path,
+                     compid,
+                     type,
+                     file_cache_tag]() {
+                        _system_impl.mavlink_ftp_client().download_async(
+                            download_path,
+                            tmp_download_path.string(),
+                            true,
+                            [this, &component, local_path, compid, type, file_cache_tag](
+                                MavlinkFtpClient::ClientResult download_result,
+                                MavlinkFtpClient::ProgressData progress_data) {
+                                if (download_result == MavlinkFtpClient::ClientResult::Next) {
+                                    if (_verbose_debugging) {
+                                        LogDebug(
+                                            "File download progress: {}{}{}",
+                                            progress_data.bytes_transferred,
+                                            '/',
+                                            progress_data.total_bytes);
+                                    }
+                                    // TODO: detect slow link (e.g. telemetry), and cancel download
+                                    // (fallback to http) e.g. by estimating the remaining download
+                                    // time, and cancel if >40s
+                                } else {
+                                    if (_verbose_debugging) {
+                                        LogDebug(
+                                            "File download ended with result {}",
+                                            static_cast<int>(download_result));
+                                    }
+                                    if (download_result ==
+                                        MavlinkFtpClient::ClientResult::Success) {
+                                        component.current_metadata_path() =
+                                            extract_and_cache_file(local_path, file_cache_tag);
+                                    }
+                                    // Move on to the next uri or type
+                                    retrieve_metadata(compid, type);
                                 }
-                                // TODO: detect slow link (e.g. telemetry), and cancel download
-                                // (fallback to http) e.g. by estimating the remaining download
-                                // time, and cancel if >40s
-                            } else {
-                                if (_verbose_debugging) {
-                                    LogDebug()
-                                        << "File download ended with result " << download_result;
-                                }
-                                if (download_result == MavlinkFtpClient::ClientResult::Success) {
-                                    component.current_metadata_path() =
-                                        extract_and_cache_file(local_path, file_cache_tag);
-                                }
-                                // Move on to the next uri or type
-                                retrieve_metadata(compid, type);
-                            }
-                        },
-                        target_compid);
-                });
+                            },
+                            target_compid);
+                    });
 
             } else {
                 // http(s) download
 #if BUILD_WITHOUT_CURL == 1
-                LogErr() << "HTTP disabled at build time, skipping download of " << uri;
+                LogErr("HTTP disabled at build time, skipping download of {}", uri);
                 retrieve_metadata(compid, type);
 #else
                 const std::string base_filename = filename_from_uri(uri);
@@ -256,12 +278,13 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
                         int progress, HttpStatus status, CURLcode curl_code) -> int {
                         UNUSED(progress);
                         if (status == HttpStatus::Error) {
-                            LogErr() << "File download failed with result " << curl_code;
+                            LogErr(
+                                "File download failed with result {}", static_cast<int>(curl_code));
                             // Move on to the next uri or type
                             retrieve_metadata(compid, type);
                         } else if (status == HttpStatus::Finished) {
                             if (_verbose_debugging) {
-                                LogDebug() << "File download finished " << tmp_download_path;
+                                LogDebug("File download finished {}", tmp_download_path.string());
                             }
                             component.current_metadata_path() =
                                 extract_and_cache_file(tmp_download_path, file_cache_tag);
@@ -299,7 +322,6 @@ void MavlinkComponentMetadata::handle_metadata_type_completed(
     if (component.json_metadata()) {
         auto metadata_type = get_metadata_type(type);
         if (metadata_type) {
-            const std::lock_guard lg_callbacks{_notification_callbacks_mutex};
             _notification_callbacks.queue(
                 MetadataUpdate{compid, metadata_type.value(), component.json_metadata().value()},
                 [this](const auto& func) { _system_impl.call_user_callback(func); });
@@ -316,7 +338,7 @@ void MavlinkComponentMetadata::handle_metadata_type_completed(
         }
     }
     if (all_completed) {
-        LogDebug() << "All metadata types completed for compid " << static_cast<int>(compid);
+        LogDebug("All metadata types completed for compid {}", static_cast<int>(compid));
         _mavlink_components[compid].result = Result::Success;
         on_all_types_completed(compid);
     }
@@ -332,7 +354,7 @@ std::optional<std::filesystem::path> MavlinkComponentMetadata::extract_and_cache
         if (InflateLZMA::inflateLZMAFile(path, returned_path)) {
             std::filesystem::remove(path);
         } else {
-            LogErr() << "Inflate of compressed json failed " << path;
+            LogErr("Inflate of compressed json failed {}", path.string());
             return std::nullopt;
         }
     }
@@ -409,42 +431,42 @@ MavlinkComponentMetadata::get_metadata(uint32_t compid, MetadataType type)
 void MavlinkComponentMetadata::parse_component_metadata_general(
     uint8_t compid, const std::string& json_metadata)
 {
-    Json::Value metadata;
-    Json::Reader reader;
-    bool parsing_successful = reader.parse(json_metadata, metadata);
-    if (!parsing_successful) {
-        LogErr() << "Failed to parse" << reader.getFormattedErrorMessages();
+    // Parse without exceptions (MAVSDK is built with -fno-exceptions).
+    auto metadata = nlohmann::json::parse(json_metadata, nullptr, false);
+    if (metadata.is_discarded() || !metadata.is_object()) {
+        LogErr("Failed to parse component metadata JSON");
         return;
     }
 
-    if (!metadata.isMember("version")) {
-        LogErr() << "version not found";
+    if (!metadata.contains("version") || !metadata["version"].is_number_integer()) {
+        LogErr("Version not found");
         return;
     }
 
-    if (metadata["version"].asInt() != 1) {
-        LogWarn() << "version " << metadata["version"].asInt() << " not supported";
+    if (metadata["version"].get<int>() != 1) {
+        LogWarn("Version {} not supported", metadata["version"].get<int>());
         return;
     }
 
-    if (!metadata.isMember("metadataTypes")) {
-        LogErr() << "metadataTypes not found";
+    if (!metadata.contains("metadataTypes") || !metadata["metadataTypes"].is_array()) {
+        LogErr("Field metadataTypes not found");
         return;
     }
 
     for (const auto& metadata_type : metadata["metadataTypes"]) {
-        if (!metadata_type.isMember("type")) {
-            LogErr() << "type missing";
+        if (!metadata_type.is_object() || !metadata_type.contains("type") ||
+            !metadata_type["type"].is_number_integer()) {
+            LogErr("Type missing");
             continue;
         }
-        auto type = static_cast<COMP_METADATA_TYPE>(metadata_type["type"].asInt());
+        auto type = static_cast<COMP_METADATA_TYPE>(metadata_type["type"].get<int>());
         auto& components = _mavlink_components[compid].components;
         if (components.find(type) != components.end()) {
-            LogErr() << "component type already added: " << type;
+            LogErr("Component type already added: {}", static_cast<int>(type));
             continue;
         }
-        if (!metadata_type.isMember("uri")) {
-            LogErr() << "uri missing";
+        if (!metadata_type.contains("uri")) {
+            LogErr("URI missing");
             continue;
         }
 
@@ -453,14 +475,12 @@ void MavlinkComponentMetadata::parse_component_metadata_general(
 }
 void MavlinkComponentMetadata::unsubscribe_metadata_available(MetadataAvailableHandle handle)
 {
-    const std::lock_guard lg{_notification_callbacks_mutex};
     _notification_callbacks.unsubscribe(handle);
 }
 MavlinkComponentMetadata::MetadataAvailableHandle
 MavlinkComponentMetadata::subscribe_metadata_available(const MetadataAvailableCallback& callback)
 {
     const std::lock_guard lg_components{_mavlink_components_mutex}; // Take this mutex first
-    const std::lock_guard lg_callbacks{_notification_callbacks_mutex};
     const auto handle = _notification_callbacks.subscribe(callback);
 
     // Immediately call the callback for all already existing metadata (with the mutexes locked)
@@ -487,33 +507,32 @@ MavlinkComponentMetadata::subscribe_metadata_available(const MetadataAvailableCa
 
 void MavlinkComponentMetadata::on_all_types_completed(uint8_t compid)
 {
-    const std::lock_guard lg_callbacks{_notification_callbacks_mutex};
     _notification_callbacks.queue(
         MetadataUpdate{compid, MetadataType::AllCompleted, ""},
         [this](const auto& func) { _system_impl.call_user_callback(func); });
 }
 
-MetadataComponentUris::MetadataComponentUris(const Json::Value& value)
+MetadataComponentUris::MetadataComponentUris(const nlohmann::json& value)
 {
-    if (value["uri"].isString()) {
-        _uri_metadata = value["uri"].asString();
+    if (value.contains("uri") && value["uri"].is_string()) {
+        _uri_metadata = value["uri"].get<std::string>();
     }
-    if (value["fileCrc"].isUInt()) {
-        _crc_metadata = value["fileCrc"].asUInt();
+    if (value.contains("fileCrc") && value["fileCrc"].is_number_unsigned()) {
+        _crc_metadata = value["fileCrc"].get<uint32_t>();
         _crc_metadata_valid = true;
     }
-    if (value["uriFallback"].isString()) {
-        _uri_metadata_fallback = value["uriFallback"].asString();
+    if (value.contains("uriFallback") && value["uriFallback"].is_string()) {
+        _uri_metadata_fallback = value["uriFallback"].get<std::string>();
     }
-    if (value["fileCrcFallback"].isUInt()) {
-        _crc_metadata_fallback = value["fileCrcFallback"].asUInt();
+    if (value.contains("fileCrcFallback") && value["fileCrcFallback"].is_number_unsigned()) {
+        _crc_metadata_fallback = value["fileCrcFallback"].get<uint32_t>();
         _crc_metadata_fallback_valid = true;
     }
-    if (value["translationUri"].isString()) {
-        _uri_translation = value["translationUri"].asString();
+    if (value.contains("translationUri") && value["translationUri"].is_string()) {
+        _uri_translation = value["translationUri"].get<std::string>();
     }
-    if (value["translationUriFallback"].isString()) {
-        _uri_translation_fallback = value["translationUriFallback"].asString();
+    if (value.contains("translationUriFallback") && value["translationUriFallback"].is_string()) {
+        _uri_translation_fallback = value["translationUriFallback"].get<std::string>();
     }
 }
 
@@ -606,7 +625,7 @@ std::optional<std::filesystem::path>& MetadataComponent::current_metadata_path()
         case State::Init:
             break;
     }
-    LogErr() << "current_metadata_path() called in invalid state";
+    LogErr("Function current_metadata_path() called in invalid state");
     return _metadata;
 }
 } // namespace mavsdk

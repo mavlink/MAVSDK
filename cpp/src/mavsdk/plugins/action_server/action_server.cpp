@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "action_server_impl.h"
-#include "plugins/action_server/action_server.h"
+#include "action_server_impl.hpp"
+#include "plugins/action_server/action_server.hpp"
 
 namespace mavsdk {
 
@@ -132,7 +132,7 @@ ActionServer::Result ActionServer::set_flight_mode_internal(FlightMode flight_mo
     return _impl->set_flight_mode_internal(flight_mode);
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const ActionServer::AllowableFlightModes& lhs, const ActionServer::AllowableFlightModes& rhs)
 {
     return (rhs.can_auto_mode == lhs.can_auto_mode) &&
@@ -144,7 +144,7 @@ bool operator==(
            (rhs.can_auto_loiter_mode == lhs.can_auto_loiter_mode);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, ActionServer::AllowableFlightModes const& allowable_flight_modes)
 {
     str << std::setprecision(15);
@@ -160,12 +160,13 @@ operator<<(std::ostream& str, ActionServer::AllowableFlightModes const& allowabl
     return str;
 }
 
-bool operator==(const ActionServer::ArmDisarm& lhs, const ActionServer::ArmDisarm& rhs)
+MAVSDK_PUBLIC bool
+operator==(const ActionServer::ArmDisarm& lhs, const ActionServer::ArmDisarm& rhs)
 {
     return (rhs.arm == lhs.arm) && (rhs.force == lhs.force);
 }
 
-std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_disarm)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_disarm)
 {
     str << std::setprecision(15);
     str << "arm_disarm:" << '\n' << "{\n";
@@ -175,74 +176,85 @@ std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_d
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(ActionServer::Result const& result)
 {
     switch (result) {
         case ActionServer::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case ActionServer::Result::Success:
-            return str << "Success";
+            return "Success";
         case ActionServer::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case ActionServer::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case ActionServer::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case ActionServer::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case ActionServer::Result::CommandDeniedLandedStateUnknown:
-            return str << "Command Denied Landed State Unknown";
+            return "Command Denied Landed State Unknown";
         case ActionServer::Result::CommandDeniedNotLanded:
-            return str << "Command Denied Not Landed";
+            return "Command Denied Not Landed";
         case ActionServer::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case ActionServer::Result::VtolTransitionSupportUnknown:
-            return str << "Vtol Transition Support Unknown";
+            return "Vtol Transition Support Unknown";
         case ActionServer::Result::NoVtolTransitionSupport:
-            return str << "No Vtol Transition Support";
+            return "No Vtol Transition Support";
         case ActionServer::Result::ParameterError:
-            return str << "Parameter Error";
+            return "Parameter Error";
         case ActionServer::Result::Next:
-            return str << "Next";
+            return "Next";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
-std::ostream& operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(ActionServer::FlightMode const& flight_mode)
 {
     switch (flight_mode) {
         case ActionServer::FlightMode::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case ActionServer::FlightMode::Ready:
-            return str << "Ready";
+            return "Ready";
         case ActionServer::FlightMode::Takeoff:
-            return str << "Takeoff";
+            return "Takeoff";
         case ActionServer::FlightMode::Hold:
-            return str << "Hold";
+            return "Hold";
         case ActionServer::FlightMode::Mission:
-            return str << "Mission";
+            return "Mission";
         case ActionServer::FlightMode::ReturnToLaunch:
-            return str << "Return To Launch";
+            return "Return To Launch";
         case ActionServer::FlightMode::Land:
-            return str << "Land";
+            return "Land";
         case ActionServer::FlightMode::Offboard:
-            return str << "Offboard";
+            return "Offboard";
         case ActionServer::FlightMode::FollowMe:
-            return str << "Follow Me";
+            return "Follow Me";
         case ActionServer::FlightMode::Manual:
-            return str << "Manual";
+            return "Manual";
         case ActionServer::FlightMode::Altctl:
-            return str << "Altctl";
+            return "Altctl";
         case ActionServer::FlightMode::Posctl:
-            return str << "Posctl";
+            return "Posctl";
         case ActionServer::FlightMode::Acro:
-            return str << "Acro";
+            return "Acro";
         case ActionServer::FlightMode::Stabilized:
-            return str << "Stabilized";
+            return "Stabilized";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode)
+{
+    return str << to_string(flight_mode);
 }
 
 } // namespace mavsdk

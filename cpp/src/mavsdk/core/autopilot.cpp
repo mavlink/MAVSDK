@@ -1,4 +1,4 @@
-#include "autopilot.h"
+#include "autopilot.hpp"
 
 namespace mavsdk {
 

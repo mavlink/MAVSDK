@@ -1,7 +1,7 @@
-#include "mavsdk.h"
-#include "plugins/camera/camera.h"
-#include "plugins/camera_server/camera_server.h"
-#include "log.h"
+#include "mavsdk.hpp"
+#include "plugins/camera/camera.hpp"
+#include "plugins/camera_server/camera_server.hpp"
+#include "log.hpp"
 #include <future>
 #include <mutex>
 #include <thread>
@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraTakePhoto)
+TEST(Camera, TakePhoto)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
@@ -32,7 +32,7 @@ TEST(SystemTest, CameraTakePhoto)
     camera_server.set_information(information);
 
     camera_server.subscribe_take_photo([&camera_server](int32_t index) {
-        LogInfo() << "Let's take photo " << index;
+        LogInfo("Let's take photo {}", index);
 
         CameraServer::CaptureInfo info;
         info.index = index;
@@ -42,7 +42,7 @@ TEST(SystemTest, CameraTakePhoto)
     });
 
     camera_server.subscribe_set_mode([&](CameraServer::Mode mode) {
-        LogInfo() << "Set mode to " << mode;
+        LogInfo("Set mode to {}", to_string(mode));
         camera_server.respond_set_mode(CameraServer::CameraFeedback::Ok);
     });
 
@@ -72,7 +72,7 @@ TEST(SystemTest, CameraTakePhoto)
 
     Camera::CaptureInfoHandle capture_handle = camera.subscribe_capture_info(
         [&camera, &received_captured_info_prom, &capture_handle](Camera::CaptureInfo capture_info) {
-            LogInfo() << "Received captured info for image: " << capture_info.index;
+            LogInfo("Received captured info for image: {}", capture_info.index);
             // Unsubscribe again to prevent double setting promise.
             camera.unsubscribe_capture_info(capture_handle);
             received_captured_info_prom.set_value();

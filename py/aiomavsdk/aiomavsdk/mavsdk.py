@@ -8,6 +8,7 @@ from mavsdk.mavsdk import Mavsdk as _Mavsdk, Configuration
 from mavsdk.component_type import ComponentType
 from mavsdk.server_component import ServerComponent
 from .system import System
+from .enums import ForwardingOption
 from .exceptions import MavsdkConnectionError
 
 
@@ -61,7 +62,11 @@ class Mavsdk:
     # Potentially blocking calls — offloaded to executor
     # ------------------------------------------------------------------
 
-    async def add_any_connection(self, connection_url: str) -> None:
+    async def add_any_connection(
+        self,
+        connection_url: str,
+        forwarding_option: ForwardingOption = ForwardingOption.OFF,
+    ) -> None:
         """
         Add a connection.
 
@@ -69,6 +74,9 @@ class Mavsdk:
         ----------
         connection_url : str
             Connection URL, e.g. ``"udp://:14540"`` or ``"serial:///dev/ttyUSB0:57600"``.
+
+        forwarding_option : ForwardingOption
+            Enables or disables forwarding. By default, it is disabled.
 
         Raises
         ------
@@ -78,7 +86,9 @@ class Mavsdk:
         loop = asyncio.get_running_loop()
         try:
             await loop.run_in_executor(
-                None, self._mavsdk.add_any_connection_with_handle, connection_url
+                None,
+                self._mavsdk.add_any_connection_with_handle_and_forwarding,
+                *(connection_url, forwarding_option),
             )
         except Exception as e:
             raise MavsdkConnectionError(str(e)) from e

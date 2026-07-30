@@ -1,6 +1,6 @@
-#include "calibration_statustext_parser.h"
-#include "calibration_messages.h"
-#include "log.h"
+#include "calibration_statustext_parser.hpp"
+#include "calibration_messages.hpp"
+#include "log.hpp"
 
 namespace mavsdk {
 
@@ -57,10 +57,8 @@ bool CalibrationStatustextParser::check_started(const std::string& statustext)
         } else {
             _status = Status::Failed;
 
-            std::stringstream error_stream{};
-            error_stream << "Unknown calibration version stamp: " << version_stamp;
-            _failed_message = error_stream.str();
-            LogErr() << _failed_message;
+            _failed_message = fmt::format("Unknown calibration version stamp: {}", version_stamp);
+            LogErr("{}", _failed_message);
         }
         return true;
     }

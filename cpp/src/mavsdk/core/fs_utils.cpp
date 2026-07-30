@@ -1,10 +1,11 @@
 
-#include "fs_utils.h"
-#include "log.h"
+#include "fs_utils.hpp"
+#include "log.hpp"
 #include <algorithm>
 #include <cctype>
 #include <fstream>
 #include <random>
+#include <sstream>
 #include <string>
 
 #if defined(LINUX) || defined(APPLE)
@@ -70,17 +71,17 @@ std::optional<std::filesystem::path> get_cache_directory()
     // Read /proc/self/cmdline
     std::ifstream cmdline("/proc/self/cmdline");
     std::string line;
-    if (std::getline(cmdline, line)) {
-        // line might have a trailing \0
-        if (line.length() > 0 && *line.end() == 0) {
-            line.pop_back();
-        }
+    // /proc/self/cmdline stores the package name followed by a NUL byte, which we want to exclude
+    if (std::getline(cmdline, line, '\0')) {
         return "/data/data/" + line + "/mavsdk_cache";
     }
 #elif defined(APPLE) || defined(LINUX)
     const char* homedir;
     if ((homedir = getenv("HOME")) == NULL) {
-        homedir = getpwuid(getuid())->pw_dir;
+        // getpwuid() can return NULL if there is no passwd entry for the uid (common in
+        // minimal containers), so guard against dereferencing it.
+        const struct passwd* pw = getpwuid(getuid());
+        homedir = (pw != nullptr) ? pw->pw_dir : nullptr;
     }
     if (!homedir) {
         return std::nullopt;
@@ -123,7 +124,7 @@ std::optional<std::filesystem::path> create_tmp_directory(const std::string& pre
         }
     }
 
-    LogErr() << "Could not create a temporary directory, aborting.";
+    LogErr("Could not create a temporary directory, aborting.");
     return std::nullopt;
 }
 

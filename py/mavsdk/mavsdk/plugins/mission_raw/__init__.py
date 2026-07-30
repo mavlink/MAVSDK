@@ -15,15 +15,19 @@ from .mission_raw import MissionRaw
 from .mission_raw import MissionRawResult
 
 # Import data structures
-from .mission_raw import MissionProgress
 from .mission_raw import MissionItem
+from .mission_raw import MissionPlan
+from .mission_raw import MissionProgress
 from .mission_raw import MissionImportData
+from .mission_raw import ProgressData
 
 # Define __all__ for explicit exports
 __all__ = [
     "MissionRaw",
     "MissionRawResult",
-    "MissionProgress",
     "MissionItem",
+    "MissionPlan",
+    "MissionProgress",
     "MissionImportData",
+    "ProgressData",
 ]

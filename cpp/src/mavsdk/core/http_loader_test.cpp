@@ -1,9 +1,9 @@
-#include "mavsdk.h"
-#include "http_loader.h"
-#include "curl_include.h"
-#include "curl_wrapper.h"
-#include "curl_wrapper_types.h"
-#include "unused.h"
+#include "mavsdk.hpp"
+#include "http_loader.hpp"
+#include "curl_include.hpp"
+#include "curl_wrapper.hpp"
+#include "curl_wrapper_types.hpp"
+#include "unused.hpp"
 #include <fstream>
 #include <iostream>
 #include <chrono>
@@ -16,7 +16,7 @@
 
 using namespace mavsdk;
 
-class HttpLoaderTest : public testing::Test {
+class HttpLoaderFixture : public testing::Test {
 protected:
     const std::string _file_url_1 = "http://subdomain.domain.com/some_folder/some_file";
     const std::string _file_url_2 = "http://subdomain.domain.com/some_folder/another_file.txt";
@@ -107,7 +107,7 @@ protected:
     }
 };
 
-TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
+TEST_F(HttpLoaderFixture, DownloadAsync_OneBad)
 {
     auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
     auto* curl_wrapper_raw = curl_wrapper_mock.get();
@@ -167,7 +167,7 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     clean();
 }
 
-TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
+TEST_F(HttpLoaderFixture, DownloadAsync_AllGood)
 {
     auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
     auto* curl_wrapper_raw = curl_wrapper_mock.get();

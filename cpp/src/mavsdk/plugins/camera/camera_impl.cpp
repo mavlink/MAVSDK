@@ -1,14 +1,15 @@
-#include "camera_impl.h"
-#include "camera_definition.h"
-#include "system.h"
-#include "unused.h"
+#include "camera_impl.hpp"
+#include "camera_definition.hpp"
+#include "system.hpp"
+#include "unused.hpp"
 #include "callback_list.tpp"
-#include "fs_utils.h"
-#include "string_utils.h"
-#include "math_utils.h"
+#include "fs_utils.hpp"
+#include "inflate_lzma.hpp"
+#include "string_utils.hpp"
+#include "math_utils.hpp"
 
 #if BUILD_WITHOUT_CURL != 1
-#include "http_loader.h"
+#include "http_loader.hpp"
 #endif
 
 #include <algorithm>
@@ -21,14 +22,16 @@
 #include <string>
 #include <thread>
 
+#include "mavsdk_export.h"
+
 namespace mavsdk {
 
-template class CallbackList<Camera::Mode>;
-template class CallbackList<std::vector<Camera::Setting>>;
-template class CallbackList<std::vector<Camera::SettingOptions>>;
-template class CallbackList<Camera::CaptureInfo>;
-template class CallbackList<Camera::VideoStreamInfo>;
-template class CallbackList<Camera::Storage>;
+template class MAVSDK_TEMPL_INST CallbackList<Camera::Mode>;
+template class MAVSDK_TEMPL_INST CallbackList<std::vector<Camera::Setting>>;
+template class MAVSDK_TEMPL_INST CallbackList<std::vector<Camera::SettingOptions>>;
+template class MAVSDK_TEMPL_INST CallbackList<Camera::CaptureInfo>;
+template class MAVSDK_TEMPL_INST CallbackList<Camera::VideoStreamInfo>;
+template class MAVSDK_TEMPL_INST CallbackList<Camera::Storage>;
 
 CameraImpl::CameraImpl(System& system) : PluginImplBase(system)
 {
@@ -49,7 +52,7 @@ void CameraImpl::init()
 {
     if (const char* env_p = std::getenv("MAVSDK_CAMERA_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Camera debugging is on.";
+            LogDebug("Camera debugging is on.");
             _debugging = true;
         }
     }
@@ -58,7 +61,7 @@ void CameraImpl::init()
     if (cache_dir_option) {
         _file_cache.emplace(cache_dir_option.value() / "camera", 50, true);
     } else {
-        LogErr() << "Failed to get cache directory";
+        LogErr("Failed to get cache directory");
     }
 
     const auto tmp_option = create_tmp_directory("mavsdk-component-metadata");
@@ -130,12 +133,19 @@ void CameraImpl::deinit()
     _system_impl->remove_call_every(_request_slower_call_every_cookie);
     _system_impl->remove_call_every(_request_faster_call_every_cookie);
 
-    // FIXME: There is a race condition here.
-    // We need to wait until all call every calls are done before we go
-    // out of scope.
+    // Cancel any pending MAVLink FTP operations so their callbacks don't fire
+    // after we are gone.  This is synchronous: once it returns no further FTP
+    // callbacks will be dispatched from the io_context thread.
+    _system_impl->mavlink_ftp_client().cancel_all_operations();
+
+    // Wait briefly for call_every lambdas that may already be mid-flight
+    // (remove_call_every only prevents future invocations).
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     std::lock_guard lock(_mutex);
+    // Signal any user-callback-queued lambdas that slipped through before
+    // cancel_all_operations() returned that they must not touch our members.
+    *_alive = false;
     _storage_subscription_callbacks.clear();
     _mode_subscription_callbacks.clear();
     _capture_info_callbacks.clear();
@@ -709,10 +719,25 @@ void CameraImpl::unsubscribe_camera_list(Camera::CameraListHandle handle)
 
 void CameraImpl::notify_camera_list_with_lock()
 {
-    _system_impl->call_user_callback([&]() {
-        _camera_list_subscription_callbacks.queue(
-            camera_list_with_lock(), [this](const auto& func) { func(); });
-    });
+    // Build the camera-list snapshot synchronously while the caller holds _mutex,
+    // then post each subscriber's callback individually to the user callback thread.
+    //
+    // The previous implementation used call_user_callback([&](){...}), which posted
+    // the entire work item to the user callback thread.  That lambda ran *after* the
+    // inner FTP/HTTP download callback returned.  The main thread could observe the
+    // loaded definition, destroy the Camera plugin, and free CameraImpl before the
+    // [&] lambda had a chance to run.  The lambda then accessed freed CameraImpl
+    // members (_camera_list_subscription_callbacks, _potential_cameras), causing a
+    // heap use-after-free that manifested as a __stack_chk_fail canary failure.
+    //
+    // With this fix the snapshot is built and each subscriber's call_user_callback
+    // is posted while the caller still holds _mutex (i.e. CameraImpl is alive).
+    // The per-subscriber func lambdas capture only the snapshot value and the
+    // system_impl pointer, neither of which is a CameraImpl member, so they are
+    // safe to run even after CameraImpl is destroyed.
+    auto snapshot = camera_list_with_lock();
+    _camera_list_subscription_callbacks.queue(
+        snapshot, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 Camera::Result CameraImpl::start_video_streaming(int32_t component_id, int32_t stream_id)
@@ -806,6 +831,8 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
             return Camera::Result::Timeout;
         case MavlinkCommandSender::Result::Unsupported:
             return Camera::Result::ActionUnsupported;
+        case MavlinkCommandSender::Result::InProgress:
+            return Camera::Result::InProgress;
         case MavlinkCommandSender::Result::Cancelled:
         default:
             return Camera::Result::Unknown;
@@ -1021,7 +1048,7 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
 
     // If image_count got smaller, consider that the storage was formatted.
     if (camera_capture_status.image_count < camera.capture_status.image_count) {
-        LogInfo() << "Seems like storage was formatted, setting state accordingly";
+        LogInfo("Seems like storage was formatted, setting state accordingly");
         reset_following_format_storage_with_lock(camera);
     }
 
@@ -1079,7 +1106,7 @@ Camera::Storage::StorageStatus CameraImpl::storage_status_from_mavlink(const int
         case STORAGE_STATUS_NOT_SUPPORTED:
             return Camera::Storage::StorageStatus::NotSupported;
         default:
-            LogErr() << "Unknown storage status received.";
+            LogErr("Unknown storage status received.");
             return Camera::Storage::StorageStatus::NotSupported;
     }
 }
@@ -1088,7 +1115,7 @@ Camera::Storage::StorageType CameraImpl::storage_type_from_mavlink(const int sto
 {
     switch (storage_type) {
         default:
-            LogErr() << "Unknown storage_type enum value: " << storage_type;
+            LogErr("Unknown storage_type enum value: {}", storage_type);
         // FALLTHROUGH
         case STORAGE_TYPE_UNKNOWN:
             return mavsdk::Camera::Storage::StorageType::Unknown;
@@ -1287,6 +1314,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
     if (potential_camera.camera_definition_url.empty()) {
         potential_camera.camera_definition_result = Camera::Result::Unavailable;
         notify_camera_list_with_lock();
+        return; // No URL means no definition to fetch.
     }
 
     const auto& info = potential_camera.maybe_information.value();
@@ -1300,7 +1328,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
     }
 
     if (cached_file_option) {
-        LogInfo() << "Using cached file " << cached_file_option.value();
+        LogInfo("Using cached file {}", cached_file_option.value().string());
         load_camera_definition_with_lock(potential_camera, cached_file_option.value());
         potential_camera.is_fetching_camera_definition = false;
         potential_camera.camera_definition_result = Camera::Result::Success;
@@ -1310,7 +1338,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
         potential_camera.is_fetching_camera_definition = true;
 
         if (url.empty()) {
-            LogInfo() << "No camera definition URL available";
+            LogInfo("No camera definition URL available");
             potential_camera.camera_definition_result = Camera::Result::ProtocolUnsupported;
             notify_camera_list_with_lock();
 
@@ -1322,7 +1350,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
             if (_http_loader == nullptr) {
                 _http_loader = std::make_unique<HttpLoader>();
             }
-            LogInfo() << "Downloading camera definition from: " << url;
+            LogInfo("Downloading camera definition from: {}", url);
 
             auto component_id = potential_camera.component_id;
 
@@ -1331,34 +1359,60 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
             _http_loader->download_async(
                 url,
                 download_path.string(),
-                [download_path, file_cache_tag, component_id, this](
-                    int progress, HttpStatus status, CURLcode curl_code) mutable {
-                    // TODO: check if we still exist
-                    LogDebug() << "Download progress: " << progress
-                               << ", status: " << static_cast<int>(status)
-                               << ", curl_code: " << std::to_string(curl_code);
+                [download_path,
+                 file_cache_tag,
+                 component_id,
+                 mutex_ptr = _mutex_keep_alive,
+                 alive = _alive,
+                 this](int progress, HttpStatus status, CURLcode curl_code) mutable {
+                    LogDebug(
+                        "Download progress: {}, status: {}, curl_code: {}",
+                        progress,
+                        static_cast<int>(status),
+                        static_cast<int>(curl_code));
 
-                    std::lock_guard lock(_mutex);
+                    std::lock_guard lock(*mutex_ptr);
+                    // Bail out if CameraImpl was already destroyed
+                    if (!alive->load()) {
+                        return;
+                    }
                     auto maybe_potential_camera =
                         maybe_potential_camera_for_component_id_with_lock(component_id, 0);
                     if (maybe_potential_camera == nullptr) {
-                        LogErr() << "Failed to find camera.";
+                        LogErr("Failed to find camera.");
+                        return;
                     }
 
                     if (status == HttpStatus::Error) {
-                        LogErr() << "File download failed with result "
-                                 << std::to_string(curl_code);
+                        LogErr("File download failed with result {}", static_cast<int>(curl_code));
                         maybe_potential_camera->is_fetching_camera_definition = false;
                         maybe_potential_camera->camera_definition_result = Camera::Result::Error;
                         notify_camera_list_with_lock();
 
                     } else if (status == HttpStatus::Finished) {
-                        LogDebug() << "File download finished " << download_path;
+                        LogDebug("File download finished {}", download_path.string());
+                        if (download_path.extension() == ".xz") {
+                            auto decompressed = download_path;
+                            decompressed.replace_extension(".extracted");
+                            if (InflateLZMA::inflateLZMAFile(download_path, decompressed)) {
+                                std::filesystem::remove(download_path);
+                                download_path = decompressed;
+                            } else {
+                                LogErr(
+                                    "Failed to decompress camera definition: {}",
+                                    download_path.string());
+                                maybe_potential_camera->is_fetching_camera_definition = false;
+                                maybe_potential_camera->camera_definition_result =
+                                    Camera::Result::Error;
+                                notify_camera_list_with_lock();
+                                return;
+                            }
+                        }
                         if (_file_cache) {
                             // Cache the file (this will move/remove the temp file as well)
                             download_path = _file_cache->insert(file_cache_tag, download_path)
                                                 .value_or(download_path);
-                            LogDebug() << "Cached path: " << download_path;
+                            LogDebug("Cached path: {}", download_path.string());
                         }
                         load_camera_definition_with_lock(*maybe_potential_camera, download_path);
                         maybe_potential_camera->is_fetching_camera_definition = false;
@@ -1368,7 +1422,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                 });
 #endif
         } else if (starts_with(url, "mftp://") || starts_with(url, "mavlinkftp://")) {
-            LogInfo() << "Download file: " << url << " using MAVLink FTP...";
+            LogInfo("Download file: {} using MAVLink FTP...", url);
 
             auto component_id = potential_camera.component_id;
 
@@ -1383,53 +1437,80 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                     MavlinkFtpClient::ProgressData progress_data) mutable {
                     // TODO: check if we still exist
                     if (client_result == MavlinkFtpClient::ClientResult::Next) {
-                        LogDebug()
-                            << "Mavlink FTP download progress: "
-                            << 100 * progress_data.bytes_transferred / progress_data.total_bytes
-                            << " %";
+                        LogDebug(
+                            "Mavlink FTP download progress: {} %",
+                            100 * progress_data.bytes_transferred / progress_data.total_bytes);
                         return;
                     }
 
                     // Use call_user_callback to defer callback execution and avoid deadlock
-                    _system_impl->call_user_callback(
-                        [file_cache_tag, downloaded_filename, component_id, client_result, this]() {
-                            std::lock_guard lock(_mutex);
-                            auto maybe_potential_camera =
-                                maybe_potential_camera_for_component_id_with_lock(component_id, 0);
-                            if (maybe_potential_camera == nullptr) {
-                                LogErr() << "Failed to find camera with ID " << component_id;
-                                return;
-                            }
+                    _system_impl->call_user_callback([file_cache_tag,
+                                                      downloaded_filename,
+                                                      component_id,
+                                                      client_result,
+                                                      mutex_ptr = _mutex_keep_alive,
+                                                      alive = _alive,
+                                                      this]() {
+                        std::lock_guard lock(*mutex_ptr);
+                        // Bail out if CameraImpl was already destroyed
+                        if (!alive->load()) {
+                            return;
+                        }
+                        auto maybe_potential_camera =
+                            maybe_potential_camera_for_component_id_with_lock(component_id, 0);
+                        if (maybe_potential_camera == nullptr) {
+                            LogErr("Failed to find camera with ID {}", component_id);
+                            return;
+                        }
 
-                            if (client_result != MavlinkFtpClient::ClientResult::Success) {
-                                LogErr() << "File download failed with result " << client_result;
+                        if (client_result != MavlinkFtpClient::ClientResult::Success) {
+                            LogErr(
+                                "File download failed with result {}",
+                                fmt::streamed(client_result));
+                            maybe_potential_camera->is_fetching_camera_definition = false;
+                            maybe_potential_camera->camera_definition_result =
+                                Camera::Result::Error;
+                            notify_camera_list_with_lock();
+                            return;
+                        }
+
+                        auto downloaded_filepath = _tmp_download_path / downloaded_filename;
+
+                        LogDebug("File download finished to {}", downloaded_filepath.string());
+                        if (downloaded_filepath.extension() == ".xz") {
+                            auto decompressed = downloaded_filepath;
+                            decompressed.replace_extension(".extracted");
+                            if (InflateLZMA::inflateLZMAFile(downloaded_filepath, decompressed)) {
+                                std::filesystem::remove(downloaded_filepath);
+                                downloaded_filepath = decompressed;
+                            } else {
+                                LogErr(
+                                    "Failed to decompress camera definition: {}",
+                                    downloaded_filepath.string());
                                 maybe_potential_camera->is_fetching_camera_definition = false;
                                 maybe_potential_camera->camera_definition_result =
                                     Camera::Result::Error;
                                 notify_camera_list_with_lock();
                                 return;
                             }
-
-                            auto downloaded_filepath = _tmp_download_path / downloaded_filename;
-
-                            LogDebug() << "File download finished to " << downloaded_filepath;
-                            if (_file_cache) {
-                                // Cache the file (this will move/remove the temp file as well)
-                                downloaded_filepath =
-                                    _file_cache->insert(file_cache_tag, downloaded_filepath)
-                                        .value_or(downloaded_filepath);
-                                LogDebug() << "Cached path: " << downloaded_filepath;
-                            }
-                            load_camera_definition_with_lock(
-                                *maybe_potential_camera, downloaded_filepath);
-                            maybe_potential_camera->is_fetching_camera_definition = false;
-                            maybe_potential_camera->camera_definition_result =
-                                Camera::Result::Success;
-                            notify_camera_list_with_lock();
-                        });
-                });
+                        }
+                        if (_file_cache) {
+                            // Cache the file (this will move/remove the temp file as well)
+                            downloaded_filepath =
+                                _file_cache->insert(file_cache_tag, downloaded_filepath)
+                                    .value_or(downloaded_filepath);
+                            LogDebug("Cached path: {}", downloaded_filepath.string());
+                        }
+                        load_camera_definition_with_lock(
+                            *maybe_potential_camera, downloaded_filepath);
+                        maybe_potential_camera->is_fetching_camera_definition = false;
+                        maybe_potential_camera->camera_definition_result = Camera::Result::Success;
+                        notify_camera_list_with_lock();
+                    });
+                },
+                component_id);
         } else {
-            LogErr() << "Unknown protocol for URL: " << url;
+            LogErr("Unknown protocol for URL: {}", url);
             potential_camera.camera_definition_result = Camera::Result::ProtocolUnsupported;
             notify_camera_list_with_lock();
         }
@@ -1444,7 +1525,7 @@ void CameraImpl::load_camera_definition_with_lock(
     }
 
     if (!potential_camera.camera_definition->load_file(path.string())) {
-        LogErr() << "Failed to load camera definition: " << path;
+        LogErr("Failed to load camera definition: {}", path.string());
         // We can't keep something around that's not loaded correctly.
         potential_camera.camera_definition = nullptr;
         return;
@@ -1622,7 +1703,7 @@ bool CameraImpl::get_possible_options_with_lock(
     options.clear();
 
     if (!camera.camera_definition) {
-        LogWarn() << "Error: no camera definition available yet";
+        LogWarn("Error: no camera definition available yet");
         return false;
     }
 
@@ -1697,7 +1778,7 @@ void CameraImpl::set_option_async(
         std::vector<ParamValue> all_values;
         if (!camera.camera_definition->get_all_options(setting_id, all_values)) {
             if (callback) {
-                LogErr() << "Could not get all options to get type for range param.";
+                LogErr("Could not get all options to get type for range param.");
                 _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
@@ -1705,7 +1786,7 @@ void CameraImpl::set_option_async(
 
         if (all_values.empty()) {
             if (callback) {
-                LogErr() << "Could not get any options to get type for range param.";
+                LogErr("Could not get any options to get type for range param.");
                 _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
@@ -1716,7 +1797,7 @@ void CameraImpl::set_option_async(
         // that.
         if (!value.set_as_same_type(option.option_id)) {
             if (callback) {
-                LogErr() << "Could not set option value to given type.";
+                LogErr("Could not set option value to given type.");
                 _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
@@ -1725,7 +1806,7 @@ void CameraImpl::set_option_async(
     } else {
         if (!camera.camera_definition->get_option_value(setting_id, option.option_id, value)) {
             if (callback) {
-                LogErr() << "Could not get option value.";
+                LogErr("Could not get option value.");
                 _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
@@ -1740,7 +1821,7 @@ void CameraImpl::set_option_async(
             }
         }
         if (!allowed) {
-            LogErr() << "Setting " << setting_id << "(" << option.option_id << ") not allowed";
+            LogErr("Setting {}({}) not allowed", setting_id, option.option_id);
             if (callback) {
                 _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
@@ -1912,7 +1993,7 @@ void CameraImpl::get_option_async(
         }
     } else {
         // If this still happens, we request the param, but also complain.
-        LogWarn() << "Setting '" << setting_id << "' not found.";
+        LogWarn("Setting '{}' not found.", setting_id);
         if (callback) {
             const auto temp_callback = callback;
             _system_impl->call_user_callback(
@@ -1980,7 +2061,7 @@ void CameraImpl::notify_current_settings_with_lock(PotentialCamera& potential_ca
 
     auto possible_setting_options = get_possible_setting_options_with_lock(potential_camera);
     if (possible_setting_options.first != Camera::Result::Success) {
-        LogErr() << "Could not get possible settings in current options subscription.";
+        LogErr("Could not get possible settings in current options subscription.");
         return;
     }
 
@@ -2109,7 +2190,7 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera, boo
         const ParamValue& param_value_type = param.second;
         const bool is_last = (count == params.size() - 1);
         if (_debugging) {
-            LogDebug() << "Trying to get param: " << param_name;
+            LogDebug("Trying to get param: {}", param_name);
         }
         _system_impl->param_sender(potential_camera.component_id, true)
             ->get_param_async(
@@ -2132,7 +2213,7 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera, boo
 
                     if (camera_later.camera_definition->set_setting(param_name, value)) {
                         if (_debugging) {
-                            LogDebug() << "Got setting for " << param_name << ": " << value;
+                            LogDebug("Got setting for {}: {}", param_name, value.get_string());
                         }
                         return;
                     }
@@ -2157,7 +2238,7 @@ void CameraImpl::subscribe_to_param_changes_with_lock(
     auto component_id = camera.component_id;
     auto changed = [this, component_id, param_name](auto new_param) {
         if (_debugging) {
-            LogDebug() << "Got changing param: " << param_name << " -> " << new_param;
+            LogDebug("Got changing param: {} -> {}", param_name, new_param);
         }
 
         std::lock_guard lock_later(_mutex);
@@ -2208,7 +2289,7 @@ void CameraImpl::subscribe_to_param_changes_with_lock(
         _system_impl->param_sender(camera.component_id, true)
             ->subscribe_param_changed<std::string>(param_name, changed, this);
     } else {
-        LogErr() << "Unknown type for param " << param_name;
+        LogErr("Unknown type for param {}", param_name);
     }
 }
 
@@ -2332,7 +2413,7 @@ void CameraImpl::list_photos_async(
     const Camera::ListPhotosCallback& callback)
 {
     if (!callback) {
-        LogWarn() << "Trying to get a photo list with a null callback, ignoring...";
+        LogWarn("Trying to get a photo list with a null callback, ignoring...");
         return;
     }
 
@@ -2341,13 +2422,13 @@ void CameraImpl::list_photos_async(
     auto maybe_potential_camera =
         maybe_potential_camera_for_component_id_with_lock(component_id, 0);
     if (maybe_potential_camera == nullptr) {
-        LogWarn() << "Invalid camera ID: " << component_id;
+        LogWarn("Invalid camera ID: {}", component_id);
         return;
     }
     auto& camera = *maybe_potential_camera;
 
     if (camera.capture_status.image_count == -1) {
-        LogErr() << "Cannot list photos: camera status has not been received yet!";
+        LogErr("Cannot list photos: camera status has not been received yet!");
         _system_impl->call_user_callback(
             [callback]() { callback(Camera::Result::Error, std::vector<Camera::CaptureInfo>{}); });
         return;

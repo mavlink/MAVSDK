@@ -1,14 +1,15 @@
-#include "action_server_impl.h"
-#include "unused.h"
-#include "flight_mode.h"
+#include "action_server_impl.hpp"
+#include "unused.hpp"
+#include "flight_mode.hpp"
 #include "callback_list.tpp"
-#include "px4_custom_mode.h"
+#include "px4_custom_mode.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<ActionServer::Result, ActionServer::ArmDisarm>;
-template class CallbackList<ActionServer::Result, ActionServer::FlightMode>;
-template class CallbackList<ActionServer::Result, bool>;
+template class MAVSDK_TEMPL_INST CallbackList<ActionServer::Result, ActionServer::ArmDisarm>;
+template class MAVSDK_TEMPL_INST CallbackList<ActionServer::Result, ActionServer::FlightMode>;
+template class MAVSDK_TEMPL_INST CallbackList<ActionServer::Result, bool>;
 
 ActionServer::FlightMode
 ActionServerImpl::telemetry_flight_mode_from_flight_mode(FlightMode flight_mode)

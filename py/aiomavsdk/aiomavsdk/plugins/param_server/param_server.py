@@ -91,9 +91,10 @@ class ParamServerAsync:
 
         If the type is wrong, the result will be `WRONG_TYPE`.
 
-        Note that all params need to be provided upfront. Once a client has
-        requested a param list, the indices are locked and no more params
-        can be added.
+        Note that new params have to be provided upfront. Once a client has
+        requested the param list, the indices are locked and no new params can
+        be added. Providing an already-existing param still updates its value
+        and announces the change to connected clients.
 
                Parameters
                ----------
@@ -114,10 +115,6 @@ class ParamServerAsync:
                Retrieve a float parameter.
 
         If the type is wrong, the result will be `WRONG_TYPE`.
-
-        Note that all params need to be provided upfront. Once a client has
-        requested a param list, the indices are locked and no more params
-        can be added.
 
                Parameters
                ----------
@@ -141,6 +138,11 @@ class ParamServerAsync:
 
         If the type is wrong, the result will be `WRONG_TYPE`.
 
+        Note that new params have to be provided upfront. Once a client has
+        requested the param list, the indices are locked and no new params can
+        be added. Providing an already-existing param still updates its value
+        and announces the change to connected clients.
+
                Parameters
                ----------
                name : str
@@ -160,10 +162,6 @@ class ParamServerAsync:
                Retrieve a custom parameter.
 
         If the type is wrong, the result will be `WRONG_TYPE`.
-
-        Note that all params need to be provided upfront. Once a client has
-        requested a param list, the indices are locked and no more params
-        can be added.
 
                Parameters
                ----------
@@ -186,6 +184,11 @@ class ParamServerAsync:
                Provide a custom parameter.
 
         If the type is wrong, the result will be `WRONG_TYPE`.
+
+        Note that new params have to be provided upfront. Once a client has
+        requested the param list, the indices are locked and no new params can
+        be added. Providing an already-existing param still updates its value
+        and announces the change to connected clients.
 
                Parameters
                ----------

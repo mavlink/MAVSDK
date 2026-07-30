@@ -1,4 +1,4 @@
-#include "gripper_impl.h"
+#include "gripper_impl.hpp"
 
 namespace mavsdk {
 

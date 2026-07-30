@@ -23,51 +23,13 @@ typedef struct mavsdk_system_s *mavsdk_system_t;
 
 // ===== Opaque Handles =====
 typedef struct mavsdk_mission_raw_s *mavsdk_mission_raw_t;
+typedef struct mavsdk_mission_raw_upload_mission_with_progress_handle_s *mavsdk_mission_raw_upload_mission_with_progress_handle_t;
 typedef struct mavsdk_mission_raw_mission_progress_handle_s *mavsdk_mission_raw_mission_progress_handle_t;
 typedef struct mavsdk_mission_raw_mission_changed_handle_s *mavsdk_mission_raw_mission_changed_handle_t;
 
 // ===== Enums =====
 
 // ===== Structs =====
-/**
- * @brief Mission progress type.
- *
- * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_raw_mission_progress_destroy() when done to avoid memory leaks.
- */
-typedef struct CMAVSDK_EXPORT {
-    /**  Current mission item index (0-based), if equal to total, the mission is finished */
-    int32_t current;
-    /**  Total number of mission items */
-    int32_t total;
-} mavsdk_mission_raw_mission_progress_t;
-
-/**
- * @brief Destroy a mission_progress struct.
- *
- * Frees all memory allocated by MAVSDK for this struct, including any
- * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * Always call this function when done with the struct, even if it currently
- * contains no dynamic allocations.
- *
- * @param target Pointer to the struct to destroy. Can be NULL (no-op).
- */
-CMAVSDK_EXPORT void mavsdk_mission_raw_mission_progress_destroy(
-    mavsdk_mission_raw_mission_progress_t* target);
-
-/**
- * @brief Destroy an array of mission_progress structs.
- *
- * Frees all memory allocated for the array and its elements, including any
- * nested dynamic allocations. Must be called to avoid memory leaks.
- *
- * @param array Pointer to the array pointer. Will be set to NULL after freeing.
- * @param size Number of elements in the array.
- */
-CMAVSDK_EXPORT void mavsdk_mission_raw_mission_progress_array_destroy(
-    mavsdk_mission_raw_mission_progress_t** array,
-    size_t size);
-
 /**
  * @brief Mission item exactly identical to MAVLink MISSION_ITEM_INT.
  *
@@ -127,6 +89,83 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_mission_item_destroy(
  */
 CMAVSDK_EXPORT void mavsdk_mission_raw_mission_item_array_destroy(
     mavsdk_mission_raw_mission_item_t** array,
+    size_t size);
+
+/**
+ * @brief Mission plan type
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_mission_raw_mission_plan_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  The mission items */
+    mavsdk_mission_raw_mission_item_t* mission_items;
+    size_t mission_items_size;
+} mavsdk_mission_raw_mission_plan_t;
+
+/**
+ * @brief Destroy a mission_plan struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_plan_destroy(
+    mavsdk_mission_raw_mission_plan_t* target);
+
+/**
+ * @brief Destroy an array of mission_plan structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_plan_array_destroy(
+    mavsdk_mission_raw_mission_plan_t** array,
+    size_t size);
+
+/**
+ * @brief Mission progress type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_mission_raw_mission_progress_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Current mission item index (0-based), if equal to total, the mission is finished */
+    int32_t current;
+    /**  Total number of mission items */
+    int32_t total;
+} mavsdk_mission_raw_mission_progress_t;
+
+/**
+ * @brief Destroy a mission_progress struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_progress_destroy(
+    mavsdk_mission_raw_mission_progress_t* target);
+
+/**
+ * @brief Destroy an array of mission_progress structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_progress_array_destroy(
+    mavsdk_mission_raw_mission_progress_t** array,
     size_t size);
 
 /**
@@ -219,8 +258,47 @@ typedef enum {
     MAVSDK_MISSION_RAW_RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN = 19,
     /**  Failed to parse the Mission Planner plan. */
     MAVSDK_MISSION_RAW_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN = 20,
+    /**  Intermediate message showing progress. */
+    MAVSDK_MISSION_RAW_RESULT_NEXT = 21,
 } mavsdk_mission_raw_result_t;
 
+
+/**
+ * @brief Progress data coming from mission upload.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_mission_raw_progress_data_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Progress (0..1.0) */
+    float progress;
+} mavsdk_mission_raw_progress_data_t;
+
+/**
+ * @brief Destroy a progress_data struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_mission_raw_progress_data_destroy(
+    mavsdk_mission_raw_progress_data_t* target);
+
+/**
+ * @brief Destroy an array of progress_data structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_mission_raw_progress_data_array_destroy(
+    mavsdk_mission_raw_progress_data_t** array,
+    size_t size);
 
 
 // ===== Primitive Array Destroy Functions =====
@@ -301,6 +379,7 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_mission_raw_upload_mission_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
+typedef void (*mavsdk_mission_raw_upload_mission_with_progress_callback_t)(const mavsdk_mission_raw_result_t result, const mavsdk_mission_raw_progress_data_t progress_data, void* user_data);
 typedef void (*mavsdk_mission_raw_upload_geofence_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
 typedef void (*mavsdk_mission_raw_upload_rally_points_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
 typedef void (*mavsdk_mission_raw_download_mission_callback_t)(const mavsdk_mission_raw_result_t result, const mavsdk_mission_raw_mission_item_t* mission_items, size_t mission_items_size, void* user_data);
@@ -326,8 +405,9 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_destroy(mavsdk_mission_raw_t mission_raw)
  *  can be started and executed even if the connection is lost.
  *
  * @param mission_raw The mission_raw instance.
-* @param mission_items  The mission items
+ * @param mission_items  The mission items
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -356,11 +436,30 @@ mavsdk_mission_raw_upload_mission(
 
 
 /**
+ * @brief Upload a list of raw mission items and report upload progress.
+ *
+ * @param mission_raw The mission_raw instance.
+ * @param mission_plan  The mission plan
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_mission_raw_upload_mission_with_progress_async(
+    mavsdk_mission_raw_t mission_raw,
+    mavsdk_mission_raw_mission_plan_t mission_plan,
+    mavsdk_mission_raw_upload_mission_with_progress_callback_t callback,
+    void* user_data);
+
+
+
+/**
  * @brief Upload a list of geofence items to the system.
  *
  * @param mission_raw The mission_raw instance.
-* @param mission_items  The mission items
+ * @param mission_items  The mission items
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -392,8 +491,9 @@ mavsdk_mission_raw_upload_geofence(
  * @brief Upload a list of rally point items to the system.
  *
  * @param mission_raw The mission_raw instance.
-* @param mission_items  The mission items
+ * @param mission_items  The mission items
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -439,6 +539,7 @@ mavsdk_mission_raw_cancel_mission_upload(
  * @brief Download a list of raw mission items from the system (asynchronous).
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -468,6 +569,7 @@ mavsdk_mission_raw_download_mission(
  * @brief Download a list of raw geofence items from the system (asynchronous).
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -497,6 +599,7 @@ mavsdk_mission_raw_download_geofence(
  * @brief Download a list of raw rallypoint items from the system (asynchronous).
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -542,6 +645,7 @@ mavsdk_mission_raw_cancel_mission_download(
  *  A mission must be uploaded to the vehicle before this can be called.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -569,11 +673,12 @@ mavsdk_mission_raw_start_mission(
  * @brief Pause the mission.
  * 
  *  Pausing the mission puts the vehicle into
- *  [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+ *  [HOLD mode](https://docs.px4.io/main/en/flight_modes_mc/hold.html).
  *  A multicopter should just hover at the spot while a fixedwing vehicle should loiter
  *  around the location where it paused.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -601,6 +706,7 @@ mavsdk_mission_raw_pause_mission(
  * @brief Clear the mission saved on the vehicle.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -631,8 +737,9 @@ mavsdk_mission_raw_clear_mission(
  *  to a specific index of a raw mission item, the mission will be set to this item.
  *
  * @param mission_raw The mission_raw instance.
-* @param index  Index of the mission item to be set as the next one (0-based)
+ * @param index  Index of the mission item to be set as the next one (0-based)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -662,6 +769,7 @@ mavsdk_mission_raw_set_current_mission_item(
  * @brief Subscribe to mission progress updates.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mission_raw_unsubscribe_mission_progress() to unsubscribe.
@@ -707,6 +815,7 @@ mavsdk_mission_raw_mission_progress(
  *  @param callback Callback to notify about change.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mission_raw_unsubscribe_mission_changed() to unsubscribe.

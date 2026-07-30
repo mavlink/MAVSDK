@@ -1,8 +1,14 @@
-#include "http_loader.h"
-#include "curl_wrapper.h"
-#include "overloaded.h"
+#include "http_loader.hpp"
+#include "curl_wrapper.hpp"
+#include "overloaded.hpp"
 
 namespace mavsdk {
+
+HttpLoader::HttpLoader(std::unique_ptr<ICurlWrapper> curl_wrapper) :
+    _curl_wrapper(std::move(curl_wrapper))
+{
+    start();
+}
 
 HttpLoader::HttpLoader() : _curl_wrapper(std::make_unique<CurlWrapper>(CurlWrapper()))
 {

@@ -9,8 +9,8 @@ get_target_property(
     INTERFACE_INCLUDE_DIRECTORIES
 )
 
-configure_file(version.h.in version.h)
-configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_include.h)
+configure_file(version.hpp.in version.hpp)
+configure_file(include/mavsdk/mavlink_include.hpp.in include/mavsdk/mavlink_include.hpp)
 
 # Generate embedded XML header for libmav
 if(NOT MAVLINK_XML_PATH)
@@ -24,7 +24,7 @@ set(MAVLINK_STANDARD_XML "${MAVLINK_XML_PATH}/standard.xml")
 set(MAVLINK_COMMON_XML "${MAVLINK_XML_PATH}/common.xml")
 set(MAVLINK_ARDUPILOTMEGA_XML "${MAVLINK_XML_PATH}/ardupilotmega.xml")
 
-set(EMBEDDED_XML_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_mavlink_xml.h")
+set(EMBEDDED_XML_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_mavlink_xml.hpp")
 
 add_custom_command(
     OUTPUT ${EMBEDDED_XML_HEADER}
@@ -61,6 +61,7 @@ target_sources(mavsdk
     inflate_lzma.cpp
     math_utils.cpp
     mavsdk.cpp
+    asio_throw_exception.cpp
     mavsdk_impl.cpp
     mavlink_channel_status.cpp
     mavlink_channels.cpp
@@ -78,6 +79,7 @@ target_sources(mavsdk
     mavlink_parameter_helper.cpp
     mavlink_receiver.cpp
     libmav_receiver.cpp
+    libmav_conversions.cpp
     mavlink_request_message.cpp
     mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp
@@ -90,7 +92,6 @@ target_sources(mavsdk
     server_component.cpp
     server_component_impl.cpp
     server_plugin_impl_base.cpp
-    socket_holder.cpp
     tcp_client_connection.cpp
     tcp_server_connection.cpp
     timeout_handler.cpp
@@ -135,6 +136,12 @@ else()
     )
 endif()
 
+target_compile_definitions(mavsdk PRIVATE MAVSDK_BUILD)
+
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(mavsdk PUBLIC MAVSDK_SHARED)
+endif()
+
 set_target_properties(mavsdk PROPERTIES
     VERSION ${MAVSDK_VERSION_STRING}
     SOVERSION ${MAVSDK_SOVERSION_STRING}
@@ -174,8 +181,35 @@ if((BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")) OR
 endif()
 
 set_target_properties(mavsdk
-    PROPERTIES COMPILE_FLAGS ${warnings}
+    PROPERTIES
+        COMPILE_FLAGS ${warnings}
+        CXX_VISIBILITY_PRESET hidden
+        VISIBILITY_INLINES_HIDDEN ON
     )
+
+# Use a linker symbol export list to hide symbols from statically-linked
+# third-party libraries (OpenSSL, tinyxml2, curl, etc.).
+# -fvisibility=hidden only affects code compiled with that flag;
+# pre-built static archives still export their symbols without this.
+if(BUILD_SHARED_LIBS)
+    if(APPLE)
+        target_link_options(mavsdk PRIVATE
+            "LINKER:-exported_symbols_list,${CMAKE_CURRENT_SOURCE_DIR}/libmavsdk.exported_symbols"
+        )
+    elseif(UNIX)
+        target_link_options(mavsdk PRIVATE
+            "LINKER:--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libmavsdk.version"
+        )
+    endif()
+endif()
+
+# Asio's io_context.hpp triggers a false-positive -Wnull-dereference with GCC
+# (executor comparison at io_context.hpp:967).  The warning comes from GCC's
+# data-flow analysis traversing inlined Asio internals; marking the Asio
+# include directory as SYSTEM is not always sufficient to suppress it.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(mavsdk PRIVATE -Wno-null-dereference)
+endif()
 
 target_include_directories(mavsdk
     PUBLIC
@@ -202,24 +236,26 @@ install(TARGETS mavsdk
     )
 
 install(FILES
-    include/mavsdk/autopilot.h
-    include/mavsdk/base64.h
-    include/mavsdk/compatibility_mode.h
-    include/mavsdk/component_type.h
-    include/mavsdk/connection_result.h
-    include/mavsdk/deprecated.h
-    include/mavsdk/handle.h
-    include/mavsdk/system.h
-    include/mavsdk/mavsdk.h
-    include/mavsdk/log_callback.h
-    include/mavsdk/plugin_base.h
-    include/mavsdk/server_plugin_base.h
-    include/mavsdk/geometry.h
-    include/mavsdk/server_component.h
-    include/mavsdk/mavlink_address.h
-    include/mavsdk/vehicle.h
-    include/mavsdk/overloaded.h
-    ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.h
+    include/mavsdk/autopilot.hpp
+    include/mavsdk/base64.hpp
+    include/mavsdk/compatibility_mode.hpp
+    include/mavsdk/component_type.hpp
+    include/mavsdk/connection_result.hpp
+    include/mavsdk/deprecated.hpp
+    include/mavsdk/handle.hpp
+    include/mavsdk/system.hpp
+    include/mavsdk/mavsdk.hpp
+    include/mavsdk/mavsdk_export.h
+    include/mavsdk/log_callback.hpp
+    include/mavsdk/plugin_base.hpp
+    include/mavsdk/server_plugin_base.hpp
+    include/mavsdk/geometry.hpp
+    include/mavsdk/math_utils.hpp
+    include/mavsdk/server_component.hpp
+    include/mavsdk/mavlink_address.hpp
+    include/mavsdk/vehicle.hpp
+    include/mavsdk/overloaded.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.hpp
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 
@@ -247,6 +283,15 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_cache_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/string_utils_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/base64_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/crc32_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/flight_mode_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/fs_utils_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/connection_result_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_helper_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/vehicle_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/autopilot_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/param_value_xml_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_message_handler_test.cpp
 )
 
 if (NOT BUILD_WITHOUT_CURL)

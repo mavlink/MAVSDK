@@ -146,6 +146,7 @@ CMAVSDK_EXPORT void mavsdk_manual_control_destroy(mavsdk_manual_control_t manual
  *  Requires a valid position using e.g. GPS, external vision, or optical flow.
  *
  * @param manual_control The manual_control instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -176,6 +177,7 @@ mavsdk_manual_control_start_position_control(
  *  Does not require a  valid position e.g. GPS.
  *
  * @param manual_control The manual_control instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
