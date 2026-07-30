@@ -8,7 +8,8 @@ plugins {
 
 kotlin {
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
+        // See shared/build.gradle.kts: mavsdk-kotlin's android variant is JVM 21.
+        jvmTarget = JvmTarget.JVM_21
     }
 }
 dependencies {
@@ -42,7 +43,7 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }

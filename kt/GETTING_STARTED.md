@@ -67,7 +67,7 @@ Build `cmavsdk` and `mavsdk-jni` for each Android ABI, place the libraries in
 `mavsdk-kotlin/src/androidMain/jniLibs/<abi>/`, then assemble:
 ```bash
 cd mavsdk-kotlin
-./gradlew assembleDebug
+./gradlew assembleAndroidMain
 ```
 
 ### 4. Run the Example
@@ -283,7 +283,7 @@ cmake --build ../jni/build
 Clean and rebuild:
 ```bash
 ./gradlew clean
-./gradlew assembleDebug
+./gradlew assembleAndroidMain
 ```
 
 ## Next Steps

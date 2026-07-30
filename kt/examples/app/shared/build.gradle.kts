@@ -24,7 +24,9 @@ kotlin {
        minSdk = libs.versions.android.minSdk.get().toInt()
     
        compilerOptions {
-           jvmTarget = JvmTarget.JVM_11
+           // Matches mavsdk-kotlin's android target: Gradle refuses to resolve a
+           // dependency built for a higher JVM version than the consumer.
+           jvmTarget = JvmTarget.JVM_21
        }
        androidResources {
            enable = true
@@ -37,8 +39,13 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
+            // Android-only for now: mavsdk-kotlin ships jvm and android targets
+            // but no iOS one yet (see KOTLIN_IOS_PLAN.md), which is why
+            // flyMission() is expect/actual rather than common code.
+            implementation(libs.mavsdk.kotlin)
         }
         commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)

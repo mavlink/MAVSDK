@@ -1,24 +1,12 @@
-import com.android.build.gradle.LibraryExtension
-import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.jvm.tasks.Jar
-
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:8.7.3")
-    }
-}
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("multiplatform") version "2.0.0"
-    id("com.vanniktech.maven.publish") version "0.33.0"
+    kotlin("multiplatform") version "2.4.10"
+    id("com.android.kotlin.multiplatform.library") version "9.3.1"
+    id("com.vanniktech.maven.publish") version "0.37.0"
 }
-
-apply(plugin = "com.android.library")
 
 group = "io.mavsdk"
 // The published version can be overridden without touching this file, because
@@ -42,24 +30,29 @@ val neutralJniClasses = files(compileNeutralJniJava.flatMap { it.destinationDire
 
 kotlin {
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "21"
-        }
-    }
-    
-    androidTarget {
-        publishLibraryVariants("release")
-        compilations.all {
-            kotlinOptions.jvmTarget = "21"
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 
-    targets.all {
-        compilations.all {
-            kotlinOptions {
-                freeCompilerArgs += "-Xexpect-actual-classes"
-            }
+    androidLibrary {
+        namespace = "io.mavsdk.kotlin"
+        compileSdk = 35
+        minSdk = 24
+
+        // The generated JNI contracts are Java, and src/androidMain/java is a
+        // symlink to jni/jvm/src/main/java so both targets share one copy.
+        // withJava() is what makes AGP compile them into the AAR, and it also
+        // puts them on the Kotlin compilation's classpath.
+        withJava()
+
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
         }
+    }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     
     sourceSets {
@@ -86,29 +79,10 @@ tasks.named<Jar>("jvmJar") {
     from(compileNeutralJniJava.flatMap { it.destinationDirectory })
 }
 
-configure<LibraryExtension> {
-    namespace = "io.mavsdk.kotlin"
-    compileSdk = 35
-    
-    defaultConfig {
-        minSdk = 24
-        ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
-        }
-    }
-    
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    sourceSets.getByName("main").java.srcDir("../../jni/jvm/src/main/java")
-}
-
 // Publishes the KMP artifact set: io.mavsdk:mavsdk-kotlin (root module with
 // Gradle Module Metadata), plus -jvm and -android variants.
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral()
 
     // Maven Central requires signatures, but unconditional signing breaks
     // publishToMavenLocal for contributors without keys. CI supplies the key

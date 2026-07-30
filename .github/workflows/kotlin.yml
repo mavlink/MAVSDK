@@ -255,7 +255,7 @@ jobs:
       - name: assemble AAR
         run: |
           cd kt/mavsdk-kotlin
-          ./gradlew assembleRelease
+          ./gradlew assembleAndroidMain
       - name: upload AAR
         uses: actions/upload-artifact@v4
         with:
