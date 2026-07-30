@@ -4,9 +4,6 @@ project(mavsdk-jni CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Include directories
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
 # Generated plugin sources (from generate_from_protos.bash)
 include(${CMAKE_CURRENT_SOURCE_DIR}/plugins_generated.cmake)
 
