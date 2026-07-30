@@ -110,6 +110,8 @@ jobs:
   jni-android:
     name: jni-android-${{ matrix.abi }}
     runs-on: ubuntu-24.04
+    env:
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
