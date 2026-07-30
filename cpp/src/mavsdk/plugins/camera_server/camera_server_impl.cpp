@@ -356,14 +356,14 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
                 auto command_ack = _server_component_impl->make_command_ack_message(
                     _last_take_photo_command, MAV_RESULT_TEMPORARILY_REJECTED);
                 _server_component_impl->send_command_ack(command_ack);
-                return CameraServer::Result::Success;
+                break;
             }
 
             case CameraServer::CameraFeedback::Failed: {
                 auto command_ack = _server_component_impl->make_command_ack_message(
                     _last_take_photo_command, MAV_RESULT_FAILED);
                 _server_component_impl->send_command_ack(command_ack);
-                return CameraServer::Result::Success;
+                break;
             }
         }
 
