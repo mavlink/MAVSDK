@@ -522,11 +522,28 @@ _cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(AllowableFlightModesCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_action_server_arm_disarm_destroy.argtypes = [
     ctypes.POINTER(ArmDisarmCStruct)
 ]
 _cmavsdk_lib.mavsdk_action_server_arm_disarm_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_action_server_arm_disarm_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ArmDisarmCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_action_server_arm_disarm_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_action_server_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_action_server_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_arm_disarm.argtypes = [
     ctypes.c_void_p,

@@ -664,9 +664,24 @@ _cmavsdk_lib.mavsdk_winch_status_flags_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_winch_status_flags_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_winch_status_flags_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(StatusFlagsCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_winch_status_flags_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_winch_status_destroy.argtypes = [ctypes.POINTER(StatusCStruct)]
 _cmavsdk_lib.mavsdk_winch_status_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_winch_status_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(StatusCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_winch_status_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_winch_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_winch_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_winch_subscribe_status.argtypes = [
     ctypes.c_void_p,

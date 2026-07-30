@@ -131,6 +131,10 @@ _cmavsdk_lib.mavsdk_failure_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_failure_destroy.restype = None
 
 
+_cmavsdk_lib.mavsdk_failure_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_failure_string_destroy.restype = None
+
+
 _cmavsdk_lib.mavsdk_failure_inject.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int,

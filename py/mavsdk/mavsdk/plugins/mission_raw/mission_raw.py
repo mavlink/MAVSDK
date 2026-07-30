@@ -560,11 +560,13 @@ class MissionRaw:
                 py_result = MissionRawResult(result)
 
                 py_data = []
-                if c_data and size.value > 0:
-                    for i in range(size.value):
+                if c_data and size > 0:
+                    for i in range(size):
                         py_data.append(MissionItem.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_mission_raw_mission_item_destroy(c_data)
+                self._lib.mavsdk_mission_raw_mission_item_array_destroy(
+                    ctypes.byref(c_data), size
+                )
 
                 callback(py_result, py_data, user_data)
 
@@ -592,7 +594,9 @@ class MissionRaw:
         py_result = [
             MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)
         ]
-        self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
+        self._lib.mavsdk_mission_raw_mission_item_array_destroy(
+            ctypes.byref(result_ptr), size
+        )
         return py_result
 
     def download_geofence_async(self, callback: Callable, user_data: Any = None):
@@ -603,11 +607,13 @@ class MissionRaw:
                 py_result = MissionRawResult(result)
 
                 py_data = []
-                if c_data and size.value > 0:
-                    for i in range(size.value):
+                if c_data and size > 0:
+                    for i in range(size):
                         py_data.append(MissionItem.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_mission_raw_mission_item_destroy(c_data)
+                self._lib.mavsdk_mission_raw_mission_item_array_destroy(
+                    ctypes.byref(c_data), size
+                )
 
                 callback(py_result, py_data, user_data)
 
@@ -635,7 +641,9 @@ class MissionRaw:
         py_result = [
             MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)
         ]
-        self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
+        self._lib.mavsdk_mission_raw_mission_item_array_destroy(
+            ctypes.byref(result_ptr), size
+        )
         return py_result
 
     def download_rallypoints_async(self, callback: Callable, user_data: Any = None):
@@ -646,11 +654,13 @@ class MissionRaw:
                 py_result = MissionRawResult(result)
 
                 py_data = []
-                if c_data and size.value > 0:
-                    for i in range(size.value):
+                if c_data and size > 0:
+                    for i in range(size):
                         py_data.append(MissionItem.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_mission_raw_mission_item_destroy(c_data)
+                self._lib.mavsdk_mission_raw_mission_item_array_destroy(
+                    ctypes.byref(c_data), size
+                )
 
                 callback(py_result, py_data, user_data)
 
@@ -678,7 +688,9 @@ class MissionRaw:
         py_result = [
             MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)
         ]
-        self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
+        self._lib.mavsdk_mission_raw_mission_item_array_destroy(
+            ctypes.byref(result_ptr), size
+        )
         return py_result
 
     def cancel_mission_download(self):
@@ -1059,26 +1071,61 @@ _cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_raw_mission_item_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionItemCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_raw_mission_item_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_mission_raw_mission_plan_destroy.argtypes = [
     ctypes.POINTER(MissionPlanCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_raw_mission_plan_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_raw_mission_plan_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionPlanCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_raw_mission_plan_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.argtypes = [
     ctypes.POINTER(MissionProgressCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_raw_mission_progress_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionProgressCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_raw_mission_progress_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_mission_raw_mission_import_data_destroy.argtypes = [
     ctypes.POINTER(MissionImportDataCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_raw_mission_import_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_raw_mission_import_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionImportDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_raw_mission_import_data_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_raw_progress_data_destroy.argtypes = [
     ctypes.POINTER(ProgressDataCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_raw_progress_data_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_raw_progress_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ProgressDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_raw_progress_data_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_mission_raw_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_mission_raw_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_raw_upload_mission_async.argtypes = [
     ctypes.c_void_p,

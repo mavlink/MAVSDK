@@ -143,6 +143,11 @@ _cmavsdk_lib.mavsdk_arm_authorizer_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_arm_authorizer_server_destroy.restype = None
 
 
+_cmavsdk_lib.mavsdk_arm_authorizer_server_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_arm_authorizer_server_string_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.argtypes = [
     ctypes.c_void_p,
     ArmAuthorizationCallback,

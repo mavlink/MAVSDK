@@ -184,6 +184,15 @@ _cmavsdk_lib.mavsdk_tune_tune_description_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_tune_tune_description_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_tune_tune_description_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(TuneDescriptionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_tune_tune_description_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_tune_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_tune_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_tune_play_tune_async.argtypes = [
     ctypes.c_void_p,

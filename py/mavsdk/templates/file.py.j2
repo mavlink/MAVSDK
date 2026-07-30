@@ -244,7 +244,16 @@ class {{ plugin_name.upper_camel_case }}:
 
                 {% if method.return_type %}
                 {# Handle return data conversion #}
-                  {% if method.return_type.is_primitive %}
+                  {% if method.return_type.is_string %}
+                  {# MAVSDK hands over a strdup'd copy that is ours to free.
+                     The callback declares this argument as POINTER(c_char)
+                     rather than c_char_p precisely so the pointer survives:
+                     ctypes converts a c_char_p argument to bytes, leaving
+                     nothing to free. #}
+                _string_ptr = ctypes.cast(c_data, ctypes.c_char_p)
+                py_data = _string_ptr.value
+                self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy(ctypes.byref(_string_ptr))
+                  {% elif method.return_type.is_primitive %}
                   {# Primitive types - no conversion needed #}
                 py_data = c_data
                   {% elif method.return_type.is_enum %}
@@ -253,18 +262,21 @@ class {{ plugin_name.upper_camel_case }}:
                   {% else %}
                   {# Struct types - convert from CStruct #}
                     {% if method.return_type.is_repeated %}
-                    {# Handle array types #}
+                    {# Handle array types. ctypes converts a size_t callback
+                       argument to a plain Python int, so it has no .value. #}
                 py_data = []
-                if c_data and size.value > 0:
-                    for i in range(size.value):
+                if c_data and size > 0:
+                    for i in range(size):
                         py_data.append({{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(c_data[i]))
                     {% else %}
                 py_data = {{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(c_data)
                     {% endif %}
 
-                    {# Destroy C struct #}
+                    {# Release the memory MAVSDK allocated for the payload. For
+                       an array that means the elements and the array itself,
+                       which is what _array_destroy does. #}
                     {% if method.return_type.is_repeated %}
-                self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(c_data)
+                self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_array_destroy(ctypes.byref(c_data), size)
                     {% else %}
                 self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(ctypes.byref(c_data))
                     {% endif %}
@@ -387,10 +399,15 @@ class {{ plugin_name.upper_camel_case }}:
           {% if method.return_type.is_repeated %}
         {# Convert C array to Python list #}
         py_result = [{{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_ptr[i]) for i in range(size.value)]
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(result_ptr)
+        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_array_destroy(ctypes.byref(result_ptr), size)
         return py_result
           {% else %}
-            {% if method.return_type.is_primitive %}
+            {% if method.return_type.is_string %}
+        {# The string is a strdup'd copy that is ours to free once read. #}
+        py_result = result_out.value
+        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy(ctypes.byref(result_out))
+        return py_result
+            {% elif method.return_type.is_primitive %}
         return result_out.value
             {% elif method.return_type.is_enum %}
         {# Convert C enum to Python enum #}
@@ -427,7 +444,11 @@ class {{ plugin_name.upper_camel_case }}:
     ctypes.c_int,
     {% endif %}
     {% if method.return_type %}
-      {% if method.return_type.is_primitive %}
+      {% if method.return_type.is_string %}
+    {# Not c_char_p: that would arrive as bytes, losing the pointer the
+       callback has to free. #}
+    ctypes.POINTER(ctypes.c_char),
+      {% elif method.return_type.is_primitive %}
     ctypes.{{ method.return_type.name }},
       {% elif method.return_type.is_enum %}
     ctypes.c_int,
@@ -459,8 +480,19 @@ _cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snak
 ]
 _cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER({{ struct.name.upper_camel_case }}CStruct)),
+    ctypes.c_size_t
+]
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_array_destroy.restype = None
+
   {% endif %}
 {% endfor %}
+
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy.restype = None
 
 {% for method in methods %}
   {% if method.is_async %}

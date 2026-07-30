@@ -134,6 +134,18 @@ _cmavsdk_lib.mavsdk_component_metadata_server_metadata_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_component_metadata_server_metadata_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_component_metadata_server_metadata_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MetadataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_component_metadata_server_metadata_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_component_metadata_server_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_component_metadata_server_string_destroy.restype = None
+
 
 _cmavsdk_lib.mavsdk_component_metadata_server_set_metadata.argtypes = [
     ctypes.c_void_p,

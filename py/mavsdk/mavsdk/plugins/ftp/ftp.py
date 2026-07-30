@@ -611,16 +611,37 @@ _cmavsdk_lib.mavsdk_ftp_filesystem_entry_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_ftp_filesystem_entry_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_ftp_filesystem_entry_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(FilesystemEntryCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_ftp_filesystem_entry_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_ftp_list_directory_data_destroy.argtypes = [
     ctypes.POINTER(ListDirectoryDataCStruct)
 ]
 _cmavsdk_lib.mavsdk_ftp_list_directory_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_list_directory_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ListDirectoryDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_ftp_list_directory_data_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_ftp_progress_data_destroy.argtypes = [
     ctypes.POINTER(ProgressDataCStruct)
 ]
 _cmavsdk_lib.mavsdk_ftp_progress_data_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_ftp_progress_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ProgressDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_ftp_progress_data_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_ftp_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_ftp_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_ftp_download_async.argtypes = [
     ctypes.c_void_p,
