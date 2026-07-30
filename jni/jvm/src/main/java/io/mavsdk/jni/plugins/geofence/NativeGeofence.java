@@ -75,6 +75,11 @@ public final class NativeGeofence {
     }
 
     @FunctionalInterface
+    public interface DownloadGeofenceCallback {
+        void invoke(int result, GeofenceData value);
+    }
+
+    @FunctionalInterface
     public interface ClearGeofenceCallback {
         void invoke(int result);
     }
@@ -86,6 +91,10 @@ public final class NativeGeofence {
     public static native int uploadGeofence(long pluginHandle, GeofenceData geofenceData);
 
     public static native void uploadGeofenceAsync(long pluginHandle, GeofenceData geofenceData, UploadGeofenceCallback callback);
+
+    public static native GeofenceData downloadGeofence(long pluginHandle);
+
+    public static native void downloadGeofenceAsync(long pluginHandle, DownloadGeofenceCallback callback);
 
     public static native int clearGeofence(long pluginHandle);
 

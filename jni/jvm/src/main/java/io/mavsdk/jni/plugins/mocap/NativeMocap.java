@@ -128,17 +128,20 @@ public final class NativeMocap {
         public final PositionBody positionBody;
         public final AngleBody angleBody;
         public final Covariance poseCovariance;
+        public final int resetCounter;
 
         public VisionPositionEstimate(
             long timeUsec,
             PositionBody positionBody,
             AngleBody angleBody,
-            Covariance poseCovariance
+            Covariance poseCovariance,
+            int resetCounter
         ) {
             this.timeUsec = timeUsec;
             this.positionBody = positionBody;
             this.angleBody = angleBody;
             this.poseCovariance = poseCovariance;
+            this.resetCounter = resetCounter;
         }
     }
 
@@ -146,15 +149,18 @@ public final class NativeMocap {
         public final long timeUsec;
         public final SpeedNed speedNed;
         public final Covariance speedCovariance;
+        public final int resetCounter;
 
         public VisionSpeedEstimate(
             long timeUsec,
             SpeedNed speedNed,
-            Covariance speedCovariance
+            Covariance speedCovariance,
+            int resetCounter
         ) {
             this.timeUsec = timeUsec;
             this.speedNed = speedNed;
             this.speedCovariance = speedCovariance;
+            this.resetCounter = resetCounter;
         }
     }
 
@@ -186,6 +192,9 @@ public final class NativeMocap {
         public final AngularVelocityBody angularVelocityBody;
         public final Covariance poseCovariance;
         public final Covariance velocityCovariance;
+        public final int resetCounter;
+        public final int estimatorType;
+        public final int qualityPercent;
 
         public Odometry(
             long timeUsec,
@@ -195,7 +204,10 @@ public final class NativeMocap {
             SpeedBody speedBody,
             AngularVelocityBody angularVelocityBody,
             Covariance poseCovariance,
-            Covariance velocityCovariance
+            Covariance velocityCovariance,
+            int resetCounter,
+            int estimatorType,
+            int qualityPercent
         ) {
             this.timeUsec = timeUsec;
             this.frameId = frameId;
@@ -205,6 +217,9 @@ public final class NativeMocap {
             this.angularVelocityBody = angularVelocityBody;
             this.poseCovariance = poseCovariance;
             this.velocityCovariance = velocityCovariance;
+            this.resetCounter = resetCounter;
+            this.estimatorType = estimatorType;
+            this.qualityPercent = qualityPercent;
         }
     }
 

@@ -544,32 +544,6 @@ Java_io_mavsdk_jni_plugins_info_NativeInfo_destroy(JNIEnv* env, jclass, jlong ha
 
 JNIEXPORT
 jobject
-JNICALL Java_io_mavsdk_jni_plugins_info_NativeInfo_getFlightInformation(
-    JNIEnv* env,
-    jclass,
-    jlong handle) {
-    if (!requireHandle(env, handle, "Info plugin")) {
-        return {};
-    }
-
-    mavsdk_info_flight_info_t returnValue{};
-    mavsdk_info_result_t result =
-        mavsdk_info_get_flight_information(
-            reinterpret_cast<mavsdk_info_t>(handle),
-            &returnValue);
-    if (result != MAVSDK_INFO_RESULT_SUCCESS) {
-        mavsdk_info_flight_info_destroy(&returnValue);
-        throwMavsdkError(env, "OperationError", "get_flight_information failed");
-        return nullptr;
-    }
-    jobject javaResult =
-        toJavaFlightInfo(env, returnValue);
-    mavsdk_info_flight_info_destroy(&returnValue);
-    return javaResult;
-}
-
-JNIEXPORT
-jobject
 JNICALL Java_io_mavsdk_jni_plugins_info_NativeInfo_getIdentification(
     JNIEnv* env,
     jclass,

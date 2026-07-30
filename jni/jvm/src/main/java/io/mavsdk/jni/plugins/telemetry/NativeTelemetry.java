@@ -65,6 +65,49 @@ public final class NativeTelemetry {
         }
     }
 
+    public static final class HomePosition {
+        public final long timestampUs;
+        public final double latitudeDeg;
+        public final double longitudeDeg;
+        public final float absoluteAltitudeM;
+        public final float relativeAltitudeM;
+        public final float localNorthM;
+        public final float localEastM;
+        public final float localDownM;
+        public final Quaternion q;
+        public final float approachNorthM;
+        public final float approachEastM;
+        public final float approachDownM;
+
+        public HomePosition(
+            long timestampUs,
+            double latitudeDeg,
+            double longitudeDeg,
+            float absoluteAltitudeM,
+            float relativeAltitudeM,
+            float localNorthM,
+            float localEastM,
+            float localDownM,
+            Quaternion q,
+            float approachNorthM,
+            float approachEastM,
+            float approachDownM
+        ) {
+            this.timestampUs = timestampUs;
+            this.latitudeDeg = latitudeDeg;
+            this.longitudeDeg = longitudeDeg;
+            this.absoluteAltitudeM = absoluteAltitudeM;
+            this.relativeAltitudeM = relativeAltitudeM;
+            this.localNorthM = localNorthM;
+            this.localEastM = localEastM;
+            this.localDownM = localDownM;
+            this.q = q;
+            this.approachNorthM = approachNorthM;
+            this.approachEastM = approachEastM;
+            this.approachDownM = approachDownM;
+        }
+    }
+
     public static final class EulerAngle {
         public final float rollDeg;
         public final float pitchDeg;
@@ -442,15 +485,18 @@ public final class NativeTelemetry {
         public final double latitudeDeg;
         public final double longitudeDeg;
         public final float absoluteAltitudeM;
+        public final long timestampUs;
 
         public GroundTruth(
             double latitudeDeg,
             double longitudeDeg,
-            float absoluteAltitudeM
+            float absoluteAltitudeM,
+            long timestampUs
         ) {
             this.latitudeDeg = latitudeDeg;
             this.longitudeDeg = longitudeDeg;
             this.absoluteAltitudeM = absoluteAltitudeM;
+            this.timestampUs = timestampUs;
         }
     }
 
@@ -572,6 +618,7 @@ public final class NativeTelemetry {
         public final float altitudeRelativeM;
         public final float altitudeTerrainM;
         public final float bottomClearanceM;
+        public final long timestampUs;
 
         public Altitude(
             float altitudeMonotonicM,
@@ -579,7 +626,8 @@ public final class NativeTelemetry {
             float altitudeLocalM,
             float altitudeRelativeM,
             float altitudeTerrainM,
-            float bottomClearanceM
+            float bottomClearanceM,
+            long timestampUs
         ) {
             this.altitudeMonotonicM = altitudeMonotonicM;
             this.altitudeAmslM = altitudeAmslM;
@@ -587,6 +635,7 @@ public final class NativeTelemetry {
             this.altitudeRelativeM = altitudeRelativeM;
             this.altitudeTerrainM = altitudeTerrainM;
             this.bottomClearanceM = bottomClearanceM;
+            this.timestampUs = timestampUs;
         }
     }
 
@@ -628,7 +677,7 @@ public final class NativeTelemetry {
 
     @FunctionalInterface
     public interface HomeCallback {
-        void invoke(Position value);
+        void invoke(HomePosition value);
     }
 
     @FunctionalInterface
@@ -832,6 +881,11 @@ public final class NativeTelemetry {
     }
 
     @FunctionalInterface
+    public interface SetRateRawGpsCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
     public interface SetRateBatteryCallback {
         void invoke(int result);
     }
@@ -921,7 +975,7 @@ public final class NativeTelemetry {
 
     public static native void unsubscribePosition(long pluginHandle, long subscriptionHandle);
 
-    public static native Position home(long pluginHandle);
+    public static native HomePosition home(long pluginHandle);
 
     public static native long subscribeHome(long pluginHandle, HomeCallback callback);
 
@@ -1148,6 +1202,10 @@ public final class NativeTelemetry {
     public static native int setRateGpsInfo(long pluginHandle, double rateHz);
 
     public static native void setRateGpsInfoAsync(long pluginHandle, double rateHz, SetRateGpsInfoCallback callback);
+
+    public static native int setRateRawGps(long pluginHandle, double rateHz);
+
+    public static native void setRateRawGpsAsync(long pluginHandle, double rateHz, SetRateRawGpsCallback callback);
 
     public static native int setRateBattery(long pluginHandle, double rateHz);
 

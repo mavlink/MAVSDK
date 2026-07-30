@@ -443,6 +443,50 @@ struct UploadGeofenceCallbackWrapper {
         }
     }
 };
+struct DownloadGeofenceCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    DownloadGeofenceCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/geofence/NativeGeofence$GeofenceData;)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_geofence_result_t result,        const mavsdk_geofence_geofence_data_t value
+    ) const {
+        struct ValueGuard {
+            mavsdk_geofence_geofence_data_t value;
+            ~ValueGuard() {
+                mavsdk_geofence_geofence_data_destroy(&value);
+            }
+        } valueGuard{value};
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        jobject javaValue =
+            toJavaGeofenceData(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
 struct ClearGeofenceCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
@@ -545,6 +589,56 @@ Java_io_mavsdk_jni_plugins_geofence_NativeGeofence_uploadGeofenceAsync(
             auto* callbackWrapper =
                 static_cast<UploadGeofenceCallbackWrapper*>(userData);
             (*callbackWrapper)(result);
+            delete callbackWrapper;
+        },
+        wrapper);
+}
+
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_geofence_NativeGeofence_downloadGeofence(
+    JNIEnv* env,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "Geofence plugin")) {
+        return {};
+    }
+
+    mavsdk_geofence_geofence_data_t returnValue{};
+    mavsdk_geofence_result_t result =
+        mavsdk_geofence_download_geofence(
+            reinterpret_cast<mavsdk_geofence_t>(handle),
+            &returnValue);
+    if (result != MAVSDK_GEOFENCE_RESULT_SUCCESS) {
+        mavsdk_geofence_geofence_data_destroy(&returnValue);
+        throwMavsdkError(env, "OperationError", "download_geofence failed");
+        return nullptr;
+    }
+    jobject javaResult =
+        toJavaGeofenceData(env, returnValue);
+    mavsdk_geofence_geofence_data_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_geofence_NativeGeofence_downloadGeofenceAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Geofence plugin") || !callback) {
+        return;
+    }
+
+    auto* wrapper = new DownloadGeofenceCallbackWrapper(env, callback);
+    mavsdk_geofence_download_geofence_async(
+        reinterpret_cast<mavsdk_geofence_t>(handle),
+        [](const mavsdk_geofence_result_t result,
+           const mavsdk_geofence_geofence_data_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<DownloadGeofenceCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
             delete callbackWrapper;
         },
         wrapper);

@@ -393,15 +393,18 @@ public final class NativeTelemetryServer {
         public final double latitudeDeg;
         public final double longitudeDeg;
         public final float absoluteAltitudeM;
+        public final long timestampUs;
 
         public GroundTruth(
             double latitudeDeg,
             double longitudeDeg,
-            float absoluteAltitudeM
+            float absoluteAltitudeM,
+            long timestampUs
         ) {
             this.latitudeDeg = latitudeDeg;
             this.longitudeDeg = longitudeDeg;
             this.absoluteAltitudeM = absoluteAltitudeM;
+            this.timestampUs = timestampUs;
         }
     }
 

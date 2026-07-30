@@ -14,16 +14,32 @@ package io.mavsdk.jni.plugins.ftp;
 public final class NativeFtp {
     private NativeFtp() {}
 
+    public static final class FilesystemEntry {
+        public final String name;
+        public final int entryType;
+        public final long sizeBytes;
+        public final long modificationTimeS;
+
+        public FilesystemEntry(
+            String name,
+            int entryType,
+            long sizeBytes,
+            long modificationTimeS
+        ) {
+            this.name = name;
+            this.entryType = entryType;
+            this.sizeBytes = sizeBytes;
+            this.modificationTimeS = modificationTimeS;
+        }
+    }
+
     public static final class ListDirectoryData {
-        public final String[] dirs;
-        public final String[] files;
+        public final FilesystemEntry[] entries;
 
         public ListDirectoryData(
-            String[] dirs,
-            String[] files
+            FilesystemEntry[] entries
         ) {
-            this.dirs = dirs;
-            this.files = files;
+            this.entries = entries;
         }
     }
 

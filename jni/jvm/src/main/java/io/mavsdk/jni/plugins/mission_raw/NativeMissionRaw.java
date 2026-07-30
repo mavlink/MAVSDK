@@ -14,19 +14,6 @@ package io.mavsdk.jni.plugins.mission_raw;
 public final class NativeMissionRaw {
     private NativeMissionRaw() {}
 
-    public static final class MissionProgress {
-        public final int current;
-        public final int total;
-
-        public MissionProgress(
-            int current,
-            int total
-        ) {
-            this.current = current;
-            this.total = total;
-        }
-    }
-
     public static final class MissionItem {
         public final int seq;
         public final int frame;
@@ -73,6 +60,29 @@ public final class NativeMissionRaw {
         }
     }
 
+    public static final class MissionPlan {
+        public final MissionItem[] missionItems;
+
+        public MissionPlan(
+            MissionItem[] missionItems
+        ) {
+            this.missionItems = missionItems;
+        }
+    }
+
+    public static final class MissionProgress {
+        public final int current;
+        public final int total;
+
+        public MissionProgress(
+            int current,
+            int total
+        ) {
+            this.current = current;
+            this.total = total;
+        }
+    }
+
     public static final class MissionImportData {
         public final MissionItem[] missionItems;
         public final MissionItem[] geofenceItems;
@@ -89,9 +99,24 @@ public final class NativeMissionRaw {
         }
     }
 
+    public static final class ProgressData {
+        public final float progress;
+
+        public ProgressData(
+            float progress
+        ) {
+            this.progress = progress;
+        }
+    }
+
     @FunctionalInterface
     public interface UploadMissionCallback {
         void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface UploadMissionWithProgressCallback {
+        void invoke(int result, ProgressData value);
     }
 
     @FunctionalInterface
@@ -156,6 +181,8 @@ public final class NativeMissionRaw {
     public static native int uploadMission(long pluginHandle, MissionItem[] missionItems);
 
     public static native void uploadMissionAsync(long pluginHandle, MissionItem[] missionItems, UploadMissionCallback callback);
+
+    public static native void uploadMissionWithProgressAsync(long pluginHandle, MissionPlan missionPlan, UploadMissionWithProgressCallback callback);
 
     public static native int uploadGeofence(long pluginHandle, MissionItem[] missionItems);
 

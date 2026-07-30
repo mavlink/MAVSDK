@@ -1342,6 +1342,10 @@ GroundTruthFromJava::GroundTruthFromJava(JNIEnv* env, jobject object) {
         clazz, "absoluteAltitudeM", "F");
     value.absolute_altitude_m =
         static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
     env->DeleteLocalRef(clazz);
 }
 
@@ -2480,7 +2484,7 @@ jobject toJavaGroundTruth(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(DDF)V");
+        carrierClass, "<init>", "(DDFJ)V");
     if (!constructor) {
         return nullptr;
     }
@@ -2488,6 +2492,7 @@ jobject toJavaGroundTruth(
         , static_cast<jdouble>(value.latitude_deg)
         , static_cast<jdouble>(value.longitude_deg)
         , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jlong>(value.timestamp_us)
     );
     return result;
 }

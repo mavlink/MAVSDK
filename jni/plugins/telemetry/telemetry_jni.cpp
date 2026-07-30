@@ -23,6 +23,8 @@ struct HeadingFromJava;
 struct HeadingArrayFromJava;
 struct QuaternionFromJava;
 struct QuaternionArrayFromJava;
+struct HomePositionFromJava;
+struct HomePositionArrayFromJava;
 struct EulerAngleFromJava;
 struct EulerAngleArrayFromJava;
 struct AngularVelocityBodyFromJava;
@@ -146,6 +148,31 @@ struct QuaternionArrayFromJava {
         for (jsize i = 0; i < count; ++i) {
             jobject element = env->GetObjectArrayElement(array, i);
             auto holder = std::make_unique<QuaternionFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+struct HomePositionFromJava {
+    mavsdk_telemetry_home_position_t value{};
+    std::unique_ptr<QuaternionFromJava> qValue;
+
+    HomePositionFromJava(JNIEnv* env, jobject object);
+    ~HomePositionFromJava();
+};
+
+struct HomePositionArrayFromJava {
+    std::vector<std::unique_ptr<HomePositionFromJava>> holders;
+    std::vector<mavsdk_telemetry_home_position_t> values;
+
+    HomePositionArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<HomePositionFromJava>(env, element);
             values.push_back(holder->value);
             holders.push_back(std::move(holder));
             env->DeleteLocalRef(element);
@@ -908,6 +935,68 @@ QuaternionFromJava::QuaternionFromJava(JNIEnv* env, jobject object) {
 }
 
 QuaternionFromJava::~QuaternionFromJava() = default;
+HomePositionFromJava::HomePositionFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
+    jfieldID latitude_degField = env->GetFieldID(
+        clazz, "latitudeDeg", "D");
+    value.latitude_deg =
+        static_cast<double>(env->GetDoubleField(object, latitude_degField));
+    jfieldID longitude_degField = env->GetFieldID(
+        clazz, "longitudeDeg", "D");
+    value.longitude_deg =
+        static_cast<double>(env->GetDoubleField(object, longitude_degField));
+    jfieldID absolute_altitude_mField = env->GetFieldID(
+        clazz, "absoluteAltitudeM", "F");
+    value.absolute_altitude_m =
+        static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID relative_altitude_mField = env->GetFieldID(
+        clazz, "relativeAltitudeM", "F");
+    value.relative_altitude_m =
+        static_cast<float>(env->GetFloatField(object, relative_altitude_mField));
+    jfieldID local_north_mField = env->GetFieldID(
+        clazz, "localNorthM", "F");
+    value.local_north_m =
+        static_cast<float>(env->GetFloatField(object, local_north_mField));
+    jfieldID local_east_mField = env->GetFieldID(
+        clazz, "localEastM", "F");
+    value.local_east_m =
+        static_cast<float>(env->GetFloatField(object, local_east_mField));
+    jfieldID local_down_mField = env->GetFieldID(
+        clazz, "localDownM", "F");
+    value.local_down_m =
+        static_cast<float>(env->GetFloatField(object, local_down_mField));
+    jfieldID qField = env->GetFieldID(
+        clazz, "q", "Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Quaternion;");
+    jobject qObject =
+        env->GetObjectField(object, qField);
+    qValue =
+        std::make_unique<QuaternionFromJava>(
+            env, qObject);
+    value.q = qValue->value;
+    env->DeleteLocalRef(qObject);
+    jfieldID approach_north_mField = env->GetFieldID(
+        clazz, "approachNorthM", "F");
+    value.approach_north_m =
+        static_cast<float>(env->GetFloatField(object, approach_north_mField));
+    jfieldID approach_east_mField = env->GetFieldID(
+        clazz, "approachEastM", "F");
+    value.approach_east_m =
+        static_cast<float>(env->GetFloatField(object, approach_east_mField));
+    jfieldID approach_down_mField = env->GetFieldID(
+        clazz, "approachDownM", "F");
+    value.approach_down_m =
+        static_cast<float>(env->GetFloatField(object, approach_down_mField));
+    env->DeleteLocalRef(clazz);
+}
+
+HomePositionFromJava::~HomePositionFromJava() = default;
 EulerAngleFromJava::EulerAngleFromJava(JNIEnv* env, jobject object) {
     if (!object) {
         return;
@@ -1517,6 +1606,10 @@ GroundTruthFromJava::GroundTruthFromJava(JNIEnv* env, jobject object) {
         clazz, "absoluteAltitudeM", "F");
     value.absolute_altitude_m =
         static_cast<float>(env->GetFloatField(object, absolute_altitude_mField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
     env->DeleteLocalRef(clazz);
 }
 
@@ -1711,6 +1804,10 @@ AltitudeFromJava::AltitudeFromJava(JNIEnv* env, jobject object) {
         clazz, "bottomClearanceM", "F");
     value.bottom_clearance_m =
         static_cast<float>(env->GetFloatField(object, bottom_clearance_mField));
+    jfieldID timestamp_usField = env->GetFieldID(
+        clazz, "timestampUs", "J");
+    value.timestamp_us =
+        static_cast<uint64_t>(env->GetLongField(object, timestamp_usField));
     env->DeleteLocalRef(clazz);
 }
 
@@ -1774,6 +1871,12 @@ jobject toJavaQuaternion(
 jobjectArray toJavaQuaternionArray(
     JNIEnv* env,
     const mavsdk_telemetry_quaternion_t* values,
+    size_t count);
+jobject toJavaHomePosition(
+    JNIEnv* env, const mavsdk_telemetry_home_position_t& value);
+jobjectArray toJavaHomePositionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_home_position_t* values,
     size_t count);
 jobject toJavaEulerAngle(
     JNIEnv* env, const mavsdk_telemetry_euler_angle_t& value);
@@ -2045,6 +2148,53 @@ jobjectArray toJavaQuaternionArray(
     jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
     for (size_t i = 0; i < count; ++i) {
         jobject item = toJavaQuaternion(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    return result;
+}
+jobject toJavaHomePosition(
+    JNIEnv* env, const mavsdk_telemetry_home_position_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/telemetry/NativeTelemetry$HomePosition");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(JDDFFFFFLio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Quaternion;FFF)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jobject qValue =
+        toJavaQuaternion(env, value.q);
+    jobject result = env->NewObject(carrierClass, constructor
+        , static_cast<jlong>(value.timestamp_us)
+        , static_cast<jdouble>(value.latitude_deg)
+        , static_cast<jdouble>(value.longitude_deg)
+        , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jfloat>(value.relative_altitude_m)
+        , static_cast<jfloat>(value.local_north_m)
+        , static_cast<jfloat>(value.local_east_m)
+        , static_cast<jfloat>(value.local_down_m)
+        , qValue
+        , static_cast<jfloat>(value.approach_north_m)
+        , static_cast<jfloat>(value.approach_east_m)
+        , static_cast<jfloat>(value.approach_down_m)
+    );
+    env->DeleteLocalRef(qValue);
+    return result;
+}
+
+jobjectArray toJavaHomePositionArray(
+    JNIEnv* env,
+    const mavsdk_telemetry_home_position_t* values,
+    size_t count) {
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/telemetry/NativeTelemetry$HomePosition");
+    if (!elementClass) {
+        return nullptr;
+    }
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaHomePosition(env, values[i]);
         env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
         env->DeleteLocalRef(item);
     }
@@ -2823,7 +2973,7 @@ jobject toJavaGroundTruth(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(DDF)V");
+        carrierClass, "<init>", "(DDFJ)V");
     if (!constructor) {
         return nullptr;
     }
@@ -2831,6 +2981,7 @@ jobject toJavaGroundTruth(
         , static_cast<jdouble>(value.latitude_deg)
         , static_cast<jdouble>(value.longitude_deg)
         , static_cast<jfloat>(value.absolute_altitude_m)
+        , static_cast<jlong>(value.timestamp_us)
     );
     return result;
 }
@@ -3082,7 +3233,7 @@ jobject toJavaAltitude(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(FFFFFF)V");
+        carrierClass, "<init>", "(FFFFFFJ)V");
     if (!constructor) {
         return nullptr;
     }
@@ -3093,6 +3244,7 @@ jobject toJavaAltitude(
         , static_cast<jfloat>(value.altitude_relative_m)
         , static_cast<jfloat>(value.altitude_terrain_m)
         , static_cast<jfloat>(value.bottom_clearance_m)
+        , static_cast<jlong>(value.timestamp_us)
     );
     return result;
 }
@@ -3205,18 +3357,18 @@ struct HomeCallbackWrapper {
         : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
             jclass callbackClass = env->GetObjectClass(callbackObject);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$Position;)V");
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/telemetry/NativeTelemetry$HomePosition;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
     void operator()(
-        const mavsdk_telemetry_position_t value
+        const mavsdk_telemetry_home_position_t value
     ) const {
         struct ValueGuard {
-            mavsdk_telemetry_position_t value;
+            mavsdk_telemetry_home_position_t value;
             ~ValueGuard() {
-                mavsdk_telemetry_position_destroy(&value);
+                mavsdk_telemetry_home_position_destroy(&value);
             }
         } valueGuard{value};
 
@@ -3229,7 +3381,7 @@ struct HomeCallbackWrapper {
             return;
         }
         jobject javaValue =
-            toJavaPosition(env, value);
+            toJavaHomePosition(env, value);
         env->CallVoidMethod(callback.get(), invokeMethod
             , javaValue
         );
@@ -4807,6 +4959,39 @@ struct SetRateGpsInfoCallbackWrapper {
         }
     }
 };
+struct SetRateRawGpsCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    SetRateRawGpsCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_telemetry_result_t result    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
 struct SetRateBatteryCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
@@ -5454,13 +5639,13 @@ JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_home(
         return {};
     }
 
-    mavsdk_telemetry_position_t returnValue{};
+    mavsdk_telemetry_home_position_t returnValue{};
         mavsdk_telemetry_home(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
             &returnValue);
     jobject javaResult =
-        toJavaPosition(env, returnValue);
-    mavsdk_telemetry_position_destroy(&returnValue);
+        toJavaHomePosition(env, returnValue);
+    mavsdk_telemetry_home_position_destroy(&returnValue);
     return javaResult;
 }
 
@@ -5479,7 +5664,7 @@ Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_subscribeHome(
         mavsdk_telemetry_subscribe_home(
             reinterpret_cast<mavsdk_telemetry_t>(handle),
             [](
-               const mavsdk_telemetry_position_t value,
+               const mavsdk_telemetry_home_position_t value,
                void* userData) {
                 auto* callbackWrapper =
                     static_cast<HomeCallbackWrapper*>(userData);
@@ -7971,6 +8156,48 @@ Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateGpsInfoAsync(
         [](const mavsdk_telemetry_result_t result, void* userData) {
             auto* callbackWrapper =
                 static_cast<SetRateGpsInfoCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
+        },
+        wrapper);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateRawGps(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jdouble rate_hz) {
+    if (!requireHandle(env, handle, "Telemetry plugin")) {
+        return {};
+    }
+
+    mavsdk_telemetry_result_t result =
+        mavsdk_telemetry_set_rate_raw_gps(
+            reinterpret_cast<mavsdk_telemetry_t>(handle),
+            static_cast<double>(rate_hz));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_telemetry_NativeTelemetry_setRateRawGpsAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jdouble rate_hz,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Telemetry plugin") || !callback) {
+        return;
+    }
+
+    auto* wrapper = new SetRateRawGpsCallbackWrapper(env, callback);
+    mavsdk_telemetry_set_rate_raw_gps_async(
+        reinterpret_cast<mavsdk_telemetry_t>(handle),
+        static_cast<double>(rate_hz),
+        [](const mavsdk_telemetry_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<SetRateRawGpsCallbackWrapper*>(userData);
             (*callbackWrapper)(result);
             delete callbackWrapper;
         },

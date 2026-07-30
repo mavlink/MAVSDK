@@ -2845,4 +2845,80 @@ JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondTrac
     return static_cast<jint>(result);
 }
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setPosition(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject position) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+    PositionFromJava
+        positionValue(env, position);
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_set_position(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            positionValue.value);
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setAttitudeQuaternion(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject attitude_quaternion) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+    QuaternionFromJava
+        attitude_quaternionValue(env, attitude_quaternion);
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_set_attitude_quaternion(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            attitude_quaternionValue.value);
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setZoomFactor(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jfloat zoom_factor) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_set_zoom_factor(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<float>(zoom_factor));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_setFieldOfView(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jfloat horizontal_fov_deg,
+    jfloat vertical_fov_deg) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_set_field_of_view(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<float>(horizontal_fov_deg),
+            static_cast<float>(vertical_fov_deg));
+    return static_cast<jint>(result);
+}
+
 } // extern "C"

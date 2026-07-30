@@ -218,4 +218,6 @@ public final class NativeAction {
 
     public static native int setGpsGlobalOrigin(long pluginHandle, double latitudeDeg, double longitudeDeg, float absoluteAltitudeM);
 
+    public static native int setHome(long pluginHandle, boolean useCurrentLocation, double latitudeDeg, double longitudeDeg, float absoluteAltitudeM);
+
 }

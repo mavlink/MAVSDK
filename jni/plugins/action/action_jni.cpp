@@ -1724,4 +1724,28 @@ JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_setGpsGlobalOrigin(
     return static_cast<jint>(result);
 }
 
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_setHome(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jboolean use_current_location,
+    jdouble latitude_deg,
+    jdouble longitude_deg,
+    jfloat absolute_altitude_m) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
+
+    mavsdk_action_result_t result =
+        mavsdk_action_set_home(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<bool>(use_current_location),
+            static_cast<double>(latitude_deg),
+            static_cast<double>(longitude_deg),
+            static_cast<float>(absolute_altitude_m));
+    return static_cast<jint>(result);
+}
+
 } // extern "C"

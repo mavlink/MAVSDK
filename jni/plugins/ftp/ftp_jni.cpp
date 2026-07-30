@@ -17,17 +17,41 @@ using namespace mavsdk::jni;
 namespace {
 
 
+struct FilesystemEntryFromJava;
+struct FilesystemEntryArrayFromJava;
 struct ListDirectoryDataFromJava;
 struct ListDirectoryDataArrayFromJava;
 struct ProgressDataFromJava;
 struct ProgressDataArrayFromJava;
 
+struct FilesystemEntryFromJava {
+    mavsdk_ftp_filesystem_entry_t value{};
+    std::string nameValue;
+
+    FilesystemEntryFromJava(JNIEnv* env, jobject object);
+    ~FilesystemEntryFromJava();
+};
+
+struct FilesystemEntryArrayFromJava {
+    std::vector<std::unique_ptr<FilesystemEntryFromJava>> holders;
+    std::vector<mavsdk_ftp_filesystem_entry_t> values;
+
+    FilesystemEntryArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<FilesystemEntryFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
 struct ListDirectoryDataFromJava {
     mavsdk_ftp_list_directory_data_t value{};
-    std::vector<std::string> dirsStrings;
-    std::vector<char*> dirsValues;
-    std::vector<std::string> filesStrings;
-    std::vector<char*> filesValues;
+    std::unique_ptr<FilesystemEntryArrayFromJava> entriesValues;
 
     ListDirectoryDataFromJava(JNIEnv* env, jobject object);
     ~ListDirectoryDataFromJava();
@@ -75,53 +99,54 @@ struct ProgressDataArrayFromJava {
     }
 };
 
+FilesystemEntryFromJava::FilesystemEntryFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID nameField = env->GetFieldID(
+        clazz, "name", "Ljava/lang/String;");
+    auto nameString =
+        static_cast<jstring>(env->GetObjectField(object, nameField));
+    JStringHolder nameHolder(env, nameString);
+    nameValue =
+        nameHolder.c_str() ? nameHolder.c_str() : "";
+    value.name = const_cast<char*>(nameValue.c_str());
+    env->DeleteLocalRef(nameString);
+    jfieldID entry_typeField = env->GetFieldID(
+        clazz, "entryType", "I");
+    value.entry_type =
+        static_cast<mavsdk_ftp_filesystem_entry_entry_type_t>(env->GetIntField(object, entry_typeField));
+    jfieldID size_bytesField = env->GetFieldID(
+        clazz, "sizeBytes", "J");
+    value.size_bytes =
+        static_cast<uint64_t>(env->GetLongField(object, size_bytesField));
+    jfieldID modification_time_sField = env->GetFieldID(
+        clazz, "modificationTimeS", "J");
+    value.modification_time_s =
+        static_cast<uint64_t>(env->GetLongField(object, modification_time_sField));
+    env->DeleteLocalRef(clazz);
+}
+
+FilesystemEntryFromJava::~FilesystemEntryFromJava() = default;
 ListDirectoryDataFromJava::ListDirectoryDataFromJava(JNIEnv* env, jobject object) {
     if (!object) {
         return;
     }
     jclass clazz = env->GetObjectClass(object);
-    jfieldID dirsField = env->GetFieldID(
-        clazz, "dirs", "[Ljava/lang/String;");
-    auto dirsArray =
-        static_cast<jobjectArray>(env->GetObjectField(object, dirsField));
-    const jsize dirsCount =
-        dirsArray ? env->GetArrayLength(dirsArray) : 0;
-    dirsStrings.reserve(static_cast<size_t>(dirsCount));
-    dirsValues.reserve(static_cast<size_t>(dirsCount));
-    for (jsize i = 0; i < dirsCount; ++i) {
-        auto item = static_cast<jstring>(env->GetObjectArrayElement(dirsArray, i));
-        JStringHolder holder(env, item);
-        dirsStrings.emplace_back(holder.c_str() ? holder.c_str() : "");
-        env->DeleteLocalRef(item);
-    }
-    for (auto& item : dirsStrings) {
-        dirsValues.push_back(const_cast<char*>(item.c_str()));
-    }
-    value.dirs = dirsValues.data();
-    value.dirs_size =
-        static_cast<size_t>(dirsCount);
-    env->DeleteLocalRef(dirsArray);
-    jfieldID filesField = env->GetFieldID(
-        clazz, "files", "[Ljava/lang/String;");
-    auto filesArray =
-        static_cast<jobjectArray>(env->GetObjectField(object, filesField));
-    const jsize filesCount =
-        filesArray ? env->GetArrayLength(filesArray) : 0;
-    filesStrings.reserve(static_cast<size_t>(filesCount));
-    filesValues.reserve(static_cast<size_t>(filesCount));
-    for (jsize i = 0; i < filesCount; ++i) {
-        auto item = static_cast<jstring>(env->GetObjectArrayElement(filesArray, i));
-        JStringHolder holder(env, item);
-        filesStrings.emplace_back(holder.c_str() ? holder.c_str() : "");
-        env->DeleteLocalRef(item);
-    }
-    for (auto& item : filesStrings) {
-        filesValues.push_back(const_cast<char*>(item.c_str()));
-    }
-    value.files = filesValues.data();
-    value.files_size =
-        static_cast<size_t>(filesCount);
-    env->DeleteLocalRef(filesArray);
+    jfieldID entriesField = env->GetFieldID(
+        clazz, "entries", "[Lio/mavsdk/jni/plugins/ftp/NativeFtp$FilesystemEntry;");
+    auto entriesArray =
+        static_cast<jobjectArray>(env->GetObjectField(object, entriesField));
+    const jsize entriesCount =
+        entriesArray ? env->GetArrayLength(entriesArray) : 0;
+    entriesValues =
+        std::make_unique<FilesystemEntryArrayFromJava>(
+            env, entriesArray);
+    value.entries = entriesValues->values.data();
+    value.entries_size =
+        static_cast<size_t>(entriesCount);
+    env->DeleteLocalRef(entriesArray);
     env->DeleteLocalRef(clazz);
 }
 
@@ -144,6 +169,12 @@ ProgressDataFromJava::ProgressDataFromJava(JNIEnv* env, jobject object) {
 
 ProgressDataFromJava::~ProgressDataFromJava() = default;
 
+jobject toJavaFilesystemEntry(
+    JNIEnv* env, const mavsdk_ftp_filesystem_entry_t& value);
+jobjectArray toJavaFilesystemEntryArray(
+    JNIEnv* env,
+    const mavsdk_ftp_filesystem_entry_t* values,
+    size_t count);
 jobject toJavaListDirectoryData(
     JNIEnv* env, const mavsdk_ftp_list_directory_data_t& value);
 jobjectArray toJavaListDirectoryDataArray(
@@ -157,6 +188,45 @@ jobjectArray toJavaProgressDataArray(
     const mavsdk_ftp_progress_data_t* values,
     size_t count);
 
+jobject toJavaFilesystemEntry(
+    JNIEnv* env, const mavsdk_ftp_filesystem_entry_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/ftp/NativeFtp$FilesystemEntry");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;IJJ)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring nameValue =
+        toJavaString(env, value.name);
+    jobject result = env->NewObject(carrierClass, constructor
+        , nameValue
+        , static_cast<jint>(value.entry_type)
+        , static_cast<jlong>(value.size_bytes)
+        , static_cast<jlong>(value.modification_time_s)
+    );
+    env->DeleteLocalRef(nameValue);
+    return result;
+}
+
+jobjectArray toJavaFilesystemEntryArray(
+    JNIEnv* env,
+    const mavsdk_ftp_filesystem_entry_t* values,
+    size_t count) {
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/ftp/NativeFtp$FilesystemEntry");
+    if (!elementClass) {
+        return nullptr;
+    }
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaFilesystemEntry(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    return result;
+}
 jobject toJavaListDirectoryData(
     JNIEnv* env, const mavsdk_ftp_list_directory_data_t& value) {
     jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/ftp/NativeFtp$ListDirectoryData");
@@ -164,34 +234,17 @@ jobject toJavaListDirectoryData(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "([Ljava/lang/String;[Ljava/lang/String;)V");
+        carrierClass, "<init>", "([Lio/mavsdk/jni/plugins/ftp/NativeFtp$FilesystemEntry;)V");
     if (!constructor) {
         return nullptr;
     }
-    jclass dirsElementClass = findClass(env, "java/lang/String");
-    jobjectArray dirsValue = env->NewObjectArray(
-        static_cast<jsize>(value.dirs_size),
-        dirsElementClass, nullptr);
-    for (size_t i = 0; i < value.dirs_size; ++i) {
-        jstring item = toJavaString(env, value.dirs[i]);
-        env->SetObjectArrayElement(dirsValue, static_cast<jsize>(i), item);
-        env->DeleteLocalRef(item);
-    }
-    jclass filesElementClass = findClass(env, "java/lang/String");
-    jobjectArray filesValue = env->NewObjectArray(
-        static_cast<jsize>(value.files_size),
-        filesElementClass, nullptr);
-    for (size_t i = 0; i < value.files_size; ++i) {
-        jstring item = toJavaString(env, value.files[i]);
-        env->SetObjectArrayElement(filesValue, static_cast<jsize>(i), item);
-        env->DeleteLocalRef(item);
-    }
+    jobjectArray entriesValue =
+        toJavaFilesystemEntryArray(
+            env, value.entries, value.entries_size);
     jobject result = env->NewObject(carrierClass, constructor
-        , dirsValue
-        , filesValue
+        , entriesValue
     );
-    env->DeleteLocalRef(dirsValue);
-    env->DeleteLocalRef(filesValue);
+    env->DeleteLocalRef(entriesValue);
     return result;
 }
 

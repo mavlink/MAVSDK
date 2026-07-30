@@ -117,8 +117,6 @@ public final class NativeInfo {
 
     public static native void destroy(long pluginHandle);
 
-    public static native FlightInfo getFlightInformation(long pluginHandle);
-
     public static native Identification getIdentification(long pluginHandle);
 
     public static native Product getProduct(long pluginHandle);

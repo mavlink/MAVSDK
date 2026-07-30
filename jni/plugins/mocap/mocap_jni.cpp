@@ -516,6 +516,10 @@ VisionPositionEstimateFromJava::VisionPositionEstimateFromJava(JNIEnv* env, jobj
             env, pose_covarianceObject);
     value.pose_covariance = pose_covarianceValue->value;
     env->DeleteLocalRef(pose_covarianceObject);
+    jfieldID reset_counterField = env->GetFieldID(
+        clazz, "resetCounter", "I");
+    value.reset_counter =
+        static_cast<uint32_t>(env->GetIntField(object, reset_counterField));
     env->DeleteLocalRef(clazz);
 }
 
@@ -547,6 +551,10 @@ VisionSpeedEstimateFromJava::VisionSpeedEstimateFromJava(JNIEnv* env, jobject ob
             env, speed_covarianceObject);
     value.speed_covariance = speed_covarianceValue->value;
     env->DeleteLocalRef(speed_covarianceObject);
+    jfieldID reset_counterField = env->GetFieldID(
+        clazz, "resetCounter", "I");
+    value.reset_counter =
+        static_cast<uint32_t>(env->GetIntField(object, reset_counterField));
     env->DeleteLocalRef(clazz);
 }
 
@@ -658,6 +666,18 @@ OdometryFromJava::OdometryFromJava(JNIEnv* env, jobject object) {
             env, velocity_covarianceObject);
     value.velocity_covariance = velocity_covarianceValue->value;
     env->DeleteLocalRef(velocity_covarianceObject);
+    jfieldID reset_counterField = env->GetFieldID(
+        clazz, "resetCounter", "I");
+    value.reset_counter =
+        static_cast<uint32_t>(env->GetIntField(object, reset_counterField));
+    jfieldID estimator_typeField = env->GetFieldID(
+        clazz, "estimatorType", "I");
+    value.estimator_type =
+        static_cast<mavsdk_mocap_odometry_mav_estimator_type_t>(env->GetIntField(object, estimator_typeField));
+    jfieldID quality_percentField = env->GetFieldID(
+        clazz, "qualityPercent", "I");
+    value.quality_percent =
+        static_cast<int32_t>(env->GetIntField(object, quality_percentField));
     env->DeleteLocalRef(clazz);
 }
 
@@ -997,7 +1017,7 @@ jobject toJavaVisionPositionEstimate(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$AngleBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
+        carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$AngleBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;I)V");
     if (!constructor) {
         return nullptr;
     }
@@ -1012,6 +1032,7 @@ jobject toJavaVisionPositionEstimate(
         , position_bodyValue
         , angle_bodyValue
         , pose_covarianceValue
+        , static_cast<jint>(value.reset_counter)
     );
     env->DeleteLocalRef(position_bodyValue);
     env->DeleteLocalRef(angle_bodyValue);
@@ -1042,7 +1063,7 @@ jobject toJavaVisionSpeedEstimate(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$SpeedNed;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
+        carrierClass, "<init>", "(JLio/mavsdk/jni/plugins/mocap/NativeMocap$SpeedNed;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;I)V");
     if (!constructor) {
         return nullptr;
     }
@@ -1054,6 +1075,7 @@ jobject toJavaVisionSpeedEstimate(
         , static_cast<jlong>(value.time_usec)
         , speed_nedValue
         , speed_covarianceValue
+        , static_cast<jint>(value.reset_counter)
     );
     env->DeleteLocalRef(speed_nedValue);
     env->DeleteLocalRef(speed_covarianceValue);
@@ -1128,7 +1150,7 @@ jobject toJavaOdometry(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(JILio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion;Lio/mavsdk/jni/plugins/mocap/NativeMocap$SpeedBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$AngularVelocityBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;)V");
+        carrierClass, "<init>", "(JILio/mavsdk/jni/plugins/mocap/NativeMocap$PositionBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Quaternion;Lio/mavsdk/jni/plugins/mocap/NativeMocap$SpeedBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$AngularVelocityBody;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;Lio/mavsdk/jni/plugins/mocap/NativeMocap$Covariance;III)V");
     if (!constructor) {
         return nullptr;
     }
@@ -1153,6 +1175,9 @@ jobject toJavaOdometry(
         , angular_velocity_bodyValue
         , pose_covarianceValue
         , velocity_covarianceValue
+        , static_cast<jint>(value.reset_counter)
+        , static_cast<jint>(value.estimator_type)
+        , static_cast<jint>(value.quality_percent)
     );
     env->DeleteLocalRef(position_bodyValue);
     env->DeleteLocalRef(qValue);

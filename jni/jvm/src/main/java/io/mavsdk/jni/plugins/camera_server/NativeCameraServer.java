@@ -428,4 +428,12 @@ public final class NativeCameraServer {
 
     public static native int respondTrackingOffCommand(long pluginHandle, int stopVideoFeedback);
 
+    public static native int setPosition(long pluginHandle, Position position);
+
+    public static native int setAttitudeQuaternion(long pluginHandle, Quaternion attitudeQuaternion);
+
+    public static native int setZoomFactor(long pluginHandle, float zoomFactor);
+
+    public static native int setFieldOfView(long pluginHandle, float horizontalFovDeg, float verticalFovDeg);
+
 }
