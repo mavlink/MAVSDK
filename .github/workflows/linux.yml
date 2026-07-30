@@ -796,7 +796,7 @@ jobs:
           cp /work/build/manylinux/c/install/lib/libcmavsdk.so /work/py/mavsdk/mavsdk/lib/libcmavsdk.so &&
           cd /work/py/mavsdk &&
           ${{ matrix.python_exec }} setup.py bdist_wheel ${{ matrix.python_plat_name_arg }} &&
-          ${{ matrix.python_exec_auditwheel }} -m auditwheel repair --plat ${{ matrix.auditwheel_plat }} dist/mavsdk4-*-linux_*.whl"
+          sudo ${{ matrix.python_exec_auditwheel }} -m auditwheel repair --plat ${{ matrix.auditwheel_plat }} dist/mavsdk4-*-linux_*.whl"
       - name: upload mavsdk wheel
         uses: actions/upload-artifact@v7
         with:
