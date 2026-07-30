@@ -329,6 +329,9 @@ class Action internal constructor(
     fun setGpsGlobalOrigin(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Result =
         Result.fromValue(native.setGpsGlobalOrigin(latitudeDeg, longitudeDeg, absoluteAltitudeM))
 
+    fun setHome(useCurrentLocation: Boolean, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Result =
+        Result.fromValue(native.setHome(useCurrentLocation, latitudeDeg, longitudeDeg, absoluteAltitudeM))
+
     override fun close() {
         if (closed) return
         closed = true
@@ -372,6 +375,7 @@ internal interface ActionNative {
     fun setReturnToLaunchAltitudeAsync(relativeAltitudeM: Float, callback: (Int) -> Unit)
     fun setCurrentSpeedAsync(speedMS: Float, callback: (Int) -> Unit)
     fun setGpsGlobalOrigin(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Int
+    fun setHome(useCurrentLocation: Boolean, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Int
     fun destroy()
 }
 

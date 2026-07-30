@@ -52,6 +52,38 @@ private fun NativeTelemetry.Quaternion.toKotlin(): Telemetry.Quaternion =
         timestampUs
     )
 
+private fun Telemetry.HomePosition.toNative(): NativeTelemetry.HomePosition =
+    NativeTelemetry.HomePosition(
+        timestampUs,
+        latitudeDeg,
+        longitudeDeg,
+        absoluteAltitudeM,
+        relativeAltitudeM,
+        localNorthM,
+        localEastM,
+        localDownM,
+        q.toNative(),
+        approachNorthM,
+        approachEastM,
+        approachDownM
+    )
+
+private fun NativeTelemetry.HomePosition.toKotlin(): Telemetry.HomePosition =
+    Telemetry.HomePosition(
+        timestampUs,
+        latitudeDeg,
+        longitudeDeg,
+        absoluteAltitudeM,
+        relativeAltitudeM,
+        localNorthM,
+        localEastM,
+        localDownM,
+        q.toKotlin(),
+        approachNorthM,
+        approachEastM,
+        approachDownM
+    )
+
 private fun Telemetry.EulerAngle.toNative(): NativeTelemetry.EulerAngle =
     NativeTelemetry.EulerAngle(
         rollDeg,
@@ -368,14 +400,16 @@ private fun Telemetry.GroundTruth.toNative(): NativeTelemetry.GroundTruth =
     NativeTelemetry.GroundTruth(
         latitudeDeg,
         longitudeDeg,
-        absoluteAltitudeM
+        absoluteAltitudeM,
+        timestampUs
     )
 
 private fun NativeTelemetry.GroundTruth.toKotlin(): Telemetry.GroundTruth =
     Telemetry.GroundTruth(
         latitudeDeg,
         longitudeDeg,
-        absoluteAltitudeM
+        absoluteAltitudeM,
+        timestampUs
     )
 
 private fun Telemetry.FixedwingMetrics.toNative(): NativeTelemetry.FixedwingMetrics =
@@ -479,7 +513,8 @@ private fun Telemetry.Altitude.toNative(): NativeTelemetry.Altitude =
         altitudeLocalM,
         altitudeRelativeM,
         altitudeTerrainM,
-        bottomClearanceM
+        bottomClearanceM,
+        timestampUs
     )
 
 private fun NativeTelemetry.Altitude.toKotlin(): Telemetry.Altitude =
@@ -489,7 +524,8 @@ private fun NativeTelemetry.Altitude.toKotlin(): Telemetry.Altitude =
         altitudeLocalM,
         altitudeRelativeM,
         altitudeTerrainM,
-        bottomClearanceM
+        bottomClearanceM,
+        timestampUs
     )
 
 private fun Telemetry.Wind.toNative(): NativeTelemetry.Wind =
@@ -548,14 +584,14 @@ private class TelemetryNativeImpl(
         activeSubscriptions.remove(subscriptionHandle)?.invoke()
     }
 
-    override fun home(): Telemetry.Position {
+    override fun home(): Telemetry.HomePosition {
         val value = NativeTelemetry.home(
             handle        )
         return value.toKotlin()
     }
 
     override fun subscribeHome(
-        callback: (Telemetry.Position) -> Unit
+        callback: (Telemetry.HomePosition) -> Unit
     ): Long {
         val subscriptionHandle = NativeTelemetry.subscribeHome(
             handle,
@@ -1524,6 +1560,19 @@ private class TelemetryNativeImpl(
             handle,
             rateHz,
             NativeTelemetry.SetRateGpsInfoCallback {
+                    result -> callback(result)
+            }
+        )
+    }
+
+    override fun setRateRawGpsAsync(
+        rateHz: Double,
+        callback: (Int) -> Unit
+    ) {
+        NativeTelemetry.setRateRawGpsAsync(
+            handle,
+            rateHz,
+            NativeTelemetry.SetRateRawGpsCallback {
                     result -> callback(result)
             }
         )

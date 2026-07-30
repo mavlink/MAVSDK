@@ -245,6 +245,7 @@ class TelemetryServer internal constructor(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
         val absoluteAltitudeM: Float,
+        val timestampUs: Long,
     )
 
     data class FixedwingMetrics(

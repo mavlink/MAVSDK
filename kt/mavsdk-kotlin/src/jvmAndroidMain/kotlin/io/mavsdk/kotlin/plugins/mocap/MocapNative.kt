@@ -107,7 +107,8 @@ private fun Mocap.VisionPositionEstimate.toNative(): NativeMocap.VisionPositionE
         timeUsec,
         positionBody.toNative(),
         angleBody.toNative(),
-        poseCovariance.toNative()
+        poseCovariance.toNative(),
+        resetCounter
     )
 
 private fun NativeMocap.VisionPositionEstimate.toKotlin(): Mocap.VisionPositionEstimate =
@@ -115,21 +116,24 @@ private fun NativeMocap.VisionPositionEstimate.toKotlin(): Mocap.VisionPositionE
         timeUsec,
         positionBody.toKotlin(),
         angleBody.toKotlin(),
-        poseCovariance.toKotlin()
+        poseCovariance.toKotlin(),
+        resetCounter
     )
 
 private fun Mocap.VisionSpeedEstimate.toNative(): NativeMocap.VisionSpeedEstimate =
     NativeMocap.VisionSpeedEstimate(
         timeUsec,
         speedNed.toNative(),
-        speedCovariance.toNative()
+        speedCovariance.toNative(),
+        resetCounter
     )
 
 private fun NativeMocap.VisionSpeedEstimate.toKotlin(): Mocap.VisionSpeedEstimate =
     Mocap.VisionSpeedEstimate(
         timeUsec,
         speedNed.toKotlin(),
-        speedCovariance.toKotlin()
+        speedCovariance.toKotlin(),
+        resetCounter
     )
 
 private fun Mocap.AttitudePositionMocap.toNative(): NativeMocap.AttitudePositionMocap =
@@ -157,7 +161,10 @@ private fun Mocap.Odometry.toNative(): NativeMocap.Odometry =
         speedBody.toNative(),
         angularVelocityBody.toNative(),
         poseCovariance.toNative(),
-        velocityCovariance.toNative()
+        velocityCovariance.toNative(),
+        resetCounter,
+        estimatorType.value,
+        qualityPercent
     )
 
 private fun NativeMocap.Odometry.toKotlin(): Mocap.Odometry =
@@ -169,7 +176,10 @@ private fun NativeMocap.Odometry.toKotlin(): Mocap.Odometry =
         speedBody.toKotlin(),
         angularVelocityBody.toKotlin(),
         poseCovariance.toKotlin(),
-        velocityCovariance.toKotlin()
+        velocityCovariance.toKotlin(),
+        resetCounter,
+        Mocap.MavEstimatorType.fromValue(estimatorType),
+        qualityPercent
     )
 
 private class MocapNativeImpl(

@@ -330,14 +330,16 @@ private fun TelemetryServer.GroundTruth.toNative(): NativeTelemetryServer.Ground
     NativeTelemetryServer.GroundTruth(
         latitudeDeg,
         longitudeDeg,
-        absoluteAltitudeM
+        absoluteAltitudeM,
+        timestampUs
     )
 
 private fun NativeTelemetryServer.GroundTruth.toKotlin(): TelemetryServer.GroundTruth =
     TelemetryServer.GroundTruth(
         latitudeDeg,
         longitudeDeg,
-        absoluteAltitudeM
+        absoluteAltitudeM,
+        timestampUs
     )
 
 private fun TelemetryServer.FixedwingMetrics.toNative(): NativeTelemetryServer.FixedwingMetrics =

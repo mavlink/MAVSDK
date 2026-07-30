@@ -88,12 +88,6 @@ private class InfoNativeImpl(
 ) : InfoNative {
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun getFlightInformation(): Info.FlightInfo {
-        val value = NativeInfo.getFlightInformation(
-            handle        )
-        return value.toKotlin()
-    }
-
     override fun getIdentification(): Info.Identification {
         val value = NativeInfo.getIdentification(
             handle        )

@@ -390,6 +390,18 @@ class CameraServer internal constructor(
     fun respondTrackingOffCommand(stopVideoFeedback: CameraFeedback): Result =
         Result.fromValue(native.respondTrackingOffCommand(stopVideoFeedback))
 
+    fun setPosition(position: Position): Result =
+        Result.fromValue(native.setPosition(position))
+
+    fun setAttitudeQuaternion(attitudeQuaternion: Quaternion): Result =
+        Result.fromValue(native.setAttitudeQuaternion(attitudeQuaternion))
+
+    fun setZoomFactor(zoomFactor: Float): Result =
+        Result.fromValue(native.setZoomFactor(zoomFactor))
+
+    fun setFieldOfView(horizontalFovDeg: Float, verticalFovDeg: Float): Result =
+        Result.fromValue(native.setFieldOfView(horizontalFovDeg, verticalFovDeg))
+
     override fun close() {
         if (closed) return
         closed = true
@@ -466,6 +478,10 @@ internal interface CameraServerNative {
     fun respondTrackingPointCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
     fun respondTrackingRectangleCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
     fun respondTrackingOffCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int
+    fun setPosition(position: CameraServer.Position): Int
+    fun setAttitudeQuaternion(attitudeQuaternion: CameraServer.Quaternion): Int
+    fun setZoomFactor(zoomFactor: Float): Int
+    fun setFieldOfView(horizontalFovDeg: Float, verticalFovDeg: Float): Int
     fun destroy()
 }
 

@@ -164,6 +164,21 @@ class Telemetry internal constructor(
         val timestampUs: Long,
     )
 
+    data class HomePosition(
+        val timestampUs: Long,
+        val latitudeDeg: Double,
+        val longitudeDeg: Double,
+        val absoluteAltitudeM: Float,
+        val relativeAltitudeM: Float,
+        val localNorthM: Float,
+        val localEastM: Float,
+        val localDownM: Float,
+        val q: Quaternion,
+        val approachNorthM: Float,
+        val approachEastM: Float,
+        val approachDownM: Float,
+    )
+
     data class EulerAngle(
         val rollDeg: Float,
         val pitchDeg: Float,
@@ -305,6 +320,7 @@ class Telemetry internal constructor(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
         val absoluteAltitudeM: Float,
+        val timestampUs: Long,
     )
 
     data class FixedwingMetrics(
@@ -355,6 +371,7 @@ class Telemetry internal constructor(
         val altitudeRelativeM: Float,
         val altitudeTerrainM: Float,
         val bottomClearanceM: Float,
+        val timestampUs: Long,
     )
 
     data class Wind(
@@ -379,10 +396,10 @@ class Telemetry internal constructor(
         awaitClose { native.unsubscribePosition(subscriptionHandle) }
     }
 
-    fun home(): Position =
+    fun home(): HomePosition =
         native.home()
 
-    fun subscribeHome(): Flow<Position> = callbackFlow {
+    fun subscribeHome(): Flow<HomePosition> = callbackFlow {
         val subscriptionHandle = native.subscribeHome(
                     ) { value ->
             trySend(value)
@@ -830,6 +847,17 @@ class Telemetry internal constructor(
             }
         }
 
+    suspend fun setRateRawGps(rateHz: Double): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = TelemetryCallbackGuard()
+            native.setRateRawGpsAsync(rateHz, ) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                    continuation.resume(parsedResult)
+                }
+            }
+        }
+
     suspend fun setRateBattery(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -1040,8 +1068,8 @@ internal interface TelemetryNative {
     fun position(): Telemetry.Position
     fun subscribePosition(callback: (Telemetry.Position) -> Unit): Long
     fun unsubscribePosition(subscriptionHandle: Long)
-    fun home(): Telemetry.Position
-    fun subscribeHome(callback: (Telemetry.Position) -> Unit): Long
+    fun home(): Telemetry.HomePosition
+    fun subscribeHome(callback: (Telemetry.HomePosition) -> Unit): Long
     fun unsubscribeHome(subscriptionHandle: Long)
     fun inAir(): Boolean
     fun subscribeInAir(callback: (Boolean) -> Unit): Long
@@ -1145,6 +1173,7 @@ internal interface TelemetryNative {
     fun setRateAttitudeEulerAsync(rateHz: Double, callback: (Int) -> Unit)
     fun setRateVelocityNedAsync(rateHz: Double, callback: (Int) -> Unit)
     fun setRateGpsInfoAsync(rateHz: Double, callback: (Int) -> Unit)
+    fun setRateRawGpsAsync(rateHz: Double, callback: (Int) -> Unit)
     fun setRateBatteryAsync(rateHz: Double, callback: (Int) -> Unit)
     fun setRateRcStatusAsync(rateHz: Double, callback: (Int) -> Unit)
     fun setRateActuatorControlTargetAsync(rateHz: Double, callback: (Int) -> Unit)

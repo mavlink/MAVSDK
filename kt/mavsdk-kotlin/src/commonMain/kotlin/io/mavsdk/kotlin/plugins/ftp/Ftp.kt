@@ -38,9 +38,27 @@ class Ftp internal constructor(
         }
     }
 
+    enum class EntryType(val value: Int) {
+        UNKNOWN(0),
+        FILE(1),
+        DIRECTORY(2),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): EntryType =
+                entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
+    data class FilesystemEntry(
+        val name: String,
+        val entryType: EntryType,
+        val sizeBytes: Long,
+        val modificationTimeS: Long,
+    )
+
     data class ListDirectoryData(
-        val dirs: List<String> = emptyList(),
-        val files: List<String> = emptyList(),
+        val entries: List<FilesystemEntry> = emptyList(),
     )
 
     data class ProgressData(

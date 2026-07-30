@@ -73,6 +73,28 @@ class Geofence internal constructor(
             }
         }
 
+    suspend fun downloadGeofence(): kotlin.Result<GeofenceData> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = GeofenceCallbackGuard()
+            native.downloadGeofenceAsync() { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                GeofenceException(
+                                    parsedResult,
+                                    "downloadGeofence failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
     suspend fun clearGeofence(): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = GeofenceCallbackGuard()
@@ -105,6 +127,7 @@ class Geofence internal constructor(
 
 internal interface GeofenceNative {
     fun uploadGeofenceAsync(geofenceData: Geofence.GeofenceData, callback: (Int) -> Unit)
+    fun downloadGeofenceAsync(callback: (Int, Geofence.GeofenceData) -> Unit)
     fun clearGeofenceAsync(callback: (Int) -> Unit)
     fun destroy()
 }

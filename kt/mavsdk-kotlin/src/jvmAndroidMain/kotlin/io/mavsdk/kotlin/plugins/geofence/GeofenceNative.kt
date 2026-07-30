@@ -73,6 +73,17 @@ private class GeofenceNativeImpl(
         )
     }
 
+    override fun downloadGeofenceAsync(
+        callback: (Int, Geofence.GeofenceData) -> Unit
+    ) {
+        NativeGeofence.downloadGeofenceAsync(
+            handle,
+            NativeGeofence.DownloadGeofenceCallback {
+                    result, value -> callback(result, value.toKotlin())
+            }
+        )
+    }
+
     override fun clearGeofenceAsync(
         callback: (Int) -> Unit
     ) {

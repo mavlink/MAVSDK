@@ -609,6 +609,18 @@ private class CameraServerNativeImpl(
     override fun respondTrackingOffCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int =
         NativeCameraServer.respondTrackingOffCommand(handle, stopVideoFeedback.value)
 
+    override fun setPosition(position: CameraServer.Position): Int =
+        NativeCameraServer.setPosition(handle, position.toNative())
+
+    override fun setAttitudeQuaternion(attitudeQuaternion: CameraServer.Quaternion): Int =
+        NativeCameraServer.setAttitudeQuaternion(handle, attitudeQuaternion.toNative())
+
+    override fun setZoomFactor(zoomFactor: Float): Int =
+        NativeCameraServer.setZoomFactor(handle, zoomFactor)
+
+    override fun setFieldOfView(horizontalFovDeg: Float, verticalFovDeg: Float): Int =
+        NativeCameraServer.setFieldOfView(handle, horizontalFovDeg, verticalFovDeg)
+
     override fun destroy() {
         activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
             activeSubscriptions.remove(subscriptionHandle)?.invoke()

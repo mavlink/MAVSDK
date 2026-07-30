@@ -7,16 +7,30 @@ package io.mavsdk.kotlin.plugins.ftp
 import io.mavsdk.jni.plugins.ftp.NativeFtp
 import java.util.concurrent.atomic.AtomicBoolean
 
+private fun Ftp.FilesystemEntry.toNative(): NativeFtp.FilesystemEntry =
+    NativeFtp.FilesystemEntry(
+        name,
+        entryType.value,
+        sizeBytes,
+        modificationTimeS
+    )
+
+private fun NativeFtp.FilesystemEntry.toKotlin(): Ftp.FilesystemEntry =
+    Ftp.FilesystemEntry(
+        name,
+        Ftp.EntryType.fromValue(entryType),
+        sizeBytes,
+        modificationTimeS
+    )
+
 private fun Ftp.ListDirectoryData.toNative(): NativeFtp.ListDirectoryData =
     NativeFtp.ListDirectoryData(
-        dirs.toTypedArray(),
-        files.toTypedArray()
+        entries.map { it.toNative() }.toTypedArray()
     )
 
 private fun NativeFtp.ListDirectoryData.toKotlin(): Ftp.ListDirectoryData =
     Ftp.ListDirectoryData(
-        dirs.toList(),
-        files.toList()
+        entries.map { it.toKotlin() }
     )
 
 private fun Ftp.ProgressData.toNative(): NativeFtp.ProgressData =

@@ -37,6 +37,24 @@ class Mocap internal constructor(
         }
     }
 
+    enum class MavEstimatorType(val value: Int) {
+        UNKNOWN(0),
+        NAIVE(1),
+        VISION(2),
+        VIO(3),
+        GPS(4),
+        GPS_INS(5),
+        MOCAP(6),
+        LIDAR(7),
+        AUTOPILOT(8),
+        ;
+
+        companion object {
+            fun fromValue(value: Int): MavEstimatorType =
+                entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
     data class PositionBody(
         val xM: Float,
         val yM: Float,
@@ -83,12 +101,14 @@ class Mocap internal constructor(
         val positionBody: PositionBody,
         val angleBody: AngleBody,
         val poseCovariance: Covariance,
+        val resetCounter: Int,
     )
 
     data class VisionSpeedEstimate(
         val timeUsec: Long,
         val speedNed: SpeedNed,
         val speedCovariance: Covariance,
+        val resetCounter: Int,
     )
 
     data class AttitudePositionMocap(
@@ -107,6 +127,9 @@ class Mocap internal constructor(
         val angularVelocityBody: AngularVelocityBody,
         val poseCovariance: Covariance,
         val velocityCovariance: Covariance,
+        val resetCounter: Int,
+        val estimatorType: MavEstimatorType,
+        val qualityPercent: Int,
     )
 
     fun setVisionPositionEstimate(visionPositionEstimate: VisionPositionEstimate): Result =

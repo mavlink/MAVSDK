@@ -289,6 +289,9 @@ private class ActionNativeImpl(
     override fun setGpsGlobalOrigin(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Int =
         NativeAction.setGpsGlobalOrigin(handle, latitudeDeg, longitudeDeg, absoluteAltitudeM)
 
+    override fun setHome(useCurrentLocation: Boolean, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float): Int =
+        NativeAction.setHome(handle, useCurrentLocation, latitudeDeg, longitudeDeg, absoluteAltitudeM)
+
     override fun destroy() {
         NativeAction.destroy(handle)
     }

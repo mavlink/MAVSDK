@@ -38,6 +38,7 @@ class MissionRaw internal constructor(
         INT_MESSAGES_NOT_SUPPORTED(18),
         FAILED_TO_OPEN_MISSION_PLANNER_PLAN(19),
         FAILED_TO_PARSE_MISSION_PLANNER_PLAN(20),
+        NEXT(21),
         ;
 
         companion object {
@@ -45,11 +46,6 @@ class MissionRaw internal constructor(
                 entries.find { it.value == value } ?: UNKNOWN
         }
     }
-
-    data class MissionProgress(
-        val current: Int,
-        val total: Int,
-    )
 
     data class MissionItem(
         val seq: Int,
@@ -67,10 +63,23 @@ class MissionRaw internal constructor(
         val missionType: Int,
     )
 
+    data class MissionPlan(
+        val missionItems: List<MissionItem> = emptyList(),
+    )
+
+    data class MissionProgress(
+        val current: Int,
+        val total: Int,
+    )
+
     data class MissionImportData(
         val missionItems: List<MissionItem> = emptyList(),
         val geofenceItems: List<MissionItem> = emptyList(),
         val rallyItems: List<MissionItem> = emptyList(),
+    )
+
+    data class ProgressData(
+        val progress: Float,
     )
 
     suspend fun uploadMission(missionItems: List<MissionItem>): Result =
@@ -78,10 +87,33 @@ class MissionRaw internal constructor(
             val callbackGuard = MissionRawCallbackGuard()
             native.uploadMissionAsync(missionItems, ) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
                 }
             }
+        }
+
+    fun uploadMissionWithProgress(missionPlan: MissionPlan): Flow<kotlin.Result<ProgressData>> =
+        callbackFlow {
+            native.uploadMissionWithProgressAsync(missionPlan, ) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                when {
+                    parsedResult == Result.NEXT -> trySend(kotlin.Result.success(value))
+                    parsedResult == Result.SUCCESS -> close()
+                    else -> {
+                        trySend(
+                            kotlin.Result.failure(
+                                MissionRawException(
+                                    parsedResult,
+                                    "uploadMissionWithProgress failed: ${parsedResult.name}"
+                                )
+                            )
+                        )
+                        close()
+                    }
+                }
+            }
+            awaitClose {}
         }
 
     suspend fun uploadGeofence(missionItems: List<MissionItem>): Result =
@@ -89,7 +121,7 @@ class MissionRaw internal constructor(
             val callbackGuard = MissionRawCallbackGuard()
             native.uploadGeofenceAsync(missionItems, ) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -100,7 +132,7 @@ class MissionRaw internal constructor(
             val callbackGuard = MissionRawCallbackGuard()
             native.uploadRallyPointsAsync(missionItems, ) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -183,7 +215,7 @@ class MissionRaw internal constructor(
             val callbackGuard = MissionRawCallbackGuard()
             native.startMissionAsync() { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -194,7 +226,7 @@ class MissionRaw internal constructor(
             val callbackGuard = MissionRawCallbackGuard()
             native.pauseMissionAsync() { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -205,7 +237,7 @@ class MissionRaw internal constructor(
             val callbackGuard = MissionRawCallbackGuard()
             native.clearMissionAsync() { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -216,7 +248,7 @@ class MissionRaw internal constructor(
             val callbackGuard = MissionRawCallbackGuard()
             native.setCurrentMissionItemAsync(index, ) { result ->
                 val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                if (continuation.isActive && parsedResult != Result.NEXT && callbackGuard.tryClaim()) {
                     continuation.resume(parsedResult)
                 }
             }
@@ -277,6 +309,7 @@ class MissionRaw internal constructor(
 
 internal interface MissionRawNative {
     fun uploadMissionAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
+    fun uploadMissionWithProgressAsync(missionPlan: MissionRaw.MissionPlan, callback: (Int, MissionRaw.ProgressData) -> Unit)
     fun uploadGeofenceAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
     fun uploadRallyPointsAsync(missionItems: List<MissionRaw.MissionItem>, callback: (Int) -> Unit)
     fun cancelMissionUpload(): Int

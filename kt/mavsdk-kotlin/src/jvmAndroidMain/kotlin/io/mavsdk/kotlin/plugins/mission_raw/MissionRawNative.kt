@@ -8,18 +8,6 @@ import io.mavsdk.jni.plugins.mission_raw.NativeMissionRaw
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 
-private fun MissionRaw.MissionProgress.toNative(): NativeMissionRaw.MissionProgress =
-    NativeMissionRaw.MissionProgress(
-        current,
-        total
-    )
-
-private fun NativeMissionRaw.MissionProgress.toKotlin(): MissionRaw.MissionProgress =
-    MissionRaw.MissionProgress(
-        current,
-        total
-    )
-
 private fun MissionRaw.MissionItem.toNative(): NativeMissionRaw.MissionItem =
     NativeMissionRaw.MissionItem(
         seq,
@@ -54,6 +42,28 @@ private fun NativeMissionRaw.MissionItem.toKotlin(): MissionRaw.MissionItem =
         missionType
     )
 
+private fun MissionRaw.MissionPlan.toNative(): NativeMissionRaw.MissionPlan =
+    NativeMissionRaw.MissionPlan(
+        missionItems.map { it.toNative() }.toTypedArray()
+    )
+
+private fun NativeMissionRaw.MissionPlan.toKotlin(): MissionRaw.MissionPlan =
+    MissionRaw.MissionPlan(
+        missionItems.map { it.toKotlin() }
+    )
+
+private fun MissionRaw.MissionProgress.toNative(): NativeMissionRaw.MissionProgress =
+    NativeMissionRaw.MissionProgress(
+        current,
+        total
+    )
+
+private fun NativeMissionRaw.MissionProgress.toKotlin(): MissionRaw.MissionProgress =
+    MissionRaw.MissionProgress(
+        current,
+        total
+    )
+
 private fun MissionRaw.MissionImportData.toNative(): NativeMissionRaw.MissionImportData =
     NativeMissionRaw.MissionImportData(
         missionItems.map { it.toNative() }.toTypedArray(),
@@ -66,6 +76,16 @@ private fun NativeMissionRaw.MissionImportData.toKotlin(): MissionRaw.MissionImp
         missionItems.map { it.toKotlin() },
         geofenceItems.map { it.toKotlin() },
         rallyItems.map { it.toKotlin() }
+    )
+
+private fun MissionRaw.ProgressData.toNative(): NativeMissionRaw.ProgressData =
+    NativeMissionRaw.ProgressData(
+        progress
+    )
+
+private fun NativeMissionRaw.ProgressData.toKotlin(): MissionRaw.ProgressData =
+    MissionRaw.ProgressData(
+        progress
     )
 
 private class MissionRawNativeImpl(
@@ -82,6 +102,19 @@ private class MissionRawNativeImpl(
             missionItems.map { it.toNative() }.toTypedArray(),
             NativeMissionRaw.UploadMissionCallback {
                     result -> callback(result)
+            }
+        )
+    }
+
+    override fun uploadMissionWithProgressAsync(
+        missionPlan: MissionRaw.MissionPlan,
+        callback: (Int, MissionRaw.ProgressData) -> Unit
+    ) {
+        NativeMissionRaw.uploadMissionWithProgressAsync(
+            handle,
+            missionPlan.toNative(),
+            NativeMissionRaw.UploadMissionWithProgressCallback {
+                    result, value -> callback(result, value.toKotlin())
             }
         )
     }

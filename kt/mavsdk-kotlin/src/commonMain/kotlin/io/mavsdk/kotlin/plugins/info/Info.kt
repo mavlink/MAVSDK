@@ -76,9 +76,6 @@ class Info internal constructor(
         val flightSwVersionType: FlightSoftwareVersionType,
     )
 
-    fun getFlightInformation(): FlightInfo =
-        native.getFlightInformation()
-
     fun getIdentification(): Identification =
         native.getIdentification()
 
@@ -119,7 +116,6 @@ class Info internal constructor(
 }
 
 internal interface InfoNative {
-    fun getFlightInformation(): Info.FlightInfo
     fun getIdentification(): Info.Identification
     fun getProduct(): Info.Product
     fun getVersion(): Info.Version
