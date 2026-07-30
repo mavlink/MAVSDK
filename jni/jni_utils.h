@@ -114,6 +114,22 @@ inline ThreadDetacher& threadDetacher() {
     return detacher;
 }
 
+/**
+ * Attaches the current thread as a daemon, hiding a header difference.
+ *
+ * The JDK declares the C++ inline wrapper as AttachCurrentThreadAsDaemon(void**,
+ * void*), while the NDK declares AttachCurrentThreadAsDaemon(JNIEnv**, void*),
+ * so one call site cannot satisfy both. GetEnv takes void** in both and needs
+ * no such treatment.
+ */
+inline jint attachCurrentThreadAsDaemon(JavaVM* jvm, JNIEnv** env) {
+#ifdef __ANDROID__
+    return jvm->AttachCurrentThreadAsDaemon(env, nullptr);
+#else
+    return jvm->AttachCurrentThreadAsDaemon(reinterpret_cast<void**>(env), nullptr);
+#endif
+}
+
 } // namespace detail
 
 /**
@@ -144,7 +160,7 @@ public:
             return;
         }
 
-        if (jvm->AttachCurrentThreadAsDaemon(reinterpret_cast<void**>(&env_), nullptr) == JNI_OK) {
+        if (detail::attachCurrentThreadAsDaemon(jvm, &env_) == JNI_OK) {
             detail::threadDetacher().arm();
         } else {
             env_ = nullptr;
