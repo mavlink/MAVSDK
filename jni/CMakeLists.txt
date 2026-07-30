@@ -24,8 +24,7 @@ add_library(mavsdk_jni SHARED
 target_link_libraries(mavsdk_jni CMAVSDK::CMAVSDK)
 
 if(ANDROID)
-    find_library(log-lib log)
-    target_link_libraries(mavsdk_jni ${log-lib})
+    target_link_libraries(mavsdk_jni log)
 else()
     find_package(JNI REQUIRED)
     target_include_directories(mavsdk_jni PRIVATE ${JNI_INCLUDE_DIRS})
