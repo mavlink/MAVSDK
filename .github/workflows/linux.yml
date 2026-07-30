@@ -557,6 +557,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       ARG_IMAGE: docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.docker_name }}-custom:${{ needs.check-docker-changes.outputs.docker_tag }}
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
@@ -680,6 +681,8 @@ jobs:
   dockcross-linux-musl:
     name: ${{ matrix.arch_name }}
     runs-on: ubuntu-24.04
+    env:
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
@@ -724,6 +727,8 @@ jobs:
   dockcross-manylinux:
     name: ${{ matrix.arch_name }}
     runs-on: ubuntu-24.04
+    env:
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
@@ -813,6 +818,8 @@ jobs:
   dockcross-android:
     name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
+    env:
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
