@@ -5,6 +5,9 @@
 package io.mavsdk.kotlin.plugins.param
 
 import io.mavsdk.jni.plugins.param.NativeParam
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Param.IntParam.toNative(): NativeParam.IntParam = NativeParam.IntParam(name, value)
 
@@ -35,40 +38,61 @@ private fun NativeParam.AllParams.toKotlin(): Param.AllParams =
     )
 
 private class ParamNativeImpl(private val handle: Long) : ParamNative {
-    override fun getParamInt(name: String): Int {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Param is closed" }
+        action()
+    }
+
+    override fun getParamInt(name: String): Int = withOpen {
         val value = NativeParam.getParamInt(handle, name)
-        return value
+        value
     }
 
-    override fun setParamInt(name: String, value: Int): Int =
+    override fun setParamInt(name: String, value: Int): Int = withOpen {
         NativeParam.setParamInt(handle, name, value)
+    }
 
-    override fun getParamFloat(name: String): Float {
+    override fun getParamFloat(name: String): Float = withOpen {
         val value = NativeParam.getParamFloat(handle, name)
-        return value
+        value
     }
 
-    override fun setParamFloat(name: String, value: Float): Int =
+    override fun setParamFloat(name: String, value: Float): Int = withOpen {
         NativeParam.setParamFloat(handle, name, value)
-
-    override fun getParamCustom(name: String): String {
-        val value = NativeParam.getParamCustom(handle, name)
-        return value
     }
 
-    override fun setParamCustom(name: String, value: String): Int =
-        NativeParam.setParamCustom(handle, name, value)
+    override fun getParamCustom(name: String): String = withOpen {
+        val value = NativeParam.getParamCustom(handle, name)
+        value
+    }
 
-    override fun getAllParams(): Param.AllParams {
+    override fun setParamCustom(name: String, value: String): Int = withOpen {
+        NativeParam.setParamCustom(handle, name, value)
+    }
+
+    override fun getAllParams(): Param.AllParams = withOpen {
         val value = NativeParam.getAllParams(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
     override fun selectComponent(componentId: Int, protocolVersion: Param.ProtocolVersion): Int =
-        NativeParam.selectComponent(handle, componentId, protocolVersion.value)
+        withOpen {
+            NativeParam.selectComponent(handle, componentId, protocolVersion.value)
+        }
 
     override fun destroy() {
-        NativeParam.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeParam.destroy(handle)
+        }
     }
 }
 

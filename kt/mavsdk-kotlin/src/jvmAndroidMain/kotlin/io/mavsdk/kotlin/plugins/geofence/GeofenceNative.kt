@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.geofence
 
 import io.mavsdk.jni.plugins.geofence.NativeGeofence
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Geofence.Point.toNative(): NativeGeofence.Point =
     NativeGeofence.Point(latitudeDeg, longitudeDeg)
@@ -35,32 +38,54 @@ private fun NativeGeofence.GeofenceData.toKotlin(): Geofence.GeofenceData =
     Geofence.GeofenceData(polygons.map { it.toKotlin() }, circles.map { it.toKotlin() })
 
 private class GeofenceNativeImpl(private val handle: Long) : GeofenceNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Geofence is closed" }
+        action()
+    }
+
     override fun uploadGeofenceAsync(geofenceData: Geofence.GeofenceData, callback: (Int) -> Unit) {
-        NativeGeofence.uploadGeofenceAsync(
-            handle,
-            geofenceData.toNative(),
-            NativeGeofence.UploadGeofenceCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGeofence.uploadGeofenceAsync(
+                handle,
+                geofenceData.toNative(),
+                NativeGeofence.UploadGeofenceCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun downloadGeofenceAsync(callback: (Int, Geofence.GeofenceData) -> Unit) {
-        NativeGeofence.downloadGeofenceAsync(
-            handle,
-            NativeGeofence.DownloadGeofenceCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeGeofence.downloadGeofenceAsync(
+                handle,
+                NativeGeofence.DownloadGeofenceCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun clearGeofenceAsync(callback: (Int) -> Unit) {
-        NativeGeofence.clearGeofenceAsync(
-            handle,
-            NativeGeofence.ClearGeofenceCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGeofence.clearGeofenceAsync(
+                handle,
+                NativeGeofence.ClearGeofenceCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun destroy() {
-        NativeGeofence.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeGeofence.destroy(handle)
+        }
     }
 }
 

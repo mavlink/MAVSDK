@@ -30,7 +30,7 @@ fun calibrate() = runBlocking {
         }
         println("✓ Autopilot found!\n")
 
-        val cal = Calibration.create(system)
+        val cal = system.calibration
         runCalibration("accelerometer", cal.calibrateAccelerometer())
         runCalibration("gyro",          cal.calibrateGyro())
         runCalibration("magnetometer",  cal.calibrateMagnetometer())

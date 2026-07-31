@@ -2,17 +2,16 @@
 // Edits need to be made to the proto files
 // (see
 // https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/component_metadata/component_metadata.proto)
+// plugin-target: System
 
 package io.mavsdk.kotlin.plugins.component_metadata
 
-import io.mavsdk.kotlin.System
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 /** Access component metadata json definitions, such as parameters. */
-class ComponentMetadata internal constructor(private val native: ComponentMetadataNative) :
-    AutoCloseable {
+class ComponentMetadata internal constructor(private val native: ComponentMetadataNative) {
     private var closed = false
 
     /** Possible results returned */
@@ -118,20 +117,13 @@ class ComponentMetadata internal constructor(private val native: ComponentMetada
     fun getMetadata(compid: Int, metadataType: MetadataType): MetadataData =
         native.getMetadata(compid, metadataType)
 
-    override fun close() {
+    internal fun destroy() {
         if (closed) return
         closed = true
         native.destroy()
     }
 
     class ComponentMetadataException(val result: Result, message: String) : Exception(message)
-
-    companion object {
-        fun create(system: System): ComponentMetadata =
-            ComponentMetadata(createComponentMetadataNative(system.getHandle())).also {
-                system.registerPlugin(it)
-            }
-    }
 }
 
 internal interface ComponentMetadataNative {

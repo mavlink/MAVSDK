@@ -34,7 +34,7 @@ fun params(action: String = "get_all", paramName: String = "", value: String = "
         }
         println("✓ Autopilot found!\n")
 
-        val param = Param.create(system)
+        val param = system.param
         when (action) {
             "get_all" -> getAllParams(param)
             "get" -> getParam(param, paramName)
@@ -64,7 +64,7 @@ fun paramsGetSet() = runBlocking {
         }
         println("✓ Autopilot found!\n")
 
-        val param = Param.create(system)
+        val param = system.param
         setFloatParam(param, "MIS_TAKEOFF_ALT", 5.0f)
         getParam(param, "MIS_TAKEOFF_ALT")
         setFloatParam(param, "MIS_TAKEOFF_ALT", 2.5f)

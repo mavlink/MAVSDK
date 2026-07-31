@@ -7,16 +7,20 @@ import kotlinx.coroutines.flow.Flow
  *
  * Example usage:
  * ```kotlin
- * Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
- *     mavsdk.addAnyConnection("udp://:14540")
- *         .onSuccess { println("Connected!") }
- *         .onFailure { error -> println("Connection failed: $error") }
+ * runBlocking {
+ *     Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
+ *         mavsdk.addAnyConnection("udp://:14540")
+ *             .onSuccess { println("Connected!") }
+ *             .onFailure { error -> println("Connection failed: $error") }
  *
- *     val system = mavsdk.firstAutopilot() ?: return@use
- *     val action = Action.create(system)  // closed automatically when mavsdk closes
- *     action.armAsync()
+ *         val system = mavsdk.firstAutopilot() ?: return@use
+ *         system.action.arm()
+ *     }
  * }
  * ```
+ *
+ * Plugin accessors such as `system.action` come from [SystemPlugins]; only the plugin type itself
+ * (`io.mavsdk.kotlin.plugins.action.Action`) needs importing, and then only when you name it.
  */
 expect class Mavsdk(configuration: Configuration) : AutoCloseable {
     /** Get MAVSDK version string */
@@ -67,13 +71,11 @@ expect class Mavsdk(configuration: Configuration) : AutoCloseable {
     fun subscribeOnNewSystem(): Flow<System>
 
     /**
-     * Get the server component handle for creating server-side plugins (CameraServer, ActionServer,
-     * TelemetryServer, etc.)
+     * Get the server component used by server-side plugins.
      *
-     * @param instance Server component instance number (default: 1)
-     * @return Raw server component handle to pass to server plugin create()
+     * @param instance Zero-based component instance number
      */
-    fun serverComponentHandle(instance: Int = 1): Long
+    fun serverComponent(instance: Int = 0): ServerComponent
 
     override fun close()
 }

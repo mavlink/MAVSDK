@@ -30,8 +30,8 @@ fun takeoffAndLand() = runBlocking {
         }
         println("✓ Autopilot found!\n")
 
-        val action = Action.create(system)
-        val telemetry = Telemetry.create(system)
+        val action = system.action
+        val telemetry = system.telemetry
 
         // Start logging position every second in the background
         val positionJob = launch {

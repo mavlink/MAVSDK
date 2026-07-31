@@ -5,12 +5,33 @@
 package io.mavsdk.kotlin.plugins.ftp_server
 
 import io.mavsdk.jni.plugins.ftp_server.NativeFtpServer
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private class FtpServerNativeImpl(private val handle: Long) : FtpServerNative {
-    override fun setRootDir(path: String): Int = NativeFtpServer.setRootDir(handle, path)
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "FtpServer is closed" }
+        action()
+    }
+
+    override fun setRootDir(path: String): Int = withOpen {
+        NativeFtpServer.setRootDir(handle, path)
+    }
 
     override fun destroy() {
-        NativeFtpServer.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeFtpServer.destroy(handle)
+        }
     }
 }
 

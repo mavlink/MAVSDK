@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.log_files
 
 import io.mavsdk.jni.plugins.log_files.NativeLogFiles
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun LogFiles.ProgressData.toNative(): NativeLogFiles.ProgressData =
     NativeLogFiles.ProgressData(progress)
@@ -19,13 +22,27 @@ private fun LogFiles.Entry.toNative(): NativeLogFiles.Entry =
 private fun NativeLogFiles.Entry.toKotlin(): LogFiles.Entry = LogFiles.Entry(id, date, sizeBytes)
 
 private class LogFilesNativeImpl(private val handle: Long) : LogFilesNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "LogFiles is closed" }
+        action()
+    }
+
     override fun getEntriesAsync(callback: (Int, List<LogFiles.Entry>) -> Unit) {
-        NativeLogFiles.getEntriesAsync(
-            handle,
-            NativeLogFiles.GetEntriesCallback { result, value ->
-                callback(result, value.map { it.toKotlin() })
-            },
-        )
+        withOpen {
+            NativeLogFiles.getEntriesAsync(
+                handle,
+                NativeLogFiles.GetEntriesCallback { result, value ->
+                    callback(result, value.map { it.toKotlin() })
+                },
+            )
+        }
     }
 
     override fun downloadLogFileAsync(
@@ -33,20 +50,26 @@ private class LogFilesNativeImpl(private val handle: Long) : LogFilesNative {
         path: String,
         callback: (Int, LogFiles.ProgressData) -> Unit,
     ) {
-        NativeLogFiles.downloadLogFileAsync(
-            handle,
-            entry.toNative(),
-            path,
-            NativeLogFiles.DownloadLogFileCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeLogFiles.downloadLogFileAsync(
+                handle,
+                entry.toNative(),
+                path,
+                NativeLogFiles.DownloadLogFileCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
-    override fun eraseAllLogFiles(): Int = NativeLogFiles.eraseAllLogFiles(handle)
+    override fun eraseAllLogFiles(): Int = withOpen { NativeLogFiles.eraseAllLogFiles(handle) }
 
     override fun destroy() {
-        NativeLogFiles.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeLogFiles.destroy(handle)
+        }
     }
 }
 

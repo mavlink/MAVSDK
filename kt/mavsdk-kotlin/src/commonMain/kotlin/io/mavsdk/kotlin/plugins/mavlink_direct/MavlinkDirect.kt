@@ -2,16 +2,16 @@
 // Edits need to be made to the proto files
 // (see
 // https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/mavlink_direct/mavlink_direct.proto)
+// plugin-target: System
 
 package io.mavsdk.kotlin.plugins.mavlink_direct
 
-import io.mavsdk.kotlin.System
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 /** Enable direct MAVLink communication using libmav. */
-class MavlinkDirect internal constructor(private val native: MavlinkDirectNative) : AutoCloseable {
+class MavlinkDirect internal constructor(private val native: MavlinkDirectNative) {
     private var closed = false
 
     /** Possible results returned for action requests. */
@@ -95,20 +95,13 @@ class MavlinkDirect internal constructor(private val native: MavlinkDirectNative
     fun loadCustomXml(xmlContent: String): Result =
         Result.fromValue(native.loadCustomXml(xmlContent))
 
-    override fun close() {
+    internal fun destroy() {
         if (closed) return
         closed = true
         native.destroy()
     }
 
     class MavlinkDirectException(val result: Result, message: String) : Exception(message)
-
-    companion object {
-        fun create(system: System): MavlinkDirect =
-            MavlinkDirect(createMavlinkDirectNative(system.getHandle())).also {
-                system.registerPlugin(it)
-            }
-    }
 }
 
 internal interface MavlinkDirectNative {

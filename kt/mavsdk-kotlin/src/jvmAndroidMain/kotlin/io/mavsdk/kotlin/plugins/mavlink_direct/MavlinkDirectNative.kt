@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.mavlink_direct
 
 import io.mavsdk.jni.plugins.mavlink_direct.NativeMavlinkDirect
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun MavlinkDirect.MavlinkMessage.toNative(): NativeMavlinkDirect.MavlinkMessage =
     NativeMavlinkDirect.MavlinkMessage(
@@ -29,15 +32,27 @@ private fun NativeMavlinkDirect.MavlinkMessage.toKotlin(): MavlinkDirect.Mavlink
     )
 
 private class MavlinkDirectNativeImpl(private val handle: Long) : MavlinkDirectNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun sendMessage(message: MavlinkDirect.MavlinkMessage): Int =
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "MavlinkDirect is closed" }
+        action()
+    }
+
+    override fun sendMessage(message: MavlinkDirect.MavlinkMessage): Int = withOpen {
         NativeMavlinkDirect.sendMessage(handle, message.toNative())
+    }
 
     override fun subscribeMessage(
         messageName: String,
         callback: (MavlinkDirect.MavlinkMessage) -> Unit,
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeMavlinkDirect.subscribeMessage(
                 handle,
@@ -49,21 +64,28 @@ private class MavlinkDirectNativeImpl(private val handle: Long) : MavlinkDirectN
                 NativeMavlinkDirect.unsubscribeMessage(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeMessage(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun loadCustomXml(xmlContent: String): Int =
+    override fun loadCustomXml(xmlContent: String): Int = withOpen {
         NativeMavlinkDirect.loadCustomXml(handle, xmlContent)
+    }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeMavlinkDirect.destroy(handle)
         }
-        NativeMavlinkDirect.destroy(handle)
     }
 }
 

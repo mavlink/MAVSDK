@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.ftp
 
 import io.mavsdk.jni.plugins.ftp.NativeFtp
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Ftp.FilesystemEntry.toNative(): NativeFtp.FilesystemEntry =
     NativeFtp.FilesystemEntry(name, entryType.value, sizeBytes, modificationTimeS)
@@ -26,19 +29,33 @@ private fun NativeFtp.ProgressData.toKotlin(): Ftp.ProgressData =
     Ftp.ProgressData(bytesTransferred, totalBytes)
 
 private class FtpNativeImpl(private val handle: Long) : FtpNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Ftp is closed" }
+        action()
+    }
+
     override fun downloadAsync(
         remoteFilePath: String,
         localDir: String,
         useBurst: Boolean,
         callback: (Int, Ftp.ProgressData) -> Unit,
     ) {
-        NativeFtp.downloadAsync(
-            handle,
-            remoteFilePath,
-            localDir,
-            useBurst,
-            NativeFtp.DownloadCallback { result, value -> callback(result, value.toKotlin()) },
-        )
+        withOpen {
+            NativeFtp.downloadAsync(
+                handle,
+                remoteFilePath,
+                localDir,
+                useBurst,
+                NativeFtp.DownloadCallback { result, value -> callback(result, value.toKotlin()) },
+            )
+        }
     }
 
     override fun uploadAsync(
@@ -46,47 +63,59 @@ private class FtpNativeImpl(private val handle: Long) : FtpNative {
         remoteDir: String,
         callback: (Int, Ftp.ProgressData) -> Unit,
     ) {
-        NativeFtp.uploadAsync(
-            handle,
-            localFilePath,
-            remoteDir,
-            NativeFtp.UploadCallback { result, value -> callback(result, value.toKotlin()) },
-        )
+        withOpen {
+            NativeFtp.uploadAsync(
+                handle,
+                localFilePath,
+                remoteDir,
+                NativeFtp.UploadCallback { result, value -> callback(result, value.toKotlin()) },
+            )
+        }
     }
 
     override fun listDirectoryAsync(
         remoteDir: String,
         callback: (Int, Ftp.ListDirectoryData) -> Unit,
     ) {
-        NativeFtp.listDirectoryAsync(
-            handle,
-            remoteDir,
-            NativeFtp.ListDirectoryCallback { result, value -> callback(result, value.toKotlin()) },
-        )
+        withOpen {
+            NativeFtp.listDirectoryAsync(
+                handle,
+                remoteDir,
+                NativeFtp.ListDirectoryCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun createDirectoryAsync(remoteDir: String, callback: (Int) -> Unit) {
-        NativeFtp.createDirectoryAsync(
-            handle,
-            remoteDir,
-            NativeFtp.CreateDirectoryCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeFtp.createDirectoryAsync(
+                handle,
+                remoteDir,
+                NativeFtp.CreateDirectoryCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun removeDirectoryAsync(remoteDir: String, callback: (Int) -> Unit) {
-        NativeFtp.removeDirectoryAsync(
-            handle,
-            remoteDir,
-            NativeFtp.RemoveDirectoryCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeFtp.removeDirectoryAsync(
+                handle,
+                remoteDir,
+                NativeFtp.RemoveDirectoryCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun removeFileAsync(remoteFilePath: String, callback: (Int) -> Unit) {
-        NativeFtp.removeFileAsync(
-            handle,
-            remoteFilePath,
-            NativeFtp.RemoveFileCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeFtp.removeFileAsync(
+                handle,
+                remoteFilePath,
+                NativeFtp.RemoveFileCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun renameAsync(
@@ -94,12 +123,14 @@ private class FtpNativeImpl(private val handle: Long) : FtpNative {
         remoteToPath: String,
         callback: (Int) -> Unit,
     ) {
-        NativeFtp.renameAsync(
-            handle,
-            remoteFromPath,
-            remoteToPath,
-            NativeFtp.RenameCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeFtp.renameAsync(
+                handle,
+                remoteFromPath,
+                remoteToPath,
+                NativeFtp.RenameCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun areFilesIdenticalAsync(
@@ -107,18 +138,26 @@ private class FtpNativeImpl(private val handle: Long) : FtpNative {
         remoteFilePath: String,
         callback: (Int, Boolean) -> Unit,
     ) {
-        NativeFtp.areFilesIdenticalAsync(
-            handle,
-            localFilePath,
-            remoteFilePath,
-            NativeFtp.AreFilesIdenticalCallback { result, value -> callback(result, value) },
-        )
+        withOpen {
+            NativeFtp.areFilesIdenticalAsync(
+                handle,
+                localFilePath,
+                remoteFilePath,
+                NativeFtp.AreFilesIdenticalCallback { result, value -> callback(result, value) },
+            )
+        }
     }
 
-    override fun setTargetCompid(compid: Int): Int = NativeFtp.setTargetCompid(handle, compid)
+    override fun setTargetCompid(compid: Int): Int = withOpen {
+        NativeFtp.setTargetCompid(handle, compid)
+    }
 
     override fun destroy() {
-        NativeFtp.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeFtp.destroy(handle)
+        }
     }
 }
 

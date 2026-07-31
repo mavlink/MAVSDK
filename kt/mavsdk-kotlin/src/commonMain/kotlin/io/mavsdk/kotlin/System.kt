@@ -2,8 +2,13 @@ package io.mavsdk.kotlin
 
 import kotlinx.coroutines.flow.Flow
 
-/** Represents a MAVLink system (e.g., drone, ground station) */
-expect class System {
+/**
+ * Represents a MAVLink system (e.g., drone, ground station)
+ *
+ * Plugin accessors such as `system.action` and `system.telemetry` are inherited from
+ * [SystemPlugins], which is generated from the proto definitions.
+ */
+expect class System : SystemPlugins {
     /** Check if system has autopilot */
     fun hasAutopilot(): Boolean
 
@@ -45,12 +50,6 @@ expect class System {
     /** Enable time synchronization */
     fun enableTimesync()
 
-    /** Get native handle (internal use only for plugins) */
-    internal fun getHandle(): Long
-
-    /** Register a plugin to be closed when this system's owner (Mavsdk) is closed. */
-    internal fun registerPlugin(plugin: AutoCloseable)
-
-    /** Close all registered plugins. Called by Mavsdk.close(). */
-    internal fun closePlugins()
+    /** Close all plugins and release the native system handle. */
+    internal fun close()
 }

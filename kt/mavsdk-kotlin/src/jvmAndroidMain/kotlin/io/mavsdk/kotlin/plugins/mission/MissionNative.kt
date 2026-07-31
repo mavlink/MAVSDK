@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.mission
 import io.mavsdk.jni.plugins.mission.NativeMission
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Mission.MissionItem.toNative(): NativeMission.MissionItem =
     NativeMission.MissionItem(
@@ -69,123 +72,160 @@ private fun NativeMission.ProgressDataOrMission.toKotlin(): Mission.ProgressData
     Mission.ProgressDataOrMission(hasProgress, progress, hasMission, missionPlan.toKotlin())
 
 private class MissionNativeImpl(private val handle: Long) : MissionNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Mission is closed" }
+        action()
+    }
+
     override fun uploadMissionAsync(missionPlan: Mission.MissionPlan, callback: (Int) -> Unit) {
-        NativeMission.uploadMissionAsync(
-            handle,
-            missionPlan.toNative(),
-            NativeMission.UploadMissionCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeMission.uploadMissionAsync(
+                handle,
+                missionPlan.toNative(),
+                NativeMission.UploadMissionCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun uploadMissionWithProgressAsync(
         missionPlan: Mission.MissionPlan,
         callback: (Int, Mission.ProgressData) -> Unit,
     ) {
-        NativeMission.uploadMissionWithProgressAsync(
-            handle,
-            missionPlan.toNative(),
-            NativeMission.UploadMissionWithProgressCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeMission.uploadMissionWithProgressAsync(
+                handle,
+                missionPlan.toNative(),
+                NativeMission.UploadMissionWithProgressCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
-    override fun cancelMissionUpload(): Int = NativeMission.cancelMissionUpload(handle)
+    override fun cancelMissionUpload(): Int = withOpen { NativeMission.cancelMissionUpload(handle) }
 
     override fun downloadMissionAsync(callback: (Int, Mission.MissionPlan) -> Unit) {
-        NativeMission.downloadMissionAsync(
-            handle,
-            NativeMission.DownloadMissionCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeMission.downloadMissionAsync(
+                handle,
+                NativeMission.DownloadMissionCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun downloadMissionWithProgressAsync(
         callback: (Int, Mission.ProgressDataOrMission) -> Unit
     ) {
-        NativeMission.downloadMissionWithProgressAsync(
-            handle,
-            NativeMission.DownloadMissionWithProgressCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeMission.downloadMissionWithProgressAsync(
+                handle,
+                NativeMission.DownloadMissionWithProgressCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
-    override fun cancelMissionDownload(): Int = NativeMission.cancelMissionDownload(handle)
+    override fun cancelMissionDownload(): Int = withOpen {
+        NativeMission.cancelMissionDownload(handle)
+    }
 
     override fun startMissionAsync(callback: (Int) -> Unit) {
-        NativeMission.startMissionAsync(
-            handle,
-            NativeMission.StartMissionCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeMission.startMissionAsync(
+                handle,
+                NativeMission.StartMissionCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun pauseMissionAsync(callback: (Int) -> Unit) {
-        NativeMission.pauseMissionAsync(
-            handle,
-            NativeMission.PauseMissionCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeMission.pauseMissionAsync(
+                handle,
+                NativeMission.PauseMissionCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun clearMissionAsync(callback: (Int) -> Unit) {
-        NativeMission.clearMissionAsync(
-            handle,
-            NativeMission.ClearMissionCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeMission.clearMissionAsync(
+                handle,
+                NativeMission.ClearMissionCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setCurrentMissionItemAsync(index: Int, callback: (Int) -> Unit) {
-        NativeMission.setCurrentMissionItemAsync(
-            handle,
-            index,
-            NativeMission.SetCurrentMissionItemCallback { result -> callback(result) },
-        )
-    }
-
-    override fun isMissionFinished(): Boolean {
-        val value = NativeMission.isMissionFinished(handle)
-        return value
-    }
-
-    override fun missionProgress(): Mission.MissionProgress {
-        val value = NativeMission.missionProgress(handle)
-        return value.toKotlin()
-    }
-
-    override fun subscribeMissionProgress(callback: (Mission.MissionProgress) -> Unit): Long {
-        val subscriptionHandle =
-            NativeMission.subscribeMissionProgress(
+        withOpen {
+            NativeMission.setCurrentMissionItemAsync(
                 handle,
-                NativeMission.MissionProgressCallback { value -> callback(value.toKotlin()) },
+                index,
+                NativeMission.SetCurrentMissionItemCallback { result -> callback(result) },
             )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeMission.unsubscribeMissionProgress(handle, subscriptionHandle)
-            }
         }
-        return subscriptionHandle
     }
+
+    override fun isMissionFinished(): Boolean = withOpen {
+        val value = NativeMission.isMissionFinished(handle)
+        value
+    }
+
+    override fun missionProgress(): Mission.MissionProgress = withOpen {
+        val value = NativeMission.missionProgress(handle)
+        value.toKotlin()
+    }
+
+    override fun subscribeMissionProgress(callback: (Mission.MissionProgress) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeMission.subscribeMissionProgress(
+                    handle,
+                    NativeMission.MissionProgressCallback { value -> callback(value.toKotlin()) },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeMission.unsubscribeMissionProgress(handle, subscriptionHandle)
+                }
+            }
+            subscriptionHandle
+        }
 
     override fun unsubscribeMissionProgress(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getReturnToLaunchAfterMission(): Boolean {
+    override fun getReturnToLaunchAfterMission(): Boolean = withOpen {
         val value = NativeMission.getReturnToLaunchAfterMission(handle)
-        return value
+        value
     }
 
-    override fun setReturnToLaunchAfterMission(enable: Boolean): Int =
+    override fun setReturnToLaunchAfterMission(enable: Boolean): Int = withOpen {
         NativeMission.setReturnToLaunchAfterMission(handle, enable)
+    }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeMission.destroy(handle)
         }
-        NativeMission.destroy(handle)
     }
 }
 

@@ -5,6 +5,9 @@
 package io.mavsdk.kotlin.plugins.{{ plugin_name.lower_snake_case }}
 
 import io.mavsdk.jni.plugins.{{ plugin_name.lower_snake_case }}.Native{{ plugin_name.upper_camel_case }}
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 {% set ns = namespace(has_infinite_stream=false, has_one_shot=false) %}
 {% for method in methods %}
 {% if method.is_async and method.is_stream and not method.is_finite %}{% set ns.has_infinite_stream = true %}{% endif %}
@@ -108,25 +111,42 @@ private fun Native{{ plugin_name.upper_camel_case }}.{{ struct.name.upper_camel_
 private class {{ plugin_name.upper_camel_case }}NativeImpl(
     private val handle: Long
 ) : {{ plugin_name.upper_camel_case }}Native {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
 {% if ns.has_infinite_stream %}
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
 {% endif %}
+    private inline fun <Value> withOpen(action: () -> Value): Value =
+        lifecycle.read {
+            check(!destroyed) { "{{ plugin_name.upper_camel_case }} is closed" }
+            action()
+        }
+
 {% for method in methods %}
 {% if method.is_sync and not (method.is_async and not method.is_stream) %}
 {% if method.return_type %}
-    override fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): {{ common_type(method.return_type) }} {
-        val value = Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}(
-            handle{% if method.params %}, {{ native_args(method.params) }}{% endif %}
-        )
-        return {{ to_kotlin("value", method.return_type) }}
-    }
+    override fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): {{ common_type(method.return_type) }} =
+        withOpen {
+            val value = Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}(
+                handle{% if method.params %}, {{ native_args(method.params) }}{% endif %}
+            )
+            {{ to_kotlin("value", method.return_type) }}
+        }
 {% elif method.has_result %}
     override fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): Int =
-        Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}(handle{% if method.params %}, {{ native_args(method.params) }}{% endif %})
+        withOpen {
+            Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}(handle{% if method.params %}, {{ native_args(method.params) }}{% endif %})
+        }
 {% else %}
     override fun {{ method.name.lower_camel_case }}({{ params(method.params) }}) {
-        Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}(handle{% if method.params %}, {{ native_args(method.params) }}{% endif %})
+        withOpen {
+            Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}(handle{% if method.params %}, {{ native_args(method.params) }}{% endif %})
+        }
     }
 {% endif %}
 
@@ -138,12 +158,13 @@ private class {{ plugin_name.upper_camel_case }}NativeImpl(
 {% endfor %}
         callback: {{ callback_type(method) }}
     ) {
-        Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}Async(
-            handle,
+        withOpen {
+            Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}Async(
+                handle,
 {% for param in method.params %}
-            {{ to_native(param.name.lower_camel_case, param.type_info) }},
+                {{ to_native(param.name.lower_camel_case, param.type_info) }},
 {% endfor %}
-            Native{{ plugin_name.upper_camel_case }}.{{ method.name.upper_camel_case }}Callback {
+                Native{{ plugin_name.upper_camel_case }}.{{ method.name.upper_camel_case }}Callback {
 {% if method.has_result and method.return_type %}
                     result, value -> callback(result, {{ to_kotlin("value", method.return_type) }})
 {% elif method.has_result %}
@@ -153,8 +174,9 @@ private class {{ plugin_name.upper_camel_case }}NativeImpl(
 {% else %}
                     callback()
 {% endif %}
-            }
-        )
+                }
+            )
+        }
     }
 
 {% endif %}
@@ -165,12 +187,13 @@ private class {{ plugin_name.upper_camel_case }}NativeImpl(
 {% endfor %}
         callback: {{ callback_type(method) }}
     ) {
-        Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}Async(
-            handle,
+        withOpen {
+            Native{{ plugin_name.upper_camel_case }}.{{ method.name.lower_camel_case }}Async(
+                handle,
 {% for param in method.params %}
-            {{ to_native(param.name.lower_camel_case, param.type_info) }},
+                {{ to_native(param.name.lower_camel_case, param.type_info) }},
 {% endfor %}
-            Native{{ plugin_name.upper_camel_case }}.{{ method.name.upper_camel_case }}Callback {
+                Native{{ plugin_name.upper_camel_case }}.{{ method.name.upper_camel_case }}Callback {
 {% if method.has_result and method.return_type %}
                     result, value -> callback(result, {{ to_kotlin("value", method.return_type) }})
 {% elif method.has_result %}
@@ -180,8 +203,9 @@ private class {{ plugin_name.upper_camel_case }}NativeImpl(
 {% else %}
                     callback()
 {% endif %}
-            }
-        )
+                }
+            )
+        }
     }
 
 {% endif %}
@@ -191,13 +215,14 @@ private class {{ plugin_name.upper_camel_case }}NativeImpl(
         {{ param.name.lower_camel_case }}: {{ common_type(param.type_info) }},
 {% endfor %}
         callback: {{ callback_type(method) }}
-    ): Long {
-        val subscriptionHandle = Native{{ plugin_name.upper_camel_case }}.subscribe{{ method.name.upper_camel_case }}(
-            handle,
+    ): Long = withOpen {
+        val subscriptionHandle =
+            Native{{ plugin_name.upper_camel_case }}.subscribe{{ method.name.upper_camel_case }}(
+                handle,
 {% for param in method.params %}
-            {{ to_native(param.name.lower_camel_case, param.type_info) }},
+                {{ to_native(param.name.lower_camel_case, param.type_info) }},
 {% endfor %}
-            Native{{ plugin_name.upper_camel_case }}.{{ method.name.upper_camel_case }}Callback {
+                Native{{ plugin_name.upper_camel_case }}.{{ method.name.upper_camel_case }}Callback {
 {% if method.has_result and method.return_type %}
                     result, value -> callback(result, {{ to_kotlin("value", method.return_type) }})
 {% elif method.has_result %}
@@ -207,29 +232,37 @@ private class {{ plugin_name.upper_camel_case }}NativeImpl(
 {% else %}
                     callback()
 {% endif %}
-            }
-        )
+                }
+            )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
                 Native{{ plugin_name.upper_camel_case }}.unsubscribe{{ method.name.upper_camel_case }}(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribe{{ method.name.upper_camel_case }}(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read {
+            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        }
     }
 
 {% endif %}
 {% endfor %}
     override fun destroy() {
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
 {% if ns.has_infinite_stream %}
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
-        }
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
 {% endif %}
-        Native{{ plugin_name.upper_camel_case }}.destroy(handle)
+            Native{{ plugin_name.upper_camel_case }}.destroy(handle)
+        }
     }
 }
 

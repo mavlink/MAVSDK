@@ -6,26 +6,49 @@ package io.mavsdk.kotlin.plugins.gripper
 
 import io.mavsdk.jni.plugins.gripper.NativeGripper
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private class GripperNativeImpl(private val handle: Long) : GripperNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Gripper is closed" }
+        action()
+    }
+
     override fun grabAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeGripper.grabAsync(
-            handle,
-            instance,
-            NativeGripper.GrabCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGripper.grabAsync(
+                handle,
+                instance,
+                NativeGripper.GrabCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun releaseAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeGripper.releaseAsync(
-            handle,
-            instance,
-            NativeGripper.ReleaseCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGripper.releaseAsync(
+                handle,
+                instance,
+                NativeGripper.ReleaseCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun destroy() {
-        NativeGripper.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeGripper.destroy(handle)
+        }
     }
 }
 

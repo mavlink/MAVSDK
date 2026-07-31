@@ -27,8 +27,8 @@ fun telemetry() = runBlocking {
             return@runBlocking
         }
 
-        val action = Action.create(system)
-        val telemetry = Telemetry.create(system)
+        val action = system.action
+        val telemetry = system.telemetry
         val positionJob = launch {
             telemetry.subscribePosition().collect { position ->
                 println(

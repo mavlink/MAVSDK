@@ -7,11 +7,25 @@ package io.mavsdk.kotlin.plugins.arm_authorizer_server
 
 import io.mavsdk.jni.plugins.arm_authorizer_server.NativeArmAuthorizerServer
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private class ArmAuthorizerServerNativeImpl(private val handle: Long) : ArmAuthorizerServerNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun subscribeArmAuthorization(callback: (Int) -> Unit): Long {
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "ArmAuthorizerServer is closed" }
+        action()
+    }
+
+    override fun subscribeArmAuthorization(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeArmAuthorizerServer.subscribeArmAuthorization(
                 handle,
@@ -22,33 +36,41 @@ private class ArmAuthorizerServerNativeImpl(private val handle: Long) : ArmAutho
                 NativeArmAuthorizerServer.unsubscribeArmAuthorization(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeArmAuthorization(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun acceptArmAuthorization(validTimeS: Int): Int =
+    override fun acceptArmAuthorization(validTimeS: Int): Int = withOpen {
         NativeArmAuthorizerServer.acceptArmAuthorization(handle, validTimeS)
+    }
 
     override fun rejectArmAuthorization(
         temporarily: Boolean,
         reason: ArmAuthorizerServer.RejectionReason,
         extraInfo: Int,
-    ): Int =
+    ): Int = withOpen {
         NativeArmAuthorizerServer.rejectArmAuthorization(
             handle,
             temporarily,
             reason.value,
             extraInfo,
         )
+    }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeArmAuthorizerServer.destroy(handle)
         }
-        NativeArmAuthorizerServer.destroy(handle)
     }
 }
 

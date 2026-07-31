@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.component_metadata
 
 import io.mavsdk.jni.plugins.component_metadata.NativeComponentMetadata
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun ComponentMetadata.MetadataData.toNative(): NativeComponentMetadata.MetadataData =
     NativeComponentMetadata.MetadataData(jsonMetadata)
@@ -25,19 +28,30 @@ private fun NativeComponentMetadata.MetadataUpdate.toKotlin(): ComponentMetadata
     )
 
 private class ComponentMetadataNativeImpl(private val handle: Long) : ComponentMetadataNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "ComponentMetadata is closed" }
+        action()
+    }
+
     override fun requestComponent(compid: Int) {
-        NativeComponentMetadata.requestComponent(handle, compid)
+        withOpen { NativeComponentMetadata.requestComponent(handle, compid) }
     }
 
     override fun requestAutopilotComponent() {
-        NativeComponentMetadata.requestAutopilotComponent(handle)
+        withOpen { NativeComponentMetadata.requestAutopilotComponent(handle) }
     }
 
     override fun subscribeMetadataAvailable(
         callback: (ComponentMetadata.MetadataUpdate) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeComponentMetadata.subscribeMetadataAvailable(
                 handle,
@@ -50,26 +64,32 @@ private class ComponentMetadataNativeImpl(private val handle: Long) : ComponentM
                 NativeComponentMetadata.unsubscribeMetadataAvailable(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeMetadataAvailable(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun getMetadata(
         compid: Int,
         metadataType: ComponentMetadata.MetadataType,
-    ): ComponentMetadata.MetadataData {
+    ): ComponentMetadata.MetadataData = withOpen {
         val value = NativeComponentMetadata.getMetadata(handle, compid, metadataType.value)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeComponentMetadata.destroy(handle)
         }
-        NativeComponentMetadata.destroy(handle)
     }
 }
 

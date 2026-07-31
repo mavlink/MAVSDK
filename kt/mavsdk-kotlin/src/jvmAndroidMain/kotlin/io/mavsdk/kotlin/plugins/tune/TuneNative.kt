@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.tune
 
 import io.mavsdk.jni.plugins.tune.NativeTune
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Tune.TuneDescription.toNative(): NativeTune.TuneDescription =
     NativeTune.TuneDescription(songElements.map { it.value }.toIntArray(), tempo)
@@ -14,16 +17,34 @@ private fun NativeTune.TuneDescription.toKotlin(): Tune.TuneDescription =
     Tune.TuneDescription(songElements.map { Tune.SongElement.fromValue(it) }, tempo)
 
 private class TuneNativeImpl(private val handle: Long) : TuneNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Tune is closed" }
+        action()
+    }
+
     override fun playTuneAsync(tuneDescription: Tune.TuneDescription, callback: (Int) -> Unit) {
-        NativeTune.playTuneAsync(
-            handle,
-            tuneDescription.toNative(),
-            NativeTune.PlayTuneCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTune.playTuneAsync(
+                handle,
+                tuneDescription.toNative(),
+                NativeTune.PlayTuneCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun destroy() {
-        NativeTune.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeTune.destroy(handle)
+        }
     }
 }
 

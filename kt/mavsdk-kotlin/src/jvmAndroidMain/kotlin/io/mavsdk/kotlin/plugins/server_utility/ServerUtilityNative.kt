@@ -6,13 +6,33 @@
 package io.mavsdk.kotlin.plugins.server_utility
 
 import io.mavsdk.jni.plugins.server_utility.NativeServerUtility
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private class ServerUtilityNativeImpl(private val handle: Long) : ServerUtilityNative {
-    override fun sendStatusText(type: ServerUtility.StatusTextType, text: String): Int =
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "ServerUtility is closed" }
+        action()
+    }
+
+    override fun sendStatusText(type: ServerUtility.StatusTextType, text: String): Int = withOpen {
         NativeServerUtility.sendStatusText(handle, type.value, text)
+    }
 
     override fun destroy() {
-        NativeServerUtility.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeServerUtility.destroy(handle)
+        }
     }
 }
 

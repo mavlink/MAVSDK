@@ -55,6 +55,14 @@ using ComponentIdCallbackWrapper = CallbackWrapper<jint, jint>;
 
 extern "C" {
 
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_NativeSystem_destroy(
+    JNIEnv*, jobject, jlong handle) {
+    if (handle) {
+        mavsdk_system_destroy(reinterpret_cast<mavsdk_system_t>(handle));
+    }
+}
+
 JNIEXPORT jboolean JNICALL
 Java_io_mavsdk_jni_NativeSystem_hasAutopilot(
     JNIEnv* env, jobject, jlong handle) {

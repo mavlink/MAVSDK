@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.transponder
 import io.mavsdk.jni.plugins.transponder.NativeTransponder
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Transponder.AdsbVehicle.toNative(): NativeTransponder.AdsbVehicle =
     NativeTransponder.AdsbVehicle(
@@ -41,44 +44,64 @@ private fun NativeTransponder.AdsbVehicle.toKotlin(): Transponder.AdsbVehicle =
     )
 
 private class TransponderNativeImpl(private val handle: Long) : TransponderNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun transponder(): Transponder.AdsbVehicle {
-        val value = NativeTransponder.transponder(handle)
-        return value.toKotlin()
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Transponder is closed" }
+        action()
     }
 
-    override fun subscribeTransponder(callback: (Transponder.AdsbVehicle) -> Unit): Long {
-        val subscriptionHandle =
-            NativeTransponder.subscribeTransponder(
-                handle,
-                NativeTransponder.TransponderCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeTransponder.unsubscribeTransponder(handle, subscriptionHandle)
-            }
-        }
-        return subscriptionHandle
+    override fun transponder(): Transponder.AdsbVehicle = withOpen {
+        val value = NativeTransponder.transponder(handle)
+        value.toKotlin()
     }
+
+    override fun subscribeTransponder(callback: (Transponder.AdsbVehicle) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeTransponder.subscribeTransponder(
+                    handle,
+                    NativeTransponder.TransponderCallback { value -> callback(value.toKotlin()) },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeTransponder.unsubscribeTransponder(handle, subscriptionHandle)
+                }
+            }
+            subscriptionHandle
+        }
 
     override fun unsubscribeTransponder(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun setRateTransponderAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTransponder.setRateTransponderAsync(
-            handle,
-            rateHz,
-            NativeTransponder.SetRateTransponderCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTransponder.setRateTransponderAsync(
+                handle,
+                rateHz,
+                NativeTransponder.SetRateTransponderCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeTransponder.destroy(handle)
         }
-        NativeTransponder.destroy(handle)
     }
 }
 

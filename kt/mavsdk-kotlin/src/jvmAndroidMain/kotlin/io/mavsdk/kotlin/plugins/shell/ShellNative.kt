@@ -6,13 +6,27 @@ package io.mavsdk.kotlin.plugins.shell
 
 import io.mavsdk.jni.plugins.shell.NativeShell
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private class ShellNativeImpl(private val handle: Long) : ShellNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun send(command: String): Int = NativeShell.send(handle, command)
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Shell is closed" }
+        action()
+    }
 
-    override fun subscribeReceive(callback: (String) -> Unit): Long {
+    override fun send(command: String): Int = withOpen { NativeShell.send(handle, command) }
+
+    override fun subscribeReceive(callback: (String) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeShell.subscribeReceive(
                 handle,
@@ -23,18 +37,24 @@ private class ShellNativeImpl(private val handle: Long) : ShellNative {
                 NativeShell.unsubscribeReceive(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeReceive(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeShell.destroy(handle)
         }
-        NativeShell.destroy(handle)
     }
 }
 

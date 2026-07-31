@@ -6,61 +6,102 @@ package io.mavsdk.kotlin.plugins.action
 
 import io.mavsdk.jni.plugins.action.NativeAction
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private class ActionNativeImpl(private val handle: Long) : ActionNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Action is closed" }
+        action()
+    }
+
     override fun armAsync(callback: (Int) -> Unit) {
-        NativeAction.armAsync(handle, NativeAction.ArmCallback { result -> callback(result) })
+        withOpen {
+            NativeAction.armAsync(handle, NativeAction.ArmCallback { result -> callback(result) })
+        }
     }
 
     override fun armForceAsync(callback: (Int) -> Unit) {
-        NativeAction.armForceAsync(
-            handle,
-            NativeAction.ArmForceCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.armForceAsync(
+                handle,
+                NativeAction.ArmForceCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun disarmAsync(callback: (Int) -> Unit) {
-        NativeAction.disarmAsync(handle, NativeAction.DisarmCallback { result -> callback(result) })
+        withOpen {
+            NativeAction.disarmAsync(
+                handle,
+                NativeAction.DisarmCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun takeoffAsync(callback: (Int) -> Unit) {
-        NativeAction.takeoffAsync(
-            handle,
-            NativeAction.TakeoffCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.takeoffAsync(
+                handle,
+                NativeAction.TakeoffCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun landAsync(callback: (Int) -> Unit) {
-        NativeAction.landAsync(handle, NativeAction.LandCallback { result -> callback(result) })
+        withOpen {
+            NativeAction.landAsync(handle, NativeAction.LandCallback { result -> callback(result) })
+        }
     }
 
     override fun rebootAsync(callback: (Int) -> Unit) {
-        NativeAction.rebootAsync(handle, NativeAction.RebootCallback { result -> callback(result) })
+        withOpen {
+            NativeAction.rebootAsync(
+                handle,
+                NativeAction.RebootCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun shutdownAsync(callback: (Int) -> Unit) {
-        NativeAction.shutdownAsync(
-            handle,
-            NativeAction.ShutdownCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.shutdownAsync(
+                handle,
+                NativeAction.ShutdownCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun terminateAsync(callback: (Int) -> Unit) {
-        NativeAction.terminateAsync(
-            handle,
-            NativeAction.TerminateCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.terminateAsync(
+                handle,
+                NativeAction.TerminateCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun killAsync(callback: (Int) -> Unit) {
-        NativeAction.killAsync(handle, NativeAction.KillCallback { result -> callback(result) })
+        withOpen {
+            NativeAction.killAsync(handle, NativeAction.KillCallback { result -> callback(result) })
+        }
     }
 
     override fun returnToLaunchAsync(callback: (Int) -> Unit) {
-        NativeAction.returnToLaunchAsync(
-            handle,
-            NativeAction.ReturnToLaunchCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.returnToLaunchAsync(
+                handle,
+                NativeAction.ReturnToLaunchCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun gotoLocationAsync(
@@ -70,14 +111,16 @@ private class ActionNativeImpl(private val handle: Long) : ActionNative {
         yawDeg: Float,
         callback: (Int) -> Unit,
     ) {
-        NativeAction.gotoLocationAsync(
-            handle,
-            latitudeDeg,
-            longitudeDeg,
-            absoluteAltitudeM,
-            yawDeg,
-            NativeAction.GotoLocationCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.gotoLocationAsync(
+                handle,
+                latitudeDeg,
+                longitudeDeg,
+                absoluteAltitudeM,
+                yawDeg,
+                NativeAction.GotoLocationCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun doOrbitAsync(
@@ -89,106 +132,130 @@ private class ActionNativeImpl(private val handle: Long) : ActionNative {
         absoluteAltitudeM: Double,
         callback: (Int) -> Unit,
     ) {
-        NativeAction.doOrbitAsync(
-            handle,
-            radiusM,
-            velocityMs,
-            yawBehavior.value,
-            latitudeDeg,
-            longitudeDeg,
-            absoluteAltitudeM,
-            NativeAction.DoOrbitCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.doOrbitAsync(
+                handle,
+                radiusM,
+                velocityMs,
+                yawBehavior.value,
+                latitudeDeg,
+                longitudeDeg,
+                absoluteAltitudeM,
+                NativeAction.DoOrbitCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun holdAsync(callback: (Int) -> Unit) {
-        NativeAction.holdAsync(handle, NativeAction.HoldCallback { result -> callback(result) })
+        withOpen {
+            NativeAction.holdAsync(handle, NativeAction.HoldCallback { result -> callback(result) })
+        }
     }
 
     override fun setActuatorAsync(index: Int, value: Float, callback: (Int) -> Unit) {
-        NativeAction.setActuatorAsync(
-            handle,
-            index,
-            value,
-            NativeAction.SetActuatorCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.setActuatorAsync(
+                handle,
+                index,
+                value,
+                NativeAction.SetActuatorCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRelayAsync(index: Int, setting: Action.RelayCommand, callback: (Int) -> Unit) {
-        NativeAction.setRelayAsync(
-            handle,
-            index,
-            setting.value,
-            NativeAction.SetRelayCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.setRelayAsync(
+                handle,
+                index,
+                setting.value,
+                NativeAction.SetRelayCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun transitionToFixedwingAsync(callback: (Int) -> Unit) {
-        NativeAction.transitionToFixedwingAsync(
-            handle,
-            NativeAction.TransitionToFixedwingCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.transitionToFixedwingAsync(
+                handle,
+                NativeAction.TransitionToFixedwingCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun transitionToMulticopterAsync(callback: (Int) -> Unit) {
-        NativeAction.transitionToMulticopterAsync(
-            handle,
-            NativeAction.TransitionToMulticopterCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.transitionToMulticopterAsync(
+                handle,
+                NativeAction.TransitionToMulticopterCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun getTakeoffAltitudeAsync(callback: (Int, Float) -> Unit) {
-        NativeAction.getTakeoffAltitudeAsync(
-            handle,
-            NativeAction.GetTakeoffAltitudeCallback { result, value -> callback(result, value) },
-        )
+        withOpen {
+            NativeAction.getTakeoffAltitudeAsync(
+                handle,
+                NativeAction.GetTakeoffAltitudeCallback { result, value -> callback(result, value) },
+            )
+        }
     }
 
     override fun setTakeoffAltitudeAsync(altitude: Float, callback: (Int) -> Unit) {
-        NativeAction.setTakeoffAltitudeAsync(
-            handle,
-            altitude,
-            NativeAction.SetTakeoffAltitudeCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.setTakeoffAltitudeAsync(
+                handle,
+                altitude,
+                NativeAction.SetTakeoffAltitudeCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun getReturnToLaunchAltitudeAsync(callback: (Int, Float) -> Unit) {
-        NativeAction.getReturnToLaunchAltitudeAsync(
-            handle,
-            NativeAction.GetReturnToLaunchAltitudeCallback { result, value ->
-                callback(result, value)
-            },
-        )
+        withOpen {
+            NativeAction.getReturnToLaunchAltitudeAsync(
+                handle,
+                NativeAction.GetReturnToLaunchAltitudeCallback { result, value ->
+                    callback(result, value)
+                },
+            )
+        }
     }
 
     override fun setReturnToLaunchAltitudeAsync(relativeAltitudeM: Float, callback: (Int) -> Unit) {
-        NativeAction.setReturnToLaunchAltitudeAsync(
-            handle,
-            relativeAltitudeM,
-            NativeAction.SetReturnToLaunchAltitudeCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.setReturnToLaunchAltitudeAsync(
+                handle,
+                relativeAltitudeM,
+                NativeAction.SetReturnToLaunchAltitudeCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setCurrentSpeedAsync(speedMS: Float, callback: (Int) -> Unit) {
-        NativeAction.setCurrentSpeedAsync(
-            handle,
-            speedMS,
-            NativeAction.SetCurrentSpeedCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeAction.setCurrentSpeedAsync(
+                handle,
+                speedMS,
+                NativeAction.SetCurrentSpeedCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setGpsGlobalOrigin(
         latitudeDeg: Double,
         longitudeDeg: Double,
         absoluteAltitudeM: Float,
-    ): Int = NativeAction.setGpsGlobalOrigin(handle, latitudeDeg, longitudeDeg, absoluteAltitudeM)
+    ): Int = withOpen {
+        NativeAction.setGpsGlobalOrigin(handle, latitudeDeg, longitudeDeg, absoluteAltitudeM)
+    }
 
     override fun setHome(
         useCurrentLocation: Boolean,
         latitudeDeg: Double,
         longitudeDeg: Double,
         absoluteAltitudeM: Float,
-    ): Int =
+    ): Int = withOpen {
         NativeAction.setHome(
             handle,
             useCurrentLocation,
@@ -196,9 +263,14 @@ private class ActionNativeImpl(private val handle: Long) : ActionNative {
             longitudeDeg,
             absoluteAltitudeM,
         )
+    }
 
     override fun destroy() {
-        NativeAction.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeAction.destroy(handle)
+        }
     }
 }
 

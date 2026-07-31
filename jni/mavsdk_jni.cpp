@@ -9,13 +9,12 @@ using namespace mavsdk::jni;
 struct NewSystemCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invoke_method;
-    mavsdk_t mavsdk_handle;
 
-    NewSystemCallbackWrapper(JNIEnv* env, jobject callback_obj, mavsdk_t handle)
-        : callback(env, callback_obj), invoke_method(nullptr), mavsdk_handle(handle) {
+    NewSystemCallbackWrapper(JNIEnv* env, jobject callback_obj)
+        : callback(env, callback_obj), invoke_method(nullptr) {
         if (callback.isValid()) {
             jclass callback_class = env->GetObjectClass(callback_obj);
-            invoke_method = env->GetMethodID(callback_class, "invoke", "(J)V");
+            invoke_method = env->GetMethodID(callback_class, "invoke", "()V");
             env->DeleteLocalRef(callback_class);
         }
     }
@@ -27,15 +26,7 @@ struct NewSystemCallbackWrapper {
         JNIEnv* env = attacher.getEnv();
         if (!env) return;
 
-        size_t count = 0;
-        mavsdk_system_t* systems = mavsdk_get_systems(mavsdk_handle, &count);
-        if (count > 0) {
-            env->CallVoidMethod(
-                callback.get(),
-                invoke_method,
-                reinterpret_cast<jlong>(systems[count - 1]));
-        }
-        mavsdk_free_systems_array(systems);
+        env->CallVoidMethod(callback.get(), invoke_method);
 
         if (env->ExceptionCheck()) {
             env->ExceptionDescribe();
@@ -83,6 +74,18 @@ Java_io_mavsdk_jni_NativeMavsdk_serverComponentHandle(
     return reinterpret_cast<jlong>(mavsdk_server_component(
         reinterpret_cast<mavsdk_t>(handle),
         static_cast<unsigned int>(instance)));
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_NativeMavsdk_destroyServerComponent(
+    JNIEnv*,
+    jobject,
+    jlong handle) {
+
+    if (handle) {
+        mavsdk_server_component_destroy(
+            reinterpret_cast<mavsdk_server_component_t>(handle));
+    }
 }
 
 JNIEXPORT jint JNICALL
@@ -203,8 +206,7 @@ Java_io_mavsdk_jni_NativeMavsdk_subscribeOnNewSystem(
     jobject callback) {
 
     if (!requireHandle(env, handle, "MAVSDK") || !callback) return 0;
-    auto* wrapper = new NewSystemCallbackWrapper(
-        env, callback, reinterpret_cast<mavsdk_t>(handle));
+    auto* wrapper = new NewSystemCallbackWrapper(env, callback);
     const auto subscription_handle = mavsdk_subscribe_on_new_system(
         reinterpret_cast<mavsdk_t>(handle),
         [](void* user_data) {

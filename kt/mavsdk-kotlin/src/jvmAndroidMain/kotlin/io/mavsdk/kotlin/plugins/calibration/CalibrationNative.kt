@@ -5,6 +5,9 @@
 package io.mavsdk.kotlin.plugins.calibration
 
 import io.mavsdk.jni.plugins.calibration.NativeCalibration
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Calibration.ProgressData.toNative(): NativeCalibration.ProgressData =
     NativeCalibration.ProgressData(hasProgress, progress, hasStatusText, statusText)
@@ -13,57 +16,83 @@ private fun NativeCalibration.ProgressData.toKotlin(): Calibration.ProgressData 
     Calibration.ProgressData(hasProgress, progress, hasStatusText, statusText)
 
 private class CalibrationNativeImpl(private val handle: Long) : CalibrationNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Calibration is closed" }
+        action()
+    }
+
     override fun calibrateGyroAsync(callback: (Int, Calibration.ProgressData) -> Unit) {
-        NativeCalibration.calibrateGyroAsync(
-            handle,
-            NativeCalibration.CalibrateGyroCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeCalibration.calibrateGyroAsync(
+                handle,
+                NativeCalibration.CalibrateGyroCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun calibrateAccelerometerAsync(callback: (Int, Calibration.ProgressData) -> Unit) {
-        NativeCalibration.calibrateAccelerometerAsync(
-            handle,
-            NativeCalibration.CalibrateAccelerometerCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeCalibration.calibrateAccelerometerAsync(
+                handle,
+                NativeCalibration.CalibrateAccelerometerCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun calibrateMagnetometerAsync(callback: (Int, Calibration.ProgressData) -> Unit) {
-        NativeCalibration.calibrateMagnetometerAsync(
-            handle,
-            NativeCalibration.CalibrateMagnetometerCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeCalibration.calibrateMagnetometerAsync(
+                handle,
+                NativeCalibration.CalibrateMagnetometerCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun calibrateLevelHorizonAsync(callback: (Int, Calibration.ProgressData) -> Unit) {
-        NativeCalibration.calibrateLevelHorizonAsync(
-            handle,
-            NativeCalibration.CalibrateLevelHorizonCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeCalibration.calibrateLevelHorizonAsync(
+                handle,
+                NativeCalibration.CalibrateLevelHorizonCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun calibrateGimbalAccelerometerAsync(
         callback: (Int, Calibration.ProgressData) -> Unit
     ) {
-        NativeCalibration.calibrateGimbalAccelerometerAsync(
-            handle,
-            NativeCalibration.CalibrateGimbalAccelerometerCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeCalibration.calibrateGimbalAccelerometerAsync(
+                handle,
+                NativeCalibration.CalibrateGimbalAccelerometerCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
-    override fun cancel(): Int = NativeCalibration.cancel(handle)
+    override fun cancel(): Int = withOpen { NativeCalibration.cancel(handle) }
 
     override fun destroy() {
-        NativeCalibration.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeCalibration.destroy(handle)
+        }
     }
 }
 

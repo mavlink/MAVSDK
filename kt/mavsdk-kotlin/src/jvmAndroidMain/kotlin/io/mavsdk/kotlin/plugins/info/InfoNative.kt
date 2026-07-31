@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.info
 
 import io.mavsdk.jni.plugins.info.NativeInfo
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Info.FlightInfo.toNative(): NativeInfo.FlightInfo =
     NativeInfo.FlightInfo(timeBootMs, flightUid, durationSinceArmingMs, durationSinceTakeoffMs)
@@ -58,29 +61,40 @@ private fun NativeInfo.Version.toKotlin(): Info.Version =
     )
 
 private class InfoNativeImpl(private val handle: Long) : InfoNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun getIdentification(): Info.Identification {
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Info is closed" }
+        action()
+    }
+
+    override fun getIdentification(): Info.Identification = withOpen {
         val value = NativeInfo.getIdentification(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun getProduct(): Info.Product {
+    override fun getProduct(): Info.Product = withOpen {
         val value = NativeInfo.getProduct(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun getVersion(): Info.Version {
+    override fun getVersion(): Info.Version = withOpen {
         val value = NativeInfo.getVersion(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun getSpeedFactor(): Double {
+    override fun getSpeedFactor(): Double = withOpen {
         val value = NativeInfo.getSpeedFactor(handle)
-        return value
+        value
     }
 
-    override fun subscribeFlightInformation(callback: (Info.FlightInfo) -> Unit): Long {
+    override fun subscribeFlightInformation(callback: (Info.FlightInfo) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeInfo.subscribeFlightInformation(
                 handle,
@@ -91,18 +105,24 @@ private class InfoNativeImpl(private val handle: Long) : InfoNative {
                 NativeInfo.unsubscribeFlightInformation(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeFlightInformation(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeInfo.destroy(handle)
         }
-        NativeInfo.destroy(handle)
     }
 }
 

@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.winch
 import io.mavsdk.jni.plugins.winch.NativeWinch
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Winch.StatusFlags.toNative(): NativeWinch.StatusFlags =
     NativeWinch.StatusFlags(
@@ -69,14 +72,25 @@ private fun NativeWinch.Status.toKotlin(): Winch.Status =
     )
 
 private class WinchNativeImpl(private val handle: Long) : WinchNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun status(): Winch.Status {
-        val value = NativeWinch.status(handle)
-        return value.toKotlin()
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Winch is closed" }
+        action()
     }
 
-    override fun subscribeStatus(callback: (Winch.Status) -> Unit): Long {
+    override fun status(): Winch.Status = withOpen {
+        val value = NativeWinch.status(handle)
+        value.toKotlin()
+    }
+
+    override fun subscribeStatus(callback: (Winch.Status) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeWinch.subscribeStatus(
                 handle,
@@ -87,19 +101,23 @@ private class WinchNativeImpl(private val handle: Long) : WinchNative {
                 NativeWinch.unsubscribeStatus(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeStatus(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun relaxAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeWinch.relaxAsync(
-            handle,
-            instance,
-            NativeWinch.RelaxCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.relaxAsync(
+                handle,
+                instance,
+                NativeWinch.RelaxCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun relativeLengthControlAsync(
@@ -108,85 +126,107 @@ private class WinchNativeImpl(private val handle: Long) : WinchNative {
         rateMS: Float,
         callback: (Int) -> Unit,
     ) {
-        NativeWinch.relativeLengthControlAsync(
-            handle,
-            instance,
-            lengthM,
-            rateMS,
-            NativeWinch.RelativeLengthControlCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.relativeLengthControlAsync(
+                handle,
+                instance,
+                lengthM,
+                rateMS,
+                NativeWinch.RelativeLengthControlCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun rateControlAsync(instance: Int, rateMS: Float, callback: (Int) -> Unit) {
-        NativeWinch.rateControlAsync(
-            handle,
-            instance,
-            rateMS,
-            NativeWinch.RateControlCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.rateControlAsync(
+                handle,
+                instance,
+                rateMS,
+                NativeWinch.RateControlCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun lockAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeWinch.lockAsync(
-            handle,
-            instance,
-            NativeWinch.LockCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.lockAsync(
+                handle,
+                instance,
+                NativeWinch.LockCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun deliverAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeWinch.deliverAsync(
-            handle,
-            instance,
-            NativeWinch.DeliverCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.deliverAsync(
+                handle,
+                instance,
+                NativeWinch.DeliverCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun holdAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeWinch.holdAsync(
-            handle,
-            instance,
-            NativeWinch.HoldCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.holdAsync(
+                handle,
+                instance,
+                NativeWinch.HoldCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun retractAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeWinch.retractAsync(
-            handle,
-            instance,
-            NativeWinch.RetractCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.retractAsync(
+                handle,
+                instance,
+                NativeWinch.RetractCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun loadLineAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeWinch.loadLineAsync(
-            handle,
-            instance,
-            NativeWinch.LoadLineCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.loadLineAsync(
+                handle,
+                instance,
+                NativeWinch.LoadLineCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun abandonLineAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeWinch.abandonLineAsync(
-            handle,
-            instance,
-            NativeWinch.AbandonLineCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.abandonLineAsync(
+                handle,
+                instance,
+                NativeWinch.AbandonLineCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun loadPayloadAsync(instance: Int, callback: (Int) -> Unit) {
-        NativeWinch.loadPayloadAsync(
-            handle,
-            instance,
-            NativeWinch.LoadPayloadCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeWinch.loadPayloadAsync(
+                handle,
+                instance,
+                NativeWinch.LoadPayloadCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeWinch.destroy(handle)
         }
-        NativeWinch.destroy(handle)
     }
 }
 

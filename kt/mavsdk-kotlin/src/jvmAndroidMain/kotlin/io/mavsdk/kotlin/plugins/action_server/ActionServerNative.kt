@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.action_server
 
 import io.mavsdk.jni.plugins.action_server.NativeActionServer
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun ActionServer.AllowableFlightModes.toNative(): NativeActionServer.AllowableFlightModes =
     NativeActionServer.AllowableFlightModes(
@@ -36,49 +39,66 @@ private fun NativeActionServer.ArmDisarm.toKotlin(): ActionServer.ArmDisarm =
     ActionServer.ArmDisarm(arm, force)
 
 private class ActionServerNativeImpl(private val handle: Long) : ActionServerNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun subscribeArmDisarm(callback: (Int, ActionServer.ArmDisarm) -> Unit): Long {
-        val subscriptionHandle =
-            NativeActionServer.subscribeArmDisarm(
-                handle,
-                NativeActionServer.ArmDisarmCallback { result, value ->
-                    callback(result, value.toKotlin())
-                },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeActionServer.unsubscribeArmDisarm(handle, subscriptionHandle)
-            }
-        }
-        return subscriptionHandle
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "ActionServer is closed" }
+        action()
     }
+
+    override fun subscribeArmDisarm(callback: (Int, ActionServer.ArmDisarm) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeActionServer.subscribeArmDisarm(
+                    handle,
+                    NativeActionServer.ArmDisarmCallback { result, value ->
+                        callback(result, value.toKotlin())
+                    },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeActionServer.unsubscribeArmDisarm(handle, subscriptionHandle)
+                }
+            }
+            subscriptionHandle
+        }
 
     override fun unsubscribeArmDisarm(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeFlightModeChange(callback: (Int, ActionServer.FlightMode) -> Unit): Long {
-        val subscriptionHandle =
-            NativeActionServer.subscribeFlightModeChange(
-                handle,
-                NativeActionServer.FlightModeChangeCallback { result, value ->
-                    callback(result, ActionServer.FlightMode.fromValue(value))
-                },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeActionServer.unsubscribeFlightModeChange(handle, subscriptionHandle)
+    override fun subscribeFlightModeChange(callback: (Int, ActionServer.FlightMode) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeActionServer.subscribeFlightModeChange(
+                    handle,
+                    NativeActionServer.FlightModeChangeCallback { result, value ->
+                        callback(result, ActionServer.FlightMode.fromValue(value))
+                    },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeActionServer.unsubscribeFlightModeChange(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeFlightModeChange(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeTakeoff(callback: (Int, Boolean) -> Unit): Long {
+    override fun subscribeTakeoff(callback: (Int, Boolean) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeActionServer.subscribeTakeoff(
                 handle,
@@ -89,14 +109,16 @@ private class ActionServerNativeImpl(private val handle: Long) : ActionServerNat
                 NativeActionServer.unsubscribeTakeoff(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeTakeoff(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeLand(callback: (Int, Boolean) -> Unit): Long {
+    override fun subscribeLand(callback: (Int, Boolean) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeActionServer.subscribeLand(
                 handle,
@@ -107,14 +129,16 @@ private class ActionServerNativeImpl(private val handle: Long) : ActionServerNat
                 NativeActionServer.unsubscribeLand(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeLand(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeReboot(callback: (Int, Boolean) -> Unit): Long {
+    override fun subscribeReboot(callback: (Int, Boolean) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeActionServer.subscribeReboot(
                 handle,
@@ -125,14 +149,16 @@ private class ActionServerNativeImpl(private val handle: Long) : ActionServerNat
                 NativeActionServer.unsubscribeReboot(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeReboot(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeShutdown(callback: (Int, Boolean) -> Unit): Long {
+    override fun subscribeShutdown(callback: (Int, Boolean) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeActionServer.subscribeShutdown(
                 handle,
@@ -143,14 +169,16 @@ private class ActionServerNativeImpl(private val handle: Long) : ActionServerNat
                 NativeActionServer.unsubscribeShutdown(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeShutdown(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeTerminate(callback: (Int, Boolean) -> Unit): Long {
+    override fun subscribeTerminate(callback: (Int, Boolean) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeActionServer.subscribeTerminate(
                 handle,
@@ -161,44 +189,58 @@ private class ActionServerNativeImpl(private val handle: Long) : ActionServerNat
                 NativeActionServer.unsubscribeTerminate(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeTerminate(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun setAllowTakeoff(allowTakeoff: Boolean): Int =
+    override fun setAllowTakeoff(allowTakeoff: Boolean): Int = withOpen {
         NativeActionServer.setAllowTakeoff(handle, allowTakeoff)
+    }
 
-    override fun setArmable(armable: Boolean, forceArmable: Boolean): Int =
+    override fun setArmable(armable: Boolean, forceArmable: Boolean): Int = withOpen {
         NativeActionServer.setArmable(handle, armable, forceArmable)
+    }
 
-    override fun setDisarmable(disarmable: Boolean, forceDisarmable: Boolean): Int =
+    override fun setDisarmable(disarmable: Boolean, forceDisarmable: Boolean): Int = withOpen {
         NativeActionServer.setDisarmable(handle, disarmable, forceDisarmable)
+    }
 
     override fun setAllowableFlightModes(flightModes: ActionServer.AllowableFlightModes): Int =
-        NativeActionServer.setAllowableFlightModes(handle, flightModes.toNative())
+        withOpen {
+            NativeActionServer.setAllowableFlightModes(handle, flightModes.toNative())
+        }
 
-    override fun getAllowableFlightModes(): ActionServer.AllowableFlightModes {
+    override fun getAllowableFlightModes(): ActionServer.AllowableFlightModes = withOpen {
         val value = NativeActionServer.getAllowableFlightModes(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun setArmedState(isArmed: Boolean): Int =
+    override fun setArmedState(isArmed: Boolean): Int = withOpen {
         NativeActionServer.setArmedState(handle, isArmed)
+    }
 
-    override fun setFlightMode(flightMode: ActionServer.FlightMode): Int =
+    override fun setFlightMode(flightMode: ActionServer.FlightMode): Int = withOpen {
         NativeActionServer.setFlightMode(handle, flightMode.value)
+    }
 
-    override fun setFlightModeInternal(flightMode: ActionServer.FlightMode): Int =
+    override fun setFlightModeInternal(flightMode: ActionServer.FlightMode): Int = withOpen {
         NativeActionServer.setFlightModeInternal(handle, flightMode.value)
+    }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeActionServer.destroy(handle)
         }
-        NativeActionServer.destroy(handle)
     }
 }
 

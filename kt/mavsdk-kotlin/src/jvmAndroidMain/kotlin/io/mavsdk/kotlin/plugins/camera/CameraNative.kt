@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.camera
 import io.mavsdk.jni.plugins.camera.NativeCamera
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Camera.Option.toNative(): NativeCamera.Option =
     NativeCamera.Option(optionId, optionDescription)
@@ -211,14 +214,27 @@ private fun NativeCamera.CameraList.toKotlin(): Camera.CameraList =
     Camera.CameraList(cameras.map { it.toKotlin() })
 
 private class CameraNativeImpl(private val handle: Long) : CameraNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Camera is closed" }
+        action()
+    }
+
     override fun takePhotoAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.takePhotoAsync(
-            handle,
-            componentId,
-            NativeCamera.TakePhotoCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.takePhotoAsync(
+                handle,
+                componentId,
+                NativeCamera.TakePhotoCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun startPhotoIntervalAsync(
@@ -226,51 +242,63 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
         intervalS: Float,
         callback: (Int) -> Unit,
     ) {
-        NativeCamera.startPhotoIntervalAsync(
-            handle,
-            componentId,
-            intervalS,
-            NativeCamera.StartPhotoIntervalCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.startPhotoIntervalAsync(
+                handle,
+                componentId,
+                intervalS,
+                NativeCamera.StartPhotoIntervalCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun stopPhotoIntervalAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.stopPhotoIntervalAsync(
-            handle,
-            componentId,
-            NativeCamera.StopPhotoIntervalCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.stopPhotoIntervalAsync(
+                handle,
+                componentId,
+                NativeCamera.StopPhotoIntervalCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun startVideoAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.startVideoAsync(
-            handle,
-            componentId,
-            NativeCamera.StartVideoCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.startVideoAsync(
+                handle,
+                componentId,
+                NativeCamera.StartVideoCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun stopVideoAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.stopVideoAsync(
-            handle,
-            componentId,
-            NativeCamera.StopVideoCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.stopVideoAsync(
+                handle,
+                componentId,
+                NativeCamera.StopVideoCallback { result -> callback(result) },
+            )
+        }
     }
 
-    override fun startVideoStreaming(componentId: Int, streamId: Int): Int =
+    override fun startVideoStreaming(componentId: Int, streamId: Int): Int = withOpen {
         NativeCamera.startVideoStreaming(handle, componentId, streamId)
+    }
 
-    override fun stopVideoStreaming(componentId: Int, streamId: Int): Int =
+    override fun stopVideoStreaming(componentId: Int, streamId: Int): Int = withOpen {
         NativeCamera.stopVideoStreaming(handle, componentId, streamId)
+    }
 
     override fun setModeAsync(componentId: Int, mode: Camera.Mode, callback: (Int) -> Unit) {
-        NativeCamera.setModeAsync(
-            handle,
-            componentId,
-            mode.value,
-            NativeCamera.SetModeCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.setModeAsync(
+                handle,
+                componentId,
+                mode.value,
+                NativeCamera.SetModeCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun listPhotosAsync(
@@ -278,22 +306,24 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
         photosRange: Camera.PhotosRange,
         callback: (Int, List<Camera.CaptureInfo>) -> Unit,
     ) {
-        NativeCamera.listPhotosAsync(
-            handle,
-            componentId,
-            photosRange.value,
-            NativeCamera.ListPhotosCallback { result, value ->
-                callback(result, value.map { it.toKotlin() })
-            },
-        )
+        withOpen {
+            NativeCamera.listPhotosAsync(
+                handle,
+                componentId,
+                photosRange.value,
+                NativeCamera.ListPhotosCallback { result, value ->
+                    callback(result, value.map { it.toKotlin() })
+                },
+            )
+        }
     }
 
-    override fun cameraList(): Camera.CameraList {
+    override fun cameraList(): Camera.CameraList = withOpen {
         val value = NativeCamera.cameraList(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeCameraList(callback: (Camera.CameraList) -> Unit): Long {
+    override fun subscribeCameraList(callback: (Camera.CameraList) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCamera.subscribeCameraList(
                 handle,
@@ -304,14 +334,16 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
                 NativeCamera.unsubscribeCameraList(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeCameraList(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeMode(callback: (Camera.ModeUpdate) -> Unit): Long {
+    override fun subscribeMode(callback: (Camera.ModeUpdate) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCamera.subscribeMode(
                 handle,
@@ -322,42 +354,47 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
                 NativeCamera.unsubscribeMode(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeMode(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getMode(componentId: Int): Camera.Mode {
+    override fun getMode(componentId: Int): Camera.Mode = withOpen {
         val value = NativeCamera.getMode(handle, componentId)
-        return Camera.Mode.fromValue(value)
+        Camera.Mode.fromValue(value)
     }
 
-    override fun subscribeVideoStreamInfo(callback: (Camera.VideoStreamUpdate) -> Unit): Long {
-        val subscriptionHandle =
-            NativeCamera.subscribeVideoStreamInfo(
-                handle,
-                NativeCamera.VideoStreamInfoCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeCamera.unsubscribeVideoStreamInfo(handle, subscriptionHandle)
+    override fun subscribeVideoStreamInfo(callback: (Camera.VideoStreamUpdate) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeCamera.subscribeVideoStreamInfo(
+                    handle,
+                    NativeCamera.VideoStreamInfoCallback { value -> callback(value.toKotlin()) },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeCamera.unsubscribeVideoStreamInfo(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeVideoStreamInfo(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getVideoStreamInfo(componentId: Int): Camera.VideoStreamInfo {
+    override fun getVideoStreamInfo(componentId: Int): Camera.VideoStreamInfo = withOpen {
         val value = NativeCamera.getVideoStreamInfo(handle, componentId)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeCaptureInfo(callback: (Camera.CaptureInfo) -> Unit): Long {
+    override fun subscribeCaptureInfo(callback: (Camera.CaptureInfo) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCamera.subscribeCaptureInfo(
                 handle,
@@ -368,14 +405,16 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
                 NativeCamera.unsubscribeCaptureInfo(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeCaptureInfo(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeStorage(callback: (Camera.StorageUpdate) -> Unit): Long {
+    override fun subscribeStorage(callback: (Camera.StorageUpdate) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCamera.subscribeStorage(
                 handle,
@@ -386,44 +425,49 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
                 NativeCamera.unsubscribeStorage(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeStorage(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getStorage(componentId: Int): Camera.Storage {
+    override fun getStorage(componentId: Int): Camera.Storage = withOpen {
         val value = NativeCamera.getStorage(handle, componentId)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeCurrentSettings(callback: (Camera.CurrentSettingsUpdate) -> Unit): Long {
-        val subscriptionHandle =
-            NativeCamera.subscribeCurrentSettings(
-                handle,
-                NativeCamera.CurrentSettingsCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeCamera.unsubscribeCurrentSettings(handle, subscriptionHandle)
+    override fun subscribeCurrentSettings(callback: (Camera.CurrentSettingsUpdate) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeCamera.subscribeCurrentSettings(
+                    handle,
+                    NativeCamera.CurrentSettingsCallback { value -> callback(value.toKotlin()) },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeCamera.unsubscribeCurrentSettings(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeCurrentSettings(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getCurrentSettings(componentId: Int): List<Camera.Setting> {
+    override fun getCurrentSettings(componentId: Int): List<Camera.Setting> = withOpen {
         val value = NativeCamera.getCurrentSettings(handle, componentId)
-        return value.map { it.toKotlin() }
+        value.map { it.toKotlin() }
     }
 
     override fun subscribePossibleSettingOptions(
         callback: (Camera.PossibleSettingOptionsUpdate) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeCamera.subscribePossibleSettingOptions(
                 handle,
@@ -434,29 +478,34 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
                 NativeCamera.unsubscribePossibleSettingOptions(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribePossibleSettingOptions(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getPossibleSettingOptions(componentId: Int): List<Camera.SettingOptions> {
-        val value = NativeCamera.getPossibleSettingOptions(handle, componentId)
-        return value.map { it.toKotlin() }
-    }
+    override fun getPossibleSettingOptions(componentId: Int): List<Camera.SettingOptions> =
+        withOpen {
+            val value = NativeCamera.getPossibleSettingOptions(handle, componentId)
+            value.map { it.toKotlin() }
+        }
 
     override fun setSettingAsync(
         componentId: Int,
         setting: Camera.Setting,
         callback: (Int) -> Unit,
     ) {
-        NativeCamera.setSettingAsync(
-            handle,
-            componentId,
-            setting.toNative(),
-            NativeCamera.SetSettingCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.setSettingAsync(
+                handle,
+                componentId,
+                setting.toNative(),
+                NativeCamera.SetSettingCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun getSettingAsync(
@@ -464,62 +513,78 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
         setting: Camera.Setting,
         callback: (Int, Camera.Setting) -> Unit,
     ) {
-        NativeCamera.getSettingAsync(
-            handle,
-            componentId,
-            setting.toNative(),
-            NativeCamera.GetSettingCallback { result, value -> callback(result, value.toKotlin()) },
-        )
+        withOpen {
+            NativeCamera.getSettingAsync(
+                handle,
+                componentId,
+                setting.toNative(),
+                NativeCamera.GetSettingCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun formatStorageAsync(componentId: Int, storageId: Int, callback: (Int) -> Unit) {
-        NativeCamera.formatStorageAsync(
-            handle,
-            componentId,
-            storageId,
-            NativeCamera.FormatStorageCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.formatStorageAsync(
+                handle,
+                componentId,
+                storageId,
+                NativeCamera.FormatStorageCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun resetSettingsAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.resetSettingsAsync(
-            handle,
-            componentId,
-            NativeCamera.ResetSettingsCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.resetSettingsAsync(
+                handle,
+                componentId,
+                NativeCamera.ResetSettingsCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun zoomInStartAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.zoomInStartAsync(
-            handle,
-            componentId,
-            NativeCamera.ZoomInStartCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.zoomInStartAsync(
+                handle,
+                componentId,
+                NativeCamera.ZoomInStartCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun zoomOutStartAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.zoomOutStartAsync(
-            handle,
-            componentId,
-            NativeCamera.ZoomOutStartCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.zoomOutStartAsync(
+                handle,
+                componentId,
+                NativeCamera.ZoomOutStartCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun zoomStopAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.zoomStopAsync(
-            handle,
-            componentId,
-            NativeCamera.ZoomStopCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.zoomStopAsync(
+                handle,
+                componentId,
+                NativeCamera.ZoomStopCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun zoomRangeAsync(componentId: Int, range: Float, callback: (Int) -> Unit) {
-        NativeCamera.zoomRangeAsync(
-            handle,
-            componentId,
-            range,
-            NativeCamera.ZoomRangeCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.zoomRangeAsync(
+                handle,
+                componentId,
+                range,
+                NativeCamera.ZoomRangeCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun trackPointAsync(
@@ -529,14 +594,16 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
         radius: Float,
         callback: (Int) -> Unit,
     ) {
-        NativeCamera.trackPointAsync(
-            handle,
-            componentId,
-            pointX,
-            pointY,
-            radius,
-            NativeCamera.TrackPointCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.trackPointAsync(
+                handle,
+                componentId,
+                pointX,
+                pointY,
+                radius,
+                NativeCamera.TrackPointCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun trackRectangleAsync(
@@ -547,63 +614,79 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
         bottomRightY: Float,
         callback: (Int) -> Unit,
     ) {
-        NativeCamera.trackRectangleAsync(
-            handle,
-            componentId,
-            topLeftX,
-            topLeftY,
-            bottomRightX,
-            bottomRightY,
-            NativeCamera.TrackRectangleCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.trackRectangleAsync(
+                handle,
+                componentId,
+                topLeftX,
+                topLeftY,
+                bottomRightX,
+                bottomRightY,
+                NativeCamera.TrackRectangleCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun trackStopAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.trackStopAsync(
-            handle,
-            componentId,
-            NativeCamera.TrackStopCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.trackStopAsync(
+                handle,
+                componentId,
+                NativeCamera.TrackStopCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun focusInStartAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.focusInStartAsync(
-            handle,
-            componentId,
-            NativeCamera.FocusInStartCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.focusInStartAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusInStartCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun focusOutStartAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.focusOutStartAsync(
-            handle,
-            componentId,
-            NativeCamera.FocusOutStartCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.focusOutStartAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusOutStartCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun focusStopAsync(componentId: Int, callback: (Int) -> Unit) {
-        NativeCamera.focusStopAsync(
-            handle,
-            componentId,
-            NativeCamera.FocusStopCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.focusStopAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusStopCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun focusRangeAsync(componentId: Int, range: Float, callback: (Int) -> Unit) {
-        NativeCamera.focusRangeAsync(
-            handle,
-            componentId,
-            range,
-            NativeCamera.FocusRangeCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeCamera.focusRangeAsync(
+                handle,
+                componentId,
+                range,
+                NativeCamera.FocusRangeCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeCamera.destroy(handle)
         }
-        NativeCamera.destroy(handle)
     }
 }
 

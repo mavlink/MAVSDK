@@ -2,17 +2,15 @@
 // Edits need to be made to the proto files
 // (see
 // https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/telemetry_server/telemetry_server.proto)
+// plugin-target: ServerComponent
 
 package io.mavsdk.kotlin.plugins.telemetry_server
-
-import io.mavsdk.kotlin.Mavsdk
 
 /**
  * Allow users to provide vehicle telemetry and state information (e.g. battery, GPS, RC connection,
  * flight mode etc.) and set telemetry update rates.
  */
-class TelemetryServer internal constructor(private val native: TelemetryServerNative) :
-    AutoCloseable {
+class TelemetryServer internal constructor(private val native: TelemetryServerNative) {
     private var closed = false
 
     /** Possible results returned for telemetry requests. */
@@ -686,18 +684,13 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
     fun publishVisualFlightRulesHud(fixedWingMetrics: FixedwingMetrics): Result =
         Result.fromValue(native.publishVisualFlightRulesHud(fixedWingMetrics))
 
-    override fun close() {
+    internal fun destroy() {
         if (closed) return
         closed = true
         native.destroy()
     }
 
     class TelemetryServerException(val result: Result, message: String) : Exception(message)
-
-    companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): TelemetryServer =
-            TelemetryServer(createTelemetryServerNative(mavsdk.serverComponentHandle(instance)))
-    }
 }
 
 internal interface TelemetryServerNative {

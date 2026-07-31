@@ -5,17 +5,37 @@
 package io.mavsdk.kotlin.plugins.rtk
 
 import io.mavsdk.jni.plugins.rtk.NativeRtk
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Rtk.RtcmData.toNative(): NativeRtk.RtcmData = NativeRtk.RtcmData(dataBase64)
 
 private fun NativeRtk.RtcmData.toKotlin(): Rtk.RtcmData = Rtk.RtcmData(dataBase64)
 
 private class RtkNativeImpl(private val handle: Long) : RtkNative {
-    override fun sendRtcmData(rtcmData: Rtk.RtcmData): Int =
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Rtk is closed" }
+        action()
+    }
+
+    override fun sendRtcmData(rtcmData: Rtk.RtcmData): Int = withOpen {
         NativeRtk.sendRtcmData(handle, rtcmData.toNative())
+    }
 
     override fun destroy() {
-        NativeRtk.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeRtk.destroy(handle)
+        }
     }
 }
 

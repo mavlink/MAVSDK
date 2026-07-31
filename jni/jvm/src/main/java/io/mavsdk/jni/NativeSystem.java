@@ -28,6 +28,7 @@ public final class NativeSystem {
     public static native int getAutopilotType(long handle);
     public static native int getVehicleType(long handle);
     public static native void enableTimesync(long handle);
+    public static native void destroy(long handle);
     public static native long subscribeIsConnected(
         long handle, BooleanCallback callback);
     public static native void unsubscribeIsConnected(

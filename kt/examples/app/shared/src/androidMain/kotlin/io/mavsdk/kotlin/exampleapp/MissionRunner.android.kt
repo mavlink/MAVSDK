@@ -4,7 +4,6 @@ import io.mavsdk.kotlin.ComponentType
 import io.mavsdk.kotlin.Mavsdk
 import io.mavsdk.kotlin.plugins.action.Action
 import io.mavsdk.kotlin.plugins.mission.Mission
-import io.mavsdk.kotlin.plugins.telemetry.Telemetry
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -37,9 +36,9 @@ actual fun flyMission(connectionUrl: String): Flow<String> = channelFlow {
         }
         send("✓ Autopilot found!")
 
-        val action = Action.create(system)
-        val mission = Mission.create(system)
-        val telemetry = Telemetry.create(system)
+        val action = system.action
+        val mission = system.mission
+        val telemetry = system.telemetry
 
         // Wait until the system reports all sensors healthy.
         send("Waiting for system to be ready...")

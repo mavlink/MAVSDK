@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.telemetry
 import io.mavsdk.jni.plugins.telemetry.NativeTelemetry
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Telemetry.Position.toNative(): NativeTelemetry.Position =
     NativeTelemetry.Position(latitudeDeg, longitudeDeg, absoluteAltitudeM, relativeAltitudeM)
@@ -392,14 +395,25 @@ private fun NativeTelemetry.Wind.toKotlin(): Telemetry.Wind =
     )
 
 private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun position(): Telemetry.Position {
-        val value = NativeTelemetry.position(handle)
-        return value.toKotlin()
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Telemetry is closed" }
+        action()
     }
 
-    override fun subscribePosition(callback: (Telemetry.Position) -> Unit): Long {
+    override fun position(): Telemetry.Position = withOpen {
+        val value = NativeTelemetry.position(handle)
+        value.toKotlin()
+    }
+
+    override fun subscribePosition(callback: (Telemetry.Position) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribePosition(
                 handle,
@@ -410,19 +424,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribePosition(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribePosition(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun home(): Telemetry.HomePosition {
+    override fun home(): Telemetry.HomePosition = withOpen {
         val value = NativeTelemetry.home(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeHome(callback: (Telemetry.HomePosition) -> Unit): Long {
+    override fun subscribeHome(callback: (Telemetry.HomePosition) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeHome(
                 handle,
@@ -433,19 +449,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeHome(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeHome(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun inAir(): Boolean {
+    override fun inAir(): Boolean = withOpen {
         val value = NativeTelemetry.inAir(handle)
-        return value
+        value
     }
 
-    override fun subscribeInAir(callback: (Boolean) -> Unit): Long {
+    override fun subscribeInAir(callback: (Boolean) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeInAir(
                 handle,
@@ -456,19 +474,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeInAir(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeInAir(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun landedState(): Telemetry.LandedState {
+    override fun landedState(): Telemetry.LandedState = withOpen {
         val value = NativeTelemetry.landedState(handle)
-        return Telemetry.LandedState.fromValue(value)
+        Telemetry.LandedState.fromValue(value)
     }
 
-    override fun subscribeLandedState(callback: (Telemetry.LandedState) -> Unit): Long {
+    override fun subscribeLandedState(callback: (Telemetry.LandedState) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeLandedState(
                 handle,
@@ -481,19 +501,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeLandedState(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeLandedState(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun armed(): Boolean {
+    override fun armed(): Boolean = withOpen {
         val value = NativeTelemetry.armed(handle)
-        return value
+        value
     }
 
-    override fun subscribeArmed(callback: (Boolean) -> Unit): Long {
+    override fun subscribeArmed(callback: (Boolean) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeArmed(
                 handle,
@@ -504,19 +526,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeArmed(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeArmed(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun vtolState(): Telemetry.VtolState {
+    override fun vtolState(): Telemetry.VtolState = withOpen {
         val value = NativeTelemetry.vtolState(handle)
-        return Telemetry.VtolState.fromValue(value)
+        Telemetry.VtolState.fromValue(value)
     }
 
-    override fun subscribeVtolState(callback: (Telemetry.VtolState) -> Unit): Long {
+    override fun subscribeVtolState(callback: (Telemetry.VtolState) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeVtolState(
                 handle,
@@ -529,42 +553,49 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeVtolState(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeVtolState(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun attitudeQuaternion(): Telemetry.Quaternion {
+    override fun attitudeQuaternion(): Telemetry.Quaternion = withOpen {
         val value = NativeTelemetry.attitudeQuaternion(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeAttitudeQuaternion(callback: (Telemetry.Quaternion) -> Unit): Long {
-        val subscriptionHandle =
-            NativeTelemetry.subscribeAttitudeQuaternion(
-                handle,
-                NativeTelemetry.AttitudeQuaternionCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeTelemetry.unsubscribeAttitudeQuaternion(handle, subscriptionHandle)
+    override fun subscribeAttitudeQuaternion(callback: (Telemetry.Quaternion) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeTelemetry.subscribeAttitudeQuaternion(
+                    handle,
+                    NativeTelemetry.AttitudeQuaternionCallback { value ->
+                        callback(value.toKotlin())
+                    },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeTelemetry.unsubscribeAttitudeQuaternion(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeAttitudeQuaternion(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun attitudeEuler(): Telemetry.EulerAngle {
+    override fun attitudeEuler(): Telemetry.EulerAngle = withOpen {
         val value = NativeTelemetry.attitudeEuler(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeAttitudeEuler(callback: (Telemetry.EulerAngle) -> Unit): Long {
+    override fun subscribeAttitudeEuler(callback: (Telemetry.EulerAngle) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeAttitudeEuler(
                 handle,
@@ -575,21 +606,23 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeAttitudeEuler(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeAttitudeEuler(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun attitudeAngularVelocityBody(): Telemetry.AngularVelocityBody {
+    override fun attitudeAngularVelocityBody(): Telemetry.AngularVelocityBody = withOpen {
         val value = NativeTelemetry.attitudeAngularVelocityBody(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
     override fun subscribeAttitudeAngularVelocityBody(
         callback: (Telemetry.AngularVelocityBody) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeAttitudeAngularVelocityBody(
                 handle,
@@ -602,19 +635,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeAttitudeAngularVelocityBody(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeAttitudeAngularVelocityBody(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun velocityNed(): Telemetry.VelocityNed {
+    override fun velocityNed(): Telemetry.VelocityNed = withOpen {
         val value = NativeTelemetry.velocityNed(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeVelocityNed(callback: (Telemetry.VelocityNed) -> Unit): Long {
+    override fun subscribeVelocityNed(callback: (Telemetry.VelocityNed) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeVelocityNed(
                 handle,
@@ -625,19 +660,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeVelocityNed(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeVelocityNed(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun gpsInfo(): Telemetry.GpsInfo {
+    override fun gpsInfo(): Telemetry.GpsInfo = withOpen {
         val value = NativeTelemetry.gpsInfo(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeGpsInfo(callback: (Telemetry.GpsInfo) -> Unit): Long {
+    override fun subscribeGpsInfo(callback: (Telemetry.GpsInfo) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeGpsInfo(
                 handle,
@@ -648,19 +685,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeGpsInfo(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeGpsInfo(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun rawGps(): Telemetry.RawGps {
+    override fun rawGps(): Telemetry.RawGps = withOpen {
         val value = NativeTelemetry.rawGps(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeRawGps(callback: (Telemetry.RawGps) -> Unit): Long {
+    override fun subscribeRawGps(callback: (Telemetry.RawGps) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeRawGps(
                 handle,
@@ -671,19 +710,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeRawGps(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeRawGps(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun battery(): Telemetry.Battery {
+    override fun battery(): Telemetry.Battery = withOpen {
         val value = NativeTelemetry.battery(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeBattery(callback: (Telemetry.Battery) -> Unit): Long {
+    override fun subscribeBattery(callback: (Telemetry.Battery) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeBattery(
                 handle,
@@ -694,19 +735,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeBattery(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeBattery(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun flightMode(): Telemetry.FlightMode {
+    override fun flightMode(): Telemetry.FlightMode = withOpen {
         val value = NativeTelemetry.flightMode(handle)
-        return Telemetry.FlightMode.fromValue(value)
+        Telemetry.FlightMode.fromValue(value)
     }
 
-    override fun subscribeFlightMode(callback: (Telemetry.FlightMode) -> Unit): Long {
+    override fun subscribeFlightMode(callback: (Telemetry.FlightMode) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeFlightMode(
                 handle,
@@ -719,19 +762,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeFlightMode(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeFlightMode(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun health(): Telemetry.Health {
+    override fun health(): Telemetry.Health = withOpen {
         val value = NativeTelemetry.health(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeHealth(callback: (Telemetry.Health) -> Unit): Long {
+    override fun subscribeHealth(callback: (Telemetry.Health) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeHealth(
                 handle,
@@ -742,19 +787,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeHealth(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeHealth(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun rcStatus(): Telemetry.RcStatus {
+    override fun rcStatus(): Telemetry.RcStatus = withOpen {
         val value = NativeTelemetry.rcStatus(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeRcStatus(callback: (Telemetry.RcStatus) -> Unit): Long {
+    override fun subscribeRcStatus(callback: (Telemetry.RcStatus) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeRcStatus(
                 handle,
@@ -765,19 +812,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeRcStatus(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeRcStatus(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun statusText(): Telemetry.StatusText {
+    override fun statusText(): Telemetry.StatusText = withOpen {
         val value = NativeTelemetry.statusText(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeStatusText(callback: (Telemetry.StatusText) -> Unit): Long {
+    override fun subscribeStatusText(callback: (Telemetry.StatusText) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeStatusText(
                 handle,
@@ -788,21 +837,23 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeStatusText(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeStatusText(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun actuatorControlTarget(): Telemetry.ActuatorControlTarget {
+    override fun actuatorControlTarget(): Telemetry.ActuatorControlTarget = withOpen {
         val value = NativeTelemetry.actuatorControlTarget(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
     override fun subscribeActuatorControlTarget(
         callback: (Telemetry.ActuatorControlTarget) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeActuatorControlTarget(
                 handle,
@@ -815,21 +866,23 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeActuatorControlTarget(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeActuatorControlTarget(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun actuatorOutputStatus(): Telemetry.ActuatorOutputStatus {
+    override fun actuatorOutputStatus(): Telemetry.ActuatorOutputStatus = withOpen {
         val value = NativeTelemetry.actuatorOutputStatus(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
     override fun subscribeActuatorOutputStatus(
         callback: (Telemetry.ActuatorOutputStatus) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeActuatorOutputStatus(
                 handle,
@@ -840,19 +893,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeActuatorOutputStatus(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeActuatorOutputStatus(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun odometry(): Telemetry.Odometry {
+    override fun odometry(): Telemetry.Odometry = withOpen {
         val value = NativeTelemetry.odometry(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeOdometry(callback: (Telemetry.Odometry) -> Unit): Long {
+    override fun subscribeOdometry(callback: (Telemetry.Odometry) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeOdometry(
                 handle,
@@ -863,21 +918,23 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeOdometry(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeOdometry(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun positionVelocityNed(): Telemetry.PositionVelocityNed {
+    override fun positionVelocityNed(): Telemetry.PositionVelocityNed = withOpen {
         val value = NativeTelemetry.positionVelocityNed(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
     override fun subscribePositionVelocityNed(
         callback: (Telemetry.PositionVelocityNed) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribePositionVelocityNed(
                 handle,
@@ -888,19 +945,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribePositionVelocityNed(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribePositionVelocityNed(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun groundTruth(): Telemetry.GroundTruth {
+    override fun groundTruth(): Telemetry.GroundTruth = withOpen {
         val value = NativeTelemetry.groundTruth(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeGroundTruth(callback: (Telemetry.GroundTruth) -> Unit): Long {
+    override fun subscribeGroundTruth(callback: (Telemetry.GroundTruth) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeGroundTruth(
                 handle,
@@ -911,42 +970,47 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeGroundTruth(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeGroundTruth(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun fixedwingMetrics(): Telemetry.FixedwingMetrics {
+    override fun fixedwingMetrics(): Telemetry.FixedwingMetrics = withOpen {
         val value = NativeTelemetry.fixedwingMetrics(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeFixedwingMetrics(callback: (Telemetry.FixedwingMetrics) -> Unit): Long {
-        val subscriptionHandle =
-            NativeTelemetry.subscribeFixedwingMetrics(
-                handle,
-                NativeTelemetry.FixedwingMetricsCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeTelemetry.unsubscribeFixedwingMetrics(handle, subscriptionHandle)
+    override fun subscribeFixedwingMetrics(callback: (Telemetry.FixedwingMetrics) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeTelemetry.subscribeFixedwingMetrics(
+                    handle,
+                    NativeTelemetry.FixedwingMetricsCallback { value -> callback(value.toKotlin()) },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeTelemetry.unsubscribeFixedwingMetrics(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeFixedwingMetrics(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun imu(): Telemetry.Imu {
+    override fun imu(): Telemetry.Imu = withOpen {
         val value = NativeTelemetry.imu(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeImu(callback: (Telemetry.Imu) -> Unit): Long {
+    override fun subscribeImu(callback: (Telemetry.Imu) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeImu(
                 handle,
@@ -957,19 +1021,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeImu(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeImu(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun scaledImu(): Telemetry.Imu {
+    override fun scaledImu(): Telemetry.Imu = withOpen {
         val value = NativeTelemetry.scaledImu(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeScaledImu(callback: (Telemetry.Imu) -> Unit): Long {
+    override fun subscribeScaledImu(callback: (Telemetry.Imu) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeScaledImu(
                 handle,
@@ -980,19 +1046,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeScaledImu(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeScaledImu(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun rawImu(): Telemetry.Imu {
+    override fun rawImu(): Telemetry.Imu = withOpen {
         val value = NativeTelemetry.rawImu(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeRawImu(callback: (Telemetry.Imu) -> Unit): Long {
+    override fun subscribeRawImu(callback: (Telemetry.Imu) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeRawImu(
                 handle,
@@ -1003,19 +1071,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeRawImu(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeRawImu(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun healthAllOk(): Boolean {
+    override fun healthAllOk(): Boolean = withOpen {
         val value = NativeTelemetry.healthAllOk(handle)
-        return value
+        value
     }
 
-    override fun subscribeHealthAllOk(callback: (Boolean) -> Unit): Long {
+    override fun subscribeHealthAllOk(callback: (Boolean) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeHealthAllOk(
                 handle,
@@ -1026,19 +1096,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeHealthAllOk(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeHealthAllOk(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun unixEpochTime(): Long {
+    override fun unixEpochTime(): Long = withOpen {
         val value = NativeTelemetry.unixEpochTime(handle)
-        return value
+        value
     }
 
-    override fun subscribeUnixEpochTime(callback: (Long) -> Unit): Long {
+    override fun subscribeUnixEpochTime(callback: (Long) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeUnixEpochTime(
                 handle,
@@ -1049,65 +1121,73 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeUnixEpochTime(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeUnixEpochTime(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun distanceSensor(): Telemetry.DistanceSensor {
+    override fun distanceSensor(): Telemetry.DistanceSensor = withOpen {
         val value = NativeTelemetry.distanceSensor(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeDistanceSensor(callback: (Telemetry.DistanceSensor) -> Unit): Long {
-        val subscriptionHandle =
-            NativeTelemetry.subscribeDistanceSensor(
-                handle,
-                NativeTelemetry.DistanceSensorCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeTelemetry.unsubscribeDistanceSensor(handle, subscriptionHandle)
+    override fun subscribeDistanceSensor(callback: (Telemetry.DistanceSensor) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeTelemetry.subscribeDistanceSensor(
+                    handle,
+                    NativeTelemetry.DistanceSensorCallback { value -> callback(value.toKotlin()) },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeTelemetry.unsubscribeDistanceSensor(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeDistanceSensor(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun scaledPressure(): Telemetry.ScaledPressure {
+    override fun scaledPressure(): Telemetry.ScaledPressure = withOpen {
         val value = NativeTelemetry.scaledPressure(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeScaledPressure(callback: (Telemetry.ScaledPressure) -> Unit): Long {
-        val subscriptionHandle =
-            NativeTelemetry.subscribeScaledPressure(
-                handle,
-                NativeTelemetry.ScaledPressureCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeTelemetry.unsubscribeScaledPressure(handle, subscriptionHandle)
+    override fun subscribeScaledPressure(callback: (Telemetry.ScaledPressure) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeTelemetry.subscribeScaledPressure(
+                    handle,
+                    NativeTelemetry.ScaledPressureCallback { value -> callback(value.toKotlin()) },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeTelemetry.unsubscribeScaledPressure(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeScaledPressure(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun heading(): Telemetry.Heading {
+    override fun heading(): Telemetry.Heading = withOpen {
         val value = NativeTelemetry.heading(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeHeading(callback: (Telemetry.Heading) -> Unit): Long {
+    override fun subscribeHeading(callback: (Telemetry.Heading) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeHeading(
                 handle,
@@ -1118,19 +1198,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeHeading(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeHeading(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun altitude(): Telemetry.Altitude {
+    override fun altitude(): Telemetry.Altitude = withOpen {
         val value = NativeTelemetry.altitude(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeAltitude(callback: (Telemetry.Altitude) -> Unit): Long {
+    override fun subscribeAltitude(callback: (Telemetry.Altitude) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeAltitude(
                 handle,
@@ -1141,19 +1223,21 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeAltitude(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeAltitude(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun wind(): Telemetry.Wind {
+    override fun wind(): Telemetry.Wind = withOpen {
         val value = NativeTelemetry.wind(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeWind(callback: (Telemetry.Wind) -> Unit): Long {
+    override fun subscribeWind(callback: (Telemetry.Wind) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeTelemetry.subscribeWind(
                 handle,
@@ -1164,227 +1248,285 @@ private class TelemetryNativeImpl(private val handle: Long) : TelemetryNative {
                 NativeTelemetry.unsubscribeWind(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeWind(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun setRatePositionAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRatePositionAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRatePositionCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRatePositionAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRatePositionCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateHomeAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateHomeAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateHomeCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateHomeAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateHomeCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateInAirAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateInAirAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateInAirCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateInAirAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateInAirCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateLandedStateAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateLandedStateAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateLandedStateCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateLandedStateAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateLandedStateCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateVtolStateAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateVtolStateAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateVtolStateCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateVtolStateAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateVtolStateCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateAttitudeQuaternionAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateAttitudeQuaternionAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateAttitudeQuaternionCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateAttitudeQuaternionAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateAttitudeQuaternionCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateAttitudeEulerAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateAttitudeEulerAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateAttitudeEulerCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateAttitudeEulerAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateAttitudeEulerCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateVelocityNedAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateVelocityNedAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateVelocityNedCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateVelocityNedAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateVelocityNedCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateGpsInfoAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateGpsInfoAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateGpsInfoCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateGpsInfoAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateGpsInfoCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateRawGpsAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateRawGpsAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateRawGpsCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateRawGpsAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateRawGpsCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateBatteryAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateBatteryAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateBatteryCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateBatteryAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateBatteryCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateRcStatusAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateRcStatusAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateRcStatusCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateRcStatusAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateRcStatusCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateActuatorControlTargetAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateActuatorControlTargetAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateActuatorControlTargetCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateActuatorControlTargetAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateActuatorControlTargetCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateActuatorOutputStatusAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateActuatorOutputStatusAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateActuatorOutputStatusCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateActuatorOutputStatusAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateActuatorOutputStatusCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateOdometryAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateOdometryAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateOdometryCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateOdometryAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateOdometryCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRatePositionVelocityNedAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRatePositionVelocityNedAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRatePositionVelocityNedCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRatePositionVelocityNedAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRatePositionVelocityNedCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateGroundTruthAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateGroundTruthAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateGroundTruthCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateGroundTruthAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateGroundTruthCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateFixedwingMetricsAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateFixedwingMetricsAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateFixedwingMetricsCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateFixedwingMetricsAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateFixedwingMetricsCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateImuAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateImuAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateImuCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateImuAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateImuCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateScaledImuAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateScaledImuAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateScaledImuCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateScaledImuAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateScaledImuCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateRawImuAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateRawImuAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateRawImuCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateRawImuAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateRawImuCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateUnixEpochTimeAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateUnixEpochTimeAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateUnixEpochTimeCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateUnixEpochTimeAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateUnixEpochTimeCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateDistanceSensorAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateDistanceSensorAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateDistanceSensorCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateDistanceSensorAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateDistanceSensorCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateAltitudeAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateAltitudeAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateAltitudeCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateAltitudeAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateAltitudeCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRateHealthAsync(rateHz: Double, callback: (Int) -> Unit) {
-        NativeTelemetry.setRateHealthAsync(
-            handle,
-            rateHz,
-            NativeTelemetry.SetRateHealthCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeTelemetry.setRateHealthAsync(
+                handle,
+                rateHz,
+                NativeTelemetry.SetRateHealthCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun getGpsGlobalOriginAsync(callback: (Int, Telemetry.GpsGlobalOrigin) -> Unit) {
-        NativeTelemetry.getGpsGlobalOriginAsync(
-            handle,
-            NativeTelemetry.GetGpsGlobalOriginCallback { result, value ->
-                callback(result, value.toKotlin())
-            },
-        )
+        withOpen {
+            NativeTelemetry.getGpsGlobalOriginAsync(
+                handle,
+                NativeTelemetry.GetGpsGlobalOriginCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeTelemetry.destroy(handle)
         }
-        NativeTelemetry.destroy(handle)
     }
 }
 

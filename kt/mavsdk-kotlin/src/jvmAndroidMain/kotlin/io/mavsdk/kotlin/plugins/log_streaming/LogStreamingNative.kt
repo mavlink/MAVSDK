@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.log_streaming
 import io.mavsdk.jni.plugins.log_streaming.NativeLogStreaming
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun LogStreaming.LogStreamingRaw.toNative(): NativeLogStreaming.LogStreamingRaw =
     NativeLogStreaming.LogStreamingRaw(dataBase64)
@@ -15,45 +18,69 @@ private fun NativeLogStreaming.LogStreamingRaw.toKotlin(): LogStreaming.LogStrea
     LogStreaming.LogStreamingRaw(dataBase64)
 
 private class LogStreamingNativeImpl(private val handle: Long) : LogStreamingNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "LogStreaming is closed" }
+        action()
+    }
+
     override fun startLogStreamingAsync(callback: (Int) -> Unit) {
-        NativeLogStreaming.startLogStreamingAsync(
-            handle,
-            NativeLogStreaming.StartLogStreamingCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeLogStreaming.startLogStreamingAsync(
+                handle,
+                NativeLogStreaming.StartLogStreamingCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun stopLogStreamingAsync(callback: (Int) -> Unit) {
-        NativeLogStreaming.stopLogStreamingAsync(
-            handle,
-            NativeLogStreaming.StopLogStreamingCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeLogStreaming.stopLogStreamingAsync(
+                handle,
+                NativeLogStreaming.StopLogStreamingCallback { result -> callback(result) },
+            )
+        }
     }
 
-    override fun subscribeLogStreamingRaw(callback: (LogStreaming.LogStreamingRaw) -> Unit): Long {
-        val subscriptionHandle =
-            NativeLogStreaming.subscribeLogStreamingRaw(
-                handle,
-                NativeLogStreaming.LogStreamingRawCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeLogStreaming.unsubscribeLogStreamingRaw(handle, subscriptionHandle)
+    override fun subscribeLogStreamingRaw(callback: (LogStreaming.LogStreamingRaw) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeLogStreaming.subscribeLogStreamingRaw(
+                    handle,
+                    NativeLogStreaming.LogStreamingRawCallback { value ->
+                        callback(value.toKotlin())
+                    },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeLogStreaming.unsubscribeLogStreamingRaw(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeLogStreamingRaw(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeLogStreaming.destroy(handle)
         }
-        NativeLogStreaming.destroy(handle)
     }
 }
 

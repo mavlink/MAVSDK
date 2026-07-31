@@ -31,9 +31,9 @@ fun flyMission() = runBlocking {
         }
         println("✓ Autopilot found!\n")
 
-        val action   = Action.create(system)
-        val mission  = Mission.create(system)
-        val telemetry = Telemetry.create(system)
+        val action = system.action
+        val mission = system.mission
+        val telemetry = system.telemetry
 
         // Wait until the system reports all sensors healthy.
         println("Waiting for system to be ready...")

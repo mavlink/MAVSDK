@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.events
 
 import io.mavsdk.jni.plugins.events.NativeEvents
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Events.Event.toNative(): NativeEvents.Event =
     NativeEvents.Event(compid, message, description, logLevel.value, eventNamespace, eventName)
@@ -64,9 +67,20 @@ private fun NativeEvents.HealthAndArmingCheckReport.toKotlin(): Events.HealthAnd
     )
 
 private class EventsNativeImpl(private val handle: Long) : EventsNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun subscribeEvents(callback: (Events.Event) -> Unit): Long {
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Events is closed" }
+        action()
+    }
+
+    override fun subscribeEvents(callback: (Events.Event) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeEvents.subscribeEvents(
                 handle,
@@ -77,16 +91,18 @@ private class EventsNativeImpl(private val handle: Long) : EventsNative {
                 NativeEvents.unsubscribeEvents(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeEvents(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun subscribeHealthAndArmingChecks(
         callback: (Events.HealthAndArmingCheckReport) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeEvents.subscribeHealthAndArmingChecks(
                 handle,
@@ -97,23 +113,29 @@ private class EventsNativeImpl(private val handle: Long) : EventsNative {
                 NativeEvents.unsubscribeHealthAndArmingChecks(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeHealthAndArmingChecks(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getHealthAndArmingChecksReport(): Events.HealthAndArmingCheckReport {
+    override fun getHealthAndArmingChecksReport(): Events.HealthAndArmingCheckReport = withOpen {
         val value = NativeEvents.getHealthAndArmingChecksReport(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeEvents.destroy(handle)
         }
-        NativeEvents.destroy(handle)
     }
 }
 

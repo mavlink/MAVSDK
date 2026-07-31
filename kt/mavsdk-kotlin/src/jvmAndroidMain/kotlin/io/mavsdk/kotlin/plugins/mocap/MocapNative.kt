@@ -5,6 +5,9 @@
 package io.mavsdk.kotlin.plugins.mocap
 
 import io.mavsdk.jni.plugins.mocap.NativeMocap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Mocap.PositionBody.toNative(): NativeMocap.PositionBody =
     NativeMocap.PositionBody(xM, yM, zM)
@@ -124,21 +127,44 @@ private fun NativeMocap.Odometry.toKotlin(): Mocap.Odometry =
     )
 
 private class MocapNativeImpl(private val handle: Long) : MocapNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Mocap is closed" }
+        action()
+    }
+
     override fun setVisionPositionEstimate(
         visionPositionEstimate: Mocap.VisionPositionEstimate
-    ): Int = NativeMocap.setVisionPositionEstimate(handle, visionPositionEstimate.toNative())
+    ): Int = withOpen {
+        NativeMocap.setVisionPositionEstimate(handle, visionPositionEstimate.toNative())
+    }
 
     override fun setVisionSpeedEstimate(visionSpeedEstimate: Mocap.VisionSpeedEstimate): Int =
-        NativeMocap.setVisionSpeedEstimate(handle, visionSpeedEstimate.toNative())
+        withOpen {
+            NativeMocap.setVisionSpeedEstimate(handle, visionSpeedEstimate.toNative())
+        }
 
     override fun setAttitudePositionMocap(attitudePositionMocap: Mocap.AttitudePositionMocap): Int =
-        NativeMocap.setAttitudePositionMocap(handle, attitudePositionMocap.toNative())
+        withOpen {
+            NativeMocap.setAttitudePositionMocap(handle, attitudePositionMocap.toNative())
+        }
 
-    override fun setOdometry(odometry: Mocap.Odometry): Int =
+    override fun setOdometry(odometry: Mocap.Odometry): Int = withOpen {
         NativeMocap.setOdometry(handle, odometry.toNative())
+    }
 
     override fun destroy() {
-        NativeMocap.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeMocap.destroy(handle)
+        }
     }
 }
 

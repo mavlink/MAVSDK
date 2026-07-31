@@ -2,10 +2,10 @@
 // Edits need to be made to the proto files
 // (see
 // https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/mission_raw_server/mission_raw_server.proto)
+// plugin-target: ServerComponent
 
 package io.mavsdk.kotlin.plugins.mission_raw_server
 
-import io.mavsdk.kotlin.Mavsdk
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -14,8 +14,7 @@ import kotlinx.coroutines.flow.callbackFlow
  * Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). Provides
  * current mission item state, so the server can progress through missions.
  */
-class MissionRawServer internal constructor(private val native: MissionRawServerNative) :
-    AutoCloseable {
+class MissionRawServer internal constructor(private val native: MissionRawServerNative) {
     private var closed = false
 
     /** Possible results returned for action requests. */
@@ -138,18 +137,13 @@ class MissionRawServer internal constructor(private val native: MissionRawServer
         awaitClose { native.unsubscribeClearAll(subscriptionHandle) }
     }
 
-    override fun close() {
+    internal fun destroy() {
         if (closed) return
         closed = true
         native.destroy()
     }
 
     class MissionRawServerException(val result: Result, message: String) : Exception(message)
-
-    companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): MissionRawServer =
-            MissionRawServer(createMissionRawServerNative(mavsdk.serverComponentHandle(instance)))
-    }
 }
 
 internal interface MissionRawServerNative {

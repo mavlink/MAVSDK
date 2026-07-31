@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.param_server
 
 import io.mavsdk.jni.plugins.param_server.NativeParamServer
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun ParamServer.IntParam.toNative(): NativeParamServer.IntParam =
     NativeParamServer.IntParam(name, value)
@@ -40,99 +43,133 @@ private fun NativeParamServer.AllParams.toKotlin(): ParamServer.AllParams =
     )
 
 private class ParamServerNativeImpl(private val handle: Long) : ParamServerNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun setProtocol(extendedProtocol: Boolean): Int =
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "ParamServer is closed" }
+        action()
+    }
+
+    override fun setProtocol(extendedProtocol: Boolean): Int = withOpen {
         NativeParamServer.setProtocol(handle, extendedProtocol)
+    }
 
-    override fun retrieveParamInt(name: String): Int {
+    override fun retrieveParamInt(name: String): Int = withOpen {
         val value = NativeParamServer.retrieveParamInt(handle, name)
-        return value
+        value
     }
 
-    override fun provideParamInt(name: String, value: Int): Int =
+    override fun provideParamInt(name: String, value: Int): Int = withOpen {
         NativeParamServer.provideParamInt(handle, name, value)
+    }
 
-    override fun retrieveParamFloat(name: String): Float {
+    override fun retrieveParamFloat(name: String): Float = withOpen {
         val value = NativeParamServer.retrieveParamFloat(handle, name)
-        return value
+        value
     }
 
-    override fun provideParamFloat(name: String, value: Float): Int =
+    override fun provideParamFloat(name: String, value: Float): Int = withOpen {
         NativeParamServer.provideParamFloat(handle, name, value)
+    }
 
-    override fun retrieveParamCustom(name: String): String {
+    override fun retrieveParamCustom(name: String): String = withOpen {
         val value = NativeParamServer.retrieveParamCustom(handle, name)
-        return value
+        value
     }
 
-    override fun provideParamCustom(name: String, value: String): Int =
+    override fun provideParamCustom(name: String, value: String): Int = withOpen {
         NativeParamServer.provideParamCustom(handle, name, value)
+    }
 
-    override fun retrieveAllParams(): ParamServer.AllParams {
+    override fun retrieveAllParams(): ParamServer.AllParams = withOpen {
         val value = NativeParamServer.retrieveAllParams(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeChangedParamInt(callback: (ParamServer.IntParam) -> Unit): Long {
-        val subscriptionHandle =
-            NativeParamServer.subscribeChangedParamInt(
-                handle,
-                NativeParamServer.ChangedParamIntCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeParamServer.unsubscribeChangedParamInt(handle, subscriptionHandle)
+    override fun subscribeChangedParamInt(callback: (ParamServer.IntParam) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeParamServer.subscribeChangedParamInt(
+                    handle,
+                    NativeParamServer.ChangedParamIntCallback { value ->
+                        callback(value.toKotlin())
+                    },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeParamServer.unsubscribeChangedParamInt(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeChangedParamInt(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeChangedParamFloat(callback: (ParamServer.FloatParam) -> Unit): Long {
-        val subscriptionHandle =
-            NativeParamServer.subscribeChangedParamFloat(
-                handle,
-                NativeParamServer.ChangedParamFloatCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeParamServer.unsubscribeChangedParamFloat(handle, subscriptionHandle)
+    override fun subscribeChangedParamFloat(callback: (ParamServer.FloatParam) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeParamServer.subscribeChangedParamFloat(
+                    handle,
+                    NativeParamServer.ChangedParamFloatCallback { value ->
+                        callback(value.toKotlin())
+                    },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeParamServer.unsubscribeChangedParamFloat(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeChangedParamFloat(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeChangedParamCustom(callback: (ParamServer.CustomParam) -> Unit): Long {
-        val subscriptionHandle =
-            NativeParamServer.subscribeChangedParamCustom(
-                handle,
-                NativeParamServer.ChangedParamCustomCallback { value -> callback(value.toKotlin()) },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeParamServer.unsubscribeChangedParamCustom(handle, subscriptionHandle)
+    override fun subscribeChangedParamCustom(callback: (ParamServer.CustomParam) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeParamServer.subscribeChangedParamCustom(
+                    handle,
+                    NativeParamServer.ChangedParamCustomCallback { value ->
+                        callback(value.toKotlin())
+                    },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeParamServer.unsubscribeChangedParamCustom(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeChangedParamCustom(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeParamServer.destroy(handle)
         }
-        NativeParamServer.destroy(handle)
     }
 }
 

@@ -2,15 +2,15 @@
 // Edits need to be made to the proto files
 // (see
 // https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/manual_control/manual_control.proto)
+// plugin-target: System
 
 package io.mavsdk.kotlin.plugins.manual_control
 
-import io.mavsdk.kotlin.System
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 /** Enable manual control using e.g. a joystick or gamepad. */
-class ManualControl internal constructor(private val native: ManualControlNative) : AutoCloseable {
+class ManualControl internal constructor(private val native: ManualControlNative) {
     private var closed = false
 
     /** Possible results returned for manual control requests. */
@@ -92,20 +92,13 @@ class ManualControl internal constructor(private val native: ManualControlNative
     fun setManualControlInput(x: Float, y: Float, z: Float, r: Float): Result =
         Result.fromValue(native.setManualControlInput(x, y, z, r))
 
-    override fun close() {
+    internal fun destroy() {
         if (closed) return
         closed = true
         native.destroy()
     }
 
     class ManualControlException(val result: Result, message: String) : Exception(message)
-
-    companion object {
-        fun create(system: System): ManualControl =
-            ManualControl(createManualControlNative(system.getHandle())).also {
-                system.registerPlugin(it)
-            }
-    }
 }
 
 internal interface ManualControlNative {

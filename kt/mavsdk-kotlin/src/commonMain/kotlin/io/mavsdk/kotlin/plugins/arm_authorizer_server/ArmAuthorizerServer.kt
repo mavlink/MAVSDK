@@ -2,17 +2,16 @@
 // Edits need to be made to the proto files
 // (see
 // https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/arm_authorizer_server/arm_authorizer_server.proto)
+// plugin-target: ServerComponent
 
 package io.mavsdk.kotlin.plugins.arm_authorizer_server
 
-import io.mavsdk.kotlin.Mavsdk
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 /** Use arm authorization. */
-class ArmAuthorizerServer internal constructor(private val native: ArmAuthorizerServerNative) :
-    AutoCloseable {
+class ArmAuthorizerServer internal constructor(private val native: ArmAuthorizerServerNative) {
     private var closed = false
 
     /** The result */
@@ -88,20 +87,13 @@ class ArmAuthorizerServer internal constructor(private val native: ArmAuthorizer
         extraInfo: Int,
     ): Result = Result.fromValue(native.rejectArmAuthorization(temporarily, reason, extraInfo))
 
-    override fun close() {
+    internal fun destroy() {
         if (closed) return
         closed = true
         native.destroy()
     }
 
     class ArmAuthorizerServerException(val result: Result, message: String) : Exception(message)
-
-    companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): ArmAuthorizerServer =
-            ArmAuthorizerServer(
-                createArmAuthorizerServerNative(mavsdk.serverComponentHandle(instance))
-            )
-    }
 }
 
 internal interface ArmAuthorizerServerNative {

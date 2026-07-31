@@ -2,14 +2,13 @@
 // Edits need to be made to the proto files
 // (see
 // https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/component_metadata_server/component_metadata_server.proto)
+// plugin-target: ServerComponent
 
 package io.mavsdk.kotlin.plugins.component_metadata_server
 
-import io.mavsdk.kotlin.Mavsdk
-
 /** Provide component metadata json definitions, such as parameters. */
 class ComponentMetadataServer
-internal constructor(private val native: ComponentMetadataServerNative) : AutoCloseable {
+internal constructor(private val native: ComponentMetadataServerNative) {
     private var closed = false
 
     /** The metadata type */
@@ -44,17 +43,10 @@ internal constructor(private val native: ComponentMetadataServerNative) : AutoCl
         native.setMetadata(metadata)
     }
 
-    override fun close() {
+    internal fun destroy() {
         if (closed) return
         closed = true
         native.destroy()
-    }
-
-    companion object {
-        fun create(mavsdk: Mavsdk, instance: Int = 1): ComponentMetadataServer =
-            ComponentMetadataServer(
-                createComponentMetadataServerNative(mavsdk.serverComponentHandle(instance))
-            )
     }
 }
 

@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.camera_server
 
 import io.mavsdk.jni.plugins.camera_server.NativeCameraServer
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun CameraServer.Information.toNative(): NativeCameraServer.Information =
     NativeCameraServer.Information(
@@ -146,18 +149,32 @@ private fun NativeCameraServer.TrackRectangle.toKotlin(): CameraServer.TrackRect
     )
 
 private class CameraServerNativeImpl(private val handle: Long) : CameraServerNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    override fun setInformation(information: CameraServer.Information): Int =
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "CameraServer is closed" }
+        action()
+    }
+
+    override fun setInformation(information: CameraServer.Information): Int = withOpen {
         NativeCameraServer.setInformation(handle, information.toNative())
+    }
 
-    override fun setVideoStreaming(videoStreaming: CameraServer.VideoStreaming): Int =
+    override fun setVideoStreaming(videoStreaming: CameraServer.VideoStreaming): Int = withOpen {
         NativeCameraServer.setVideoStreaming(handle, videoStreaming.toNative())
+    }
 
-    override fun setInProgress(inProgress: Boolean): Int =
+    override fun setInProgress(inProgress: Boolean): Int = withOpen {
         NativeCameraServer.setInProgress(handle, inProgress)
+    }
 
-    override fun subscribeTakePhoto(callback: (Int) -> Unit): Long {
+    override fun subscribeTakePhoto(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeTakePhoto(
                 handle,
@@ -168,20 +185,23 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeTakePhoto(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeTakePhoto(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondTakePhoto(
         takePhotoFeedback: CameraServer.CameraFeedback,
         captureInfo: CameraServer.CaptureInfo,
-    ): Int =
+    ): Int = withOpen {
         NativeCameraServer.respondTakePhoto(handle, takePhotoFeedback.value, captureInfo.toNative())
+    }
 
-    override fun subscribeStartVideo(callback: (Int) -> Unit): Long {
+    override fun subscribeStartVideo(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeStartVideo(
                 handle,
@@ -192,17 +212,21 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeStartVideo(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeStartVideo(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondStartVideo(startVideoFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondStartVideo(handle, startVideoFeedback.value)
+        withOpen {
+            NativeCameraServer.respondStartVideo(handle, startVideoFeedback.value)
+        }
 
-    override fun subscribeStopVideo(callback: (Int) -> Unit): Long {
+    override fun subscribeStopVideo(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeStopVideo(
                 handle,
@@ -213,17 +237,20 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeStopVideo(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeStopVideo(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun respondStopVideo(stopVideoFeedback: CameraServer.CameraFeedback): Int =
+    override fun respondStopVideo(stopVideoFeedback: CameraServer.CameraFeedback): Int = withOpen {
         NativeCameraServer.respondStopVideo(handle, stopVideoFeedback.value)
+    }
 
-    override fun subscribeStartVideoStreaming(callback: (Int) -> Unit): Long {
+    override fun subscribeStartVideoStreaming(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeStartVideoStreaming(
                 handle,
@@ -234,19 +261,22 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeStartVideoStreaming(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeStartVideoStreaming(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondStartVideoStreaming(
         startVideoStreamingFeedback: CameraServer.CameraFeedback
-    ): Int =
+    ): Int = withOpen {
         NativeCameraServer.respondStartVideoStreaming(handle, startVideoStreamingFeedback.value)
+    }
 
-    override fun subscribeStopVideoStreaming(callback: (Int) -> Unit): Long {
+    override fun subscribeStopVideoStreaming(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeStopVideoStreaming(
                 handle,
@@ -257,18 +287,22 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeStopVideoStreaming(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeStopVideoStreaming(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondStopVideoStreaming(
         stopVideoStreamingFeedback: CameraServer.CameraFeedback
-    ): Int = NativeCameraServer.respondStopVideoStreaming(handle, stopVideoStreamingFeedback.value)
+    ): Int = withOpen {
+        NativeCameraServer.respondStopVideoStreaming(handle, stopVideoStreamingFeedback.value)
+    }
 
-    override fun subscribeSetMode(callback: (CameraServer.Mode) -> Unit): Long {
+    override fun subscribeSetMode(callback: (CameraServer.Mode) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeSetMode(
                 handle,
@@ -281,17 +315,20 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeSetMode(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeSetMode(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun respondSetMode(setModeFeedback: CameraServer.CameraFeedback): Int =
+    override fun respondSetMode(setModeFeedback: CameraServer.CameraFeedback): Int = withOpen {
         NativeCameraServer.respondSetMode(handle, setModeFeedback.value)
+    }
 
-    override fun subscribeStorageInformation(callback: (Int) -> Unit): Long {
+    override fun subscribeStorageInformation(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeStorageInformation(
                 handle,
@@ -302,24 +339,27 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeStorageInformation(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeStorageInformation(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondStorageInformation(
         storageInformationFeedback: CameraServer.CameraFeedback,
         storageInformation: CameraServer.StorageInformation,
-    ): Int =
+    ): Int = withOpen {
         NativeCameraServer.respondStorageInformation(
             handle,
             storageInformationFeedback.value,
             storageInformation.toNative(),
         )
+    }
 
-    override fun subscribeCaptureStatus(callback: (Int) -> Unit): Long {
+    override fun subscribeCaptureStatus(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeCaptureStatus(
                 handle,
@@ -330,24 +370,27 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeCaptureStatus(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeCaptureStatus(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondCaptureStatus(
         captureStatusFeedback: CameraServer.CameraFeedback,
         captureStatus: CameraServer.CaptureStatus,
-    ): Int =
+    ): Int = withOpen {
         NativeCameraServer.respondCaptureStatus(
             handle,
             captureStatusFeedback.value,
             captureStatus.toNative(),
         )
+    }
 
-    override fun subscribeFormatStorage(callback: (Int) -> Unit): Long {
+    override fun subscribeFormatStorage(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeFormatStorage(
                 handle,
@@ -358,17 +401,21 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeFormatStorage(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeFormatStorage(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondFormatStorage(formatStorageFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondFormatStorage(handle, formatStorageFeedback.value)
+        withOpen {
+            NativeCameraServer.respondFormatStorage(handle, formatStorageFeedback.value)
+        }
 
-    override fun subscribeResetSettings(callback: (Int) -> Unit): Long {
+    override fun subscribeResetSettings(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeResetSettings(
                 handle,
@@ -379,17 +426,21 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeResetSettings(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeResetSettings(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondResetSettings(resetSettingsFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondResetSettings(handle, resetSettingsFeedback.value)
+        withOpen {
+            NativeCameraServer.respondResetSettings(handle, resetSettingsFeedback.value)
+        }
 
-    override fun subscribeZoomInStart(callback: (Int) -> Unit): Long {
+    override fun subscribeZoomInStart(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeZoomInStart(
                 handle,
@@ -400,17 +451,21 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeZoomInStart(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeZoomInStart(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondZoomInStart(zoomInStartFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondZoomInStart(handle, zoomInStartFeedback.value)
+        withOpen {
+            NativeCameraServer.respondZoomInStart(handle, zoomInStartFeedback.value)
+        }
 
-    override fun subscribeZoomOutStart(callback: (Int) -> Unit): Long {
+    override fun subscribeZoomOutStart(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeZoomOutStart(
                 handle,
@@ -421,17 +476,21 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeZoomOutStart(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeZoomOutStart(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondZoomOutStart(zoomOutStartFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondZoomOutStart(handle, zoomOutStartFeedback.value)
+        withOpen {
+            NativeCameraServer.respondZoomOutStart(handle, zoomOutStartFeedback.value)
+        }
 
-    override fun subscribeZoomStop(callback: (Int) -> Unit): Long {
+    override fun subscribeZoomStop(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeZoomStop(
                 handle,
@@ -442,17 +501,20 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeZoomStop(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeZoomStop(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun respondZoomStop(zoomStopFeedback: CameraServer.CameraFeedback): Int =
+    override fun respondZoomStop(zoomStopFeedback: CameraServer.CameraFeedback): Int = withOpen {
         NativeCameraServer.respondZoomStop(handle, zoomStopFeedback.value)
+    }
 
-    override fun subscribeZoomRange(callback: (Float) -> Unit): Long {
+    override fun subscribeZoomRange(callback: (Float) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeZoomRange(
                 handle,
@@ -463,47 +525,55 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeZoomRange(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeZoomRange(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun respondZoomRange(zoomRangeFeedback: CameraServer.CameraFeedback): Int =
+    override fun respondZoomRange(zoomRangeFeedback: CameraServer.CameraFeedback): Int = withOpen {
         NativeCameraServer.respondZoomRange(handle, zoomRangeFeedback.value)
+    }
 
     override fun setTrackingRectangleStatus(trackedRectangle: CameraServer.TrackRectangle) {
-        NativeCameraServer.setTrackingRectangleStatus(handle, trackedRectangle.toNative())
+        withOpen {
+            NativeCameraServer.setTrackingRectangleStatus(handle, trackedRectangle.toNative())
+        }
     }
 
     override fun setTrackingOffStatus() {
-        NativeCameraServer.setTrackingOffStatus(handle)
+        withOpen { NativeCameraServer.setTrackingOffStatus(handle) }
     }
 
-    override fun subscribeTrackingPointCommand(callback: (CameraServer.TrackPoint) -> Unit): Long {
-        val subscriptionHandle =
-            NativeCameraServer.subscribeTrackingPointCommand(
-                handle,
-                NativeCameraServer.TrackingPointCommandCallback { value ->
-                    callback(value.toKotlin())
-                },
-            )
-        if (subscriptionHandle != 0L) {
-            activeSubscriptions[subscriptionHandle] = {
-                NativeCameraServer.unsubscribeTrackingPointCommand(handle, subscriptionHandle)
+    override fun subscribeTrackingPointCommand(callback: (CameraServer.TrackPoint) -> Unit): Long =
+        withOpen {
+            val subscriptionHandle =
+                NativeCameraServer.subscribeTrackingPointCommand(
+                    handle,
+                    NativeCameraServer.TrackingPointCommandCallback { value ->
+                        callback(value.toKotlin())
+                    },
+                )
+            if (subscriptionHandle != 0L) {
+                activeSubscriptions[subscriptionHandle] = {
+                    NativeCameraServer.unsubscribeTrackingPointCommand(handle, subscriptionHandle)
+                }
             }
+            subscriptionHandle
         }
-        return subscriptionHandle
-    }
 
     override fun unsubscribeTrackingPointCommand(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun subscribeTrackingRectangleCommand(
         callback: (CameraServer.TrackRectangle) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeTrackingRectangleCommand(
                 handle,
@@ -516,14 +586,16 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeTrackingRectangleCommand(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeTrackingRectangleCommand(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeTrackingOffCommand(callback: (Int) -> Unit): Long {
+    override fun subscribeTrackingOffCommand(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeCameraServer.subscribeTrackingOffCommand(
                 handle,
@@ -534,40 +606,57 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
                 NativeCameraServer.unsubscribeTrackingOffCommand(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeTrackingOffCommand(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun respondTrackingPointCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondTrackingPointCommand(handle, stopVideoFeedback.value)
+        withOpen {
+            NativeCameraServer.respondTrackingPointCommand(handle, stopVideoFeedback.value)
+        }
 
     override fun respondTrackingRectangleCommand(
         stopVideoFeedback: CameraServer.CameraFeedback
-    ): Int = NativeCameraServer.respondTrackingRectangleCommand(handle, stopVideoFeedback.value)
+    ): Int = withOpen {
+        NativeCameraServer.respondTrackingRectangleCommand(handle, stopVideoFeedback.value)
+    }
 
     override fun respondTrackingOffCommand(stopVideoFeedback: CameraServer.CameraFeedback): Int =
-        NativeCameraServer.respondTrackingOffCommand(handle, stopVideoFeedback.value)
+        withOpen {
+            NativeCameraServer.respondTrackingOffCommand(handle, stopVideoFeedback.value)
+        }
 
-    override fun setPosition(position: CameraServer.Position): Int =
+    override fun setPosition(position: CameraServer.Position): Int = withOpen {
         NativeCameraServer.setPosition(handle, position.toNative())
+    }
 
     override fun setAttitudeQuaternion(attitudeQuaternion: CameraServer.Quaternion): Int =
-        NativeCameraServer.setAttitudeQuaternion(handle, attitudeQuaternion.toNative())
+        withOpen {
+            NativeCameraServer.setAttitudeQuaternion(handle, attitudeQuaternion.toNative())
+        }
 
-    override fun setZoomFactor(zoomFactor: Float): Int =
+    override fun setZoomFactor(zoomFactor: Float): Int = withOpen {
         NativeCameraServer.setZoomFactor(handle, zoomFactor)
+    }
 
-    override fun setFieldOfView(horizontalFovDeg: Float, verticalFovDeg: Float): Int =
+    override fun setFieldOfView(horizontalFovDeg: Float, verticalFovDeg: Float): Int = withOpen {
         NativeCameraServer.setFieldOfView(handle, horizontalFovDeg, verticalFovDeg)
+    }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeCameraServer.destroy(handle)
         }
-        NativeCameraServer.destroy(handle)
     }
 }
 

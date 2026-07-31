@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.mission_raw_server
 
 import io.mavsdk.jni.plugins.mission_raw_server.NativeMissionRawServer
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun MissionRawServer.MissionItem.toNative(): NativeMissionRawServer.MissionItem =
     NativeMissionRawServer.MissionItem(
@@ -55,11 +58,22 @@ private fun NativeMissionRawServer.MissionProgress.toKotlin(): MissionRawServer.
     MissionRawServer.MissionProgress(current, total)
 
 private class MissionRawServerNativeImpl(private val handle: Long) : MissionRawServerNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "MissionRawServer is closed" }
+        action()
+    }
 
     override fun subscribeIncomingMission(
         callback: (Int, MissionRawServer.MissionPlan) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeMissionRawServer.subscribeIncomingMission(
                 handle,
@@ -72,16 +86,18 @@ private class MissionRawServerNativeImpl(private val handle: Long) : MissionRawS
                 NativeMissionRawServer.unsubscribeIncomingMission(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeIncomingMission(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun subscribeCurrentItemChanged(
         callback: (MissionRawServer.MissionItem) -> Unit
-    ): Long {
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeMissionRawServer.subscribeCurrentItemChanged(
                 handle,
@@ -94,18 +110,20 @@ private class MissionRawServerNativeImpl(private val handle: Long) : MissionRawS
                 NativeMissionRawServer.unsubscribeCurrentItemChanged(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeCurrentItemChanged(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun setCurrentItemComplete() {
-        NativeMissionRawServer.setCurrentItemComplete(handle)
+        withOpen { NativeMissionRawServer.setCurrentItemComplete(handle) }
     }
 
-    override fun subscribeClearAll(callback: (Int) -> Unit): Long {
+    override fun subscribeClearAll(callback: (Int) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeMissionRawServer.subscribeClearAll(
                 handle,
@@ -116,18 +134,24 @@ private class MissionRawServerNativeImpl(private val handle: Long) : MissionRawS
                 NativeMissionRawServer.unsubscribeClearAll(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeClearAll(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeMissionRawServer.destroy(handle)
         }
-        NativeMissionRawServer.destroy(handle)
     }
 }
 

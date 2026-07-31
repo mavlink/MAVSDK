@@ -5,6 +5,9 @@
 package io.mavsdk.kotlin.plugins.follow_me
 
 import io.mavsdk.jni.plugins.follow_me.NativeFollowMe
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun FollowMe.Config.toNative(): NativeFollowMe.Config =
     NativeFollowMe.Config(
@@ -47,33 +50,51 @@ private fun NativeFollowMe.TargetLocation.toKotlin(): FollowMe.TargetLocation =
     )
 
 private class FollowMeNativeImpl(private val handle: Long) : FollowMeNative {
-    override fun getConfig(): FollowMe.Config {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "FollowMe is closed" }
+        action()
+    }
+
+    override fun getConfig(): FollowMe.Config = withOpen {
         val value = NativeFollowMe.getConfig(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun setConfig(config: FollowMe.Config): Int =
+    override fun setConfig(config: FollowMe.Config): Int = withOpen {
         NativeFollowMe.setConfig(handle, config.toNative())
+    }
 
-    override fun isActive(): Boolean {
+    override fun isActive(): Boolean = withOpen {
         val value = NativeFollowMe.isActive(handle)
-        return value
+        value
     }
 
-    override fun setTargetLocation(location: FollowMe.TargetLocation): Int =
+    override fun setTargetLocation(location: FollowMe.TargetLocation): Int = withOpen {
         NativeFollowMe.setTargetLocation(handle, location.toNative())
-
-    override fun getLastLocation(): FollowMe.TargetLocation {
-        val value = NativeFollowMe.getLastLocation(handle)
-        return value.toKotlin()
     }
 
-    override fun start(): Int = NativeFollowMe.start(handle)
+    override fun getLastLocation(): FollowMe.TargetLocation = withOpen {
+        val value = NativeFollowMe.getLastLocation(handle)
+        value.toKotlin()
+    }
 
-    override fun stop(): Int = NativeFollowMe.stop(handle)
+    override fun start(): Int = withOpen { NativeFollowMe.start(handle) }
+
+    override fun stop(): Int = withOpen { NativeFollowMe.stop(handle) }
 
     override fun destroy() {
-        NativeFollowMe.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeFollowMe.destroy(handle)
+        }
     }
 }
 

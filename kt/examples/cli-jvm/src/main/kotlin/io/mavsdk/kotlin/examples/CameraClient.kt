@@ -31,7 +31,7 @@ fun cameraClient() = runBlocking {
             .first()
         println("✓ Camera system discovered!\n")
 
-        val camera = Camera.create(system)
+        val camera = system.camera
 
         // Subscribe to storage updates in the background.
         val storageJob = launch {

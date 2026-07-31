@@ -7,6 +7,9 @@ package io.mavsdk.kotlin.plugins.gimbal
 import io.mavsdk.jni.plugins.gimbal.NativeGimbal
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Gimbal.Quaternion.toNative(): NativeGimbal.Quaternion =
     NativeGimbal.Quaternion(w, x, y, z)
@@ -94,7 +97,18 @@ private fun NativeGimbal.ControlStatus.toKotlin(): Gimbal.ControlStatus =
     )
 
 private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Gimbal is closed" }
+        action()
+    }
 
     override fun setAnglesAsync(
         gimbalId: Int,
@@ -105,16 +119,18 @@ private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
         sendMode: Gimbal.SendMode,
         callback: (Int) -> Unit,
     ) {
-        NativeGimbal.setAnglesAsync(
-            handle,
-            gimbalId,
-            rollDeg,
-            pitchDeg,
-            yawDeg,
-            gimbalMode.value,
-            sendMode.value,
-            NativeGimbal.SetAnglesCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGimbal.setAnglesAsync(
+                handle,
+                gimbalId,
+                rollDeg,
+                pitchDeg,
+                yawDeg,
+                gimbalMode.value,
+                sendMode.value,
+                NativeGimbal.SetAnglesCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setAngularRatesAsync(
@@ -126,16 +142,18 @@ private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
         sendMode: Gimbal.SendMode,
         callback: (Int) -> Unit,
     ) {
-        NativeGimbal.setAngularRatesAsync(
-            handle,
-            gimbalId,
-            rollRateDegS,
-            pitchRateDegS,
-            yawRateDegS,
-            gimbalMode.value,
-            sendMode.value,
-            NativeGimbal.SetAngularRatesCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGimbal.setAngularRatesAsync(
+                handle,
+                gimbalId,
+                rollRateDegS,
+                pitchRateDegS,
+                yawRateDegS,
+                gimbalMode.value,
+                sendMode.value,
+                NativeGimbal.SetAngularRatesCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun setRoiLocationAsync(
@@ -145,14 +163,16 @@ private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
         altitudeM: Float,
         callback: (Int) -> Unit,
     ) {
-        NativeGimbal.setRoiLocationAsync(
-            handle,
-            gimbalId,
-            latitudeDeg,
-            longitudeDeg,
-            altitudeM,
-            NativeGimbal.SetRoiLocationCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGimbal.setRoiLocationAsync(
+                handle,
+                gimbalId,
+                latitudeDeg,
+                longitudeDeg,
+                altitudeM,
+                NativeGimbal.SetRoiLocationCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun takeControlAsync(
@@ -160,28 +180,32 @@ private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
         controlMode: Gimbal.ControlMode,
         callback: (Int) -> Unit,
     ) {
-        NativeGimbal.takeControlAsync(
-            handle,
-            gimbalId,
-            controlMode.value,
-            NativeGimbal.TakeControlCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGimbal.takeControlAsync(
+                handle,
+                gimbalId,
+                controlMode.value,
+                NativeGimbal.TakeControlCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun releaseControlAsync(gimbalId: Int, callback: (Int) -> Unit) {
-        NativeGimbal.releaseControlAsync(
-            handle,
-            gimbalId,
-            NativeGimbal.ReleaseControlCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeGimbal.releaseControlAsync(
+                handle,
+                gimbalId,
+                NativeGimbal.ReleaseControlCallback { result -> callback(result) },
+            )
+        }
     }
 
-    override fun gimbalList(): Gimbal.GimbalList {
+    override fun gimbalList(): Gimbal.GimbalList = withOpen {
         val value = NativeGimbal.gimbalList(handle)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeGimbalList(callback: (Gimbal.GimbalList) -> Unit): Long {
+    override fun subscribeGimbalList(callback: (Gimbal.GimbalList) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeGimbal.subscribeGimbalList(
                 handle,
@@ -192,14 +216,16 @@ private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
                 NativeGimbal.unsubscribeGimbalList(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeGimbalList(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun subscribeControlStatus(callback: (Gimbal.ControlStatus) -> Unit): Long {
+    override fun subscribeControlStatus(callback: (Gimbal.ControlStatus) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeGimbal.subscribeControlStatus(
                 handle,
@@ -210,19 +236,21 @@ private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
                 NativeGimbal.unsubscribeControlStatus(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeControlStatus(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getControlStatus(gimbalId: Int): Gimbal.ControlStatus {
+    override fun getControlStatus(gimbalId: Int): Gimbal.ControlStatus = withOpen {
         val value = NativeGimbal.getControlStatus(handle, gimbalId)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
-    override fun subscribeAttitude(callback: (Gimbal.Attitude) -> Unit): Long {
+    override fun subscribeAttitude(callback: (Gimbal.Attitude) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeGimbal.subscribeAttitude(
                 handle,
@@ -233,23 +261,29 @@ private class GimbalNativeImpl(private val handle: Long) : GimbalNative {
                 NativeGimbal.unsubscribeAttitude(handle, subscriptionHandle)
             }
         }
-        return subscriptionHandle
+        subscriptionHandle
     }
 
     override fun unsubscribeAttitude(subscriptionHandle: Long) {
-        activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    override fun getAttitude(gimbalId: Int): Gimbal.Attitude {
+    override fun getAttitude(gimbalId: Int): Gimbal.Attitude = withOpen {
         val value = NativeGimbal.getAttitude(handle, gimbalId)
-        return value.toKotlin()
+        value.toKotlin()
     }
 
     override fun destroy() {
-        activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
-            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
+            NativeGimbal.destroy(handle)
         }
-        NativeGimbal.destroy(handle)
     }
 }
 

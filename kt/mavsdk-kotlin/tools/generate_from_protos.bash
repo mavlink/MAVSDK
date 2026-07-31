@@ -105,9 +105,9 @@ main() {
         process_plugin "$plugin"
     done
 
-    if [ "${#plugins[@]}" -eq "${#default_plugins[@]}" ]; then
-        python3 "${script_dir}/validate_generated.py"
-    fi
+    # Always regenerated, even for a partial run: the accessors are derived from
+    # whatever plugin files are on disk, not just the ones processed above.
+    python3 "${script_dir}/generate_plugin_accessors.py"
 
     echo "All plugins processed successfully!"
 }

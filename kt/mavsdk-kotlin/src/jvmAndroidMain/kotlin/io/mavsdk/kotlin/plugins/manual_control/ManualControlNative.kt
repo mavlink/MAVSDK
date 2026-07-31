@@ -7,27 +7,51 @@ package io.mavsdk.kotlin.plugins.manual_control
 
 import io.mavsdk.jni.plugins.manual_control.NativeManualControl
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private class ManualControlNativeImpl(private val handle: Long) : ManualControlNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "ManualControl is closed" }
+        action()
+    }
+
     override fun startPositionControlAsync(callback: (Int) -> Unit) {
-        NativeManualControl.startPositionControlAsync(
-            handle,
-            NativeManualControl.StartPositionControlCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeManualControl.startPositionControlAsync(
+                handle,
+                NativeManualControl.StartPositionControlCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun startAltitudeControlAsync(callback: (Int) -> Unit) {
-        NativeManualControl.startAltitudeControlAsync(
-            handle,
-            NativeManualControl.StartAltitudeControlCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeManualControl.startAltitudeControlAsync(
+                handle,
+                NativeManualControl.StartAltitudeControlCallback { result -> callback(result) },
+            )
+        }
     }
 
-    override fun setManualControlInput(x: Float, y: Float, z: Float, r: Float): Int =
+    override fun setManualControlInput(x: Float, y: Float, z: Float, r: Float): Int = withOpen {
         NativeManualControl.setManualControlInput(handle, x, y, z, r)
+    }
 
     override fun destroy() {
-        NativeManualControl.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeManualControl.destroy(handle)
+        }
     }
 }
 

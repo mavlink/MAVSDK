@@ -6,6 +6,9 @@ package io.mavsdk.kotlin.plugins.offboard
 
 import io.mavsdk.jni.plugins.offboard.NativeOffboard
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun Offboard.Attitude.toNative(): NativeOffboard.Attitude =
     NativeOffboard.Attitude(rollDeg, pitchDeg, yawDeg, thrustValue)
@@ -68,70 +71,104 @@ private fun NativeOffboard.AccelerationNed.toKotlin(): Offboard.AccelerationNed 
     Offboard.AccelerationNed(northMS2, eastMS2, downMS2)
 
 private class OffboardNativeImpl(private val handle: Long) : OffboardNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "Offboard is closed" }
+        action()
+    }
+
     override fun startAsync(callback: (Int) -> Unit) {
-        NativeOffboard.startAsync(
-            handle,
-            NativeOffboard.StartCallback { result -> callback(result) },
-        )
+        withOpen {
+            NativeOffboard.startAsync(
+                handle,
+                NativeOffboard.StartCallback { result -> callback(result) },
+            )
+        }
     }
 
     override fun stopAsync(callback: (Int) -> Unit) {
-        NativeOffboard.stopAsync(handle, NativeOffboard.StopCallback { result -> callback(result) })
+        withOpen {
+            NativeOffboard.stopAsync(
+                handle,
+                NativeOffboard.StopCallback { result -> callback(result) },
+            )
+        }
     }
 
-    override fun isActive(): Boolean {
+    override fun isActive(): Boolean = withOpen {
         val value = NativeOffboard.isActive(handle)
-        return value
+        value
     }
 
-    override fun setAttitude(attitude: Offboard.Attitude): Int =
+    override fun setAttitude(attitude: Offboard.Attitude): Int = withOpen {
         NativeOffboard.setAttitude(handle, attitude.toNative())
+    }
 
-    override fun setActuatorControl(actuatorControl: Offboard.ActuatorControl): Int =
+    override fun setActuatorControl(actuatorControl: Offboard.ActuatorControl): Int = withOpen {
         NativeOffboard.setActuatorControl(handle, actuatorControl.toNative())
+    }
 
-    override fun setAttitudeRate(attitudeRate: Offboard.AttitudeRate): Int =
+    override fun setAttitudeRate(attitudeRate: Offboard.AttitudeRate): Int = withOpen {
         NativeOffboard.setAttitudeRate(handle, attitudeRate.toNative())
+    }
 
-    override fun setPositionNed(positionNedYaw: Offboard.PositionNedYaw): Int =
+    override fun setPositionNed(positionNedYaw: Offboard.PositionNedYaw): Int = withOpen {
         NativeOffboard.setPositionNed(handle, positionNedYaw.toNative())
+    }
 
-    override fun setPositionGlobal(positionGlobalYaw: Offboard.PositionGlobalYaw): Int =
+    override fun setPositionGlobal(positionGlobalYaw: Offboard.PositionGlobalYaw): Int = withOpen {
         NativeOffboard.setPositionGlobal(handle, positionGlobalYaw.toNative())
+    }
 
     override fun setVelocityBody(velocityBodyYawspeed: Offboard.VelocityBodyYawspeed): Int =
-        NativeOffboard.setVelocityBody(handle, velocityBodyYawspeed.toNative())
+        withOpen {
+            NativeOffboard.setVelocityBody(handle, velocityBodyYawspeed.toNative())
+        }
 
-    override fun setVelocityNed(velocityNedYaw: Offboard.VelocityNedYaw): Int =
+    override fun setVelocityNed(velocityNedYaw: Offboard.VelocityNedYaw): Int = withOpen {
         NativeOffboard.setVelocityNed(handle, velocityNedYaw.toNative())
+    }
 
     override fun setPositionVelocityNed(
         positionNedYaw: Offboard.PositionNedYaw,
         velocityNedYaw: Offboard.VelocityNedYaw,
-    ): Int =
+    ): Int = withOpen {
         NativeOffboard.setPositionVelocityNed(
             handle,
             positionNedYaw.toNative(),
             velocityNedYaw.toNative(),
         )
+    }
 
     override fun setPositionVelocityAccelerationNed(
         positionNedYaw: Offboard.PositionNedYaw,
         velocityNedYaw: Offboard.VelocityNedYaw,
         accelerationNed: Offboard.AccelerationNed,
-    ): Int =
+    ): Int = withOpen {
         NativeOffboard.setPositionVelocityAccelerationNed(
             handle,
             positionNedYaw.toNative(),
             velocityNedYaw.toNative(),
             accelerationNed.toNative(),
         )
+    }
 
-    override fun setAccelerationNed(accelerationNed: Offboard.AccelerationNed): Int =
+    override fun setAccelerationNed(accelerationNed: Offboard.AccelerationNed): Int = withOpen {
         NativeOffboard.setAccelerationNed(handle, accelerationNed.toNative())
+    }
 
     override fun destroy() {
-        NativeOffboard.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeOffboard.destroy(handle)
+        }
     }
 }
 

@@ -6,6 +6,9 @@
 package io.mavsdk.kotlin.plugins.telemetry_server
 
 import io.mavsdk.jni.plugins.telemetry_server.NativeTelemetryServer
+import java.util.concurrent.locks.ReentrantReadWriteLock
+import kotlin.concurrent.read
+import kotlin.concurrent.write
 
 private fun TelemetryServer.Position.toNative(): NativeTelemetryServer.Position =
     NativeTelemetryServer.Position(latitudeDeg, longitudeDeg, absoluteAltitudeM, relativeAltitudeM)
@@ -268,20 +271,34 @@ private fun NativeTelemetryServer.Imu.toKotlin(): TelemetryServer.Imu =
     )
 
 private class TelemetryServerNativeImpl(private val handle: Long) : TelemetryServerNative {
+    // The read lock keeps `handle` alive for the duration of a native call; destroy()
+    // takes the write lock, which waits for in-flight calls to finish. Readers do not
+    // exclude each other, so independent calls on this plugin still run concurrently
+    // and cancelling a subscription does not queue behind a slow blocking call.
+    private val lifecycle = ReentrantReadWriteLock()
+    @Volatile private var destroyed = false
+
+    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
+        check(!destroyed) { "TelemetryServer is closed" }
+        action()
+    }
+
     override fun publishPosition(
         position: TelemetryServer.Position,
         velocityNed: TelemetryServer.VelocityNed,
         heading: TelemetryServer.Heading,
-    ): Int =
+    ): Int = withOpen {
         NativeTelemetryServer.publishPosition(
             handle,
             position.toNative(),
             velocityNed.toNative(),
             heading.toNative(),
         )
+    }
 
-    override fun publishHome(home: TelemetryServer.Position): Int =
+    override fun publishHome(home: TelemetryServer.Position): Int = withOpen {
         NativeTelemetryServer.publishHome(handle, home.toNative())
+    }
 
     override fun publishSysStatus(
         battery: TelemetryServer.Battery,
@@ -290,7 +307,7 @@ private class TelemetryServerNativeImpl(private val handle: Long) : TelemetrySer
         accelStatus: Boolean,
         magStatus: Boolean,
         gpsStatus: Boolean,
-    ): Int =
+    ): Int = withOpen {
         NativeTelemetryServer.publishSysStatus(
             handle,
             battery.toNative(),
@@ -300,62 +317,84 @@ private class TelemetryServerNativeImpl(private val handle: Long) : TelemetrySer
             magStatus,
             gpsStatus,
         )
+    }
 
     override fun publishExtendedSysState(
         vtolState: TelemetryServer.VtolState,
         landedState: TelemetryServer.LandedState,
-    ): Int =
+    ): Int = withOpen {
         NativeTelemetryServer.publishExtendedSysState(handle, vtolState.value, landedState.value)
+    }
 
     override fun publishRawGps(
         rawGps: TelemetryServer.RawGps,
         gpsInfo: TelemetryServer.GpsInfo,
-    ): Int = NativeTelemetryServer.publishRawGps(handle, rawGps.toNative(), gpsInfo.toNative())
+    ): Int = withOpen {
+        NativeTelemetryServer.publishRawGps(handle, rawGps.toNative(), gpsInfo.toNative())
+    }
 
-    override fun publishBattery(battery: TelemetryServer.Battery): Int =
+    override fun publishBattery(battery: TelemetryServer.Battery): Int = withOpen {
         NativeTelemetryServer.publishBattery(handle, battery.toNative())
+    }
 
-    override fun publishStatusText(statusText: TelemetryServer.StatusText): Int =
+    override fun publishStatusText(statusText: TelemetryServer.StatusText): Int = withOpen {
         NativeTelemetryServer.publishStatusText(handle, statusText.toNative())
+    }
 
-    override fun publishOdometry(odometry: TelemetryServer.Odometry): Int =
+    override fun publishOdometry(odometry: TelemetryServer.Odometry): Int = withOpen {
         NativeTelemetryServer.publishOdometry(handle, odometry.toNative())
+    }
 
     override fun publishPositionVelocityNed(
         positionVelocityNed: TelemetryServer.PositionVelocityNed
-    ): Int =
+    ): Int = withOpen {
         NativeTelemetryServer.publishPositionVelocityNed(handle, positionVelocityNed.toNative())
+    }
 
-    override fun publishGroundTruth(groundTruth: TelemetryServer.GroundTruth): Int =
+    override fun publishGroundTruth(groundTruth: TelemetryServer.GroundTruth): Int = withOpen {
         NativeTelemetryServer.publishGroundTruth(handle, groundTruth.toNative())
+    }
 
-    override fun publishImu(imu: TelemetryServer.Imu): Int =
+    override fun publishImu(imu: TelemetryServer.Imu): Int = withOpen {
         NativeTelemetryServer.publishImu(handle, imu.toNative())
+    }
 
-    override fun publishScaledImu(imu: TelemetryServer.Imu): Int =
+    override fun publishScaledImu(imu: TelemetryServer.Imu): Int = withOpen {
         NativeTelemetryServer.publishScaledImu(handle, imu.toNative())
+    }
 
-    override fun publishRawImu(imu: TelemetryServer.Imu): Int =
+    override fun publishRawImu(imu: TelemetryServer.Imu): Int = withOpen {
         NativeTelemetryServer.publishRawImu(handle, imu.toNative())
+    }
 
-    override fun publishUnixEpochTime(timeUs: Long): Int =
+    override fun publishUnixEpochTime(timeUs: Long): Int = withOpen {
         NativeTelemetryServer.publishUnixEpochTime(handle, timeUs)
+    }
 
     override fun publishDistanceSensor(distanceSensor: TelemetryServer.DistanceSensor): Int =
-        NativeTelemetryServer.publishDistanceSensor(handle, distanceSensor.toNative())
+        withOpen {
+            NativeTelemetryServer.publishDistanceSensor(handle, distanceSensor.toNative())
+        }
 
     override fun publishAttitude(
         angle: TelemetryServer.EulerAngle,
         angularVelocity: TelemetryServer.AngularVelocityBody,
-    ): Int =
+    ): Int = withOpen {
         NativeTelemetryServer.publishAttitude(handle, angle.toNative(), angularVelocity.toNative())
+    }
 
     override fun publishVisualFlightRulesHud(
         fixedWingMetrics: TelemetryServer.FixedwingMetrics
-    ): Int = NativeTelemetryServer.publishVisualFlightRulesHud(handle, fixedWingMetrics.toNative())
+    ): Int = withOpen {
+        NativeTelemetryServer.publishVisualFlightRulesHud(handle, fixedWingMetrics.toNative())
+    }
 
     override fun destroy() {
-        NativeTelemetryServer.destroy(handle)
+        lifecycle.write {
+            if (destroyed) return
+            destroyed = true
+            NativeTelemetryServer.destroy(handle)
+        }
     }
 }
 

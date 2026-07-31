@@ -5,12 +5,13 @@ public final class NativeMavsdk {
 
     @FunctionalInterface
     public interface NewSystemCallback {
-        void invoke(long systemHandle);
+        void invoke();
     }
 
     public static native long create(long configurationHandle);
     public static native String version(long handle);
     public static native long serverComponentHandle(long handle, int instance);
+    public static native void destroyServerComponent(long handle);
     public static native int addAnyConnection(long handle, String connectionUrl);
     public static native long[] addAnyConnectionWithHandle(long handle, String connectionUrl);
     public static native void removeConnection(long handle, long connectionHandle);

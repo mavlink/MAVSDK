@@ -26,42 +26,40 @@ fun cameraServer() = runBlocking {
             }
         println("✓ Listening\n")
 
-        // Server plugins are not associated with a System and must be closed explicitly.
-        CameraServer.create(mavsdk).use { server ->
+        val server = mavsdk.serverComponent().cameraServer
 
-            // Register all operation handlers before activating.
-            subscribeOperations(server)
+        // Register all operation handlers before activating.
+        subscribeOperations(server)
 
-            // Set initial capture state.
-            server.setInProgress(false)
+        // Set initial capture state.
+        server.setInProgress(false)
 
-            // Publish camera information — this activates the plugin.
-            val info = CameraServer.Information(
-                vendorName                = "MAVSDK",
-                modelName                 = "Example Camera Server",
-                firmwareVersion           = "1.0.0",
-                focalLengthMm             = 3.0f,
-                horizontalSensorSizeMm    = 3.68f,
-                verticalSensorSizeMm      = 2.76f,
-                horizontalResolutionPx    = 3280,
-                verticalResolutionPx      = 2464,
-                lensId                    = 0,
-                definitionFileVersion     = 0,
-                definitionFileUri         = "",
-                imageInVideoModeSupported = false,
-                videoInImageModeSupported = false,
-            )
-            val result = server.setInformation(info)
-            if (result != CameraServer.Result.SUCCESS) {
-                println("✗ Failed to set camera info: $result")
-                return@runBlocking
-            }
-            println("✓ Camera active — ready for clients\n")
-
-            // Run indefinitely as a server.
-            println("Serving... (press Ctrl+C to stop)")
-            delay(Long.MAX_VALUE)
+        // Publish camera information — this activates the plugin.
+        val info = CameraServer.Information(
+            vendorName                = "MAVSDK",
+            modelName                 = "Example Camera Server",
+            firmwareVersion           = "1.0.0",
+            focalLengthMm             = 3.0f,
+            horizontalSensorSizeMm    = 3.68f,
+            verticalSensorSizeMm      = 2.76f,
+            horizontalResolutionPx    = 3280,
+            verticalResolutionPx      = 2464,
+            lensId                    = 0,
+            definitionFileVersion     = 0,
+            definitionFileUri         = "",
+            imageInVideoModeSupported = false,
+            videoInImageModeSupported = false,
+        )
+        val result = server.setInformation(info)
+        if (result != CameraServer.Result.SUCCESS) {
+            println("✗ Failed to set camera info: $result")
+            return@runBlocking
         }
+        println("✓ Camera active — ready for clients\n")
+
+        // Run indefinitely as a server.
+        println("Serving... (press Ctrl+C to stop)")
+        delay(Long.MAX_VALUE)
     }
 }
 
