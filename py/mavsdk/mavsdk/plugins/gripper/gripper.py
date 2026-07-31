@@ -8,7 +8,6 @@
 Allows users to send gripper actions.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -70,7 +69,7 @@ class Gripper:
                 "Failed to create Gripper plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def grab_async(self, instance, callback: Callable, user_data: Any = None):
         """Gripper grab cargo."""
@@ -153,6 +152,9 @@ _cmavsdk_lib.mavsdk_gripper_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_gripper_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_gripper_destroy.restype = None
 
+
+_cmavsdk_lib.mavsdk_gripper_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_gripper_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_gripper_grab_async.argtypes = [
     ctypes.c_void_p,

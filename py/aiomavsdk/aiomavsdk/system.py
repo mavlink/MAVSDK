@@ -4,7 +4,9 @@ import asyncio
 
 from typing import AsyncGenerator, List
 
+from mavsdk.autopilot import Autopilot
 from mavsdk.system import System as _System
+from mavsdk.vehicle import Vehicle
 
 
 class System:
@@ -49,6 +51,14 @@ class System:
     async def enable_timesync(self) -> None:
         """Enable time synchronization using the TIMESYNC messages."""
         self._system.enable_timesync()
+
+    async def autopilot_type(self) -> Autopilot:
+        """Get the autopilot type reported by this system."""
+        return self._system.autopilot_type()
+
+    async def vehicle_type(self) -> Vehicle:
+        """Get the vehicle type reported by this system."""
+        return self._system.vehicle_type()
 
     # ------------------------------------------------------------------
     # Potentially blocking accessors — offloaded to executor

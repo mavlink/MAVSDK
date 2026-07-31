@@ -8,7 +8,6 @@
 Enable manual control using e.g. a joystick or gamepad.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -64,7 +63,7 @@ class ManualControl:
                 "Failed to create ManualControl plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def start_position_control_async(self, callback: Callable, user_data: Any = None):
         """Start position control using e.g. joystick input.
@@ -171,6 +170,11 @@ _cmavsdk_lib.mavsdk_manual_control_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_manual_control_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_manual_control_destroy.restype = None
 
+
+_cmavsdk_lib.mavsdk_manual_control_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_manual_control_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_manual_control_start_position_control_async.argtypes = [
     ctypes.c_void_p,

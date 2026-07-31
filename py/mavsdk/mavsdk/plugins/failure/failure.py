@@ -8,7 +8,6 @@
 Inject failures into system to test failsafes.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -94,7 +93,7 @@ class Failure:
                 "Failed to create Failure plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def inject(self, failure_unit, failure_type, instance):
         """Get inject (blocking)"""
@@ -129,6 +128,10 @@ _cmavsdk_lib.mavsdk_failure_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_failure_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_failure_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_failure_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_failure_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_failure_inject.argtypes = [

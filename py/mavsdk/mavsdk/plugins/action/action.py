@@ -8,7 +8,6 @@
 Enable simple actions such as arming, taking off, and landing.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -85,7 +84,7 @@ class Action:
                 "Failed to create Action plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def arm_async(self, callback: Callable, user_data: Any = None):
         """Send command to arm the drone.
@@ -958,6 +957,9 @@ _cmavsdk_lib.mavsdk_action_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_action_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_action_destroy.restype = None
 
+
+_cmavsdk_lib.mavsdk_action_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_action_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_action_arm_async.argtypes = [
     ctypes.c_void_p,

@@ -169,6 +169,9 @@ CMAVSDK_EXPORT mavsdk_server_component_t mavsdk_server_component(
     mavsdk_t mavsdk,
     unsigned int instance
 );
+CMAVSDK_EXPORT void mavsdk_server_component_destroy(
+    mavsdk_server_component_t server_component
+);
 CMAVSDK_EXPORT mavsdk_server_component_t mavsdk_server_component_by_type(
     mavsdk_t mavsdk,
     mavsdk_component_type_t component_type,

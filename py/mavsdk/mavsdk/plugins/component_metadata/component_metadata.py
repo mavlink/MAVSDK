@@ -8,7 +8,6 @@
 Access component metadata json definitions, such as parameters.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -154,7 +153,7 @@ class ComponentMetadata:
                 "Failed to create ComponentMetadata plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def request_component(self, compid):
         """Get request_component (blocking)"""
@@ -245,10 +244,28 @@ _cmavsdk_lib.mavsdk_component_metadata_metadata_data_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_component_metadata_metadata_data_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_component_metadata_metadata_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MetadataDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_component_metadata_metadata_data_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_component_metadata_metadata_update_destroy.argtypes = [
     ctypes.POINTER(MetadataUpdateCStruct)
 ]
 _cmavsdk_lib.mavsdk_component_metadata_metadata_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_component_metadata_metadata_update_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MetadataUpdateCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_component_metadata_metadata_update_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_component_metadata_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_component_metadata_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_component_metadata_request_component.argtypes = [

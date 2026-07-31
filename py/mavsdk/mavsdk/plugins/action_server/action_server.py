@@ -8,7 +8,6 @@
 Provide vehicle actions (as a server) such as arming, taking off, and landing.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -206,7 +205,7 @@ class ActionServer:
                 "Failed to create ActionServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def subscribe_arm_disarm(self, callback: Callable, user_data: Any = None):
         """Subscribe to ARM/DISARM commands"""
@@ -522,11 +521,28 @@ _cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(AllowableFlightModesCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_action_server_arm_disarm_destroy.argtypes = [
     ctypes.POINTER(ArmDisarmCStruct)
 ]
 _cmavsdk_lib.mavsdk_action_server_arm_disarm_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_action_server_arm_disarm_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ArmDisarmCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_action_server_arm_disarm_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_action_server_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_action_server_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_arm_disarm.argtypes = [
     ctypes.c_void_p,

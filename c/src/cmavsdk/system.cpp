@@ -3,6 +3,7 @@
 #include <mavsdk/system.hpp>
 #include <mavsdk/component_type.hpp>
 #include <cstring>
+#include <memory>
 #include <vector>
 
 using namespace mavsdk;
@@ -11,44 +12,44 @@ extern "C" {
 
 // --- Creation / Destruction ---
 void mavsdk_system_destroy(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     delete cpp_system_ptr;
 }
 
 // --- Basic Queries ---
 bool mavsdk_system_has_autopilot(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     return (*cpp_system_ptr)->has_autopilot();
 }
 
 bool mavsdk_system_is_standalone(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     return (*cpp_system_ptr)->is_standalone();
 }
 
 bool mavsdk_system_has_camera(mavsdk_system_t system, int camera_id) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     return (*cpp_system_ptr)->has_camera(camera_id);
 }
 
 bool mavsdk_system_has_gimbal(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     return (*cpp_system_ptr)->has_gimbal();
 }
 
 bool mavsdk_system_is_connected(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     return (*cpp_system_ptr)->is_connected();
 }
 
 uint8_t mavsdk_system_get_system_id(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     return (*cpp_system_ptr)->get_system_id();
 }
 
 // --- Component IDs ---
 uint8_t* mavsdk_system_component_ids(mavsdk_system_t system, size_t* count) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     auto ids = (*cpp_system_ptr)->component_ids();
     *count = ids.size();
     if (ids.empty()) {
@@ -87,7 +88,7 @@ mavsdk_is_connected_handle_t mavsdk_system_subscribe_is_connected(
     mavsdk_is_connected_callback_t callback,
     void* user_data)
 {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     
     auto* wrapper = new IsConnectedCallbackWrapper{callback, user_data};
     
@@ -111,7 +112,7 @@ void mavsdk_system_unsubscribe_is_connected(
     mavsdk_system_t system,
     mavsdk_is_connected_handle_t handle)
 {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     auto* handle_pair = static_cast<std::pair<System::IsConnectedHandle, IsConnectedCallbackWrapper*>*>(handle);
     
     if (handle_pair) {
@@ -127,7 +128,7 @@ mavsdk_component_discovered_handle_t mavsdk_system_subscribe_component_discovere
     mavsdk_component_discovered_callback_t callback,
     void* user_data)
 {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     
     auto* wrapper = new ComponentDiscoveredCallbackWrapper{callback, user_data};
     
@@ -150,7 +151,7 @@ void mavsdk_system_unsubscribe_component_discovered(
     mavsdk_system_t system,
     mavsdk_component_discovered_handle_t handle)
 {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     auto* handle_pair = static_cast<std::pair<System::ComponentDiscoveredHandle, ComponentDiscoveredCallbackWrapper*>*>(handle);
     
     if (handle_pair) {
@@ -166,7 +167,7 @@ mavsdk_component_discovered_id_handle_t mavsdk_system_subscribe_component_discov
     mavsdk_component_discovered_id_callback_t callback,
     void* user_data)
 {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     
     auto* wrapper = new ComponentDiscoveredIdCallbackWrapper{callback, user_data};
     
@@ -189,7 +190,7 @@ void mavsdk_system_unsubscribe_component_discovered_id(
     mavsdk_system_t system,
     mavsdk_component_discovered_id_handle_t handle)
 {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     auto* handle_pair = static_cast<std::pair<System::ComponentDiscoveredIdHandle, ComponentDiscoveredIdCallbackWrapper*>*>(handle);
     
     if (handle_pair) {
@@ -201,12 +202,12 @@ void mavsdk_system_unsubscribe_component_discovered_id(
 
 // --- Other System Functions ---
 void mavsdk_system_enable_timesync(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     (*cpp_system_ptr)->enable_timesync();
 }
 
 mavsdk_autopilot_t mavsdk_system_autopilot_type(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     switch ((*cpp_system_ptr)->autopilot_type()) {
         case Autopilot::Px4: return MAVSDK_AUTOPILOT_PX4;
         case Autopilot::ArduPilot: return MAVSDK_AUTOPILOT_ARDUPILOT;
@@ -216,7 +217,7 @@ mavsdk_autopilot_t mavsdk_system_autopilot_type(mavsdk_system_t system) {
 }
 
 mavsdk_vehicle_t mavsdk_system_vehicle_type(mavsdk_system_t system) {
-    auto* cpp_system_ptr = static_cast<System**>(system);
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     switch ((*cpp_system_ptr)->vehicle_type()) {
         case Vehicle::FixedWing: return MAVSDK_VEHICLE_FIXED_WING;
         case Vehicle::Quadrotor:

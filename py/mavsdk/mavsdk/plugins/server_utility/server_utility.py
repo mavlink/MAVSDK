@@ -8,7 +8,6 @@
 Utility for onboard MAVSDK instances for common "server" tasks.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -71,7 +70,7 @@ class ServerUtility:
                 "Failed to create ServerUtility plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def send_status_text(self, type, text):
         """Get send_status_text (blocking)"""
@@ -105,6 +104,12 @@ _cmavsdk_lib.mavsdk_server_utility_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_server_utility_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_server_utility_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_server_utility_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_server_utility_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_server_utility_send_status_text.argtypes = [

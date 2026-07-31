@@ -8,7 +8,6 @@
 Service to send RTK corrections to the vehicle.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -95,7 +94,7 @@ class Rtk:
                 "Failed to create Rtk plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def send_rtcm_data(self, rtcm_data):
         """Get send_rtcm_data (blocking)"""
@@ -131,6 +130,16 @@ _cmavsdk_lib.mavsdk_rtk_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_rtk_rtcm_data_destroy.argtypes = [ctypes.POINTER(RtcmDataCStruct)]
 _cmavsdk_lib.mavsdk_rtk_rtcm_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_rtk_rtcm_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(RtcmDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_rtk_rtcm_data_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_rtk_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_rtk_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_rtk_send_rtcm_data.argtypes = [

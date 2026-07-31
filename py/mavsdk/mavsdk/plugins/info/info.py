@@ -8,7 +8,6 @@
 Provide information about the hardware and/or software of a system.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -332,7 +331,7 @@ class Info:
                 "Failed to create Info plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def get_identification(self):
         """Get get_identification (blocking)"""
@@ -446,16 +445,44 @@ _cmavsdk_lib.mavsdk_info_flight_info_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_info_flight_info_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_info_flight_info_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(FlightInfoCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_info_flight_info_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_info_identification_destroy.argtypes = [
     ctypes.POINTER(IdentificationCStruct)
 ]
 _cmavsdk_lib.mavsdk_info_identification_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_info_identification_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(IdentificationCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_info_identification_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_info_product_destroy.argtypes = [ctypes.POINTER(ProductCStruct)]
 _cmavsdk_lib.mavsdk_info_product_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_info_product_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ProductCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_info_product_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_info_version_destroy.argtypes = [ctypes.POINTER(VersionCStruct)]
 _cmavsdk_lib.mavsdk_info_version_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_info_version_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(VersionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_info_version_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_info_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_info_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_info_get_identification.argtypes = [
