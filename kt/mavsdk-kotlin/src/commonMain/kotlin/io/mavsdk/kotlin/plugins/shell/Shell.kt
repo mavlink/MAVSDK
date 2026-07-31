@@ -9,15 +9,23 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/** Allow to communicate with the vehicle's system shell. */
 class Shell internal constructor(private val native: ShellNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for shell requests */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** No system is connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Response was not received */
         NO_RESPONSE(4),
+        /** Shell busy (transfer in progress) */
         BUSY(5);
 
         companion object {
@@ -25,8 +33,22 @@ class Shell internal constructor(private val native: ShellNative) : AutoCloseabl
         }
     }
 
+    /**
+     * Send a command line.
+     *
+     * @param command The command line to send
+     * @return The result of the request.
+     */
     fun send(command: String): Result = Result.fromValue(native.send(command))
 
+    /**
+     * Receive feedback from a sent command line.
+     *
+     * This subscription needs to be made before a command line is sent, otherwise, no response will
+     * be sent.
+     *
+     * @return Received data.
+     */
     fun subscribeReceive(): Flow<String> = callbackFlow {
         val subscriptionHandle = native.subscribeReceive() { value -> trySend(value) }
         awaitClose { native.unsubscribeReceive(subscriptionHandle) }

@@ -8,16 +8,25 @@ import io.mavsdk.kotlin.System
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Allows users to send gripper actions. */
 class Gripper internal constructor(private val native: GripperNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for gripper action requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request was successful */
         SUCCESS(1),
+        /** No system is connected */
         NO_SYSTEM(2),
+        /** Temporarily rejected */
         BUSY(3),
+        /** Request timed out */
         TIMEOUT(4),
+        /** Action not supported */
         UNSUPPORTED(5),
+        /** Action failed */
         FAILED(6);
 
         companion object {
@@ -25,8 +34,16 @@ class Gripper internal constructor(private val native: GripperNative) : AutoClos
         }
     }
 
+    /**
+     * Gripper Actions.
+     *
+     * Available gripper actions are defined in mavlink under
+     * https://mavlink.io/en/messages/common.html#GRIPPER_ACTIONS
+     */
     enum class GripperAction(val value: Int) {
+        /** Open the gripper to release the cargo */
         RELEASE(0),
+        /** Close the gripper and grab onto cargo */
         GRAB(1);
 
         companion object {
@@ -35,6 +52,12 @@ class Gripper internal constructor(private val native: GripperNative) : AutoClos
         }
     }
 
+    /**
+     * Gripper grab cargo.
+     *
+     * @param instance
+     * @return The result of the request.
+     */
     suspend fun grab(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = GripperCallbackGuard()
         native.grabAsync(instance) { result ->
@@ -45,6 +68,12 @@ class Gripper internal constructor(private val native: GripperNative) : AutoClos
         }
     }
 
+    /**
+     * Gripper release cargo.
+     *
+     * @param instance
+     * @return The result of the request.
+     */
     suspend fun release(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = GripperCallbackGuard()
         native.releaseAsync(instance) { result ->

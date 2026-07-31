@@ -11,25 +11,43 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Enable waypoint missions. */
 class Mission internal constructor(private val native: MissionNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for action requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Error */
         ERROR(2),
+        /** Too many mission items in the mission */
         TOO_MANY_MISSION_ITEMS(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Request timed out */
         TIMEOUT(5),
+        /** Invalid argument */
         INVALID_ARGUMENT(6),
+        /** Mission downloaded from the system is not supported */
         UNSUPPORTED(7),
+        /** No mission available on the system */
         NO_MISSION_AVAILABLE(8),
+        /** Unsupported mission command */
         UNSUPPORTED_MISSION_CMD(9),
+        /** Mission transfer (upload or download) has been cancelled */
         TRANSFER_CANCELLED(10),
+        /** No system connected */
         NO_SYSTEM(11),
+        /** Intermediate message showing progress */
         NEXT(12),
+        /** Request denied */
         DENIED(13),
+        /** There was a protocol error */
         PROTOCOL_ERROR(14),
+        /** The system does not support the MISSION_INT protocol */
         INT_MESSAGES_NOT_SUPPORTED(15);
 
         companion object {
@@ -37,14 +55,23 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         }
     }
 
+    /** Possible camera actions at a mission item. */
     enum class CameraAction(val value: Int) {
+        /** No action */
         NONE(0),
+        /** Take a single photo */
         TAKE_PHOTO(1),
+        /** Start capturing photos at regular intervals */
         START_PHOTO_INTERVAL(2),
+        /** Stop capturing photos at regular intervals */
         STOP_PHOTO_INTERVAL(3),
+        /** Start capturing video */
         START_VIDEO(4),
+        /** Stop capturing video */
         STOP_VIDEO(5),
+        /** Start capturing photos at regular distance */
         START_PHOTO_DISTANCE(6),
+        /** Stop capturing photos at regular distance */
         STOP_PHOTO_DISTANCE(7);
 
         companion object {
@@ -53,11 +80,17 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         }
     }
 
+    /** Possible vehicle actions at a mission item */
     enum class VehicleAction(val value: Int) {
+        /** No action */
         NONE(0),
+        /** Vehicle will takeoff and go to defined waypoint */
         TAKEOFF(1),
+        /** When a waypoint is reached vehicle will land at current position */
         LAND(2),
+        /** When a waypoint is reached vehicle will transition to fixed-wing mode */
         TRANSITION_TO_FW(3),
+        /** When a waypoint is reached vehicle will transition to multi-copter mode */
         TRANSITION_TO_MC(4);
 
         companion object {
@@ -66,6 +99,31 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         }
     }
 
+    /**
+     * Type representing a mission item.
+     *
+     * A MissionItem can contain a position and/or actions. Mission items are building blocks to
+     * assemble a mission, which can be sent to (or received from) a system. They cannot be used
+     * independently.
+     *
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to +180)
+     * @property relativeAltitudeM Altitude relative to takeoff altitude in metres
+     * @property speedMS Speed to use after this mission item (in metres/second)
+     * @property isFlyThrough True will make the drone fly through without stopping, while false
+     *   will make the drone stop on the waypoint
+     * @property gimbalPitchDeg Gimbal pitch (in degrees)
+     * @property gimbalYawDeg Gimbal yaw (in degrees)
+     * @property cameraAction Camera action to trigger at this mission item
+     * @property loiterTimeS Loiter time (in seconds)
+     * @property cameraPhotoIntervalS Camera photo interval to use after this mission item (in
+     *   seconds)
+     * @property acceptanceRadiusM Radius for completing a mission item (in metres)
+     * @property yawDeg Absolute yaw angle (in degrees)
+     * @property cameraPhotoDistanceM Camera photo distance to use after this mission item (in
+     *   meters)
+     * @property vehicleAction Vehicle action to trigger at this mission item.
+     */
     data class MissionItem(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
@@ -83,12 +141,37 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         val vehicleAction: VehicleAction,
     )
 
+    /**
+     * Mission plan type
+     *
+     * @property missionItems The mission items
+     */
     data class MissionPlan(val missionItems: List<MissionItem> = emptyList())
 
+    /**
+     * Mission progress type.
+     *
+     * @property current Current mission item index (0-based), if equal to total, the mission is
+     *   finished
+     * @property total Total number of mission items
+     */
     data class MissionProgress(val current: Int, val total: Int)
 
+    /**
+     * Progress data coming from mission upload.
+     *
+     * @property progress Progress (0..1.0)
+     */
     data class ProgressData(val progress: Float)
 
+    /**
+     * Progress data coming from mission download, or the mission itself (if the transfer succeeds).
+     *
+     * @property hasProgress Whether this ProgressData contains a 'progress' status or not
+     * @property progress Progress (0..1.0)
+     * @property hasMission Whether this ProgressData contains a 'mission_plan' or not
+     * @property missionPlan Mission plan
+     */
     data class ProgressDataOrMission(
         val hasProgress: Boolean,
         val progress: Float,
@@ -96,6 +179,15 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         val missionPlan: MissionPlan,
     )
 
+    /**
+     * Upload a list of mission items to the system.
+     *
+     * The mission items are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if the connection is lost.
+     *
+     * @param missionPlan The mission plan
+     * @return The result of the request.
+     */
     suspend fun uploadMission(missionPlan: MissionPlan): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionCallbackGuard()
@@ -109,6 +201,15 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
             }
         }
 
+    /**
+     * Upload a list of mission items to the system and report upload progress.
+     *
+     * The mission items are uploaded to a drone. Once uploaded the mission can be started and
+     * executed even if the connection is lost.
+     *
+     * @param missionPlan The mission plan
+     * @return The progress data
+     */
     fun uploadMissionWithProgress(missionPlan: MissionPlan): Flow<kotlin.Result<ProgressData>> =
         callbackFlow {
             native.uploadMissionWithProgressAsync(missionPlan) { result, value ->
@@ -132,8 +233,20 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
             awaitClose {}
         }
 
+    /**
+     * Cancel an ongoing mission upload.
+     *
+     * @return The result of the request.
+     */
     fun cancelMissionUpload(): Result = Result.fromValue(native.cancelMissionUpload())
 
+    /**
+     * Download a list of mission items from the system (asynchronous).
+     *
+     * Will fail if any of the downloaded mission items are not supported by the MAVSDK API.
+     *
+     * @return The mission plan
+     */
     suspend fun downloadMission(): kotlin.Result<MissionPlan> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionCallbackGuard()
@@ -156,6 +269,13 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
             }
         }
 
+    /**
+     * Download a list of mission items from the system (asynchronous) and report progress.
+     *
+     * Will fail if any of the downloaded mission items are not supported by the MAVSDK API.
+     *
+     * @return The progress data, or the mission plan (when the download is finished)
+     */
     fun downloadMissionWithProgress(): Flow<kotlin.Result<ProgressDataOrMission>> = callbackFlow {
         native.downloadMissionWithProgressAsync() { result, value ->
             val parsedResult = Result.fromValue(result)
@@ -178,8 +298,20 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         awaitClose {}
     }
 
+    /**
+     * Cancel an ongoing mission download.
+     *
+     * @return The result of the request.
+     */
     fun cancelMissionDownload(): Result = Result.fromValue(native.cancelMissionDownload())
 
+    /**
+     * Start the mission.
+     *
+     * A mission must be uploaded to the vehicle before this can be called.
+     *
+     * @return The result of the request.
+     */
     suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = MissionCallbackGuard()
         native.startMissionAsync() { result ->
@@ -190,6 +322,16 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         }
     }
 
+    /**
+     * Pause the mission.
+     *
+     * Pausing the mission puts the vehicle into
+     * [HOLD mode](https://docs.px4.io/main/en/flight_modes_mc/hold.html). A multicopter should just
+     * hover at the spot while a fixedwing vehicle should loiter around the location where it
+     * paused.
+     *
+     * @return The result of the request.
+     */
     suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = MissionCallbackGuard()
         native.pauseMissionAsync() { result ->
@@ -200,6 +342,11 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         }
     }
 
+    /**
+     * Clear the mission saved on the vehicle.
+     *
+     * @return The result of the request.
+     */
     suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = MissionCallbackGuard()
         native.clearMissionAsync() { result ->
@@ -210,6 +357,18 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
         }
     }
 
+    /**
+     * Sets the mission item index to go to.
+     *
+     * By setting the current index to 0, the mission is restarted from the beginning. If it is set
+     * to a specific index of a mission item, the mission will be set to this item.
+     *
+     * Note that this is not necessarily true for general missions using MAVLink if loop counters
+     * are used.
+     *
+     * @param index Index of the mission item to be set as the next one (0-based)
+     * @return The result of the request.
+     */
     suspend fun setCurrentMissionItem(index: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = MissionCallbackGuard()
@@ -223,17 +382,48 @@ class Mission internal constructor(private val native: MissionNative) : AutoClos
             }
         }
 
+    /**
+     * Check if the mission has been finished.
+     *
+     * @return True if the mission is finished and the last mission item has been reached
+     */
     fun isMissionFinished(): Boolean = native.isMissionFinished()
 
+    /**
+     * Subscribe to mission progress updates.
+     *
+     * @return Mission progress
+     */
     fun missionProgress(): MissionProgress = native.missionProgress()
 
+    /**
+     * Subscribe to mission progress updates.
+     *
+     * @return Mission progress
+     */
     fun subscribeMissionProgress(): Flow<MissionProgress> = callbackFlow {
         val subscriptionHandle = native.subscribeMissionProgress() { value -> trySend(value) }
         awaitClose { native.unsubscribeMissionProgress(subscriptionHandle) }
     }
 
+    /**
+     * Get whether to trigger Return-to-Launch (RTL) after mission is complete.
+     *
+     * Before getting this option, it needs to be set, or a mission needs to be downloaded.
+     *
+     * @return If true, trigger an RTL at the end of the mission
+     */
     fun getReturnToLaunchAfterMission(): Boolean = native.getReturnToLaunchAfterMission()
 
+    /**
+     * Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
+     *
+     * This will only take effect for the next mission upload, meaning that the mission may have to
+     * be uploaded again.
+     *
+     * @param enable If true, trigger an RTL at the end of the mission
+     * @return The result of the request.
+     */
     fun setReturnToLaunchAfterMission(enable: Boolean): Result =
         Result.fromValue(native.setReturnToLaunchAfterMission(enable))
 

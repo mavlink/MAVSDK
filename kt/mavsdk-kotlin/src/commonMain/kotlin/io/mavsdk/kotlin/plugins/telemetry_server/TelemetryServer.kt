@@ -7,18 +7,31 @@ package io.mavsdk.kotlin.plugins.telemetry_server
 
 import io.mavsdk.kotlin.Mavsdk
 
+/**
+ * Allow users to provide vehicle telemetry and state information (e.g. battery, GPS, RC connection,
+ * flight mode etc.) and set telemetry update rates.
+ */
 class TelemetryServer internal constructor(private val native: TelemetryServerNative) :
     AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for telemetry requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Success: the telemetry command was accepted by the vehicle */
         SUCCESS(1),
+        /** No system connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Command refused by vehicle */
         COMMAND_DENIED(5),
+        /** Request timed out */
         TIMEOUT(6),
+        /** Request not supported */
         UNSUPPORTED(7);
 
         companion object {
@@ -26,13 +39,21 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         }
     }
 
+    /** GPS fix type. */
     enum class FixType(val value: Int) {
+        /** No GPS connected */
         NO_GPS(0),
+        /** No position information, GPS is connected */
         NO_FIX(1),
+        /** 2D position */
         FIX_2D(2),
+        /** 3D position */
         FIX_3D(3),
+        /** DGPS/SBAS aided 3D position */
         FIX_DGPS(4),
+        /** RTK float, 3D position */
         RTK_FLOAT(5),
+        /** RTK Fixed, 3D position */
         RTK_FIXED(6);
 
         companion object {
@@ -41,11 +62,17 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         }
     }
 
+    /** Maps to MAV_VTOL_STATE */
     enum class VtolState(val value: Int) {
+        /** Not VTOL */
         UNDEFINED(0),
+        /** Transitioning to fixed-wing */
         TRANSITION_TO_FW(1),
+        /** Transitioning to multi-copter */
         TRANSITION_TO_MC(2),
+        /** Multi-copter */
         MC(3),
+        /** Fixed-wing */
         FW(4);
 
         companion object {
@@ -54,14 +81,23 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         }
     }
 
+    /** Status types. */
     enum class StatusTextType(val value: Int) {
+        /** Debug */
         DEBUG(0),
+        /** Information */
         INFO(1),
+        /** Notice */
         NOTICE(2),
+        /** Warning */
         WARNING(3),
+        /** Error */
         ERROR(4),
+        /** Critical */
         CRITICAL(5),
+        /** Alert */
         ALERT(6),
+        /** Emergency */
         EMERGENCY(7);
 
         companion object {
@@ -70,11 +106,17 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         }
     }
 
+    /** Landed State enumeration. */
     enum class LandedState(val value: Int) {
+        /** Landed state is unknown */
         UNKNOWN(0),
+        /** The vehicle is on the ground */
         ON_GROUND(1),
+        /** The vehicle is in the air */
         IN_AIR(2),
+        /** The vehicle is taking off */
         TAKING_OFF(3),
+        /** The vehicle is landing */
         LANDING(4);
 
         companion object {
@@ -82,10 +124,24 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         }
     }
 
+    /** Mavlink frame id */
     enum class MavFrame(val value: Int) {
+        /** Frame is undefined. */
         UNDEF(0),
+        /**
+         * Setpoint in body NED frame. This makes sense if all position control is externalized -
+         * e.g. useful to command 2 m/s^2 acceleration to the right.
+         */
         BODY_NED(1),
+        /**
+         * Odometry local coordinate frame of data given by a vision estimation system, Z-down (x:
+         * north, y: east, z: down).
+         */
         VISION_NED(2),
+        /**
+         * Odometry local coordinate frame of data given by an estimator running onboard the
+         * vehicle, Z-down (x: north, y: east, z: down).
+         */
         ESTIM_NED(3);
 
         companion object {
@@ -94,6 +150,14 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         }
     }
 
+    /**
+     * Position type in global coordinates.
+     *
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to +180)
+     * @property absoluteAltitudeM Altitude AMSL (above mean sea level) in metres
+     * @property relativeAltitudeM Altitude relative to takeoff altitude in metres
+     */
     data class Position(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
@@ -101,8 +165,28 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val relativeAltitudeM: Float,
     )
 
+    /**
+     * Heading type used for global position
+     *
+     * @property headingDeg Heading in degrees (range: 0 to +360)
+     */
     data class Heading(val headingDeg: Double)
 
+    /**
+     * Quaternion type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Hamilton quaternion product
+     * definition is used. A zero-rotation quaternion is represented by (1,0,0,0). The quaternion
+     * could also be written as w + xi + yj + zk.
+     *
+     * For more info see: https://en.wikipedia.org/wiki/Quaternion
+     *
+     * @property w Quaternion entry 0, also denoted as a
+     * @property x Quaternion entry 1, also denoted as b
+     * @property y Quaternion entry 2, also denoted as c
+     * @property z Quaternion entry 3, also denoted as d
+     * @property timestampUs Timestamp in microseconds
+     */
     data class Quaternion(
         val w: Float,
         val x: Float,
@@ -111,6 +195,19 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val timestampUs: Long,
     )
 
+    /**
+     * Euler angle type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Euler angles follow the
+     * convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+     *
+     * For more info see https://en.wikipedia.org/wiki/Euler_angles
+     *
+     * @property rollDeg Roll angle in degrees, positive is banking to the right
+     * @property pitchDeg Pitch angle in degrees, positive is pitching nose up
+     * @property yawDeg Yaw angle in degrees, positive is clock-wise seen from above
+     * @property timestampUs Timestamp in microseconds
+     */
     data class EulerAngle(
         val rollDeg: Float,
         val pitchDeg: Float,
@@ -118,10 +215,46 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val timestampUs: Long,
     )
 
+    /**
+     * Angular velocity type.
+     *
+     * @property rollRadS Roll angular velocity
+     * @property pitchRadS Pitch angular velocity
+     * @property yawRadS Yaw angular velocity
+     */
     data class AngularVelocityBody(val rollRadS: Float, val pitchRadS: Float, val yawRadS: Float)
 
+    /**
+     * GPS information type.
+     *
+     * @property numSatellites Number of visible satellites in use
+     * @property fixType Fix type
+     */
     data class GpsInfo(val numSatellites: Int, val fixType: FixType)
 
+    /**
+     * Raw GPS information type.
+     *
+     * Warning: this is an advanced type! If you want the location of the drone, use the position
+     * instead. This message exposes the raw values of the GNSS sensor.
+     *
+     * @property timestampUs Timestamp in microseconds (UNIX Epoch time or time since system boot,
+     *   to be inferred)
+     * @property latitudeDeg Latitude in degrees (WGS84, EGM96 ellipsoid)
+     * @property longitudeDeg Longitude in degrees (WGS84, EGM96 ellipsoid)
+     * @property absoluteAltitudeM Altitude AMSL (above mean sea level) in metres
+     * @property hdop GPS HDOP horizontal dilution of position (unitless). If unknown, set to NaN
+     * @property vdop GPS VDOP vertical dilution of position (unitless). If unknown, set to NaN
+     * @property velocityMS Ground velocity in metres per second
+     * @property cogDeg Course over ground (NOT heading, but direction of movement) in degrees. If
+     *   unknown, set to NaN
+     * @property altitudeEllipsoidM Altitude in metres (above WGS84, EGM96 ellipsoid)
+     * @property horizontalUncertaintyM Position uncertainty in metres
+     * @property verticalUncertaintyM Altitude uncertainty in metres
+     * @property velocityUncertaintyMS Velocity uncertainty in metres per second
+     * @property headingUncertaintyDeg Heading uncertainty in degrees
+     * @property yawDeg Yaw in earth frame from north.
+     */
     data class RawGps(
         val timestampUs: Long,
         val latitudeDeg: Double,
@@ -139,26 +272,94 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val yawDeg: Float,
     )
 
+    /**
+     * Battery type.
+     *
+     * @property voltageV Voltage in volts
+     * @property remainingPercent Estimated battery remaining (range: 0.0 to 1.0)
+     */
     data class Battery(val voltageV: Float, val remainingPercent: Float)
 
+    /**
+     * Remote control status type.
+     *
+     * @property wasAvailableOnce True if an RC signal has been available once
+     * @property isAvailable True if the RC signal is available now
+     * @property signalStrengthPercent Signal strength (range: 0 to 100, NaN if unknown)
+     */
     data class RcStatus(
         val wasAvailableOnce: Boolean,
         val isAvailable: Boolean,
         val signalStrengthPercent: Float,
     )
 
+    /**
+     * StatusText information type.
+     *
+     * @property type Message type
+     * @property text MAVLink status message
+     */
     data class StatusText(val type: StatusTextType, val text: String)
 
+    /**
+     * Actuator control target type.
+     *
+     * @property group An actuator control group is e.g. 'attitude' for the core flight controls, or
+     *   'gimbal' for a payload.
+     * @property controls Controls normed from -1 to 1, where 0 is neutral position.
+     */
     data class ActuatorControlTarget(val group: Int, val controls: List<Float> = emptyList())
 
+    /**
+     * Actuator output status type.
+     *
+     * @property active Active outputs
+     * @property actuator Servo/motor output values
+     */
     data class ActuatorOutputStatus(val active: Int, val actuator: List<Float> = emptyList())
 
+    /**
+     * Covariance type.
+     *
+     * Row-major representation of a 6x6 cross-covariance matrix upper right triangle. Set first to
+     * NaN if unknown.
+     *
+     * @property covarianceMatrix Representation of a covariance matrix.
+     */
     data class Covariance(val covarianceMatrix: List<Float> = emptyList())
 
+    /**
+     * Velocity type, represented in the Body (X Y Z) frame and in metres/second.
+     *
+     * @property xMS Velocity in X in metres/second
+     * @property yMS Velocity in Y in metres/second
+     * @property zMS Velocity in Z in metres/second
+     */
     data class VelocityBody(val xMS: Float, val yMS: Float, val zMS: Float)
 
+    /**
+     * Position type, represented in the Body (X Y Z) frame
+     *
+     * @property xM X Position in metres.
+     * @property yM Y Position in metres.
+     * @property zM Z Position in metres.
+     */
     data class PositionBody(val xM: Float, val yM: Float, val zM: Float)
 
+    /**
+     * Odometry message type.
+     *
+     * @property timeUsec Timestamp (0 to use Backend timestamp).
+     * @property frameId Coordinate frame of reference for the pose data.
+     * @property childFrameId Coordinate frame of reference for the velocity in free space (twist)
+     *   data.
+     * @property positionBody Position.
+     * @property q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+     * @property velocityBody Linear velocity (m/s).
+     * @property angularVelocityBody Angular velocity (rad/s).
+     * @property poseCovariance Pose cross-covariance matrix.
+     * @property velocityCovariance Velocity cross-covariance matrix.
+     */
     data class Odometry(
         val timeUsec: Long,
         val frameId: MavFrame,
@@ -171,12 +372,29 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val velocityCovariance: Covariance,
     )
 
+    /**
+     * DistanceSensor message type.
+     *
+     * @property minimumDistanceM Minimum distance the sensor can measure, NaN if unknown.
+     * @property maximumDistanceM Maximum distance the sensor can measure, NaN if unknown.
+     * @property currentDistanceM Current distance reading, NaN if unknown.
+     */
     data class DistanceSensor(
         val minimumDistanceM: Float,
         val maximumDistanceM: Float,
         val currentDistanceM: Float,
     )
 
+    /**
+     * Scaled Pressure message type.
+     *
+     * @property timestampUs Timestamp (time since system boot)
+     * @property absolutePressureHpa Absolute pressure in hPa
+     * @property differentialPressureHpa Differential pressure 1 in hPa
+     * @property temperatureDeg Absolute pressure temperature (in celsius)
+     * @property differentialPressureTemperatureDeg Differential pressure temperature (in celsius, 0
+     *   if not available)
+     */
     data class ScaledPressure(
         val timestampUs: Long,
         val absolutePressureHpa: Float,
@@ -185,12 +403,40 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val differentialPressureTemperatureDeg: Float,
     )
 
+    /**
+     * PositionNed message type.
+     *
+     * @property northM Position along north direction in metres
+     * @property eastM Position along east direction in metres
+     * @property downM Position along down direction in metres
+     */
     data class PositionNed(val northM: Float, val eastM: Float, val downM: Float)
 
+    /**
+     * VelocityNed message type.
+     *
+     * @property northMS Velocity along north direction in metres per second
+     * @property eastMS Velocity along east direction in metres per second
+     * @property downMS Velocity along down direction in metres per second
+     */
     data class VelocityNed(val northMS: Float, val eastMS: Float, val downMS: Float)
 
+    /**
+     * PositionVelocityNed message type.
+     *
+     * @property position Position (NED)
+     * @property velocity Velocity (NED)
+     */
     data class PositionVelocityNed(val position: PositionNed, val velocity: VelocityNed)
 
+    /**
+     * GroundTruth message type.
+     *
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to 180)
+     * @property absoluteAltitudeM Altitude AMSL (above mean sea level) in metres
+     * @property timestampUs Timestamp in microseconds (since system boot)
+     */
     data class GroundTruth(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
@@ -198,6 +444,16 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val timestampUs: Long,
     )
 
+    /**
+     * FixedwingMetrics message type.
+     *
+     * @property airspeedMS Current indicated airspeed (IAS) in metres per second
+     * @property throttlePercentage Current throttle setting (0 to 100)
+     * @property climbRateMS Current climb rate in metres per second
+     * @property groundspeedMS Current groundspeed metres per second
+     * @property headingDeg Current heading in compass units (0-360, 0=north)
+     * @property absoluteAltitudeM Current altitude in metres (MSL)
+     */
     data class FixedwingMetrics(
         val airspeedMS: Float,
         val throttlePercentage: Float,
@@ -207,16 +463,46 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val absoluteAltitudeM: Float,
     )
 
+    /**
+     * AccelerationFrd message type.
+     *
+     * @property forwardMS2 Acceleration in forward direction in metres per second^2
+     * @property rightMS2 Acceleration in right direction in metres per second^2
+     * @property downMS2 Acceleration in down direction in metres per second^2
+     */
     data class AccelerationFrd(val forwardMS2: Float, val rightMS2: Float, val downMS2: Float)
 
+    /**
+     * AngularVelocityFrd message type.
+     *
+     * @property forwardRadS Angular velocity in forward direction in radians per second
+     * @property rightRadS Angular velocity in right direction in radians per second
+     * @property downRadS Angular velocity in Down direction in radians per second
+     */
     data class AngularVelocityFrd(val forwardRadS: Float, val rightRadS: Float, val downRadS: Float)
 
+    /**
+     * MagneticFieldFrd message type.
+     *
+     * @property forwardGauss Magnetic field in forward direction measured in Gauss
+     * @property rightGauss Magnetic field in East direction measured in Gauss
+     * @property downGauss Magnetic field in Down direction measured in Gauss
+     */
     data class MagneticFieldFrd(
         val forwardGauss: Float,
         val rightGauss: Float,
         val downGauss: Float,
     )
 
+    /**
+     * Imu message type.
+     *
+     * @property accelerationFrd Acceleration
+     * @property angularVelocityFrd Angular velocity
+     * @property magneticFieldFrd Magnetic field
+     * @property temperatureDegc Temperature
+     * @property timestampUs Timestamp in microseconds
+     */
     data class Imu(
         val accelerationFrd: AccelerationFrd,
         val angularVelocityFrd: AngularVelocityFrd,
@@ -225,11 +511,36 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
         val timestampUs: Long,
     )
 
+    /**
+     * Publish to 'position' updates.
+     *
+     * @param position The next position
+     * @param velocityNed The next velocity (NED)
+     * @param heading Heading (yaw) in degrees
+     * @return The result of the request.
+     */
     fun publishPosition(position: Position, velocityNed: VelocityNed, heading: Heading): Result =
         Result.fromValue(native.publishPosition(position, velocityNed, heading))
 
+    /**
+     * Publish to 'home position' updates.
+     *
+     * @param home The next home position
+     * @return The result of the request.
+     */
     fun publishHome(home: Position): Result = Result.fromValue(native.publishHome(home))
 
+    /**
+     * Publish 'sys status' updates.
+     *
+     * @param battery The next 'battery' state
+     * @param rcReceiverStatus rc receiver status
+     * @param gyroStatus
+     * @param accelStatus
+     * @param magStatus
+     * @param gpsStatus
+     * @return The result of the request.
+     */
     fun publishSysStatus(
         battery: Battery,
         rcReceiverStatus: Boolean,
@@ -249,41 +560,129 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
             )
         )
 
+    /**
+     * Publish 'extended sys state' updates.
+     *
+     * @param vtolState
+     * @param landedState
+     * @return The result of the request.
+     */
     fun publishExtendedSysState(vtolState: VtolState, landedState: LandedState): Result =
         Result.fromValue(native.publishExtendedSysState(vtolState, landedState))
 
+    /**
+     * Publish to 'Raw GPS' updates.
+     *
+     * @param rawGps The next 'Raw GPS' state. Warning: this is an advanced feature, use `Position`
+     *   updates to get the location of the drone!
+     * @param gpsInfo The next 'GPS info' state
+     * @return The result of the request.
+     */
     fun publishRawGps(rawGps: RawGps, gpsInfo: GpsInfo): Result =
         Result.fromValue(native.publishRawGps(rawGps, gpsInfo))
 
+    /**
+     * Publish to 'battery' updates.
+     *
+     * @param battery The next 'battery' state
+     * @return The result of the request.
+     */
     fun publishBattery(battery: Battery): Result = Result.fromValue(native.publishBattery(battery))
 
+    /**
+     * Publish to 'status text' updates.
+     *
+     * @param statusText The next 'status text'
+     * @return The result of the request.
+     */
     fun publishStatusText(statusText: StatusText): Result =
         Result.fromValue(native.publishStatusText(statusText))
 
+    /**
+     * Publish to 'odometry' updates.
+     *
+     * @param odometry The next odometry status
+     * @return The result of the request.
+     */
     fun publishOdometry(odometry: Odometry): Result =
         Result.fromValue(native.publishOdometry(odometry))
 
+    /**
+     * Publish to 'position velocity' updates.
+     *
+     * @param positionVelocityNed The next position and velocity status
+     * @return The result of the request.
+     */
     fun publishPositionVelocityNed(positionVelocityNed: PositionVelocityNed): Result =
         Result.fromValue(native.publishPositionVelocityNed(positionVelocityNed))
 
+    /**
+     * Publish to 'ground truth' updates.
+     *
+     * @param groundTruth Ground truth position information available in simulation
+     * @return The result of the request.
+     */
     fun publishGroundTruth(groundTruth: GroundTruth): Result =
         Result.fromValue(native.publishGroundTruth(groundTruth))
 
+    /**
+     * Publish to 'IMU' updates (in SI units in NED body frame).
+     *
+     * @param imu The next IMU status
+     * @return The result of the request.
+     */
     fun publishImu(imu: Imu): Result = Result.fromValue(native.publishImu(imu))
 
+    /**
+     * Publish to 'Scaled IMU' updates.
+     *
+     * @param imu The next scaled IMU status
+     * @return The result of the request.
+     */
     fun publishScaledImu(imu: Imu): Result = Result.fromValue(native.publishScaledImu(imu))
 
+    /**
+     * Publish to 'Raw IMU' updates.
+     *
+     * @param imu The next raw IMU status
+     * @return The result of the request.
+     */
     fun publishRawImu(imu: Imu): Result = Result.fromValue(native.publishRawImu(imu))
 
+    /**
+     * Publish to 'unix epoch time' updates.
+     *
+     * @param timeUs The next 'unix epoch time' status
+     * @return The result of the request.
+     */
     fun publishUnixEpochTime(timeUs: Long): Result =
         Result.fromValue(native.publishUnixEpochTime(timeUs))
 
+    /**
+     * Publish to "distance sensor" updates.
+     *
+     * @param distanceSensor The next 'Distance Sensor' status
+     * @return The result of the request.
+     */
     fun publishDistanceSensor(distanceSensor: DistanceSensor): Result =
         Result.fromValue(native.publishDistanceSensor(distanceSensor))
 
+    /**
+     * Publish to "attitude" updates.
+     *
+     * @param angle roll/pitch/yaw body angles
+     * @param angularVelocity roll/pitch/yaw angular velocities
+     * @return The result of the request.
+     */
     fun publishAttitude(angle: EulerAngle, angularVelocity: AngularVelocityBody): Result =
         Result.fromValue(native.publishAttitude(angle, angularVelocity))
 
+    /**
+     * Publish to "Visual Flight Rules HUD" updates.
+     *
+     * @param fixedWingMetrics
+     * @return The result of the request.
+     */
     fun publishVisualFlightRulesHud(fixedWingMetrics: FixedwingMetrics): Result =
         Result.fromValue(native.publishVisualFlightRulesHud(fixedWingMetrics))
 

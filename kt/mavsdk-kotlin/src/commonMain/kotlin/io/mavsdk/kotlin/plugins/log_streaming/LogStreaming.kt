@@ -11,17 +11,27 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Provide log streaming data. */
 class LogStreaming internal constructor(private val native: LogStreamingNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for logging requests */
     enum class Result(val value: Int) {
+        /** Request succeeded */
         SUCCESS(0),
+        /** No system connected */
         NO_SYSTEM(1),
+        /** Connection error */
         CONNECTION_ERROR(2),
+        /** System busy */
         BUSY(3),
+        /** Command denied */
         COMMAND_DENIED(4),
+        /** Timeout */
         TIMEOUT(5),
+        /** Unsupported */
         UNSUPPORTED(6),
+        /** Unknown error */
         UNKNOWN(7);
 
         companion object {
@@ -29,8 +39,18 @@ class LogStreaming internal constructor(private val native: LogStreamingNative) 
         }
     }
 
+    /**
+     * Raw logging data type
+     *
+     * @property dataBase64 Ulog file stream data encoded as base64
+     */
     data class LogStreamingRaw(val dataBase64: String)
 
+    /**
+     * Start streaming logging data.
+     *
+     * @return The result of the request.
+     */
     suspend fun startLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = LogStreamingCallbackGuard()
         native.startLogStreamingAsync() { result ->
@@ -41,6 +61,11 @@ class LogStreaming internal constructor(private val native: LogStreamingNative) 
         }
     }
 
+    /**
+     * Stop streaming logging data.
+     *
+     * @return The result of the request.
+     */
     suspend fun stopLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = LogStreamingCallbackGuard()
         native.stopLogStreamingAsync() { result ->
@@ -51,6 +76,11 @@ class LogStreaming internal constructor(private val native: LogStreamingNative) 
         }
     }
 
+    /**
+     * Subscribe to logging messages
+     *
+     * @return A message containing logged data
+     */
     fun subscribeLogStreamingRaw(): Flow<LogStreamingRaw> = callbackFlow {
         val subscriptionHandle = native.subscribeLogStreamingRaw() { value -> trySend(value) }
         awaitClose { native.unsubscribeLogStreamingRaw(subscriptionHandle) }

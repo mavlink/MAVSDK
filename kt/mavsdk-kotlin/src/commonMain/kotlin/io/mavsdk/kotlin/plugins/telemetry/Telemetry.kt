@@ -11,17 +11,31 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/**
+ * Allow users to get vehicle telemetry and state information (e.g. battery, GPS, RC connection,
+ * flight mode etc.) and set telemetry update rates. Certain Telemetry Topics such as, Position or
+ * Velocity_Ned require GPS Fix before data gets published.
+ */
 class Telemetry internal constructor(private val native: TelemetryNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for telemetry requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Success: the telemetry command was accepted by the vehicle */
         SUCCESS(1),
+        /** No system connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Command refused by vehicle */
         COMMAND_DENIED(5),
+        /** Request timed out */
         TIMEOUT(6),
+        /** Request not supported */
         UNSUPPORTED(7);
 
         companion object {
@@ -29,13 +43,21 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /** GPS fix type. */
     enum class FixType(val value: Int) {
+        /** No GPS connected */
         NO_GPS(0),
+        /** No position information, GPS is connected */
         NO_FIX(1),
+        /** 2D position */
         FIX_2D(2),
+        /** 3D position */
         FIX_3D(3),
+        /** DGPS/SBAS aided 3D position */
         FIX_DGPS(4),
+        /** RTK float, 3D position */
         RTK_FLOAT(5),
+        /** RTK Fixed, 3D position */
         RTK_FIXED(6);
 
         companion object {
@@ -44,11 +66,17 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /** Battery function type. */
     enum class BatteryFunction(val value: Int) {
+        /** Battery function is unknown */
         UNKNOWN(0),
+        /** Battery supports all flight systems */
         ALL(1),
+        /** Battery for the propulsion system */
         PROPULSION(2),
+        /** Avionics battery */
         AVIONICS(3),
+        /** Payload battery */
         PAYLOAD(4);
 
         companion object {
@@ -57,21 +85,42 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /**
+     * Flight modes.
+     *
+     * For more information about flight modes, check out
+     * https://docs.px4.io/main/en/config/flight_mode.html.
+     */
     enum class FlightMode(val value: Int) {
+        /** Mode not known */
         UNKNOWN(0),
+        /** Armed and ready to take off */
         READY(1),
+        /** Taking off */
         TAKEOFF(2),
+        /** Holding (hovering in place (or circling for fixed-wing vehicles) */
         HOLD(3),
+        /** In mission */
         MISSION(4),
+        /** Returning to launch position (then landing) */
         RETURN_TO_LAUNCH(5),
+        /** Landing */
         LAND(6),
+        /** In 'offboard' mode */
         OFFBOARD(7),
+        /** In 'follow-me' mode */
         FOLLOW_ME(8),
+        /** In 'Manual' mode */
         MANUAL(9),
+        /** In 'Altitude Control' mode */
         ALTCTL(10),
+        /** In 'Position Control' mode */
         POSCTL(11),
+        /** In 'Acro' mode */
         ACRO(12),
+        /** In 'Stabilize' mode */
         STABILIZED(13),
+        /** In 'Rattitude' mode */
         RATTITUDE(14);
 
         companion object {
@@ -79,14 +128,23 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /** Status types. */
     enum class StatusTextType(val value: Int) {
+        /** Debug */
         DEBUG(0),
+        /** Information */
         INFO(1),
+        /** Notice */
         NOTICE(2),
+        /** Warning */
         WARNING(3),
+        /** Error */
         ERROR(4),
+        /** Critical */
         CRITICAL(5),
+        /** Alert */
         ALERT(6),
+        /** Emergency */
         EMERGENCY(7);
 
         companion object {
@@ -95,11 +153,17 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /** Landed State enumeration. */
     enum class LandedState(val value: Int) {
+        /** Landed state is unknown */
         UNKNOWN(0),
+        /** The vehicle is on the ground */
         ON_GROUND(1),
+        /** The vehicle is in the air */
         IN_AIR(2),
+        /** The vehicle is taking off */
         TAKING_OFF(3),
+        /** The vehicle is landing */
         LANDING(4);
 
         companion object {
@@ -107,11 +171,17 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /** VTOL State enumeration */
     enum class VtolState(val value: Int) {
+        /** MAV is not configured as VTOL */
         UNDEFINED(0),
+        /** VTOL is in transition from multicopter to fixed-wing */
         TRANSITION_TO_FW(1),
+        /** VTOL is in transition from fixed-wing to multicopter */
         TRANSITION_TO_MC(2),
+        /** VTOL is in multicopter state */
         MC(3),
+        /** VTOL is in fixed-wing state */
         FW(4);
 
         companion object {
@@ -120,10 +190,24 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /** Mavlink frame id */
     enum class MavFrame(val value: Int) {
+        /** Frame is undefined. */
         UNDEF(0),
+        /**
+         * Setpoint in body NED frame. This makes sense if all position control is externalized -
+         * e.g. useful to command 2 m/s^2 acceleration to the right.
+         */
         BODY_NED(1),
+        /**
+         * Odometry local coordinate frame of data given by a vision estimation system, Z-down (x:
+         * north, y: east, z: down).
+         */
         VISION_NED(2),
+        /**
+         * Odometry local coordinate frame of data given by an estimator running onboard the
+         * vehicle, Z-down (x: north, y: east, z: down).
+         */
         ESTIM_NED(3);
 
         companion object {
@@ -132,6 +216,14 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /**
+     * Position type in global coordinates.
+     *
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to +180)
+     * @property absoluteAltitudeM Altitude AMSL (above mean sea level) in metres
+     * @property relativeAltitudeM Altitude relative to takeoff altitude in metres
+     */
     data class Position(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
@@ -139,8 +231,28 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val relativeAltitudeM: Float,
     )
 
+    /**
+     * Heading type used for global position
+     *
+     * @property headingDeg Heading in degrees (range: 0 to +360)
+     */
     data class Heading(val headingDeg: Double)
 
+    /**
+     * Quaternion type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Hamilton quaternion product
+     * definition is used. A zero-rotation quaternion is represented by (1,0,0,0). The quaternion
+     * could also be written as w + xi + yj + zk.
+     *
+     * For more info see: https://en.wikipedia.org/wiki/Quaternion
+     *
+     * @property w Quaternion entry 0, also denoted as a
+     * @property x Quaternion entry 1, also denoted as b
+     * @property y Quaternion entry 2, also denoted as c
+     * @property z Quaternion entry 3, also denoted as d
+     * @property timestampUs Timestamp in microseconds
+     */
     data class Quaternion(
         val w: Float,
         val x: Float,
@@ -149,6 +261,25 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val timestampUs: Long,
     )
 
+    /**
+     * Home position type.
+     *
+     * Includes the global GPS position, local NED position, surface quaternion, and approach vector
+     * from the MAVLink HOME_POSITION message.
+     *
+     * @property timestampUs Timestamp (UNIX Epoch or since system boot) in microseconds
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to +180)
+     * @property absoluteAltitudeM Altitude AMSL (above mean sea level) in metres
+     * @property relativeAltitudeM Altitude relative to takeoff altitude in metres
+     * @property localNorthM Local North position in NED frame (m)
+     * @property localEastM Local East position in NED frame (m)
+     * @property localDownM Local Down position in NED frame (m, positive down)
+     * @property q Surface quaternion (world-to-surface-normal and heading)
+     * @property approachNorthM Local North position of the approach vector end in NED frame (m)
+     * @property approachEastM Local East position of the approach vector end in NED frame (m)
+     * @property approachDownM Local Down position of the approach vector end in NED frame (m)
+     */
     data class HomePosition(
         val timestampUs: Long,
         val latitudeDeg: Double,
@@ -164,6 +295,19 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val approachDownM: Float,
     )
 
+    /**
+     * Euler angle type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Euler angles follow the
+     * convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+     *
+     * For more info see https://en.wikipedia.org/wiki/Euler_angles
+     *
+     * @property rollDeg Roll angle in degrees, positive is banking to the right
+     * @property pitchDeg Pitch angle in degrees, positive is pitching nose up
+     * @property yawDeg Yaw angle in degrees, positive is clock-wise seen from above
+     * @property timestampUs Timestamp in microseconds
+     */
     data class EulerAngle(
         val rollDeg: Float,
         val pitchDeg: Float,
@@ -171,10 +315,46 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val timestampUs: Long,
     )
 
+    /**
+     * Angular velocity type.
+     *
+     * @property rollRadS Roll angular velocity
+     * @property pitchRadS Pitch angular velocity
+     * @property yawRadS Yaw angular velocity
+     */
     data class AngularVelocityBody(val rollRadS: Float, val pitchRadS: Float, val yawRadS: Float)
 
+    /**
+     * GPS information type.
+     *
+     * @property numSatellites Number of visible satellites in use
+     * @property fixType Fix type
+     */
     data class GpsInfo(val numSatellites: Int, val fixType: FixType)
 
+    /**
+     * Raw GPS information type.
+     *
+     * Warning: this is an advanced type! If you want the location of the drone, use the position
+     * instead. This message exposes the raw values of the GNSS sensor.
+     *
+     * @property timestampUs Timestamp in microseconds (UNIX Epoch time or time since system boot,
+     *   to be inferred)
+     * @property latitudeDeg Latitude in degrees (WGS84, EGM96 ellipsoid)
+     * @property longitudeDeg Longitude in degrees (WGS84, EGM96 ellipsoid)
+     * @property absoluteAltitudeM Altitude AMSL (above mean sea level) in metres
+     * @property hdop GPS HDOP horizontal dilution of position (unitless). If unknown, set to NaN
+     * @property vdop GPS VDOP vertical dilution of position (unitless). If unknown, set to NaN
+     * @property velocityMS Ground velocity in metres per second
+     * @property cogDeg Course over ground (NOT heading, but direction of movement) in degrees. If
+     *   unknown, set to NaN
+     * @property altitudeEllipsoidM Altitude in metres (above WGS84, EGM96 ellipsoid)
+     * @property horizontalUncertaintyM Position uncertainty in metres
+     * @property verticalUncertaintyM Altitude uncertainty in metres
+     * @property velocityUncertaintyMS Velocity uncertainty in metres per second
+     * @property headingUncertaintyDeg Heading uncertainty in degrees
+     * @property yawDeg Yaw in earth frame from north.
+     */
     data class RawGps(
         val timestampUs: Long,
         val latitudeDeg: Double,
@@ -192,6 +372,21 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val yawDeg: Float,
     )
 
+    /**
+     * Battery type.
+     *
+     * @property id Battery ID, for systems with multiple batteries
+     * @property temperatureDegc Temperature of the battery in degrees Celsius. NAN for unknown
+     *   temperature
+     * @property voltageV Voltage in volts
+     * @property currentBatteryA Battery current in Amps, NAN if autopilot does not measure the
+     *   current
+     * @property capacityConsumedAh Consumed charge in Amp hours, NAN if autopilot does not provide
+     *   consumption estimate
+     * @property remainingPercent Estimated battery remaining (range: 0 to 100)
+     * @property timeRemainingS Estimated battery usage time remaining
+     * @property batteryFunction Function of the battery
+     */
     data class Battery(
         val id: Int,
         val temperatureDegc: Float,
@@ -203,6 +398,19 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val batteryFunction: BatteryFunction,
     )
 
+    /**
+     * Health type.
+     *
+     * @property isGyrometerCalibrationOk True if the gyrometer is calibrated
+     * @property isAccelerometerCalibrationOk True if the accelerometer is calibrated
+     * @property isMagnetometerCalibrationOk True if the magnetometer is calibrated
+     * @property isLocalPositionOk True if the local position estimate is good enough to fly in
+     *   'position control' mode
+     * @property isGlobalPositionOk True if the global position estimate is good enough to fly in
+     *   'position control' mode
+     * @property isHomePositionOk True if the home position has been initialized properly
+     * @property isArmable True if system can be armed
+     */
     data class Health(
         val isGyrometerCalibrationOk: Boolean,
         val isAccelerometerCalibrationOk: Boolean,
@@ -213,24 +421,86 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val isArmable: Boolean,
     )
 
+    /**
+     * Remote control status type.
+     *
+     * @property wasAvailableOnce True if an RC signal has been available once
+     * @property isAvailable True if the RC signal is available now
+     * @property signalStrengthPercent Signal strength (range: 0 to 100, NaN if unknown)
+     */
     data class RcStatus(
         val wasAvailableOnce: Boolean,
         val isAvailable: Boolean,
         val signalStrengthPercent: Float,
     )
 
+    /**
+     * StatusText information type.
+     *
+     * @property type Message type
+     * @property text MAVLink status message
+     */
     data class StatusText(val type: StatusTextType, val text: String)
 
+    /**
+     * Actuator control target type.
+     *
+     * @property group An actuator control group is e.g. 'attitude' for the core flight controls, or
+     *   'gimbal' for a payload.
+     * @property controls Controls normed from -1 to 1, where 0 is neutral position.
+     */
     data class ActuatorControlTarget(val group: Int, val controls: List<Float> = emptyList())
 
+    /**
+     * Actuator output status type.
+     *
+     * @property active Active outputs
+     * @property actuator Servo/motor output values
+     */
     data class ActuatorOutputStatus(val active: Int, val actuator: List<Float> = emptyList())
 
+    /**
+     * Covariance type.
+     *
+     * Row-major representation of a 6x6 cross-covariance matrix upper right triangle. Set first to
+     * NaN if unknown.
+     *
+     * @property covarianceMatrix Representation of a covariance matrix.
+     */
     data class Covariance(val covarianceMatrix: List<Float> = emptyList())
 
+    /**
+     * Velocity type, represented in the Body (X Y Z) frame and in metres/second.
+     *
+     * @property xMS Velocity in X in metres/second
+     * @property yMS Velocity in Y in metres/second
+     * @property zMS Velocity in Z in metres/second
+     */
     data class VelocityBody(val xMS: Float, val yMS: Float, val zMS: Float)
 
+    /**
+     * Position type, represented in the Body (X Y Z) frame
+     *
+     * @property xM X Position in metres.
+     * @property yM Y Position in metres.
+     * @property zM Z Position in metres.
+     */
     data class PositionBody(val xM: Float, val yM: Float, val zM: Float)
 
+    /**
+     * Odometry message type.
+     *
+     * @property timeUsec Timestamp (0 to use Backend timestamp).
+     * @property frameId Coordinate frame of reference for the pose data.
+     * @property childFrameId Coordinate frame of reference for the velocity in free space (twist)
+     *   data.
+     * @property positionBody Position.
+     * @property q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+     * @property velocityBody Linear velocity (m/s).
+     * @property angularVelocityBody Angular velocity (rad/s).
+     * @property poseCovariance Pose cross-covariance matrix.
+     * @property velocityCovariance Velocity cross-covariance matrix.
+     */
     data class Odometry(
         val timeUsec: Long,
         val frameId: MavFrame,
@@ -243,6 +513,14 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val velocityCovariance: Covariance,
     )
 
+    /**
+     * DistanceSensor message type.
+     *
+     * @property minimumDistanceM Minimum distance the sensor can measure, NaN if unknown.
+     * @property maximumDistanceM Maximum distance the sensor can measure, NaN if unknown.
+     * @property currentDistanceM Current distance reading, NaN if unknown.
+     * @property orientation Sensor Orientation reading.
+     */
     data class DistanceSensor(
         val minimumDistanceM: Float,
         val maximumDistanceM: Float,
@@ -250,6 +528,16 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val orientation: EulerAngle,
     )
 
+    /**
+     * Scaled Pressure message type.
+     *
+     * @property timestampUs Timestamp (time since system boot)
+     * @property absolutePressureHpa Absolute pressure in hPa
+     * @property differentialPressureHpa Differential pressure 1 in hPa
+     * @property temperatureDeg Absolute pressure temperature (in celsius)
+     * @property differentialPressureTemperatureDeg Differential pressure temperature (in celsius, 0
+     *   if not available)
+     */
     data class ScaledPressure(
         val timestampUs: Long,
         val absolutePressureHpa: Float,
@@ -258,12 +546,40 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val differentialPressureTemperatureDeg: Float,
     )
 
+    /**
+     * PositionNed message type.
+     *
+     * @property northM Position along north direction in metres
+     * @property eastM Position along east direction in metres
+     * @property downM Position along down direction in metres
+     */
     data class PositionNed(val northM: Float, val eastM: Float, val downM: Float)
 
+    /**
+     * VelocityNed message type.
+     *
+     * @property northMS Velocity along north direction in metres per second
+     * @property eastMS Velocity along east direction in metres per second
+     * @property downMS Velocity along down direction in metres per second
+     */
     data class VelocityNed(val northMS: Float, val eastMS: Float, val downMS: Float)
 
+    /**
+     * PositionVelocityNed message type.
+     *
+     * @property position Position (NED)
+     * @property velocity Velocity (NED)
+     */
     data class PositionVelocityNed(val position: PositionNed, val velocity: VelocityNed)
 
+    /**
+     * GroundTruth message type.
+     *
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to 180)
+     * @property absoluteAltitudeM Altitude AMSL (above mean sea level) in metres
+     * @property timestampUs Timestamp in microseconds (since system boot)
+     */
     data class GroundTruth(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
@@ -271,6 +587,16 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val timestampUs: Long,
     )
 
+    /**
+     * FixedwingMetrics message type.
+     *
+     * @property airspeedMS Current indicated airspeed (IAS) in metres per second
+     * @property throttlePercentage Current throttle setting (0 to 100)
+     * @property climbRateMS Current climb rate in metres per second
+     * @property groundspeedMS Current groundspeed metres per second
+     * @property headingDeg Current heading in compass units (0-360, 0=north)
+     * @property absoluteAltitudeM Current altitude in metres (MSL)
+     */
     data class FixedwingMetrics(
         val airspeedMS: Float,
         val throttlePercentage: Float,
@@ -280,16 +606,46 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val absoluteAltitudeM: Float,
     )
 
+    /**
+     * AccelerationFrd message type.
+     *
+     * @property forwardMS2 Acceleration in forward direction in metres per second^2
+     * @property rightMS2 Acceleration in right direction in metres per second^2
+     * @property downMS2 Acceleration in down direction in metres per second^2
+     */
     data class AccelerationFrd(val forwardMS2: Float, val rightMS2: Float, val downMS2: Float)
 
+    /**
+     * AngularVelocityFrd message type.
+     *
+     * @property forwardRadS Angular velocity in forward direction in radians per second
+     * @property rightRadS Angular velocity in right direction in radians per second
+     * @property downRadS Angular velocity in Down direction in radians per second
+     */
     data class AngularVelocityFrd(val forwardRadS: Float, val rightRadS: Float, val downRadS: Float)
 
+    /**
+     * MagneticFieldFrd message type.
+     *
+     * @property forwardGauss Magnetic field in forward direction measured in Gauss
+     * @property rightGauss Magnetic field in East direction measured in Gauss
+     * @property downGauss Magnetic field in Down direction measured in Gauss
+     */
     data class MagneticFieldFrd(
         val forwardGauss: Float,
         val rightGauss: Float,
         val downGauss: Float,
     )
 
+    /**
+     * Imu message type.
+     *
+     * @property accelerationFrd Acceleration
+     * @property angularVelocityFrd Angular velocity
+     * @property magneticFieldFrd Magnetic field
+     * @property temperatureDegc Temperature
+     * @property timestampUs Timestamp in microseconds
+     */
     data class Imu(
         val accelerationFrd: AccelerationFrd,
         val angularVelocityFrd: AngularVelocityFrd,
@@ -298,12 +654,31 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val timestampUs: Long,
     )
 
+    /**
+     * Gps global origin type.
+     *
+     * @property latitudeDeg Latitude of the origin
+     * @property longitudeDeg Longitude of the origin
+     * @property altitudeM Altitude AMSL (above mean sea level) in metres
+     */
     data class GpsGlobalOrigin(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
         val altitudeM: Float,
     )
 
+    /**
+     * Altitude message type
+     *
+     * @property altitudeMonotonicM Altitude in meters is initialized on system boot and monotonic
+     * @property altitudeAmslM Altitude AMSL (above mean sea level) in meters
+     * @property altitudeLocalM Local altitude in meters
+     * @property altitudeRelativeM Altitude above home position in meters
+     * @property altitudeTerrainM Altitude above terrain in meters
+     * @property bottomClearanceM This is not the altitude, but the clear space below the system
+     *   according to the fused clearance estimate in meters.
+     * @property timestampUs Timestamp in microseconds (since system boot)
+     */
     data class Altitude(
         val altitudeMonotonicM: Float,
         val altitudeAmslM: Float,
@@ -314,6 +689,20 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val timestampUs: Long,
     )
 
+    /**
+     * Wind message type
+     *
+     * @property windXNedMS Wind in North (NED) direction
+     * @property windYNedMS Wind in East (NED) direction
+     * @property windZNedMS Wind in down (NED) direction
+     * @property horizontalVariabilityStddevMS Variability of wind in XY, 1-STD estimated from a 1
+     *   Hz lowpassed wind estimate
+     * @property verticalVariabilityStddevMS Variability of wind in Z, 1-STD estimated from a 1 Hz
+     *   lowpassed wind estimate
+     * @property windAltitudeMslM Altitude (MSL) that this measurement was taken at
+     * @property horizontalWindSpeedAccuracyMS Horizontal speed 1-STD accuracy
+     * @property verticalWindSpeedAccuracyMS Vertical speed 1-STD accuracy
+     */
     data class Wind(
         val windXNedMS: Float,
         val windYNedMS: Float,
@@ -325,238 +714,578 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         val verticalWindSpeedAccuracyMS: Float,
     )
 
+    /**
+     * Subscribe to 'position' updates.
+     *
+     * @return The next position
+     */
     fun position(): Position = native.position()
 
+    /**
+     * Subscribe to 'position' updates.
+     *
+     * @return The next position
+     */
     fun subscribePosition(): Flow<Position> = callbackFlow {
         val subscriptionHandle = native.subscribePosition() { value -> trySend(value) }
         awaitClose { native.unsubscribePosition(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'home position' updates.
+     *
+     * @return The next home position
+     */
     fun home(): HomePosition = native.home()
 
+    /**
+     * Subscribe to 'home position' updates.
+     *
+     * @return The next home position
+     */
     fun subscribeHome(): Flow<HomePosition> = callbackFlow {
         val subscriptionHandle = native.subscribeHome() { value -> trySend(value) }
         awaitClose { native.unsubscribeHome(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to in-air updates.
+     *
+     * @return The next 'in-air' state
+     */
     fun inAir(): Boolean = native.inAir()
 
+    /**
+     * Subscribe to in-air updates.
+     *
+     * @return The next 'in-air' state
+     */
     fun subscribeInAir(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = native.subscribeInAir() { value -> trySend(value) }
         awaitClose { native.unsubscribeInAir(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to landed state updates
+     *
+     * @return The next 'landed' state
+     */
     fun landedState(): LandedState = native.landedState()
 
+    /**
+     * Subscribe to landed state updates
+     *
+     * @return The next 'landed' state
+     */
     fun subscribeLandedState(): Flow<LandedState> = callbackFlow {
         val subscriptionHandle = native.subscribeLandedState() { value -> trySend(value) }
         awaitClose { native.unsubscribeLandedState(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to armed updates.
+     *
+     * @return The next 'armed' state
+     */
     fun armed(): Boolean = native.armed()
 
+    /**
+     * Subscribe to armed updates.
+     *
+     * @return The next 'armed' state
+     */
     fun subscribeArmed(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = native.subscribeArmed() { value -> trySend(value) }
         awaitClose { native.unsubscribeArmed(subscriptionHandle) }
     }
 
+    /**
+     * subscribe to vtol state Updates
+     *
+     * @return The next 'vtol' state
+     */
     fun vtolState(): VtolState = native.vtolState()
 
+    /**
+     * subscribe to vtol state Updates
+     *
+     * @return The next 'vtol' state
+     */
     fun subscribeVtolState(): Flow<VtolState> = callbackFlow {
         val subscriptionHandle = native.subscribeVtolState() { value -> trySend(value) }
         awaitClose { native.unsubscribeVtolState(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'attitude' updates (quaternion).
+     *
+     * @return The next attitude (quaternion)
+     */
     fun attitudeQuaternion(): Quaternion = native.attitudeQuaternion()
 
+    /**
+     * Subscribe to 'attitude' updates (quaternion).
+     *
+     * @return The next attitude (quaternion)
+     */
     fun subscribeAttitudeQuaternion(): Flow<Quaternion> = callbackFlow {
         val subscriptionHandle = native.subscribeAttitudeQuaternion() { value -> trySend(value) }
         awaitClose { native.unsubscribeAttitudeQuaternion(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'attitude' updates (Euler).
+     *
+     * @return The next attitude (Euler)
+     */
     fun attitudeEuler(): EulerAngle = native.attitudeEuler()
 
+    /**
+     * Subscribe to 'attitude' updates (Euler).
+     *
+     * @return The next attitude (Euler)
+     */
     fun subscribeAttitudeEuler(): Flow<EulerAngle> = callbackFlow {
         val subscriptionHandle = native.subscribeAttitudeEuler() { value -> trySend(value) }
         awaitClose { native.unsubscribeAttitudeEuler(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'attitude' updates (angular velocity)
+     *
+     * @return The next angular velocity (rad/s)
+     */
     fun attitudeAngularVelocityBody(): AngularVelocityBody = native.attitudeAngularVelocityBody()
 
+    /**
+     * Subscribe to 'attitude' updates (angular velocity)
+     *
+     * @return The next angular velocity (rad/s)
+     */
     fun subscribeAttitudeAngularVelocityBody(): Flow<AngularVelocityBody> = callbackFlow {
         val subscriptionHandle =
             native.subscribeAttitudeAngularVelocityBody() { value -> trySend(value) }
         awaitClose { native.unsubscribeAttitudeAngularVelocityBody(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'ground speed' updates (NED).
+     *
+     * @return The next velocity (NED)
+     */
     fun velocityNed(): VelocityNed = native.velocityNed()
 
+    /**
+     * Subscribe to 'ground speed' updates (NED).
+     *
+     * @return The next velocity (NED)
+     */
     fun subscribeVelocityNed(): Flow<VelocityNed> = callbackFlow {
         val subscriptionHandle = native.subscribeVelocityNed() { value -> trySend(value) }
         awaitClose { native.unsubscribeVelocityNed(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'GPS info' updates.
+     *
+     * @return The next 'GPS info' state
+     */
     fun gpsInfo(): GpsInfo = native.gpsInfo()
 
+    /**
+     * Subscribe to 'GPS info' updates.
+     *
+     * @return The next 'GPS info' state
+     */
     fun subscribeGpsInfo(): Flow<GpsInfo> = callbackFlow {
         val subscriptionHandle = native.subscribeGpsInfo() { value -> trySend(value) }
         awaitClose { native.unsubscribeGpsInfo(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'Raw GPS' updates.
+     *
+     * @return The next 'Raw GPS' state. Warning: this is an advanced feature, use `Position`
+     *   updates to get the location of the drone!
+     */
     fun rawGps(): RawGps = native.rawGps()
 
+    /**
+     * Subscribe to 'Raw GPS' updates.
+     *
+     * @return The next 'Raw GPS' state. Warning: this is an advanced feature, use `Position`
+     *   updates to get the location of the drone!
+     */
     fun subscribeRawGps(): Flow<RawGps> = callbackFlow {
         val subscriptionHandle = native.subscribeRawGps() { value -> trySend(value) }
         awaitClose { native.unsubscribeRawGps(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'battery' updates.
+     *
+     * @return The next 'battery' state
+     */
     fun battery(): Battery = native.battery()
 
+    /**
+     * Subscribe to 'battery' updates.
+     *
+     * @return The next 'battery' state
+     */
     fun subscribeBattery(): Flow<Battery> = callbackFlow {
         val subscriptionHandle = native.subscribeBattery() { value -> trySend(value) }
         awaitClose { native.unsubscribeBattery(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'flight mode' updates.
+     *
+     * @return The next flight mode
+     */
     fun flightMode(): FlightMode = native.flightMode()
 
+    /**
+     * Subscribe to 'flight mode' updates.
+     *
+     * @return The next flight mode
+     */
     fun subscribeFlightMode(): Flow<FlightMode> = callbackFlow {
         val subscriptionHandle = native.subscribeFlightMode() { value -> trySend(value) }
         awaitClose { native.unsubscribeFlightMode(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'health' updates.
+     *
+     * @return The next 'health' state
+     */
     fun health(): Health = native.health()
 
+    /**
+     * Subscribe to 'health' updates.
+     *
+     * @return The next 'health' state
+     */
     fun subscribeHealth(): Flow<Health> = callbackFlow {
         val subscriptionHandle = native.subscribeHealth() { value -> trySend(value) }
         awaitClose { native.unsubscribeHealth(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'RC status' updates.
+     *
+     * @return The next RC status
+     */
     fun rcStatus(): RcStatus = native.rcStatus()
 
+    /**
+     * Subscribe to 'RC status' updates.
+     *
+     * @return The next RC status
+     */
     fun subscribeRcStatus(): Flow<RcStatus> = callbackFlow {
         val subscriptionHandle = native.subscribeRcStatus() { value -> trySend(value) }
         awaitClose { native.unsubscribeRcStatus(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'status text' updates.
+     *
+     * @return The next 'status text'
+     */
     fun statusText(): StatusText = native.statusText()
 
+    /**
+     * Subscribe to 'status text' updates.
+     *
+     * @return The next 'status text'
+     */
     fun subscribeStatusText(): Flow<StatusText> = callbackFlow {
         val subscriptionHandle = native.subscribeStatusText() { value -> trySend(value) }
         awaitClose { native.unsubscribeStatusText(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'actuator control target' updates.
+     *
+     * @return The next actuator control target
+     */
     fun actuatorControlTarget(): ActuatorControlTarget = native.actuatorControlTarget()
 
+    /**
+     * Subscribe to 'actuator control target' updates.
+     *
+     * @return The next actuator control target
+     */
     fun subscribeActuatorControlTarget(): Flow<ActuatorControlTarget> = callbackFlow {
         val subscriptionHandle = native.subscribeActuatorControlTarget() { value -> trySend(value) }
         awaitClose { native.unsubscribeActuatorControlTarget(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'actuator output status' updates.
+     *
+     * @return The next actuator output status
+     */
     fun actuatorOutputStatus(): ActuatorOutputStatus = native.actuatorOutputStatus()
 
+    /**
+     * Subscribe to 'actuator output status' updates.
+     *
+     * @return The next actuator output status
+     */
     fun subscribeActuatorOutputStatus(): Flow<ActuatorOutputStatus> = callbackFlow {
         val subscriptionHandle = native.subscribeActuatorOutputStatus() { value -> trySend(value) }
         awaitClose { native.unsubscribeActuatorOutputStatus(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'odometry' updates.
+     *
+     * @return The next odometry status
+     */
     fun odometry(): Odometry = native.odometry()
 
+    /**
+     * Subscribe to 'odometry' updates.
+     *
+     * @return The next odometry status
+     */
     fun subscribeOdometry(): Flow<Odometry> = callbackFlow {
         val subscriptionHandle = native.subscribeOdometry() { value -> trySend(value) }
         awaitClose { native.unsubscribeOdometry(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'position velocity' updates.
+     *
+     * @return The next position and velocity status
+     */
     fun positionVelocityNed(): PositionVelocityNed = native.positionVelocityNed()
 
+    /**
+     * Subscribe to 'position velocity' updates.
+     *
+     * @return The next position and velocity status
+     */
     fun subscribePositionVelocityNed(): Flow<PositionVelocityNed> = callbackFlow {
         val subscriptionHandle = native.subscribePositionVelocityNed() { value -> trySend(value) }
         awaitClose { native.unsubscribePositionVelocityNed(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'ground truth' updates.
+     *
+     * @return Ground truth position information available in simulation
+     */
     fun groundTruth(): GroundTruth = native.groundTruth()
 
+    /**
+     * Subscribe to 'ground truth' updates.
+     *
+     * @return Ground truth position information available in simulation
+     */
     fun subscribeGroundTruth(): Flow<GroundTruth> = callbackFlow {
         val subscriptionHandle = native.subscribeGroundTruth() { value -> trySend(value) }
         awaitClose { native.unsubscribeGroundTruth(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'fixedwing metrics' updates.
+     *
+     * @return The next fixedwing metrics
+     */
     fun fixedwingMetrics(): FixedwingMetrics = native.fixedwingMetrics()
 
+    /**
+     * Subscribe to 'fixedwing metrics' updates.
+     *
+     * @return The next fixedwing metrics
+     */
     fun subscribeFixedwingMetrics(): Flow<FixedwingMetrics> = callbackFlow {
         val subscriptionHandle = native.subscribeFixedwingMetrics() { value -> trySend(value) }
         awaitClose { native.unsubscribeFixedwingMetrics(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'IMU' updates (in SI units in NED body frame).
+     *
+     * @return The next IMU status
+     */
     fun imu(): Imu = native.imu()
 
+    /**
+     * Subscribe to 'IMU' updates (in SI units in NED body frame).
+     *
+     * @return The next IMU status
+     */
     fun subscribeImu(): Flow<Imu> = callbackFlow {
         val subscriptionHandle = native.subscribeImu() { value -> trySend(value) }
         awaitClose { native.unsubscribeImu(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'Scaled IMU' updates.
+     *
+     * @return The next scaled IMU status
+     */
     fun scaledImu(): Imu = native.scaledImu()
 
+    /**
+     * Subscribe to 'Scaled IMU' updates.
+     *
+     * @return The next scaled IMU status
+     */
     fun subscribeScaledImu(): Flow<Imu> = callbackFlow {
         val subscriptionHandle = native.subscribeScaledImu() { value -> trySend(value) }
         awaitClose { native.unsubscribeScaledImu(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by
+     * the sensor)
+     *
+     * @return The next raw IMU status
+     */
     fun rawImu(): Imu = native.rawImu()
 
+    /**
+     * Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by
+     * the sensor)
+     *
+     * @return The next raw IMU status
+     */
     fun subscribeRawImu(): Flow<Imu> = callbackFlow {
         val subscriptionHandle = native.subscribeRawImu() { value -> trySend(value) }
         awaitClose { native.unsubscribeRawImu(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'HealthAllOk' updates.
+     *
+     * @return The next 'health all ok' status
+     */
     fun healthAllOk(): Boolean = native.healthAllOk()
 
+    /**
+     * Subscribe to 'HealthAllOk' updates.
+     *
+     * @return The next 'health all ok' status
+     */
     fun subscribeHealthAllOk(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = native.subscribeHealthAllOk() { value -> trySend(value) }
         awaitClose { native.unsubscribeHealthAllOk(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'unix epoch time' updates.
+     *
+     * @return The next 'unix epoch time' status
+     */
     fun unixEpochTime(): Long = native.unixEpochTime()
 
+    /**
+     * Subscribe to 'unix epoch time' updates.
+     *
+     * @return The next 'unix epoch time' status
+     */
     fun subscribeUnixEpochTime(): Flow<Long> = callbackFlow {
         val subscriptionHandle = native.subscribeUnixEpochTime() { value -> trySend(value) }
         awaitClose { native.unsubscribeUnixEpochTime(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'Distance Sensor' updates.
+     *
+     * @return The next Distance Sensor status
+     */
     fun distanceSensor(): DistanceSensor = native.distanceSensor()
 
+    /**
+     * Subscribe to 'Distance Sensor' updates.
+     *
+     * @return The next Distance Sensor status
+     */
     fun subscribeDistanceSensor(): Flow<DistanceSensor> = callbackFlow {
         val subscriptionHandle = native.subscribeDistanceSensor() { value -> trySend(value) }
         awaitClose { native.unsubscribeDistanceSensor(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'Scaled Pressure' updates.
+     *
+     * @return The next Scaled Pressure status
+     */
     fun scaledPressure(): ScaledPressure = native.scaledPressure()
 
+    /**
+     * Subscribe to 'Scaled Pressure' updates.
+     *
+     * @return The next Scaled Pressure status
+     */
     fun subscribeScaledPressure(): Flow<ScaledPressure> = callbackFlow {
         val subscriptionHandle = native.subscribeScaledPressure() { value -> trySend(value) }
         awaitClose { native.unsubscribeScaledPressure(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'Heading' updates.
+     *
+     * @return The next heading (yaw) in degrees
+     */
     fun heading(): Heading = native.heading()
 
+    /**
+     * Subscribe to 'Heading' updates.
+     *
+     * @return The next heading (yaw) in degrees
+     */
     fun subscribeHeading(): Flow<Heading> = callbackFlow {
         val subscriptionHandle = native.subscribeHeading() { value -> trySend(value) }
         awaitClose { native.unsubscribeHeading(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'Altitude' updates.
+     *
+     * @return The next altitude
+     */
     fun altitude(): Altitude = native.altitude()
 
+    /**
+     * Subscribe to 'Altitude' updates.
+     *
+     * @return The next altitude
+     */
     fun subscribeAltitude(): Flow<Altitude> = callbackFlow {
         val subscriptionHandle = native.subscribeAltitude() { value -> trySend(value) }
         awaitClose { native.unsubscribeAltitude(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to 'Wind Estimated' updates.
+     *
+     * @return The next wind
+     */
     fun wind(): Wind = native.wind()
 
+    /**
+     * Subscribe to 'Wind Estimated' updates.
+     *
+     * @return The next wind
+     */
     fun subscribeWind(): Flow<Wind> = callbackFlow {
         val subscriptionHandle = native.subscribeWind() { value -> trySend(value) }
         awaitClose { native.unsubscribeWind(subscriptionHandle) }
     }
 
+    /**
+     * Set rate to 'position' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRatePosition(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -568,6 +1297,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'home position' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateHome(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = TelemetryCallbackGuard()
         native.setRateHomeAsync(rateHz) { result ->
@@ -578,6 +1313,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /**
+     * Set rate to in-air updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateInAir(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = TelemetryCallbackGuard()
         native.setRateInAirAsync(rateHz) { result ->
@@ -588,6 +1329,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /**
+     * Set rate to landed state updates
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateLandedState(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -599,6 +1346,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to VTOL state updates
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateVtolState(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -610,6 +1363,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'attitude euler angle' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateAttitudeQuaternion(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -621,6 +1380,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'attitude quaternion' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateAttitudeEuler(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -632,6 +1397,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate of camera attitude updates. Set rate to 'ground speed' updates (NED).
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateVelocityNed(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -643,6 +1414,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'GPS info' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateGpsInfo(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -654,6 +1431,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'Raw GPS' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateRawGps(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -665,6 +1448,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'battery' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateBattery(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -676,6 +1465,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'RC status' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateRcStatus(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -687,6 +1482,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'actuator control target' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateActuatorControlTarget(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -698,6 +1499,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'actuator output status' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateActuatorOutputStatus(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -709,6 +1516,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'odometry' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateOdometry(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -720,6 +1533,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'position velocity' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRatePositionVelocityNed(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -731,6 +1550,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'ground truth' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateGroundTruth(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -742,6 +1567,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'fixedwing metrics' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateFixedwingMetrics(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -753,6 +1584,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'IMU' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = TelemetryCallbackGuard()
         native.setRateImuAsync(rateHz) { result ->
@@ -763,6 +1600,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
         }
     }
 
+    /**
+     * Set rate to 'Scaled IMU' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateScaledImu(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -774,6 +1617,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'Raw IMU' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateRawImu(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -785,6 +1634,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'unix epoch time' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateUnixEpochTime(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -796,6 +1651,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'Distance Sensor' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateDistanceSensor(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -807,6 +1668,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'Altitude' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateAltitude(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -818,6 +1685,12 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Set rate to 'Health' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateHealth(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()
@@ -829,6 +1702,11 @@ class Telemetry internal constructor(private val native: TelemetryNative) : Auto
             }
         }
 
+    /**
+     * Get the GPS location of where the estimator has been initialized.
+     *
+     * @return
+     */
     suspend fun getGpsGlobalOrigin(): kotlin.Result<GpsGlobalOrigin> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TelemetryCallbackGuard()

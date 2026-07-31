@@ -9,18 +9,29 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/** Get event notifications, such as takeoff, or arming checks */
 class Events internal constructor(private val native: EventsNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned */
     enum class Result(val value: Int) {
+        /** Successful result */
         SUCCESS(0),
+        /** Not available */
         NOT_AVAILABLE(1),
+        /** Connection error */
         CONNECTION_ERROR(2),
+        /** Unsupported */
         UNSUPPORTED(3),
+        /** Denied */
         DENIED(4),
+        /** Failed */
         FAILED(5),
+        /** Timeout */
         TIMEOUT(6),
+        /** No system available */
         NO_SYSTEM(7),
+        /** Unknown result */
         UNKNOWN(8);
 
         companion object {
@@ -28,14 +39,23 @@ class Events internal constructor(private val native: EventsNative) : AutoClosea
         }
     }
 
+    /** Log level type */
     enum class LogLevel(val value: Int) {
+        /** Emergency */
         EMERGENCY(0),
+        /** Alert */
         ALERT(1),
+        /** Critical */
         CRITICAL(2),
+        /** Error */
         ERROR(3),
+        /** Warning */
         WARNING(4),
+        /** Notice */
         NOTICE(5),
+        /** Info */
         INFO(6),
+        /** Debug */
         DEBUG(7);
 
         companion object {
@@ -44,6 +64,16 @@ class Events internal constructor(private val native: EventsNative) : AutoClosea
         }
     }
 
+    /**
+     * Event type
+     *
+     * @property compid The source component ID of the event
+     * @property message Short, single-line message
+     * @property description Detailed description (optional, might be multiple lines)
+     * @property logLevel Log level of message
+     * @property eventNamespace Namespace, e.g. "px4"
+     * @property eventName Event name (unique within the namespace)
+     */
     data class Event(
         val compid: Int,
         val message: String,
@@ -53,6 +83,14 @@ class Events internal constructor(private val native: EventsNative) : AutoClosea
         val eventName: String,
     )
 
+    /**
+     * Health and arming check problem type
+     *
+     * @property message Short, single-line message
+     * @property description Detailed description (optional, might be multiple lines)
+     * @property logLevel Log level of message
+     * @property healthComponent Associated health component, e.g. "gps"
+     */
     data class HealthAndArmingCheckProblem(
         val message: String,
         val description: String,
@@ -60,12 +98,29 @@ class Events internal constructor(private val native: EventsNative) : AutoClosea
         val healthComponent: String,
     )
 
+    /**
+     * Arming checks for a specific mode
+     *
+     * @property modeName Mode name, e.g. "Position"
+     * @property canArmOrRun If disarmed: indicates if arming is possible. If armed: indicates if
+     *   the mode can be selected
+     * @property problems List of reported problems for the mode
+     */
     data class HealthAndArmingCheckMode(
         val modeName: String,
         val canArmOrRun: Boolean,
         val problems: List<HealthAndArmingCheckProblem> = emptyList(),
     )
 
+    /**
+     * Health component report type
+     *
+     * @property name Unique component name, e.g. "gps"
+     * @property label Human readable label of the component, e.g. "GPS" or "Accelerometer"
+     * @property isPresent If the component is present
+     * @property hasError If the component has errors
+     * @property hasWarning If the component has warnings
+     */
     data class HealthComponentReport(
         val name: String,
         val label: String,
@@ -74,22 +129,44 @@ class Events internal constructor(private val native: EventsNative) : AutoClosea
         val hasWarning: Boolean,
     )
 
+    /**
+     * Health and arming check report type
+     *
+     * @property currentModeIntention Report for currently intended mode
+     * @property healthComponents Health components list (e.g. for "gps")
+     * @property allProblems Complete list of problems
+     */
     data class HealthAndArmingCheckReport(
         val currentModeIntention: HealthAndArmingCheckMode,
         val healthComponents: List<HealthComponentReport> = emptyList(),
         val allProblems: List<HealthAndArmingCheckProblem> = emptyList(),
     )
 
+    /**
+     * Subscribe to event updates.
+     *
+     * @return The event
+     */
     fun subscribeEvents(): Flow<Event> = callbackFlow {
         val subscriptionHandle = native.subscribeEvents() { value -> trySend(value) }
         awaitClose { native.unsubscribeEvents(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to arming check updates.
+     *
+     * @return The report
+     */
     fun subscribeHealthAndArmingChecks(): Flow<HealthAndArmingCheckReport> = callbackFlow {
         val subscriptionHandle = native.subscribeHealthAndArmingChecks() { value -> trySend(value) }
         awaitClose { native.unsubscribeHealthAndArmingChecks(subscriptionHandle) }
     }
 
+    /**
+     * Get the latest report.
+     *
+     * @return The report
+     */
     fun getHealthAndArmingChecksReport(): HealthAndArmingCheckReport =
         native.getHealthAndArmingChecksReport()
 

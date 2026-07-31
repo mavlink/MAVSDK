@@ -10,19 +10,30 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/** Access component metadata json definitions, such as parameters. */
 class ComponentMetadata internal constructor(private val native: ComponentMetadataNative) :
     AutoCloseable {
     private var closed = false
 
+    /** Possible results returned */
     enum class Result(val value: Int) {
+        /** Success */
         SUCCESS(0),
+        /** Not available */
         NOT_AVAILABLE(1),
+        /** Connection error */
         CONNECTION_ERROR(2),
+        /** Unsupported */
         UNSUPPORTED(3),
+        /** Denied */
         DENIED(4),
+        /** Failed */
         FAILED(5),
+        /** Timeout */
         TIMEOUT(6),
+        /** No system */
         NO_SYSTEM(7),
+        /** Not requested */
         NOT_REQUESTED(8);
 
         companion object {
@@ -31,10 +42,18 @@ class ComponentMetadata internal constructor(private val native: ComponentMetada
         }
     }
 
+    /** The metadata type */
     enum class MetadataType(val value: Int) {
+        /**
+         * This is set in the subscription callback when all metadata types completed for a given
+         * component ID
+         */
         ALL_COMPLETED(0),
+        /** Parameter metadata */
         PARAMETER(1),
+        /** Event definitions */
         EVENTS(2),
+        /** Actuator definitions */
         ACTUATORS(3);
 
         companion object {
@@ -43,23 +62,59 @@ class ComponentMetadata internal constructor(private val native: ComponentMetada
         }
     }
 
+    /**
+     * Metadata response
+     *
+     * @property jsonMetadata The JSON metadata
+     */
     data class MetadataData(val jsonMetadata: String)
 
+    /**
+     * Metadata for a given component and type
+     *
+     * @property compid The component ID
+     * @property type The metadata type
+     * @property jsonMetadata The JSON metadata
+     */
     data class MetadataUpdate(val compid: Int, val type: MetadataType, val jsonMetadata: String)
 
+    /**
+     * Request metadata from a specific component. This is used to start requesting metadata from a
+     * component. The metadata can later be accessed via subscription (see below) or GetMetadata.
+     *
+     * @param compid The component ID to request
+     */
     fun requestComponent(compid: Int) {
         native.requestComponent(compid)
     }
 
+    /**
+     * Request metadata from the autopilot component. This is used to start requesting metadata from
+     * the autopilot. The metadata can later be accessed via subscription (see below) or
+     * GetMetadata.
+     */
     fun requestAutopilotComponent() {
         native.requestAutopilotComponent()
     }
 
+    /**
+     * Register a callback that gets called when metadata is available
+     *
+     * @return The metadata data
+     */
     fun subscribeMetadataAvailable(): Flow<MetadataUpdate> = callbackFlow {
         val subscriptionHandle = native.subscribeMetadataAvailable() { value -> trySend(value) }
         awaitClose { native.unsubscribeMetadataAvailable(subscriptionHandle) }
     }
 
+    /**
+     * Access metadata. This can be used if you know the metadata is available already, otherwise
+     * use the subscription to get notified when it becomes available.
+     *
+     * @param compid The component ID to request
+     * @param metadataType The metadata type
+     * @return The response
+     */
     fun getMetadata(compid: Int, metadataType: MetadataType): MetadataData =
         native.getMetadata(compid, metadataType)
 

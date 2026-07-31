@@ -11,16 +11,28 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/**
+ * Provide control over a gimbal within the MAVLink Gimbal Protocol:
+ * https://mavlink.io/en/services/gimbal_v2.html
+ */
 class Gimbal internal constructor(private val native: GimbalNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for gimbal commands. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Command was accepted */
         SUCCESS(1),
+        /** Error occurred sending the command */
         ERROR(2),
+        /** Command timed out */
         TIMEOUT(3),
+        /** Functionality not supported */
         UNSUPPORTED(4),
+        /** No system connected */
         NO_SYSTEM(5),
+        /** Invalid argument */
         INVALID_ARGUMENT(6);
 
         companion object {
@@ -28,8 +40,11 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         }
     }
 
+    /** Gimbal mode type. */
     enum class GimbalMode(val value: Int) {
+        /** Yaw follow will point the gimbal to the vehicle heading */
         YAW_FOLLOW(0),
+        /** Yaw lock will fix the gimbal pointing to an absolute direction */
         YAW_LOCK(1);
 
         companion object {
@@ -38,9 +53,13 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         }
     }
 
+    /** Control mode */
     enum class ControlMode(val value: Int) {
+        /** Indicates that the component does not have control over the gimbal */
         NONE(0),
+        /** To take primary control over the gimbal */
         PRIMARY(1),
+        /** To take secondary control over the gimbal */
         SECONDARY(2);
 
         companion object {
@@ -49,8 +68,14 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         }
     }
 
+    /** The send mode type */
     enum class SendMode(val value: Int) {
+        /**
+         * Send command exactly once with quality of service (use for sporadic commands slower than
+         * 1 Hz)
+         */
         ONCE(0),
+        /** Stream setpoint without quality of service (use for setpoints faster than 1 Hz). */
         STREAM(1);
 
         companion object {
@@ -59,12 +84,57 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         }
     }
 
+    /**
+     * Quaternion type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Hamilton quaternion product
+     * definition is used. A zero-rotation quaternion is represented by (1,0,0,0). The quaternion
+     * could also be written as w + xi + yj + zk.
+     *
+     * For more info see: https://en.wikipedia.org/wiki/Quaternion
+     *
+     * @property w Quaternion entry 0, also denoted as a
+     * @property x Quaternion entry 1, also denoted as b
+     * @property y Quaternion entry 2, also denoted as c
+     * @property z Quaternion entry 3, also denoted as d
+     */
     data class Quaternion(val w: Float, val x: Float, val y: Float, val z: Float)
 
+    /**
+     * Euler angle type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Euler angles are converted
+     * using the 3-1-2 sequence instead of standard 3-2-1 in order to avoid the gimbal lock at 90
+     * degrees down.
+     *
+     * For more info see https://en.wikipedia.org/wiki/Euler_angles
+     *
+     * @property rollDeg Roll angle in degrees, positive is banking to the right
+     * @property pitchDeg Pitch angle in degrees, positive is pitching nose up
+     * @property yawDeg Yaw angle in degrees, positive is clock-wise seen from above
+     */
     data class EulerAngle(val rollDeg: Float, val pitchDeg: Float, val yawDeg: Float)
 
+    /**
+     * Gimbal angular rate type
+     *
+     * @property rollRadS Roll angular velocity
+     * @property pitchRadS Pitch angular velocity
+     * @property yawRadS Yaw angular velocity
+     */
     data class AngularVelocityBody(val rollRadS: Float, val pitchRadS: Float, val yawRadS: Float)
 
+    /**
+     * Gimbal attitude type
+     *
+     * @property gimbalId Gimbal ID
+     * @property eulerAngleForward Euler angle relative to forward
+     * @property quaternionForward Quaternion relative to forward
+     * @property eulerAngleNorth Euler angle relative to North
+     * @property quaternionNorth Quaternion relative to North
+     * @property angularVelocity The angular rate
+     * @property timestampUs Timestamp in microseconds
+     */
     data class Attitude(
         val gimbalId: Int,
         val eulerAngleForward: EulerAngle,
@@ -75,6 +145,17 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         val timestampUs: Long,
     )
 
+    /**
+     * Gimbal list item
+     *
+     * @property gimbalId ID to address it, starting at 1 (0 means all gimbals)
+     * @property vendorName Vendor name
+     * @property modelName Model name
+     * @property customName Custom name name
+     * @property gimbalManagerComponentId MAVLink component of gimbal manager, for debugging
+     *   purposes
+     * @property gimbalDeviceId MAVLink component of gimbal device
+     */
     data class GimbalItem(
         val gimbalId: Int,
         val vendorName: String,
@@ -84,8 +165,27 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         val gimbalDeviceId: Int,
     )
 
+    /**
+     * Gimbal list
+     *
+     * @property gimbals Gimbal items.
+     */
     data class GimbalList(val gimbals: List<GimbalItem> = emptyList())
 
+    /**
+     * Control status
+     *
+     * @property gimbalId Gimbal ID
+     * @property controlMode Control mode (none, primary or secondary)
+     * @property sysidPrimaryControl Sysid of the component that has primary control over the gimbal
+     *   (0 if no one is in control)
+     * @property compidPrimaryControl Compid of the component that has primary control over the
+     *   gimbal (0 if no one is in control)
+     * @property sysidSecondaryControl Sysid of the component that has secondary control over the
+     *   gimbal (0 if no one is in control)
+     * @property compidSecondaryControl Compid of the component that has secondary control over the
+     *   gimbal (0 if no one is in control)
+     */
     data class ControlStatus(
         val gimbalId: Int,
         val controlMode: ControlMode,
@@ -95,6 +195,22 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         val compidSecondaryControl: Int,
     )
 
+    /**
+     * Set gimbal roll, pitch and yaw angles.
+     *
+     * This sets the desired roll, pitch and yaw angles of a gimbal. Will return when the command is
+     * accepted, however, it might take the gimbal longer to actually be set to the new angles.
+     *
+     * Note that the roll angle needs to be set to 0 when send_mode is Once.
+     *
+     * @param gimbalId Gimbal id to address (0 for all gimbals)
+     * @param rollDeg Roll angle in degrees (negative down on the right)
+     * @param pitchDeg Pitch angle in degrees (negative points down)
+     * @param yawDeg Yaw angle in degrees (positive is clock-wise, range: -180 to 180 or 0 to 360)
+     * @param gimbalMode Gimbal mode to use
+     * @param sendMode Send mode of command/setpoint
+     * @return The result of the request.
+     */
     suspend fun setAngles(
         gimbalId: Int,
         rollDeg: Float,
@@ -112,6 +228,24 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         }
     }
 
+    /**
+     * Set gimbal angular rates.
+     *
+     * This sets the desired angular rates around roll, pitch and yaw axes of a gimbal. Will return
+     * when the command is accepted, however, it might take the gimbal longer to actually reach the
+     * angular rate.
+     *
+     * Note that the roll angle needs to be set to 0 when send_mode is Once.
+     *
+     * @param gimbalId Gimbal id to address (0 for all gimbals)
+     * @param rollRateDegS Angular rate around roll axis in degrees/second (negative down on the
+     *   right)
+     * @param pitchRateDegS Angular rate around pitch axis in degrees/second (negative downward)
+     * @param yawRateDegS Angular rate around yaw axis in degrees/second (positive is clock-wise)
+     * @param gimbalMode Gimbal mode to use
+     * @param sendMode Send mode of command/setpoint
+     * @return The result of the request.
+     */
     suspend fun setAngularRates(
         gimbalId: Int,
         rollRateDegS: Float,
@@ -136,6 +270,20 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         }
     }
 
+    /**
+     * Set gimbal region of interest (ROI).
+     *
+     * This sets a region of interest that the gimbal will point to. The gimbal will continue to
+     * point to the specified region until it receives a new command. The function will return when
+     * the command is accepted, however, it might take the gimbal longer to actually rotate to the
+     * ROI.
+     *
+     * @param gimbalId Gimbal id to address (0 for all gimbals)
+     * @param latitudeDeg Latitude in degrees
+     * @param longitudeDeg Longitude in degrees
+     * @param altitudeM Altitude in metres (AMSL)
+     * @return The result of the request.
+     */
     suspend fun setRoiLocation(
         gimbalId: Int,
         latitudeDeg: Double,
@@ -151,6 +299,20 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
         }
     }
 
+    /**
+     * Take control.
+     *
+     * There can be only two components in control of a gimbal at any given time. One with "primary"
+     * control, and one with "secondary" control. The way the secondary control is implemented is
+     * not specified and hence depends on the vehicle.
+     *
+     * Components are expected to be cooperative, which means that they can override each other and
+     * should therefore do it carefully.
+     *
+     * @param gimbalId Gimbal id to address (0 for all gimbals)
+     * @param controlMode Control mode (primary or secondary)
+     * @return The result of the request.
+     */
     suspend fun takeControl(gimbalId: Int, controlMode: ControlMode): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = GimbalCallbackGuard()
@@ -162,6 +324,14 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
             }
         }
 
+    /**
+     * Release control.
+     *
+     * Release control, such that other components can control the gimbal.
+     *
+     * @param gimbalId Gimbal id to address (0 for all gimbals)
+     * @return The result of the request.
+     */
     suspend fun releaseControl(gimbalId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = GimbalCallbackGuard()
@@ -173,25 +343,68 @@ class Gimbal internal constructor(private val native: GimbalNative) : AutoClosea
             }
         }
 
+    /**
+     * Subscribe to list of gimbals.
+     *
+     * This allows to find out what gimbals are connected to the system. Based on the gimbal ID, we
+     * can then address a specific gimbal.
+     *
+     * @return Gimbal list
+     */
     fun gimbalList(): GimbalList = native.gimbalList()
 
+    /**
+     * Subscribe to list of gimbals.
+     *
+     * This allows to find out what gimbals are connected to the system. Based on the gimbal ID, we
+     * can then address a specific gimbal.
+     *
+     * @return Gimbal list
+     */
     fun subscribeGimbalList(): Flow<GimbalList> = callbackFlow {
         val subscriptionHandle = native.subscribeGimbalList() { value -> trySend(value) }
         awaitClose { native.unsubscribeGimbalList(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to control status updates.
+     *
+     * This allows a component to know if it has primary, secondary or no control over the gimbal.
+     * Also, it gives the system and component ids of the other components in control (if any).
+     *
+     * @return Control status
+     */
     fun subscribeControlStatus(): Flow<ControlStatus> = callbackFlow {
         val subscriptionHandle = native.subscribeControlStatus() { value -> trySend(value) }
         awaitClose { native.unsubscribeControlStatus(subscriptionHandle) }
     }
 
+    /**
+     * Get control status for specific gimbal.
+     *
+     * @param gimbalId Gimbal ID
+     * @return Control status
+     */
     fun getControlStatus(gimbalId: Int): ControlStatus = native.getControlStatus(gimbalId)
 
+    /**
+     * Subscribe to attitude updates.
+     *
+     * This gets you the gimbal's attitude and angular rate.
+     *
+     * @return The attitude
+     */
     fun subscribeAttitude(): Flow<Attitude> = callbackFlow {
         val subscriptionHandle = native.subscribeAttitude() { value -> trySend(value) }
         awaitClose { native.unsubscribeAttitude(subscriptionHandle) }
     }
 
+    /**
+     * Get attitude for specific gimbal.
+     *
+     * @param gimbalId Gimbal ID
+     * @return The attitude
+     */
     fun getAttitude(gimbalId: Int): Attitude = native.getAttitude(gimbalId)
 
     override fun close() {

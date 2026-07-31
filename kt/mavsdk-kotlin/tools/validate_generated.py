@@ -39,15 +39,22 @@ for forbidden in ("TODO", "NotImplementedError", "external fun"):
 
 representative_shapes = {
     COMMON / "mission_raw_server/MissionRawServer.kt": (
+        " * Provides low level access to missions using the MAVLink mission protocol.",
+        " * @property missionItems Mission items.",
         "val missionItems: List<MissionItem> = emptyList()",
+        " * Subscribe to when a new mission is uploaded",
         "fun subscribeIncomingMission(): Flow<MissionPlan>",
     ),
     COMMON / "mission/Mission.kt": (
+        " * Upload a list of mission items to the system.",
+        " * @param missionPlan The mission plan to upload.",
         "fun uploadMissionWithProgress(missionPlan: MissionPlan)",
         "fun downloadMissionWithProgress()",
     ),
     COMMON / "param/Param.kt": (
+        " * @property intParams Collection of int params.",
         "val intParams: List<IntParam> = emptyList()",
+        " * @return Collection of all parameter types.",
         "fun getAllParams(): AllParams",
     ),
     ACTUAL / "mission_raw_server/MissionRawServerNative.kt": (

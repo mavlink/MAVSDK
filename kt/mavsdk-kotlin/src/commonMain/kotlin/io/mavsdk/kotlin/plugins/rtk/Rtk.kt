@@ -6,14 +6,21 @@ package io.mavsdk.kotlin.plugins.rtk
 
 import io.mavsdk.kotlin.System
 
+/** Service to send RTK corrections to the vehicle. */
 class Rtk internal constructor(private val native: RtkNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for rtk requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Passed data is too long */
         TOO_LONG(2),
+        /** No system connected */
         NO_SYSTEM(3),
+        /** Connection error */
         CONNECTION_ERROR(4);
 
         companion object {
@@ -21,8 +28,19 @@ class Rtk internal constructor(private val native: RtkNative) : AutoCloseable {
         }
     }
 
+    /**
+     * RTCM data type
+     *
+     * @property dataBase64 The data encoded as a base64 string
+     */
     data class RtcmData(val dataBase64: String)
 
+    /**
+     * Send RTCM data.
+     *
+     * @param rtcmData The data
+     * @return The result of the request.
+     */
     fun sendRtcmData(rtcmData: RtcmData): Result = Result.fromValue(native.sendRtcmData(rtcmData))
 
     override fun close() {

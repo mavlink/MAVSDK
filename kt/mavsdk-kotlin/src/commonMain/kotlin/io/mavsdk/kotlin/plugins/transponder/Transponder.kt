@@ -11,16 +11,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Allow users to get ADS-B information and set ADS-B update rates. */
 class Transponder internal constructor(private val native: TransponderNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for transponder requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Success: the transponder command was accepted by the vehicle */
         SUCCESS(1),
+        /** No system connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Command refused by vehicle */
         COMMAND_DENIED(5),
+        /** Request timed out */
         TIMEOUT(6);
 
         companion object {
@@ -28,26 +37,47 @@ class Transponder internal constructor(private val native: TransponderNative) : 
         }
     }
 
+    /** ADSB classification for the type of vehicle emitting the transponder signal. */
     enum class AdsbEmitterType(val value: Int) {
+        /** No emitter info. */
         NO_INFO(0),
+        /** Light emitter. */
         LIGHT(1),
+        /** Small emitter. */
         SMALL(2),
+        /** Large emitter. */
         LARGE(3),
+        /** High vortex emitter. */
         HIGH_VORTEX_LARGE(4),
+        /** Heavy emitter. */
         HEAVY(5),
+        /** Highly maneuverable emitter. */
         HIGHLY_MANUV(6),
+        /** Rotorcraft emitter. */
         ROTOCRAFT(7),
+        /** Unassigned emitter. */
         UNASSIGNED(8),
+        /** Glider emitter. */
         GLIDER(9),
+        /** Lighter air emitter. */
         LIGHTER_AIR(10),
+        /** Parachute emitter. */
         PARACHUTE(11),
+        /** Ultra light emitter. */
         ULTRA_LIGHT(12),
+        /** Unassigned2 emitter. */
         UNASSIGNED2(13),
+        /** UAV emitter. */
         UAV(14),
+        /** Space emitter. */
         SPACE(15),
+        /** Unassigned3 emitter. */
         UNASSGINED3(16),
+        /** Emergency emitter. */
         EMERGENCY_SURFACE(17),
+        /** Service surface emitter. */
         SERVICE_SURFACE(18),
+        /** Point obstacle emitter. */
         POINT_OBSTACLE(19);
 
         companion object {
@@ -56,8 +86,11 @@ class Transponder internal constructor(private val native: TransponderNative) : 
         }
     }
 
+    /** Altitude type used in AdsbVehicle message */
     enum class AdsbAltitudeType(val value: Int) {
+        /** Altitude reported from a Baro source using QNH reference */
         PRESSURE_QNH(0),
+        /** Altitude reported from a GNSS source */
         GEOMETRIC(1);
 
         companion object {
@@ -66,6 +99,23 @@ class Transponder internal constructor(private val native: TransponderNative) : 
         }
     }
 
+    /**
+     * ADSB Vehicle type.
+     *
+     * @property icaoAddress ICAO (International Civil Aviation Organization) unique worldwide
+     *   identifier
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to +180).
+     * @property altitudeType ADSB altitude type.
+     * @property absoluteAltitudeM Altitude in metres according to altitude_type
+     * @property headingDeg Course over ground, in degrees
+     * @property horizontalVelocityMS The horizontal velocity in metres/second
+     * @property verticalVelocityMS The vertical velocity in metres/second. Positive is up.
+     * @property callsign The callsign
+     * @property emitterType ADSB emitter type.
+     * @property squawk Squawk code.
+     * @property tslcS Time Since Last Communication in seconds.
+     */
     data class AdsbVehicle(
         val icaoAddress: Int,
         val latitudeDeg: Double,
@@ -81,13 +131,29 @@ class Transponder internal constructor(private val native: TransponderNative) : 
         val tslcS: Int,
     )
 
+    /**
+     * Subscribe to 'transponder' updates.
+     *
+     * @return The next detection
+     */
     fun transponder(): AdsbVehicle = native.transponder()
 
+    /**
+     * Subscribe to 'transponder' updates.
+     *
+     * @return The next detection
+     */
     fun subscribeTransponder(): Flow<AdsbVehicle> = callbackFlow {
         val subscriptionHandle = native.subscribeTransponder() { value -> trySend(value) }
         awaitClose { native.unsubscribeTransponder(subscriptionHandle) }
     }
 
+    /**
+     * Set rate to 'transponder' updates.
+     *
+     * @param rateHz The requested rate (in Hertz)
+     * @return The result of the request.
+     */
     suspend fun setRateTransponder(rateHz: Double): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TransponderCallbackGuard()

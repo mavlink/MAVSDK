@@ -11,22 +11,44 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/**
+ * Can be used to manage cameras that implement the MAVLink Camera Protocol:
+ * https://mavlink.io/en/services/camera.html.
+ *
+ * Currently only a single camera is supported. When multiple cameras are supported the plugin will
+ * need to be instantiated separately for every camera and the camera selected using
+ * `select_camera`.
+ */
 class Camera internal constructor(private val native: CameraNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for camera commands */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Command executed successfully */
         SUCCESS(1),
+        /** Command in progress */
         IN_PROGRESS(2),
+        /** Camera is busy and rejected command */
         BUSY(3),
+        /** Camera denied the command */
         DENIED(4),
+        /** An error has occurred while executing the command */
         ERROR(5),
+        /** Command timed out */
         TIMEOUT(6),
+        /** Command has wrong argument(s) */
         WRONG_ARGUMENT(7),
+        /** No system connected */
         NO_SYSTEM(8),
+        /** Definition file protocol not supported */
         PROTOCOL_UNSUPPORTED(9),
+        /** Not available (yet) */
         UNAVAILABLE(10),
+        /** Camera with camera ID not found */
         CAMERA_ID_INVALID(11),
+        /** Camera action not supported */
         ACTION_UNSUPPORTED(12);
 
         companion object {
@@ -34,9 +56,13 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /** Camera mode type. */
     enum class Mode(val value: Int) {
+        /** Unknown */
         UNKNOWN(0),
+        /** Photo mode */
         PHOTO(1),
+        /** Video mode */
         VIDEO(2);
 
         companion object {
@@ -44,8 +70,11 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /** Photos range type. */
     enum class PhotosRange(val value: Int) {
+        /** All the photos present on the camera */
         ALL(0),
+        /** Photos taken since MAVSDK got connected */
         SINCE_CONNECTION(1);
 
         companion object {
@@ -54,8 +83,11 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /** Video stream status type. */
     enum class VideoStreamStatus(val value: Int) {
+        /** Video stream is not running */
         NOT_RUNNING(0),
+        /** Video stream is running */
         IN_PROGRESS(1);
 
         companion object {
@@ -64,9 +96,13 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /** Video stream light spectrum type */
     enum class VideoStreamSpectrum(val value: Int) {
+        /** Unknown */
         UNKNOWN(0),
+        /** Visible light */
         VISIBLE_LIGHT(1),
+        /** Infrared */
         INFRARED(2);
 
         companion object {
@@ -75,10 +111,15 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /** Storage status type. */
     enum class StorageStatus(val value: Int) {
+        /** Status not available */
         NOT_AVAILABLE(0),
+        /** Storage is not formatted (i.e. has no recognized file system) */
         UNFORMATTED(1),
+        /** Storage is formatted (i.e. has recognized a file system) */
         FORMATTED(2),
+        /** Storage status is not supported */
         NOT_SUPPORTED(3);
 
         companion object {
@@ -87,12 +128,19 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /** Storage type. */
     enum class StorageType(val value: Int) {
+        /** Storage type unknown */
         UNKNOWN(0),
+        /** Storage type USB stick */
         USB_STICK(1),
+        /** Storage type SD card */
         SD(2),
+        /** Storage type MicroSD card */
         MICROSD(3),
+        /** Storage type HD mass storage */
         HD(4),
+        /** Storage type other, not listed */
         OTHER(5);
 
         companion object {
@@ -100,8 +148,24 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Type to represent a setting option.
+     *
+     * @property optionId Name of the option (machine readable)
+     * @property optionDescription Description of the option (human readable)
+     */
     data class Option(val optionId: String, val optionDescription: String)
 
+    /**
+     * Type to represent a setting with a selected option.
+     *
+     * @property settingId Name of a setting (machine readable)
+     * @property settingDescription Description of the setting (human readable). This field is meant
+     *   to be read from the drone, ignore it when setting.
+     * @property option Selected option
+     * @property isRange If option is given as a range. This field is meant to be read from the
+     *   drone, ignore it when setting.
+     */
     data class Setting(
         val settingId: String,
         val settingDescription: String,
@@ -109,6 +173,15 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         val isRange: Boolean,
     )
 
+    /**
+     * Type to represent a setting with a list of options to choose from.
+     *
+     * @property componentId Component ID
+     * @property settingId Name of the setting (machine readable)
+     * @property settingDescription Description of the setting (human readable)
+     * @property options List of options or if range [min, max] or [min, max, interval]
+     * @property isRange If option is given as a range
+     */
     data class SettingOptions(
         val componentId: Int,
         val settingId: String,
@@ -117,6 +190,17 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         val isRange: Boolean,
     )
 
+    /**
+     * Type for video stream settings.
+     *
+     * @property frameRateHz Frames per second
+     * @property horizontalResolutionPix Horizontal resolution (in pixels)
+     * @property verticalResolutionPix Vertical resolution (in pixels)
+     * @property bitRateBS Bit rate (in bits per second)
+     * @property rotationDeg Video image rotation (clockwise, 0-359 degrees)
+     * @property uri Video stream URI
+     * @property horizontalFovDeg Horizontal fov in degrees
+     */
     data class VideoStreamSettings(
         val frameRateHz: Float,
         val horizontalResolutionPix: Int,
@@ -127,6 +211,14 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         val horizontalFovDeg: Float,
     )
 
+    /**
+     * Information about the video stream.
+     *
+     * @property streamId Stream ID
+     * @property settings Video stream settings
+     * @property status Current status of video streaming
+     * @property spectrum Light-spectrum of the video stream
+     */
     data class VideoStreamInfo(
         val streamId: Int,
         val settings: VideoStreamSettings,
@@ -134,10 +226,37 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         val spectrum: VideoStreamSpectrum,
     )
 
+    /**
+     * An update about the current mode
+     *
+     * @property componentId Component ID
+     * @property mode Camera mode
+     */
     data class ModeUpdate(val componentId: Int, val mode: Mode)
 
+    /**
+     * An update about a video stream
+     *
+     * @property componentId Component ID
+     * @property videoStreamInfo Video stream info
+     */
     data class VideoStreamUpdate(val componentId: Int, val videoStreamInfo: VideoStreamInfo)
 
+    /**
+     * Information about the camera's storage status.
+     *
+     * @property componentId Component ID
+     * @property videoOn Whether video recording is currently in process
+     * @property photoIntervalOn Whether a photo interval is currently in process
+     * @property usedStorageMib Used storage (in MiB)
+     * @property availableStorageMib Available storage (in MiB)
+     * @property totalStorageMib Total storage (in MiB)
+     * @property recordingTimeS Elapsed time since starting the video recording (in seconds)
+     * @property mediaFolderName Current folder name where media are saved
+     * @property storageStatus Storage status
+     * @property storageId Storage ID starting at 1
+     * @property storageType Storage type
+     */
     data class Storage(
         val componentId: Int,
         val videoOn: Boolean,
@@ -152,18 +271,44 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         val storageType: StorageType,
     )
 
+    /**
+     * An update about storage
+     *
+     * @property componentId Component ID
+     * @property storage Storage
+     */
     data class StorageUpdate(val componentId: Int, val storage: Storage)
 
+    /**
+     * An update about a current setting
+     *
+     * @property componentId Component ID
+     * @property currentSettings List of current settings
+     */
     data class CurrentSettingsUpdate(
         val componentId: Int,
         val currentSettings: List<Setting> = emptyList(),
     )
 
+    /**
+     * An update about possible setting options
+     *
+     * @property componentId Component ID
+     * @property settingOptions List of settings that can be changed
+     */
     data class PossibleSettingOptionsUpdate(
         val componentId: Int,
         val settingOptions: List<SettingOptions> = emptyList(),
     )
 
+    /**
+     * Position type in global coordinates.
+     *
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to +180)
+     * @property absoluteAltitudeM Altitude AMSL (above mean sea level) in metres
+     * @property relativeAltitudeM Altitude relative to takeoff altitude in metres
+     */
     data class Position(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
@@ -171,10 +316,48 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         val relativeAltitudeM: Float,
     )
 
+    /**
+     * Quaternion type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Hamilton quaternion product
+     * definition is used. A zero-rotation quaternion is represented by (1,0,0,0). The quaternion
+     * could also be written as w + xi + yj + zk.
+     *
+     * For more info see: https://en.wikipedia.org/wiki/Quaternion
+     *
+     * @property w Quaternion entry 0, also denoted as a
+     * @property x Quaternion entry 1, also denoted as b
+     * @property y Quaternion entry 2, also denoted as c
+     * @property z Quaternion entry 3, also denoted as d
+     */
     data class Quaternion(val w: Float, val x: Float, val y: Float, val z: Float)
 
+    /**
+     * Euler angle type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Euler angles follow the
+     * convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+     *
+     * For more info see https://en.wikipedia.org/wiki/Euler_angles
+     *
+     * @property rollDeg Roll angle in degrees, positive is banking to the right
+     * @property pitchDeg Pitch angle in degrees, positive is pitching nose up
+     * @property yawDeg Yaw angle in degrees, positive is clock-wise seen from above
+     */
     data class EulerAngle(val rollDeg: Float, val pitchDeg: Float, val yawDeg: Float)
 
+    /**
+     * Information about a picture just captured.
+     *
+     * @property componentId Component ID
+     * @property position Location where the picture was taken
+     * @property attitudeQuaternion Attitude of the camera when the picture was taken (quaternion)
+     * @property attitudeEulerAngle Attitude of the camera when the picture was taken (euler angle)
+     * @property timeUtcUs Timestamp in UTC (since UNIX epoch) in microseconds
+     * @property isSuccess True if the capture was successful
+     * @property index Zero-based index of this image since vehicle was armed
+     * @property fileUrl Download URL of this image
+     */
     data class CaptureInfo(
         val componentId: Int,
         val position: Position,
@@ -186,6 +369,18 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         val fileUrl: String,
     )
 
+    /**
+     * Type to represent a camera information.
+     *
+     * @property componentId Component ID
+     * @property vendorName Name of the camera vendor
+     * @property modelName Name of the camera model
+     * @property focalLengthMm Focal length
+     * @property horizontalSensorSizeMm Horizontal sensor size
+     * @property verticalSensorSizeMm Vertical sensor size
+     * @property horizontalResolutionPx Horizontal image resolution in pixels
+     * @property verticalResolutionPx Vertical image resolution in pixels
+     */
     data class Information(
         val componentId: Int,
         val vendorName: String,
@@ -197,8 +392,19 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         val verticalResolutionPx: Int,
     )
 
+    /**
+     * Camera list
+     *
+     * @property cameras Camera items.
+     */
     data class CameraList(val cameras: List<Information> = emptyList())
 
+    /**
+     * Take one photo.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun takePhoto(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = CameraCallbackGuard()
         native.takePhotoAsync(componentId) { result ->
@@ -213,6 +419,13 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Start photo timelapse with a given interval.
+     *
+     * @param componentId Component ID
+     * @param intervalS Interval between photos (in seconds)
+     * @return The result of the request.
+     */
     suspend fun startPhotoInterval(componentId: Int, intervalS: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -228,6 +441,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Stop a running photo timelapse.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun stopPhotoInterval(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -243,6 +462,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Start a video recording.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun startVideo(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = CameraCallbackGuard()
         native.startVideoAsync(componentId) { result ->
@@ -257,6 +482,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Stop a running video recording.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun stopVideo(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = CameraCallbackGuard()
         native.stopVideoAsync(componentId) { result ->
@@ -271,12 +502,33 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Start video streaming.
+     *
+     * @param componentId Component ID
+     * @param streamId video stream id
+     * @return The result of the request.
+     */
     fun startVideoStreaming(componentId: Int, streamId: Int): Result =
         Result.fromValue(native.startVideoStreaming(componentId, streamId))
 
+    /**
+     * Stop current video streaming.
+     *
+     * @param componentId Component ID
+     * @param streamId video stream id
+     * @return The result of the request.
+     */
     fun stopVideoStreaming(componentId: Int, streamId: Int): Result =
         Result.fromValue(native.stopVideoStreaming(componentId, streamId))
 
+    /**
+     * Set camera mode.
+     *
+     * @param componentId Component ID
+     * @param mode Camera mode to set
+     * @return The result of the request.
+     */
     suspend fun setMode(componentId: Int, mode: Mode): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -292,6 +544,17 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * List photos available on the camera.
+     *
+     * Note that this might need to be called initially to set the PhotosRange accordingly. Once set
+     * to 'all' rather than 'since connection', it will try to request the previous images over
+     * time.
+     *
+     * @param componentId Component ID
+     * @param photosRange Which photos should be listed (all or since connection)
+     * @return List of capture infos (representing the photos)
+     */
     suspend fun listPhotos(
         componentId: Int,
         photosRange: PhotosRange,
@@ -313,56 +576,141 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Subscribe to list of cameras.
+     *
+     * This allows to find out what cameras are connected to the system. Based on the camera ID, we
+     * can then address a specific camera.
+     *
+     * @return Camera list
+     */
     fun cameraList(): CameraList = native.cameraList()
 
+    /**
+     * Subscribe to list of cameras.
+     *
+     * This allows to find out what cameras are connected to the system. Based on the camera ID, we
+     * can then address a specific camera.
+     *
+     * @return Camera list
+     */
     fun subscribeCameraList(): Flow<CameraList> = callbackFlow {
         val subscriptionHandle = native.subscribeCameraList() { value -> trySend(value) }
         awaitClose { native.unsubscribeCameraList(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to camera mode updates.
+     *
+     * @return Mode update for camera
+     */
     fun subscribeMode(): Flow<ModeUpdate> = callbackFlow {
         val subscriptionHandle = native.subscribeMode() { value -> trySend(value) }
         awaitClose { native.unsubscribeMode(subscriptionHandle) }
     }
 
+    /**
+     * Get camera mode.
+     *
+     * @param componentId Component ID
+     * @return Mode
+     */
     fun getMode(componentId: Int): Mode = native.getMode(componentId)
 
+    /**
+     * Subscribe to video stream info updates.
+     *
+     * @return Video stream update for camera
+     */
     fun subscribeVideoStreamInfo(): Flow<VideoStreamUpdate> = callbackFlow {
         val subscriptionHandle = native.subscribeVideoStreamInfo() { value -> trySend(value) }
         awaitClose { native.unsubscribeVideoStreamInfo(subscriptionHandle) }
     }
 
+    /**
+     * Get video stream info.
+     *
+     * @param componentId Component ID
+     * @return Video stream info
+     */
     fun getVideoStreamInfo(componentId: Int): VideoStreamInfo =
         native.getVideoStreamInfo(componentId)
 
+    /**
+     * Subscribe to capture info updates.
+     *
+     * @return Capture info
+     */
     fun subscribeCaptureInfo(): Flow<CaptureInfo> = callbackFlow {
         val subscriptionHandle = native.subscribeCaptureInfo() { value -> trySend(value) }
         awaitClose { native.unsubscribeCaptureInfo(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to camera's storage status updates.
+     *
+     * @return Camera's storage status
+     */
     fun subscribeStorage(): Flow<StorageUpdate> = callbackFlow {
         val subscriptionHandle = native.subscribeStorage() { value -> trySend(value) }
         awaitClose { native.unsubscribeStorage(subscriptionHandle) }
     }
 
+    /**
+     * Get camera's storage status.
+     *
+     * @param componentId Component ID
+     * @return Camera's storage status
+     */
     fun getStorage(componentId: Int): Storage = native.getStorage(componentId)
 
+    /**
+     * Get the list of current camera settings.
+     *
+     * @return Current setting update per camera
+     */
     fun subscribeCurrentSettings(): Flow<CurrentSettingsUpdate> = callbackFlow {
         val subscriptionHandle = native.subscribeCurrentSettings() { value -> trySend(value) }
         awaitClose { native.unsubscribeCurrentSettings(subscriptionHandle) }
     }
 
+    /**
+     * Get current settings.
+     *
+     * @param componentId Component ID
+     * @return List of current settings
+     */
     fun getCurrentSettings(componentId: Int): List<Setting> = native.getCurrentSettings(componentId)
 
+    /**
+     * Get the list of settings that can be changed.
+     *
+     * @return Possible setting update per camera
+     */
     fun subscribePossibleSettingOptions(): Flow<PossibleSettingOptionsUpdate> = callbackFlow {
         val subscriptionHandle =
             native.subscribePossibleSettingOptions() { value -> trySend(value) }
         awaitClose { native.unsubscribePossibleSettingOptions(subscriptionHandle) }
     }
 
+    /**
+     * Get possible setting options.
+     *
+     * @param componentId Component ID
+     * @return List of settings that can be changed
+     */
     fun getPossibleSettingOptions(componentId: Int): List<SettingOptions> =
         native.getPossibleSettingOptions(componentId)
 
+    /**
+     * Set a setting to some value.
+     *
+     * Only setting_id of setting and option_id of option needs to be set.
+     *
+     * @param componentId Component ID
+     * @param setting Desired setting
+     * @return The result of the request.
+     */
     suspend fun setSetting(componentId: Int, setting: Setting): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -378,6 +726,15 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Get a setting.
+     *
+     * Only setting_id of setting needs to be set.
+     *
+     * @param componentId Component ID (0/all not available)
+     * @param setting Requested setting
+     * @return Setting
+     */
     suspend fun getSetting(componentId: Int, setting: Setting): kotlin.Result<Setting> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -400,6 +757,15 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Format storage (e.g. SD card) in camera.
+     *
+     * This will delete all content of the camera storage!
+     *
+     * @param componentId Component ID
+     * @param storageId Storage identify to be format
+     * @return The result of the request.
+     */
     suspend fun formatStorage(componentId: Int, storageId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -415,6 +781,14 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Reset all settings in camera.
+     *
+     * This will reset all camera settings to default value
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun resetSettings(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -430,6 +804,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Start zooming in.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun zoomInStart(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -445,6 +825,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Start zooming out.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun zoomOutStart(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -460,6 +846,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Stop zooming.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun zoomStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = CameraCallbackGuard()
         native.zoomStopAsync(componentId) { result ->
@@ -474,6 +866,13 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
+     *
+     * @param componentId Component ID
+     * @param range Range must be between 0.0 and 100.0
+     * @return The result of the request.
+     */
     suspend fun zoomRange(componentId: Int, range: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -489,6 +888,15 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Track point.
+     *
+     * @param componentId Component ID
+     * @param pointX Point in X axis (0..1, 0 is left, 1 is right)
+     * @param pointY Point in Y axis (0..1, 0 is top, 1 is bottom)
+     * @param radius Radius (0 is one pixel, 1 is full image width)
+     * @return The result of the request.
+     */
     suspend fun trackPoint(componentId: Int, pointX: Float, pointY: Float, radius: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -504,6 +912,18 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Track rectangle.
+     *
+     * @param componentId Component ID
+     * @param topLeftX Top left corner of rectangle x value (normalized 0..1, 0 is left, 1 is right)
+     * @param topLeftY Top left corner of rectangle y value (normalized 0..1, 0 is top, 1 is bottom)
+     * @param bottomRightX Bottom right corner of rectangle x value (normalized 0..1, 0 is left, 1
+     *   is right)
+     * @param bottomRightY Bottom right corner of rectangle y value (normalized 0..1, 0 is top, 1 is
+     *   bottom)
+     * @return The result of the request.
+     */
     suspend fun trackRectangle(
         componentId: Int,
         topLeftX: Float,
@@ -525,6 +945,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Stop tracking.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun trackStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = CameraCallbackGuard()
         native.trackStopAsync(componentId) { result ->
@@ -539,6 +965,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Start focusing in.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun focusInStart(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -554,6 +986,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Start focusing out.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun focusOutStart(componentId: Int): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()
@@ -569,6 +1007,12 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
             }
         }
 
+    /**
+     * Stop focus.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
     suspend fun focusStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = CameraCallbackGuard()
         native.focusStopAsync(componentId) { result ->
@@ -583,6 +1027,13 @@ class Camera internal constructor(private val native: CameraNative) : AutoClosea
         }
     }
 
+    /**
+     * Focus with range value of full range (value between 0.0 and 100.0).
+     *
+     * @param componentId Component ID
+     * @param range Range must be between 0.0 - 100.0
+     * @return The result of the request.
+     */
     suspend fun focusRange(componentId: Int, range: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = CameraCallbackGuard()

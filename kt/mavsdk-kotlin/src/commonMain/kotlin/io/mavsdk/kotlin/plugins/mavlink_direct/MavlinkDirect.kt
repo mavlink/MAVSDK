@@ -10,17 +10,27 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/** Enable direct MAVLink communication using libmav. */
 class MavlinkDirect internal constructor(private val native: MavlinkDirectNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for action requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Error */
         ERROR(2),
+        /** Invalid MAVLink message */
         INVALID_MESSAGE(3),
+        /** Invalid field name or value */
         INVALID_FIELD(4),
+        /** Connection error */
         CONNECTION_ERROR(5),
+        /** No system connected */
         NO_SYSTEM(6),
+        /** Request timed out */
         TIMEOUT(7);
 
         companion object {
@@ -28,6 +38,16 @@ class MavlinkDirect internal constructor(private val native: MavlinkDirectNative
         }
     }
 
+    /**
+     * A complete MAVLink message with all header information and fields
+     *
+     * @property messageName MAVLink message name (e.g., "HEARTBEAT", "GLOBAL_POSITION_INT")
+     * @property systemId System ID of the sender (for received messages)
+     * @property componentId Component ID of the sender (for received messages)
+     * @property targetSystemId Target system ID (for sending, 0 for broadcast)
+     * @property targetComponentId Target component ID (for sending, 0 for broadcast)
+     * @property fieldsJson All message fields as single JSON object
+     */
     data class MavlinkMessage(
         val messageName: String,
         val systemId: Int,
@@ -37,13 +57,41 @@ class MavlinkDirect internal constructor(private val native: MavlinkDirectNative
         val fieldsJson: String,
     )
 
+    /**
+     * Send a MAVLink message directly to the system.
+     *
+     * This allows sending any MAVLink message with full control over the message content.
+     *
+     * @param message The MAVLink message to send
+     * @return The result of the request.
+     */
     fun sendMessage(message: MavlinkMessage): Result = Result.fromValue(native.sendMessage(message))
 
+    /**
+     * Subscribe to incoming MAVLink messages.
+     *
+     * This provides direct access to incoming MAVLink messages. Use an empty string in message_name
+     * to subscribe to all messages, or specify a message name (e.g., "HEARTBEAT") to filter for
+     * specific message types.
+     *
+     * @param messageName MAVLink message name to filter for (e.g., "HEARTBEAT"), empty string = all
+     *   messages
+     * @return The received MAVLink message
+     */
     fun subscribeMessage(messageName: String): Flow<MavlinkMessage> = callbackFlow {
         val subscriptionHandle = native.subscribeMessage(messageName) { value -> trySend(value) }
         awaitClose { native.unsubscribeMessage(subscriptionHandle) }
     }
 
+    /**
+     * Load custom MAVLink message definitions from XML.
+     *
+     * This allows loading custom MAVLink message definitions at runtime, extending the available
+     * message types beyond the built-in definitions.
+     *
+     * @param xmlContent The custom MAVLink XML definition content
+     * @return The result of the request.
+     */
     fun loadCustomXml(xmlContent: String): Result =
         Result.fromValue(native.loadCustomXml(xmlContent))
 

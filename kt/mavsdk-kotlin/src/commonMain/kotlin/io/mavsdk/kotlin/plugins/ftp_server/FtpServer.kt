@@ -6,13 +6,19 @@ package io.mavsdk.kotlin.plugins.ftp_server
 
 import io.mavsdk.kotlin.Mavsdk
 
+/** Provide files or directories to transfer. */
 class FtpServer internal constructor(private val native: FtpServerNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for FTP server requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Directory does not exist */
         DOES_NOT_EXIST(2),
+        /** Operations in progress */
         BUSY(3);
 
         companion object {
@@ -20,6 +26,16 @@ class FtpServer internal constructor(private val native: FtpServerNative) : Auto
         }
     }
 
+    /**
+     * Set root directory.
+     *
+     * This is the directory that can then be accessed by a client. The directory needs to exist
+     * when this is called. The permissions are the same as the file permission for the user running
+     * the server. The root directory can't be changed while an FTP process is in progress.
+     *
+     * @param path Absolute path of folder
+     * @return The result of the request.
+     */
     fun setRootDir(path: String): Result = Result.fromValue(native.setRootDir(path))
 
     override fun close() {

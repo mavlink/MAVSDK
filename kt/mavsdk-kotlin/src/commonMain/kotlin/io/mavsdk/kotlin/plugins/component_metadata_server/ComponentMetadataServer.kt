@@ -7,13 +7,18 @@ package io.mavsdk.kotlin.plugins.component_metadata_server
 
 import io.mavsdk.kotlin.Mavsdk
 
+/** Provide component metadata json definitions, such as parameters. */
 class ComponentMetadataServer
 internal constructor(private val native: ComponentMetadataServerNative) : AutoCloseable {
     private var closed = false
 
+    /** The metadata type */
     enum class MetadataType(val value: Int) {
+        /** Parameter metadata */
         PARAMETER(0),
+        /** Event definitions */
         EVENTS(1),
+        /** Actuator definitions */
         ACTUATORS(2);
 
         companion object {
@@ -22,8 +27,19 @@ internal constructor(private val native: ComponentMetadataServerNative) : AutoCl
         }
     }
 
+    /**
+     * The metadata type and content
+     *
+     * @property type The metadata type
+     * @property jsonMetadata The JSON metadata
+     */
     data class Metadata(val type: MetadataType, val jsonMetadata: String)
 
+    /**
+     * Provide metadata (can only be called once)
+     *
+     * @param metadata List of metadata
+     */
     fun setMetadata(metadata: List<Metadata>) {
         native.setMetadata(metadata)
     }

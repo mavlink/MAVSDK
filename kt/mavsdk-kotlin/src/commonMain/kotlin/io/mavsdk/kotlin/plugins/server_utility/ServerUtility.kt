@@ -7,14 +7,21 @@ package io.mavsdk.kotlin.plugins.server_utility
 
 import io.mavsdk.kotlin.System
 
+/** Utility for onboard MAVSDK instances for common "server" tasks. */
 class ServerUtility internal constructor(private val native: ServerUtilityNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for server utility requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** No system is connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Invalid argument */
         INVALID_ARGUMENT(4);
 
         companion object {
@@ -22,14 +29,23 @@ class ServerUtility internal constructor(private val native: ServerUtilityNative
         }
     }
 
+    /** Status types. */
     enum class StatusTextType(val value: Int) {
+        /** Debug */
         DEBUG(0),
+        /** Information */
         INFO(1),
+        /** Notice */
         NOTICE(2),
+        /** Warning */
         WARNING(3),
+        /** Error */
         ERROR(4),
+        /** Critical */
         CRITICAL(5),
+        /** Alert */
         ALERT(6),
+        /** Emergency */
         EMERGENCY(7);
 
         companion object {
@@ -38,6 +54,13 @@ class ServerUtility internal constructor(private val native: ServerUtilityNative
         }
     }
 
+    /**
+     * Sends a statustext.
+     *
+     * @param type The text to send
+     * @param text Text message
+     * @return The result of the request.
+     */
     fun sendStatusText(type: StatusTextType, text: String): Result =
         Result.fromValue(native.sendStatusText(type, text))
 

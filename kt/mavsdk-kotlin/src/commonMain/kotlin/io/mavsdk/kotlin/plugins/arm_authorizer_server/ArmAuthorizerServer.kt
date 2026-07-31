@@ -10,13 +10,18 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/** Use arm authorization. */
 class ArmAuthorizerServer internal constructor(private val native: ArmAuthorizerServerNative) :
     AutoCloseable {
     private var closed = false
 
+    /** The result */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Command accepted */
         SUCCESS(1),
+        /** Command failed */
         FAILED(2);
 
         companion object {
@@ -24,12 +29,22 @@ class ArmAuthorizerServer internal constructor(private val native: ArmAuthorizer
         }
     }
 
+    /** The rejection reason */
     enum class RejectionReason(val value: Int) {
+        /** Not a specific reason */
         GENERIC(0),
+        /** Authorizer will send the error as string to GCS */
         NONE(1),
+        /** At least one waypoint have a invalid value */
         INVALID_WAYPOINT(2),
+        /** Timeout in the authorizer process(in case it depends on network) */
         TIMEOUT(3),
+        /**
+         * Airspace of the mission in use by another vehicle, second result parameter can have the
+         * waypoint id that caused it to be denied.
+         */
         AIRSPACE_IN_USE(4),
+        /** Weather is not good to fly */
         BAD_WEATHER(5);
 
         companion object {
@@ -38,14 +53,35 @@ class ArmAuthorizerServer internal constructor(private val native: ArmAuthorizer
         }
     }
 
+    /**
+     * Subscribe to arm authorization request messages. Each request received should respond to
+     * using RespondArmAuthorization
+     *
+     * @return vehicle system id
+     */
     fun subscribeArmAuthorization(): Flow<Int> = callbackFlow {
         val subscriptionHandle = native.subscribeArmAuthorization() { value -> trySend(value) }
         awaitClose { native.unsubscribeArmAuthorization(subscriptionHandle) }
     }
 
+    /**
+     * Authorize arm for the specific time
+     *
+     * @param validTimeS Time in seconds for which this authorization is valid
+     * @return The result of the request.
+     */
     fun acceptArmAuthorization(validTimeS: Int): Result =
         Result.fromValue(native.acceptArmAuthorization(validTimeS))
 
+    /**
+     * Reject arm authorization request
+     *
+     * @param temporarily True if the answer should be TEMPORARILY_REJECTED, false for DENIED
+     * @param reason Reason for the arm to be rejected
+     * @param extraInfo Extra information specific to the rejection reason (see
+     *   https://mavlink.io/en/services/arm_authorization.html)
+     * @return The result of the request.
+     */
     fun rejectArmAuthorization(
         temporarily: Boolean,
         reason: RejectionReason,

@@ -9,18 +9,29 @@ import io.mavsdk.kotlin.System
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Enable manual control using e.g. a joystick or gamepad. */
 class ManualControl internal constructor(private val native: ManualControlNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for manual control requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request was successful */
         SUCCESS(1),
+        /** No system is connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Command refused by vehicle */
         COMMAND_DENIED(5),
+        /** Request timed out */
         TIMEOUT(6),
+        /** Input out of range */
         INPUT_OUT_OF_RANGE(7),
+        /** No Input set */
         INPUT_NOT_SET(8);
 
         companion object {
@@ -28,6 +39,14 @@ class ManualControl internal constructor(private val native: ManualControlNative
         }
     }
 
+    /**
+     * Start position control using e.g. joystick input.
+     *
+     * Requires manual control input to be sent regularly already. Requires a valid position using
+     * e.g. GPS, external vision, or optical flow.
+     *
+     * @return The result of the request.
+     */
     suspend fun startPositionControl(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ManualControlCallbackGuard()
         native.startPositionControlAsync() { result ->
@@ -38,6 +57,14 @@ class ManualControl internal constructor(private val native: ManualControlNative
         }
     }
 
+    /**
+     * Start altitude control
+     *
+     * Requires manual control input to be sent regularly already. Does not require a valid position
+     * e.g. GPS.
+     *
+     * @return The result of the request.
+     */
     suspend fun startAltitudeControl(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ManualControlCallbackGuard()
         native.startAltitudeControlAsync() { result ->
@@ -48,6 +75,20 @@ class ManualControl internal constructor(private val native: ManualControlNative
         }
     }
 
+    /**
+     * Set manual control input
+     *
+     * The manual control input needs to be sent at a rate high enough to prevent triggering of RC
+     * loss, a good minimum rate is 10 Hz.
+     *
+     * @param x value between -1. to 1. negative -> backwards, positive -> forwards
+     * @param y value between -1. to 1. negative -> left, positive -> right
+     * @param z value between -1. to 1. negative -> down, positive -> up (usually for now, for
+     *   multicopter 0 to 1 is expected)
+     * @param r value between -1. to 1. negative -> turn anti-clockwise (towards the left), positive
+     *   -> turn clockwise (towards the right)
+     * @return The result of the request.
+     */
     fun setManualControlInput(x: Float, y: Float, z: Float, r: Float): Result =
         Result.fromValue(native.setManualControlInput(x, y, z, r))
 

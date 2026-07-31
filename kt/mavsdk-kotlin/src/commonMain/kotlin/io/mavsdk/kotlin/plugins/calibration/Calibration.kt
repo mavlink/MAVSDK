@@ -9,21 +9,35 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/** Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer. */
 class Calibration internal constructor(private val native: CalibrationNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for calibration commands */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** The calibration succeeded */
         SUCCESS(1),
+        /** Intermediate message showing progress or instructions on the next steps */
         NEXT(2),
+        /** Calibration failed */
         FAILED(3),
+        /** No system is connected */
         NO_SYSTEM(4),
+        /** Connection error */
         CONNECTION_ERROR(5),
+        /** Vehicle is busy */
         BUSY(6),
+        /** Command refused by vehicle */
         COMMAND_DENIED(7),
+        /** Command timed out */
         TIMEOUT(8),
+        /** Calibration process was cancelled */
         CANCELLED(9),
+        /** Calibration process failed since the vehicle is armed */
         FAILED_ARMED(10),
+        /** Functionality not supported */
         UNSUPPORTED(11);
 
         companion object {
@@ -31,6 +45,16 @@ class Calibration internal constructor(private val native: CalibrationNative) : 
         }
     }
 
+    /**
+     * Progress data coming from calibration.
+     *
+     * Can be a progress percentage, or an instruction text.
+     *
+     * @property hasProgress Whether this ProgressData contains a 'progress' status or not
+     * @property progress Progress (percentage)
+     * @property hasStatusText Whether this ProgressData contains a 'status_text' or not
+     * @property statusText Instruction text
+     */
     data class ProgressData(
         val hasProgress: Boolean,
         val progress: Float,
@@ -38,6 +62,11 @@ class Calibration internal constructor(private val native: CalibrationNative) : 
         val statusText: String,
     )
 
+    /**
+     * Perform gyro calibration.
+     *
+     * @return Progress data
+     */
     fun calibrateGyro(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         native.calibrateGyroAsync() { result, value ->
             val parsedResult = Result.fromValue(result)
@@ -60,6 +89,11 @@ class Calibration internal constructor(private val native: CalibrationNative) : 
         awaitClose {}
     }
 
+    /**
+     * Perform accelerometer calibration.
+     *
+     * @return Progress data
+     */
     fun calibrateAccelerometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         native.calibrateAccelerometerAsync() { result, value ->
             val parsedResult = Result.fromValue(result)
@@ -82,6 +116,11 @@ class Calibration internal constructor(private val native: CalibrationNative) : 
         awaitClose {}
     }
 
+    /**
+     * Perform magnetometer calibration.
+     *
+     * @return Progress data
+     */
     fun calibrateMagnetometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         native.calibrateMagnetometerAsync() { result, value ->
             val parsedResult = Result.fromValue(result)
@@ -104,6 +143,11 @@ class Calibration internal constructor(private val native: CalibrationNative) : 
         awaitClose {}
     }
 
+    /**
+     * Perform board level horizon calibration.
+     *
+     * @return Progress data
+     */
     fun calibrateLevelHorizon(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         native.calibrateLevelHorizonAsync() { result, value ->
             val parsedResult = Result.fromValue(result)
@@ -126,6 +170,11 @@ class Calibration internal constructor(private val native: CalibrationNative) : 
         awaitClose {}
     }
 
+    /**
+     * Perform gimbal accelerometer calibration.
+     *
+     * @return Progress data
+     */
     fun calibrateGimbalAccelerometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         native.calibrateGimbalAccelerometerAsync() { result, value ->
             val parsedResult = Result.fromValue(result)
@@ -148,6 +197,11 @@ class Calibration internal constructor(private val native: CalibrationNative) : 
         awaitClose {}
     }
 
+    /**
+     * Cancel ongoing calibration process.
+     *
+     * @return The result of the request.
+     */
     fun cancel(): Result = Result.fromValue(native.cancel())
 
     override fun close() {

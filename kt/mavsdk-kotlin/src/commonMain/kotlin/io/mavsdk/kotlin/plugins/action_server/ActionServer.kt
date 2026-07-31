@@ -9,22 +9,37 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/** Provide vehicle actions (as a server) such as arming, taking off, and landing. */
 class ActionServer internal constructor(private val native: ActionServerNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for action requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request was successful */
         SUCCESS(1),
+        /** No system is connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Command refused by vehicle */
         COMMAND_DENIED(5),
+        /** Command refused because landed state is unknown */
         COMMAND_DENIED_LANDED_STATE_UNKNOWN(6),
+        /** Command refused because vehicle not landed */
         COMMAND_DENIED_NOT_LANDED(7),
+        /** Request timed out */
         TIMEOUT(8),
+        /** Hybrid/VTOL transition support is unknown */
         VTOL_TRANSITION_SUPPORT_UNKNOWN(9),
+        /** Vehicle does not support hybrid/VTOL transitions */
         NO_VTOL_TRANSITION_SUPPORT(10),
+        /** Error getting or setting parameter */
         PARAMETER_ERROR(11),
+        /** Intermediate message showing progress or instructions on the next steps */
         NEXT(12);
 
         companion object {
@@ -32,20 +47,40 @@ class ActionServer internal constructor(private val native: ActionServerNative) 
         }
     }
 
+    /**
+     * Flight modes.
+     *
+     * For more information about flight modes, check out
+     * https://docs.px4.io/main/en/config/flight_mode.html.
+     */
     enum class FlightMode(val value: Int) {
+        /** Mode not known */
         UNKNOWN(0),
+        /** Armed and ready to take off */
         READY(1),
+        /** Taking off */
         TAKEOFF(2),
+        /** Holding (hovering in place (or circling for fixed-wing vehicles) */
         HOLD(3),
+        /** In mission */
         MISSION(4),
+        /** Returning to launch position (then landing) */
         RETURN_TO_LAUNCH(5),
+        /** Landing */
         LAND(6),
+        /** In 'offboard' mode */
         OFFBOARD(7),
+        /** In 'follow-me' mode */
         FOLLOW_ME(8),
+        /** In 'Manual' mode */
         MANUAL(9),
+        /** In 'Altitude Control' mode */
         ALTCTL(10),
+        /** In 'Position Control' mode */
         POSCTL(11),
+        /** In 'Acro' mode */
         ACRO(12),
+        /** In 'Stabilize' mode */
         STABILIZED(13);
 
         companion object {
@@ -53,6 +88,17 @@ class ActionServer internal constructor(private val native: ActionServerNative) 
         }
     }
 
+    /**
+     * State to check if the vehicle can transition to respective flightmodes
+     *
+     * @property canAutoMode Auto/mission mode
+     * @property canGuidedMode Guided mode
+     * @property canStabilizeMode Stabilize mode
+     * @property canAutoRtlMode Auto RTL mode
+     * @property canAutoTakeoffMode Auto takeoff mode
+     * @property canAutoLandMode Auto land mode
+     * @property canAutoLoiterMode Auto hold/loiter mode
+     */
     data class AllowableFlightModes(
         val canAutoMode: Boolean,
         val canGuidedMode: Boolean,
@@ -63,62 +109,152 @@ class ActionServer internal constructor(private val native: ActionServerNative) 
         val canAutoLoiterMode: Boolean,
     )
 
+    /**
+     * Arming message type
+     *
+     * @property arm Should vehicle arm
+     * @property force Should arm override pre-flight checks
+     */
     data class ArmDisarm(val arm: Boolean, val force: Boolean)
 
+    /**
+     * Subscribe to ARM/DISARM commands
+     *
+     * @return
+     */
     fun subscribeArmDisarm(): Flow<ArmDisarm> = callbackFlow {
         val subscriptionHandle = native.subscribeArmDisarm() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeArmDisarm(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to DO_SET_MODE
+     *
+     * @return
+     */
     fun subscribeFlightModeChange(): Flow<FlightMode> = callbackFlow {
         val subscriptionHandle = native.subscribeFlightModeChange() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeFlightModeChange(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to takeoff command
+     *
+     * @return
+     */
     fun subscribeTakeoff(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = native.subscribeTakeoff() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeTakeoff(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to land command
+     *
+     * @return
+     */
     fun subscribeLand(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = native.subscribeLand() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeLand(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to reboot command
+     *
+     * @return
+     */
     fun subscribeReboot(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = native.subscribeReboot() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeReboot(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to shutdown command
+     *
+     * @return
+     */
     fun subscribeShutdown(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = native.subscribeShutdown() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeShutdown(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to terminate command
+     *
+     * @return
+     */
     fun subscribeTerminate(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = native.subscribeTerminate() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeTerminate(subscriptionHandle) }
     }
 
+    /**
+     * Can the vehicle takeoff
+     *
+     * @param allowTakeoff Is takeoff allowed?
+     * @return The result of the request.
+     */
     fun setAllowTakeoff(allowTakeoff: Boolean): Result =
         Result.fromValue(native.setAllowTakeoff(allowTakeoff))
 
+    /**
+     * Can the vehicle arm when requested
+     *
+     * @param armable Is Armable now?
+     * @param forceArmable Is armable with force?
+     * @return The result of the request.
+     */
     fun setArmable(armable: Boolean, forceArmable: Boolean): Result =
         Result.fromValue(native.setArmable(armable, forceArmable))
 
+    /**
+     * Can the vehicle disarm when requested
+     *
+     * @param disarmable Is disarmable now?
+     * @param forceDisarmable Is disarmable with force? (Kill)
+     * @return The result of the request.
+     */
     fun setDisarmable(disarmable: Boolean, forceDisarmable: Boolean): Result =
         Result.fromValue(native.setDisarmable(disarmable, forceDisarmable))
 
+    /**
+     * Set which modes the vehicle can transition to (Manual always allowed)
+     *
+     * @param flightModes
+     * @return The result of the request.
+     */
     fun setAllowableFlightModes(flightModes: AllowableFlightModes): Result =
         Result.fromValue(native.setAllowableFlightModes(flightModes))
 
+    /**
+     * Get which modes the vehicle can transition to (Manual always allowed)
+     *
+     * @return
+     */
     fun getAllowableFlightModes(): AllowableFlightModes = native.getAllowableFlightModes()
 
+    /**
+     * Set/override the armed/disarmed state of the vehicle directly, and notify subscribers
+     *
+     * @param isArmed Is armed now?
+     * @return The result of the request.
+     */
     fun setArmedState(isArmed: Boolean): Result = Result.fromValue(native.setArmedState(isArmed))
 
+    /**
+     * Set/override the flight mode of the vehicle directly, and notify subscribers
+     *
+     * @param flightMode Current vehicle flight mode, e.g. Takeoff/Mission/Land/etc.
+     * @return The result of the request.
+     */
     fun setFlightMode(flightMode: FlightMode): Result =
         Result.fromValue(native.setFlightMode(flightMode))
 
+    /**
+     * Set/override the flight mode of the vehicle directly, and *do not* notify subscribers
+     *
+     * @param flightMode Current vehicle flight mode, e.g. Takeoff/Mission/Land/etc.
+     * @return The result of the request.
+     */
     fun setFlightModeInternal(flightMode: FlightMode): Result =
         Result.fromValue(native.setFlightModeInternal(flightMode))
 

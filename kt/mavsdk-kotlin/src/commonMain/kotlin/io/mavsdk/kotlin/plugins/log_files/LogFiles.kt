@@ -11,17 +11,30 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/**
+ * Allow to download log files from the vehicle after a flight is complete. For log streaming during
+ * flight check the logging plugin.
+ */
 class LogFiles internal constructor(private val native: LogFilesNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for calibration commands */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Progress update */
         NEXT(2),
+        /** No log files found */
         NO_LOGFILES(3),
+        /** A timeout happened */
         TIMEOUT(4),
+        /** Invalid argument */
         INVALID_ARGUMENT(5),
+        /** File open failed */
         FILE_OPEN_FAILED(6),
+        /** No system is connected */
         NO_SYSTEM(7);
 
         companion object {
@@ -29,10 +42,27 @@ class LogFiles internal constructor(private val native: LogFilesNative) : AutoCl
         }
     }
 
+    /**
+     * Progress data coming when downloading a log file.
+     *
+     * @property progress Progress from 0 to 1
+     */
     data class ProgressData(val progress: Float)
 
+    /**
+     * Log file entry type.
+     *
+     * @property id ID of the log file, to specify a file to be downloaded
+     * @property date Date of the log file in UTC in ISO 8601 format "yyyy-mm-ddThh:mm:ssZ"
+     * @property sizeBytes Size of file in bytes
+     */
     data class Entry(val id: Int, val date: String, val sizeBytes: Int)
 
+    /**
+     * Get List of log files.
+     *
+     * @return List of entries
+     */
     suspend fun getEntries(): kotlin.Result<List<Entry>> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = LogFilesCallbackGuard()
@@ -55,6 +85,13 @@ class LogFiles internal constructor(private val native: LogFilesNative) : AutoCl
             }
         }
 
+    /**
+     * Download log file.
+     *
+     * @param entry Entry of the log file to download.
+     * @param path Path of where to download log file to.
+     * @return Progress if result is progress
+     */
     fun downloadLogFile(entry: Entry, path: String): Flow<kotlin.Result<ProgressData>> =
         callbackFlow {
             native.downloadLogFileAsync(entry, path) { result, value ->
@@ -78,6 +115,11 @@ class LogFiles internal constructor(private val native: LogFilesNative) : AutoCl
             awaitClose {}
         }
 
+    /**
+     * Erase all log files.
+     *
+     * @return The result of the request.
+     */
     fun eraseAllLogFiles(): Result = Result.fromValue(native.eraseAllLogFiles())
 
     override fun close() {

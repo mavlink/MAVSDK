@@ -10,23 +10,41 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/**
+ * Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). Provides
+ * current mission item state, so the server can progress through missions.
+ */
 class MissionRawServer internal constructor(private val native: MissionRawServerNative) :
     AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for action requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Error */
         ERROR(2),
+        /** Too many mission items in the mission */
         TOO_MANY_MISSION_ITEMS(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Request timed out */
         TIMEOUT(5),
+        /** Invalid argument */
         INVALID_ARGUMENT(6),
+        /** Mission downloaded from the system is not supported */
         UNSUPPORTED(7),
+        /** No mission available on the system */
         NO_MISSION_AVAILABLE(8),
+        /** Unsupported mission command */
         UNSUPPORTED_MISSION_CMD(9),
+        /** Mission transfer (upload or download) has been cancelled */
         TRANSFER_CANCELLED(10),
+        /** No system connected */
         NO_SYSTEM(11),
+        /** Intermediate message showing progress or instructions on the next steps */
         NEXT(12);
 
         companion object {
@@ -34,6 +52,25 @@ class MissionRawServer internal constructor(private val native: MissionRawServer
         }
     }
 
+    /**
+     * Mission item exactly identical to MAVLink MISSION_ITEM_INT.
+     *
+     * @property seq Sequence (uint16_t)
+     * @property frame The coordinate system of the waypoint (actually uint8_t)
+     * @property command The scheduled action for the waypoint (actually uint16_t)
+     * @property current false:0, true:1 (actually uint8_t)
+     * @property autocontinue Autocontinue to next waypoint (actually uint8_t)
+     * @property param1 PARAM1, see MAV_CMD enum
+     * @property param2 PARAM2, see MAV_CMD enum
+     * @property param3 PARAM3, see MAV_CMD enum
+     * @property param4 PARAM4, see MAV_CMD enum
+     * @property x PARAM5 / local: x position in meters * 1e4, global: latitude in degrees * 10^7
+     * @property y PARAM6 / y position: local: x position in meters * 1e4, global: longitude in
+     *   degrees *10^7
+     * @property z PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending
+     *   on frame)
+     * @property missionType Mission type (actually uint8_t)
+     */
     data class MissionItem(
         val seq: Int,
         val frame: Int,
@@ -50,24 +87,52 @@ class MissionRawServer internal constructor(private val native: MissionRawServer
         val missionType: Int,
     )
 
+    /**
+     * Mission plan type
+     *
+     * @property missionItems The mission items
+     */
     data class MissionPlan(val missionItems: List<MissionItem> = emptyList())
 
+    /**
+     * Mission progress type.
+     *
+     * @property current Current mission item index (0-based), if equal to total, the mission is
+     *   finished
+     * @property total Total number of mission items
+     */
     data class MissionProgress(val current: Int, val total: Int)
 
+    /**
+     * Subscribe to when a new mission is uploaded (asynchronous).
+     *
+     * @return The mission plan
+     */
     fun subscribeIncomingMission(): Flow<MissionPlan> = callbackFlow {
         val subscriptionHandle = native.subscribeIncomingMission() { _, value -> trySend(value) }
         awaitClose { native.unsubscribeIncomingMission(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to when a new current item is set
+     *
+     * @return
+     */
     fun subscribeCurrentItemChanged(): Flow<MissionItem> = callbackFlow {
         val subscriptionHandle = native.subscribeCurrentItemChanged() { value -> trySend(value) }
         awaitClose { native.unsubscribeCurrentItemChanged(subscriptionHandle) }
     }
 
+    /** Set Current item as completed */
     fun setCurrentItemComplete() {
         native.setCurrentItemComplete()
     }
 
+    /**
+     * Subscribe when a MISSION_CLEAR_ALL is received
+     *
+     * @return
+     */
     fun subscribeClearAll(): Flow<Int> = callbackFlow {
         val subscriptionHandle = native.subscribeClearAll() { value -> trySend(value) }
         awaitClose { native.unsubscribeClearAll(subscriptionHandle) }

@@ -9,17 +9,27 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+/** Provide raw access to retrieve and provide server parameters. */
 class ParamServer internal constructor(private val native: ParamServerNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for param requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Not Found */
         NOT_FOUND(2),
+        /** Wrong type */
         WRONG_TYPE(3),
+        /** Parameter name too long (> 16) */
         PARAM_NAME_TOO_LONG(4),
+        /** No system available */
         NO_SYSTEM(5),
+        /** Parameter name too long (> 128) */
         PARAM_VALUE_TOO_LONG(6),
+        /** New params have to be provided before the param set is locked down */
         PARAM_PROVIDED_TOO_LATE(7);
 
         companion object {
@@ -27,48 +37,166 @@ class ParamServer internal constructor(private val native: ParamServerNative) : 
         }
     }
 
+    /**
+     * Type for integer parameters.
+     *
+     * @property name Name of the parameter
+     * @property value Value of the parameter
+     */
     data class IntParam(val name: String, val value: Int)
 
+    /**
+     * Type for float parameters.
+     *
+     * @property name Name of the parameter
+     * @property value Value of the parameter
+     */
     data class FloatParam(val name: String, val value: Float)
 
+    /**
+     * Type for float parameters.
+     *
+     * @property name Name of the parameter
+     * @property value Value of the parameter
+     */
     data class CustomParam(val name: String, val value: String)
 
+    /**
+     * Type collecting all integer, float, and custom parameters.
+     *
+     * @property intParams Collection of all parameter names and values of type int
+     * @property floatParams Collection of all parameter names and values of type float
+     * @property customParams Collection of all parameter names and values of type custom
+     */
     data class AllParams(
         val intParams: List<IntParam> = emptyList(),
         val floatParams: List<FloatParam> = emptyList(),
         val customParams: List<CustomParam> = emptyList(),
     )
 
+    /**
+     * Set param protocol.
+     *
+     * The extended param protocol is used by default. This allows to use the previous/normal one.
+     *
+     * Note that camera definition files are meant to implement/use the extended protocol.
+     *
+     * @param extendedProtocol Use extended protocol
+     * @return The result of the request.
+     */
     fun setProtocol(extendedProtocol: Boolean): Result =
         Result.fromValue(native.setProtocol(extendedProtocol))
 
+    /**
+     * Retrieve an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter
+     * @return Value of the requested parameter
+     */
     fun retrieveParamInt(name: String): Int = native.retrieveParamInt(name)
 
+    /**
+     * Provide an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * Note that new params have to be provided upfront. Once a client has requested the param list,
+     * the indices are locked and no new params can be added. Providing an already-existing param
+     * still updates its value and announces the change to connected clients.
+     *
+     * @param name Name of the parameter to provide
+     * @param value Value the parameter should be set to
+     * @return The result of the request.
+     */
     fun provideParamInt(name: String, value: Int): Result =
         Result.fromValue(native.provideParamInt(name, value))
 
+    /**
+     * Retrieve a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter
+     * @return Value of the requested parameter
+     */
     fun retrieveParamFloat(name: String): Float = native.retrieveParamFloat(name)
 
+    /**
+     * Provide a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * Note that new params have to be provided upfront. Once a client has requested the param list,
+     * the indices are locked and no new params can be added. Providing an already-existing param
+     * still updates its value and announces the change to connected clients.
+     *
+     * @param name Name of the parameter to provide
+     * @param value Value the parameter should be set to
+     * @return The result of the request.
+     */
     fun provideParamFloat(name: String, value: Float): Result =
         Result.fromValue(native.provideParamFloat(name, value))
 
+    /**
+     * Retrieve a custom parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter
+     * @return Value of the requested parameter
+     */
     fun retrieveParamCustom(name: String): String = native.retrieveParamCustom(name)
 
+    /**
+     * Provide a custom parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * Note that new params have to be provided upfront. Once a client has requested the param list,
+     * the indices are locked and no new params can be added. Providing an already-existing param
+     * still updates its value and announces the change to connected clients.
+     *
+     * @param name Name of the parameter to provide
+     * @param value Value the parameter should be set to
+     * @return The result of the request.
+     */
     fun provideParamCustom(name: String, value: String): Result =
         Result.fromValue(native.provideParamCustom(name, value))
 
+    /**
+     * Retrieve all parameters.
+     *
+     * @return Collection of all parameters
+     */
     fun retrieveAllParams(): AllParams = native.retrieveAllParams()
 
+    /**
+     * Subscribe to changed int param.
+     *
+     * @return Param that changed
+     */
     fun subscribeChangedParamInt(): Flow<IntParam> = callbackFlow {
         val subscriptionHandle = native.subscribeChangedParamInt() { value -> trySend(value) }
         awaitClose { native.unsubscribeChangedParamInt(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to changed float param.
+     *
+     * @return Param that changed
+     */
     fun subscribeChangedParamFloat(): Flow<FloatParam> = callbackFlow {
         val subscriptionHandle = native.subscribeChangedParamFloat() { value -> trySend(value) }
         awaitClose { native.unsubscribeChangedParamFloat(subscriptionHandle) }
     }
 
+    /**
+     * Subscribe to changed custom param.
+     *
+     * @return Param that changed
+     */
     fun subscribeChangedParamCustom(): Flow<CustomParam> = callbackFlow {
         val subscriptionHandle = native.subscribeChangedParamCustom() { value -> trySend(value) }
         awaitClose { native.unsubscribeChangedParamCustom(subscriptionHandle) }

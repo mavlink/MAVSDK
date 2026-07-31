@@ -8,15 +8,23 @@ import io.mavsdk.kotlin.System
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Enable creating and sending a tune to be played on the system. */
 class Tune internal constructor(private val native: TuneNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for tune requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Invalid tempo (range: 32 - 255) */
         INVALID_TEMPO(2),
+        /** Invalid tune: encoded string must be at most 247 chars */
         TUNE_TOO_LONG(3),
+        /** Failed to send the request */
         ERROR(4),
+        /** No system connected */
         NO_SYSTEM(5);
 
         companion object {
@@ -24,27 +32,49 @@ class Tune internal constructor(private val native: TuneNative) : AutoCloseable 
         }
     }
 
+    /** An element of the tune */
     enum class SongElement(val value: Int) {
+        /** After this element, start playing legato */
         STYLE_LEGATO(0),
+        /** After this element, start playing normal */
         STYLE_NORMAL(1),
+        /** After this element, start playing staccato */
         STYLE_STACCATO(2),
+        /** After this element, set the note duration to 1 */
         DURATION_1(3),
+        /** After this element, set the note duration to 2 */
         DURATION_2(4),
+        /** After this element, set the note duration to 4 */
         DURATION_4(5),
+        /** After this element, set the note duration to 8 */
         DURATION_8(6),
+        /** After this element, set the note duration to 16 */
         DURATION_16(7),
+        /** After this element, set the note duration to 32 */
         DURATION_32(8),
+        /** Play note A */
         NOTE_A(9),
+        /** Play note B */
         NOTE_B(10),
+        /** Play note C */
         NOTE_C(11),
+        /** Play note D */
         NOTE_D(12),
+        /** Play note E */
         NOTE_E(13),
+        /** Play note F */
         NOTE_F(14),
+        /** Play note G */
         NOTE_G(15),
+        /** Play a rest */
         NOTE_PAUSE(16),
+        /** After this element, sharp the note (half a step up) */
         SHARP(17),
+        /** After this element, flat the note (half a step down) */
         FLAT(18),
+        /** After this element, shift the note 1 octave up */
         OCTAVE_UP(19),
+        /** After this element, shift the note 1 octave down */
         OCTAVE_DOWN(20);
 
         companion object {
@@ -53,8 +83,20 @@ class Tune internal constructor(private val native: TuneNative) : AutoCloseable 
         }
     }
 
+    /**
+     * Tune description, containing song elements and tempo.
+     *
+     * @property songElements The list of song elements (notes, pauses, ...) to be played
+     * @property tempo The tempo of the song (range: 32 - 255)
+     */
     data class TuneDescription(val songElements: List<SongElement> = emptyList(), val tempo: Int)
 
+    /**
+     * Send a tune to be played by the system.
+     *
+     * @param tuneDescription The tune to be played
+     * @return The result of the request.
+     */
     suspend fun playTune(tuneDescription: TuneDescription): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = TuneCallbackGuard()

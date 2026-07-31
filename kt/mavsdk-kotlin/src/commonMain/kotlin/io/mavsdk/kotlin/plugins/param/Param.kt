@@ -6,26 +6,45 @@ package io.mavsdk.kotlin.plugins.param
 
 import io.mavsdk.kotlin.System
 
+/** Provide raw access to get and set parameters. */
 class Param internal constructor(private val native: ParamNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for param requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Request timed out */
         TIMEOUT(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Wrong type */
         WRONG_TYPE(4),
+        /** Parameter name too long (> 16) */
         PARAM_NAME_TOO_LONG(5),
+        /** No system connected */
         NO_SYSTEM(6),
+        /** Param value too long (> 128) */
         PARAM_VALUE_TOO_LONG(7),
+        /** Operation failed. */
         FAILED(8),
+        /** Parameter does not exist */
         DOES_NOT_EXIST(9),
+        /** Parameter value does not fit within accepted range */
         VALUE_OUT_OF_RANGE(10),
+        /** Caller is not permitted to set the value of this parameter */
         PERMISSION_DENIED(11),
+        /** Unknown component specified */
         COMPONENT_NOT_FOUND(12),
+        /** Parameter is read-only */
         READ_ONLY(13),
+        /** Parameter data type is not supported by flight stack */
         TYPE_UNSUPPORTED(14),
+        /** Parameter type does not match expected type */
         TYPE_MISMATCH(15),
+        /** Parameter exists but reading failed */
         READ_FAIL(16);
 
         companion object {
@@ -33,8 +52,11 @@ class Param internal constructor(private val native: ParamNative) : AutoCloseabl
         }
     }
 
+    /** Parameter version */
     enum class ProtocolVersion(val value: Int) {
+        /** Original v1 version */
         V1(0),
+        /** Extended param version */
         EXT(1);
 
         companion object {
@@ -43,35 +65,125 @@ class Param internal constructor(private val native: ParamNative) : AutoCloseabl
         }
     }
 
+    /**
+     * Type for integer parameters.
+     *
+     * @property name Name of the parameter
+     * @property value Value of the parameter
+     */
     data class IntParam(val name: String, val value: Int)
 
+    /**
+     * Type for float parameters.
+     *
+     * @property name Name of the parameter
+     * @property value Value of the parameter
+     */
     data class FloatParam(val name: String, val value: Float)
 
+    /**
+     * Type for custom parameters
+     *
+     * @property name Name of the parameter
+     * @property value Value of the parameter (max len 128 bytes)
+     */
     data class CustomParam(val name: String, val value: String)
 
+    /**
+     * Type collecting all integer, float, and custom parameters.
+     *
+     * @property intParams Collection of all parameter names and values of type int
+     * @property floatParams Collection of all parameter names and values of type float
+     * @property customParams Collection of all parameter names and values of type custom
+     */
     data class AllParams(
         val intParams: List<IntParam> = emptyList(),
         val floatParams: List<FloatParam> = emptyList(),
         val customParams: List<CustomParam> = emptyList(),
     )
 
+    /**
+     * Get an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter
+     * @return Value of the requested parameter
+     */
     fun getParamInt(name: String): Int = native.getParamInt(name)
 
+    /**
+     * Set an int parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter to set
+     * @param value Value the parameter should be set to
+     * @return The result of the request.
+     */
     fun setParamInt(name: String, value: Int): Result =
         Result.fromValue(native.setParamInt(name, value))
 
+    /**
+     * Get a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter
+     * @return Value of the requested parameter
+     */
     fun getParamFloat(name: String): Float = native.getParamFloat(name)
 
+    /**
+     * Set a float parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter to set
+     * @param value Value the parameter should be set to
+     * @return The result of the request.
+     */
     fun setParamFloat(name: String, value: Float): Result =
         Result.fromValue(native.setParamFloat(name, value))
 
+    /**
+     * Get a custom parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter
+     * @return Value of the requested parameter
+     */
     fun getParamCustom(name: String): String = native.getParamCustom(name)
 
+    /**
+     * Set a custom parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * @param name Name of the parameter to set
+     * @param value Value the parameter should be set to
+     * @return The result of the request.
+     */
     fun setParamCustom(name: String, value: String): Result =
         Result.fromValue(native.setParamCustom(name, value))
 
+    /**
+     * Get all parameters.
+     *
+     * @return Collection of all parameters
+     */
     fun getAllParams(): AllParams = native.getAllParams()
 
+    /**
+     * Select component ID of parameter component to talk to and param protocol version.
+     *
+     * Default is the autopilot component (1), and Version (0).
+     *
+     * @param componentId MAVLink component Id of component to select
+     * @param protocolVersion Protocol version
+     * @return The result of the request.
+     */
     fun selectComponent(componentId: Int, protocolVersion: ProtocolVersion): Result =
         Result.fromValue(native.selectComponent(componentId, protocolVersion))
 

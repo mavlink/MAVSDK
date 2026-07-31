@@ -6,17 +6,27 @@ package io.mavsdk.kotlin.plugins.failure
 
 import io.mavsdk.kotlin.System
 
+/** Inject failures into system to test failsafes. */
 class Failure internal constructor(private val native: FailureNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for failure requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** No system is connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Failure not supported */
         UNSUPPORTED(4),
+        /** Failure injection denied */
         DENIED(5),
+        /** Failure injection is disabled */
         DISABLED(6),
+        /** Request timed out */
         TIMEOUT(7);
 
         companion object {
@@ -24,21 +34,37 @@ class Failure internal constructor(private val native: FailureNative) : AutoClos
         }
     }
 
+    /** A failure unit. */
     enum class FailureUnit(val value: Int) {
+        /** Gyro */
         SENSOR_GYRO(0),
+        /** Accelerometer */
         SENSOR_ACCEL(1),
+        /** Magnetometer */
         SENSOR_MAG(2),
+        /** Barometer */
         SENSOR_BARO(3),
+        /** GPS */
         SENSOR_GPS(4),
+        /** Optical flow */
         SENSOR_OPTICAL_FLOW(5),
+        /** Visual inertial odometry */
         SENSOR_VIO(6),
+        /** Distance sensor */
         SENSOR_DISTANCE_SENSOR(7),
+        /** Airspeed */
         SENSOR_AIRSPEED(8),
+        /** Battery */
         SYSTEM_BATTERY(9),
+        /** Motor */
         SYSTEM_MOTOR(10),
+        /** Servo */
         SYSTEM_SERVO(11),
+        /** Avoidance */
         SYSTEM_AVOIDANCE(12),
+        /** RC signal */
         SYSTEM_RC_SIGNAL(13),
+        /** MAVLink signal */
         SYSTEM_MAVLINK_SIGNAL(14);
 
         companion object {
@@ -47,14 +73,23 @@ class Failure internal constructor(private val native: FailureNative) : AutoClos
         }
     }
 
+    /** A failure type */
     enum class FailureType(val value: Int) {
+        /** No failure injected, used to reset a previous failure */
         OK(0),
+        /** Sets unit off, so completely non-responsive */
         OFF(1),
+        /** Unit is stuck e.g. keeps reporting the same value */
         STUCK(2),
+        /** Unit is reporting complete garbage */
         GARBAGE(3),
+        /** Unit is consistently wrong */
         WRONG(4),
+        /** Unit is slow, so e.g. reporting at slower than expected rate */
         SLOW(5),
+        /** Data of unit is delayed in time */
         DELAYED(6),
+        /** Unit is sometimes working, sometimes not */
         INTERMITTENT(7);
 
         companion object {
@@ -63,6 +98,14 @@ class Failure internal constructor(private val native: FailureNative) : AutoClos
         }
     }
 
+    /**
+     * Injects a failure.
+     *
+     * @param failureUnit The failure unit to send
+     * @param failureType The failure type to send
+     * @param instance Instance to affect (0 for all)
+     * @return The result of the request.
+     */
     fun inject(failureUnit: FailureUnit, failureType: FailureType, instance: Int): Result =
         Result.fromValue(native.inject(failureUnit, failureType, instance))
 

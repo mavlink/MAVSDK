@@ -11,22 +11,37 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Implements file transfer functionality using MAVLink FTP. */
 class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for FTP commands */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Success */
         SUCCESS(1),
+        /** Intermediate message showing progress */
         NEXT(2),
+        /** Timeout */
         TIMEOUT(3),
+        /** Operation is already in progress */
         BUSY(4),
+        /** File IO operation error */
         FILE_IO_ERROR(5),
+        /** File exists already */
         FILE_EXISTS(6),
+        /** File does not exist */
         FILE_DOES_NOT_EXIST(7),
+        /** File is write protected */
         FILE_PROTECTED(8),
+        /** Invalid parameter */
         INVALID_PARAMETER(9),
+        /** Unsupported command */
         UNSUPPORTED(10),
+        /** General protocol error */
         PROTOCOL_ERROR(11),
+        /** No system connected */
         NO_SYSTEM(12);
 
         companion object {
@@ -34,9 +49,13 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
         }
     }
 
+    /** The type of a file system entry. */
     enum class EntryType(val value: Int) {
+        /** Unknown entry type */
         UNKNOWN(0),
+        /** A regular file */
         FILE(1),
+        /** A directory */
         DIRECTORY(2);
 
         companion object {
@@ -44,6 +63,15 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
         }
     }
 
+    /**
+     * A file system entry (file or directory) with metadata.
+     *
+     * @property name The name of the file or directory.
+     * @property entryType Whether the entry is a file or a directory.
+     * @property sizeBytes The size of the file in bytes (0 for directories).
+     * @property modificationTimeS Last modification time in seconds since UNIX epoch (UTC), 0 if
+     *   unknown.
+     */
     data class FilesystemEntry(
         val name: String,
         val entryType: EntryType,
@@ -51,10 +79,29 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
         val modificationTimeS: Long,
     )
 
+    /**
+     * The output of a directory list
+     *
+     * @property entries The directory entries (files and directories) with their metadata.
+     */
     data class ListDirectoryData(val entries: List<FilesystemEntry> = emptyList())
 
+    /**
+     * Progress data type for file transfer.
+     *
+     * @property bytesTransferred The number of bytes already transferred.
+     * @property totalBytes The total bytes to transfer.
+     */
     data class ProgressData(val bytesTransferred: Int, val totalBytes: Int)
 
+    /**
+     * Downloads a file to local directory.
+     *
+     * @param remoteFilePath The path of the remote file to download.
+     * @param localDir The local directory to download to.
+     * @param useBurst Use burst for faster downloading.
+     * @return The progress data if result is next
+     */
     fun download(
         remoteFilePath: String,
         localDir: String,
@@ -78,6 +125,13 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
         awaitClose {}
     }
 
+    /**
+     * Uploads local file to remote directory.
+     *
+     * @param localFilePath The local file path to upload.
+     * @param remoteDir The remote directory to upload to.
+     * @return The progress data if result is next
+     */
     fun upload(localFilePath: String, remoteDir: String): Flow<kotlin.Result<ProgressData>> =
         callbackFlow {
             native.uploadAsync(localFilePath, remoteDir) { result, value ->
@@ -98,6 +152,12 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
             awaitClose {}
         }
 
+    /**
+     * Lists items from a remote directory.
+     *
+     * @param remoteDir The remote directory to list the contents for.
+     * @return The found directories and files.
+     */
     suspend fun listDirectory(remoteDir: String): kotlin.Result<ListDirectoryData> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = FtpCallbackGuard()
@@ -120,6 +180,12 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
             }
         }
 
+    /**
+     * Creates a remote directory.
+     *
+     * @param remoteDir The remote directory to create.
+     * @return The result of the request.
+     */
     suspend fun createDirectory(remoteDir: String): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = FtpCallbackGuard()
@@ -133,6 +199,12 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
             }
         }
 
+    /**
+     * Removes a remote directory.
+     *
+     * @param remoteDir The remote directory to remove.
+     * @return The result of the request.
+     */
     suspend fun removeDirectory(remoteDir: String): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = FtpCallbackGuard()
@@ -146,6 +218,12 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
             }
         }
 
+    /**
+     * Removes a remote file.
+     *
+     * @param remoteFilePath The path of the remote file to remove.
+     * @return The result of the request.
+     */
     suspend fun removeFile(remoteFilePath: String): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = FtpCallbackGuard()
@@ -159,6 +237,13 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
             }
         }
 
+    /**
+     * Renames a remote file or remote directory.
+     *
+     * @param remoteFromPath The remote source path.
+     * @param remoteToPath The remote destination path.
+     * @return The result of the request.
+     */
     suspend fun rename(remoteFromPath: String, remoteToPath: String): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = FtpCallbackGuard()
@@ -172,6 +257,13 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
             }
         }
 
+    /**
+     * Compares a local file to a remote file using a CRC32 checksum.
+     *
+     * @param localFilePath The path of the local file.
+     * @param remoteFilePath The path of the remote file.
+     * @return Whether the files are identical.
+     */
     suspend fun areFilesIdentical(
         localFilePath: String,
         remoteFilePath: String,
@@ -196,6 +288,12 @@ class Ftp internal constructor(private val native: FtpNative) : AutoCloseable {
         }
     }
 
+    /**
+     * Set target component ID. By default it is the autopilot.
+     *
+     * @param compid The component ID to set.
+     * @return The result of the request.
+     */
     fun setTargetCompid(compid: Int): Result = Result.fromValue(native.setTargetCompid(compid))
 
     override fun close() {

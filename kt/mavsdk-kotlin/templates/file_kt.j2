@@ -65,6 +65,26 @@ import kotlinx.coroutines.flow.callbackFlow
 ) -> Unit
 {%- endmacro -%}
 
+{% macro method_kdoc(method) -%}
+    /**
+     * {{ method.method_description | trim | replace('\n', '\n     * ') }}
+{% for param in method.params %}
+     *
+     * @param {{ param.name.lower_camel_case }} {{ param.description | trim | replace('\n', '\n     *     ') }}
+{% endfor %}
+{% if method.return_type %}
+     *
+     * @return {{ method.return_description | trim | replace('\n', '\n     *     ') }}
+{% elif method.has_result %}
+     *
+     * @return The result of the request.
+{% endif %}
+     */
+{%- endmacro %}
+
+/**
+ * {{ class_description | trim | replace('\n', '\n * ') }}
+ */
 class {{ plugin_name.upper_camel_case }} internal constructor(
     private val native: {{ plugin_name.upper_camel_case }}Native
 ) : AutoCloseable {
@@ -84,8 +104,12 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
 {% if value.name.uppercase == 'IN_PROGRESS' %}{% set ns.has_in_progress = true %}{% endif %}
 {% if value.name.uppercase == 'NEXT' %}{% set ns.has_next = true %}{% endif %}
 {% endfor %}
+    /**
+     * {{ nested_enum.enum_description | trim | replace('\n', '\n     * ') }}
+     */
     enum class Result(val value: Int) {
 {% for value in nested_enum.values %}
+        /** {{ value.description | trim | replace('\n', '\n         * ') }} */
         {{ value.name.uppercase }}({{ loop.index0 }}),
 {% endfor %}
         ;
@@ -111,8 +135,12 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
 {% for enum in enums %}
 {% set enum_state = namespace(has_unknown=false) %}
 {% for value in enum.values %}{% if value.name.uppercase == 'UNKNOWN' %}{% set enum_state.has_unknown = true %}{% endif %}{% endfor %}
+    /**
+     * {{ enum.enum_description | trim | replace('\n', '\n     * ') }}
+     */
     enum class {{ enum.name.upper_camel_case }}(val value: Int) {
 {% for value in enum.values %}
+        /** {{ value.description | trim | replace('\n', '\n         * ') }} */
         {{ value.name.uppercase }}({{ loop.index0 }}),
 {% endfor %}
         ;
@@ -134,8 +162,12 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
 {% set enum_state = namespace(has_unknown=false) %}
 {% for value in nested_enum.values %}{% if value.name.uppercase == 'UNKNOWN' %}{% set enum_state.has_unknown = true %}{% endif %}{% endfor %}
+    /**
+     * {{ nested_enum.enum_description | trim | replace('\n', '\n     * ') }}
+     */
     enum class {{ nested_enum.name.upper_camel_case }}(val value: Int) {
 {% for value in nested_enum.values %}
+        /** {{ value.description | trim | replace('\n', '\n         * ') }} */
         {{ value.name.uppercase }}({{ loop.index0 }}),
 {% endfor %}
         ;
@@ -159,6 +191,13 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
 {# ======================================================================== #}
 {% for struct in structs %}
 {% if not struct.name.upper_camel_case.endswith('Result') %}
+    /**
+     * {{ struct.struct_description | trim | replace('\n', '\n     * ') }}
+{% for field in struct.fields %}
+     *
+     * @property {{ field.name.lower_camel_case }} {{ field.description | trim | replace('\n', '\n     *     ') }}
+{% endfor %}
+     */
     data class {{ struct.name.upper_camel_case }}(
 {% for field in struct.fields %}
         val {{ field.name.lower_camel_case }}: {{ pub_type(field.type_info) }}{% if field.type_info.is_repeated %} = emptyList(){% endif %},
@@ -172,6 +211,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
 {# ======================================================================== #}
 {% for method in methods %}
 {% if method.is_sync and not (method.is_async and not method.is_stream) %}
+{{ method_kdoc(method) }}
 {% if method.has_result and method.return_name %}
     fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): {{ pub_type(method.return_type) }} =
         native.{{ method.name.lower_camel_case }}({{ args(method.params) }})
@@ -189,6 +229,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
 
 {% endif %}
 {% if method.is_async and not method.is_stream %}
+{{ method_kdoc(method) }}
 {% if method.has_result and method.return_name %}
     suspend fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): kotlin.Result<{{ pub_type(method.return_type) }}> =
         suspendCancellableCoroutine { continuation ->
@@ -243,6 +284,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
 
 {% endif %}
 {% if method.is_async and method.is_stream and not method.is_finite %}
+{{ method_kdoc(method) }}
 {% if method.has_result and not method.return_type %}
     fun subscribe{{ method.name.upper_camel_case }}({{ params(method.params) }}): Flow<Result> = callbackFlow {
         val subscriptionHandle = native.subscribe{{ method.name.upper_camel_case }}(
@@ -283,6 +325,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
 
 {% endif %}
 {% if method.is_async and method.is_stream and method.is_finite %}
+{{ method_kdoc(method) }}
 {% if method.has_result and method.return_type %}
     fun {{ method.name.lower_camel_case }}({{ params(method.params) }}): Flow<kotlin.Result<{{ pub_type(method.return_type) }}>> =
         callbackFlow {

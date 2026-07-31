@@ -6,15 +6,26 @@ package io.mavsdk.kotlin.plugins.mocap
 
 import io.mavsdk.kotlin.System
 
+/**
+ * Allows interfacing a vehicle with a motion capture system in order to allow navigation without
+ * global positioning sources available (e.g. indoors, or when flying under a bridge. etc.).
+ */
 class Mocap internal constructor(private val native: MocapNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for mocap requests */
     enum class Result(val value: Int) {
+        /** Unknown error */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** No system is connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Invalid request data */
         INVALID_REQUEST_DATA(4),
+        /** Function unsupported */
         UNSUPPORTED(5);
 
         companion object {
@@ -22,8 +33,11 @@ class Mocap internal constructor(private val native: MocapNative) : AutoCloseabl
         }
     }
 
+    /** Mavlink frame id */
     enum class MavFrame(val value: Int) {
+        /** Legacy mocap NED frame. Deprecated in MAVLink and replaced by MAV_FRAME_LOCAL_FRD. */
         MOCAP_NED(0),
+        /** Local FRD frame (x: forward, y: right, z: down). */
         LOCAL_FRD(1);
 
         companion object {
@@ -32,15 +46,25 @@ class Mocap internal constructor(private val native: MocapNative) : AutoCloseabl
         }
     }
 
+    /** Estimator type, matching MAVLink MAV_ESTIMATOR_TYPE. */
     enum class MavEstimatorType(val value: Int) {
+        /** Unknown estimator type. */
         UNKNOWN(0),
+        /** Naive estimator. */
         NAIVE(1),
+        /** Computer vision-based estimate. */
         VISION(2),
+        /** Visual-inertial estimate. */
         VIO(3),
+        /** Plain GPS estimate. */
         GPS(4),
+        /** GPS and inertial navigation estimate. */
         GPS_INS(5),
+        /** Motion capture estimate. */
         MOCAP(6),
+        /** Lidar estimate. */
         LIDAR(7),
+        /** Autopilot estimate. */
         AUTOPILOT(8);
 
         companion object {
@@ -49,20 +73,84 @@ class Mocap internal constructor(private val native: MocapNative) : AutoCloseabl
         }
     }
 
+    /**
+     * Body position type
+     *
+     * @property xM X position in metres.
+     * @property yM Y position in metres.
+     * @property zM Z position in metres.
+     */
     data class PositionBody(val xM: Float, val yM: Float, val zM: Float)
 
+    /**
+     * Body angle type
+     *
+     * @property rollRad Roll angle in radians.
+     * @property pitchRad Pitch angle in radians.
+     * @property yawRad Yaw angle in radians.
+     */
     data class AngleBody(val rollRad: Float, val pitchRad: Float, val yawRad: Float)
 
+    /**
+     * Speed type, represented in the Body (X Y Z) frame and in metres/second.
+     *
+     * @property xMS Velocity in X in metres/second.
+     * @property yMS Velocity in Y in metres/second.
+     * @property zMS Velocity in Z in metres/second.
+     */
     data class SpeedBody(val xMS: Float, val yMS: Float, val zMS: Float)
 
+    /**
+     * Speed type, represented in NED (North East Down) coordinates.
+     *
+     * @property northMS Velocity North in metres/second.
+     * @property eastMS Velocity East in metres/second.
+     * @property downMS Velocity Down in metres/second.
+     */
     data class SpeedNed(val northMS: Float, val eastMS: Float, val downMS: Float)
 
+    /**
+     * Angular velocity type
+     *
+     * @property rollRadS Roll angular velocity in radians/second.
+     * @property pitchRadS Pitch angular velocity in radians/second.
+     * @property yawRadS Yaw angular velocity in radians/second.
+     */
     data class AngularVelocityBody(val rollRadS: Float, val pitchRadS: Float, val yawRadS: Float)
 
+    /**
+     * Covariance type. Row-major representation of a 6x6 cross-covariance matrix upper right
+     * triangle. Needs to be 21 entries or 1 entry with NaN if unknown.
+     *
+     * @property covarianceMatrix The covariance matrix
+     */
     data class Covariance(val covarianceMatrix: List<Float> = emptyList())
 
+    /**
+     * Quaternion type.
+     *
+     * All rotations and axis systems follow the right-hand rule. The Hamilton quaternion product
+     * definition is used. A zero-rotation quaternion is represented by (1,0,0,0). The quaternion
+     * could also be written as w + xi + yj + zk.
+     *
+     * For more info see: https://en.wikipedia.org/wiki/Quaternion
+     *
+     * @property w Quaternion entry 0, also denoted as a
+     * @property x Quaternion entry 1, also denoted as b
+     * @property y Quaternion entry 2, also denoted as c
+     * @property z Quaternion entry 3, also denoted as d
+     */
     data class Quaternion(val w: Float, val x: Float, val y: Float, val z: Float)
 
+    /**
+     * Global position/attitude estimate from a vision source.
+     *
+     * @property timeUsec PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+     * @property positionBody Global position (m)
+     * @property angleBody Body angle (rad).
+     * @property poseCovariance Pose cross-covariance matrix.
+     * @property resetCounter Estimate reset counter. Increment when the estimate resets or jumps.
+     */
     data class VisionPositionEstimate(
         val timeUsec: Long,
         val positionBody: PositionBody,
@@ -71,6 +159,14 @@ class Mocap internal constructor(private val native: MocapNative) : AutoCloseabl
         val resetCounter: Int,
     )
 
+    /**
+     * Global speed estimate from a vision source.
+     *
+     * @property timeUsec Timestamp UNIX Epoch time (0 to use Backend timestamp)
+     * @property speedNed Global speed (m/s)
+     * @property speedCovariance Linear velocity cross-covariance matrix.
+     * @property resetCounter Estimate reset counter. Increment when the estimate resets or jumps.
+     */
     data class VisionSpeedEstimate(
         val timeUsec: Long,
         val speedNed: SpeedNed,
@@ -78,6 +174,14 @@ class Mocap internal constructor(private val native: MocapNative) : AutoCloseabl
         val resetCounter: Int,
     )
 
+    /**
+     * Motion capture attitude and position
+     *
+     * @property timeUsec PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+     * @property q Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
+     * @property positionBody Body Position (NED)
+     * @property poseCovariance Pose cross-covariance matrix.
+     */
     data class AttitudePositionMocap(
         val timeUsec: Long,
         val q: Quaternion,
@@ -85,6 +189,22 @@ class Mocap internal constructor(private val native: MocapNative) : AutoCloseabl
         val poseCovariance: Covariance,
     )
 
+    /**
+     * Odometry message to communicate odometry information with an external interface.
+     *
+     * @property timeUsec Timestamp (0 to use Backend timestamp).
+     * @property frameId Coordinate frame of reference for the pose data.
+     * @property positionBody Body Position.
+     * @property q Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+     * @property speedBody Linear speed (m/s).
+     * @property angularVelocityBody Angular speed (rad/s).
+     * @property poseCovariance Pose cross-covariance matrix.
+     * @property velocityCovariance Velocity cross-covariance matrix.
+     * @property resetCounter Estimate reset counter. Increment when the estimate resets or jumps.
+     * @property estimatorType Type of estimator that is providing the odometry.
+     * @property qualityPercent Optional odometry quality in percent. -1 = failed, 0 =
+     *   unknown/unset, 1 = worst, 100 = best.
+     */
     data class Odometry(
         val timeUsec: Long,
         val frameId: MavFrame,
@@ -99,15 +219,39 @@ class Mocap internal constructor(private val native: MocapNative) : AutoCloseabl
         val qualityPercent: Int,
     )
 
+    /**
+     * Send Global position/attitude estimate from a vision source.
+     *
+     * @param visionPositionEstimate The vision position estimate
+     * @return The result of the request.
+     */
     fun setVisionPositionEstimate(visionPositionEstimate: VisionPositionEstimate): Result =
         Result.fromValue(native.setVisionPositionEstimate(visionPositionEstimate))
 
+    /**
+     * Send Global speed estimate from a vision source.
+     *
+     * @param visionSpeedEstimate The vision speed estimate
+     * @return The result of the request.
+     */
     fun setVisionSpeedEstimate(visionSpeedEstimate: VisionSpeedEstimate): Result =
         Result.fromValue(native.setVisionSpeedEstimate(visionSpeedEstimate))
 
+    /**
+     * Send motion capture attitude and position.
+     *
+     * @param attitudePositionMocap The attitude and position data
+     * @return The result of the request.
+     */
     fun setAttitudePositionMocap(attitudePositionMocap: AttitudePositionMocap): Result =
         Result.fromValue(native.setAttitudePositionMocap(attitudePositionMocap))
 
+    /**
+     * Send odometry information with an external interface.
+     *
+     * @param odometry The odometry data
+     * @return The result of the request.
+     */
     fun setOdometry(odometry: Odometry): Result = Result.fromValue(native.setOdometry(odometry))
 
     override fun close() {

@@ -8,24 +8,41 @@ import io.mavsdk.kotlin.System
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Enable simple actions such as arming, taking off, and landing. */
 class Action internal constructor(private val native: ActionNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for action requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request was successful */
         SUCCESS(1),
+        /** No system is connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Command refused by vehicle */
         COMMAND_DENIED(5),
+        /** Command refused because landed state is unknown */
         COMMAND_DENIED_LANDED_STATE_UNKNOWN(6),
+        /** Command refused because vehicle not landed */
         COMMAND_DENIED_NOT_LANDED(7),
+        /** Request timed out */
         TIMEOUT(8),
+        /** Hybrid/VTOL transition support is unknown */
         VTOL_TRANSITION_SUPPORT_UNKNOWN(9),
+        /** Vehicle does not support hybrid/VTOL transitions */
         NO_VTOL_TRANSITION_SUPPORT(10),
+        /** Error getting or setting parameter */
         PARAMETER_ERROR(11),
+        /** Action not supported */
         UNSUPPORTED(12),
+        /** Action failed */
         FAILED(13),
+        /** Invalid argument */
         INVALID_ARGUMENT(14);
 
         companion object {
@@ -33,11 +50,17 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /** Yaw behaviour during orbit flight. */
     enum class OrbitYawBehavior(val value: Int) {
+        /** Vehicle front points to the center (default) */
         HOLD_FRONT_TO_CIRCLE_CENTER(0),
+        /** Vehicle front holds heading when message received */
         HOLD_INITIAL_HEADING(1),
+        /** Yaw uncontrolled */
         UNCONTROLLED(2),
+        /** Vehicle front follows flight path (tangential to circle) */
         HOLD_FRONT_TANGENT_TO_CIRCLE(3),
+        /** Yaw controlled by RC input */
         RC_CONTROLLED(4);
 
         companion object {
@@ -46,8 +69,11 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /** Commanded values for relays */
     enum class RelayCommand(val value: Int) {
+        /** Turn the relay off */
         ON(0),
+        /** Turn the relay on. */
         OFF(1);
 
         companion object {
@@ -56,6 +82,14 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to arm the drone.
+     *
+     * Arming a drone normally causes motors to spin at idle. Before arming take all safety
+     * precautions and stand clear of the drone!
+     *
+     * @return The result of the request.
+     */
     suspend fun arm(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.armAsync() { result ->
@@ -66,6 +100,16 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to force-arm the drone without any checks.
+     *
+     * Attention: this is not to be used for normal flying but only bench tests!
+     *
+     * Arming a drone normally causes motors to spin at idle. Before arming take all safety
+     * precautions and stand clear of the drone!
+     *
+     * @return The result of the request.
+     */
     suspend fun armForce(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.armForceAsync() { result ->
@@ -76,6 +120,14 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to disarm the drone.
+     *
+     * This will disarm a drone that considers itself landed. If flying, the drone should reject the
+     * disarm command. Disarming means that all motors will stop.
+     *
+     * @return The result of the request.
+     */
     suspend fun disarm(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.disarmAsync() { result ->
@@ -86,6 +138,16 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to take off and hover.
+     *
+     * This switches the drone into position control mode and commands it to take off and hover at
+     * the takeoff altitude.
+     *
+     * Note that the vehicle must be armed before it can take off.
+     *
+     * @return The result of the request.
+     */
     suspend fun takeoff(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.takeoffAsync() { result ->
@@ -96,6 +158,13 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to land at the current position.
+     *
+     * This switches the drone to 'Land' flight mode.
+     *
+     * @return The result of the request.
+     */
     suspend fun land(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.landAsync() { result ->
@@ -106,6 +175,13 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to reboot the drone components.
+     *
+     * This will reboot the autopilot, companion computer, camera and gimbal.
+     *
+     * @return The result of the request.
+     */
     suspend fun reboot(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.rebootAsync() { result ->
@@ -116,6 +192,15 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to shut down the drone components.
+     *
+     * This will shut down the autopilot, onboard computer, camera and gimbal. This command should
+     * only be used when the autopilot is disarmed and autopilots commonly reject it if they are not
+     * already ready to shut down.
+     *
+     * @return The result of the request.
+     */
     suspend fun shutdown(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.shutdownAsync() { result ->
@@ -126,6 +211,14 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to terminate the drone.
+     *
+     * This will run the terminate routine as configured on the drone (e.g. disarm and open the
+     * parachute).
+     *
+     * @return The result of the request.
+     */
     suspend fun terminate(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.terminateAsync() { result ->
@@ -136,6 +229,14 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to kill the drone.
+     *
+     * This will disarm a drone irrespective of whether it is landed or flying. Note that the drone
+     * will fall out of the sky if this command is used while flying.
+     *
+     * @return The result of the request.
+     */
     suspend fun kill(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.killAsync() { result ->
@@ -146,6 +247,16 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to return to the launch (takeoff) position and land.
+     *
+     * This switches the drone into
+     * [Return mode](https://docs.px4.io/main/en/flight_modes_mc/return.html) which generally means
+     * it will rise up to a certain altitude to clear any obstacles before heading back to the
+     * launch (takeoff) position and land there.
+     *
+     * @return The result of the request.
+     */
     suspend fun returnToLaunch(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.returnToLaunchAsync() { result ->
@@ -156,6 +267,20 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to move the vehicle to a specific global position.
+     *
+     * The latitude and longitude are given in degrees (WGS84 frame) and the altitude in meters AMSL
+     * (above mean sea level).
+     *
+     * The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
+     *
+     * @param latitudeDeg Latitude (in degrees)
+     * @param longitudeDeg Longitude (in degrees)
+     * @param absoluteAltitudeM Altitude AMSL (in meters)
+     * @param yawDeg Yaw angle (in degrees, frame is NED, 0 is North, positive is clockwise)
+     * @return The result of the request.
+     */
     suspend fun gotoLocation(
         latitudeDeg: Double,
         longitudeDeg: Double,
@@ -171,6 +296,20 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command do orbit to the drone.
+     *
+     * This will run the orbit routine with the given parameters.
+     *
+     * @param radiusM Radius of circle (in meters)
+     * @param velocityMs Tangential velocity (in m/s)
+     * @param yawBehavior Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
+     * @param latitudeDeg Center point latitude in degrees. NAN: use current latitude for center
+     * @param longitudeDeg Center point longitude in degrees. NAN: use current longitude for center
+     * @param absoluteAltitudeM Center point altitude in meters. NAN: use current altitude for
+     *   center
+     * @return The result of the request.
+     */
     suspend fun doOrbit(
         radiusM: Float,
         velocityMs: Float,
@@ -195,6 +334,17 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to hold position (a.k.a. "Loiter").
+     *
+     * Sends a command to drone to change to Hold flight mode, causing the vehicle to stop and
+     * maintain its current GPS position and altitude.
+     *
+     * Note: this command is specific to the PX4 Autopilot flight stack as it implies a change to a
+     * PX4-specific mode.
+     *
+     * @return The result of the request.
+     */
     suspend fun hold(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.holdAsync() { result ->
@@ -205,6 +355,15 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to set the value of an actuator.
+     *
+     * Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
+     *
+     * @param index Index of actuator (starting with 1)
+     * @param value Value to set the actuator to (normalized from [-1..1])
+     * @return The result of the request.
+     */
     suspend fun setActuator(index: Int, value: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
@@ -216,6 +375,16 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
             }
         }
 
+    /**
+     * Send command to set the value of a relay.
+     *
+     * The index of the relay starts at 0. For the relay value, 1=on, 0=off, others possible
+     * depending on system hardware
+     *
+     * @param index Index of relay (starting with 0)
+     * @param setting Value to set the relay to
+     * @return The result of the request.
+     */
     suspend fun setRelay(index: Int, setting: RelayCommand): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
@@ -227,6 +396,15 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
             }
         }
 
+    /**
+     * Send command to transition the drone to fixedwing.
+     *
+     * The associated action will only be executed for VTOL vehicles (on other vehicle types the
+     * command will fail). The command will succeed if called when the vehicle is already in
+     * fixedwing mode.
+     *
+     * @return The result of the request.
+     */
     suspend fun transitionToFixedwing(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.transitionToFixedwingAsync() { result ->
@@ -237,6 +415,15 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Send command to transition the drone to multicopter.
+     *
+     * The associated action will only be executed for VTOL vehicles (on other vehicle types the
+     * command will fail). The command will succeed if called when the vehicle is already in
+     * multicopter mode.
+     *
+     * @return The result of the request.
+     */
     suspend fun transitionToMulticopter(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = ActionCallbackGuard()
         native.transitionToMulticopterAsync() { result ->
@@ -247,6 +434,11 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
         }
     }
 
+    /**
+     * Get the takeoff altitude (in meters above ground).
+     *
+     * @return Takeoff altitude relative to ground/takeoff location (in meters)
+     */
     suspend fun getTakeoffAltitude(): kotlin.Result<Float> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
@@ -269,6 +461,12 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
             }
         }
 
+    /**
+     * Set takeoff altitude (in meters above ground).
+     *
+     * @param altitude Takeoff altitude relative to ground/takeoff location (in meters)
+     * @return The result of the request.
+     */
     suspend fun setTakeoffAltitude(altitude: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
@@ -280,6 +478,11 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
             }
         }
 
+    /**
+     * Get the return to launch minimum return altitude (in meters).
+     *
+     * @return Return altitude relative to takeoff location (in meters)
+     */
     suspend fun getReturnToLaunchAltitude(): kotlin.Result<Float> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
@@ -302,6 +505,12 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
             }
         }
 
+    /**
+     * Set the return to launch minimum return altitude (in meters).
+     *
+     * @param relativeAltitudeM Return altitude relative to takeoff location (in meters)
+     * @return The result of the request.
+     */
     suspend fun setReturnToLaunchAltitude(relativeAltitudeM: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
@@ -313,6 +522,15 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
             }
         }
 
+    /**
+     * Set current speed.
+     *
+     * This will set the speed during a mission, reposition, and similar. It is ephemeral, so not
+     * stored on the drone and does not survive a reboot.
+     *
+     * @param speedMS Speed in meters/second
+     * @return The result of the request.
+     */
     suspend fun setCurrentSpeed(speedMS: Float): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = ActionCallbackGuard()
@@ -324,6 +542,16 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
             }
         }
 
+    /**
+     * Set GPS Global Origin.
+     *
+     * Sets the GPS coordinates of the vehicle local origin (0,0,0) position.
+     *
+     * @param latitudeDeg Latitude (in degrees)
+     * @param longitudeDeg Longitude (in degrees)
+     * @param absoluteAltitudeM Altitude AMSL (in meters)
+     * @return The result of the request.
+     */
     fun setGpsGlobalOrigin(
         latitudeDeg: Double,
         longitudeDeg: Double,
@@ -331,6 +559,17 @@ class Action internal constructor(private val native: ActionNative) : AutoClosea
     ): Result =
         Result.fromValue(native.setGpsGlobalOrigin(latitudeDeg, longitudeDeg, absoluteAltitudeM))
 
+    /**
+     * Set home.
+     *
+     * Sets the home position.
+     *
+     * @param useCurrentLocation Use current location
+     * @param latitudeDeg Latitude (in degrees)
+     * @param longitudeDeg Longitude (in degrees)
+     * @param absoluteAltitudeM Altitude AMSL (in meters)
+     * @return The result of the request.
+     */
     fun setHome(
         useCurrentLocation: Boolean,
         latitudeDeg: Double,

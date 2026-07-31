@@ -6,18 +6,32 @@ package io.mavsdk.kotlin.plugins.follow_me
 
 import io.mavsdk.kotlin.System
 
+/**
+ * Allow users to command the vehicle to follow a specific target. The target is provided as a GPS
+ * coordinate and altitude.
+ */
 class FollowMe internal constructor(private val native: FollowMeNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for followme operations */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** No system connected */
         NO_SYSTEM(2),
+        /** Connection error */
         CONNECTION_ERROR(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Command denied */
         COMMAND_DENIED(5),
+        /** Request timed out */
         TIMEOUT(6),
+        /** FollowMe is not active */
         NOT_ACTIVE(7),
+        /** Failed to set FollowMe configuration */
         SET_CONFIG_FAILED(8);
 
         companion object {
@@ -25,9 +39,16 @@ class FollowMe internal constructor(private val native: FollowMeNative) : AutoCl
         }
     }
 
+    /** Altitude mode to configure which altitude the follow me will assume the target to be at. */
     enum class FollowAltitudeMode(val value: Int) {
+        /**
+         * Target assumed to be mobing at a constant altitude of home position (where the vehicle
+         * armed)
+         */
         CONSTANT(0),
+        /** Target assumed to be at the terrain level sensed by the distance sensor */
         TERRAIN(1),
+        /** Target GPS altitude taken into account to do 3D tracking */
         TARGET_GPS(2);
 
         companion object {
@@ -36,6 +57,21 @@ class FollowMe internal constructor(private val native: FollowMeNative) : AutoCl
         }
     }
 
+    /**
+     * Configuration type.
+     *
+     * @property followHeightM [m] Follow height in meters (recommended minimum 8 meters)
+     * @property followDistanceM [m] Follow distance to target in meters (recommended minimum 4
+     *   meter)
+     * @property responsiveness How responsive the vehicle is to the motion of the target, Lower
+     *   value = More responsive (range 0.0 to 1.0)
+     * @property altitudeMode Follow Altitude control mode
+     * @property maxTangentialVelMS [m/s] Maximum orbit tangential velocity relative to the target,
+     *   in meters per second. Higher value = More aggressive follow angle tracking.
+     * @property followAngleDeg [deg] Follow Angle relative to the target. 0 equals following in
+     *   front of the target's direction. Angle increases in Clockwise direction, so following from
+     *   right would be 90 degrees, from the left is -90 degrees, and so on.
+     */
     data class Config(
         val followHeightM: Float,
         val followDistanceM: Float,
@@ -45,6 +81,16 @@ class FollowMe internal constructor(private val native: FollowMeNative) : AutoCl
         val followAngleDeg: Float,
     )
 
+    /**
+     * Target location for the vehicle to follow
+     *
+     * @property latitudeDeg Target latitude in degrees
+     * @property longitudeDeg Target longitude in degrees
+     * @property absoluteAltitudeM Target altitude in meters above MSL
+     * @property velocityXMS Target velocity in X axis, in meters per second
+     * @property velocityYMS Target velocity in Y axis, in meters per second
+     * @property velocityZMS Target velocity in Z axis, in meters per second
+     */
     data class TargetLocation(
         val latitudeDeg: Double,
         val longitudeDeg: Double,
@@ -54,19 +100,56 @@ class FollowMe internal constructor(private val native: FollowMeNative) : AutoCl
         val velocityZMS: Float,
     )
 
+    /**
+     * Get current configuration.
+     *
+     * @return The current configuration
+     */
     fun getConfig(): Config = native.getConfig()
 
+    /**
+     * Apply configuration by sending it to the system.
+     *
+     * @param config The new configuration to be set
+     * @return The result of the request.
+     */
     fun setConfig(config: Config): Result = Result.fromValue(native.setConfig(config))
 
+    /**
+     * Check if FollowMe is active.
+     *
+     * @return Whether follow me is active or not
+     */
     fun isActive(): Boolean = native.isActive()
 
+    /**
+     * Set location of the moving target.
+     *
+     * @param location The new TargetLocation to follow
+     * @return The result of the request.
+     */
     fun setTargetLocation(location: TargetLocation): Result =
         Result.fromValue(native.setTargetLocation(location))
 
+    /**
+     * Get the last location of the target.
+     *
+     * @return The last target location that was set
+     */
     fun getLastLocation(): TargetLocation = native.getLastLocation()
 
+    /**
+     * Start FollowMe mode.
+     *
+     * @return The result of the request.
+     */
     fun start(): Result = Result.fromValue(native.start())
 
+    /**
+     * Stop FollowMe mode.
+     *
+     * @return The result of the request.
+     */
     fun stop(): Result = Result.fromValue(native.stop())
 
     override fun close() {

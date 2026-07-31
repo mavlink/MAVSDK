@@ -8,17 +8,27 @@ import io.mavsdk.kotlin.System
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/** Enable setting a geofence. */
 class Geofence internal constructor(private val native: GeofenceNative) : AutoCloseable {
     private var closed = false
 
+    /** Possible results returned for geofence requests. */
     enum class Result(val value: Int) {
+        /** Unknown result */
         UNKNOWN(0),
+        /** Request succeeded */
         SUCCESS(1),
+        /** Error */
         ERROR(2),
+        /** Too many objects in the geofence */
         TOO_MANY_GEOFENCE_ITEMS(3),
+        /** Vehicle is busy */
         BUSY(4),
+        /** Request timed out */
         TIMEOUT(5),
+        /** Invalid argument */
         INVALID_ARGUMENT(6),
+        /** No system connected */
         NO_SYSTEM(7);
 
         companion object {
@@ -26,8 +36,11 @@ class Geofence internal constructor(private val native: GeofenceNative) : AutoCl
         }
     }
 
+    /** Geofence types. */
     enum class FenceType(val value: Int) {
+        /** Type representing an inclusion fence */
         INCLUSION(0),
+        /** Type representing an exclusion fence */
         EXCLUSION(1);
 
         companion object {
@@ -36,17 +49,51 @@ class Geofence internal constructor(private val native: GeofenceNative) : AutoCl
         }
     }
 
+    /**
+     * Point type.
+     *
+     * @property latitudeDeg Latitude in degrees (range: -90 to +90)
+     * @property longitudeDeg Longitude in degrees (range: -180 to +180)
+     */
     data class Point(val latitudeDeg: Double, val longitudeDeg: Double)
 
+    /**
+     * Polygon type.
+     *
+     * @property points Points defining the polygon
+     * @property fenceType Fence type
+     */
     data class Polygon(val points: List<Point> = emptyList(), val fenceType: FenceType)
 
+    /**
+     * Circular type.
+     *
+     * @property point Point defining the center
+     * @property radius Radius of the circular fence
+     * @property fenceType Fence type
+     */
     data class Circle(val point: Point, val radius: Float, val fenceType: FenceType)
 
+    /**
+     * Geofence data type.
+     *
+     * @property polygons Polygon(s) representing the geofence(s)
+     * @property circles Circle(s) representing the geofence(s)
+     */
     data class GeofenceData(
         val polygons: List<Polygon> = emptyList(),
         val circles: List<Circle> = emptyList(),
     )
 
+    /**
+     * Upload geofences.
+     *
+     * Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will
+     * remain on the drone even if a connection is lost.
+     *
+     * @param geofenceData Circle(s) and/or Polygon(s) representing the geofence(s)
+     * @return The result of the request.
+     */
     suspend fun uploadGeofence(geofenceData: GeofenceData): Result =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = GeofenceCallbackGuard()
@@ -58,6 +105,13 @@ class Geofence internal constructor(private val native: GeofenceNative) : AutoCl
             }
         }
 
+    /**
+     * Download geofences from the vehicle.
+     *
+     * Downloads polygon and circular geofences from the vehicle.
+     *
+     * @return Downloaded geofence data
+     */
     suspend fun downloadGeofence(): kotlin.Result<GeofenceData> =
         suspendCancellableCoroutine { continuation ->
             val callbackGuard = GeofenceCallbackGuard()
@@ -80,6 +134,11 @@ class Geofence internal constructor(private val native: GeofenceNative) : AutoCl
             }
         }
 
+    /**
+     * Clear all geofences saved on the vehicle.
+     *
+     * @return The result of the request.
+     */
     suspend fun clearGeofence(): Result = suspendCancellableCoroutine { continuation ->
         val callbackGuard = GeofenceCallbackGuard()
         native.clearGeofenceAsync() { result ->
