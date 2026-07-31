@@ -83,7 +83,9 @@ class Shell:
 
         def c_callback(c_data, ud):
             try:
-                py_data = c_data
+                _string_ptr = ctypes.cast(c_data, ctypes.c_char_p)
+                py_data = _string_ptr.value
+                self._lib.mavsdk_shell_string_destroy(ctypes.byref(_string_ptr))
 
                 callback(py_data, user_data)
 
@@ -110,7 +112,7 @@ class Shell:
 
 
 # ===== Callback Types =====
-ReceiveCallback = ctypes.CFUNCTYPE(None, ctypes.c_char_p, ctypes.c_void_p)
+ReceiveCallback = ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_char), ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_shell_create.argtypes = [ctypes.c_void_p]
@@ -118,6 +120,10 @@ _cmavsdk_lib.mavsdk_shell_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_shell_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_shell_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_shell_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_shell_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_shell_send.argtypes = [

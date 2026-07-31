@@ -804,46 +804,103 @@ _cmavsdk_lib.mavsdk_offboard_attitude_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_offboard_attitude_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_offboard_attitude_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(AttitudeCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_attitude_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_offboard_actuator_control_group_destroy.argtypes = [
     ctypes.POINTER(ActuatorControlGroupCStruct)
 ]
 _cmavsdk_lib.mavsdk_offboard_actuator_control_group_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_actuator_control_group_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ActuatorControlGroupCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_actuator_control_group_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_offboard_actuator_control_destroy.argtypes = [
     ctypes.POINTER(ActuatorControlCStruct)
 ]
 _cmavsdk_lib.mavsdk_offboard_actuator_control_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_offboard_actuator_control_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ActuatorControlCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_actuator_control_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_offboard_attitude_rate_destroy.argtypes = [
     ctypes.POINTER(AttitudeRateCStruct)
 ]
 _cmavsdk_lib.mavsdk_offboard_attitude_rate_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_attitude_rate_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(AttitudeRateCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_attitude_rate_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_offboard_position_ned_yaw_destroy.argtypes = [
     ctypes.POINTER(PositionNedYawCStruct)
 ]
 _cmavsdk_lib.mavsdk_offboard_position_ned_yaw_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_offboard_position_ned_yaw_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(PositionNedYawCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_position_ned_yaw_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_offboard_position_global_yaw_destroy.argtypes = [
     ctypes.POINTER(PositionGlobalYawCStruct)
 ]
 _cmavsdk_lib.mavsdk_offboard_position_global_yaw_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_position_global_yaw_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(PositionGlobalYawCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_position_global_yaw_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_offboard_velocity_body_yawspeed_destroy.argtypes = [
     ctypes.POINTER(VelocityBodyYawspeedCStruct)
 ]
 _cmavsdk_lib.mavsdk_offboard_velocity_body_yawspeed_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_offboard_velocity_body_yawspeed_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(VelocityBodyYawspeedCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_velocity_body_yawspeed_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_offboard_velocity_ned_yaw_destroy.argtypes = [
     ctypes.POINTER(VelocityNedYawCStruct)
 ]
 _cmavsdk_lib.mavsdk_offboard_velocity_ned_yaw_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_velocity_ned_yaw_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(VelocityNedYawCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_velocity_ned_yaw_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_offboard_acceleration_ned_destroy.argtypes = [
     ctypes.POINTER(AccelerationNedCStruct)
 ]
 _cmavsdk_lib.mavsdk_offboard_acceleration_ned_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_offboard_acceleration_ned_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(AccelerationNedCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_offboard_acceleration_ned_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_offboard_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_offboard_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_offboard_start_async.argtypes = [
     ctypes.c_void_p,

@@ -224,6 +224,18 @@ _cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MavlinkMessageCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_mavlink_direct_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_mavlink_direct_string_destroy.restype = None
+
 
 _cmavsdk_lib.mavsdk_mavlink_direct_send_message.argtypes = [
     ctypes.c_void_p,

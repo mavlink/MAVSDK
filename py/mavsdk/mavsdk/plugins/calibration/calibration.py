@@ -289,6 +289,17 @@ _cmavsdk_lib.mavsdk_calibration_progress_data_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_calibration_progress_data_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_calibration_progress_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ProgressDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_calibration_progress_data_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_calibration_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_calibration_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_calibration_calibrate_gyro_async.argtypes = [
     ctypes.c_void_p,

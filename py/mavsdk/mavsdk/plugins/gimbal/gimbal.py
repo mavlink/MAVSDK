@@ -933,34 +933,79 @@ _cmavsdk_lib.mavsdk_gimbal_quaternion_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_gimbal_quaternion_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_gimbal_quaternion_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(QuaternionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_gimbal_quaternion_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_gimbal_euler_angle_destroy.argtypes = [
     ctypes.POINTER(EulerAngleCStruct)
 ]
 _cmavsdk_lib.mavsdk_gimbal_euler_angle_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_euler_angle_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(EulerAngleCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_gimbal_euler_angle_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_gimbal_angular_velocity_body_destroy.argtypes = [
     ctypes.POINTER(AngularVelocityBodyCStruct)
 ]
 _cmavsdk_lib.mavsdk_gimbal_angular_velocity_body_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_gimbal_angular_velocity_body_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(AngularVelocityBodyCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_gimbal_angular_velocity_body_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_gimbal_attitude_destroy.argtypes = [ctypes.POINTER(AttitudeCStruct)]
 _cmavsdk_lib.mavsdk_gimbal_attitude_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_attitude_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(AttitudeCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_gimbal_attitude_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_gimbal_gimbal_item_destroy.argtypes = [
     ctypes.POINTER(GimbalItemCStruct)
 ]
 _cmavsdk_lib.mavsdk_gimbal_gimbal_item_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_gimbal_gimbal_item_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(GimbalItemCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_gimbal_gimbal_item_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_gimbal_gimbal_list_destroy.argtypes = [
     ctypes.POINTER(GimbalListCStruct)
 ]
 _cmavsdk_lib.mavsdk_gimbal_gimbal_list_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_gimbal_list_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(GimbalListCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_gimbal_gimbal_list_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_gimbal_control_status_destroy.argtypes = [
     ctypes.POINTER(ControlStatusCStruct)
 ]
 _cmavsdk_lib.mavsdk_gimbal_control_status_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_gimbal_control_status_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ControlStatusCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_gimbal_control_status_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_gimbal_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_gimbal_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_gimbal_set_angles_async.argtypes = [
     ctypes.c_void_p,

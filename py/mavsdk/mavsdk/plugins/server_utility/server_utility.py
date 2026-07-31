@@ -107,6 +107,12 @@ _cmavsdk_lib.mavsdk_server_utility_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_server_utility_destroy.restype = None
 
 
+_cmavsdk_lib.mavsdk_server_utility_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_server_utility_string_destroy.restype = None
+
+
 _cmavsdk_lib.mavsdk_server_utility_send_status_text.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int,

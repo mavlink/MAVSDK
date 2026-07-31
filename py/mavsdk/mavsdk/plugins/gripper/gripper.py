@@ -154,6 +154,9 @@ _cmavsdk_lib.mavsdk_gripper_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_gripper_destroy.restype = None
 
 
+_cmavsdk_lib.mavsdk_gripper_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_gripper_string_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_gripper_grab_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_uint32,
