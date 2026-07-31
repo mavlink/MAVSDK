@@ -4,7 +4,6 @@ project(mavsdk-jni CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Generated plugin sources (from generate_from_protos.bash)
 include(${CMAKE_CURRENT_SOURCE_DIR}/plugins_generated.cmake)
 
 set(CORE_SOURCES
@@ -25,6 +24,11 @@ target_link_libraries(mavsdk_jni CMAVSDK::CMAVSDK)
 
 if(ANDROID)
     target_link_libraries(mavsdk_jni log)
+
+    target_link_options(mavsdk_jni PRIVATE -static-libstdc++)
+
+    target_link_options(mavsdk_jni PRIVATE "-Wl,--exclude-libs,ALL")
+    target_compile_options(mavsdk_jni PRIVATE -fvisibility=hidden -fvisibility-inlines-hidden)
 else()
     find_package(JNI REQUIRED)
     target_include_directories(mavsdk_jni PRIVATE ${JNI_INCLUDE_DIRS})
