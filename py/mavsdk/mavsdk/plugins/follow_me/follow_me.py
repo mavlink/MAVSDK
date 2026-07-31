@@ -9,7 +9,6 @@ Allow users to command the vehicle to follow a specific target.
  The target is provided as a GPS coordinate and altitude.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -212,7 +211,7 @@ class FollowMe:
                 "Failed to create FollowMe plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def get_config(self):
         """Get get_config (blocking)"""

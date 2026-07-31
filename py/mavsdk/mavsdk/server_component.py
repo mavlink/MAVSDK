@@ -1,4 +1,5 @@
 import ctypes
+import weakref
 
 from .cmavsdk_loader import _cmavsdk_lib
 
@@ -15,10 +16,23 @@ class ServerComponent:
     def __init__(self, lib: ctypes.CDLL, handle: ctypes.c_void_p):
         self._lib = lib
         self._handle = handle
+        self._plugins = weakref.WeakSet()
+
+    def _track_plugin(self, plugin) -> None:
+        """Register a server plugin so it is destroyed before this component goes.
+
+        Same reasoning as :meth:`mavsdk.system.System._track_plugin`: the plugin
+        owns a C++ object reaching into MavsdkImpl and must not outlive it.
+        """
+        self._plugins.add(plugin)
 
     def destroy(self) -> None:
         """Release the underlying server component handle. Idempotent."""
         if self._handle:
+            for plugin in list(self._plugins):
+                plugin.destroy()
+            self._plugins.clear()
+
             self._lib.mavsdk_server_component_destroy(self._handle)
             self._handle = None
 

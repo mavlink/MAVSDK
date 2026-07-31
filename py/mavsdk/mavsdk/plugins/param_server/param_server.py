@@ -8,7 +8,6 @@
 Provide raw access to retrieve and provide server parameters.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -275,7 +274,7 @@ class ParamServer:
                 "Failed to create ParamServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def set_protocol(self, extended_protocol):
         """Get set_protocol (blocking)"""

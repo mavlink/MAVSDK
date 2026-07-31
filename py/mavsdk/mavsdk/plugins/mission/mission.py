@@ -8,7 +8,6 @@
 Enable waypoint missions.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -401,7 +400,7 @@ class Mission:
                 "Failed to create Mission plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def upload_mission_async(
         self, mission_plan, callback: Callable, user_data: Any = None

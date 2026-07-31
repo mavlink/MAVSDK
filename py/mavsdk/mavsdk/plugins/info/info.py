@@ -8,7 +8,6 @@
 Provide information about the hardware and/or software of a system.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -332,7 +331,7 @@ class Info:
                 "Failed to create Info plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def get_identification(self):
         """Get get_identification (blocking)"""

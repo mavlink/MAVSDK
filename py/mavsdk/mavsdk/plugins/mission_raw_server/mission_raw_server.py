@@ -9,7 +9,6 @@ Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format
  Provides current mission item state, so the server can progress through missions.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -275,7 +274,7 @@ class MissionRawServer:
                 "Failed to create MissionRawServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def subscribe_incoming_mission(self, callback: Callable, user_data: Any = None):
         """Subscribe to when a new mission is uploaded (asynchronous)."""

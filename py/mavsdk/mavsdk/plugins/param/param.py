@@ -8,7 +8,6 @@
 Provide raw access to get and set parameters.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -289,7 +288,7 @@ class Param:
                 "Failed to create Param plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def get_param_int(self, name):
         """Get get_param_int (blocking)"""

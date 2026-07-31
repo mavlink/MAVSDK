@@ -8,7 +8,6 @@
 Enable setting a geofence.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -278,7 +277,7 @@ class Geofence:
                 "Failed to create Geofence plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def upload_geofence_async(
         self, geofence_data, callback: Callable, user_data: Any = None

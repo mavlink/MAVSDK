@@ -8,7 +8,6 @@
 Provide files or directories to transfer.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -59,7 +58,7 @@ class FtpServer:
                 "Failed to create FtpServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def set_root_dir(self, path):
         """Get set_root_dir (blocking)"""

@@ -8,7 +8,6 @@
 Allow to communicate with the vehicle's system shell.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -61,7 +60,7 @@ class Shell:
                 "Failed to create Shell plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def send(self, command):
         """Get send (blocking)"""

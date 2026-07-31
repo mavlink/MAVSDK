@@ -10,7 +10,6 @@ Allows interfacing a vehicle with a motion capture system in
  (e.g. indoors, or when flying under a bridge. etc.).
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -711,7 +710,7 @@ class Mocap:
                 "Failed to create Mocap plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def set_vision_position_estimate(self, vision_position_estimate):
         """Get set_vision_position_estimate (blocking)"""

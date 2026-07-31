@@ -8,7 +8,6 @@
 Enable raw missions as exposed by MAVLink.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -408,7 +407,7 @@ class MissionRaw:
                 "Failed to create MissionRaw plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def upload_mission_async(
         self, mission_items, callback: Callable, user_data: Any = None

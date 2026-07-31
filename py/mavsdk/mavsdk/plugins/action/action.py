@@ -8,7 +8,6 @@
 Enable simple actions such as arming, taking off, and landing.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -85,7 +84,7 @@ class Action:
                 "Failed to create Action plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def arm_async(self, callback: Callable, user_data: Any = None):
         """Send command to arm the drone.

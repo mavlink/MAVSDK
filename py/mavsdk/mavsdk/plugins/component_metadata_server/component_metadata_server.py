@@ -8,7 +8,6 @@
 Provide component metadata json definitions, such as parameters.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -100,7 +99,7 @@ class ComponentMetadataServer:
                 "Failed to create ComponentMetadataServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def set_metadata(self, metadata):
         """Get set_metadata (blocking)"""

@@ -1,4 +1,5 @@
 import ctypes
+import weakref
 
 from typing import Any, Callable, List
 
@@ -24,10 +25,26 @@ class System:
         self._handle = handle
         # Keep references to prevent GC: { subscription handle: callback }
         self._callbacks = {}
+        self._plugins = weakref.WeakSet()
+
+    def _track_plugin(self, plugin) -> None:
+        """Register a plugin so it is destroyed before this system goes away.
+
+        A plugin owns a C++ object that reaches back into MavsdkImpl, so it must not
+        outlive mavsdk_destroy. Plugins register themselves from their constructor.
+        The set is weak so that a plugin the caller drops is collected promptly
+        rather than pinned for the lifetime of the system.
+        """
+        self._plugins.add(plugin)
 
     def destroy(self) -> None:
         """Release the underlying system handle. Idempotent."""
         if self._handle:
+            # Plugins first -- they are the ones holding references into MavsdkImpl.
+            for plugin in list(self._plugins):
+                plugin.destroy()
+            self._plugins.clear()
+
             # Unsubscribe before releasing the handle. Dropping our shared_ptr does
             # not destroy the C++ System -- MavsdkImpl owns it -- so any subscription
             # left active would keep firing into ctypes trampolines that are about to
