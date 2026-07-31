@@ -8,7 +8,6 @@
 {{ class_description }}
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -228,7 +227,11 @@ class {{ plugin_name.upper_camel_case }}:
         if not self._handle:
             raise RuntimeError("Failed to create {{ plugin_name.upper_camel_case }} plugin - C function returned null handle")
 
-        atexit.register(self.destroy)
+        {% if is_server %}
+        server_component._track_plugin(self)
+        {% else %}
+        system._track_plugin(self)
+        {% endif %}
 
     {% for method in methods %}
 

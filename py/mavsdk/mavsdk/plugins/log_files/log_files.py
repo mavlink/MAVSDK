@@ -9,7 +9,6 @@ Allow to download log files from the vehicle after a flight is complete.
  For log streaming during flight check the logging plugin.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -148,7 +147,7 @@ class LogFiles:
                 "Failed to create LogFiles plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def get_entries_async(self, callback: Callable, user_data: Any = None):
         """Get List of log files."""

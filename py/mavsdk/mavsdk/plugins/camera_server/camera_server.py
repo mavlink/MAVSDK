@@ -8,7 +8,6 @@
 Provides handling of camera interface
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -723,7 +722,7 @@ class CameraServer:
                 "Failed to create CameraServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def set_information(self, information):
         """Get set_information (blocking)"""

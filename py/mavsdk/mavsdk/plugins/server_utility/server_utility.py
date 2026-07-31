@@ -8,7 +8,6 @@
 Utility for onboard MAVSDK instances for common "server" tasks.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -71,7 +70,7 @@ class ServerUtility:
                 "Failed to create ServerUtility plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def send_status_text(self, type, text):
         """Get send_status_text (blocking)"""

@@ -9,7 +9,6 @@ Allow users to provide vehicle telemetry and state information
  (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -1631,7 +1630,7 @@ class TelemetryServer:
                 "Failed to create TelemetryServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def publish_position(self, position, velocity_ned, heading):
         """Get publish_position (blocking)"""

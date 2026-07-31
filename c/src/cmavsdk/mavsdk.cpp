@@ -367,6 +367,10 @@ mavsdk_server_component_t mavsdk_server_component(
     return nullptr;
 }
 
+void mavsdk_server_component_destroy(mavsdk_server_component_t server_component) {
+    delete reinterpret_cast<std::shared_ptr<ServerComponent>*>(server_component);
+}
+
 mavsdk_server_component_t mavsdk_server_component_by_type(
     mavsdk_t mavsdk,
     mavsdk_component_type_t component_type,

@@ -14,7 +14,6 @@ Can be used to manage cameras that implement the MAVLink
  `select_camera`.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -1162,7 +1161,7 @@ class Camera:
                 "Failed to create Camera plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def take_photo_async(self, component_id, callback: Callable, user_data: Any = None):
         """Take one photo."""

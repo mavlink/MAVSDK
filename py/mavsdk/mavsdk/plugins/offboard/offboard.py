@@ -15,7 +15,6 @@ Control a drone with position, velocity, attitude or motor commands.
  are minimally sent at 2Hz).
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -572,7 +571,7 @@ class Offboard:
                 "Failed to create Offboard plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def start_async(self, callback: Callable, user_data: Any = None):
         """Start offboard control."""

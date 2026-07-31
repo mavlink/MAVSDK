@@ -20,6 +20,7 @@ typedef void* mavsdk_component_discovered_handle_t;
 typedef void* mavsdk_component_discovered_id_handle_t;
 
 // ===== Basic System Queries =====
+CMAVSDK_EXPORT void mavsdk_system_destroy(mavsdk_system_t system);
 CMAVSDK_EXPORT bool mavsdk_system_has_autopilot(mavsdk_system_t system);
 CMAVSDK_EXPORT bool mavsdk_system_is_standalone(mavsdk_system_t system);
 CMAVSDK_EXPORT bool mavsdk_system_has_camera(mavsdk_system_t system, int camera_id);

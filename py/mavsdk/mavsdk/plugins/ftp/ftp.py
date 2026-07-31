@@ -8,7 +8,6 @@
 Implements file transfer functionality using MAVLink FTP.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -220,7 +219,7 @@ class Ftp:
                 "Failed to create Ftp plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def download_async(
         self,
