@@ -87,9 +87,10 @@ fun flyMission() = runBlocking {
             return@use
         }
 
-        // Wait until item 2 reached, then pause
+        // Wait until item 2 reached, then pause. No cancel here: the subscription
+        // has to stay alive to keep reporting the second half of the mission, and
+        // complete() is idempotent so later events are harmless.
         pauseJob.await()
-        progressJob.cancel()
 
         println("\nPausing mission...")
         mission.pauseMission().also { println("Pause result: $it") }
@@ -115,5 +116,9 @@ fun flyMission() = runBlocking {
         delay(2_000)
         while (telemetry.armed()) delay(1_000)
         println("Disarmed — done!")
+
+        // Only now: runBlocking waits for this child, so it has to stop before the
+        // example can exit.
+        progressJob.cancel()
     }
 }

@@ -42,7 +42,16 @@ kotlin {
             // Android-only for now: mavsdk-kotlin ships jvm and android targets
             // but no iOS one yet (see KOTLIN_IOS_PLAN.md), which is why
             // flyMission() is expect/actual rather than common code.
-            implementation(libs.mavsdk.kotlin)
+            //
+            // Testing a CI-built .aar instead of the local source build:
+            //   ./gradlew :androidApp:assembleDebug -PmavsdkAar=/path/to/mavsdk-kotlin.aar
+            // and comment out the includeBuild in settings.gradle.kts.
+            val mavsdkAar = providers.gradleProperty("mavsdkAar").orNull
+            if (mavsdkAar != null) {
+                implementation(files(mavsdkAar))
+            } else {
+                implementation(libs.mavsdk.kotlin)
+            }
         }
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)
@@ -54,6 +63,10 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            // Publishes for android, iosArm64 and iosSimulatorArm64 -- the same
+            // targets as this module -- so the map screen can be common code even
+            // though flyMission is still Android-only.
+            implementation(libs.ramani.maplibre)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
