@@ -4,3 +4,5 @@ src/mavsdk/core/stackoverflow_unistd.h
 src/mavsdk/core/tronkko_dirent.h
 ../c/
 ../py/
+../jni/
+../kt/

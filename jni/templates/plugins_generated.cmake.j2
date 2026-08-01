@@ -1,0 +1,7 @@
+# This file is auto-generated - do not edit manually
+
+set(PLUGIN_SOURCES
+{%- for plugin in plugins %}
+    plugins/{{ plugin }}/{{ plugin }}_jni.cpp
+{%- endfor %}
+)
