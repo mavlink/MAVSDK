@@ -16,10 +16,11 @@ ktfmt { kotlinLangStyle() }
 
 group = "io.mavsdk"
 
-// The published version can be overridden without touching this file, because
-// the publishing plugin reads the VERSION_NAME property:
-// ./gradlew publishToMavenCentral -PVERSION_NAME=2.0.0
-version = "1.0.0"
+// CI derives the version from the tag on releases and from the last release
+// plus a patch on main, and passes it as VERSION_NAME, which the publishing
+// plugin picks up on its own. The fallback below is what local builds get:
+// ./gradlew publishToMavenLocal -PVERSION_NAME=2.0.0
+version = providers.gradleProperty("VERSION_NAME").getOrElse("3.17.2-SNAPSHOT")
 
 repositories {
     google()

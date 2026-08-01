@@ -266,14 +266,13 @@ jobs:
           retention-days: 14
           if-no-files-found: error
 
-  # Publishes io.mavsdk:mavsdk-kotlin{,-jvm,-android} to a Maven Central
-  # staging repository on v* tags. Promotion to the public repository is left
-  # manual in the Central Portal; swap in publishAndReleaseToMavenCentral once
-  # you are happy to let a tag publish unattended.
+  # Publishes io.mavsdk:mavsdk-kotlin{,-jvm,-android} to Maven Central:
+  # a v* tag publishes the release version unattended, and every merge to main
+  # publishes the next patch as a snapshot so the in-between state is testable.
   publish:
     name: publish to Maven Central
     needs: [kotlin-jvm, kotlin-android]
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -314,8 +313,17 @@ jobs:
             mkdir -p "$dest/$abi"
             cp "$dir"/* "$dest/$abi/"
           done
-      - name: derive version from tag
-        run: echo "VERSION_NAME=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+      # Release tags live on the release branches rather than on main, so the
+      # last release is the highest v* tag, not the one `git describe` finds.
+      - name: derive version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "VERSION_NAME=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+          else
+            latest="$(git tag --list 'v*' --sort=-v:refname | head -n 1)"
+            IFS=. read -r major minor patch <<< "${latest#v}"
+            echo "VERSION_NAME=${major}.${minor}.$((patch + 1))-SNAPSHOT" >> $GITHUB_ENV
+          fi
       - name: publish
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
@@ -323,5 +331,6 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
         run: |
+          echo "Publishing $VERSION_NAME"
           cd kt/mavsdk-kotlin
-          ./gradlew publishToMavenCentral -PVERSION_NAME="$VERSION_NAME"
+          ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME="$VERSION_NAME"
