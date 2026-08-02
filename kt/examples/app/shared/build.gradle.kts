@@ -8,24 +8,12 @@ plugins {
 }
 
 kotlin {
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "Shared"
-            isStatic = true
-        }
-    }
-    
     androidLibrary {
        namespace = "io.mavsdk.kotlin.exampleapp.shared"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
        minSdk = libs.versions.android.minSdk.get().toInt()
     
        compilerOptions {
-           // Matches mavsdk-kotlin's android target: Gradle refuses to resolve a
-           // dependency built for a higher JVM version than the consumer.
            jvmTarget = JvmTarget.JVM_21
        }
        androidResources {
@@ -39,10 +27,6 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
-            // Android-only for now: mavsdk-kotlin ships jvm and android targets
-            // but no iOS one yet (see KOTLIN_IOS_PLAN.md), which is why
-            // flyMission() is expect/actual rather than common code.
-            //
             // Testing a CI-built .aar instead of the local source build:
             //   ./gradlew :androidApp:assembleDebug -PmavsdkAar=/path/to/mavsdk-kotlin.aar
             // and comment out the includeBuild in settings.gradle.kts.
@@ -63,9 +47,6 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            // Publishes for android, iosArm64 and iosSimulatorArm64 -- the same
-            // targets as this module -- so the map screen can be common code even
-            // though flyMission is still Android-only.
             implementation(libs.ramani.maplibre)
         }
         commonTest.dependencies {
@@ -76,4 +57,11 @@ kotlin {
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        cacheDynamicVersionsFor(0, "seconds")
+        cacheChangingModulesFor(0, "seconds")
+    }
 }

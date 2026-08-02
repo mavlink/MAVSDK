@@ -33,9 +33,10 @@ sealed interface MissionEvent {
  * from the same connection as the mission, so one collection drives both the log
  * and the map.
  *
- * This is an `expect` rather than common code because `mavsdk-kotlin` currently
- * has no iOS target — see `KOTLIN_IOS_PLAN.md`. Once it does, the Android
- * implementation should move to `commonMain` unchanged.
+ * This is an `expect` rather than common code because the implementation needs
+ * `mavsdk-kotlin`, which currently has an android variant but no iOS one — see
+ * `KOTLIN_IOS_PLAN.md`. Once it has one, the Android implementation should move
+ * to `commonMain` unchanged.
  *
  * @param connectionUrl e.g. `udpin://0.0.0.0:14540` to listen locally, or
  *   `udpout://<host-ip>:<host-port>` to reach a drone elsewhere.
