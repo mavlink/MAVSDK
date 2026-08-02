@@ -14,7 +14,7 @@ junit = "4.13.2"
 kotlin = "2.4.10"
 kotlinx-coroutines = "1.10.2"
 material3 = "1.11.0-alpha07"
-mavsdk = "1.0.0"
+mavsdk = "latest.integration"
 ramani = "0.13.0"
 
 [libraries]

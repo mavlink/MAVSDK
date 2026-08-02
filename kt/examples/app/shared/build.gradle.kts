@@ -14,8 +14,6 @@ kotlin {
        minSdk = libs.versions.android.minSdk.get().toInt()
     
        compilerOptions {
-           // Matches mavsdk-kotlin's android target: Gradle refuses to resolve a
-           // dependency built for a higher JVM version than the consumer.
            jvmTarget = JvmTarget.JVM_21
        }
        androidResources {
@@ -59,4 +57,11 @@ kotlin {
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        cacheDynamicVersionsFor(0, "seconds")
+        cacheChangingModulesFor(0, "seconds")
+    }
 }

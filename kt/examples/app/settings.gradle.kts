@@ -36,4 +36,4 @@ dependencyResolutionManagement {
 include(":androidApp")
 include(":shared")
 
-includeBuild("../../mavsdk-kotlin")
+//includeBuild("../../mavsdk-kotlin")
