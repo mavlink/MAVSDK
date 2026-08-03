@@ -68,8 +68,13 @@ class CoreService final {
     //
     // MAVSDK can be configured with a heartbeat watchdog (deadman timer).
     // While configured, the periodic heartbeats sent by MAVSDK are only sent
-    // as long as this is called at least once per timeout period. If the
+    // as long as this keeps being called within the timeout period. If the
     // watchdog times out, heartbeats stop until it is fed again.
+    //
+    // Call this at least twice per timeout period. Heartbeats are sent at 1 Hz
+    // and the deadline is only checked when one is due, so feeding exactly once
+    // per period leaves no margin and a single late feed already drops a
+    // heartbeat.
     //
     // This allows MAVSDK's heartbeats to reflect the liveness of the client:
     // if the client hangs or dies, heartbeats stop.
@@ -95,7 +100,9 @@ class CoreService final {
     // When timeout_s is 0, the watchdog is disabled and heartbeats follow the
     // usual policy (always_send_heartbeats or a connected system).
     //
-    // Values greater than 0 and less than 1 are rejected.
+    // Values greater than 0 and less than 2 are rejected: heartbeats are sent
+    // at 1 Hz, so a timeout shorter than two heartbeat periods cannot be met
+    // reliably.
     //
     // This is an alternative to configuring the watchdog at mavsdk_server
     // startup with the --heartbeat-watchdog-timeout option.
@@ -126,8 +133,13 @@ class CoreService final {
       //
       // MAVSDK can be configured with a heartbeat watchdog (deadman timer).
       // While configured, the periodic heartbeats sent by MAVSDK are only sent
-      // as long as this is called at least once per timeout period. If the
+      // as long as this keeps being called within the timeout period. If the
       // watchdog times out, heartbeats stop until it is fed again.
+      //
+      // Call this at least twice per timeout period. Heartbeats are sent at 1 Hz
+      // and the deadline is only checked when one is due, so feeding exactly once
+      // per period leaves no margin and a single late feed already drops a
+      // heartbeat.
       //
       // This allows MAVSDK's heartbeats to reflect the liveness of the client:
       // if the client hangs or dies, heartbeats stop.
@@ -148,7 +160,9 @@ class CoreService final {
       // When timeout_s is 0, the watchdog is disabled and heartbeats follow the
       // usual policy (always_send_heartbeats or a connected system).
       //
-      // Values greater than 0 and less than 1 are rejected.
+      // Values greater than 0 and less than 2 are rejected: heartbeats are sent
+      // at 1 Hz, so a timeout shorter than two heartbeat periods cannot be met
+      // reliably.
       //
       // This is an alternative to configuring the watchdog at mavsdk_server
       // startup with the --heartbeat-watchdog-timeout option.
@@ -259,8 +273,13 @@ class CoreService final {
     //
     // MAVSDK can be configured with a heartbeat watchdog (deadman timer).
     // While configured, the periodic heartbeats sent by MAVSDK are only sent
-    // as long as this is called at least once per timeout period. If the
+    // as long as this keeps being called within the timeout period. If the
     // watchdog times out, heartbeats stop until it is fed again.
+    //
+    // Call this at least twice per timeout period. Heartbeats are sent at 1 Hz
+    // and the deadline is only checked when one is due, so feeding exactly once
+    // per period leaves no margin and a single late feed already drops a
+    // heartbeat.
     //
     // This allows MAVSDK's heartbeats to reflect the liveness of the client:
     // if the client hangs or dies, heartbeats stop.
@@ -280,7 +299,9 @@ class CoreService final {
     // When timeout_s is 0, the watchdog is disabled and heartbeats follow the
     // usual policy (always_send_heartbeats or a connected system).
     //
-    // Values greater than 0 and less than 1 are rejected.
+    // Values greater than 0 and less than 2 are rejected: heartbeats are sent
+    // at 1 Hz, so a timeout shorter than two heartbeat periods cannot be met
+    // reliably.
     //
     // This is an alternative to configuring the watchdog at mavsdk_server
     // startup with the --heartbeat-watchdog-timeout option.

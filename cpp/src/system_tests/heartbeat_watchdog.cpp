@@ -1,5 +1,6 @@
 #include "mavsdk.hpp"
 #include "mavlink_include.hpp"
+#include "mavlink_channels.hpp"
 
 #include <gtest/gtest.h>
 
@@ -111,12 +112,38 @@ void add_raw_connection(Mavsdk& mavsdk)
         ConnectionResult::Success);
 }
 
-void inject_autopilot_heartbeat(Mavsdk& mavsdk, uint8_t sysid)
+// Owns a MAVLink channel for the test's own packing.
+//
+// mavlink_msg_*_pack (without _chan) always finalizes on channel 0, and
+// mavlink_get_channel_status()'s status array is a single global shared with
+// libmavsdk, so packing here on channel 0 races the library's outbound packing
+// on its own channel 0. Production code avoids that by checking out a channel
+// and using *_pack_chan; do the same here.
+class TestMavlinkPackChannel {
+public:
+    TestMavlinkPackChannel()
+    {
+        EXPECT_TRUE(MavlinkChannels::Instance().checkout_free_channel(_channel));
+    }
+
+    ~TestMavlinkPackChannel() { MavlinkChannels::Instance().checkin_used_channel(_channel); }
+
+    TestMavlinkPackChannel(const TestMavlinkPackChannel&) = delete;
+    TestMavlinkPackChannel& operator=(const TestMavlinkPackChannel&) = delete;
+
+    uint8_t channel() const { return _channel; }
+
+private:
+    uint8_t _channel{0};
+};
+
+void inject_autopilot_heartbeat(Mavsdk& mavsdk, uint8_t pack_channel, uint8_t sysid)
 {
     mavlink_message_t message;
-    mavlink_msg_heartbeat_pack(
+    mavlink_msg_heartbeat_pack_chan(
         sysid,
         MAV_COMP_ID_AUTOPILOT1,
+        pack_channel,
         &message,
         MAV_TYPE_QUADROTOR,
         MAV_AUTOPILOT_PX4,
@@ -155,6 +182,9 @@ TEST(HeartbeatWatchdog, GatesHeartbeatsOnTheWire)
 TEST(HeartbeatWatchdog, ConcurrentReconfigurationDoesNotDeadlock)
 {
     Mavsdk mavsdk{ground_station_configuration(true)};
+    // Checked out after the Mavsdk, so the test packs on a different channel
+    // than the library's own server component.
+    TestMavlinkPackChannel pack_channel;
     add_raw_connection(mavsdk);
 
     // Churn the configuration and the watchdog from a separate thread. These
@@ -178,7 +208,7 @@ TEST(HeartbeatWatchdog, ConcurrentReconfigurationDoesNotDeadlock)
     // combination used to be an ABBA deadlock with configuration updates,
     // which held the server components lock while taking the systems lock.
     for (int sysid = 1; sysid <= 150; ++sysid) {
-        inject_autopilot_heartbeat(mavsdk, static_cast<uint8_t>(sysid));
+        inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), static_cast<uint8_t>(sysid));
         std::this_thread::sleep_for(2ms);
     }
 
@@ -193,6 +223,9 @@ TEST(HeartbeatWatchdog, DisablingAlwaysSendDuringDiscoveryKeepsHeartbeatsRunning
     // each period, so a connect racing a configuration update cannot leave
     // heartbeats stuck off.
     Mavsdk mavsdk{ground_station_configuration(false)};
+    // Checked out after the Mavsdk, so the test packs on a different channel
+    // than the library's own server component.
+    TestMavlinkPackChannel pack_channel;
     HeartbeatCounter heartbeats{mavsdk};
     add_raw_connection(mavsdk);
 
@@ -206,7 +239,7 @@ TEST(HeartbeatWatchdog, DisablingAlwaysSendDuringDiscoveryKeepsHeartbeatsRunning
         // heartbeat timeout and disconnect, which would stop heartbeats
         // through an unrelated code path.
         for (uint8_t alive = 1; alive < sysid; ++alive) {
-            inject_autopilot_heartbeat(mavsdk, alive);
+            inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), alive);
         }
 
         // The first heartbeat of a new system only creates it: the system's
@@ -214,13 +247,13 @@ TEST(HeartbeatWatchdog, DisablingAlwaysSendDuringDiscoveryKeepsHeartbeatsRunning
         // message is not delivered to the system itself and does not connect
         // it yet. Wait for the system to exist, then let the posted handler
         // registration run.
-        inject_autopilot_heartbeat(mavsdk, sysid);
+        inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), sysid);
         ASSERT_TRUE(wait_for([&]() { return mavsdk.systems().size() >= sysid; }));
         std::this_thread::sleep_for(100ms);
 
         // The second heartbeat connects the system, racing the policy-off
         // update below.
-        inject_autopilot_heartbeat(mavsdk, sysid);
+        inject_autopilot_heartbeat(mavsdk, pack_channel.channel(), sysid);
         mavsdk.set_configuration(off_configuration);
 
         // At least one system is connected (or about to finish connecting), so
