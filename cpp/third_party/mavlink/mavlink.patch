@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8aadc9af..0bb61919 100644
+index 8aadc9af..54ceaa03 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -2,6 +2,20 @@ cmake_minimum_required(VERSION 3.13)
+@@ -2,17 +2,43 @@ cmake_minimum_required(VERSION 3.13)
  
  project(mavlink)
  
@@ -22,4 +22,48 @@ index 8aadc9af..0bb61919 100644
 +
  find_package(Python COMPONENTS Interpreter REQUIRED)
  
- # We automatically install the pip dependencies locally below.
+-# We automatically install the pip dependencies locally below.
+-# Therefore, we check whether pip is available here.
+-execute_process(
+-    COMMAND ${Python_EXECUTABLE} -m pip -V
+-    RESULT_VARIABLE EXIT_CODE
+-    OUTPUT_QUIET
+-)
+-if (NOT ${EXIT_CODE} EQUAL 0)
+-    message(FATAL_ERROR "Python pip not found, pip is required")
++option(MAVLINK_INSTALL_PYTHON_DEPENDENCIES
++       "Install pymavlink's Python dependencies with pip" ON)
++
++if(MAVLINK_INSTALL_PYTHON_DEPENDENCIES)
++    execute_process(
++        COMMAND ${Python_EXECUTABLE} -m pip -V
++        RESULT_VARIABLE EXIT_CODE
++        OUTPUT_QUIET
++    )
++    if(NOT ${EXIT_CODE} EQUAL 0)
++        message(FATAL_ERROR "Python pip not found, pip is required")
++    endif()
++
++    set(MAVLINK_PYTHON_SETUP_COMMAND
++        COMMAND ${Python_EXECUTABLE}
++            -m pip install -r pymavlink/requirements.txt --upgrade
++            -t ${CMAKE_CURRENT_BINARY_DIR}/pip-dependencies/)
++    set(MAVLINK_PYTHON_ENV
++        "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}/pip-dependencies/")
++else()
++    set(MAVLINK_PYTHON_ENV "PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR}")
+ endif()
+ 
+ if (NOT MAVLINK_DIALECT)
+@@ -28,9 +54,8 @@ message(STATUS "MAVLink version: ${MAVLINK_VERSION}")
+ set(EXAMPLE_HEADER ${CMAKE_CURRENT_BINARY_DIR}/include/mavlink/${MAVLINK_DIALECT}/mavlink.h)
+ 
+ add_custom_command(OUTPUT ${EXAMPLE_HEADER}
+-    COMMAND ${Python_EXECUTABLE}
+-        -m pip install -r pymavlink/requirements.txt --upgrade -t ${CMAKE_CURRENT_BINARY_DIR}/pip-dependencies/
+-        COMMAND ${CMAKE_COMMAND} -E env "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}/pip-dependencies/" ${Python_EXECUTABLE}
++    ${MAVLINK_PYTHON_SETUP_COMMAND}
++    COMMAND ${CMAKE_COMMAND} -E env "${MAVLINK_PYTHON_ENV}" ${Python_EXECUTABLE}
+         -m pymavlink.tools.mavgen
+         --lang=C
+         --wire-protocol=${MAVLINK_VERSION}

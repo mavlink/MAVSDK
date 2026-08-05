@@ -1,0 +1,42 @@
+#!/bin/sh
+
+set -eu
+
+DEBIAN_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+BUILD_ARCH=${DEB_BUILD_ARCH:-$(dpkg-architecture -qDEB_BUILD_ARCH)}
+HOST_ARCH=${DEB_HOST_ARCH:-$(dpkg-architecture -qDEB_HOST_ARCH)}
+APT_TOOL='apt-get -y --no-install-recommends'
+
+if [ "$BUILD_ARCH" != "$HOST_ARCH" ]; then
+    dpkg --add-architecture "$HOST_ARCH"
+fi
+
+apt-get update
+apt-get install -y --no-install-recommends devscripts equivs lintian
+
+if [ -r /etc/os-release ]; then
+    . /etc/os-release
+fi
+
+if [ "${ID:-}" = debian ] && [ "${VERSION_ID:-}" = 13 ] && \
+   [ "$BUILD_ARCH" = amd64 ] && [ "$HOST_ARCH" = arm64 ]; then
+    # TODO: Remove this override once Debian bug #1111197 is fixed in
+    # Debian 13: https://bugs.debian.org/1111197
+    # libpsl-dev:amd64 and :arm64 contain manpages which differ only by a
+    # generated date, despite the package declaring Multi-Arch: same.
+    # Keep the override in this single-package transaction so it cannot hide
+    # an unrelated conflict while the other build dependencies are installed.
+    apt-get -y --no-install-recommends \
+        -o Dpkg::Options::=--force-overwrite \
+        install "libpsl-dev:$HOST_ARCH"
+fi
+
+if [ "$BUILD_ARCH" = "$HOST_ARCH" ]; then
+    mk-build-deps --install --remove \
+        --tool "$APT_TOOL" "$DEBIAN_DIR/control"
+else
+    mk-build-deps --install --remove \
+        --build-arch "$BUILD_ARCH" \
+        --host-arch "$HOST_ARCH" \
+        --tool "$APT_TOOL" "$DEBIAN_DIR/control"
+fi

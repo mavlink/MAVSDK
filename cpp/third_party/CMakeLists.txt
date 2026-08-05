@@ -13,38 +13,47 @@ if (CMAKE_CROSSCOMPILING)
 endif()
 
 if(SUPERBUILD)
-    build_target(fmt)
-
     set(MAVLINK_HASH "d6a7eeaf43319ce6da19a1973ca40180a4210643"
         CACHE STRING "Hash for the MAVLink Repository")
     set(MAVLINK_URL "https://github.com/mavlink/mavlink"
         CACHE STRING "URL for the MAVLink Repository")
 
-    build_target(asio)
+    # MAVSDK-specific dependencies which are not generally provided by Linux
+    # distributions. These remain part of the superbuild even when common
+    # dependencies are supplied by the system package manager.
     build_target(mavlink)
     build_target(libevents)
     build_target(picosha2)
-    build_target(tinyxml2)
-    build_target(libmavlike)
-    build_target(nlohmann_json)
-    build_target(liblzma)
 
-    if(NOT BUILD_WITHOUT_CURL)
-        if(ANDROID)
-            build_target(boringssl)
-        else()
-            build_target(openssl)
+    if(NOT MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES)
+        build_target(fmt)
+        build_target(asio)
+        build_target(tinyxml2)
+        build_target(nlohmann_json)
+        build_target(liblzma)
+
+        if(NOT BUILD_WITHOUT_CURL)
+            if(ANDROID)
+                build_target(boringssl)
+            else()
+                build_target(openssl)
+            endif()
+
+            if(NOT IOS)
+                build_target(zlib-ng)
+            endif()
+
+            build_target(curl)
         endif()
-
-        if(NOT IOS)
-            build_target(zlib-ng)
-        endif()
-
-        build_target(curl)
     endif()
 
+    # libmavlike depends on TinyXML2. In the self-contained superbuild it must
+    # be configured after the bundled TinyXML2 install; distribution builds
+    # reach the same point with TinyXML2 supplied by the system package.
+    build_target(libmavlike)
+
     if(BUILD_MAVSDK_SERVER)
-        if (BUILD_WITHOUT_CURL)
+        if(BUILD_WITHOUT_CURL AND NOT MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES)
             if(ANDROID)
                 build_target(boringssl)
             else()

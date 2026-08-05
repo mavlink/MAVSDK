@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(external-picosha2)
 include(ExternalProject)
+include(${CMAKE_CURRENT_LIST_DIR}/../cmake/cross_compile_args.cmake)
 
 list(APPEND CMAKE_ARGS
     "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
@@ -11,6 +12,8 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DBUILD_SHARED_LIBS=OFF"
     )
+
+mavsdk_append_cross_compile_args(CMAKE_ARGS)
 
 if(IOS)
     list(APPEND CMAKE_ARGS
@@ -28,7 +31,7 @@ endforeach()
 ExternalProject_add(
     picosha2
     GIT_REPOSITORY https://github.com/julianoes/PicoSHA2
-    GIT_TAG cmake-install-support
+    GIT_TAG 1bf940d8a03bb752604fbb366d47b97b50b9e6ce
     PREFIX picosha2
     CMAKE_ARGS ${CMAKE_ARGS}
     )

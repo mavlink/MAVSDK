@@ -1,15 +1,24 @@
 #!/usr/bin/make -f
-# See debhelper(7) (uncomment to enable)
-# output every command that modifies files on the build system.
-#export DH_VERBOSE = 1
+
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 %:
-	dh $@ --without=build-stamp --builddirectory=build
+	dh $@ --buildsystem=cmake --builddirectory=build-debian
 
 override_dh_auto_configure:
-	dh_auto_configure -O--buildsystem=cmake -O--builddirectory=build -- \
-		-DCMAKE_BUILD_TYPE=Release \
+	dh_auto_configure --buildsystem=cmake --builddirectory=build-debian -- \
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DCMAKE_INSTALL_LIBDIR=lib/$(DEB_HOST_MULTIARCH) \
 		-DBUILD_SHARED_LIBS=ON \
+		-DBUILD_MAVSDK_SERVER=OFF \
+		-DSUPERBUILD=ON \
+		-DMAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES=ON \
 		-DBUILD_TESTING=OFF \
-		-DSUPERBUILD=OFF \
-		-DCMAKE_INSTALL_PREFIX=/usr
+		-DWERROR=OFF \
+		-DMAVSDK_VERSION=$(DEB_VERSION_UPSTREAM)
+
+override_dh_missing:
+	dh_missing --fail-missing

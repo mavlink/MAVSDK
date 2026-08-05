@@ -1,0 +1,71 @@
+MAVSDK's dependency modes
+==========================
+
+The Debian build enables MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES.  The common
+libraries (Asio, curl, fmt, liblzma, nlohmann-json, and TinyXML2) therefore
+come from packages declared in debian/control.
+
+MAVLink, libevents, PicoSHA2, and libmav are not currently available as
+Debian packages.  Upstream release builds fetch their pinned revisions and
+link them into libmavsdk.  Consequently, this packaging is suitable for
+MAVSDK's upstream binary releases, but its source package is not yet suitable
+for the Debian archive: archive builds must not access the network.
+
+Before an archive upload, those four revisions must either be included as
+source-package components (with their copyright information) or packaged
+separately in Debian.  Once they are available locally, the Debian build can
+use SUPERBUILD=OFF with their install prefixes in CMAKE_PREFIX_PATH, and the
+git build dependency can be removed.
+
+Python tooling
+==============
+
+The traditional superbuild installs the MAVLink generator's Python
+requirements into its private build directory with pip.  Debian builds do not
+need that bootstrap: python3 and python3-lxml are native build dependencies,
+and the generator uses them directly.  The pip behavior remains the default
+for builds which do not select MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES.
+
+Binary packages and supported releases
+======================================
+
+The Debian build produces libmavsdk3 for the shared-library runtime and
+libmavsdk-dev for headers, the unversioned linker symlink, and CMake and
+pkg-config metadata.  Debhelper generates libmavsdk3-dbgsym separately, so
+users install debugging symbols only when needed.
+
+Release CI builds these packages for amd64 and arm64 on Debian 12 and 13.
+Debian 11 remains on the legacy packaging path while it approaches end of
+upstream support; it does not use this dependency and package split.
+
+Installing build dependencies
+==============================
+
+Run the dependency installer as root before invoking dpkg-buildpackage:
+
+    sudo ./debian/install-build-deps
+
+For an amd64-to-arm64 cross-build, select arm64 as the host architecture:
+
+    sudo env DEB_HOST_ARCH=arm64 ./debian/install-build-deps
+    dpkg-buildpackage --build=binary --no-sign --host-arch arm64
+
+Run these commands from the cpp directory.  dpkg-buildpackage invokes
+debian/rules and writes the runtime, development, and debug-symbol packages to
+the repository root.  CPack is not part of the Debian packaging path.
+
+The installer contains a narrowly guarded workaround for Debian bug #1111197.
+On Debian 13 amd64-to-arm64 cross-builds only, it preinstalls
+libpsl-dev:arm64 in a separate transaction where apt passes --force-overwrite
+to dpkg.  The two architectures of libpsl-dev contain non-identical copies of
+a shared manpage.  All other build dependencies retain the normal overwrite
+checks, and native builds and other build/host combinations do not enable the
+workaround.  Remove it after the fixed libpsl package is available in Debian
+13.
+
+Release version
+===============
+
+The package version remains maintainer-controlled in debian/changelog.  For a
+tagged release, CI checks that its upstream portion matches the v-prefixed Git
+tag before publishing packages; it does not rewrite the changelog.
