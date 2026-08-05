@@ -88,6 +88,85 @@ struct SetMavlinkTimeoutRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR SetHeartbeatWatchdogTimeoutResponse::SetHeartbeatWatchdogTimeoutResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct SetHeartbeatWatchdogTimeoutResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetHeartbeatWatchdogTimeoutResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetHeartbeatWatchdogTimeoutResponseDefaultTypeInternal() {}
+  union {
+    SetHeartbeatWatchdogTimeoutResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetHeartbeatWatchdogTimeoutResponseDefaultTypeInternal _SetHeartbeatWatchdogTimeoutResponse_default_instance_;
+
+inline constexpr SetHeartbeatWatchdogTimeoutRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : timeout_s_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SetHeartbeatWatchdogTimeoutRequest::SetHeartbeatWatchdogTimeoutRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SetHeartbeatWatchdogTimeoutRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetHeartbeatWatchdogTimeoutRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetHeartbeatWatchdogTimeoutRequestDefaultTypeInternal() {}
+  union {
+    SetHeartbeatWatchdogTimeoutRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetHeartbeatWatchdogTimeoutRequestDefaultTypeInternal _SetHeartbeatWatchdogTimeoutRequest_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR FeedHeartbeatWatchdogResponse::FeedHeartbeatWatchdogResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct FeedHeartbeatWatchdogResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FeedHeartbeatWatchdogResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FeedHeartbeatWatchdogResponseDefaultTypeInternal() {}
+  union {
+    FeedHeartbeatWatchdogResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FeedHeartbeatWatchdogResponseDefaultTypeInternal _FeedHeartbeatWatchdogResponse_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR FeedHeartbeatWatchdogRequest::FeedHeartbeatWatchdogRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct FeedHeartbeatWatchdogRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FeedHeartbeatWatchdogRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FeedHeartbeatWatchdogRequestDefaultTypeInternal() {}
+  union {
+    FeedHeartbeatWatchdogRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FeedHeartbeatWatchdogRequestDefaultTypeInternal _FeedHeartbeatWatchdogRequest_default_instance_;
 
 inline constexpr ConnectionState::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -184,6 +263,39 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest, _impl_.timeout_s_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -200,13 +312,21 @@ static const ::_pbi::MigrationSchema
         {8, 17, -1, sizeof(::mavsdk::rpc::core::ConnectionStateResponse)},
         {18, -1, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutRequest)},
         {27, -1, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutResponse)},
-        {35, -1, -1, sizeof(::mavsdk::rpc::core::ConnectionState)},
+        {35, -1, -1, sizeof(::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest)},
+        {43, -1, -1, sizeof(::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse)},
+        {51, -1, -1, sizeof(::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest)},
+        {60, -1, -1, sizeof(::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse)},
+        {68, -1, -1, sizeof(::mavsdk::rpc::core::ConnectionState)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::core::_SubscribeConnectionStateRequest_default_instance_._instance,
     &::mavsdk::rpc::core::_ConnectionStateResponse_default_instance_._instance,
     &::mavsdk::rpc::core::_SetMavlinkTimeoutRequest_default_instance_._instance,
     &::mavsdk::rpc::core::_SetMavlinkTimeoutResponse_default_instance_._instance,
+    &::mavsdk::rpc::core::_FeedHeartbeatWatchdogRequest_default_instance_._instance,
+    &::mavsdk::rpc::core::_FeedHeartbeatWatchdogResponse_default_instance_._instance,
+    &::mavsdk::rpc::core::_SetHeartbeatWatchdogTimeoutRequest_default_instance_._instance,
+    &::mavsdk::rpc::core::_SetHeartbeatWatchdogTimeoutResponse_default_instance_._instance,
     &::mavsdk::rpc::core::_ConnectionState_default_instance_._instance,
 };
 const char descriptor_table_protodef_core_2fcore_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
@@ -216,27 +336,38 @@ const char descriptor_table_protodef_core_2fcore_2eproto[] ABSL_ATTRIBUTE_SECTIO
     "ionStateResponse\022:\n\020connection_state\030\001 \001"
     "(\0132 .mavsdk.rpc.core.ConnectionState\"-\n\030"
     "SetMavlinkTimeoutRequest\022\021\n\ttimeout_s\030\001 "
-    "\001(\001\"\033\n\031SetMavlinkTimeoutResponse\"\'\n\017Conn"
-    "ectionState\022\024\n\014is_connected\030\002 \001(\0102\367\001\n\013Co"
-    "reService\022z\n\030SubscribeConnectionState\0220."
-    "mavsdk.rpc.core.SubscribeConnectionState"
-    "Request\032(.mavsdk.rpc.core.ConnectionStat"
-    "eResponse\"\0000\001\022l\n\021SetMavlinkTimeout\022).mav"
-    "sdk.rpc.core.SetMavlinkTimeoutRequest\032*."
-    "mavsdk.rpc.core.SetMavlinkTimeoutRespons"
-    "e\"\000B\033\n\016io.mavsdk.coreB\tCoreProtob\006proto3"
+    "\001(\001\"\033\n\031SetMavlinkTimeoutResponse\"\036\n\034Feed"
+    "HeartbeatWatchdogRequest\"\037\n\035FeedHeartbea"
+    "tWatchdogResponse\"7\n\"SetHeartbeatWatchdo"
+    "gTimeoutRequest\022\021\n\ttimeout_s\030\001 \001(\001\"%\n#Se"
+    "tHeartbeatWatchdogTimeoutResponse\"\'\n\017Con"
+    "nectionState\022\024\n\014is_connected\030\002 \001(\0102\376\003\n\013C"
+    "oreService\022z\n\030SubscribeConnectionState\0220"
+    ".mavsdk.rpc.core.SubscribeConnectionStat"
+    "eRequest\032(.mavsdk.rpc.core.ConnectionSta"
+    "teResponse\"\0000\001\022l\n\021SetMavlinkTimeout\022).ma"
+    "vsdk.rpc.core.SetMavlinkTimeoutRequest\032*"
+    ".mavsdk.rpc.core.SetMavlinkTimeoutRespon"
+    "se\"\000\022x\n\025FeedHeartbeatWatchdog\022-.mavsdk.r"
+    "pc.core.FeedHeartbeatWatchdogRequest\032..m"
+    "avsdk.rpc.core.FeedHeartbeatWatchdogResp"
+    "onse\"\000\022\212\001\n\033SetHeartbeatWatchdogTimeout\0223"
+    ".mavsdk.rpc.core.SetHeartbeatWatchdogTim"
+    "eoutRequest\0324.mavsdk.rpc.core.SetHeartbe"
+    "atWatchdogTimeoutResponse\"\000B\033\n\016io.mavsdk"
+    ".coreB\tCoreProtob\006proto3"
 };
 static ::absl::once_flag descriptor_table_core_2fcore_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_core_2fcore_2eproto = {
     false,
     false,
-    560,
+    984,
     descriptor_table_protodef_core_2fcore_2eproto,
     "core/core.proto",
     &descriptor_table_core_2fcore_2eproto_once,
     nullptr,
     0,
-    5,
+    9,
     schemas,
     file_default_instances,
     TableStruct_core_2fcore_2eproto::offsets,
@@ -906,6 +1037,521 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SetMavlinkTimeoutResponse::_table_ = {
 
 
 ::google::protobuf::Metadata SetMavlinkTimeoutResponse::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class FeedHeartbeatWatchdogRequest::_Internal {
+ public:
+};
+
+FeedHeartbeatWatchdogRequest::FeedHeartbeatWatchdogRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.FeedHeartbeatWatchdogRequest)
+}
+FeedHeartbeatWatchdogRequest::FeedHeartbeatWatchdogRequest(
+    ::google::protobuf::Arena* arena,
+    const FeedHeartbeatWatchdogRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  FeedHeartbeatWatchdogRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.FeedHeartbeatWatchdogRequest)
+}
+
+inline void* FeedHeartbeatWatchdogRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) FeedHeartbeatWatchdogRequest(arena);
+}
+constexpr auto FeedHeartbeatWatchdogRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(FeedHeartbeatWatchdogRequest),
+                                            alignof(FeedHeartbeatWatchdogRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull FeedHeartbeatWatchdogRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_FeedHeartbeatWatchdogRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &FeedHeartbeatWatchdogRequest::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<FeedHeartbeatWatchdogRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &FeedHeartbeatWatchdogRequest::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<FeedHeartbeatWatchdogRequest>(), &FeedHeartbeatWatchdogRequest::ByteSizeLong,
+            &FeedHeartbeatWatchdogRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(FeedHeartbeatWatchdogRequest, _impl_._cached_size_),
+        false,
+    },
+    &FeedHeartbeatWatchdogRequest::kDescriptorMethods,
+    &descriptor_table_core_2fcore_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* FeedHeartbeatWatchdogRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> FeedHeartbeatWatchdogRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata FeedHeartbeatWatchdogRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class FeedHeartbeatWatchdogResponse::_Internal {
+ public:
+};
+
+FeedHeartbeatWatchdogResponse::FeedHeartbeatWatchdogResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.FeedHeartbeatWatchdogResponse)
+}
+FeedHeartbeatWatchdogResponse::FeedHeartbeatWatchdogResponse(
+    ::google::protobuf::Arena* arena,
+    const FeedHeartbeatWatchdogResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  FeedHeartbeatWatchdogResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.FeedHeartbeatWatchdogResponse)
+}
+
+inline void* FeedHeartbeatWatchdogResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) FeedHeartbeatWatchdogResponse(arena);
+}
+constexpr auto FeedHeartbeatWatchdogResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(FeedHeartbeatWatchdogResponse),
+                                            alignof(FeedHeartbeatWatchdogResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull FeedHeartbeatWatchdogResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_FeedHeartbeatWatchdogResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &FeedHeartbeatWatchdogResponse::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<FeedHeartbeatWatchdogResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &FeedHeartbeatWatchdogResponse::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<FeedHeartbeatWatchdogResponse>(), &FeedHeartbeatWatchdogResponse::ByteSizeLong,
+            &FeedHeartbeatWatchdogResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(FeedHeartbeatWatchdogResponse, _impl_._cached_size_),
+        false,
+    },
+    &FeedHeartbeatWatchdogResponse::kDescriptorMethods,
+    &descriptor_table_core_2fcore_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* FeedHeartbeatWatchdogResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> FeedHeartbeatWatchdogResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata FeedHeartbeatWatchdogResponse::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SetHeartbeatWatchdogTimeoutRequest::_Internal {
+ public:
+};
+
+SetHeartbeatWatchdogTimeoutRequest::SetHeartbeatWatchdogTimeoutRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+}
+SetHeartbeatWatchdogTimeoutRequest::SetHeartbeatWatchdogTimeoutRequest(
+    ::google::protobuf::Arena* arena, const SetHeartbeatWatchdogTimeoutRequest& from)
+    : SetHeartbeatWatchdogTimeoutRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE SetHeartbeatWatchdogTimeoutRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SetHeartbeatWatchdogTimeoutRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.timeout_s_ = {};
+}
+SetHeartbeatWatchdogTimeoutRequest::~SetHeartbeatWatchdogTimeoutRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+  SharedDtor(*this);
+}
+inline void SetHeartbeatWatchdogTimeoutRequest::SharedDtor(MessageLite& self) {
+  SetHeartbeatWatchdogTimeoutRequest& this_ = static_cast<SetHeartbeatWatchdogTimeoutRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* SetHeartbeatWatchdogTimeoutRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetHeartbeatWatchdogTimeoutRequest(arena);
+}
+constexpr auto SetHeartbeatWatchdogTimeoutRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetHeartbeatWatchdogTimeoutRequest),
+                                            alignof(SetHeartbeatWatchdogTimeoutRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SetHeartbeatWatchdogTimeoutRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SetHeartbeatWatchdogTimeoutRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SetHeartbeatWatchdogTimeoutRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SetHeartbeatWatchdogTimeoutRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SetHeartbeatWatchdogTimeoutRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SetHeartbeatWatchdogTimeoutRequest>(), &SetHeartbeatWatchdogTimeoutRequest::ByteSizeLong,
+            &SetHeartbeatWatchdogTimeoutRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SetHeartbeatWatchdogTimeoutRequest, _impl_._cached_size_),
+        false,
+    },
+    &SetHeartbeatWatchdogTimeoutRequest::kDescriptorMethods,
+    &descriptor_table_core_2fcore_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SetHeartbeatWatchdogTimeoutRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> SetHeartbeatWatchdogTimeoutRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // double timeout_s = 1;
+    {::_pbi::TcParser::FastF64S1,
+     {9, 63, 0, PROTOBUF_FIELD_OFFSET(SetHeartbeatWatchdogTimeoutRequest, _impl_.timeout_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // double timeout_s = 1;
+    {PROTOBUF_FIELD_OFFSET(SetHeartbeatWatchdogTimeoutRequest, _impl_.timeout_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SetHeartbeatWatchdogTimeoutRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.timeout_s_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SetHeartbeatWatchdogTimeoutRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetHeartbeatWatchdogTimeoutRequest& this_ = static_cast<const SetHeartbeatWatchdogTimeoutRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetHeartbeatWatchdogTimeoutRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetHeartbeatWatchdogTimeoutRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // double timeout_s = 1;
+          if (::absl::bit_cast<::uint64_t>(this_._internal_timeout_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+                1, this_._internal_timeout_s(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetHeartbeatWatchdogTimeoutRequest::ByteSizeLong(const MessageLite& base) {
+          const SetHeartbeatWatchdogTimeoutRequest& this_ = static_cast<const SetHeartbeatWatchdogTimeoutRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetHeartbeatWatchdogTimeoutRequest::ByteSizeLong() const {
+          const SetHeartbeatWatchdogTimeoutRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // double timeout_s = 1;
+            if (::absl::bit_cast<::uint64_t>(this_._internal_timeout_s()) != 0) {
+              total_size += 9;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SetHeartbeatWatchdogTimeoutRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetHeartbeatWatchdogTimeoutRequest*>(&to_msg);
+  auto& from = static_cast<const SetHeartbeatWatchdogTimeoutRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint64_t>(from._internal_timeout_s()) != 0) {
+    _this->_impl_.timeout_s_ = from._impl_.timeout_s_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetHeartbeatWatchdogTimeoutRequest::CopyFrom(const SetHeartbeatWatchdogTimeoutRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SetHeartbeatWatchdogTimeoutRequest::InternalSwap(SetHeartbeatWatchdogTimeoutRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.timeout_s_, other->_impl_.timeout_s_);
+}
+
+::google::protobuf::Metadata SetHeartbeatWatchdogTimeoutRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SetHeartbeatWatchdogTimeoutResponse::_Internal {
+ public:
+};
+
+SetHeartbeatWatchdogTimeoutResponse::SetHeartbeatWatchdogTimeoutResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutResponse)
+}
+SetHeartbeatWatchdogTimeoutResponse::SetHeartbeatWatchdogTimeoutResponse(
+    ::google::protobuf::Arena* arena,
+    const SetHeartbeatWatchdogTimeoutResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetHeartbeatWatchdogTimeoutResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.SetHeartbeatWatchdogTimeoutResponse)
+}
+
+inline void* SetHeartbeatWatchdogTimeoutResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetHeartbeatWatchdogTimeoutResponse(arena);
+}
+constexpr auto SetHeartbeatWatchdogTimeoutResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetHeartbeatWatchdogTimeoutResponse),
+                                            alignof(SetHeartbeatWatchdogTimeoutResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SetHeartbeatWatchdogTimeoutResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SetHeartbeatWatchdogTimeoutResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SetHeartbeatWatchdogTimeoutResponse::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SetHeartbeatWatchdogTimeoutResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SetHeartbeatWatchdogTimeoutResponse::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SetHeartbeatWatchdogTimeoutResponse>(), &SetHeartbeatWatchdogTimeoutResponse::ByteSizeLong,
+            &SetHeartbeatWatchdogTimeoutResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SetHeartbeatWatchdogTimeoutResponse, _impl_._cached_size_),
+        false,
+    },
+    &SetHeartbeatWatchdogTimeoutResponse::kDescriptorMethods,
+    &descriptor_table_core_2fcore_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SetHeartbeatWatchdogTimeoutResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SetHeartbeatWatchdogTimeoutResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SetHeartbeatWatchdogTimeoutResponse::GetMetadata() const {
   return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

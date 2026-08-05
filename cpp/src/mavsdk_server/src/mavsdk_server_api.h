@@ -53,6 +53,25 @@ MAVSDK_PUBLIC int mavsdk_server_run_with_mavlink_ids(
     const uint8_t component_id);
 
 /*
+ * Set the heartbeat watchdog timeout.
+ *
+ * When greater than 0, MAVSDK's periodic heartbeats are only sent as long as
+ * the FeedHeartbeatWatchdog RPC keeps being called at least once per timeout
+ * period. Feed at least twice per period: heartbeats are sent at 1 Hz and the
+ * deadline is checked when one is due, so feeding exactly once per period
+ * leaves no margin for a late feed.
+ *
+ * Call this before mavsdk_server_run(). It can also be set at runtime with the
+ * SetHeartbeatWatchdogTimeout RPC.
+ *
+ * @param mavsdk_server Pointer to initialized MavsdkServer
+ * @param timeout_s Timeout in seconds: 0 (disabled) or at least 2
+ * @return 0 if successful, 1 if the timeout was rejected as invalid
+ */
+MAVSDK_PUBLIC int mavsdk_server_set_heartbeat_watchdog_timeout(
+    struct MavsdkServer* mavsdk_server, const double timeout_s);
+
+/*
  * Get gRPC port.
  *
  * @param mavsdk_server Pointer to initialized MavsdkServer

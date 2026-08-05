@@ -21,6 +21,7 @@ add_executable(system_tests_runner
     telemetry_timestamp.cpp
     telemetry_rc_status.cpp
     geofence_download.cpp
+    heartbeat_watchdog.cpp
     telemetry_home_position.cpp
     request_message_rapid.cpp
     fs_helpers.cpp

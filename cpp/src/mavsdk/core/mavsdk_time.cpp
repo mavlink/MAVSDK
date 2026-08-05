@@ -51,12 +51,14 @@ double Time::elapsed_since_s(const SteadyTimePoint& since)
 SteadyTimePoint Time::steady_time_in_future(double duration_s)
 {
     auto now = steady_time();
-    return now + std::chrono::milliseconds(int64_t(duration_s * 1e3));
+    // llround instead of a truncating cast: e.g. 1.001 * 1e3 is
+    // 1000.999... in double and would truncate to 1000.
+    return now + std::chrono::milliseconds(std::llround(duration_s * 1e3));
 }
 
 void Time::shift_steady_time_by(SteadyTimePoint& time, double offset_s)
 {
-    time += std::chrono::milliseconds(int64_t(offset_s * 1e3));
+    time += std::chrono::milliseconds(std::llround(offset_s * 1e3));
 }
 
 void Time::sleep_for(std::chrono::hours h)

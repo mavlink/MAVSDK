@@ -3,6 +3,7 @@
 #include <atomic>
 #include <cstdint>
 #include <mutex>
+#include <optional>
 #include <sys/types.h>
 #include <utility>
 #include <vector>
@@ -19,6 +20,7 @@
 #include "cli_arg.hpp"
 #include "handle_factory.hpp"
 #include "handle.hpp"
+#include "heartbeat_watchdog.hpp"
 #include "mavsdk.hpp"
 #include "mavlink_include.hpp"
 #include "mavlink_message_handler.hpp"
@@ -77,6 +79,7 @@ public:
     std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s);
 
     void set_configuration(Mavsdk::Configuration new_configuration);
+    bool set_heartbeat_watchdog_timeout_s(double timeout_s);
     Mavsdk::Configuration get_configuration() const;
     ComponentType get_component_type() const;
 
@@ -108,8 +111,7 @@ public:
     void notify_on_discover();
     void notify_on_timeout();
 
-    void start_sending_heartbeats();
-    void stop_sending_heartbeats();
+    void feed_heartbeat_watchdog();
 
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
@@ -199,6 +201,16 @@ private:
     Mavsdk::ConnectionHandle add_connection(std::unique_ptr<Connection>&& connection);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
 
+    // Apply a change to the configuration as one atomic read-modify-write, so
+    // that concurrent configuration updates cannot be lost between reading
+    // the current configuration and writing back the modified copy.
+    void update_configuration(const std::function<void(Mavsdk::Configuration&)>& modify);
+    // Requires _configuration_update_mutex to be held.
+    void set_configuration_locked(Mavsdk::Configuration new_configuration);
+
+    // Periodic CallEvery callback: sends heartbeats only when the policy and
+    // watchdog allow it.
+    void maybe_send_heartbeats();
     void send_heartbeats();
 
     void process_user_callbacks_thread();
@@ -251,13 +263,34 @@ private:
 
     CallbackList<> _new_system_callbacks{_io_context};
 
+    // Serializes configuration writers (set_configuration() and
+    // update_configuration()) so that read-modify-write updates cannot lose
+    // each other's changes. Always the outermost lock: it is never taken by
+    // the io thread, and set_configuration_locked() takes _mutex,
+    // _server_components_mutex and _heartbeat_mutex only individually while
+    // holding it, so it cannot participate in a lock-order cycle.
+    std::mutex _configuration_update_mutex;
+
     // Leaf mutex guarding only _configuration. It is never held while acquiring
     // another mutex, so it cannot participate in a lock-order inversion with
-    // _mutex / _server_components_mutex.
+    // _mutex / _server_components_mutex. Writers must additionally hold
+    // _configuration_update_mutex (via set_configuration() or
+    // update_configuration()), which serializes read-modify-write updates.
     mutable std::mutex _configuration_mutex{};
     Mavsdk::Configuration _configuration{ComponentType::GroundStation};
     std::atomic<uint8_t> _our_system_id{0};
     std::atomic<uint8_t> _our_component_id{0};
+    // Cached as atomics so they can be read without racing against
+    // set_configuration() writing _configuration. This also keeps the
+    // getters free of _mutex: some of them are called while
+    // _server_components_mutex is held (e.g. send_heartbeats() ->
+    // ServerComponentImpl::send_heartbeat() -> get_mav_autopilot()), and
+    // taking _mutex there would create a _server_components_mutex -> _mutex
+    // ordering that conflicts with the io thread's _mutex ->
+    // _server_components_mutex order.
+    std::atomic<uint8_t> _our_mav_type{0};
+    std::atomic<Autopilot> _our_autopilot{Autopilot::Unknown};
+    std::atomic<CompatibilityMode> _our_compatibility_mode{CompatibilityMode::Auto};
 
     struct UserCallback {
         UserCallback() = default;
@@ -307,7 +340,18 @@ private:
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     std::mutex _heartbeat_mutex{};
-    CallEveryHandler::Cookie _heartbeat_send_cookie{};
+    // Lifetime CallEvery cookie for the 1 Hz heartbeat tick. Registered once
+    // and left running; maybe_send_heartbeats() decides whether to send.
+    CallEveryHandler::Cookie _heartbeat_send_cookie{0};
+
+    // Cached from _configuration so that the heartbeat tick can evaluate the
+    // policy and the watchdog in one critical section. Guarded by
+    // _heartbeat_mutex, so it must not be read from paths that cannot take it.
+    bool _always_send_heartbeats{false};
+    // Always accessed with _heartbeat_mutex held, so that a configuration
+    // update cannot be seen half-applied by the heartbeat tick. Its own mutex
+    // is a leaf, so taking it under _heartbeat_mutex is safe.
+    HeartbeatWatchdog _heartbeat_watchdog{time};
 
     std::mutex _callback_executor_mutex{};
     std::function<void(std::function<void()>)> _callback_executor{};
