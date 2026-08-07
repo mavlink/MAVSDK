@@ -722,12 +722,16 @@ void MavlinkParameterServer::mark_protocol_seen(bool extended)
 void MavlinkParameterServer::enqueue_value_broadcast(
     const std::string& name, const ParamValue& param_value, bool extended)
 {
+    const auto param_opt { _param_cache.param_by_id(name, extended) };
+    const uint16_t param_index { param_opt ? param_opt->index : std::numeric_limits<std::uint16_t>::max() };
+    const uint16_t param_count { _param_cache.count(extended) };
+
     auto new_work = std::make_shared<WorkItem>(
         name,
         param_value,
         WorkItemValue{
-            std::numeric_limits<std::uint16_t>::max(),
-            std::numeric_limits<std::uint16_t>::max(),
+            param_index,
+            param_count,
             extended});
     asio::post(_io_context, [this, new_work]() {
         const bool was_empty = _work_queue.empty();
