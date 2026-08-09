@@ -1,8 +1,8 @@
 # Migrating from MAVSDK-Python
 
-The `mavsdk` package on PyPI is changing hands.
+The `mavsdk` package on PyPI is changing.
 
-It used to be [MAVSDK-Python](https://github.com/mavlink/MAVSDK-Python): an asyncio wrapper that talks gRPC to a `mavsdk_server` process bundled inside the package. From MAVSDK v4, the `mavsdk` name refers instead to a native binding that calls the MAVSDK C library directly, with no gRPC and no server process.
+It used to be [MAVSDK-Python](https://github.com/mavlink/MAVSDK-Python): an asyncio wrapper that talks gRPC to a `mavsdk_server` process bundled inside the package. From MAVSDK v4, the `mavsdk` name refers instead to a native binding that calls the MAVSDK C++ library directly (via C), with no gRPC and no server process.
 
 The two have different APIs. This page explains what to do about it.
 
@@ -33,7 +33,7 @@ import mavsdk_grpc as mavsdk           # or: from mavsdk_grpc import System
 
 Nothing else in your code needs to change.
 
-**Change nothing at all** — pin the last release under the old name:
+**Change nothing at all** — pin the last release under the old name (e.g. in your requirements.txt)
 
 ```
 mavsdk<4
@@ -51,6 +51,8 @@ Beyond the API itself:
 - **Two interfaces.** `mavsdk` exposes a synchronous, callback-based API; `mavsdk.asyncio` exposes an asyncio API close in spirit to MAVSDK-Python. Both come from the same distribution — there is nothing extra to install.
 - **Explicit system discovery.** MAVSDK-Python hid connection and discovery behind `drone.connect()`. The native binding separates connecting from discovering systems, which matters once more than one vehicle is involved.
 - **Plugins are constructed, not attributes.** `drone.action.arm()` becomes `Action(drone).arm()`.
+- **Support for multiple systems.**
+- **Support for server side plugins.** This allows implementations of things like cameras, or gimbals using plugins such as `CameraServer` and `GimbalServer`.
 
 ## API mapping
 
