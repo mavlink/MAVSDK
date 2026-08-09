@@ -123,15 +123,22 @@ void Action::goto_location_async(
     double longitude_deg,
     float absolute_altitude_m,
     float yaw_deg,
-    const ResultCallback callback)
+    const ResultCallback callback,
+    float loiter_radius_m)
 {
-    _impl->goto_location_async(latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg, callback);
+    _impl->goto_location_async(
+        latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg, loiter_radius_m, callback);
 }
 
 Action::Result Action::goto_location(
-    double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m,
+    float yaw_deg,
+    float loiter_radius_m) const
 {
-    return _impl->goto_location(latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg);
+    return _impl->goto_location(
+        latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg, loiter_radius_m);
 }
 
 void Action::do_orbit_async(

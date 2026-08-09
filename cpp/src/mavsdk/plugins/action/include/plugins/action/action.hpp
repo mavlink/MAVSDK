@@ -463,9 +463,12 @@ public:
      *
      * The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
      *
+     * Optional loiter_radius_m maps to MAV_CMD_DO_REPOSITION param3 (fixed-wing loiter
+     * radius in meters; direction via yaw). Zero or NaN is ignored (default).
+     *
      * This function is non-blocking. See 'goto_location' for the blocking counterpart.
      */
-    void goto_location_async(double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg, const ResultCallback callback);
+    void goto_location_async(double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg, const ResultCallback callback, float loiter_radius_m = NAN);
 
 
 
@@ -483,7 +486,7 @@ public:
      * @return Result of request.
      
      */
-    Result goto_location(double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const;
+    Result goto_location(double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg, float loiter_radius_m = NAN) const;
 
 
 

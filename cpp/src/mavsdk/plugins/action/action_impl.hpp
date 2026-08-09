@@ -34,7 +34,8 @@ public:
         const double latitude_deg,
         const double longitude_deg,
         const float altitude_amsl_m,
-        const float yaw_deg);
+        const float yaw_deg,
+        const float loiter_radius_m = NAN);
     Action::Result do_orbit(
         const float radius_m,
         const float velocity_ms,
@@ -63,6 +64,7 @@ public:
         const double longitude_deg,
         const float altitude_amsl_m,
         const float yaw_deg,
+        const float loiter_radius_m,
         const Action::ResultCallback& callback);
     void do_orbit_async(
         const float radius_m,

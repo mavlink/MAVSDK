@@ -500,7 +500,7 @@ public:
         
             
         
-        auto result = _lazy_plugin.maybe_plugin()->goto_location(request->latitude_deg(), request->longitude_deg(), request->absolute_altitude_m(), request->yaw_deg());
+        auto result = _lazy_plugin.maybe_plugin()->goto_location(request->latitude_deg(), request->longitude_deg(), request->absolute_altitude_m(), request->yaw_deg(), request->loiter_radius_m());
         
 
         

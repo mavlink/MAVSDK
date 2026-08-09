@@ -17,7 +17,7 @@ public:
     MOCK_CONST_METHOD0(land, Action::Result()) {};
     MOCK_CONST_METHOD0(reboot, Action::Result()) {};
     MOCK_CONST_METHOD0(shutdown, Action::Result()) {};
-    MOCK_CONST_METHOD4(goto_location, Action::Result(double, double, float, float)) {};
+    MOCK_CONST_METHOD5(goto_location, Action::Result(double, double, float, float, float)) {};
     MOCK_CONST_METHOD6(
         do_orbit, Action::Result(float, float, Action::OrbitYawBehavior, double, double, double)) {
     };

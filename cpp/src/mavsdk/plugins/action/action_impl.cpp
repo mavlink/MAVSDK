@@ -156,15 +156,19 @@ Action::Result ActionImpl::goto_location(
     const double latitude_deg,
     const double longitude_deg,
     const float altitude_amsl_m,
-    const float yaw_deg)
+    const float yaw_deg,
+    const float loiter_radius_m)
 {
     auto prom = std::promise<Action::Result>();
     auto fut = prom.get_future();
 
     goto_location_async(
-        latitude_deg, longitude_deg, altitude_amsl_m, yaw_deg, [&prom](Action::Result result) {
-            prom.set_value(result);
-        });
+        latitude_deg,
+        longitude_deg,
+        altitude_amsl_m,
+        yaw_deg,
+        loiter_radius_m,
+        [&prom](Action::Result result) { prom.set_value(result); });
 
     return fut.get();
 }
@@ -491,15 +495,20 @@ void ActionImpl::goto_location_async(
     const double longitude_deg,
     const float altitude_amsl_m,
     const float yaw_deg,
+    const float loiter_radius_m,
     const Action::ResultCallback& callback)
 {
     auto send_do_reposition =
-        [this, callback, yaw_deg, latitude_deg, longitude_deg, altitude_amsl_m]() {
+        [this, callback, yaw_deg, latitude_deg, longitude_deg, altitude_amsl_m, loiter_radius_m]() {
             MavlinkCommandSender::CommandInt command{};
 
             command.command = MAV_CMD_DO_REPOSITION;
             command.target_component_id = _system_impl->get_autopilot_id();
             command.frame = MAV_FRAME_GLOBAL_INT;
+            // param3: fixed-wing loiter radius (MAV_CMD_DO_REPOSITION). 0/NaN ignored.
+            if (std::isfinite(loiter_radius_m) && loiter_radius_m > 0.0f) {
+                command.params.maybe_param3 = loiter_radius_m;
+            }
             command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
