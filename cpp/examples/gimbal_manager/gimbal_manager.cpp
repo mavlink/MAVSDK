@@ -78,6 +78,7 @@ constexpr uint32_t gimbal_flags_roll_lock = 4;
 constexpr uint32_t gimbal_flags_pitch_lock = 8;
 constexpr uint32_t gimbal_flags_yaw_lock = 16;
 constexpr uint32_t gimbal_flags_yaw_in_vehicle_frame = 32;
+constexpr uint32_t gimbal_flags_yaw_in_earth_frame = 64;
 
 // GIMBAL_MANAGER_CAP_FLAGS and GIMBAL_DEVICE_CAP_FLAGS share the same bit values.
 constexpr uint32_t gimbal_cap_flags_has_neutral = 2;
@@ -548,10 +549,11 @@ private:
             return;
         }
 
+        const uint32_t flags = fields.value("flags", 0u);
         std::cout << "GIMBAL_MANAGER_SET_ATTITUDE from " << message.system_id << "/"
-                  << message.component_id << " flags=" << fields.value("flags", 0u) << '\n';
+                  << message.component_id << " flags=" << flags << '\n';
 
-        apply_flags(fields.value("flags", 0u));
+        apply_flags(flags);
         _roi.reset();
 
         // A quaternion with NaN elements (arriving as null) means "only use rates".
@@ -569,7 +571,7 @@ private:
 
         if (setpoint) {
             _pitch_setpoint_deg = setpoint->pitch_deg;
-            _yaw_setpoint_deg = setpoint->yaw_deg;
+            _yaw_setpoint_deg = earthToVehicleYawIfNeeded(setpoint->yaw_deg, flags);
         } else {
             _pitch_setpoint_deg.reset();
             _yaw_setpoint_deg.reset();
@@ -606,7 +608,8 @@ private:
                   << message.component_id << ": pitch=" << fields.value("pitch", 0.0f)
                   << " yaw=" << fields.value("yaw", 0.0f) << '\n';
 
-        apply_flags(fields.value("flags", 0u));
+        const uint32_t flags = fields.value("flags", 0u);
+        apply_flags(flags);
         _roi.reset();
 
         // Fields are in radians, rad/s.
@@ -618,7 +621,9 @@ private:
         _pitch_setpoint_deg =
             pitch_rad ? std::optional<float>(to_deg_from_rad(*pitch_rad)) : std::nullopt;
         _yaw_setpoint_deg =
-            yaw_rad ? std::optional<float>(to_deg_from_rad(*yaw_rad)) : std::nullopt;
+            yaw_rad ?
+                std::optional<float>(earthToVehicleYawIfNeeded(to_deg_from_rad(*yaw_rad), flags)) :
+                std::nullopt;
         _pitch_rate_setpoint_deg_s = pitch_rate_rad_s ?
                                          std::optional<float>(to_deg_from_rad(*pitch_rate_rad_s)) :
                                          std::nullopt;
@@ -640,6 +645,19 @@ private:
             _pitch_setpoint_deg = 0.0f;
             _yaw_setpoint_deg = 0.0f;
         }
+    }
+
+    // Our internal yaw setpoint is vehicle-relative (see computeRoiAngles). If a
+    // setpoint arrives in the earth frame - e.g. an ROI pointing at an absolute
+    // bearing, which is what PX4 sends with GIMBAL_MANAGER_FLAGS_YAW_IN_EARTH_FRAME -
+    // convert it to our convention using the current vehicle heading.
+    float earthToVehicleYawIfNeeded(float yaw_deg, uint32_t flags) const
+    {
+        if (flags & gimbal_flags_yaw_in_earth_frame) {
+            return wrap_180(yaw_deg - _vehicle_yaw_deg.value_or(0.0f));
+        }
+
+        return yaw_deg;
     }
 
     void update_simulation(float dt_s)
