@@ -520,9 +520,9 @@ public:
      *
      * This function is blocking. See 'goto_location_fixedwing_async' for the non-blocking counterpart.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result goto_location_fixedwing(double latitude_deg, double longitude_deg, float absolute_altitude_m, float loiter_radius_m) const;
 

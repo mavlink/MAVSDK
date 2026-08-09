@@ -297,6 +297,45 @@ class Action internal constructor(private val native: ActionNative) {
     }
 
     /**
+     * Send command to the drone to fly to a location for fixed-wing aircraft.
+     *
+     * This sends a MAV_CMD_DO_REPOSITION command with a loiter radius.
+     *
+     * The latitude and longitude are given in degrees (WGS84 frame) and the altitude in meters AMSL
+     * (above mean sea level).
+     *
+     * The loiter radius defines the radius of the loiter circle in meters, and its sign controls
+     * the direction: positive is clockwise, negative is counter-clockwise. A value of 0 is ignored
+     * by the autopilot.
+     *
+     * @param latitudeDeg Latitude (in degrees)
+     * @param longitudeDeg Longitude (in degrees)
+     * @param absoluteAltitudeM Altitude AMSL (in meters)
+     * @param loiterRadiusM Loiter radius (in meters). Positive: clockwise, negative:
+     *   counter-clockwise, 0: ignored.
+     * @return The result of the request.
+     */
+    suspend fun gotoLocationFixedwing(
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+        loiterRadiusM: Float,
+    ): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = ActionCallbackGuard()
+        native.gotoLocationFixedwingAsync(
+            latitudeDeg,
+            longitudeDeg,
+            absoluteAltitudeM,
+            loiterRadiusM,
+        ) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (continuation.isActive && true && callbackGuard.tryClaim()) {
+                continuation.resume(parsedResult)
+            }
+        }
+    }
+
+    /**
      * Send command do orbit to the drone.
      *
      * This will run the orbit routine with the given parameters.
@@ -615,6 +654,14 @@ internal interface ActionNative {
         longitudeDeg: Double,
         absoluteAltitudeM: Float,
         yawDeg: Float,
+        callback: (Int) -> Unit,
+    )
+
+    fun gotoLocationFixedwingAsync(
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+        loiterRadiusM: Float,
         callback: (Int) -> Unit,
     )
 

@@ -123,6 +123,25 @@ private class ActionNativeImpl(private val handle: Long) : ActionNative {
         }
     }
 
+    override fun gotoLocationFixedwingAsync(
+        latitudeDeg: Double,
+        longitudeDeg: Double,
+        absoluteAltitudeM: Float,
+        loiterRadiusM: Float,
+        callback: (Int) -> Unit,
+    ) {
+        withOpen {
+            NativeAction.gotoLocationFixedwingAsync(
+                handle,
+                latitudeDeg,
+                longitudeDeg,
+                absoluteAltitudeM,
+                loiterRadiusM,
+                NativeAction.GotoLocationFixedwingCallback { result -> callback(result) },
+            )
+        }
+    }
+
     override fun doOrbitAsync(
         radiusM: Float,
         velocityMs: Float,

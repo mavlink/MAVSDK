@@ -96,6 +96,12 @@ extern GetTakeoffAltitudeRequestDefaultTypeInternal _GetTakeoffAltitudeRequest_d
 class GetTakeoffAltitudeResponse;
 struct GetTakeoffAltitudeResponseDefaultTypeInternal;
 extern GetTakeoffAltitudeResponseDefaultTypeInternal _GetTakeoffAltitudeResponse_default_instance_;
+class GotoLocationFixedwingRequest;
+struct GotoLocationFixedwingRequestDefaultTypeInternal;
+extern GotoLocationFixedwingRequestDefaultTypeInternal _GotoLocationFixedwingRequest_default_instance_;
+class GotoLocationFixedwingResponse;
+struct GotoLocationFixedwingResponseDefaultTypeInternal;
+extern GotoLocationFixedwingResponseDefaultTypeInternal _GotoLocationFixedwingResponse_default_instance_;
 class GotoLocationRequest;
 struct GotoLocationRequestDefaultTypeInternal;
 extern GotoLocationRequestDefaultTypeInternal _GotoLocationRequest_default_instance_;
@@ -395,7 +401,7 @@ class TransitionToMulticopterRequest final
     return reinterpret_cast<const TransitionToMulticopterRequest*>(
         &_TransitionToMulticopterRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 32;
+  static constexpr int kIndexInFileMessages = 34;
   friend void swap(TransitionToMulticopterRequest& a, TransitionToMulticopterRequest& b) { a.Swap(&b); }
   inline void Swap(TransitionToMulticopterRequest* other) {
     if (other == this) return;
@@ -541,7 +547,7 @@ class TransitionToFixedwingRequest final
     return reinterpret_cast<const TransitionToFixedwingRequest*>(
         &_TransitionToFixedwingRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 30;
+  static constexpr int kIndexInFileMessages = 32;
   friend void swap(TransitionToFixedwingRequest& a, TransitionToFixedwingRequest& b) { a.Swap(&b); }
   inline void Swap(TransitionToFixedwingRequest* other) {
     if (other == this) return;
@@ -1126,7 +1132,7 @@ class SetTakeoffAltitudeRequest final
     return reinterpret_cast<const SetTakeoffAltitudeRequest*>(
         &_SetTakeoffAltitudeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 36;
+  static constexpr int kIndexInFileMessages = 38;
   friend void swap(SetTakeoffAltitudeRequest& a, SetTakeoffAltitudeRequest& b) { a.Swap(&b); }
   inline void Swap(SetTakeoffAltitudeRequest* other) {
     if (other == this) return;
@@ -1317,7 +1323,7 @@ class SetReturnToLaunchAltitudeRequest final
     return reinterpret_cast<const SetReturnToLaunchAltitudeRequest*>(
         &_SetReturnToLaunchAltitudeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 40;
+  static constexpr int kIndexInFileMessages = 42;
   friend void swap(SetReturnToLaunchAltitudeRequest& a, SetReturnToLaunchAltitudeRequest& b) { a.Swap(&b); }
   inline void Swap(SetReturnToLaunchAltitudeRequest* other) {
     if (other == this) return;
@@ -1508,7 +1514,7 @@ class SetRelayRequest final
     return reinterpret_cast<const SetRelayRequest*>(
         &_SetRelayRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 28;
+  static constexpr int kIndexInFileMessages = 30;
   friend void swap(SetRelayRequest& a, SetRelayRequest& b) { a.Swap(&b); }
   inline void Swap(SetRelayRequest* other) {
     if (other == this) return;
@@ -1711,7 +1717,7 @@ class SetHomeRequest final
     return reinterpret_cast<const SetHomeRequest*>(
         &_SetHomeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 46;
+  static constexpr int kIndexInFileMessages = 48;
   friend void swap(SetHomeRequest& a, SetHomeRequest& b) { a.Swap(&b); }
   inline void Swap(SetHomeRequest* other) {
     if (other == this) return;
@@ -1938,7 +1944,7 @@ class SetGpsGlobalOriginRequest final
     return reinterpret_cast<const SetGpsGlobalOriginRequest*>(
         &_SetGpsGlobalOriginRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 44;
+  static constexpr int kIndexInFileMessages = 46;
   friend void swap(SetGpsGlobalOriginRequest& a, SetGpsGlobalOriginRequest& b) { a.Swap(&b); }
   inline void Swap(SetGpsGlobalOriginRequest* other) {
     if (other == this) return;
@@ -2153,7 +2159,7 @@ class SetCurrentSpeedRequest final
     return reinterpret_cast<const SetCurrentSpeedRequest*>(
         &_SetCurrentSpeedRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 42;
+  static constexpr int kIndexInFileMessages = 44;
   friend void swap(SetCurrentSpeedRequest& a, SetCurrentSpeedRequest& b) { a.Swap(&b); }
   inline void Swap(SetCurrentSpeedRequest* other) {
     if (other == this) return;
@@ -2344,7 +2350,7 @@ class SetActuatorRequest final
     return reinterpret_cast<const SetActuatorRequest*>(
         &_SetActuatorRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 26;
+  static constexpr int kIndexInFileMessages = 28;
   friend void swap(SetActuatorRequest& a, SetActuatorRequest& b) { a.Swap(&b); }
   inline void Swap(SetActuatorRequest* other) {
     if (other == this) return;
@@ -3130,7 +3136,7 @@ class HoldRequest final
     return reinterpret_cast<const HoldRequest*>(
         &_HoldRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 24;
+  static constexpr int kIndexInFileMessages = 26;
   friend void swap(HoldRequest& a, HoldRequest& b) { a.Swap(&b); }
   inline void Swap(HoldRequest* other) {
     if (other == this) return;
@@ -3444,6 +3450,233 @@ class GotoLocationRequest final
 };
 // -------------------------------------------------------------------
 
+class GotoLocationFixedwingRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.GotoLocationFixedwingRequest) */ {
+ public:
+  inline GotoLocationFixedwingRequest() : GotoLocationFixedwingRequest(nullptr) {}
+  ~GotoLocationFixedwingRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GotoLocationFixedwingRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GotoLocationFixedwingRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GotoLocationFixedwingRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GotoLocationFixedwingRequest(const GotoLocationFixedwingRequest& from) : GotoLocationFixedwingRequest(nullptr, from) {}
+  inline GotoLocationFixedwingRequest(GotoLocationFixedwingRequest&& from) noexcept
+      : GotoLocationFixedwingRequest(nullptr, std::move(from)) {}
+  inline GotoLocationFixedwingRequest& operator=(const GotoLocationFixedwingRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GotoLocationFixedwingRequest& operator=(GotoLocationFixedwingRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GotoLocationFixedwingRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GotoLocationFixedwingRequest* internal_default_instance() {
+    return reinterpret_cast<const GotoLocationFixedwingRequest*>(
+        &_GotoLocationFixedwingRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 22;
+  friend void swap(GotoLocationFixedwingRequest& a, GotoLocationFixedwingRequest& b) { a.Swap(&b); }
+  inline void Swap(GotoLocationFixedwingRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GotoLocationFixedwingRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GotoLocationFixedwingRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GotoLocationFixedwingRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GotoLocationFixedwingRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GotoLocationFixedwingRequest& from) { GotoLocationFixedwingRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GotoLocationFixedwingRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.action.GotoLocationFixedwingRequest"; }
+
+ protected:
+  explicit GotoLocationFixedwingRequest(::google::protobuf::Arena* arena);
+  GotoLocationFixedwingRequest(::google::protobuf::Arena* arena, const GotoLocationFixedwingRequest& from);
+  GotoLocationFixedwingRequest(::google::protobuf::Arena* arena, GotoLocationFixedwingRequest&& from) noexcept
+      : GotoLocationFixedwingRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLatitudeDegFieldNumber = 1,
+    kLongitudeDegFieldNumber = 2,
+    kAbsoluteAltitudeMFieldNumber = 3,
+    kLoiterRadiusMFieldNumber = 4,
+  };
+  // double latitude_deg = 1;
+  void clear_latitude_deg() ;
+  double latitude_deg() const;
+  void set_latitude_deg(double value);
+
+  private:
+  double _internal_latitude_deg() const;
+  void _internal_set_latitude_deg(double value);
+
+  public:
+  // double longitude_deg = 2;
+  void clear_longitude_deg() ;
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
+
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
+
+  public:
+  // float absolute_altitude_m = 3;
+  void clear_absolute_altitude_m() ;
+  float absolute_altitude_m() const;
+  void set_absolute_altitude_m(float value);
+
+  private:
+  float _internal_absolute_altitude_m() const;
+  void _internal_set_absolute_altitude_m(float value);
+
+  public:
+  // float loiter_radius_m = 4;
+  void clear_loiter_radius_m() ;
+  float loiter_radius_m() const;
+  void set_loiter_radius_m(float value);
+
+  private:
+  float _internal_loiter_radius_m() const;
+  void _internal_set_loiter_radius_m(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.GotoLocationFixedwingRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GotoLocationFixedwingRequest& from_msg);
+    double latitude_deg_;
+    double longitude_deg_;
+    float absolute_altitude_m_;
+    float loiter_radius_m_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_action_2faction_2eproto;
+};
+// -------------------------------------------------------------------
+
 class GetTakeoffAltitudeRequest final
     : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.GetTakeoffAltitudeRequest) */ {
@@ -3503,7 +3736,7 @@ class GetTakeoffAltitudeRequest final
     return reinterpret_cast<const GetTakeoffAltitudeRequest*>(
         &_GetTakeoffAltitudeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 34;
+  static constexpr int kIndexInFileMessages = 36;
   friend void swap(GetTakeoffAltitudeRequest& a, GetTakeoffAltitudeRequest& b) { a.Swap(&b); }
   inline void Swap(GetTakeoffAltitudeRequest* other) {
     if (other == this) return;
@@ -3649,7 +3882,7 @@ class GetReturnToLaunchAltitudeRequest final
     return reinterpret_cast<const GetReturnToLaunchAltitudeRequest*>(
         &_GetReturnToLaunchAltitudeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 38;
+  static constexpr int kIndexInFileMessages = 40;
   friend void swap(GetReturnToLaunchAltitudeRequest& a, GetReturnToLaunchAltitudeRequest& b) { a.Swap(&b); }
   inline void Swap(GetReturnToLaunchAltitudeRequest* other) {
     if (other == this) return;
@@ -3796,7 +4029,7 @@ class DoOrbitRequest final
     return reinterpret_cast<const DoOrbitRequest*>(
         &_DoOrbitRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 22;
+  static constexpr int kIndexInFileMessages = 24;
   friend void swap(DoOrbitRequest& a, DoOrbitRequest& b) { a.Swap(&b); }
   inline void Swap(DoOrbitRequest* other) {
     if (other == this) return;
@@ -4485,7 +4718,7 @@ class ActionResult final
     return reinterpret_cast<const ActionResult*>(
         &_ActionResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 48;
+  static constexpr int kIndexInFileMessages = 50;
   friend void swap(ActionResult& a, ActionResult& b) { a.Swap(&b); }
   inline void Swap(ActionResult* other) {
     if (other == this) return;
@@ -4726,7 +4959,7 @@ class TransitionToMulticopterResponse final
     return reinterpret_cast<const TransitionToMulticopterResponse*>(
         &_TransitionToMulticopterResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 33;
+  static constexpr int kIndexInFileMessages = 35;
   friend void swap(TransitionToMulticopterResponse& a, TransitionToMulticopterResponse& b) { a.Swap(&b); }
   inline void Swap(TransitionToMulticopterResponse* other) {
     if (other == this) return;
@@ -4923,7 +5156,7 @@ class TransitionToFixedwingResponse final
     return reinterpret_cast<const TransitionToFixedwingResponse*>(
         &_TransitionToFixedwingResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 31;
+  static constexpr int kIndexInFileMessages = 33;
   friend void swap(TransitionToFixedwingResponse& a, TransitionToFixedwingResponse& b) { a.Swap(&b); }
   inline void Swap(TransitionToFixedwingResponse* other) {
     if (other == this) return;
@@ -5711,7 +5944,7 @@ class SetTakeoffAltitudeResponse final
     return reinterpret_cast<const SetTakeoffAltitudeResponse*>(
         &_SetTakeoffAltitudeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 37;
+  static constexpr int kIndexInFileMessages = 39;
   friend void swap(SetTakeoffAltitudeResponse& a, SetTakeoffAltitudeResponse& b) { a.Swap(&b); }
   inline void Swap(SetTakeoffAltitudeResponse* other) {
     if (other == this) return;
@@ -5908,7 +6141,7 @@ class SetReturnToLaunchAltitudeResponse final
     return reinterpret_cast<const SetReturnToLaunchAltitudeResponse*>(
         &_SetReturnToLaunchAltitudeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 41;
+  static constexpr int kIndexInFileMessages = 43;
   friend void swap(SetReturnToLaunchAltitudeResponse& a, SetReturnToLaunchAltitudeResponse& b) { a.Swap(&b); }
   inline void Swap(SetReturnToLaunchAltitudeResponse* other) {
     if (other == this) return;
@@ -6105,7 +6338,7 @@ class SetRelayResponse final
     return reinterpret_cast<const SetRelayResponse*>(
         &_SetRelayResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 29;
+  static constexpr int kIndexInFileMessages = 31;
   friend void swap(SetRelayResponse& a, SetRelayResponse& b) { a.Swap(&b); }
   inline void Swap(SetRelayResponse* other) {
     if (other == this) return;
@@ -6302,7 +6535,7 @@ class SetHomeResponse final
     return reinterpret_cast<const SetHomeResponse*>(
         &_SetHomeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 47;
+  static constexpr int kIndexInFileMessages = 49;
   friend void swap(SetHomeResponse& a, SetHomeResponse& b) { a.Swap(&b); }
   inline void Swap(SetHomeResponse* other) {
     if (other == this) return;
@@ -6499,7 +6732,7 @@ class SetGpsGlobalOriginResponse final
     return reinterpret_cast<const SetGpsGlobalOriginResponse*>(
         &_SetGpsGlobalOriginResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 45;
+  static constexpr int kIndexInFileMessages = 47;
   friend void swap(SetGpsGlobalOriginResponse& a, SetGpsGlobalOriginResponse& b) { a.Swap(&b); }
   inline void Swap(SetGpsGlobalOriginResponse* other) {
     if (other == this) return;
@@ -6696,7 +6929,7 @@ class SetCurrentSpeedResponse final
     return reinterpret_cast<const SetCurrentSpeedResponse*>(
         &_SetCurrentSpeedResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 43;
+  static constexpr int kIndexInFileMessages = 45;
   friend void swap(SetCurrentSpeedResponse& a, SetCurrentSpeedResponse& b) { a.Swap(&b); }
   inline void Swap(SetCurrentSpeedResponse* other) {
     if (other == this) return;
@@ -6893,7 +7126,7 @@ class SetActuatorResponse final
     return reinterpret_cast<const SetActuatorResponse*>(
         &_SetActuatorResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 27;
+  static constexpr int kIndexInFileMessages = 29;
   friend void swap(SetActuatorResponse& a, SetActuatorResponse& b) { a.Swap(&b); }
   inline void Swap(SetActuatorResponse* other) {
     if (other == this) return;
@@ -7878,7 +8111,7 @@ class HoldResponse final
     return reinterpret_cast<const HoldResponse*>(
         &_HoldResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 25;
+  static constexpr int kIndexInFileMessages = 27;
   friend void swap(HoldResponse& a, HoldResponse& b) { a.Swap(&b); }
   inline void Swap(HoldResponse* other) {
     if (other == this) return;
@@ -8212,6 +8445,203 @@ class GotoLocationResponse final
 };
 // -------------------------------------------------------------------
 
+class GotoLocationFixedwingResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.GotoLocationFixedwingResponse) */ {
+ public:
+  inline GotoLocationFixedwingResponse() : GotoLocationFixedwingResponse(nullptr) {}
+  ~GotoLocationFixedwingResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(GotoLocationFixedwingResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GotoLocationFixedwingResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GotoLocationFixedwingResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline GotoLocationFixedwingResponse(const GotoLocationFixedwingResponse& from) : GotoLocationFixedwingResponse(nullptr, from) {}
+  inline GotoLocationFixedwingResponse(GotoLocationFixedwingResponse&& from) noexcept
+      : GotoLocationFixedwingResponse(nullptr, std::move(from)) {}
+  inline GotoLocationFixedwingResponse& operator=(const GotoLocationFixedwingResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GotoLocationFixedwingResponse& operator=(GotoLocationFixedwingResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GotoLocationFixedwingResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GotoLocationFixedwingResponse* internal_default_instance() {
+    return reinterpret_cast<const GotoLocationFixedwingResponse*>(
+        &_GotoLocationFixedwingResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 23;
+  friend void swap(GotoLocationFixedwingResponse& a, GotoLocationFixedwingResponse& b) { a.Swap(&b); }
+  inline void Swap(GotoLocationFixedwingResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GotoLocationFixedwingResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GotoLocationFixedwingResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GotoLocationFixedwingResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GotoLocationFixedwingResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GotoLocationFixedwingResponse& from) { GotoLocationFixedwingResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GotoLocationFixedwingResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.action.GotoLocationFixedwingResponse"; }
+
+ protected:
+  explicit GotoLocationFixedwingResponse(::google::protobuf::Arena* arena);
+  GotoLocationFixedwingResponse(::google::protobuf::Arena* arena, const GotoLocationFixedwingResponse& from);
+  GotoLocationFixedwingResponse(::google::protobuf::Arena* arena, GotoLocationFixedwingResponse&& from) noexcept
+      : GotoLocationFixedwingResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kActionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  bool has_action_result() const;
+  void clear_action_result() ;
+  const ::mavsdk::rpc::action::ActionResult& action_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::action::ActionResult* release_action_result();
+  ::mavsdk::rpc::action::ActionResult* mutable_action_result();
+  void set_allocated_action_result(::mavsdk::rpc::action::ActionResult* value);
+  void unsafe_arena_set_allocated_action_result(::mavsdk::rpc::action::ActionResult* value);
+  ::mavsdk::rpc::action::ActionResult* unsafe_arena_release_action_result();
+
+  private:
+  const ::mavsdk::rpc::action::ActionResult& _internal_action_result() const;
+  ::mavsdk::rpc::action::ActionResult* _internal_mutable_action_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.GotoLocationFixedwingResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GotoLocationFixedwingResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::action::ActionResult* action_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_action_2faction_2eproto;
+};
+// -------------------------------------------------------------------
+
 class GetTakeoffAltitudeResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.action.GetTakeoffAltitudeResponse) */ {
@@ -8272,7 +8702,7 @@ class GetTakeoffAltitudeResponse final
     return reinterpret_cast<const GetTakeoffAltitudeResponse*>(
         &_GetTakeoffAltitudeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 35;
+  static constexpr int kIndexInFileMessages = 37;
   friend void swap(GetTakeoffAltitudeResponse& a, GetTakeoffAltitudeResponse& b) { a.Swap(&b); }
   inline void Swap(GetTakeoffAltitudeResponse* other) {
     if (other == this) return;
@@ -8481,7 +8911,7 @@ class GetReturnToLaunchAltitudeResponse final
     return reinterpret_cast<const GetReturnToLaunchAltitudeResponse*>(
         &_GetReturnToLaunchAltitudeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 39;
+  static constexpr int kIndexInFileMessages = 41;
   friend void swap(GetReturnToLaunchAltitudeResponse& a, GetReturnToLaunchAltitudeResponse& b) { a.Swap(&b); }
   inline void Swap(GetReturnToLaunchAltitudeResponse* other) {
     if (other == this) return;
@@ -8690,7 +9120,7 @@ class DoOrbitResponse final
     return reinterpret_cast<const DoOrbitResponse*>(
         &_DoOrbitResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 23;
+  static constexpr int kIndexInFileMessages = 25;
   friend void swap(DoOrbitResponse& a, DoOrbitResponse& b) { a.Swap(&b); }
   inline void Swap(DoOrbitResponse* other) {
     if (other == this) return;
@@ -10659,6 +11089,198 @@ inline void GotoLocationResponse::set_allocated_action_result(::mavsdk::rpc::act
 
   _impl_.action_result_ = reinterpret_cast<::mavsdk::rpc::action::ActionResult*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.action.GotoLocationResponse.action_result)
+}
+
+// -------------------------------------------------------------------
+
+// GotoLocationFixedwingRequest
+
+// double latitude_deg = 1;
+inline void GotoLocationFixedwingRequest::clear_latitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = 0;
+}
+inline double GotoLocationFixedwingRequest::latitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.GotoLocationFixedwingRequest.latitude_deg)
+  return _internal_latitude_deg();
+}
+inline void GotoLocationFixedwingRequest::set_latitude_deg(double value) {
+  _internal_set_latitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.GotoLocationFixedwingRequest.latitude_deg)
+}
+inline double GotoLocationFixedwingRequest::_internal_latitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.latitude_deg_;
+}
+inline void GotoLocationFixedwingRequest::_internal_set_latitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = value;
+}
+
+// double longitude_deg = 2;
+inline void GotoLocationFixedwingRequest::clear_longitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = 0;
+}
+inline double GotoLocationFixedwingRequest::longitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.GotoLocationFixedwingRequest.longitude_deg)
+  return _internal_longitude_deg();
+}
+inline void GotoLocationFixedwingRequest::set_longitude_deg(double value) {
+  _internal_set_longitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.GotoLocationFixedwingRequest.longitude_deg)
+}
+inline double GotoLocationFixedwingRequest::_internal_longitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.longitude_deg_;
+}
+inline void GotoLocationFixedwingRequest::_internal_set_longitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = value;
+}
+
+// float absolute_altitude_m = 3;
+inline void GotoLocationFixedwingRequest::clear_absolute_altitude_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = 0;
+}
+inline float GotoLocationFixedwingRequest::absolute_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.GotoLocationFixedwingRequest.absolute_altitude_m)
+  return _internal_absolute_altitude_m();
+}
+inline void GotoLocationFixedwingRequest::set_absolute_altitude_m(float value) {
+  _internal_set_absolute_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.GotoLocationFixedwingRequest.absolute_altitude_m)
+}
+inline float GotoLocationFixedwingRequest::_internal_absolute_altitude_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.absolute_altitude_m_;
+}
+inline void GotoLocationFixedwingRequest::_internal_set_absolute_altitude_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = value;
+}
+
+// float loiter_radius_m = 4;
+inline void GotoLocationFixedwingRequest::clear_loiter_radius_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.loiter_radius_m_ = 0;
+}
+inline float GotoLocationFixedwingRequest::loiter_radius_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.GotoLocationFixedwingRequest.loiter_radius_m)
+  return _internal_loiter_radius_m();
+}
+inline void GotoLocationFixedwingRequest::set_loiter_radius_m(float value) {
+  _internal_set_loiter_radius_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action.GotoLocationFixedwingRequest.loiter_radius_m)
+}
+inline float GotoLocationFixedwingRequest::_internal_loiter_radius_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.loiter_radius_m_;
+}
+inline void GotoLocationFixedwingRequest::_internal_set_loiter_radius_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.loiter_radius_m_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GotoLocationFixedwingResponse
+
+// .mavsdk.rpc.action.ActionResult action_result = 1;
+inline bool GotoLocationFixedwingResponse::has_action_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.action_result_ != nullptr);
+  return value;
+}
+inline void GotoLocationFixedwingResponse::clear_action_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.action_result_ != nullptr) _impl_.action_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::action::ActionResult& GotoLocationFixedwingResponse::_internal_action_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::action::ActionResult* p = _impl_.action_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::action::ActionResult&>(::mavsdk::rpc::action::_ActionResult_default_instance_);
+}
+inline const ::mavsdk::rpc::action::ActionResult& GotoLocationFixedwingResponse::action_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action.GotoLocationFixedwingResponse.action_result)
+  return _internal_action_result();
+}
+inline void GotoLocationFixedwingResponse::unsafe_arena_set_allocated_action_result(::mavsdk::rpc::action::ActionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.action_result_);
+  }
+  _impl_.action_result_ = reinterpret_cast<::mavsdk::rpc::action::ActionResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.action.GotoLocationFixedwingResponse.action_result)
+}
+inline ::mavsdk::rpc::action::ActionResult* GotoLocationFixedwingResponse::release_action_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::action::ActionResult* released = _impl_.action_result_;
+  _impl_.action_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::action::ActionResult* GotoLocationFixedwingResponse::unsafe_arena_release_action_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.action.GotoLocationFixedwingResponse.action_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::action::ActionResult* temp = _impl_.action_result_;
+  _impl_.action_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::action::ActionResult* GotoLocationFixedwingResponse::_internal_mutable_action_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.action_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::action::ActionResult>(GetArena());
+    _impl_.action_result_ = reinterpret_cast<::mavsdk::rpc::action::ActionResult*>(p);
+  }
+  return _impl_.action_result_;
+}
+inline ::mavsdk::rpc::action::ActionResult* GotoLocationFixedwingResponse::mutable_action_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::action::ActionResult* _msg = _internal_mutable_action_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.action.GotoLocationFixedwingResponse.action_result)
+  return _msg;
+}
+inline void GotoLocationFixedwingResponse::set_allocated_action_result(::mavsdk::rpc::action::ActionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.action_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.action_result_ = reinterpret_cast<::mavsdk::rpc::action::ActionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.action.GotoLocationFixedwingResponse.action_result)
 }
 
 // -------------------------------------------------------------------

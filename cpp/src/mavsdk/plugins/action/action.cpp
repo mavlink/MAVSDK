@@ -146,7 +146,10 @@ void Action::goto_location_fixedwing_async(
 }
 
 Action::Result Action::goto_location_fixedwing(
-    double latitude_deg, double longitude_deg, float absolute_altitude_m, float loiter_radius_m) const
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m,
+    float loiter_radius_m) const
 {
     return _impl->goto_location_fixedwing(
         latitude_deg, longitude_deg, absolute_altitude_m, loiter_radius_m);

@@ -70,6 +70,11 @@ public final class NativeAction {
     }
 
     @FunctionalInterface
+    public interface GotoLocationFixedwingCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
     public interface DoOrbitCallback {
         void invoke(int result);
     }
@@ -171,6 +176,10 @@ public final class NativeAction {
     public static native int gotoLocation(long pluginHandle, double latitudeDeg, double longitudeDeg, float absoluteAltitudeM, float yawDeg);
 
     public static native void gotoLocationAsync(long pluginHandle, double latitudeDeg, double longitudeDeg, float absoluteAltitudeM, float yawDeg, GotoLocationCallback callback);
+
+    public static native int gotoLocationFixedwing(long pluginHandle, double latitudeDeg, double longitudeDeg, float absoluteAltitudeM, float loiterRadiusM);
+
+    public static native void gotoLocationFixedwingAsync(long pluginHandle, double latitudeDeg, double longitudeDeg, float absoluteAltitudeM, float loiterRadiusM, GotoLocationFixedwingCallback callback);
 
     public static native int doOrbit(long pluginHandle, float radiusM, float velocityMs, int yawBehavior, double latitudeDeg, double longitudeDeg, double absoluteAltitudeM);
 
