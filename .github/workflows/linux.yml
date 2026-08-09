@@ -581,7 +581,14 @@ jobs:
         uses: jlumbroso/free-disk-space@v1.3.1
         continue-on-error: true
       - name: setup dockcross
-        run: docker run --rm ${{ env.ARG_IMAGE }} > ./dockcross-linux-${{ matrix.docker_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
+        run: |
+          for i in 1 2 3 4 5; do
+            docker run --rm ${{ env.ARG_IMAGE }} > ./dockcross-linux-${{ matrix.docker_name }}-custom && break
+            echo "::warning::docker run for dockcross image failed (attempt $i/5), retrying in 15s"
+            sleep 15
+          done
+          chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
+          test -s ./dockcross-linux-${{ matrix.docker_name }}-custom
       - uses: actions/cache@v5
         id: cache
         with:
@@ -697,7 +704,14 @@ jobs:
           submodules: recursive
           fetch-depth: 0
       - name: setup dockcross
-        run: docker run --rm dockcross/${{ matrix.arch_name }}:20250818-0a27819 > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
+        run: |
+          for i in 1 2 3 4 5; do
+            docker run --rm dockcross/${{ matrix.arch_name }}:20250818-0a27819 > ./dockcross-${{ matrix.arch_name }} && break
+            echo "::warning::docker run for dockcross image failed (attempt $i/5), retrying in 15s"
+            sleep 15
+          done
+          chmod +x ./dockcross-${{ matrix.arch_name }}
+          test -s ./dockcross-${{ matrix.arch_name }}
       - uses: actions/cache@v5
         id: cache
         with:
@@ -758,7 +772,14 @@ jobs:
           fetch-depth: 0
       - name: setup dockcross
         working-directory: .
-        run: docker run --rm dockcross/${{ matrix.arch_name }}:latest > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
+        run: |
+          for i in 1 2 3 4 5; do
+            docker run --rm dockcross/${{ matrix.arch_name }}:latest > ./dockcross-${{ matrix.arch_name }} && break
+            echo "::warning::docker run for dockcross image failed (attempt $i/5), retrying in 15s"
+            sleep 15
+          done
+          chmod +x ./dockcross-${{ matrix.arch_name }}
+          test -s ./dockcross-${{ matrix.arch_name }}
       - uses: actions/cache@v5
         id: cache
         with:
@@ -845,7 +866,14 @@ jobs:
         uses: jlumbroso/free-disk-space@v1.3.1
         continue-on-error: true
       - name: setup dockcross
-        run: docker run --rm dockcross/${{ matrix.name }}:20250818-0a27819 > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
+        run: |
+          for i in 1 2 3 4 5; do
+            docker run --rm dockcross/${{ matrix.name }}:20250818-0a27819 > ./dockcross-${{ matrix.name }} && break
+            echo "::warning::docker run for dockcross image failed (attempt $i/5), retrying in 15s"
+            sleep 15
+          done
+          chmod +x ./dockcross-${{ matrix.name }}
+          test -s ./dockcross-${{ matrix.name }}
       - uses: actions/cache@v5
         id: cache
         with:
