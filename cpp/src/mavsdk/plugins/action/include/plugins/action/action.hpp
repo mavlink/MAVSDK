@@ -489,6 +489,47 @@ public:
 
 
     /**
+     * @brief Send command to the drone to fly to a location for fixed-wing aircraft.
+     *
+     * This sends a MAV_CMD_DO_REPOSITION command with a loiter radius.
+     *
+     * The latitude and longitude are given in degrees (WGS84 frame) and the altitude
+     * in meters AMSL (above mean sea level).
+     *
+     * The loiter radius defines the radius of the loiter circle in meters, and its sign
+     * controls the direction: positive is clockwise, negative is counter-clockwise.
+     * A value of 0 is ignored by the autopilot.
+     *
+     * This function is non-blocking. See 'goto_location_fixedwing' for the blocking counterpart.
+     */
+    void goto_location_fixedwing_async(double latitude_deg, double longitude_deg, float absolute_altitude_m, float loiter_radius_m, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Send command to the drone to fly to a location for fixed-wing aircraft.
+     *
+     * This sends a MAV_CMD_DO_REPOSITION command with a loiter radius.
+     *
+     * The latitude and longitude are given in degrees (WGS84 frame) and the altitude
+     * in meters AMSL (above mean sea level).
+     *
+     * The loiter radius defines the radius of the loiter circle in meters, and its sign
+     * controls the direction: positive is clockwise, negative is counter-clockwise.
+     * A value of 0 is ignored by the autopilot.
+     *
+     * This function is blocking. See 'goto_location_fixedwing_async' for the non-blocking counterpart.
+     *
+
+     * @return Result of request.
+
+     */
+    Result goto_location_fixedwing(double latitude_deg, double longitude_deg, float absolute_altitude_m, float loiter_radius_m) const;
+
+
+
+
+    /**
      * @brief Send command do orbit to the drone.
      *
      * This will run the orbit routine with the given parameters.

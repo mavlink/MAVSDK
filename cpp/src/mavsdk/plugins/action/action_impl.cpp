@@ -5,6 +5,7 @@
 #include "px4_custom_mode.hpp"
 #include <cmath>
 #include <future>
+#include <limits>
 
 namespace mavsdk {
 
@@ -165,6 +166,25 @@ Action::Result ActionImpl::goto_location(
         latitude_deg, longitude_deg, altitude_amsl_m, yaw_deg, [&prom](Action::Result result) {
             prom.set_value(result);
         });
+
+    return fut.get();
+}
+
+Action::Result ActionImpl::goto_location_fixedwing(
+    const double latitude_deg,
+    const double longitude_deg,
+    const float altitude_amsl_m,
+    const float loiter_radius_m)
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    goto_location_fixedwing_async(
+        latitude_deg,
+        longitude_deg,
+        altitude_amsl_m,
+        loiter_radius_m,
+        [&prom](Action::Result result) { prom.set_value(result); });
 
     return fut.get();
 }
@@ -501,6 +521,60 @@ void ActionImpl::goto_location_async(
             command.target_component_id = _system_impl->get_autopilot_id();
             command.frame = MAV_FRAME_GLOBAL_INT;
             command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
+            command.params.x = int32_t(std::round(latitude_deg * 1e7));
+            command.params.y = int32_t(std::round(longitude_deg * 1e7));
+            command.params.maybe_z = altitude_amsl_m;
+            command.params.maybe_param2 = static_cast<float>(MAV_DO_REPOSITION_FLAGS_CHANGE_MODE);
+
+            _system_impl->send_command_async(
+                command, [this, callback](MavlinkCommandSender::Result result, float) {
+                    command_result_callback(result, callback);
+                });
+        };
+    // Note: The required flight mode before DO_REPOSITION is not specified in the MAVLink standard.
+    if (_system_impl->effective_autopilot() == Autopilot::Px4 ||
+        _system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        FlightMode goto_flight_mode;
+        if (_system_impl->effective_autopilot() == Autopilot::Px4) {
+            goto_flight_mode = FlightMode::Hold;
+        } else {
+            goto_flight_mode = FlightMode::Offboard;
+        }
+        if (_system_impl->get_flight_mode() != goto_flight_mode) {
+            _system_impl->set_flight_mode_async(
+                goto_flight_mode,
+                [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
+                    Action::Result action_result = action_result_from_command_result(result);
+                    if (action_result != Action::Result::Success) {
+                        command_result_callback(result, callback);
+                        return;
+                    }
+                    send_do_reposition();
+                });
+            return;
+        }
+    }
+
+    send_do_reposition();
+}
+
+void ActionImpl::goto_location_fixedwing_async(
+    const double latitude_deg,
+    const double longitude_deg,
+    const float altitude_amsl_m,
+    const float loiter_radius_m,
+    const Action::ResultCallback& callback)
+{
+    auto send_do_reposition =
+        [this, callback, loiter_radius_m, latitude_deg, longitude_deg, altitude_amsl_m]() {
+            MavlinkCommandSender::CommandInt command{};
+
+            command.command = MAV_CMD_DO_REPOSITION;
+            command.target_component_id = _system_impl->get_autopilot_id();
+            command.frame = MAV_FRAME_GLOBAL_INT;
+            command.params.maybe_param3 = loiter_radius_m;
+            // Yaw is not meaningful while continuously turning in a loiter.
+            command.params.maybe_param4 = std::numeric_limits<float>::quiet_NaN();
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
             command.params.maybe_z = altitude_amsl_m;
