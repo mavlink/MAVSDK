@@ -35,6 +35,12 @@ int mavsdk_server_run_with_mavlink_ids(
     return mavsdk_server_run(mavsdk_server, system_address, mavsdk_server_port);
 }
 
+int mavsdk_server_set_heartbeat_watchdog_timeout(
+    MavsdkServer* mavsdk_server, const double timeout_s)
+{
+    return mavsdk_server->setHeartbeatWatchdogTimeout(timeout_s) ? 0 : 1;
+}
+
 int mavsdk_server_get_port(MavsdkServer* mavsdk_server)
 {
     return mavsdk_server->getPort();

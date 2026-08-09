@@ -8,7 +8,6 @@
 Use arm authorization.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -67,7 +66,7 @@ class ArmAuthorizerServer:
                 "Failed to create ArmAuthorizerServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def subscribe_arm_authorization(self, callback: Callable, user_data: Any = None):
         """Subscribe to arm authorization request messages. Each request received should respond to using RespondArmAuthorization"""
@@ -142,6 +141,11 @@ _cmavsdk_lib.mavsdk_arm_authorizer_server_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_arm_authorizer_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_arm_authorizer_server_destroy.restype = None
 
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_arm_authorizer_server_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.argtypes = [
     ctypes.c_void_p,

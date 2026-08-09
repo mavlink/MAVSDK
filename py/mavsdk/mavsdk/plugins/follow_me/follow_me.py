@@ -9,7 +9,6 @@ Allow users to command the vehicle to follow a specific target.
  The target is provided as a GPS coordinate and altitude.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -212,7 +211,7 @@ class FollowMe:
                 "Failed to create FollowMe plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def get_config(self):
         """Get get_config (blocking)"""
@@ -319,10 +318,28 @@ _cmavsdk_lib.mavsdk_follow_me_destroy.restype = None
 _cmavsdk_lib.mavsdk_follow_me_config_destroy.argtypes = [ctypes.POINTER(ConfigCStruct)]
 _cmavsdk_lib.mavsdk_follow_me_config_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_follow_me_config_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ConfigCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_follow_me_config_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_follow_me_target_location_destroy.argtypes = [
     ctypes.POINTER(TargetLocationCStruct)
 ]
 _cmavsdk_lib.mavsdk_follow_me_target_location_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_follow_me_target_location_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(TargetLocationCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_follow_me_target_location_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_follow_me_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_follow_me_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_follow_me_get_config.argtypes = [

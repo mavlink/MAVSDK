@@ -8,7 +8,6 @@
 Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -121,7 +120,7 @@ class Calibration:
                 "Failed to create Calibration plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def calibrate_gyro_async(self, callback: Callable, user_data: Any = None):
         """Perform gyro calibration."""
@@ -289,6 +288,17 @@ _cmavsdk_lib.mavsdk_calibration_progress_data_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_calibration_progress_data_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_calibration_progress_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ProgressDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_calibration_progress_data_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_calibration_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_calibration_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_calibration_calibrate_gyro_async.argtypes = [
     ctypes.c_void_p,

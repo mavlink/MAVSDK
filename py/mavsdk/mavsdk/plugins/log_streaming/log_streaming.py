@@ -8,7 +8,6 @@
 Provide log streaming data.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -98,7 +97,7 @@ class LogStreaming:
                 "Failed to create LogStreaming plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def start_log_streaming_async(self, callback: Callable, user_data: Any = None):
         """Start streaming logging data."""
@@ -216,6 +215,17 @@ _cmavsdk_lib.mavsdk_log_streaming_log_streaming_raw_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_log_streaming_log_streaming_raw_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_log_streaming_log_streaming_raw_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(LogStreamingRawCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_log_streaming_log_streaming_raw_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_log_streaming_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_log_streaming_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_log_streaming_start_log_streaming_async.argtypes = [
     ctypes.c_void_p,

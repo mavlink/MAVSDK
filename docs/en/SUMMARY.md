@@ -18,6 +18,7 @@
         * [Gimbal](cpp/guide/gimbal.md)
         * [VTOL Support](cpp/guide/vtol.md)
         * [MavlinkDirect](cpp/guide/mavlink_direct.md)
+        * [Heartbeat Watchdog](cpp/guide/heartbeat_watchdog.md)
         * [Building C++ Apps](cpp/guide/toolchain.md)
         * [Logging](cpp/guide/logging.md)
         * [Plugin/Test Logging](cpp/guide/dev_logging.md)

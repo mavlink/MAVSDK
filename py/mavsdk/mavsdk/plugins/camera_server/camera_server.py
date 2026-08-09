@@ -8,7 +8,6 @@
 Provides handling of camera interface
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -723,7 +722,7 @@ class CameraServer:
                 "Failed to create CameraServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def set_information(self, information):
         """Get set_information (blocking)"""
@@ -1516,45 +1515,105 @@ _cmavsdk_lib.mavsdk_camera_server_information_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_camera_server_information_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_server_information_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(InformationCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_information_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_server_video_streaming_destroy.argtypes = [
     ctypes.POINTER(VideoStreamingCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_video_streaming_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_server_video_streaming_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(VideoStreamingCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_video_streaming_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_server_position_destroy.argtypes = [
     ctypes.POINTER(PositionCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_position_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_server_position_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(PositionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_position_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_server_quaternion_destroy.argtypes = [
     ctypes.POINTER(QuaternionCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_quaternion_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_server_quaternion_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(QuaternionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_quaternion_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_server_capture_info_destroy.argtypes = [
     ctypes.POINTER(CaptureInfoCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_capture_info_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_server_capture_info_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(CaptureInfoCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_capture_info_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_server_storage_information_destroy.argtypes = [
     ctypes.POINTER(StorageInformationCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_storage_information_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_server_storage_information_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(StorageInformationCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_storage_information_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_server_capture_status_destroy.argtypes = [
     ctypes.POINTER(CaptureStatusCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_capture_status_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_server_capture_status_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(CaptureStatusCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_capture_status_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_server_track_point_destroy.argtypes = [
     ctypes.POINTER(TrackPointCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_track_point_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_server_track_point_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(TrackPointCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_track_point_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_server_track_rectangle_destroy.argtypes = [
     ctypes.POINTER(TrackRectangleCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_track_rectangle_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_server_track_rectangle_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(TrackRectangleCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_server_track_rectangle_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_camera_server_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_camera_server_set_information.argtypes = [

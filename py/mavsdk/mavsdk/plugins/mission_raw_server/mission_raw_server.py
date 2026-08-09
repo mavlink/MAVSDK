@@ -9,7 +9,6 @@ Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format
  Provides current mission item state, so the server can progress through missions.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -275,7 +274,7 @@ class MissionRawServer:
                 "Failed to create MissionRawServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def subscribe_incoming_mission(self, callback: Callable, user_data: Any = None):
         """Subscribe to when a new mission is uploaded (asynchronous)."""
@@ -396,16 +395,39 @@ _cmavsdk_lib.mavsdk_mission_raw_server_mission_item_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_mission_raw_server_mission_item_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_item_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionItemCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_item_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_mission_raw_server_mission_plan_destroy.argtypes = [
     ctypes.POINTER(MissionPlanCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_raw_server_mission_plan_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_plan_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionPlanCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_plan_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_raw_server_mission_progress_destroy.argtypes = [
     ctypes.POINTER(MissionProgressCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_raw_server_mission_progress_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_progress_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionProgressCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_progress_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_mission_raw_server_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_mission_raw_server_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_raw_server_subscribe_incoming_mission.argtypes = [
     ctypes.c_void_p,

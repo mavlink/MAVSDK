@@ -94,6 +94,15 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     _process_user_callbacks_thread =
         std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
 
+    // Register the lifetime 1 Hz heartbeat tick. maybe_send_heartbeats() gates
+    // actual emission on policy and watchdog state, so we never add/remove this
+    // cookie for connect/disconnect/config changes.
+    {
+        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
+        _heartbeat_send_cookie = call_every_handler.add(
+            [this]() { maybe_send_heartbeats(); }, HEARTBEAT_SEND_INTERVAL_S);
+    }
+
     // Start the recurring timer that drives TimeoutHandler and CallEveryHandler
     // on the io_context thread every 5 ms.
     schedule_timers_poll();
@@ -108,12 +117,13 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
 
 MavsdkImpl::~MavsdkImpl()
 {
+    _should_exit = true;
+
     {
         std::lock_guard<std::mutex> lock(_heartbeat_mutex);
         call_every_handler.remove(_heartbeat_send_cookie);
+        _heartbeat_send_cookie = 0;
     }
-
-    _should_exit = true;
 
     // Stop the Asio io_context so _io_thread exits io_context::run().
     // This also cancels any pending async_receive_from operations on UdpConnection sockets.
@@ -586,9 +596,6 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                 LogWarn("Bytes: {}", bytes);
             }
             make_system_with_component(message.sysid, message.compid);
-
-            // We now better talk back.
-            start_sending_heartbeats();
         }
 
         if (_should_exit) {
@@ -753,9 +760,6 @@ void MavsdkImpl::process_libmav_message(
                     (int)message.component_id);
             }
             make_system_with_component(message.system_id, message.component_id);
-
-            // We now better talk back.
-            start_sending_heartbeats();
         }
 
         if (_should_exit) {
@@ -996,12 +1000,11 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
         }
 
         new_conn->add_remote_to_keep(remote_ip.value(), udp.port);
-        std::lock_guard lock(_mutex);
 
         // With a UDP remote, we need to initiate the connection by sending heartbeats.
-        auto new_configuration = get_configuration();
-        new_configuration.set_always_send_heartbeats(true);
-        set_configuration(new_configuration);
+        update_configuration([](Mavsdk::Configuration& configuration) {
+            configuration.set_always_send_heartbeats(true);
+        });
     }
 
     auto handle = add_connection(std::move(new_conn));
@@ -1085,13 +1088,12 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
     if (ret == ConnectionResult::Success) {
         auto handle = add_connection(std::move(new_conn));
 
-        auto new_configuration = get_configuration();
-
         // PX4 starting with v1.13 does not send heartbeats by default, so we need
         // to initiate the MAVLink connection by sending heartbeats.
         // Therefore, we override the default here and enable sending heartbeats.
-        new_configuration.set_always_send_heartbeats(true);
-        set_configuration(new_configuration);
+        update_configuration([](Mavsdk::Configuration& configuration) {
+            configuration.set_always_send_heartbeats(true);
+        });
 
         return {ret, handle};
 
@@ -1132,9 +1134,9 @@ MavsdkImpl::add_raw_connection(ForwardingOption forwarding_option)
     auto handle = add_connection(std::move(new_conn));
 
     // Enable heartbeats for raw connection
-    auto new_configuration = get_configuration();
-    new_configuration.set_always_send_heartbeats(true);
-    set_configuration(new_configuration);
+    update_configuration([](Mavsdk::Configuration& configuration) {
+        configuration.set_always_send_heartbeats(true);
+    });
 
     return {ConnectionResult::Success, handle};
 }
@@ -1183,26 +1185,44 @@ ComponentType MavsdkImpl::get_component_type() const
     return _configuration.get_component_type();
 }
 
+bool MavsdkImpl::set_heartbeat_watchdog_timeout_s(double timeout_s)
+{
+    // Configuration::set_heartbeat_watchdog_timeout_s() validates the value
+    // (and warns) itself; an invalid value leaves the configuration unchanged.
+    bool accepted = false;
+    update_configuration([timeout_s, &accepted](Mavsdk::Configuration& configuration) {
+        accepted = configuration.set_heartbeat_watchdog_timeout_s(timeout_s);
+    });
+    return accepted;
+}
+
+void MavsdkImpl::update_configuration(const std::function<void(Mavsdk::Configuration&)>& modify)
+{
+    // _configuration_update_mutex serializes all configuration writers.
+    std::lock_guard configuration_update_lock(_configuration_update_mutex);
+
+    auto new_configuration = get_configuration();
+    modify(new_configuration);
+    set_configuration_locked(new_configuration);
+}
+
 void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 {
-    std::lock_guard server_components_lock(_server_components_mutex);
-    // We just point the default to the newly created component. This means
-    // that the previous default component will be deleted if it is not
-    // used/referenced anywhere.
-    _default_server_component = server_component_by_id_with_lock(
-        new_configuration.get_component_id(), new_configuration.get_mav_type());
+    std::lock_guard configuration_update_lock(_configuration_update_mutex);
+    set_configuration_locked(std::move(new_configuration));
+}
 
-    const bool was_always_sending_heartbeats = [this] {
-        std::lock_guard configuration_lock(_configuration_mutex);
-        return _configuration.get_always_send_heartbeats();
-    }();
-
-    if (new_configuration.get_always_send_heartbeats() && !was_always_sending_heartbeats) {
-        start_sending_heartbeats();
-    } else if (
-        !new_configuration.get_always_send_heartbeats() && was_always_sending_heartbeats &&
-        !is_any_system_connected()) {
-        stop_sending_heartbeats();
+void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuration)
+{
+    // Requires _configuration_update_mutex. Take _server_components_mutex only
+    // for the default-component update below; do not hold it across later work.
+    {
+        std::lock_guard server_components_lock(_server_components_mutex);
+        // We just point the default to the newly created component. This means
+        // that the previous default component will be deleted if it is not
+        // used/referenced anywhere.
+        _default_server_component = server_component_by_id_with_lock(
+            new_configuration.get_component_id(), new_configuration.get_mav_type());
     }
 
     {
@@ -1212,6 +1232,21 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
     // We cache these values as atomic to avoid having to lock any mutex for them.
     _our_system_id = new_configuration.get_system_id();
     _our_component_id = new_configuration.get_component_id();
+    _our_mav_type = new_configuration.get_mav_type();
+    _our_autopilot = new_configuration.get_autopilot();
+    _our_compatibility_mode = new_configuration.get_compatibility_mode();
+
+    const double new_watchdog_timeout_s = new_configuration.get_heartbeat_watchdog_timeout_s();
+    const bool always_send = new_configuration.get_always_send_heartbeats();
+    {
+        // Apply both under _heartbeat_mutex so maybe_send_heartbeats() cannot
+        // observe one without the other. HeartbeatWatchdog ignores a timeout
+        // that has not actually changed, so this does not re-arm on every
+        // unrelated configuration update.
+        std::lock_guard<std::mutex> heartbeat_lock(_heartbeat_mutex);
+        _always_send_heartbeats = always_send;
+        _heartbeat_watchdog.set_timeout_s(new_watchdog_timeout_s);
+    }
 }
 
 uint8_t MavsdkImpl::get_own_system_id() const
@@ -1226,20 +1261,17 @@ uint8_t MavsdkImpl::get_own_component_id() const
 
 uint8_t MavsdkImpl::get_mav_type() const
 {
-    std::lock_guard configuration_lock(_configuration_mutex);
-    return _configuration.get_mav_type();
+    return _our_mav_type;
 }
 
 Autopilot MavsdkImpl::get_autopilot() const
 {
-    std::lock_guard configuration_lock(_configuration_mutex);
-    return _configuration.get_autopilot();
+    return _our_autopilot;
 }
 
 uint8_t MavsdkImpl::get_mav_autopilot() const
 {
-    std::lock_guard configuration_lock(_configuration_mutex);
-    switch (_configuration.get_autopilot()) {
+    switch (_our_autopilot.load()) {
         case Autopilot::Px4:
             return MAV_AUTOPILOT_PX4;
         case Autopilot::ArduPilot:
@@ -1252,18 +1284,12 @@ uint8_t MavsdkImpl::get_mav_autopilot() const
 
 CompatibilityMode MavsdkImpl::get_compatibility_mode() const
 {
-    std::lock_guard configuration_lock(_configuration_mutex);
-    return _configuration.get_compatibility_mode();
+    return _our_compatibility_mode;
 }
 
 Autopilot MavsdkImpl::effective_autopilot(Autopilot detected) const
 {
-    CompatibilityMode compatibility_mode;
-    {
-        std::lock_guard configuration_lock(_configuration_mutex);
-        compatibility_mode = _configuration.get_compatibility_mode();
-    }
-    switch (compatibility_mode) {
+    switch (_our_compatibility_mode.load()) {
         case CompatibilityMode::Auto:
             return detected;
         case CompatibilityMode::Pure:
@@ -1537,35 +1563,50 @@ void MavsdkImpl::process_user_callbacks_thread()
     }
 }
 
-void MavsdkImpl::start_sending_heartbeats()
+void MavsdkImpl::feed_heartbeat_watchdog()
 {
-    // Check if we're in the process of shutting down
     if (_should_exit) {
         return;
     }
 
-    // Before sending out first heartbeats we need to make sure we have a
-    // default server component.
-    default_server_component_impl();
-
-    {
-        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
-        call_every_handler.remove(_heartbeat_send_cookie);
-        _heartbeat_send_cookie =
-            call_every_handler.add([this]() { send_heartbeats(); }, HEARTBEAT_SEND_INTERVAL_S);
-    }
+    std::lock_guard<std::mutex> lock(_heartbeat_mutex);
+    _heartbeat_watchdog.feed();
 }
 
-void MavsdkImpl::stop_sending_heartbeats()
+void MavsdkImpl::maybe_send_heartbeats()
 {
-    const bool always_send_heartbeats = [this] {
-        std::lock_guard configuration_lock(_configuration_mutex);
-        return _configuration.get_always_send_heartbeats();
-    }();
-    if (!always_send_heartbeats) {
-        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
-        call_every_handler.remove(_heartbeat_send_cookie);
+    if (_should_exit) {
+        return;
     }
+
+    // Ask the watchdog before the policy gate, so that an armed deadline can
+    // expire (and log) even while heartbeats are not supposed to be sent
+    // anyway. always_send is read in the same critical section, so a
+    // configuration update cannot slip between the two gates and let a
+    // heartbeat out after it has enabled the watchdog.
+    // _heartbeat_mutex is released before is_any_system_connected() takes
+    // _mutex (lock order: _mutex before _heartbeat_mutex).
+    bool always_send = false;
+    {
+        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
+
+        if (!_heartbeat_watchdog.allows_sending()) {
+            return;
+        }
+
+        always_send = _always_send_heartbeats;
+    }
+
+    // Policy: send only when always_send is set or at least one system is
+    // connected. Connectivity is checked live each tick (and outside
+    // _heartbeat_mutex), so connect/disconnect races do not need separate
+    // start/stop cookie juggling.
+    if (!always_send && !is_any_system_connected()) {
+        return;
+    }
+
+    default_server_component_impl();
+    send_heartbeats();
 }
 
 ServerComponentImpl& MavsdkImpl::default_server_component_impl()

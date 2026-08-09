@@ -1,0 +1,21 @@
+# mavsdk-jni
+
+Generate the package-encoded JNI entry points and the matching raw Java contracts:
+
+```sh
+./tools/generate_from_protos.bash
+```
+
+The generated Java transport layer lives under `jvm/src/main/java/io/mavsdk/jni/plugins`.
+Compile all contracts without retaining build output:
+
+```sh
+./jvm/compile.sh
+```
+
+After building `libmavsdk_jni`, validate the Java contracts, exported native
+symbols, callback descriptors, and representative carrier shapes:
+
+```sh
+./jvm/validate.sh
+```
