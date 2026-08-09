@@ -543,8 +543,13 @@ private:
             !in_control(
                 static_cast<uint8_t>(message.system_id),
                 static_cast<uint8_t>(message.component_id))) {
+            std::cout << "GIMBAL_MANAGER_SET_ATTITUDE ignored (not for us or not in control) from "
+                      << message.system_id << "/" << message.component_id << '\n';
             return;
         }
+
+        std::cout << "GIMBAL_MANAGER_SET_ATTITUDE from " << message.system_id << "/"
+                  << message.component_id << " flags=" << fields.value("flags", 0u) << '\n';
 
         apply_flags(fields.value("flags", 0u));
         _roi.reset();
@@ -592,8 +597,14 @@ private:
             !in_control(
                 static_cast<uint8_t>(message.system_id),
                 static_cast<uint8_t>(message.component_id))) {
+            std::cout << "GIMBAL_MANAGER_SET_PITCHYAW ignored (not for us or not in control) from "
+                      << message.system_id << "/" << message.component_id << '\n';
             return;
         }
+
+        std::cout << "GIMBAL_MANAGER_SET_PITCHYAW from " << message.system_id << "/"
+                  << message.component_id << ": pitch=" << fields.value("pitch", 0.0f)
+                  << " yaw=" << fields.value("yaw", 0.0f) << '\n';
 
         apply_flags(fields.value("flags", 0u));
         _roi.reset();
@@ -613,6 +624,11 @@ private:
                                          std::nullopt;
         _yaw_rate_setpoint_deg_s =
             yaw_rate_rad_s ? std::optional<float>(to_deg_from_rad(*yaw_rate_rad_s)) : std::nullopt;
+
+        std::cout << "  -> setpoint now pitch="
+                  << (_pitch_setpoint_deg ? std::to_string(*_pitch_setpoint_deg) : "none")
+                  << " deg, yaw="
+                  << (_yaw_setpoint_deg ? std::to_string(*_yaw_setpoint_deg) : "none") << " deg\n";
     }
 
     // Needs to be called with _mutex held.
