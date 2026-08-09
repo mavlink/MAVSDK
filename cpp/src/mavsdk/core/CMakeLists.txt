@@ -48,6 +48,7 @@ target_sources(mavsdk
     base64.cpp
     compatibility_mode.cpp
     call_every_handler.cpp
+    heartbeat_watchdog.cpp
     callback_tracker.cpp
     connection.cpp
     connection_result.cpp
@@ -270,6 +271,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/file_cache_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/locked_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/heartbeat_watchdog_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/math_utils_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
@@ -291,6 +293,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/vehicle_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/autopilot_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/handle_factory_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/compatibility_mode_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/param_value_xml_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_message_handler_test.cpp
 )

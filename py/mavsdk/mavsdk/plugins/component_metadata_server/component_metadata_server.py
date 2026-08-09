@@ -8,7 +8,6 @@
 Provide component metadata json definitions, such as parameters.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -100,7 +99,7 @@ class ComponentMetadataServer:
                 "Failed to create ComponentMetadataServer plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        server_component._track_plugin(self)
 
     def set_metadata(self, metadata):
         """Get set_metadata (blocking)"""
@@ -133,6 +132,18 @@ _cmavsdk_lib.mavsdk_component_metadata_server_metadata_destroy.argtypes = [
     ctypes.POINTER(MetadataCStruct)
 ]
 _cmavsdk_lib.mavsdk_component_metadata_server_metadata_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_component_metadata_server_metadata_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MetadataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_component_metadata_server_metadata_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_component_metadata_server_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_component_metadata_server_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_component_metadata_server_set_metadata.argtypes = [

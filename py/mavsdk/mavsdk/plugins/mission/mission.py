@@ -8,7 +8,6 @@
 Enable waypoint missions.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -401,7 +400,7 @@ class Mission:
                 "Failed to create Mission plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def upload_mission_async(
         self, mission_plan, callback: Callable, user_data: Any = None
@@ -816,26 +815,59 @@ _cmavsdk_lib.mavsdk_mission_mission_item_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_mission_mission_item_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_mission_item_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionItemCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_mission_item_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_mission_mission_plan_destroy.argtypes = [
     ctypes.POINTER(MissionPlanCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_mission_plan_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_mission_plan_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionPlanCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_mission_plan_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_mission_progress_destroy.argtypes = [
     ctypes.POINTER(MissionProgressCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_mission_progress_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_mission_progress_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MissionProgressCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_mission_progress_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_mission_progress_data_destroy.argtypes = [
     ctypes.POINTER(ProgressDataCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_progress_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_progress_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ProgressDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_progress_data_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_progress_data_or_mission_destroy.argtypes = [
     ctypes.POINTER(ProgressDataOrMissionCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_progress_data_or_mission_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_progress_data_or_mission_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ProgressDataOrMissionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mission_progress_data_or_mission_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_mission_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_mission_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_upload_mission_async.argtypes = [
     ctypes.c_void_p,

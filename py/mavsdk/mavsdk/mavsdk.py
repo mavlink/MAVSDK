@@ -2,6 +2,7 @@
 
 import atexit
 import ctypes
+import weakref
 
 from typing import Optional, List, Callable, Any
 
@@ -84,11 +85,22 @@ class Mavsdk:
 
         self._callbacks = {}  # Keep references to prevent GC: { handle: callback }
 
+        # Systems and server components own a handle each and must be released before
+        # mavsdk_destroy runs, since Python's GC gives no ordering guarantee between
+        # them and this object. The set is weak so that a System dropped by the caller
+        # is still collected promptly; destroy() only has to sweep whatever survives.
+        self._children = weakref.WeakSet()
+
         self._handle = self._lib.mavsdk_create(configuration._handle)
         self._destroyed = False
         configuration._handle = None
 
         atexit.register(self.destroy)
+
+    def _track(self, child):
+        """Register a handle-owning child so destroy() can release it."""
+        self._children.add(child)
+        return child
 
     def version(self) -> str:
         """Get MAVSDK version string"""
@@ -155,8 +167,12 @@ class Mavsdk:
         if not systems_ptr:
             return []
 
-        systems = [System(self._lib, systems_ptr[i]) for i in range(count.value)]
+        systems = [
+            self._track(System(self._lib, systems_ptr[i])) for i in range(count.value)
+        ]
 
+        # Frees the array of pointers only; each element is a separate allocation
+        # now owned by the System wrapper above.
         self._lib.mavsdk_free_systems_array(systems_ptr)
         return systems
 
@@ -164,7 +180,7 @@ class Mavsdk:
         """Wait for and return first autopilot system"""
         handle = self._lib.mavsdk_first_autopilot(self._handle, timeout_s)
         if handle:
-            return System(self._lib, handle)
+            return self._track(System(self._lib, handle))
         return None
 
     def subscribe_on_new_system(
@@ -182,7 +198,13 @@ class Mavsdk:
         return handle
 
     def unsubscribe_on_new_system(self, handle: ctypes.c_void_p):
-        """Unsubscribe from new system discoveries"""
+        """Unsubscribe from new system discoveries
+
+        A no-op once this instance is destroyed, so that callers unsubscribing from
+        a ``finally`` block during teardown do not pass a null handle into C.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_unsubscribe_on_new_system(self._handle, handle)
         self._callbacks.pop(handle, None)
 
@@ -190,7 +212,7 @@ class Mavsdk:
         """Get server component by instance"""
         handle = self._lib.mavsdk_server_component(self._handle, instance)
         if handle:
-            return ServerComponent(self._lib, handle)
+            return self._track(ServerComponent(self._lib, handle))
         return None
 
     def server_component_by_type(
@@ -201,14 +223,14 @@ class Mavsdk:
             self._handle, int(component_type), instance
         )
         if handle:
-            return ServerComponent(self._lib, handle)
+            return self._track(ServerComponent(self._lib, handle))
         return None
 
     def server_component_by_id(self, component_id: int):
         """Get server component by component ID"""
         handle = self._lib.mavsdk_server_component_by_id(self._handle, component_id)
         if handle:
-            return ServerComponent(self._lib, handle)
+            return self._track(ServerComponent(self._lib, handle))
         return None
 
     def pass_received_raw_bytes(self, data: bytes):
@@ -241,8 +263,20 @@ class Mavsdk:
     def destroy(self):
         """Destroy the Mavsdk instance"""
         if not self._destroyed and self._handle:
-            self._callbacks.clear()
+            # Release systems and server components first. Their handles are
+            # shared_ptrs into objects owned by this instance, so they must not
+            # outlive mavsdk_destroy. Snapshot the weak set before iterating, since
+            # destroy() can drop the last reference and mutate it underneath us.
+            for child in list(self._children):
+                child.destroy()
+            self._children.clear()
+
             self._lib.mavsdk_destroy(self._handle)
+
+            # Only now drop the ctypes trampolines. mavsdk_destroy stops the
+            # callback thread, so releasing them earlier would leave a window in
+            # which a callback could jump into collected memory.
+            self._callbacks.clear()
             self._handle = None
             self._destroyed = True
 

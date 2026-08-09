@@ -102,7 +102,12 @@ std::optional<std::filesystem::path> create_tmp_directory(const std::string& pre
 {
     // Inspired by https://stackoverflow.com/a/58454949/8548472
 #ifdef ANDROID
-    const auto tmp_dir = std::filesystem::path(mavsdk_temp_path);
+    // Android points TMPDIR at the app's own cache directory, which is the only
+    // temp location an app process may write to; mavsdk_temp_path is only a
+    // fallback for the unusual case of it being unset.
+    const char* env_tmp_dir = getenv("TMPDIR");
+    const auto tmp_dir =
+        std::filesystem::path(env_tmp_dir != nullptr ? env_tmp_dir : mavsdk_temp_path);
 #else
     const auto tmp_dir = std::filesystem::temp_directory_path();
 #endif
@@ -118,8 +123,11 @@ std::optional<std::filesystem::path> create_tmp_directory(const std::string& pre
         ss << prefix << '-' << std::hex << rand(prng);
         auto path = tmp_dir / ss.str();
 
-        const auto created = std::filesystem::create_directory(path);
-        if (created) {
+        // The error_code overload: the throwing one turns an unwritable temp
+        // directory into an uncaught filesystem_error, and callers already
+        // handle nullopt.
+        std::error_code ec;
+        if (std::filesystem::create_directory(path, ec)) {
             return path.string();
         }
     }

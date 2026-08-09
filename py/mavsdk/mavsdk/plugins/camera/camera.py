@@ -14,7 +14,6 @@ Can be used to manage cameras that implement the MAVLink
  `select_camera`.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -1162,7 +1161,7 @@ class Camera:
                 "Failed to create Camera plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def take_photo_async(self, component_id, callback: Callable, user_data: Any = None):
         """Take one photo."""
@@ -1402,11 +1401,13 @@ class Camera:
                 py_result = CameraResult(result)
 
                 py_data = []
-                if c_data and size.value > 0:
-                    for i in range(size.value):
+                if c_data and size > 0:
+                    for i in range(size):
                         py_data.append(CaptureInfo.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_camera_capture_info_destroy(c_data)
+                self._lib.mavsdk_camera_capture_info_array_destroy(
+                    ctypes.byref(c_data), size
+                )
 
                 callback(py_result, py_data, user_data)
 
@@ -1440,7 +1441,9 @@ class Camera:
         py_result = [
             CaptureInfo.from_c_struct(result_ptr[i]) for i in range(size.value)
         ]
-        self._lib.mavsdk_camera_capture_info_destroy(result_ptr)
+        self._lib.mavsdk_camera_capture_info_array_destroy(
+            ctypes.byref(result_ptr), size
+        )
         return py_result
 
     def subscribe_camera_list(self, callback: Callable, user_data: Any = None):
@@ -1663,7 +1666,7 @@ class Camera:
             raise Exception(f"get_current_settings failed: {result}")
 
         py_result = [Setting.from_c_struct(result_ptr[i]) for i in range(size.value)]
-        self._lib.mavsdk_camera_setting_destroy(result_ptr)
+        self._lib.mavsdk_camera_setting_array_destroy(ctypes.byref(result_ptr), size)
         return py_result
 
     def subscribe_possible_setting_options(
@@ -1713,7 +1716,9 @@ class Camera:
         py_result = [
             SettingOptions.from_c_struct(result_ptr[i]) for i in range(size.value)
         ]
-        self._lib.mavsdk_camera_setting_options_destroy(result_ptr)
+        self._lib.mavsdk_camera_setting_options_array_destroy(
+            ctypes.byref(result_ptr), size
+        )
         return py_result
 
     def set_setting_async(
@@ -2327,80 +2332,185 @@ _cmavsdk_lib.mavsdk_camera_destroy.restype = None
 _cmavsdk_lib.mavsdk_camera_option_destroy.argtypes = [ctypes.POINTER(OptionCStruct)]
 _cmavsdk_lib.mavsdk_camera_option_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_option_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(OptionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_option_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_setting_destroy.argtypes = [ctypes.POINTER(SettingCStruct)]
 _cmavsdk_lib.mavsdk_camera_setting_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_setting_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(SettingCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_setting_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_setting_options_destroy.argtypes = [
     ctypes.POINTER(SettingOptionsCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_setting_options_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_setting_options_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(SettingOptionsCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_setting_options_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_video_stream_settings_destroy.argtypes = [
     ctypes.POINTER(VideoStreamSettingsCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_video_stream_settings_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_video_stream_settings_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(VideoStreamSettingsCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_video_stream_settings_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_video_stream_info_destroy.argtypes = [
     ctypes.POINTER(VideoStreamInfoCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_video_stream_info_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_video_stream_info_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(VideoStreamInfoCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_video_stream_info_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_mode_update_destroy.argtypes = [
     ctypes.POINTER(ModeUpdateCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_mode_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_mode_update_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ModeUpdateCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_mode_update_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_video_stream_update_destroy.argtypes = [
     ctypes.POINTER(VideoStreamUpdateCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_video_stream_update_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_video_stream_update_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(VideoStreamUpdateCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_video_stream_update_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_storage_destroy.argtypes = [ctypes.POINTER(StorageCStruct)]
 _cmavsdk_lib.mavsdk_camera_storage_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_storage_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(StorageCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_storage_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_storage_update_destroy.argtypes = [
     ctypes.POINTER(StorageUpdateCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_storage_update_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_storage_update_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(StorageUpdateCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_storage_update_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_current_settings_update_destroy.argtypes = [
     ctypes.POINTER(CurrentSettingsUpdateCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_current_settings_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_current_settings_update_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(CurrentSettingsUpdateCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_current_settings_update_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_possible_setting_options_update_destroy.argtypes = [
     ctypes.POINTER(PossibleSettingOptionsUpdateCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_possible_setting_options_update_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_possible_setting_options_update_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(PossibleSettingOptionsUpdateCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_possible_setting_options_update_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_position_destroy.argtypes = [ctypes.POINTER(PositionCStruct)]
 _cmavsdk_lib.mavsdk_camera_position_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_position_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(PositionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_position_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_quaternion_destroy.argtypes = [
     ctypes.POINTER(QuaternionCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_quaternion_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_quaternion_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(QuaternionCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_quaternion_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_euler_angle_destroy.argtypes = [
     ctypes.POINTER(EulerAngleCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_euler_angle_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_euler_angle_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(EulerAngleCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_euler_angle_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_capture_info_destroy.argtypes = [
     ctypes.POINTER(CaptureInfoCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_capture_info_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_capture_info_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(CaptureInfoCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_capture_info_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_camera_information_destroy.argtypes = [
     ctypes.POINTER(InformationCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_information_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_information_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(InformationCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_information_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_camera_list_destroy.argtypes = [
     ctypes.POINTER(CameraListCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_camera_list_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_camera_camera_list_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(CameraListCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_camera_camera_list_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_camera_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_take_photo_async.argtypes = [
     ctypes.c_void_p,

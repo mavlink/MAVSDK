@@ -56,9 +56,9 @@ int main(int argc, char** argv)
     // To simulate message drops.
     if (argc == 3 && std::string(argv[2]) == "--drop") {
         std::cout << "Dropping some messages" << std::endl;
-        unsigned counter = 0;
-        mavsdk.intercept_incoming_messages_async(
-            [&](const mavlink_message_t&) { return counter++ % 10 != 0; });
+        auto counter = std::make_shared<unsigned>(0);
+        mavsdk.subscribe_incoming_messages_json(
+            [counter](Mavsdk::MavlinkMessage) { return (*counter)++ % 10 != 0; });
     }
 
     // Wait for autopilot type to be determined (from heartbeat)

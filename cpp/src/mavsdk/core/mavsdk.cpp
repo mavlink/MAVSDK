@@ -1,5 +1,7 @@
 #include "mavsdk.hpp"
 
+#include "heartbeat_watchdog.hpp"
+#include "log.hpp"
 #include "mavsdk_impl.hpp"
 
 namespace mavsdk {
@@ -48,6 +50,11 @@ void Mavsdk::set_configuration(Configuration configuration)
     _impl->set_configuration(configuration);
 }
 
+bool Mavsdk::set_heartbeat_watchdog_timeout_s(double timeout_s)
+{
+    return _impl->set_heartbeat_watchdog_timeout_s(timeout_s);
+}
+
 void Mavsdk::set_timeout_s(double timeout_s)
 {
     _impl->set_timeout_s(timeout_s);
@@ -61,6 +68,11 @@ void Mavsdk::set_heartbeat_timeout_s(double timeout_s)
 double Mavsdk::get_heartbeat_timeout_s() const
 {
     return _impl->heartbeat_timeout_s();
+}
+
+void Mavsdk::feed_heartbeat_watchdog()
+{
+    _impl->feed_heartbeat_watchdog();
 }
 
 void Mavsdk::set_callback_executor(std::function<void(std::function<void()>)> executor)
@@ -196,6 +208,25 @@ bool Mavsdk::Configuration::get_always_send_heartbeats() const
 void Mavsdk::Configuration::set_always_send_heartbeats(bool always_send_heartbeats)
 {
     _always_send_heartbeats = always_send_heartbeats;
+}
+
+double Mavsdk::Configuration::get_heartbeat_watchdog_timeout_s() const
+{
+    return _heartbeat_watchdog_timeout_s;
+}
+
+bool Mavsdk::Configuration::set_heartbeat_watchdog_timeout_s(double timeout_s)
+{
+    if (!HeartbeatWatchdog::is_valid_timeout_s(timeout_s)) {
+        LogWarn(
+            "Invalid heartbeat watchdog timeout: {} s (must be 0 or >= {} s)",
+            timeout_s,
+            HeartbeatWatchdog::min_timeout_s);
+        return false;
+    }
+
+    _heartbeat_watchdog_timeout_s = timeout_s;
+    return true;
 }
 
 ComponentType Mavsdk::Configuration::get_component_type() const

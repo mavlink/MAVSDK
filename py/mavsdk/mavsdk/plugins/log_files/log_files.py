@@ -9,7 +9,6 @@ Allow to download log files from the vehicle after a flight is complete.
  For log streaming during flight check the logging plugin.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -148,7 +147,7 @@ class LogFiles:
                 "Failed to create LogFiles plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def get_entries_async(self, callback: Callable, user_data: Any = None):
         """Get List of log files."""
@@ -158,11 +157,13 @@ class LogFiles:
                 py_result = LogFilesResult(result)
 
                 py_data = []
-                if c_data and size.value > 0:
-                    for i in range(size.value):
+                if c_data and size > 0:
+                    for i in range(size):
                         py_data.append(Entry.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_log_files_entry_destroy(c_data)
+                self._lib.mavsdk_log_files_entry_array_destroy(
+                    ctypes.byref(c_data), size
+                )
 
                 callback(py_result, py_data, user_data)
 
@@ -188,7 +189,7 @@ class LogFiles:
             raise Exception(f"get_entries failed: {result}")
 
         py_result = [Entry.from_c_struct(result_ptr[i]) for i in range(size.value)]
-        self._lib.mavsdk_log_files_entry_destroy(result_ptr)
+        self._lib.mavsdk_log_files_entry_array_destroy(ctypes.byref(result_ptr), size)
         return py_result
 
     def download_log_file_async(
@@ -262,9 +263,26 @@ _cmavsdk_lib.mavsdk_log_files_progress_data_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_log_files_progress_data_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_log_files_progress_data_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ProgressDataCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_log_files_progress_data_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_log_files_entry_destroy.argtypes = [ctypes.POINTER(EntryCStruct)]
 _cmavsdk_lib.mavsdk_log_files_entry_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_log_files_entry_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(EntryCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_log_files_entry_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_log_files_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_log_files_string_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_log_files_get_entries_async.argtypes = [
     ctypes.c_void_p,

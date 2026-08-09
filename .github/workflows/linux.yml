@@ -387,7 +387,8 @@ jobs:
             python3-venv \
             libasio-dev \
             libfmt-dev \
-            nlohmann-json3-dev
+            nlohmann-json3-dev \
+            openjdk-21-jdk-headless
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -415,6 +416,9 @@ jobs:
         run: PATH="$PATH:$HOME/.local/bin:$(pwd)/cpp/build/release/third_party/install/bin" tools/generate_from_protos.bash
       - name: fix style
         run: tools/fix_style.py . || true
+      - name: fix kotlin style
+        working-directory: kt/mavsdk-kotlin
+        run: ./gradlew ktfmtFormat --console=plain
       - name: check for diff
         run: git diff --exit-code
 
@@ -557,6 +561,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       ARG_IMAGE: docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.docker_name }}-custom:${{ needs.check-docker-changes.outputs.docker_tag }}
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
@@ -680,6 +685,8 @@ jobs:
   dockcross-linux-musl:
     name: ${{ matrix.arch_name }}
     runs-on: ubuntu-24.04
+    env:
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
@@ -724,6 +731,8 @@ jobs:
   dockcross-manylinux:
     name: ${{ matrix.arch_name }}
     runs-on: ubuntu-24.04
+    env:
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
@@ -762,7 +771,7 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/manylinux/cpp/third_party/install" >> $GITHUB_ENV
       - name: configure cpp
         working-directory: .
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "yum install -y perl-core && cmake $superbuild $cmake_prefix_path -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=build/manylinux/cpp/install -DBUILD_MAVSDK_SERVER=OFF -Bbuild/manylinux/cpp -Scpp"
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "sudo yum install -y perl-core && cmake $superbuild $cmake_prefix_path -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=build/manylinux/cpp/install -DBUILD_MAVSDK_SERVER=OFF -Bbuild/manylinux/cpp -Scpp"
       - name: build cpp
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/cpp -j$(nproc) --target install
@@ -781,13 +790,13 @@ jobs:
       - name: build mavsdk wheel
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} bash -c "
-          ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt auditwheel &&
-          ${{ matrix.python_exec_auditwheel }} -m pip install auditwheel &&
+          sudo ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt auditwheel &&
+          sudo ${{ matrix.python_exec_auditwheel }} -m pip install auditwheel &&
           mkdir -p /work/py/mavsdk/mavsdk/lib &&
           cp /work/build/manylinux/c/install/lib/libcmavsdk.so /work/py/mavsdk/mavsdk/lib/libcmavsdk.so &&
           cd /work/py/mavsdk &&
           ${{ matrix.python_exec }} setup.py bdist_wheel ${{ matrix.python_plat_name_arg }} &&
-          ${{ matrix.python_exec_auditwheel }} -m auditwheel repair --plat ${{ matrix.auditwheel_plat }} dist/mavsdk4-*-linux_*.whl"
+          sudo ${{ matrix.python_exec_auditwheel }} -m auditwheel repair --plat ${{ matrix.auditwheel_plat }} dist/mavsdk4-*-linux_*.whl"
       - name: upload mavsdk wheel
         uses: actions/upload-artifact@v7
         with:
@@ -799,7 +808,7 @@ jobs:
         if: matrix.artifact_arch == 'x86_64'
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} bash -c "
-          ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt &&
+          sudo ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt &&
           cd /work/py/aiomavsdk &&
           ${{ matrix.python_exec }} setup.py bdist_wheel"
       - name: upload aiomavsdk wheel
@@ -813,6 +822,8 @@ jobs:
   dockcross-android:
     name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
+    env:
+      OCI_EXE: docker
     strategy:
       fail-fast: false
       matrix:
@@ -850,7 +861,7 @@ jobs:
       - name: build
         run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j$(nproc) --target install
       - name: create tar with header and library
-        run: mkdir -p build/${{ matrix.name }}/export/include; cp build/${{ matrix.name }}/install/include/mavsdk/mavsdk_server/mavsdk_server_api.h build/${{ matrix.name }}/export/include; mkdir -p build/${{ matrix.name }}/export/${{ matrix.arch }}; cp build/${{ matrix.name }}/install/lib/libmavsdk_server.so build/${{ matrix.name }}/export/${{ matrix.arch }}; tar -C build/${{ matrix.name }}/export -cf build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar ${{ matrix.arch }} include;
+        run: mkdir -p build/${{ matrix.name }}/export/include; cp build/${{ matrix.name }}/install/include/mavsdk/mavsdk_server/mavsdk_server_api.h build/${{ matrix.name }}/install/include/mavsdk/mavsdk_export.h build/${{ matrix.name }}/export/include; mkdir -p build/${{ matrix.name }}/export/${{ matrix.arch }}; cp build/${{ matrix.name }}/install/lib/libmavsdk_server.so build/${{ matrix.name }}/export/${{ matrix.arch }}; tar -C build/${{ matrix.name }}/export -cf build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar ${{ matrix.arch }} include;
       - name: Upload as artifact
         uses: actions/upload-artifact@v7
         with:

@@ -8,7 +8,6 @@
 Provide raw access to get and set parameters.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -289,7 +288,7 @@ class Param:
                 "Failed to create Param plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def get_param_int(self, name):
         """Get get_param_int (blocking)"""
@@ -365,7 +364,9 @@ class Param:
         if result != ParamResult.SUCCESS:
             raise Exception(f"get_param_custom failed: {result}")
 
-        return result_out.value
+        py_result = result_out.value
+        self._lib.mavsdk_param_string_destroy(ctypes.byref(result_out))
+        return py_result
 
     def set_param_custom(self, name, value):
         """Get set_param_custom (blocking)"""
@@ -428,20 +429,48 @@ _cmavsdk_lib.mavsdk_param_destroy.restype = None
 _cmavsdk_lib.mavsdk_param_int_param_destroy.argtypes = [ctypes.POINTER(IntParamCStruct)]
 _cmavsdk_lib.mavsdk_param_int_param_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_param_int_param_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(IntParamCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_param_int_param_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_param_float_param_destroy.argtypes = [
     ctypes.POINTER(FloatParamCStruct)
 ]
 _cmavsdk_lib.mavsdk_param_float_param_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_param_float_param_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(FloatParamCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_param_float_param_array_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_param_custom_param_destroy.argtypes = [
     ctypes.POINTER(CustomParamCStruct)
 ]
 _cmavsdk_lib.mavsdk_param_custom_param_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_param_custom_param_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(CustomParamCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_param_custom_param_array_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_param_all_params_destroy.argtypes = [
     ctypes.POINTER(AllParamsCStruct)
 ]
 _cmavsdk_lib.mavsdk_param_all_params_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_param_all_params_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(AllParamsCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_param_all_params_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_param_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
+_cmavsdk_lib.mavsdk_param_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_param_get_param_int.argtypes = [

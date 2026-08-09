@@ -1,0 +1,12 @@
+{
+    "double": "Double",
+    "float": "Float",
+    "int64_t": "Long",
+    "uint64_t": "Long",
+    "int32_t": "Int",
+    "bool": "Boolean",
+    "std::string": "String",
+    "std::byte": "ByteArray",
+    "uint32_t": "Int",
+    "repeated": { "prefix": "", "suffix": "" }
+}

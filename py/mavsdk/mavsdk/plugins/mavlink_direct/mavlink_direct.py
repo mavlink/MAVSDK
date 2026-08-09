@@ -8,7 +8,6 @@
 Enable direct MAVLink communication using libmav.
 """
 
-import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -131,7 +130,7 @@ class MavlinkDirect:
                 "Failed to create MavlinkDirect plugin - C function returned null handle"
             )
 
-        atexit.register(self.destroy)
+        system._track_plugin(self)
 
     def send_message(self, message):
         """Get send_message (blocking)"""
@@ -223,6 +222,18 @@ _cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_destroy.argtypes = [
     ctypes.POINTER(MavlinkMessageCStruct)
 ]
 _cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(MavlinkMessageCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_array_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_mavlink_direct_string_destroy.argtypes = [
+    ctypes.POINTER(ctypes.c_char_p)
+]
+_cmavsdk_lib.mavsdk_mavlink_direct_string_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_mavlink_direct_send_message.argtypes = [
