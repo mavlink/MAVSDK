@@ -512,6 +512,45 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status GotoLocationFixedwing(
+        grpc::ServerContext* /* context */,
+        const rpc::action::GotoLocationFixedwingRequest* request,
+        rpc::action::GotoLocationFixedwingResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("GotoLocationFixedwing sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+            
+        
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->goto_location_fixedwing(request->latitude_deg(), request->longitude_deg(), request->absolute_altitude_m(), request->loiter_radius_m());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status DoOrbit(
         grpc::ServerContext* /* context */,
         const rpc::action::DoOrbitRequest* request,

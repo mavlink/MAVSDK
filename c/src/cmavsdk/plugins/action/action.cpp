@@ -565,6 +565,50 @@ mavsdk_action_goto_location(
     return translate_result(ret_value);
 }
 
+// GotoLocationFixedwing async
+void mavsdk_action_goto_location_fixedwing_async(
+    mavsdk_action_t action,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m,
+    float loiter_radius_m,
+    mavsdk_action_goto_location_fixedwing_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
+
+    wrapper->cpp_plugin->goto_location_fixedwing_async(
+        latitude_deg,
+        longitude_deg,
+        absolute_altitude_m,
+        loiter_radius_m,
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// GotoLocationFixedwing sync
+mavsdk_action_result_t
+mavsdk_action_goto_location_fixedwing(
+    mavsdk_action_t action,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m,
+    float loiter_radius_m)
+{
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
+
+    auto ret_value = wrapper->cpp_plugin->goto_location_fixedwing(        latitude_deg,        longitude_deg,        absolute_altitude_m,        loiter_radius_m);
+
+    return translate_result(ret_value);
+}
+
 // DoOrbit async
 void mavsdk_action_do_orbit_async(
     mavsdk_action_t action,

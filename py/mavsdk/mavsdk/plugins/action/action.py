@@ -463,6 +463,66 @@ class Action:
 
         return result
 
+    def goto_location_fixedwing_async(
+        self,
+        latitude_deg,
+        longitude_deg,
+        absolute_altitude_m,
+        loiter_radius_m,
+        callback: Callable,
+        user_data: Any = None,
+    ):
+        """Send command to the drone to fly to a location for fixed-wing aircraft.
+
+        This sends a MAV_CMD_DO_REPOSITION command with a loiter radius.
+
+        The latitude and longitude are given in degrees (WGS84 frame) and the altitude
+        in meters AMSL (above mean sea level).
+
+        The loiter radius defines the radius of the loiter circle in meters, and its sign
+        controls the direction: positive is clockwise, negative is counter-clockwise.
+        A value of 0 is ignored by the autopilot."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = ActionResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in goto_location_fixedwing callback: {e}")
+
+        cb = GotoLocationFixedwingCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_action_goto_location_fixedwing_async(
+            self._handle,
+            latitude_deg,
+            longitude_deg,
+            absolute_altitude_m,
+            loiter_radius_m,
+            cb,
+            None,
+        )
+
+    def goto_location_fixedwing(
+        self, latitude_deg, longitude_deg, absolute_altitude_m, loiter_radius_m
+    ):
+        """Get goto_location_fixedwing (blocking)"""
+
+        result_code = self._lib.mavsdk_action_goto_location_fixedwing(
+            self._handle,
+            latitude_deg,
+            longitude_deg,
+            absolute_altitude_m,
+            loiter_radius_m,
+        )
+        result = ActionResult(result_code)
+        if result != ActionResult.SUCCESS:
+            raise Exception(f"goto_location_fixedwing failed: {result}")
+
+        return result
+
     def do_orbit_async(
         self,
         radius_m,
@@ -932,6 +992,7 @@ TerminateCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 KillCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 ReturnToLaunchCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 GotoLocationCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+GotoLocationFixedwingCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 DoOrbitCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 HoldCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetActuatorCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
@@ -1112,6 +1173,27 @@ _cmavsdk_lib.mavsdk_action_goto_location.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_action_goto_location.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_goto_location_fixedwing_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_float,
+    ctypes.c_float,
+    GotoLocationFixedwingCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_goto_location_fixedwing_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_goto_location_fixedwing.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_float,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_action_goto_location_fixedwing.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_action_do_orbit_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_float,

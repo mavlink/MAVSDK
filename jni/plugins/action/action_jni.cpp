@@ -385,6 +385,39 @@ struct GotoLocationCallbackWrapper {
         }
     }
 };
+struct GotoLocationFixedwingCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    GotoLocationFixedwingCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_action_result_t result    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
 struct DoOrbitCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
@@ -1210,6 +1243,60 @@ Java_io_mavsdk_jni_plugins_action_NativeAction_gotoLocationAsync(
         [](const mavsdk_action_result_t result, void* userData) {
             auto* callbackWrapper =
                 static_cast<GotoLocationCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            delete callbackWrapper;
+        },
+        wrapper);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_action_NativeAction_gotoLocationFixedwing(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jdouble latitude_deg,
+    jdouble longitude_deg,
+    jfloat absolute_altitude_m,
+    jfloat loiter_radius_m) {
+    if (!requireHandle(env, handle, "Action plugin")) {
+        return {};
+    }
+
+    mavsdk_action_result_t result =
+        mavsdk_action_goto_location_fixedwing(
+            reinterpret_cast<mavsdk_action_t>(handle),
+            static_cast<double>(latitude_deg),
+            static_cast<double>(longitude_deg),
+            static_cast<float>(absolute_altitude_m),
+            static_cast<float>(loiter_radius_m));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_action_NativeAction_gotoLocationFixedwingAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jdouble latitude_deg,
+    jdouble longitude_deg,
+    jfloat absolute_altitude_m,
+    jfloat loiter_radius_m,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Action plugin") || !callback) {
+        return;
+    }
+
+    auto* wrapper = new GotoLocationFixedwingCallbackWrapper(env, callback);
+    mavsdk_action_goto_location_fixedwing_async(
+        reinterpret_cast<mavsdk_action_t>(handle),
+        static_cast<double>(latitude_deg),
+        static_cast<double>(longitude_deg),
+        static_cast<float>(absolute_altitude_m),
+        static_cast<float>(loiter_radius_m),
+        [](const mavsdk_action_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<GotoLocationFixedwingCallbackWrapper*>(userData);
             (*callbackWrapper)(result);
             delete callbackWrapper;
         },

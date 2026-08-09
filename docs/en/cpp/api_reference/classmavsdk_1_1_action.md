@@ -50,6 +50,8 @@ void | [return_to_launch_async](#classmavsdk_1_1_action_1abe5bd426de588b246644ee
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [return_to_launch](#classmavsdk_1_1_action_1afd7c225df0495b0947f00e7d2dd64877) () const | Send command to return to the launch (takeoff) position and land.
 void | [goto_location_async](#classmavsdk_1_1_action_1a6fd615e5571d6e7e3c53a79d2160ffc5) (double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg, const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to move the vehicle to a specific global position.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [goto_location](#classmavsdk_1_1_action_1afb3546fa994357e491816f2032716818) (double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg)const | Send command to move the vehicle to a specific global position.
+void | [goto_location_fixedwing_async](#classmavsdk_1_1_action_1a190e73b01370e11c65d3ac8d799f39c7) (double latitude_deg, double longitude_deg, float absolute_altitude_m, float loiter_radius_m, const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to the drone to fly to a location for fixed-wing aircraft.
+[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [goto_location_fixedwing](#classmavsdk_1_1_action_1a775ba7387dd5a4018606da2892c5f041) (double latitude_deg, double longitude_deg, float absolute_altitude_m, float loiter_radius_m)const | Send command to the drone to fly to a location for fixed-wing aircraft.
 void | [do_orbit_async](#classmavsdk_1_1_action_1aac9a2ac57a6e8f734b25c2e6dc0729ba) (float radius_m, float velocity_ms, [OrbitYawBehavior](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92) yaw_behavior, double latitude_deg, double longitude_deg, double absolute_altitude_m, const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command do orbit to the drone.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [do_orbit](#classmavsdk_1_1_action_1ac7447a86016bee3576643563079288b9) (float radius_m, float velocity_ms, [OrbitYawBehavior](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92) yaw_behavior, double latitude_deg, double longitude_deg, double absolute_altitude_m)const | Send command do orbit to the drone.
 void | [hold_async](#classmavsdk_1_1_action_1aad198c883e7ace1cf4556c3b15bd8ad8) (const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to hold position (a.k.a. "Loiter").
@@ -624,6 +626,63 @@ This function is blocking. See 'goto_location_async' for the non-blocking counte
 * double **longitude_deg** - 
 * float **absolute_altitude_m** - 
 * float **yaw_deg** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+
+### goto_location_fixedwing_async() {#classmavsdk_1_1_action_1a190e73b01370e11c65d3ac8d799f39c7}
+```cpp
+void mavsdk::Action::goto_location_fixedwing_async(double latitude_deg, double longitude_deg, float absolute_altitude_m, float loiter_radius_m, const ResultCallback callback)
+```
+
+
+Send command to the drone to fly to a location for fixed-wing aircraft.
+
+This sends a MAV_CMD_DO_REPOSITION command with a loiter radius.
+
+
+The latitude and longitude are given in degrees (WGS84 frame) and the altitude in meters AMSL (above mean sea level).
+
+
+The loiter radius defines the radius of the loiter circle in meters, and its sign controls the direction: positive is clockwise, negative is counter-clockwise. A value of 0 is ignored by the autopilot.
+
+
+This function is non-blocking. See 'goto_location_fixedwing' for the blocking counterpart.
+
+**Parameters**
+
+* double **latitude_deg** - 
+* double **longitude_deg** - 
+* float **absolute_altitude_m** - 
+* float **loiter_radius_m** - 
+* const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) **callback** - 
+
+### goto_location_fixedwing() {#classmavsdk_1_1_action_1a775ba7387dd5a4018606da2892c5f041}
+```cpp
+Result mavsdk::Action::goto_location_fixedwing(double latitude_deg, double longitude_deg, float absolute_altitude_m, float loiter_radius_m) const
+```
+
+
+Send command to the drone to fly to a location for fixed-wing aircraft.
+
+This sends a MAV_CMD_DO_REPOSITION command with a loiter radius.
+
+
+The latitude and longitude are given in degrees (WGS84 frame) and the altitude in meters AMSL (above mean sea level).
+
+
+The loiter radius defines the radius of the loiter circle in meters, and its sign controls the direction: positive is clockwise, negative is counter-clockwise. A value of 0 is ignored by the autopilot.
+
+
+This function is blocking. See 'goto_location_fixedwing_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* double **latitude_deg** - 
+* double **longitude_deg** - 
+* float **absolute_altitude_m** - 
+* float **loiter_radius_m** - 
 
 **Returns**
 

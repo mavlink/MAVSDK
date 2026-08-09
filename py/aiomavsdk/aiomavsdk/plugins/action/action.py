@@ -223,6 +223,40 @@ class ActionAsync:
             ),
         )
 
+    async def goto_location_fixedwing(
+        self, latitude_deg, longitude_deg, absolute_altitude_m, loiter_radius_m
+    ):
+        """
+               Send command to the drone to fly to a location for fixed-wing aircraft.
+
+        This sends a MAV_CMD_DO_REPOSITION command with a loiter radius.
+
+        The latitude and longitude are given in degrees (WGS84 frame) and the altitude
+        in meters AMSL (above mean sea level).
+
+        The loiter radius defines the radius of the loiter circle in meters, and its sign
+        controls the direction: positive is clockwise, negative is counter-clockwise.
+        A value of 0 is ignored by the autopilot.
+
+               Parameters
+               ----------
+               latitude_deg : float
+               longitude_deg : float
+               absolute_altitude_m : float
+               loiter_radius_m : float
+               Raises
+               ------
+               ActionError
+                   If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None,
+            lambda: self._plugin.goto_location_fixedwing(
+                latitude_deg, longitude_deg, absolute_altitude_m, loiter_radius_m
+            ),
+        )
+
     async def do_orbit(
         self,
         radius_m,

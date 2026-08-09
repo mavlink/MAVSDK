@@ -179,6 +179,7 @@ typedef void (*mavsdk_action_terminate_callback_t)(const mavsdk_action_result_t 
 typedef void (*mavsdk_action_kill_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_return_to_launch_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_goto_location_callback_t)(const mavsdk_action_result_t result, void* user_data);
+typedef void (*mavsdk_action_goto_location_fixedwing_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_do_orbit_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_hold_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_set_actuator_callback_t)(const mavsdk_action_result_t result, void* user_data);
@@ -557,6 +558,59 @@ mavsdk_action_goto_location(
     double longitude_deg,
     float absolute_altitude_m,
     float yaw_deg);
+
+
+/**
+ * @brief Send command to the drone to fly to a location for fixed-wing aircraft.
+ * 
+ *  This sends a MAV_CMD_DO_REPOSITION command with a loiter radius.
+ * 
+ *  The latitude and longitude are given in degrees (WGS84 frame) and the altitude
+ *  in meters AMSL (above mean sea level).
+ * 
+ *  The loiter radius defines the radius of the loiter circle in meters, and its sign
+ *  controls the direction: positive is clockwise, negative is counter-clockwise.
+ *  A value of 0 is ignored by the autopilot.
+ *
+ * @param action The action instance.
+ * @param latitude_deg  Latitude (in degrees)
+ * 
+ * @param longitude_deg  Longitude (in degrees)
+ * 
+ * @param absolute_altitude_m  Altitude AMSL (in meters)
+ * 
+ * @param loiter_radius_m  Loiter radius (in meters). Positive: clockwise, negative: counter-clockwise, 0: ignored.
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_action_goto_location_fixedwing_async(
+    mavsdk_action_t action,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m,
+    float loiter_radius_m,
+    mavsdk_action_goto_location_fixedwing_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current goto location fixedwing (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param goto_location_fixedwing_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_action_result_t
+mavsdk_action_goto_location_fixedwing(
+    mavsdk_action_t action,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m,
+    float loiter_radius_m);
 
 
 /**

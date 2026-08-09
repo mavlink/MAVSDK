@@ -35,6 +35,11 @@ public:
         const double longitude_deg,
         const float altitude_amsl_m,
         const float yaw_deg);
+    Action::Result goto_location_fixedwing(
+        const double latitude_deg,
+        const double longitude_deg,
+        const float altitude_amsl_m,
+        const float loiter_radius_m);
     Action::Result do_orbit(
         const float radius_m,
         const float velocity_ms,
@@ -63,6 +68,12 @@ public:
         const double longitude_deg,
         const float altitude_amsl_m,
         const float yaw_deg,
+        const Action::ResultCallback& callback);
+    void goto_location_fixedwing_async(
+        const double latitude_deg,
+        const double longitude_deg,
+        const float altitude_amsl_m,
+        const float loiter_radius_m,
         const Action::ResultCallback& callback);
     void do_orbit_async(
         const float radius_m,
