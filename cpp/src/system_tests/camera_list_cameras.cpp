@@ -2,6 +2,7 @@
 #include "plugins/camera/camera.hpp"
 #include "plugins/camera_server/camera_server.hpp"
 #include "log.hpp"
+#include <atomic>
 #include <future>
 #include <mutex>
 #include <thread>
@@ -48,7 +49,7 @@ TEST(Camera, ListCameras)
 
     auto camera = Camera{system};
 
-    bool found_camera = false;
+    std::atomic<bool> found_camera{false};
     auto camera_list_handle = camera.subscribe_camera_list([&](Camera::CameraList camera_list) {
         if (!camera_list.cameras.empty()) {
             found_camera = true;
