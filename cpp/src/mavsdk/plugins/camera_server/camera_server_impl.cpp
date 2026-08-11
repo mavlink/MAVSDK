@@ -1656,7 +1656,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 if (_zoom_out_start_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_zoom_out_start_command = command;
                     int dummy = 0;
@@ -1668,7 +1668,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 if (_zoom_in_start_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_zoom_in_start_command = command;
                     int dummy = 0;
@@ -1680,7 +1680,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 if (_zoom_stop_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_zoom_stop_command = command;
                     int dummy = 0;
@@ -1698,7 +1698,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
             if (_zoom_range_callbacks.empty()) {
                 unsupported();
                 return _server_component_impl->make_command_ack_message(
-                    command, MAV_RESULT::MAV_RESULT_DENIED);
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
 
             } else {
                 _last_zoom_range_command = command;
