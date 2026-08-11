@@ -112,7 +112,7 @@ public:
             double timeout_s,
             ResultAndItemsCallback callback,
             uint32_t mission_count,
-            uint8_t target_system_id,
+            uint32_t target_system_id,
             uint8_t target_component_id,
             bool debugging);
         ~ReceiveIncomingMission() override;
@@ -141,7 +141,7 @@ public:
         std::size_t _expected_count{0};
         unsigned _retries_done{0};
         uint32_t _mission_count{0};
-        uint8_t _target_system_id{0};
+        uint32_t _target_system_id{0};
         uint8_t _target_component_id{0};
     };
     static constexpr unsigned retries = 5;
@@ -156,7 +156,7 @@ public:
             const std::vector<ItemInt>& items,
             double timeout_s,
             ResultCallback callback,
-            uint8_t target_system_id,
+            uint32_t target_system_id,
             uint8_t target_component_id,
             bool debugging);
 
@@ -191,7 +191,7 @@ public:
         TimeoutHandler::Cookie _cookie{};
         std::size_t _next_sequence{0};
         unsigned _retries_done{0};
-        uint8_t _target_system_id{0};
+        uint32_t _target_system_id{0};
         uint8_t _target_component_id{0};
     };
 

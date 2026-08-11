@@ -309,7 +309,7 @@ _cmavsdk_lib.mavsdk_configuration_create_with_component_type.argtypes = [ctypes.
 _cmavsdk_lib.mavsdk_configuration_create_with_component_type.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_configuration_create_manual.argtypes = [
-    ctypes.c_uint8,
+    ctypes.c_uint32,
     ctypes.c_uint8,
     ctypes.c_int,
 ]
@@ -319,11 +319,11 @@ _cmavsdk_lib.mavsdk_configuration_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_configuration_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_configuration_get_system_id.argtypes = [ctypes.c_void_p]
-_cmavsdk_lib.mavsdk_configuration_get_system_id.restype = ctypes.c_uint8
+_cmavsdk_lib.mavsdk_configuration_get_system_id.restype = ctypes.c_uint32
 
 _cmavsdk_lib.mavsdk_configuration_set_system_id.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_uint8,
+    ctypes.c_uint32,
 ]
 _cmavsdk_lib.mavsdk_configuration_set_system_id.restype = None
 

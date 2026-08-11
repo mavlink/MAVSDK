@@ -84,7 +84,7 @@ public:
     ComponentType get_component_type() const;
 
     bool send_message(mavlink_message_t& message);
-    uint8_t get_own_system_id() const;
+    uint32_t get_own_system_id() const;
     uint8_t get_own_component_id() const;
 
     Sender& sender();
@@ -199,7 +199,7 @@ private:
     add_raw_connection(ForwardingOption forwarding_option);
 
     Mavsdk::ConnectionHandle add_connection(std::unique_ptr<Connection>&& connection);
-    void make_system_with_component(uint8_t system_id, uint8_t component_id);
+    void make_system_with_component(uint32_t system_id, uint8_t component_id);
 
     // Apply a change to the configuration as one atomic read-modify-write, so
     // that concurrent configuration updates cannot be lost between reading
@@ -228,7 +228,7 @@ private:
     server_component_by_id_with_lock(uint8_t component_id, uint8_t mav_type);
     ServerComponentImpl& default_server_component_with_lock();
 
-    static uint8_t get_target_system_id(const mavlink_message_t& message);
+    static uint32_t get_target_system_id(const mavlink_message_t& message);
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 
     // Helper methods for JSON message conversion
@@ -255,7 +255,7 @@ private:
     std::vector<ConnectionEntry> _connections{};
     CallbackList<Mavsdk::ConnectionError> _connections_errors_subscriptions{_io_context};
 
-    std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};
+    std::vector<std::pair<uint32_t, std::shared_ptr<System>>> _systems{};
 
     std::recursive_mutex _server_components_mutex;
     std::vector<std::pair<uint8_t, std::shared_ptr<ServerComponent>>> _server_components{};
@@ -278,7 +278,7 @@ private:
     // update_configuration()), which serializes read-modify-write updates.
     mutable std::mutex _configuration_mutex{};
     Mavsdk::Configuration _configuration{ComponentType::GroundStation};
-    std::atomic<uint8_t> _our_system_id{0};
+    std::atomic<uint32_t> _our_system_id{0};
     std::atomic<uint8_t> _our_component_id{0};
     // Cached as atomics so they can be read without racing against
     // set_configuration() writing _configuration. This also keeps the

@@ -172,7 +172,7 @@ Sender& ServerComponentImpl::sender()
     return _our_sender;
 }
 
-uint8_t ServerComponentImpl::get_own_system_id() const
+uint32_t ServerComponentImpl::get_own_system_id() const
 {
     return _mavsdk_impl.get_own_system_id();
 }
@@ -196,16 +196,26 @@ bool ServerComponentImpl::send_message(mavlink_message_t& message)
     return _mavsdk_impl.send_message(message);
 }
 
-bool ServerComponentImpl::send_command_ack(mavlink_command_ack_t& command_ack)
+bool ServerComponentImpl::send_command_ack(
+    mavlink_command_ack_t& command_ack, uint32_t target_system_id)
 {
+    // mavlink_command_ack_t's target_system is only 8 bits wide, so a target
+    // above 255 has to be passed alongside it. Zero means "use the struct".
+    const uint32_t target = target_system_id != 0 ? target_system_id : command_ack.target_system;
+
     return queue_message([&, this](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
-        mavlink_msg_command_ack_encode_chan(
+        mavlink_msg_command_ack_pack_chan(
             mavlink_address.system_id,
             mavlink_address.component_id,
             channel,
             &message,
-            &command_ack);
+            command_ack.command,
+            command_ack.result,
+            command_ack.progress,
+            command_ack.result_param2,
+            target,
+            command_ack.target_component);
         return message;
     });
 }
@@ -470,7 +480,7 @@ bool ServerComponentImpl::OurSender::queue_message(
     return _server_component_impl.queue_message(fun);
 }
 
-uint8_t ServerComponentImpl::OurSender::get_own_system_id() const
+uint32_t ServerComponentImpl::OurSender::get_own_system_id() const
 {
     return _server_component_impl.get_own_system_id();
 }

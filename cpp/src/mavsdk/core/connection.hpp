@@ -36,7 +36,7 @@ public:
     // Send raw bytes for forwarding unknown messages
     virtual std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) = 0;
 
-    bool has_system_id(uint8_t system_id);
+    bool has_system_id(uint32_t system_id);
     bool should_forward_messages() const;
     static unsigned forwarding_connections_count();
 
@@ -71,7 +71,7 @@ protected:
     mutable std::mutex _libmav_receiver_mutex;
     ForwardingOption _forwarding_option;
     std::mutex _system_ids_mutex;
-    std::unordered_set<uint8_t> _system_ids;
+    std::unordered_set<uint32_t> _system_ids;
 
     bool _debugging = false;
 

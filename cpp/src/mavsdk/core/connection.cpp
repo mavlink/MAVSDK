@@ -124,7 +124,7 @@ unsigned Connection::forwarding_connections_count()
     return _forwarding_connections_count;
 }
 
-bool Connection::has_system_id(uint8_t system_id)
+bool Connection::has_system_id(uint32_t system_id)
 {
     std::lock_guard<std::mutex> lock(_system_ids_mutex);
     return _system_ids.find(system_id) != _system_ids.end();

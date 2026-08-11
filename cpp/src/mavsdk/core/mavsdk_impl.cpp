@@ -386,7 +386,7 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
     // See https://mavlink.io/en/guide/routing.html
 
     bool forward_heartbeats_enabled = true;
-    const uint8_t target_system_id = get_target_system_id(message);
+    const uint32_t target_system_id = get_target_system_id(message);
     const uint8_t target_component_id = get_target_component_id(message);
 
     // If it's a message only for us, we keep it, otherwise, we forward it.
@@ -860,20 +860,27 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         json_message.system_id = message.sysid;
         json_message.component_id = message.compid;
 
-        // Extract target_system and target_component if present
-        uint8_t target_system_id = 0;
-        uint8_t target_component_id = 0;
-        if (libmav_msg_opt.value().get("target_system", target_system_id) ==
-            mav::MessageResult::Success) {
-            json_message.target_system_id = target_system_id;
+        // A target that doesn't fit in 8 bits is carried in the extended
+        // header, where the payload's target_system reads as 0.
+        if (libmav_msg_opt.value().header().isTargetted()) {
+            json_message.target_system_id = libmav_msg_opt.value().extendedTargetSystemId();
+            json_message.target_component_id = libmav_msg_opt.value().extendedTargetComponentId();
         } else {
-            json_message.target_system_id = 0;
-        }
-        if (libmav_msg_opt.value().get("target_component", target_component_id) ==
-            mav::MessageResult::Success) {
-            json_message.target_component_id = target_component_id;
-        } else {
-            json_message.target_component_id = 0;
+            // Extract target_system and target_component if present
+            uint8_t target_system_id = 0;
+            uint8_t target_component_id = 0;
+            if (libmav_msg_opt.value().get("target_system", target_system_id) ==
+                mav::MessageResult::Success) {
+                json_message.target_system_id = target_system_id;
+            } else {
+                json_message.target_system_id = 0;
+            }
+            if (libmav_msg_opt.value().get("target_component", target_component_id) ==
+                mav::MessageResult::Success) {
+                json_message.target_component_id = target_component_id;
+            } else {
+                json_message.target_component_id = 0;
+            }
         }
 
         // Generate JSON using LibmavReceiver's public method.
@@ -913,7 +920,7 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
 
     uint8_t successful_emissions = 0;
     for (auto& _connection : _connections) {
-        const uint8_t target_system_id = get_target_system_id(message);
+        const uint32_t target_system_id = get_target_system_id(message);
 
         if (target_system_id != 0 && !(*_connection.connection).has_system_id(target_system_id)) {
             continue;
@@ -1249,7 +1256,7 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
     }
 }
 
-uint8_t MavsdkImpl::get_own_system_id() const
+uint32_t MavsdkImpl::get_own_system_id() const
 {
     return _our_system_id;
 }
@@ -1325,7 +1332,7 @@ uint8_t MavsdkImpl::mav_type_for_component_type(ComponentType component_type)
     }
 }
 
-void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
+void MavsdkImpl::make_system_with_component(uint32_t system_id, uint8_t comp_id)
 {
     // Needs _systems_lock
 
@@ -1794,8 +1801,17 @@ void MavsdkImpl::unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle han
     _connections_errors_subscriptions.unsubscribe(handle);
 }
 
-uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
+uint32_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
 {
+#ifdef MAVLINK_IFLAG_TARGETTED
+    // A target that doesn't fit in 8 bits travels in the extended header, and
+    // the payload field then reads as 0. Checking the payload first would
+    // report a broadcast and route the message to everyone.
+    if (message.incompat_flags & MAVLINK_IFLAG_TARGETTED) {
+        return message.target_sysid;
+    }
+#endif
+
     // Checks whether connection knows target system ID by extracting target system if set.
     const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
 
@@ -1809,11 +1825,21 @@ uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
         return 0;
     }
 
-    return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+    // _MAV_PAYLOAD hands back a char*, which is signed on most platforms, so
+    // a target above 127 would sign extend into the wider return type.
+    return static_cast<uint8_t>((_MAV_PAYLOAD(&message))[meta->target_system_ofs]);
 }
 
 uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
 {
+#ifdef MAVLINK_IFLAG_TARGETTED
+    // See get_target_system_id(): with an extended header the target component
+    // is carried alongside the target system rather than in the payload.
+    if (message.incompat_flags & MAVLINK_IFLAG_TARGETTED) {
+        return message.target_compid;
+    }
+#endif
+
     // Checks whether connection knows target system ID by extracting target system if set.
     const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
 
@@ -1827,7 +1853,7 @@ uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
         return 0;
     }
 
-    return (_MAV_PAYLOAD(&message))[meta->target_component_ofs];
+    return static_cast<uint8_t>((_MAV_PAYLOAD(&message))[meta->target_component_ofs]);
 }
 
 Sender& MavsdkImpl::sender()

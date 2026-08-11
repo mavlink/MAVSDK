@@ -142,18 +142,25 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
         _last_message.raw_bytes.clear();
     }
 
-    // Extract target_system and target_component if present in message fields
-    uint8_t target_system_id = 0;
-    uint8_t target_component_id = 0;
-    if (message.get("target_system", target_system_id) == mav::MessageResult::Success) {
-        _last_message.target_system_id = target_system_id;
+    // A target that doesn't fit in 8 bits is carried in the extended header,
+    // and the payload's target_system then reads as 0, so the header wins.
+    if (header.isTargetted()) {
+        _last_message.target_system_id = message.extendedTargetSystemId();
+        _last_message.target_component_id = message.extendedTargetComponentId();
     } else {
-        _last_message.target_system_id = 0;
-    }
-    if (message.get("target_component", target_component_id) == mav::MessageResult::Success) {
-        _last_message.target_component_id = target_component_id;
-    } else {
-        _last_message.target_component_id = 0;
+        // Extract target_system and target_component if present in message fields
+        uint8_t target_system_id = 0;
+        uint8_t target_component_id = 0;
+        if (message.get("target_system", target_system_id) == mav::MessageResult::Success) {
+            _last_message.target_system_id = target_system_id;
+        } else {
+            _last_message.target_system_id = 0;
+        }
+        if (message.get("target_component", target_component_id) == mav::MessageResult::Success) {
+            _last_message.target_component_id = target_component_id;
+        } else {
+            _last_message.target_component_id = 0;
+        }
     }
 
     _last_message.fields_json = json;

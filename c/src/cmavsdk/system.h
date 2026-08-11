@@ -26,7 +26,7 @@ CMAVSDK_EXPORT bool mavsdk_system_is_standalone(mavsdk_system_t system);
 CMAVSDK_EXPORT bool mavsdk_system_has_camera(mavsdk_system_t system, int camera_id);
 CMAVSDK_EXPORT bool mavsdk_system_has_gimbal(mavsdk_system_t system);
 CMAVSDK_EXPORT bool mavsdk_system_is_connected(mavsdk_system_t system);
-CMAVSDK_EXPORT uint8_t mavsdk_system_get_system_id(mavsdk_system_t system);
+CMAVSDK_EXPORT uint32_t mavsdk_system_get_system_id(mavsdk_system_t system);
 
 /**
  * @brief Get all component IDs.

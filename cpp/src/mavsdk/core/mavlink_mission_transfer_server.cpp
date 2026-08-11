@@ -147,7 +147,7 @@ MavlinkMissionTransferServer::ReceiveIncomingMission::ReceiveIncomingMission(
     double timeout_s,
     ResultAndItemsCallback callback,
     uint32_t mission_count,
-    uint8_t target_system_id,
+    uint32_t target_system_id,
     uint8_t target_component_id,
     bool debugging) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
@@ -346,7 +346,7 @@ MavlinkMissionTransferServer::SendOutgoingMission::SendOutgoingMission(
     const std::vector<ItemInt>& items,
     double timeout_s,
     ResultCallback callback,
-    uint8_t target_system_id,
+    uint32_t target_system_id,
     uint8_t target_component_id,
     bool debugging) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),

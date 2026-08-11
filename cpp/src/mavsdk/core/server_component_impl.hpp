@@ -54,7 +54,7 @@ public:
         bool queue_message(
             std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
             override;
-        [[nodiscard]] uint8_t get_own_system_id() const override;
+        [[nodiscard]] uint32_t get_own_system_id() const override;
         [[nodiscard]] uint8_t get_own_component_id() const override;
         [[nodiscard]] CompatibilityMode compatibility_mode() const override;
         [[nodiscard]] asio::io_context& io_context() override;
@@ -119,7 +119,7 @@ public:
     void refresh_timeout_handler(TimeoutHandler::Cookie cookie);
     void unregister_timeout_handler(TimeoutHandler::Cookie cookie);
 
-    [[nodiscard]] uint8_t get_own_system_id() const;
+    [[nodiscard]] uint32_t get_own_system_id() const;
 
     void set_own_component_id(uint8_t own_component_id);
     [[nodiscard]] uint8_t get_own_component_id() const;
@@ -127,7 +127,7 @@ public:
     Time& get_time();
 
     bool send_message(mavlink_message_t& message);
-    bool send_command_ack(mavlink_command_ack_t& command_ack);
+    bool send_command_ack(mavlink_command_ack_t& command_ack, uint32_t target_system_id = 0);
 
     bool queue_message(
         std::function<mavlink_message_t(MavlinkAddress mavlink_addres, uint8_t channel)> fun);
