@@ -8,6 +8,7 @@ add_executable(system_tests_runner
     camera_storage.cpp
     camera_list_cameras.cpp
     camera_video_stream.cpp
+    camera_zoom_focus.cpp
     component_metadata.cpp
     action_arm_disarm.cpp
     param_set_and_get.cpp
