@@ -271,6 +271,105 @@ CameraServer::Result CameraServer::respond_zoom_range(CameraFeedback zoom_range_
     return _impl->respond_zoom_range(zoom_range_feedback);
 }
 
+CameraServer::FocusInStepHandle
+CameraServer::subscribe_focus_in_step(const FocusInStepCallback& callback)
+{
+    return _impl->subscribe_focus_in_step(callback);
+}
+
+void CameraServer::unsubscribe_focus_in_step(FocusInStepHandle handle)
+{
+    _impl->unsubscribe_focus_in_step(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_focus_in_step(CameraFeedback focus_in_step_feedback) const
+{
+    return _impl->respond_focus_in_step(focus_in_step_feedback);
+}
+
+CameraServer::FocusOutStepHandle
+CameraServer::subscribe_focus_out_step(const FocusOutStepCallback& callback)
+{
+    return _impl->subscribe_focus_out_step(callback);
+}
+
+void CameraServer::unsubscribe_focus_out_step(FocusOutStepHandle handle)
+{
+    _impl->unsubscribe_focus_out_step(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_focus_out_step(CameraFeedback focus_out_step_feedback) const
+{
+    return _impl->respond_focus_out_step(focus_out_step_feedback);
+}
+
+CameraServer::FocusInStartHandle
+CameraServer::subscribe_focus_in_start(const FocusInStartCallback& callback)
+{
+    return _impl->subscribe_focus_in_start(callback);
+}
+
+void CameraServer::unsubscribe_focus_in_start(FocusInStartHandle handle)
+{
+    _impl->unsubscribe_focus_in_start(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_focus_in_start(CameraFeedback focus_in_start_feedback) const
+{
+    return _impl->respond_focus_in_start(focus_in_start_feedback);
+}
+
+CameraServer::FocusOutStartHandle
+CameraServer::subscribe_focus_out_start(const FocusOutStartCallback& callback)
+{
+    return _impl->subscribe_focus_out_start(callback);
+}
+
+void CameraServer::unsubscribe_focus_out_start(FocusOutStartHandle handle)
+{
+    _impl->unsubscribe_focus_out_start(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_focus_out_start(CameraFeedback focus_out_start_feedback) const
+{
+    return _impl->respond_focus_out_start(focus_out_start_feedback);
+}
+
+CameraServer::FocusStopHandle CameraServer::subscribe_focus_stop(const FocusStopCallback& callback)
+{
+    return _impl->subscribe_focus_stop(callback);
+}
+
+void CameraServer::unsubscribe_focus_stop(FocusStopHandle handle)
+{
+    _impl->unsubscribe_focus_stop(handle);
+}
+
+CameraServer::Result CameraServer::respond_focus_stop(CameraFeedback focus_stop_feedback) const
+{
+    return _impl->respond_focus_stop(focus_stop_feedback);
+}
+
+CameraServer::FocusRangeHandle
+CameraServer::subscribe_focus_range(const FocusRangeCallback& callback)
+{
+    return _impl->subscribe_focus_range(callback);
+}
+
+void CameraServer::unsubscribe_focus_range(FocusRangeHandle handle)
+{
+    _impl->unsubscribe_focus_range(handle);
+}
+
+CameraServer::Result CameraServer::respond_focus_range(CameraFeedback focus_range_feedback) const
+{
+    return _impl->respond_focus_range(focus_range_feedback);
+}
+
 void CameraServer::set_tracking_rectangle_status(TrackRectangle tracked_rectangle) const
 {
     _impl->set_tracking_rectangle_status(tracked_rectangle);

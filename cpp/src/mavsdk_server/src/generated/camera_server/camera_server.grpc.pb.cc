@@ -55,6 +55,18 @@ static const char* CameraServerService_method_names[] = {
   "/mavsdk.rpc.camera_server.CameraServerService/RespondZoomStop",
   "/mavsdk.rpc.camera_server.CameraServerService/SubscribeZoomRange",
   "/mavsdk.rpc.camera_server.CameraServerService/RespondZoomRange",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeFocusInStep",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondFocusInStep",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeFocusOutStep",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondFocusOutStep",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeFocusInStart",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondFocusInStart",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeFocusOutStart",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondFocusOutStart",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeFocusStop",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondFocusStop",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeFocusRange",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondFocusRange",
   "/mavsdk.rpc.camera_server.CameraServerService/SetTrackingRectangleStatus",
   "/mavsdk.rpc.camera_server.CameraServerService/SetTrackingOffStatus",
   "/mavsdk.rpc.camera_server.CameraServerService/SubscribeTrackingPointCommand",
@@ -107,18 +119,30 @@ CameraServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>
   , rpcmethod_RespondZoomStop_(CameraServerService_method_names[28], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeZoomRange_(CameraServerService_method_names[29], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_RespondZoomRange_(CameraServerService_method_names[30], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetTrackingRectangleStatus_(CameraServerService_method_names[31], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetTrackingOffStatus_(CameraServerService_method_names[32], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeTrackingPointCommand_(CameraServerService_method_names[33], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeTrackingRectangleCommand_(CameraServerService_method_names[34], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeTrackingOffCommand_(CameraServerService_method_names[35], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondTrackingPointCommand_(CameraServerService_method_names[36], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_RespondTrackingRectangleCommand_(CameraServerService_method_names[37], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_RespondTrackingOffCommand_(CameraServerService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetPosition_(CameraServerService_method_names[39], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetAttitudeQuaternion_(CameraServerService_method_names[40], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetZoomFactor_(CameraServerService_method_names[41], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetFieldOfView_(CameraServerService_method_names[42], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeFocusInStep_(CameraServerService_method_names[31], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondFocusInStep_(CameraServerService_method_names[32], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeFocusOutStep_(CameraServerService_method_names[33], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondFocusOutStep_(CameraServerService_method_names[34], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeFocusInStart_(CameraServerService_method_names[35], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondFocusInStart_(CameraServerService_method_names[36], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeFocusOutStart_(CameraServerService_method_names[37], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondFocusOutStart_(CameraServerService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeFocusStop_(CameraServerService_method_names[39], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondFocusStop_(CameraServerService_method_names[40], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeFocusRange_(CameraServerService_method_names[41], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondFocusRange_(CameraServerService_method_names[42], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTrackingRectangleStatus_(CameraServerService_method_names[43], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTrackingOffStatus_(CameraServerService_method_names[44], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeTrackingPointCommand_(CameraServerService_method_names[45], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTrackingRectangleCommand_(CameraServerService_method_names[46], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTrackingOffCommand_(CameraServerService_method_names[47], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondTrackingPointCommand_(CameraServerService_method_names[48], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTrackingRectangleCommand_(CameraServerService_method_names[49], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTrackingOffCommand_(CameraServerService_method_names[50], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetPosition_(CameraServerService_method_names[51], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetAttitudeQuaternion_(CameraServerService_method_names[52], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetZoomFactor_(CameraServerService_method_names[53], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetFieldOfView_(CameraServerService_method_names[54], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraServerService::Stub::SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::mavsdk::rpc::camera_server::SetInformationResponse* response) {
@@ -736,6 +760,240 @@ void CameraServerService::Stub::async::RespondZoomRange(::grpc::ClientContext* c
   return result;
 }
 
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::FocusInStepResponse>* CameraServerService::Stub::SubscribeFocusInStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStepRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::FocusInStepResponse>::Create(channel_.get(), rpcmethod_SubscribeFocusInStep_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeFocusInStep(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStepRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::FocusInStepResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::FocusInStepResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFocusInStep_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusInStepResponse>* CameraServerService::Stub::AsyncSubscribeFocusInStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStepRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusInStepResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusInStep_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusInStepResponse>* CameraServerService::Stub::PrepareAsyncSubscribeFocusInStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStepRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusInStepResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusInStep_, context, request, false, nullptr);
+}
+
+::grpc::Status CameraServerService::Stub::RespondFocusInStep(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStepRequest& request, ::mavsdk::rpc::camera_server::RespondFocusInStepResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusInStepRequest, ::mavsdk::rpc::camera_server::RespondFocusInStepResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondFocusInStep_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondFocusInStep(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStepRequest* request, ::mavsdk::rpc::camera_server::RespondFocusInStepResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusInStepRequest, ::mavsdk::rpc::camera_server::RespondFocusInStepResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusInStep_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondFocusInStep(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStepRequest* request, ::mavsdk::rpc::camera_server::RespondFocusInStepResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusInStep_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusInStepResponse>* CameraServerService::Stub::PrepareAsyncRespondFocusInStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStepRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondFocusInStepResponse, ::mavsdk::rpc::camera_server::RespondFocusInStepRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondFocusInStep_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusInStepResponse>* CameraServerService::Stub::AsyncRespondFocusInStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStepRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondFocusInStepRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::FocusOutStepResponse>* CameraServerService::Stub::SubscribeFocusOutStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStepRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::FocusOutStepResponse>::Create(channel_.get(), rpcmethod_SubscribeFocusOutStep_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeFocusOutStep(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStepRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::FocusOutStepResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::FocusOutStepResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFocusOutStep_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusOutStepResponse>* CameraServerService::Stub::AsyncSubscribeFocusOutStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStepRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusOutStepResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusOutStep_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusOutStepResponse>* CameraServerService::Stub::PrepareAsyncSubscribeFocusOutStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStepRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusOutStepResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusOutStep_, context, request, false, nullptr);
+}
+
+::grpc::Status CameraServerService::Stub::RespondFocusOutStep(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest& request, ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest, ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondFocusOutStep_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondFocusOutStep(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest* request, ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest, ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusOutStep_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondFocusOutStep(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest* request, ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusOutStep_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse>* CameraServerService::Stub::PrepareAsyncRespondFocusOutStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse, ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondFocusOutStep_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse>* CameraServerService::Stub::AsyncRespondFocusOutStepRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondFocusOutStepRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::FocusInStartResponse>* CameraServerService::Stub::SubscribeFocusInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStartRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::FocusInStartResponse>::Create(channel_.get(), rpcmethod_SubscribeFocusInStart_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeFocusInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStartRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::FocusInStartResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::FocusInStartResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFocusInStart_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusInStartResponse>* CameraServerService::Stub::AsyncSubscribeFocusInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusInStartResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusInStart_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusInStartResponse>* CameraServerService::Stub::PrepareAsyncSubscribeFocusInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStartRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusInStartResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusInStart_, context, request, false, nullptr);
+}
+
+::grpc::Status CameraServerService::Stub::RespondFocusInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStartRequest& request, ::mavsdk::rpc::camera_server::RespondFocusInStartResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusInStartRequest, ::mavsdk::rpc::camera_server::RespondFocusInStartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondFocusInStart_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondFocusInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStartRequest* request, ::mavsdk::rpc::camera_server::RespondFocusInStartResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusInStartRequest, ::mavsdk::rpc::camera_server::RespondFocusInStartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusInStart_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondFocusInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStartRequest* request, ::mavsdk::rpc::camera_server::RespondFocusInStartResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusInStart_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusInStartResponse>* CameraServerService::Stub::PrepareAsyncRespondFocusInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStartRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondFocusInStartResponse, ::mavsdk::rpc::camera_server::RespondFocusInStartRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondFocusInStart_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusInStartResponse>* CameraServerService::Stub::AsyncRespondFocusInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStartRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondFocusInStartRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::FocusOutStartResponse>* CameraServerService::Stub::SubscribeFocusOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStartRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::FocusOutStartResponse>::Create(channel_.get(), rpcmethod_SubscribeFocusOutStart_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeFocusOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStartRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::FocusOutStartResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::FocusOutStartResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFocusOutStart_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusOutStartResponse>* CameraServerService::Stub::AsyncSubscribeFocusOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusOutStartResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusOutStart_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusOutStartResponse>* CameraServerService::Stub::PrepareAsyncSubscribeFocusOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusOutStartResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusOutStart_, context, request, false, nullptr);
+}
+
+::grpc::Status CameraServerService::Stub::RespondFocusOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest& request, ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest, ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondFocusOutStart_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondFocusOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest, ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusOutStart_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondFocusOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusOutStart_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse>* CameraServerService::Stub::PrepareAsyncRespondFocusOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse, ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondFocusOutStart_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse>* CameraServerService::Stub::AsyncRespondFocusOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondFocusOutStartRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::FocusStopResponse>* CameraServerService::Stub::SubscribeFocusStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusStopRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::FocusStopResponse>::Create(channel_.get(), rpcmethod_SubscribeFocusStop_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeFocusStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusStopRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::FocusStopResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::FocusStopResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFocusStop_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusStopResponse>* CameraServerService::Stub::AsyncSubscribeFocusStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusStopRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusStopResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusStop_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusStopResponse>* CameraServerService::Stub::PrepareAsyncSubscribeFocusStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusStopRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusStopResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusStop_, context, request, false, nullptr);
+}
+
+::grpc::Status CameraServerService::Stub::RespondFocusStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusStopRequest& request, ::mavsdk::rpc::camera_server::RespondFocusStopResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusStopRequest, ::mavsdk::rpc::camera_server::RespondFocusStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondFocusStop_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondFocusStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusStopRequest* request, ::mavsdk::rpc::camera_server::RespondFocusStopResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusStopRequest, ::mavsdk::rpc::camera_server::RespondFocusStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusStop_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondFocusStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusStopRequest* request, ::mavsdk::rpc::camera_server::RespondFocusStopResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusStop_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusStopResponse>* CameraServerService::Stub::PrepareAsyncRespondFocusStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusStopRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondFocusStopResponse, ::mavsdk::rpc::camera_server::RespondFocusStopRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondFocusStop_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusStopResponse>* CameraServerService::Stub::AsyncRespondFocusStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusStopRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondFocusStopRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::FocusRangeResponse>* CameraServerService::Stub::SubscribeFocusRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusRangeRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::FocusRangeResponse>::Create(channel_.get(), rpcmethod_SubscribeFocusRange_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeFocusRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusRangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::FocusRangeResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::FocusRangeResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFocusRange_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusRangeResponse>* CameraServerService::Stub::AsyncSubscribeFocusRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusRangeRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusRangeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusRange_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::FocusRangeResponse>* CameraServerService::Stub::PrepareAsyncSubscribeFocusRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusRangeRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::FocusRangeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFocusRange_, context, request, false, nullptr);
+}
+
+::grpc::Status CameraServerService::Stub::RespondFocusRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusRangeRequest& request, ::mavsdk::rpc::camera_server::RespondFocusRangeResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusRangeRequest, ::mavsdk::rpc::camera_server::RespondFocusRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondFocusRange_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondFocusRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusRangeRequest* request, ::mavsdk::rpc::camera_server::RespondFocusRangeResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondFocusRangeRequest, ::mavsdk::rpc::camera_server::RespondFocusRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusRange_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondFocusRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusRangeRequest* request, ::mavsdk::rpc::camera_server::RespondFocusRangeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondFocusRange_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusRangeResponse>* CameraServerService::Stub::PrepareAsyncRespondFocusRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusRangeRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondFocusRangeResponse, ::mavsdk::rpc::camera_server::RespondFocusRangeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondFocusRange_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondFocusRangeResponse>* CameraServerService::Stub::AsyncRespondFocusRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondFocusRangeRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondFocusRangeRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ::grpc::Status CameraServerService::Stub::SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetTrackingRectangleStatus_, context, request, response);
 }
@@ -1304,6 +1562,126 @@ CameraServerService::Service::Service() {
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraServerService_method_names[31],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeFocusInStepRequest, ::mavsdk::rpc::camera_server::FocusInStepResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeFocusInStepRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::FocusInStepResponse>* writer) {
+               return service->SubscribeFocusInStep(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[32],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondFocusInStepRequest, ::mavsdk::rpc::camera_server::RespondFocusInStepResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondFocusInStepRequest* req,
+             ::mavsdk::rpc::camera_server::RespondFocusInStepResponse* resp) {
+               return service->RespondFocusInStep(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[33],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeFocusOutStepRequest, ::mavsdk::rpc::camera_server::FocusOutStepResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeFocusOutStepRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::FocusOutStepResponse>* writer) {
+               return service->SubscribeFocusOutStep(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[34],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest, ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest* req,
+             ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse* resp) {
+               return service->RespondFocusOutStep(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[35],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeFocusInStartRequest, ::mavsdk::rpc::camera_server::FocusInStartResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeFocusInStartRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::FocusInStartResponse>* writer) {
+               return service->SubscribeFocusInStart(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[36],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondFocusInStartRequest, ::mavsdk::rpc::camera_server::RespondFocusInStartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondFocusInStartRequest* req,
+             ::mavsdk::rpc::camera_server::RespondFocusInStartResponse* resp) {
+               return service->RespondFocusInStart(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[37],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeFocusOutStartRequest, ::mavsdk::rpc::camera_server::FocusOutStartResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeFocusOutStartRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::FocusOutStartResponse>* writer) {
+               return service->SubscribeFocusOutStart(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[38],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest, ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest* req,
+             ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse* resp) {
+               return service->RespondFocusOutStart(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[39],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeFocusStopRequest, ::mavsdk::rpc::camera_server::FocusStopResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeFocusStopRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::FocusStopResponse>* writer) {
+               return service->SubscribeFocusStop(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[40],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondFocusStopRequest, ::mavsdk::rpc::camera_server::RespondFocusStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondFocusStopRequest* req,
+             ::mavsdk::rpc::camera_server::RespondFocusStopResponse* resp) {
+               return service->RespondFocusStop(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[41],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeFocusRangeRequest, ::mavsdk::rpc::camera_server::FocusRangeResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeFocusRangeRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::FocusRangeResponse>* writer) {
+               return service->SubscribeFocusRange(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[42],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondFocusRangeRequest, ::mavsdk::rpc::camera_server::RespondFocusRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondFocusRangeRequest* req,
+             ::mavsdk::rpc::camera_server::RespondFocusRangeResponse* resp) {
+               return service->RespondFocusRange(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[43],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1313,7 +1691,7 @@ CameraServerService::Service::Service() {
                return service->SetTrackingRectangleStatus(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[32],
+      CameraServerService_method_names[44],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1323,7 +1701,7 @@ CameraServerService::Service::Service() {
                return service->SetTrackingOffStatus(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[33],
+      CameraServerService_method_names[45],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>(
           [](CameraServerService::Service* service,
@@ -1333,7 +1711,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeTrackingPointCommand(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[34],
+      CameraServerService_method_names[46],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>(
           [](CameraServerService::Service* service,
@@ -1343,7 +1721,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeTrackingRectangleCommand(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[35],
+      CameraServerService_method_names[47],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>(
           [](CameraServerService::Service* service,
@@ -1353,7 +1731,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeTrackingOffCommand(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[36],
+      CameraServerService_method_names[48],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1363,7 +1741,7 @@ CameraServerService::Service::Service() {
                return service->RespondTrackingPointCommand(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[37],
+      CameraServerService_method_names[49],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1373,7 +1751,7 @@ CameraServerService::Service::Service() {
                return service->RespondTrackingRectangleCommand(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[38],
+      CameraServerService_method_names[50],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1383,7 +1761,7 @@ CameraServerService::Service::Service() {
                return service->RespondTrackingOffCommand(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[39],
+      CameraServerService_method_names[51],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetPositionRequest, ::mavsdk::rpc::camera_server::SetPositionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1393,7 +1771,7 @@ CameraServerService::Service::Service() {
                return service->SetPosition(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[40],
+      CameraServerService_method_names[52],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1403,7 +1781,7 @@ CameraServerService::Service::Service() {
                return service->SetAttitudeQuaternion(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[41],
+      CameraServerService_method_names[53],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1413,7 +1791,7 @@ CameraServerService::Service::Service() {
                return service->SetZoomFactor(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[42],
+      CameraServerService_method_names[54],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1638,6 +2016,90 @@ CameraServerService::Service::~Service() {
 }
 
 ::grpc::Status CameraServerService::Service::RespondZoomRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeFocusInStep(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStepRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::FocusInStepResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondFocusInStep(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStepRequest* request, ::mavsdk::rpc::camera_server::RespondFocusInStepResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeFocusOutStep(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStepRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::FocusOutStepResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondFocusOutStep(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStepRequest* request, ::mavsdk::rpc::camera_server::RespondFocusOutStepResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeFocusInStart(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusInStartRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::FocusInStartResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondFocusInStart(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondFocusInStartRequest* request, ::mavsdk::rpc::camera_server::RespondFocusInStartResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeFocusOutStart(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusOutStartRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::FocusOutStartResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondFocusOutStart(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondFocusOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondFocusOutStartResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeFocusStop(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusStopRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::FocusStopResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondFocusStop(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondFocusStopRequest* request, ::mavsdk::rpc::camera_server::RespondFocusStopResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeFocusRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeFocusRangeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::FocusRangeResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondFocusRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondFocusRangeRequest* request, ::mavsdk::rpc::camera_server::RespondFocusRangeResponse* response) {
   (void) context;
   (void) request;
   (void) response;

@@ -1192,6 +1192,276 @@ public:
 
 
 
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_in_step.
+     */
+    using FocusInStepCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_in_step.
+     */
+    using FocusInStepHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to focus in step command.
+     */
+    FocusInStepHandle subscribe_focus_in_step(const FocusInStepCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_in_step
+     */
+    void unsubscribe_focus_in_step(FocusInStepHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus in step.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_in_step(CameraFeedback focus_in_step_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_out_step.
+     */
+    using FocusOutStepCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_out_step.
+     */
+    using FocusOutStepHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to focus out step command.
+     */
+    FocusOutStepHandle subscribe_focus_out_step(const FocusOutStepCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_out_step
+     */
+    void unsubscribe_focus_out_step(FocusOutStepHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus out step.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_out_step(CameraFeedback focus_out_step_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_in_start.
+     */
+    using FocusInStartCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_in_start.
+     */
+    using FocusInStartHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to focus in start command.
+     */
+    FocusInStartHandle subscribe_focus_in_start(const FocusInStartCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_in_start
+     */
+    void unsubscribe_focus_in_start(FocusInStartHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus in start.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_in_start(CameraFeedback focus_in_start_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_out_start.
+     */
+    using FocusOutStartCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_out_start.
+     */
+    using FocusOutStartHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to focus out start command.
+     */
+    FocusOutStartHandle subscribe_focus_out_start(const FocusOutStartCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_out_start
+     */
+    void unsubscribe_focus_out_start(FocusOutStartHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus out start.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_out_start(CameraFeedback focus_out_start_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_stop.
+     */
+    using FocusStopCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_stop.
+     */
+    using FocusStopHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to focus stop command.
+     */
+    FocusStopHandle subscribe_focus_stop(const FocusStopCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_stop
+     */
+    void unsubscribe_focus_stop(FocusStopHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus stop.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_stop(CameraFeedback focus_stop_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_range.
+     */
+    using FocusRangeCallback = std::function<void(float)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_range.
+     */
+    using FocusRangeHandle = Handle<float>;
+
+    /**
+     * @brief Subscribe to focus range command.
+     */
+    FocusRangeHandle subscribe_focus_range(const FocusRangeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_range
+     */
+    void unsubscribe_focus_range(FocusRangeHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus range.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_range(CameraFeedback focus_range_feedback) const;
+
+
+
+
 
 
     /**

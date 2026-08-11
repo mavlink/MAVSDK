@@ -104,6 +104,40 @@ public:
     subscribe_zoom_range(const CameraServer::ZoomRangeCallback& callback);
     void unsubscribe_zoom_range(CameraServer::ZoomRangeHandle handle);
     CameraServer::Result respond_zoom_range(CameraServer::CameraFeedback zoom_range_feedback);
+
+    CameraServer::FocusInStepHandle
+    subscribe_focus_in_step(const CameraServer::FocusInStepCallback& callback);
+    void unsubscribe_focus_in_step(CameraServer::FocusInStepHandle handle);
+    CameraServer::Result respond_focus_in_step(CameraServer::CameraFeedback focus_in_step_feedback);
+    
+    CameraServer::FocusOutStepHandle
+    subscribe_focus_out_step(const CameraServer::FocusOutStepCallback& callback);
+    void unsubscribe_focus_out_step(CameraServer::FocusOutStepHandle handle);
+    CameraServer::Result
+    respond_focus_out_step(CameraServer::CameraFeedback focus_out_step_feedback);
+
+    CameraServer::FocusInStartHandle
+    subscribe_focus_in_start(const CameraServer::FocusInStartCallback& callback);
+    void unsubscribe_focus_in_start(CameraServer::FocusInStartHandle handle);
+    CameraServer::Result
+    respond_focus_in_start(CameraServer::CameraFeedback focus_in_start_feedback);
+
+    CameraServer::FocusOutStartHandle
+    subscribe_focus_out_start(const CameraServer::FocusOutStartCallback& callback);
+    void unsubscribe_focus_out_start(CameraServer::FocusOutStartHandle handle);
+    CameraServer::Result
+    respond_focus_out_start(CameraServer::CameraFeedback focus_out_start_feedback);
+
+    CameraServer::FocusStopHandle
+    subscribe_focus_stop(const CameraServer::FocusStopCallback& callback);
+    void unsubscribe_focus_stop(CameraServer::FocusStopHandle handle);
+    CameraServer::Result respond_focus_stop(CameraServer::CameraFeedback focus_stop_feedback);
+
+    CameraServer::FocusRangeHandle
+    subscribe_focus_range(const CameraServer::FocusRangeCallback& callback);
+    void unsubscribe_focus_range(CameraServer::FocusRangeHandle handle);
+    CameraServer::Result respond_focus_range(CameraServer::CameraFeedback focus_range_feedback);
+
     CameraServer::TrackingPointCommandHandle
     subscribe_tracking_point_command(const CameraServer::TrackingPointCommandCallback& callback);
     void unsubscribe_tracking_point_command(CameraServer::TrackingPointCommandHandle handle);
@@ -284,6 +318,20 @@ private:
     CallbackList<int32_t> _zoom_out_start_callbacks{_server_component_impl->io_context()};
     CallbackList<int32_t> _zoom_stop_callbacks{_server_component_impl->io_context()};
     CallbackList<float> _zoom_range_callbacks{_server_component_impl->io_context()};
+    
+    CallbackList<int32_t> _focus_in_step_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _focus_out_step_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _focus_in_start_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _focus_out_start_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _focus_stop_callbacks{_server_component_impl->io_context()};
+    CallbackList<float> _focus_range_callbacks{_server_component_impl->io_context()};
+    
+    MavlinkCommandReceiver::CommandLong _last_focus_in_step_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_out_step_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_in_start_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_out_start_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_stop_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_range_command;
 
     MavlinkCommandReceiver::CommandLong _last_zoom_in_start_command;
     MavlinkCommandReceiver::CommandLong _last_zoom_out_start_command;
