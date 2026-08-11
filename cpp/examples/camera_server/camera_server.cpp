@@ -178,4 +178,54 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
         std::cout << "reset camera settings" << std::endl;
         camera_server.respond_reset_settings(mavsdk::CameraServer::CameraFeedback::Ok);
     });
+
+    camera_server.subscribe_zoom_in_start([&camera_server](int camera_id) {
+        std::cout << "Zoom in start" << std::endl;
+        camera_server.respond_zoom_in_start(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_zoom_out_start([&camera_server](int camera_id) {
+        std::cout << "Zoom out start" << std::endl;
+        camera_server.respond_zoom_out_start(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_zoom_stop([&camera_server](int camera_id) {
+        std::cout << "Zoom stop" << std::endl;
+        camera_server.respond_zoom_stop(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_zoom_range([&camera_server](float zoom_level) {
+        std::cout << "Zoom range requested: " << zoom_level << "%" << std::endl;
+        camera_server.respond_zoom_range(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_in_step([&camera_server](int camera_id) {
+        std::cout << "Focus in step" << std::endl;
+        camera_server.respond_focus_in_step(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_out_step([&camera_server](int camera_id) {
+        std::cout << "Focus out step" << std::endl;
+        camera_server.respond_focus_out_step(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_in_start([&camera_server](int camera_id) {
+        std::cout << "Focus in start" << std::endl;
+        camera_server.respond_focus_in_start(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_out_start([&camera_server](int camera_id) {
+        std::cout << "Focus out start" << std::endl;
+        camera_server.respond_focus_out_start(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_stop([&camera_server](int camera_id) {
+        std::cout << "Focus stop" << std::endl;
+        camera_server.respond_focus_stop(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_range([&camera_server](float focus_level) {
+        std::cout << "Focus range requested: " << focus_level << "%" << std::endl;
+        camera_server.respond_focus_range(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
 }
