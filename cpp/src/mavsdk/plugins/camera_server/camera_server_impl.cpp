@@ -1746,27 +1746,28 @@ CameraServerImpl::process_set_camera_focus(const MavlinkCommandReceiver::Command
 
     switch (focus_type) {
         case FOCUS_TYPE_STEP:
+            // Negative: In, Positive: Out
             if (focus_value == -1.f) {
-                if (_focus_out_step_callbacks.empty()) {
-                    unsupported();
-                    return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
-                } else {
-                    _last_focus_out_step_command = command;
-                    int dummy = 0;
-                    _focus_out_step_callbacks.queue(dummy, [this](const auto& func) {
-                        _server_component_impl->call_user_callback(func);
-                    });
-                }
-            } else if (focus_value == 1.f) {
                 if (_focus_in_step_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_focus_in_step_command = command;
                     int dummy = 0;
                     _focus_in_step_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
+                }
+            } else if (focus_value == 1.f) {
+                if (_focus_out_step_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+                } else {
+                    _last_focus_out_step_command = command;
+                    int dummy = 0;
+                    _focus_out_step_callbacks.queue(dummy, [this](const auto& func) {
                         _server_component_impl->call_user_callback(func);
                     });
                 }
@@ -1777,23 +1778,12 @@ CameraServerImpl::process_set_camera_focus(const MavlinkCommandReceiver::Command
             }
             break;
         case FOCUS_TYPE_CONTINUOUS:
+            // Negative: In, Positive: Out, 0: Stop
             if (focus_value == -1.f) {
-                if (_focus_out_start_callbacks.empty()) {
-                    unsupported();
-                    return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
-                } else {
-                    _last_focus_out_start_command = command;
-                    int dummy = 0;
-                    _focus_out_start_callbacks.queue(dummy, [this](const auto& func) {
-                        _server_component_impl->call_user_callback(func);
-                    });
-                }
-            } else if (focus_value == 1.f) {
                 if (_focus_in_start_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_focus_in_start_command = command;
                     int dummy = 0;
@@ -1801,11 +1791,23 @@ CameraServerImpl::process_set_camera_focus(const MavlinkCommandReceiver::Command
                         _server_component_impl->call_user_callback(func);
                     });
                 }
+            } else if (focus_value == 1.f) {
+                if (_focus_out_start_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+                } else {
+                    _last_focus_out_start_command = command;
+                    int dummy = 0;
+                    _focus_out_start_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
+                }
             } else if (focus_value == 0.f) {
                 if (_focus_stop_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_focus_stop_command = command;
                     int dummy = 0;
@@ -1823,7 +1825,7 @@ CameraServerImpl::process_set_camera_focus(const MavlinkCommandReceiver::Command
             if (_focus_range_callbacks.empty()) {
                 unsupported();
                 return _server_component_impl->make_command_ack_message(
-                    command, MAV_RESULT::MAV_RESULT_DENIED);
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
 
             } else {
                 if (focus_value < 0.0f || focus_value > 100.0f) {
@@ -1839,25 +1841,20 @@ CameraServerImpl::process_set_camera_focus(const MavlinkCommandReceiver::Command
             break;
         case FOCUS_TYPE_METERS:
             // Fallthrough
-            break;
         case FOCUS_TYPE_AUTO:
             // Fallthrough
-            break;
         case FOCUS_TYPE_AUTO_SINGLE:
             // Fallthrough
-            break;
         case FOCUS_TYPE_AUTO_CONTINUOUS:
             // Fallthrough
-            break;
         default:
             unsupported();
             return _server_component_impl->make_command_ack_message(
                 command, MAV_RESULT::MAV_RESULT_DENIED);
-            break;
     }
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    // For any success so far, we don't ack yet, but later when the respond function is called.
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>
