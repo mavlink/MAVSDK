@@ -615,6 +615,120 @@ class CameraServer internal constructor(private val native: CameraServerNative) 
         Result.fromValue(native.respondZoomRange(zoomRangeFeedback))
 
     /**
+     * Subscribe to focus in step command.
+     *
+     * @return reserved, just make protoc-gen-mavsdk working
+     */
+    fun subscribeFocusInStep(): Flow<Int> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusInStep() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusInStep(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus in step.
+     *
+     * @param focusInStepFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusInStep(focusInStepFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusInStep(focusInStepFeedback))
+
+    /**
+     * Subscribe to focus out step command.
+     *
+     * @return reserved, just make protoc-gen-mavsdk working
+     */
+    fun subscribeFocusOutStep(): Flow<Int> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusOutStep() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusOutStep(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus out step.
+     *
+     * @param focusOutStepFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusOutStep(focusOutStepFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusOutStep(focusOutStepFeedback))
+
+    /**
+     * Subscribe to focus in start command.
+     *
+     * @return reserved, just make protoc-gen-mavsdk working
+     */
+    fun subscribeFocusInStart(): Flow<Int> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusInStart() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusInStart(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus in start.
+     *
+     * @param focusInStartFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusInStart(focusInStartFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusInStart(focusInStartFeedback))
+
+    /**
+     * Subscribe to focus out start command.
+     *
+     * @return reserved, just make protoc-gen-mavsdk working
+     */
+    fun subscribeFocusOutStart(): Flow<Int> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusOutStart() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusOutStart(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus out start.
+     *
+     * @param focusOutStartFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusOutStart(focusOutStartFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusOutStart(focusOutStartFeedback))
+
+    /**
+     * Subscribe to focus stop command.
+     *
+     * @return reserved, just make protoc-gen-mavsdk working
+     */
+    fun subscribeFocusStop(): Flow<Int> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusStop() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusStop(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus stop.
+     *
+     * @param focusStopFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusStop(focusStopFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusStop(focusStopFeedback))
+
+    /**
+     * Subscribe to focus range command.
+     *
+     * @return The focus distance in meters.
+     */
+    fun subscribeFocusRange(): Flow<Float> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusRange() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusRange(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus range.
+     *
+     * @param focusRangeFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusRange(focusRangeFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusRange(focusRangeFeedback))
+
+    /**
      * Set/update the current rectangle tracking status.
      *
      * @param trackedRectangle The tracked rectangle
@@ -830,6 +944,42 @@ internal interface CameraServerNative {
     fun unsubscribeZoomRange(subscriptionHandle: Long)
 
     fun respondZoomRange(zoomRangeFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusInStep(callback: (Int) -> Unit): Long
+
+    fun unsubscribeFocusInStep(subscriptionHandle: Long)
+
+    fun respondFocusInStep(focusInStepFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusOutStep(callback: (Int) -> Unit): Long
+
+    fun unsubscribeFocusOutStep(subscriptionHandle: Long)
+
+    fun respondFocusOutStep(focusOutStepFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusInStart(callback: (Int) -> Unit): Long
+
+    fun unsubscribeFocusInStart(subscriptionHandle: Long)
+
+    fun respondFocusInStart(focusInStartFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusOutStart(callback: (Int) -> Unit): Long
+
+    fun unsubscribeFocusOutStart(subscriptionHandle: Long)
+
+    fun respondFocusOutStart(focusOutStartFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusStop(callback: (Int) -> Unit): Long
+
+    fun unsubscribeFocusStop(subscriptionHandle: Long)
+
+    fun respondFocusStop(focusStopFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusRange(callback: (Float) -> Unit): Long
+
+    fun unsubscribeFocusRange(subscriptionHandle: Long)
+
+    fun respondFocusRange(focusRangeFeedback: CameraServer.CameraFeedback): Int
 
     fun setTrackingRectangleStatus(trackedRectangle: CameraServer.TrackRectangle)
 

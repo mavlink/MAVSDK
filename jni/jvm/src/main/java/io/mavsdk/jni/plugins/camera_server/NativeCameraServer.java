@@ -298,6 +298,36 @@ public final class NativeCameraServer {
     }
 
     @FunctionalInterface
+    public interface FocusInStepCallback {
+        void invoke(int value);
+    }
+
+    @FunctionalInterface
+    public interface FocusOutStepCallback {
+        void invoke(int value);
+    }
+
+    @FunctionalInterface
+    public interface FocusInStartCallback {
+        void invoke(int value);
+    }
+
+    @FunctionalInterface
+    public interface FocusOutStartCallback {
+        void invoke(int value);
+    }
+
+    @FunctionalInterface
+    public interface FocusStopCallback {
+        void invoke(int value);
+    }
+
+    @FunctionalInterface
+    public interface FocusRangeCallback {
+        void invoke(float value);
+    }
+
+    @FunctionalInterface
     public interface TrackingPointCommandCallback {
         void invoke(TrackPoint value);
     }
@@ -405,6 +435,42 @@ public final class NativeCameraServer {
     public static native void unsubscribeZoomRange(long pluginHandle, long subscriptionHandle);
 
     public static native int respondZoomRange(long pluginHandle, int zoomRangeFeedback);
+
+    public static native long subscribeFocusInStep(long pluginHandle, FocusInStepCallback callback);
+
+    public static native void unsubscribeFocusInStep(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusInStep(long pluginHandle, int focusInStepFeedback);
+
+    public static native long subscribeFocusOutStep(long pluginHandle, FocusOutStepCallback callback);
+
+    public static native void unsubscribeFocusOutStep(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusOutStep(long pluginHandle, int focusOutStepFeedback);
+
+    public static native long subscribeFocusInStart(long pluginHandle, FocusInStartCallback callback);
+
+    public static native void unsubscribeFocusInStart(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusInStart(long pluginHandle, int focusInStartFeedback);
+
+    public static native long subscribeFocusOutStart(long pluginHandle, FocusOutStartCallback callback);
+
+    public static native void unsubscribeFocusOutStart(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusOutStart(long pluginHandle, int focusOutStartFeedback);
+
+    public static native long subscribeFocusStop(long pluginHandle, FocusStopCallback callback);
+
+    public static native void unsubscribeFocusStop(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusStop(long pluginHandle, int focusStopFeedback);
+
+    public static native long subscribeFocusRange(long pluginHandle, FocusRangeCallback callback);
+
+    public static native void unsubscribeFocusRange(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusRange(long pluginHandle, int focusRangeFeedback);
 
     public static native void setTrackingRectangleStatus(long pluginHandle, TrackRectangle trackedRectangle);
 

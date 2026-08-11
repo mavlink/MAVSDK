@@ -706,6 +706,258 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_zoom_range(zoom_range_feedback)
         )
 
+    async def subscribe_focus_in_step(self) -> AsyncGenerator[int, None]:
+        """
+        Subscribe to focus in step command.
+
+        Yields
+        ------
+         : int
+             The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_focus_in_step(callback)
+        self._subscription_handles[id(queue)] = handle
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            if id(queue) in self._subscription_handles:
+                self._subscription_handles.pop(id(queue))
+                self._plugin.unsubscribe_focus_in_step(handle)
+
+    async def respond_focus_in_step(self, focus_in_step_feedback):
+        """
+        Respond to focus in step.
+
+        Parameters
+        ----------
+        focus_in_step_feedback : CameraFeedback
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.respond_focus_in_step(focus_in_step_feedback)
+        )
+
+    async def subscribe_focus_out_step(self) -> AsyncGenerator[int, None]:
+        """
+        Subscribe to focus out step command.
+
+        Yields
+        ------
+         : int
+             The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_focus_out_step(callback)
+        self._subscription_handles[id(queue)] = handle
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            if id(queue) in self._subscription_handles:
+                self._subscription_handles.pop(id(queue))
+                self._plugin.unsubscribe_focus_out_step(handle)
+
+    async def respond_focus_out_step(self, focus_out_step_feedback):
+        """
+        Respond to focus out step.
+
+        Parameters
+        ----------
+        focus_out_step_feedback : CameraFeedback
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.respond_focus_out_step(focus_out_step_feedback)
+        )
+
+    async def subscribe_focus_in_start(self) -> AsyncGenerator[int, None]:
+        """
+        Subscribe to focus in start command.
+
+        Yields
+        ------
+         : int
+             The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_focus_in_start(callback)
+        self._subscription_handles[id(queue)] = handle
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            if id(queue) in self._subscription_handles:
+                self._subscription_handles.pop(id(queue))
+                self._plugin.unsubscribe_focus_in_start(handle)
+
+    async def respond_focus_in_start(self, focus_in_start_feedback):
+        """
+        Respond to focus in start.
+
+        Parameters
+        ----------
+        focus_in_start_feedback : CameraFeedback
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.respond_focus_in_start(focus_in_start_feedback)
+        )
+
+    async def subscribe_focus_out_start(self) -> AsyncGenerator[int, None]:
+        """
+        Subscribe to focus out start command.
+
+        Yields
+        ------
+         : int
+             The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_focus_out_start(callback)
+        self._subscription_handles[id(queue)] = handle
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            if id(queue) in self._subscription_handles:
+                self._subscription_handles.pop(id(queue))
+                self._plugin.unsubscribe_focus_out_start(handle)
+
+    async def respond_focus_out_start(self, focus_out_start_feedback):
+        """
+        Respond to focus out start.
+
+        Parameters
+        ----------
+        focus_out_start_feedback : CameraFeedback
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.respond_focus_out_start(focus_out_start_feedback)
+        )
+
+    async def subscribe_focus_stop(self) -> AsyncGenerator[int, None]:
+        """
+        Subscribe to focus stop command.
+
+        Yields
+        ------
+         : int
+             The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_focus_stop(callback)
+        self._subscription_handles[id(queue)] = handle
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            if id(queue) in self._subscription_handles:
+                self._subscription_handles.pop(id(queue))
+                self._plugin.unsubscribe_focus_stop(handle)
+
+    async def respond_focus_stop(self, focus_stop_feedback):
+        """
+        Respond to focus stop.
+
+        Parameters
+        ----------
+        focus_stop_feedback : CameraFeedback
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.respond_focus_stop(focus_stop_feedback)
+        )
+
+    async def subscribe_focus_range(self) -> AsyncGenerator[float, None]:
+        """
+        Subscribe to focus range command.
+
+        Yields
+        ------
+         : float
+             The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_focus_range(callback)
+        self._subscription_handles[id(queue)] = handle
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            if id(queue) in self._subscription_handles:
+                self._subscription_handles.pop(id(queue))
+                self._plugin.unsubscribe_focus_range(handle)
+
+    async def respond_focus_range(self, focus_range_feedback):
+        """
+        Respond to focus range.
+
+        Parameters
+        ----------
+        focus_range_feedback : CameraFeedback
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.respond_focus_range(focus_range_feedback)
+        )
+
     async def set_tracking_rectangle_status(self, tracked_rectangle):
         """
         Set/update the current rectangle tracking status.

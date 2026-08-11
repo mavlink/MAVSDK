@@ -713,6 +713,12 @@ struct mavsdk_camera_server_wrapper {
     std::vector<mavsdk::CameraServer::ZoomOutStartHandle*> zoom_out_start_handles;
     std::vector<mavsdk::CameraServer::ZoomStopHandle*> zoom_stop_handles;
     std::vector<mavsdk::CameraServer::ZoomRangeHandle*> zoom_range_handles;
+    std::vector<mavsdk::CameraServer::FocusInStepHandle*> focus_in_step_handles;
+    std::vector<mavsdk::CameraServer::FocusOutStepHandle*> focus_out_step_handles;
+    std::vector<mavsdk::CameraServer::FocusInStartHandle*> focus_in_start_handles;
+    std::vector<mavsdk::CameraServer::FocusOutStartHandle*> focus_out_start_handles;
+    std::vector<mavsdk::CameraServer::FocusStopHandle*> focus_stop_handles;
+    std::vector<mavsdk::CameraServer::FocusRangeHandle*> focus_range_handles;
     std::vector<mavsdk::CameraServer::TrackingPointCommandHandle*> tracking_point_command_handles;
     std::vector<mavsdk::CameraServer::TrackingRectangleCommandHandle*> tracking_rectangle_command_handles;
     std::vector<mavsdk::CameraServer::TrackingOffCommandHandle*> tracking_off_command_handles;
@@ -812,6 +818,36 @@ void mavsdk_camera_server_destroy(mavsdk_camera_server_t camera_server) {
             delete h;
         }
         wrapper->zoom_range_handles.clear();
+        for (auto* h : wrapper->focus_in_step_handles) {
+            wrapper->cpp_plugin->unsubscribe_focus_in_step(std::move(*h));
+            delete h;
+        }
+        wrapper->focus_in_step_handles.clear();
+        for (auto* h : wrapper->focus_out_step_handles) {
+            wrapper->cpp_plugin->unsubscribe_focus_out_step(std::move(*h));
+            delete h;
+        }
+        wrapper->focus_out_step_handles.clear();
+        for (auto* h : wrapper->focus_in_start_handles) {
+            wrapper->cpp_plugin->unsubscribe_focus_in_start(std::move(*h));
+            delete h;
+        }
+        wrapper->focus_in_start_handles.clear();
+        for (auto* h : wrapper->focus_out_start_handles) {
+            wrapper->cpp_plugin->unsubscribe_focus_out_start(std::move(*h));
+            delete h;
+        }
+        wrapper->focus_out_start_handles.clear();
+        for (auto* h : wrapper->focus_stop_handles) {
+            wrapper->cpp_plugin->unsubscribe_focus_stop(std::move(*h));
+            delete h;
+        }
+        wrapper->focus_stop_handles.clear();
+        for (auto* h : wrapper->focus_range_handles) {
+            wrapper->cpp_plugin->unsubscribe_focus_range(std::move(*h));
+            delete h;
+        }
+        wrapper->focus_range_handles.clear();
         for (auto* h : wrapper->tracking_point_command_handles) {
             wrapper->cpp_plugin->unsubscribe_tracking_point_command(std::move(*h));
             delete h;
@@ -1743,6 +1779,378 @@ mavsdk_camera_server_respond_zoom_range(
     auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_zoom_range(        translate_camera_feedback_from_c(zoom_range_feedback));
+
+    return translate_result(ret_value);
+}
+
+// FocusInStep async
+mavsdk_camera_server_focus_in_step_handle_t mavsdk_camera_server_subscribe_focus_in_step(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_in_step_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_focus_in_step(
+        [callback, user_data](
+            int32_t value) {
+                if (callback) {
+                    callback(
+                        value,
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::CameraServer::FocusInStepHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->focus_in_step_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_focus_in_step_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_camera_server_unsubscribe_focus_in_step(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_in_step_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::FocusInStepHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->focus_in_step_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
+        wrapper->cpp_plugin->unsubscribe_focus_in_step(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+
+
+// RespondFocusInStep sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_in_step(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_in_step_feedback)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->respond_focus_in_step(        translate_camera_feedback_from_c(focus_in_step_feedback));
+
+    return translate_result(ret_value);
+}
+
+// FocusOutStep async
+mavsdk_camera_server_focus_out_step_handle_t mavsdk_camera_server_subscribe_focus_out_step(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_out_step_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_focus_out_step(
+        [callback, user_data](
+            int32_t value) {
+                if (callback) {
+                    callback(
+                        value,
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::CameraServer::FocusOutStepHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->focus_out_step_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_focus_out_step_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_camera_server_unsubscribe_focus_out_step(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_out_step_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::FocusOutStepHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->focus_out_step_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
+        wrapper->cpp_plugin->unsubscribe_focus_out_step(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+
+
+// RespondFocusOutStep sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_out_step(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_out_step_feedback)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->respond_focus_out_step(        translate_camera_feedback_from_c(focus_out_step_feedback));
+
+    return translate_result(ret_value);
+}
+
+// FocusInStart async
+mavsdk_camera_server_focus_in_start_handle_t mavsdk_camera_server_subscribe_focus_in_start(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_in_start_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_focus_in_start(
+        [callback, user_data](
+            int32_t value) {
+                if (callback) {
+                    callback(
+                        value,
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::CameraServer::FocusInStartHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->focus_in_start_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_focus_in_start_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_camera_server_unsubscribe_focus_in_start(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_in_start_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::FocusInStartHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->focus_in_start_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
+        wrapper->cpp_plugin->unsubscribe_focus_in_start(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+
+
+// RespondFocusInStart sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_in_start(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_in_start_feedback)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->respond_focus_in_start(        translate_camera_feedback_from_c(focus_in_start_feedback));
+
+    return translate_result(ret_value);
+}
+
+// FocusOutStart async
+mavsdk_camera_server_focus_out_start_handle_t mavsdk_camera_server_subscribe_focus_out_start(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_out_start_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_focus_out_start(
+        [callback, user_data](
+            int32_t value) {
+                if (callback) {
+                    callback(
+                        value,
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::CameraServer::FocusOutStartHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->focus_out_start_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_focus_out_start_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_camera_server_unsubscribe_focus_out_start(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_out_start_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::FocusOutStartHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->focus_out_start_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
+        wrapper->cpp_plugin->unsubscribe_focus_out_start(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+
+
+// RespondFocusOutStart sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_out_start(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_out_start_feedback)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->respond_focus_out_start(        translate_camera_feedback_from_c(focus_out_start_feedback));
+
+    return translate_result(ret_value);
+}
+
+// FocusStop async
+mavsdk_camera_server_focus_stop_handle_t mavsdk_camera_server_subscribe_focus_stop(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_stop_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_focus_stop(
+        [callback, user_data](
+            int32_t value) {
+                if (callback) {
+                    callback(
+                        value,
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::CameraServer::FocusStopHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->focus_stop_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_focus_stop_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_camera_server_unsubscribe_focus_stop(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_stop_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::FocusStopHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->focus_stop_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
+        wrapper->cpp_plugin->unsubscribe_focus_stop(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+
+
+// RespondFocusStop sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_stop(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_stop_feedback)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->respond_focus_stop(        translate_camera_feedback_from_c(focus_stop_feedback));
+
+    return translate_result(ret_value);
+}
+
+// FocusRange async
+mavsdk_camera_server_focus_range_handle_t mavsdk_camera_server_subscribe_focus_range(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_range_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_focus_range(
+        [callback, user_data](
+            float value) {
+                if (callback) {
+                    callback(
+                        value,
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::CameraServer::FocusRangeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->focus_range_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_focus_range_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_camera_server_unsubscribe_focus_range(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_range_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::FocusRangeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->focus_range_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
+        wrapper->cpp_plugin->unsubscribe_focus_range(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+
+
+// RespondFocusRange sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_range(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_range_feedback)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->respond_focus_range(        translate_camera_feedback_from_c(focus_range_feedback));
 
     return translate_result(ret_value);
 }
