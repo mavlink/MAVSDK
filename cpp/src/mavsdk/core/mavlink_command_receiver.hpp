@@ -20,9 +20,9 @@ public:
     ~MavlinkCommandReceiver();
 
     struct CommandInt {
-        uint8_t target_system_id{0};
+        uint32_t target_system_id{0};
         uint8_t target_component_id{0};
-        uint8_t origin_system_id{0};
+        uint32_t origin_system_id{0};
         uint8_t origin_component_id{0};
         MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
         uint16_t command{0};
@@ -63,9 +63,9 @@ public:
     };
 
     struct CommandLong {
-        uint8_t target_system_id{0};
+        uint32_t target_system_id{0};
         uint8_t target_component_id{0};
-        uint8_t origin_system_id{0};
+        uint32_t origin_system_id{0};
         uint8_t origin_component_id{0};
         uint16_t command{0};
         uint8_t confirmation{0};

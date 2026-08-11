@@ -92,7 +92,7 @@ MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& c
 }
 
 mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
-    const uint8_t target_sysid,
+    const uint32_t target_sysid,
     const uint8_t target_compid,
     const uint16_t command,
     MAV_RESULT result)
@@ -225,7 +225,7 @@ void MavlinkPassthroughImpl::receive_mavlink_message(const mavlink_message_t& me
             message, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
-uint8_t MavlinkPassthroughImpl::get_our_sysid() const
+uint32_t MavlinkPassthroughImpl::get_our_sysid() const
 {
     return _system_impl->get_own_system_id();
 }
@@ -235,7 +235,7 @@ uint8_t MavlinkPassthroughImpl::get_our_compid() const
     return _system_impl->get_own_component_id();
 }
 
-uint8_t MavlinkPassthroughImpl::get_target_sysid() const
+uint32_t MavlinkPassthroughImpl::get_target_sysid() const
 {
     return _system_impl->get_system_id();
 }

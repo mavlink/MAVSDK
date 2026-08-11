@@ -20,6 +20,11 @@ if(SUPERBUILD)
     set(MAVLINK_URL "https://github.com/mavlink/mavlink"
         CACHE STRING "URL for the MAVLink Repository")
 
+    set(LIBMAVLIKE_HASH "fbcb13faa08f80fa1830c297fdbc51900d9a0306"
+        CACHE STRING "Hash for the libmavlike Repository")
+    set(LIBMAVLIKE_URL "https://github.com/julianoes/libmavlike"
+        CACHE STRING "URL for the libmavlike Repository")
+
     build_target(asio)
     build_target(mavlink)
     build_target(libevents)

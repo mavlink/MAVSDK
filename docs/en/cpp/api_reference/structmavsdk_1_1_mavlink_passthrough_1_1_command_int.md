@@ -10,7 +10,7 @@ Type for MAVLink command_int.
 ## Data Fields
 
 
-uint8_t [target_sysid](#structmavsdk_1_1_mavlink_passthrough_1_1_command_int_1a306288fb9fa75a3304ba16dd8d9bb0c6)  - [System](classmavsdk_1_1_system.md) ID to send command to.
+uint32_t [target_sysid](#structmavsdk_1_1_mavlink_passthrough_1_1_command_int_1ad124b5226865ff6c1c133bd0f6878da1)  - [System](classmavsdk_1_1_system.md) ID to send command to.
 
 uint8_t [target_compid](#structmavsdk_1_1_mavlink_passthrough_1_1_command_int_1aa93fd091a743292535c2419579f62204)  - Component ID to send command to.
 
@@ -36,10 +36,10 @@ float [z](#structmavsdk_1_1_mavlink_passthrough_1_1_command_int_1a06b57c3981c70b
 ## Field Documentation
 
 
-### target_sysid {#structmavsdk_1_1_mavlink_passthrough_1_1_command_int_1a306288fb9fa75a3304ba16dd8d9bb0c6}
+### target_sysid {#structmavsdk_1_1_mavlink_passthrough_1_1_command_int_1ad124b5226865ff6c1c133bd0f6878da1}
 
 ```cpp
-uint8_t mavsdk::MavlinkPassthrough::CommandInt::target_sysid
+uint32_t mavsdk::MavlinkPassthrough::CommandInt::target_sysid
 ```
 
 

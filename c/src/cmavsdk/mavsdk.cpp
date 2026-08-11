@@ -82,7 +82,7 @@ mavsdk_configuration_t mavsdk_configuration_create_with_component_type(mavsdk_co
     return reinterpret_cast<mavsdk_configuration_t>(config);
 }
 
-mavsdk_configuration_t mavsdk_configuration_create_manual(uint8_t system_id, uint8_t component_id, int always_send_heartbeats) {
+mavsdk_configuration_t mavsdk_configuration_create_manual(uint32_t system_id, uint8_t component_id, int always_send_heartbeats) {
     auto* config = new Mavsdk::Configuration(system_id, component_id, always_send_heartbeats != 0);
     return reinterpret_cast<mavsdk_configuration_t>(config);
 }
@@ -91,12 +91,12 @@ void mavsdk_configuration_destroy(mavsdk_configuration_t config) {
     delete reinterpret_cast<Mavsdk::Configuration*>(config);
 }
 
-uint8_t mavsdk_configuration_get_system_id(mavsdk_configuration_t config) {
+uint32_t mavsdk_configuration_get_system_id(mavsdk_configuration_t config) {
     auto* cpp_config = reinterpret_cast<Mavsdk::Configuration*>(config);
     return cpp_config->get_system_id();
 }
 
-void mavsdk_configuration_set_system_id(mavsdk_configuration_t config, uint8_t system_id) {
+void mavsdk_configuration_set_system_id(mavsdk_configuration_t config, uint32_t system_id) {
     auto* cpp_config = reinterpret_cast<Mavsdk::Configuration*>(config);
     cpp_config->set_system_id(system_id);
 }

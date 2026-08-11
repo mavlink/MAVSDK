@@ -110,8 +110,16 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
 
     // Set target system/component if specified
     if (message.target_system_id != 0) {
-        // For messages that have target_system field, set it
-        libmav_message.set("target_system", static_cast<uint8_t>(message.target_system_id));
+        if (message.target_system_id > 255) {
+            // Doesn't fit the payload's 8 bit target_system field, so it goes
+            // in the extended header instead. Truncating would address a
+            // different system, and zeroing would broadcast.
+            libmav_message.setExtendedTarget(
+                message.target_system_id, static_cast<uint8_t>(message.target_component_id));
+        } else {
+            // For messages that have target_system field, set it
+            libmav_message.set("target_system", static_cast<uint8_t>(message.target_system_id));
+        }
     }
     if (message.target_component_id != 0) {
         // For messages that have target_component field, set it
@@ -134,14 +142,30 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
         mavlink_message.len = payload_length;
         memcpy(mavlink_message.payload64, payload_view.first, payload_length);
 
-        mavlink_finalize_message_chan(
+#ifdef MAVLINK_IFLAG_TARGETTED
+        // A target above 255 has to be handed to the C implementation
+        // separately so it ends up in the extended header rather than being
+        // truncated into the payload.
+        mavlink_finalize_message_chan_target(
             &mavlink_message,
             mavlink_address.system_id,
             mavlink_address.component_id,
             channel,
             payload_length,
             libmav_message.type().maxPayloadSize(),
+            libmav_message.type().crcExtra(),
+            message.target_system_id > 255 ? message.target_system_id : 0,
+            static_cast<uint8_t>(message.target_component_id));
+#else
+        mavlink_finalize_message_chan(
+            &mavlink_message,
+            static_cast<uint8_t>(mavlink_address.system_id),
+            mavlink_address.component_id,
+            channel,
+            payload_length,
+            libmav_message.type().maxPayloadSize(),
             libmav_message.type().crcExtra());
+#endif
 
         return mavlink_message;
     });

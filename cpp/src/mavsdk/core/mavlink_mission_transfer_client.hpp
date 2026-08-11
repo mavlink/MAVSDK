@@ -126,7 +126,7 @@ public:
             ResultCallback callback,
             ProgressCallback progress_callback,
             bool debugging,
-            uint8_t target_system_id,
+            uint32_t target_system_id,
             Autopilot autopilot);
 
         ~UploadWorkItem() override;
@@ -163,7 +163,7 @@ public:
         TimeoutHandler::Cookie _cookie{};
         unsigned _retries_done{0};
 
-        uint8_t _target_system_id;
+        uint32_t _target_system_id;
         Autopilot _autopilot;
     };
 
@@ -178,7 +178,7 @@ public:
             ResultAndItemsCallback callback,
             ProgressCallback progress_callback,
             bool debugging,
-            uint8_t target_system_id);
+            uint32_t target_system_id);
 
         ~DownloadWorkItem() override;
         void start() override;
@@ -213,7 +213,7 @@ public:
         std::size_t _next_sequence{0};
         std::size_t _expected_count{0};
         unsigned _retries_done{0};
-        uint8_t _target_system_id;
+        uint32_t _target_system_id;
     };
 
     class ClearWorkItem : public WorkItem {
@@ -226,7 +226,7 @@ public:
             double timeout_s,
             ResultCallback callback,
             bool debugging,
-            uint8_t target_system_id);
+            uint32_t target_system_id);
 
         ~ClearWorkItem() override;
         void start() override;
@@ -246,7 +246,7 @@ public:
         ResultCallback _callback{nullptr};
         TimeoutHandler::Cookie _cookie{};
         unsigned _retries_done{0};
-        uint8_t _target_system_id;
+        uint32_t _target_system_id;
     };
 
     class SetCurrentWorkItem : public WorkItem {
@@ -259,7 +259,7 @@ public:
             double timeout_s,
             ResultCallback callback,
             bool debugging,
-            uint8_t target_system_id);
+            uint32_t target_system_id);
 
         ~SetCurrentWorkItem() override;
         void start() override;
@@ -281,7 +281,7 @@ public:
         ResultCallback _callback{nullptr};
         TimeoutHandler::Cookie _cookie{};
         unsigned _retries_done{0};
-        uint8_t _target_system_id;
+        uint32_t _target_system_id;
     };
 
     static constexpr unsigned retries = 5;
@@ -297,20 +297,20 @@ public:
 
     std::weak_ptr<WorkItem> upload_items_async(
         uint8_t type,
-        uint8_t target_system_id,
+        uint32_t target_system_id,
         const std::vector<ItemInt>& items,
         const ResultCallback& callback,
         const ProgressCallback& progress_callback = nullptr);
 
     std::weak_ptr<WorkItem> download_items_async(
         uint8_t type,
-        uint8_t target_system_id,
+        uint32_t target_system_id,
         ResultAndItemsCallback callback,
         ProgressCallback progress_callback = nullptr);
 
-    void clear_items_async(uint8_t type, uint8_t target_system_id, ResultCallback callback);
+    void clear_items_async(uint8_t type, uint32_t target_system_id, ResultCallback callback);
 
-    void set_current_item_async(int current, uint8_t target_system_id, ResultCallback callback);
+    void set_current_item_async(int current, uint32_t target_system_id, ResultCallback callback);
 
     void do_work();
     bool is_idle();

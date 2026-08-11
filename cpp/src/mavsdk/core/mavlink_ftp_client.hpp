@@ -288,7 +288,7 @@ private:
         bool stream_download{false};
         uint32_t stream_offset{0};
         uint16_t stream_seq_number{0};
-        uint8_t stream_target_system_id{0};
+        uint32_t stream_target_system_id{0};
         unsigned stream_chunk_transmitted{0};
     };
 

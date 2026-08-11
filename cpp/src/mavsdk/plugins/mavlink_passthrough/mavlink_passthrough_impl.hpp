@@ -28,7 +28,7 @@ public:
     MavlinkPassthrough::Result send_command_long(const MavlinkPassthrough::CommandLong& command);
     MavlinkPassthrough::Result send_command_int(const MavlinkPassthrough::CommandInt& command);
     mavlink_message_t make_command_ack_message(
-        const uint8_t target_sysid,
+        const uint32_t target_sysid,
         const uint8_t target_compid,
         const uint16_t command,
         MAV_RESULT result);
@@ -42,9 +42,9 @@ public:
 
     void unsubscribe_message(uint16_t message_id, MavlinkPassthrough::MessageHandle handle);
 
-    uint8_t get_our_sysid() const;
+    uint32_t get_our_sysid() const;
     uint8_t get_our_compid() const;
-    uint8_t get_target_sysid() const;
+    uint32_t get_target_sysid() const;
     uint8_t get_target_compid() const;
 
 private:
