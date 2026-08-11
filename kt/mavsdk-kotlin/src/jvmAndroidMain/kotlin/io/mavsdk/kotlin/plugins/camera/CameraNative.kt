@@ -637,6 +637,26 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
         }
     }
 
+    override fun focusInStepAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusInStepAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusInStepCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusOutStepAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusOutStepAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusOutStepCallback { result -> callback(result) },
+            )
+        }
+    }
+
     override fun focusInStartAsync(componentId: Int, callback: (Int) -> Unit) {
         withOpen {
             NativeCamera.focusInStartAsync(

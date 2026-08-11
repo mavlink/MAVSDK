@@ -49,6 +49,8 @@ public:
         float bottom_right_x,
         float bottom_right_y);
     Camera::Result track_stop(int32_t camera_id);
+    Camera::Result focus_in_step(int32_t camera_id);
+    Camera::Result focus_out_step(int32_t camera_id);
     Camera::Result focus_in_start(int32_t camera_id);
     Camera::Result focus_out_start(int32_t camera_id);
     Camera::Result focus_stop(int32_t camera_id);
@@ -73,7 +75,9 @@ public:
         float bottom_right_y,
         const Camera::ResultCallback& callback);
     void track_stop_async(int32_t camera_id, const Camera::ResultCallback& callback);
-
+    
+    void focus_in_step_async(int32_t camera_id, const Camera::ResultCallback& callback);
+    void focus_out_step_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void focus_in_start_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void focus_out_start_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void focus_stop_async(int32_t camera_id, const Camera::ResultCallback& callback);
@@ -339,8 +343,10 @@ private:
         float bottom_right_x,
         float bottom_right_y);
     MavlinkCommandSender::CommandLong make_command_track_stop(int32_t camera_id);
-    MavlinkCommandSender::CommandLong make_command_focus_in(int32_t camera_id);
-    MavlinkCommandSender::CommandLong make_command_focus_out(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_in_step(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_out_step(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_in_start(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_out_start(int32_t camera_id);
     MavlinkCommandSender::CommandLong make_command_focus_stop(int32_t camera_id);
     MavlinkCommandSender::CommandLong make_command_focus_range(int32_t camera_id, float range);
 

@@ -2441,6 +2441,72 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status FocusInStep(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::FocusInStepRequest* request,
+        rpc::camera::FocusInStepResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("FocusInStep sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_in_step(request->component_id());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status FocusOutStep(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::FocusOutStepRequest* request,
+        rpc::camera::FocusOutStepResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("FocusOutStep sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_out_step(request->component_id());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status FocusInStart(
         grpc::ServerContext* /* context */,
         const rpc::camera::FocusInStartRequest* request,

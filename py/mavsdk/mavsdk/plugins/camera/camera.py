@@ -2134,6 +2134,74 @@ class Camera:
 
         return result
 
+    def focus_in_step_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
+        """Step focus in."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_in_step callback: {e}")
+
+        cb = FocusInStepCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_focus_in_step_async(
+            self._handle, component_id, cb, None
+        )
+
+    def focus_in_step(self, component_id):
+        """Get focus_in_step (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_focus_in_step(
+            self._handle,
+            component_id,
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"focus_in_step failed: {result}")
+
+        return result
+
+    def focus_out_step_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
+        """Step focus out."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_out_step callback: {e}")
+
+        cb = FocusOutStepCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_focus_out_step_async(
+            self._handle, component_id, cb, None
+        )
+
+    def focus_out_step(self, component_id):
+        """Get focus_out_step (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_focus_out_step(
+            self._handle,
+            component_id,
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"focus_out_step failed: {result}")
+
+        return result
+
     def focus_in_start_async(
         self, component_id, callback: Callable, user_data: Any = None
     ):
@@ -2317,6 +2385,8 @@ ZoomRangeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 TrackPointCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 TrackRectangleCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 TrackStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusInStepCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusOutStepCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 FocusInStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 FocusOutStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 FocusStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
@@ -2982,6 +3052,36 @@ _cmavsdk_lib.mavsdk_camera_track_stop.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_camera_track_stop.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_in_step_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusInStepCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_in_step_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_in_step.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_in_step.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_out_step_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusOutStepCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_out_step_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_out_step.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_out_step.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_focus_in_start_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,

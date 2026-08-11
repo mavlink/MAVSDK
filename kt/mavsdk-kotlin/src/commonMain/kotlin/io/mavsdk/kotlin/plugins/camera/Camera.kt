@@ -966,6 +966,48 @@ class Camera internal constructor(private val native: CameraNative) {
     }
 
     /**
+     * Step focus in.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
+    suspend fun focusInStep(componentId: Int): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = CameraCallbackGuard()
+            native.focusInStepAsync(componentId) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
+                    continuation.resume(parsedResult)
+                }
+            }
+        }
+
+    /**
+     * Step focus out.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
+    suspend fun focusOutStep(componentId: Int): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = CameraCallbackGuard()
+            native.focusOutStepAsync(componentId) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
+                    continuation.resume(parsedResult)
+                }
+            }
+        }
+
+    /**
      * Start focusing in.
      *
      * @param componentId Component ID
@@ -1161,6 +1203,10 @@ internal interface CameraNative {
     )
 
     fun trackStopAsync(componentId: Int, callback: (Int) -> Unit)
+
+    fun focusInStepAsync(componentId: Int, callback: (Int) -> Unit)
+
+    fun focusOutStepAsync(componentId: Int, callback: (Int) -> Unit)
 
     fun focusInStartAsync(componentId: Int, callback: (Int) -> Unit)
 

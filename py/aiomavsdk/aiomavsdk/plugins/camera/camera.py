@@ -751,6 +751,40 @@ class CameraAsync:
             None, lambda: self._plugin.track_stop(component_id)
         )
 
+    async def focus_in_step(self, component_id):
+        """
+        Step focus in.
+
+        Parameters
+        ----------
+        component_id : int
+        Raises
+        ------
+        CameraError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.focus_in_step(component_id)
+        )
+
+    async def focus_out_step(self, component_id):
+        """
+        Step focus out.
+
+        Parameters
+        ----------
+        component_id : int
+        Raises
+        ------
+        CameraError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.focus_out_step(component_id)
+        )
+
     async def focus_in_start(self, component_id):
         """
         Start focusing in.

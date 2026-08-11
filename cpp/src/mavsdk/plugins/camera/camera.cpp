@@ -354,6 +354,26 @@ Camera::Result Camera::track_stop(int32_t component_id) const
     return _impl->track_stop(component_id);
 }
 
+void Camera::focus_in_step_async(int32_t component_id, const ResultCallback callback)
+{
+    _impl->focus_in_step_async(component_id, callback);
+}
+
+Camera::Result Camera::focus_in_step(int32_t component_id) const
+{
+    return _impl->focus_in_step(component_id);
+}
+
+void Camera::focus_out_step_async(int32_t component_id, const ResultCallback callback)
+{
+    _impl->focus_out_step_async(component_id, callback);
+}
+
+Camera::Result Camera::focus_out_step(int32_t component_id) const
+{
+    return _impl->focus_out_step(component_id);
+}
+
 void Camera::focus_in_start_async(int32_t component_id, const ResultCallback callback)
 {
     _impl->focus_in_start_async(component_id, callback);

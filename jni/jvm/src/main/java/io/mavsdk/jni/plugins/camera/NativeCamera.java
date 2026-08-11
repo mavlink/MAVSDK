@@ -472,6 +472,16 @@ public final class NativeCamera {
     }
 
     @FunctionalInterface
+    public interface FocusInStepCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusOutStepCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
     public interface FocusInStartCallback {
         void invoke(int result);
     }
@@ -610,6 +620,14 @@ public final class NativeCamera {
     public static native int trackStop(long pluginHandle, int componentId);
 
     public static native void trackStopAsync(long pluginHandle, int componentId, TrackStopCallback callback);
+
+    public static native int focusInStep(long pluginHandle, int componentId);
+
+    public static native void focusInStepAsync(long pluginHandle, int componentId, FocusInStepCallback callback);
+
+    public static native int focusOutStep(long pluginHandle, int componentId);
+
+    public static native void focusOutStepAsync(long pluginHandle, int componentId, FocusOutStepCallback callback);
 
     public static native int focusInStart(long pluginHandle, int componentId);
 

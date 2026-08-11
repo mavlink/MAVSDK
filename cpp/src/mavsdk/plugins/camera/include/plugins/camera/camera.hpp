@@ -1511,6 +1511,52 @@ public:
 
 
     /**
+     * @brief Step focus in.
+     *
+     * This function is non-blocking. See 'focus_in_step' for the blocking counterpart.
+     */
+    void focus_in_step_async(int32_t component_id, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Step focus in.
+     *
+     * This function is blocking. See 'focus_in_step_async' for the non-blocking counterpart.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result focus_in_step(int32_t component_id) const;
+
+
+
+
+    /**
+     * @brief Step focus out.
+     *
+     * This function is non-blocking. See 'focus_out_step' for the blocking counterpart.
+     */
+    void focus_out_step_async(int32_t component_id, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Step focus out.
+     *
+     * This function is blocking. See 'focus_out_step_async' for the non-blocking counterpart.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result focus_out_step(int32_t component_id) const;
+
+
+
+
+    /**
      * @brief Start focusing in.
      *
      * This function is non-blocking. See 'focus_in_start' for the blocking counterpart.

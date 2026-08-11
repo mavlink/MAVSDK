@@ -1005,6 +1005,8 @@ typedef void (*mavsdk_camera_zoom_range_callback_t)(const mavsdk_camera_result_t
 typedef void (*mavsdk_camera_track_point_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_track_rectangle_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_track_stop_callback_t)(const mavsdk_camera_result_t result, void* user_data);
+typedef void (*mavsdk_camera_focus_in_step_callback_t)(const mavsdk_camera_result_t result, void* user_data);
+typedef void (*mavsdk_camera_focus_out_step_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_focus_in_start_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_focus_out_start_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_focus_stop_callback_t)(const mavsdk_camera_result_t result, void* user_data);
@@ -1979,6 +1981,70 @@ CMAVSDK_EXPORT void mavsdk_camera_track_stop_async(
 CMAVSDK_EXPORT
 mavsdk_camera_result_t
 mavsdk_camera_track_stop(
+    mavsdk_camera_t camera,
+    int32_t component_id);
+
+
+/**
+ * @brief Step focus in.
+ *
+ * @param camera The camera instance.
+ * @param component_id  Component ID
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_focus_in_step_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_focus_in_step_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current focus in step (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param focus_in_step_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_result_t
+mavsdk_camera_focus_in_step(
+    mavsdk_camera_t camera,
+    int32_t component_id);
+
+
+/**
+ * @brief Step focus out.
+ *
+ * @param camera The camera instance.
+ * @param component_id  Component ID
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_focus_out_step_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_focus_out_step_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current focus out step (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param focus_out_step_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_result_t
+mavsdk_camera_focus_out_step(
     mavsdk_camera_t camera,
     int32_t component_id);
 
