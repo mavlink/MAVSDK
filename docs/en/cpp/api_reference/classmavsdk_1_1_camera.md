@@ -140,6 +140,10 @@ void | [track_rectangle_async](#classmavsdk_1_1_camera_1a4fcec80674d2de32934c67a
 [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [track_rectangle](#classmavsdk_1_1_camera_1a32c338bc723337dcf4229bac94073d03) (int32_t component_id, float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y)const | Track rectangle.
 void | [track_stop_async](#classmavsdk_1_1_camera_1a7b1c720a0a346516af8c1bc3e49210cc) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Stop tracking.
 [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [track_stop](#classmavsdk_1_1_camera_1a1f4a0c1c2cfcef55cdab94f3d726766f) (int32_t component_id)const | Stop tracking.
+void | [focus_in_step_async](#classmavsdk_1_1_camera_1aa6e9fb538089b6cfa3cf4544b26331e1) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Step focus in.
+[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_in_step](#classmavsdk_1_1_camera_1a575dd39509f53f55db20a38b278af5bb) (int32_t component_id)const | Step focus in.
+void | [focus_out_step_async](#classmavsdk_1_1_camera_1a14ff25e9f97acf2e63bf052e75e3185e) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Step focus out.
+[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_out_step](#classmavsdk_1_1_camera_1a2293c597722e249614d19a8cb9d3b17b) (int32_t component_id)const | Step focus out.
 void | [focus_in_start_async](#classmavsdk_1_1_camera_1ad40616613df551c00a78099e7790b880) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Start focusing in.
 [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_in_start](#classmavsdk_1_1_camera_1a8be24bc7d5c21b94b388bc1eeed2e8fe) (int32_t component_id)const | Start focusing in.
 void | [focus_out_start_async](#classmavsdk_1_1_camera_1ad7917d952b7d0e43dba631a152575765) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Start focusing out.
@@ -1431,6 +1435,72 @@ Result mavsdk::Camera::track_stop(int32_t component_id) const
 Stop tracking.
 
 This function is blocking. See 'track_stop_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+
+### focus_in_step_async() {#classmavsdk_1_1_camera_1aa6e9fb538089b6cfa3cf4544b26331e1}
+```cpp
+void mavsdk::Camera::focus_in_step_async(int32_t component_id, const ResultCallback callback)
+```
+
+
+Step focus in.
+
+This function is non-blocking. See 'focus_in_step' for the blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+* const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) **callback** - 
+
+### focus_in_step() {#classmavsdk_1_1_camera_1a575dd39509f53f55db20a38b278af5bb}
+```cpp
+Result mavsdk::Camera::focus_in_step(int32_t component_id) const
+```
+
+
+Step focus in.
+
+This function is blocking. See 'focus_in_step_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+
+### focus_out_step_async() {#classmavsdk_1_1_camera_1a14ff25e9f97acf2e63bf052e75e3185e}
+```cpp
+void mavsdk::Camera::focus_out_step_async(int32_t component_id, const ResultCallback callback)
+```
+
+
+Step focus out.
+
+This function is non-blocking. See 'focus_out_step' for the blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+* const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) **callback** - 
+
+### focus_out_step() {#classmavsdk_1_1_camera_1a2293c597722e249614d19a8cb9d3b17b}
+```cpp
+Result mavsdk::Camera::focus_out_step(int32_t component_id) const
+```
+
+
+Step focus out.
+
+This function is blocking. See 'focus_out_step_async' for the non-blocking counterpart.
 
 **Parameters**
 
