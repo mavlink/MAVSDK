@@ -97,12 +97,8 @@ MavlinkDirectServerImpl::send_message(MavlinkDirectServer::MavlinkMessage messag
     }
 
     // Set target system/component if specified (0 means broadcast).
-    // MAVLink system/component IDs are still 1 byte on the wire (sysid32 not yet supported),
-    // so reject anything that wouldn't round-trip instead of silently truncating it.
-    if (message.target_system_id > 255) {
-        LogErr("target_system_id {} out of range (max 255)", message.target_system_id);
-        return MavlinkDirectServer::Result::InvalidField;
-    }
+    // Component IDs are still 1 byte on the wire, so reject anything that wouldn't round-trip
+    // instead of silently truncating it.
     if (message.target_component_id > 255) {
         LogErr("target_component_id {} out of range (max 255)", message.target_component_id);
         return MavlinkDirectServer::Result::InvalidField;

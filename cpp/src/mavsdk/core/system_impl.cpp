@@ -65,7 +65,7 @@ SystemImpl::~SystemImpl()
     unregister_timeout_handler_blocking(_heartbeat_timeout_cookie);
 }
 
-void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
+void SystemImpl::init(uint32_t system_id, uint8_t comp_id)
 {
     _target_address.system_id = system_id;
     // We use this as a default.
@@ -700,7 +700,7 @@ void SystemImpl::set_disconnected()
     }
 }
 
-uint8_t SystemImpl::get_system_id() const
+uint32_t SystemImpl::get_system_id() const
 {
     return _target_address.system_id;
 }
@@ -716,12 +716,12 @@ std::vector<uint8_t> SystemImpl::component_ids() const
     return std::vector<uint8_t>{_components.begin(), _components.end()};
 }
 
-void SystemImpl::set_system_id(uint8_t system_id)
+void SystemImpl::set_system_id(uint32_t system_id)
 {
     _target_address.system_id = system_id;
 }
 
-uint8_t SystemImpl::get_own_system_id() const
+uint32_t SystemImpl::get_own_system_id() const
 {
     return _mavsdk_impl.get_own_system_id();
 }
