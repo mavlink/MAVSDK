@@ -1,12 +1,9 @@
-#include <cstdio>
-#include <cstdlib>
 #include <functional>
 #include <limits>
 #include "mavlink_passthrough_impl.hpp"
 #include "plugins/mavlink_passthrough/mavlink_passthrough.hpp"
 #include "system.hpp"
 #include "callback_list.tpp"
-#include "log.hpp"
 #include "mavsdk_export.h"
 
 namespace mavsdk {
@@ -59,13 +56,8 @@ MavlinkPassthrough::Result MavlinkPassthroughImpl::queue_message(
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong& command)
 {
-    if (command.target_sysid > std::numeric_limits<uint8_t>::max()) {
-        LogErr("Target system ID {} is not supported yet", command.target_sysid);
-        return MavlinkPassthrough::Result::CommandNoSystem;
-    }
-
     MavlinkCommandSender::CommandLong command_internal{};
-    command_internal.target_system_id = static_cast<uint8_t>(command.target_sysid);
+    command_internal.target_system_id = command.target_sysid;
     command_internal.target_component_id = command.target_compid;
     command_internal.command = command.command;
     command_internal.params.maybe_param1 = command.param1;
@@ -83,13 +75,8 @@ MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong&
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& command)
 {
-    if (command.target_sysid > std::numeric_limits<uint8_t>::max()) {
-        LogErr("Target system ID {} is not supported yet", command.target_sysid);
-        return MavlinkPassthrough::Result::CommandNoSystem;
-    }
-
     MavlinkCommandSender::CommandInt command_internal{};
-    command_internal.target_system_id = static_cast<uint8_t>(command.target_sysid);
+    command_internal.target_system_id = command.target_sysid;
     command_internal.target_component_id = command.target_compid;
     command_internal.frame = command.frame;
     command_internal.command = command.command;
@@ -111,15 +98,6 @@ mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
     const uint16_t command,
     MAV_RESULT result)
 {
-    // This returns a mavlink_message_t by value, so there is no Result to report a bad
-    // target_sysid through. It's temporary, until sysid32 is supported.
-    if (target_sysid > std::numeric_limits<uint8_t>::max()) {
-        LogErr("Target system ID {} is not supported yet", target_sysid);
-        fflush(stdout);
-        fflush(stderr);
-        std::abort();
-    }
-
     /* copied over from system impl */
     const uint8_t progress = std::numeric_limits<uint8_t>::max();
     const uint8_t result_param2 = 0;
@@ -133,7 +111,7 @@ mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
         result,
         progress,
         result_param2,
-        static_cast<uint8_t>(target_sysid),
+        target_sysid,
         target_compid);
     return msg;
 }

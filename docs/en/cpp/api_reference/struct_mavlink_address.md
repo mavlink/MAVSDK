@@ -27,7 +27,7 @@ uint32_t MavlinkAddress::system_id
 
 System ID, also called sysid.
 
-32 bits wide to accommodate MAVLink's extended system IDs, which are not supported yet.
+32 bits wide to accommodate MAVLink's extended system IDs. Values above 255 are only carried by peers that understand them.
 
 ### component_id {#struct_mavlink_address_1a666949f3b25592649b66a96bebf1d82b}
 
