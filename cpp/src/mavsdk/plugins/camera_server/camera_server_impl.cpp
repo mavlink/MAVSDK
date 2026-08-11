@@ -1826,6 +1826,11 @@ CameraServerImpl::process_set_camera_focus(const MavlinkCommandReceiver::Command
                     command, MAV_RESULT::MAV_RESULT_DENIED);
 
             } else {
+                if (focus_value < 0.0f || focus_value > 100.0f) {
+                    LogWarn("Invalid focus range value: {}", focus_value);
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                }
                 _last_focus_range_command = command;
                 _focus_range_callbacks.queue(focus_value, [this](const auto& func) {
                     _server_component_impl->call_user_callback(func);
