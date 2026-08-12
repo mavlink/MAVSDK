@@ -269,7 +269,11 @@ mavlink_command_ack_t ServerComponentImpl::make_command_ack_message(
     command_ack.result = result;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.result_param2 = 0;
-    command_ack.target_system = command.origin_system_id;
+    // The payload field is only 8 bits. A wider origin cannot be represented
+    // here and reads as a broadcast, matching what the wire does for an
+    // extended target; send_command_ack() takes the full value separately.
+    command_ack.target_system =
+        command.origin_system_id > 255 ? 0 : static_cast<uint8_t>(command.origin_system_id);
     command_ack.target_component = command.origin_component_id;
 
     return command_ack;
@@ -283,7 +287,11 @@ mavlink_command_ack_t ServerComponentImpl::make_command_ack_message(
     command_ack.result = result;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.result_param2 = 0;
-    command_ack.target_system = command.origin_system_id;
+    // The payload field is only 8 bits. A wider origin cannot be represented
+    // here and reads as a broadcast, matching what the wire does for an
+    // extended target; send_command_ack() takes the full value separately.
+    command_ack.target_system =
+        command.origin_system_id > 255 ? 0 : static_cast<uint8_t>(command.origin_system_id);
     command_ack.target_component = command.origin_component_id;
 
     return command_ack;
