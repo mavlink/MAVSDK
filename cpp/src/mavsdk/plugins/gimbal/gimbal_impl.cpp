@@ -897,8 +897,8 @@ void GimbalImpl::take_control_async(
         return;
     }
 
-    float own_sysid = _system_impl->get_own_system_id();
-    float own_compid = _system_impl->get_own_component_id();
+    const auto own_sysid = static_cast<float>(_system_impl->get_own_system_id());
+    const auto own_compid = static_cast<float>(_system_impl->get_own_component_id());
 
     MavlinkCommandSender::CommandLong command{};
 
