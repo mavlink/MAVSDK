@@ -1,4 +1,3 @@
-#include "log.hpp"
 #include "mavsdk.hpp"
 #include "plugins/action/action.hpp"
 #include "plugins/action_server/action_server.hpp"
@@ -17,17 +16,17 @@ using namespace mavsdk;
 // sender sets MAVLINK_IFLAG_SYSID32 and the header grows by 3 bytes. A target
 // above 255 likewise moves into an extended header behind
 // MAVLINK_IFLAG_TARGETTED.
-//
+
+// The cases below need the MAVLink C library to carry a wide system ID, which
+// comes from the generator changes in that PR. Against a MAVLINK_HASH without
+// them only the 8 bit compatibility case can run, since the rest would be
+// testing a truncation we already know is there.
+#ifdef MAVLINK_IFLAG_TARGETTED
+
 // 0x0A000001 is 10.0.0.1, which is the point of the feature: an IPv4 address
 // used directly as a system ID.
 static constexpr uint32_t autopilot_sysid = 0x0A000001;
 static constexpr uint32_t groundstation_sysid = 0x0A000002;
-
-// The 32 bit cases below need the MAVLink C library to carry a wide system ID,
-// which arrives with the generator changes from that PR. Until MAVLINK_HASH is
-// bumped to a build that has them, only the 8 bit compatibility case can run:
-// the rest would be testing a truncation we already know is there.
-#ifdef MAVLINK_IFLAG_TARGETTED
 
 TEST(Sysid32, Discovery)
 {
@@ -105,9 +104,8 @@ TEST(Sysid32, MavlinkDirectRoundtrip)
 
     MavlinkDirectServer::MavlinkMessage message;
     message.message_name = "GLOBAL_POSITION_INT";
-    message.fields_json =
-        R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,)"
-        R"("relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
+    message.fields_json = R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,)"
+                          R"("relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
     ASSERT_EQ(sender.send_message(message), MavlinkDirectServer::Result::Success);
 
