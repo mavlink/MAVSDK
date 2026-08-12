@@ -107,8 +107,9 @@ JNIEXPORT jint JNICALL
 Java_io_mavsdk_jni_NativeSystem_getSystemId(
     JNIEnv* env, jobject, jlong handle) {
     if (!requireHandle(env, handle, "system")) return 0;
-    return mavsdk_system_get_system_id(
-        reinterpret_cast<mavsdk_system_t>(handle));
+    // See NativeConfiguration_getSystemId: jint is signed, the bits survive.
+    return static_cast<jint>(mavsdk_system_get_system_id(
+        reinterpret_cast<mavsdk_system_t>(handle)));
 }
 
 JNIEXPORT jintArray JNICALL
