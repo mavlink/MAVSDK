@@ -331,6 +331,52 @@ CameraImpl::make_command_focus_range(int32_t component_id, float range)
     return cmd;
 }
 
+MavlinkCommandSender::CommandLong
+CameraImpl::make_command_focus_meters(int32_t component_id, float distance_m)
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
+    cmd.params.maybe_param1 = static_cast<float>(FOCUS_TYPE_METERS);
+    cmd.params.maybe_param2 = distance_m;
+    cmd.target_component_id = fixup_component_target(component_id);
+
+    return cmd;
+}
+
+MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_auto(int32_t component_id)
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
+    cmd.params.maybe_param1 = static_cast<float>(FOCUS_TYPE_AUTO);
+    cmd.params.maybe_param2 = 0.f;
+    cmd.target_component_id = fixup_component_target(component_id);
+
+    return cmd;
+}
+
+MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_auto_single(int32_t component_id)
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
+    cmd.params.maybe_param1 = static_cast<float>(FOCUS_TYPE_AUTO_SINGLE);
+    cmd.params.maybe_param2 = 0.f;
+    cmd.target_component_id = fixup_component_target(component_id);
+
+    return cmd;
+}
+
+MavlinkCommandSender::CommandLong
+CameraImpl::make_command_focus_auto_continuous(int32_t component_id)
+{
+    MavlinkCommandSender::CommandLong cmd{};
+    cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
+    cmd.params.maybe_param1 = static_cast<float>(FOCUS_TYPE_AUTO_CONTINUOUS);
+    cmd.params.maybe_param2 = 0.f;
+    cmd.target_component_id = fixup_component_target(component_id);
+
+    return cmd;
+}
+
 MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_photo(int32_t component_id)
 {
     MavlinkCommandSender::CommandLong cmd_stop_photo{};
@@ -508,6 +554,34 @@ Camera::Result CameraImpl::focus_range(int32_t component_id, float range)
     return camera_result_from_command_result(_system_impl->send_command(cmd));
 }
 
+Camera::Result CameraImpl::focus_meters(int32_t component_id, float distance_m)
+{
+    auto cmd = make_command_focus_meters(component_id, distance_m);
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
+Camera::Result CameraImpl::focus_auto(int32_t component_id)
+{
+    auto cmd = make_command_focus_auto(component_id);
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
+Camera::Result CameraImpl::focus_auto_single(int32_t component_id)
+{
+    auto cmd = make_command_focus_auto_single(component_id);
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
+Camera::Result CameraImpl::focus_auto_continuous(int32_t component_id)
+{
+    auto cmd = make_command_focus_auto_continuous(component_id);
+
+    return camera_result_from_command_result(_system_impl->send_command(cmd));
+}
+
 Camera::Result CameraImpl::start_photo_interval(int32_t component_id, float interval_s)
 {
     auto cmd_take_photo_time_lapse = make_command_take_photo(component_id, interval_s, 0.f);
@@ -674,6 +748,49 @@ void CameraImpl::focus_range_async(
     int32_t component_id, float range, const Camera::ResultCallback& callback)
 {
     auto cmd = make_command_focus_range(component_id, range);
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+
+void CameraImpl::focus_meters_async(
+    int32_t component_id, float distance_m, const Camera::ResultCallback& callback)
+{
+    auto cmd = make_command_focus_meters(component_id, distance_m);
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+
+void CameraImpl::focus_auto_async(int32_t component_id, const Camera::ResultCallback& callback)
+{
+    auto cmd = make_command_focus_auto(component_id);
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+
+void CameraImpl::focus_auto_single_async(
+    int32_t component_id, const Camera::ResultCallback& callback)
+{
+    auto cmd = make_command_focus_auto_single(component_id);
+
+    _system_impl->send_command_async(
+        cmd, [this, callback](MavlinkCommandSender::Result result, float) {
+            receive_command_result(result, callback);
+        });
+}
+
+void CameraImpl::focus_auto_continuous_async(
+    int32_t component_id, const Camera::ResultCallback& callback)
+{
+    auto cmd = make_command_focus_auto_continuous(component_id);
 
     _system_impl->send_command_async(
         cmd, [this, callback](MavlinkCommandSender::Result result, float) {

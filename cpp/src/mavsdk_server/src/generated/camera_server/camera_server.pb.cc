@@ -621,6 +621,24 @@ struct SubscribeFocusOutStartRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeFocusOutStartRequestDefaultTypeInternal _SubscribeFocusOutStartRequest_default_instance_;
               template <typename>
+PROTOBUF_CONSTEXPR SubscribeFocusMetersRequest::SubscribeFocusMetersRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct SubscribeFocusMetersRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeFocusMetersRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeFocusMetersRequestDefaultTypeInternal() {}
+  union {
+    SubscribeFocusMetersRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeFocusMetersRequestDefaultTypeInternal _SubscribeFocusMetersRequest_default_instance_;
+              template <typename>
 PROTOBUF_CONSTEXPR SubscribeFocusInStepRequest::SubscribeFocusInStepRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
@@ -656,6 +674,60 @@ struct SubscribeFocusInStartRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeFocusInStartRequestDefaultTypeInternal _SubscribeFocusInStartRequest_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR SubscribeFocusAutoSingleRequest::SubscribeFocusAutoSingleRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct SubscribeFocusAutoSingleRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeFocusAutoSingleRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeFocusAutoSingleRequestDefaultTypeInternal() {}
+  union {
+    SubscribeFocusAutoSingleRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeFocusAutoSingleRequestDefaultTypeInternal _SubscribeFocusAutoSingleRequest_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR SubscribeFocusAutoRequest::SubscribeFocusAutoRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct SubscribeFocusAutoRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeFocusAutoRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeFocusAutoRequestDefaultTypeInternal() {}
+  union {
+    SubscribeFocusAutoRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeFocusAutoRequestDefaultTypeInternal _SubscribeFocusAutoRequest_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR SubscribeFocusAutoContinuousRequest::SubscribeFocusAutoContinuousRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct SubscribeFocusAutoContinuousRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeFocusAutoContinuousRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeFocusAutoContinuousRequestDefaultTypeInternal() {}
+  union {
+    SubscribeFocusAutoContinuousRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeFocusAutoContinuousRequestDefaultTypeInternal _SubscribeFocusAutoContinuousRequest_default_instance_;
               template <typename>
 PROTOBUF_CONSTEXPR SubscribeCaptureStatusRequest::SubscribeCaptureStatusRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
@@ -1455,6 +1527,31 @@ struct RespondFocusOutStartRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusOutStartRequestDefaultTypeInternal _RespondFocusOutStartRequest_default_instance_;
 
+inline constexpr RespondFocusMetersRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : focus_meters_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondFocusMetersRequest::RespondFocusMetersRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondFocusMetersRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondFocusMetersRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondFocusMetersRequestDefaultTypeInternal() {}
+  union {
+    RespondFocusMetersRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusMetersRequestDefaultTypeInternal _RespondFocusMetersRequest_default_instance_;
+
 inline constexpr RespondFocusInStepRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : focus_in_step_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
@@ -1504,6 +1601,81 @@ struct RespondFocusInStartRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusInStartRequestDefaultTypeInternal _RespondFocusInStartRequest_default_instance_;
+
+inline constexpr RespondFocusAutoSingleRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : focus_auto_single_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondFocusAutoSingleRequest::RespondFocusAutoSingleRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondFocusAutoSingleRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondFocusAutoSingleRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondFocusAutoSingleRequestDefaultTypeInternal() {}
+  union {
+    RespondFocusAutoSingleRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusAutoSingleRequestDefaultTypeInternal _RespondFocusAutoSingleRequest_default_instance_;
+
+inline constexpr RespondFocusAutoRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : focus_auto_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondFocusAutoRequest::RespondFocusAutoRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondFocusAutoRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondFocusAutoRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondFocusAutoRequestDefaultTypeInternal() {}
+  union {
+    RespondFocusAutoRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusAutoRequestDefaultTypeInternal _RespondFocusAutoRequest_default_instance_;
+
+inline constexpr RespondFocusAutoContinuousRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : focus_auto_continuous_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondFocusAutoContinuousRequest::RespondFocusAutoContinuousRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondFocusAutoContinuousRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondFocusAutoContinuousRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondFocusAutoContinuousRequestDefaultTypeInternal() {}
+  union {
+    RespondFocusAutoContinuousRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusAutoContinuousRequestDefaultTypeInternal _RespondFocusAutoContinuousRequest_default_instance_;
 
 inline constexpr ResetSettingsResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -1756,6 +1928,31 @@ struct FocusOutStartResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FocusOutStartResponseDefaultTypeInternal _FocusOutStartResponse_default_instance_;
 
+inline constexpr FocusMetersResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : focus_distance_m_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FocusMetersResponse::FocusMetersResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FocusMetersResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FocusMetersResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FocusMetersResponseDefaultTypeInternal() {}
+  union {
+    FocusMetersResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FocusMetersResponseDefaultTypeInternal _FocusMetersResponse_default_instance_;
+
 inline constexpr FocusInStepResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : reserved_{0},
@@ -1805,6 +2002,81 @@ struct FocusInStartResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FocusInStartResponseDefaultTypeInternal _FocusInStartResponse_default_instance_;
+
+inline constexpr FocusAutoSingleResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : reserved_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FocusAutoSingleResponse::FocusAutoSingleResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FocusAutoSingleResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FocusAutoSingleResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FocusAutoSingleResponseDefaultTypeInternal() {}
+  union {
+    FocusAutoSingleResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FocusAutoSingleResponseDefaultTypeInternal _FocusAutoSingleResponse_default_instance_;
+
+inline constexpr FocusAutoResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : reserved_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FocusAutoResponse::FocusAutoResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FocusAutoResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FocusAutoResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FocusAutoResponseDefaultTypeInternal() {}
+  union {
+    FocusAutoResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FocusAutoResponseDefaultTypeInternal _FocusAutoResponse_default_instance_;
+
+inline constexpr FocusAutoContinuousResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : reserved_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FocusAutoContinuousResponse::FocusAutoContinuousResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FocusAutoContinuousResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FocusAutoContinuousResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FocusAutoContinuousResponseDefaultTypeInternal() {}
+  union {
+    FocusAutoContinuousResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FocusAutoContinuousResponseDefaultTypeInternal _FocusAutoContinuousResponse_default_instance_;
 
 inline constexpr CaptureStatusResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -2790,6 +3062,31 @@ struct RespondFocusOutStartResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusOutStartResponseDefaultTypeInternal _RespondFocusOutStartResponse_default_instance_;
 
+inline constexpr RespondFocusMetersResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        camera_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondFocusMetersResponse::RespondFocusMetersResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondFocusMetersResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondFocusMetersResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondFocusMetersResponseDefaultTypeInternal() {}
+  union {
+    RespondFocusMetersResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusMetersResponseDefaultTypeInternal _RespondFocusMetersResponse_default_instance_;
+
 inline constexpr RespondFocusInStepResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -2839,6 +3136,81 @@ struct RespondFocusInStartResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusInStartResponseDefaultTypeInternal _RespondFocusInStartResponse_default_instance_;
+
+inline constexpr RespondFocusAutoSingleResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        camera_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondFocusAutoSingleResponse::RespondFocusAutoSingleResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondFocusAutoSingleResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondFocusAutoSingleResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondFocusAutoSingleResponseDefaultTypeInternal() {}
+  union {
+    RespondFocusAutoSingleResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusAutoSingleResponseDefaultTypeInternal _RespondFocusAutoSingleResponse_default_instance_;
+
+inline constexpr RespondFocusAutoResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        camera_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondFocusAutoResponse::RespondFocusAutoResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondFocusAutoResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondFocusAutoResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondFocusAutoResponseDefaultTypeInternal() {}
+  union {
+    RespondFocusAutoResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusAutoResponseDefaultTypeInternal _RespondFocusAutoResponse_default_instance_;
+
+inline constexpr RespondFocusAutoContinuousResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        camera_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondFocusAutoContinuousResponse::RespondFocusAutoContinuousResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondFocusAutoContinuousResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondFocusAutoContinuousResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondFocusAutoContinuousResponseDefaultTypeInternal() {}
+  union {
+    RespondFocusAutoContinuousResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondFocusAutoContinuousResponseDefaultTypeInternal _RespondFocusAutoContinuousResponse_default_instance_;
 
 inline constexpr RespondCaptureStatusResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -3746,6 +4118,150 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusRangeResponse, _impl_.camera_server_result_),
         0,
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SubscribeFocusMetersRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::FocusMetersResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::FocusMetersResponse, _impl_.focus_distance_m_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusMetersRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusMetersRequest, _impl_.focus_meters_feedback_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusMetersResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusMetersResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusMetersResponse, _impl_.camera_server_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SubscribeFocusAutoRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::FocusAutoResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::FocusAutoResponse, _impl_.reserved_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoRequest, _impl_.focus_auto_feedback_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoResponse, _impl_.camera_server_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SubscribeFocusAutoSingleRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::FocusAutoSingleResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::FocusAutoSingleResponse, _impl_.reserved_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoSingleRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoSingleRequest, _impl_.focus_auto_single_feedback_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoSingleResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoSingleResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoSingleResponse, _impl_.camera_server_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SubscribeFocusAutoContinuousRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::FocusAutoContinuousResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::FocusAutoContinuousResponse, _impl_.reserved_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoContinuousRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoContinuousRequest, _impl_.focus_auto_continuous_feedback_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoContinuousResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoContinuousResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondFocusAutoContinuousResponse, _impl_.camera_server_result_),
+        0,
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -4214,42 +4730,58 @@ static const ::_pbi::MigrationSchema
         {760, -1, -1, sizeof(::mavsdk::rpc::camera_server::FocusRangeResponse)},
         {769, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusRangeRequest)},
         {778, 787, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusRangeResponse)},
-        {788, -1, -1, sizeof(::mavsdk::rpc::camera_server::Information)},
-        {809, -1, -1, sizeof(::mavsdk::rpc::camera_server::VideoStreaming)},
-        {819, -1, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
-        {831, -1, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
-        {843, 857, -1, sizeof(::mavsdk::rpc::camera_server::CaptureInfo)},
-        {863, -1, -1, sizeof(::mavsdk::rpc::camera_server::CameraServerResult)},
-        {873, -1, -1, sizeof(::mavsdk::rpc::camera_server::StorageInformation)},
-        {889, -1, -1, sizeof(::mavsdk::rpc::camera_server::CaptureStatus)},
-        {903, 912, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingPointStatusRequest)},
-        {913, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingPointStatusResponse)},
-        {921, 930, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest)},
-        {931, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse)},
-        {939, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest)},
-        {947, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse)},
-        {955, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest)},
-        {963, 972, -1, sizeof(::mavsdk::rpc::camera_server::TrackingPointCommandResponse)},
-        {973, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest)},
-        {981, 990, -1, sizeof(::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse)},
-        {991, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest)},
-        {999, -1, -1, sizeof(::mavsdk::rpc::camera_server::TrackingOffCommandResponse)},
-        {1008, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest)},
-        {1017, 1026, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse)},
-        {1027, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest)},
-        {1036, 1045, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse)},
-        {1046, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest)},
-        {1055, 1064, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse)},
-        {1065, 1074, -1, sizeof(::mavsdk::rpc::camera_server::SetPositionRequest)},
-        {1075, 1084, -1, sizeof(::mavsdk::rpc::camera_server::SetPositionResponse)},
-        {1085, 1094, -1, sizeof(::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest)},
-        {1095, 1104, -1, sizeof(::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse)},
-        {1105, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetZoomFactorRequest)},
-        {1114, 1123, -1, sizeof(::mavsdk::rpc::camera_server::SetZoomFactorResponse)},
-        {1124, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetFieldOfViewRequest)},
-        {1134, 1143, -1, sizeof(::mavsdk::rpc::camera_server::SetFieldOfViewResponse)},
-        {1144, -1, -1, sizeof(::mavsdk::rpc::camera_server::TrackPoint)},
-        {1155, -1, -1, sizeof(::mavsdk::rpc::camera_server::TrackRectangle)},
+        {788, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeFocusMetersRequest)},
+        {796, -1, -1, sizeof(::mavsdk::rpc::camera_server::FocusMetersResponse)},
+        {805, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusMetersRequest)},
+        {814, 823, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusMetersResponse)},
+        {824, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeFocusAutoRequest)},
+        {832, -1, -1, sizeof(::mavsdk::rpc::camera_server::FocusAutoResponse)},
+        {841, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusAutoRequest)},
+        {850, 859, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusAutoResponse)},
+        {860, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeFocusAutoSingleRequest)},
+        {868, -1, -1, sizeof(::mavsdk::rpc::camera_server::FocusAutoSingleResponse)},
+        {877, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusAutoSingleRequest)},
+        {886, 895, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusAutoSingleResponse)},
+        {896, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeFocusAutoContinuousRequest)},
+        {904, -1, -1, sizeof(::mavsdk::rpc::camera_server::FocusAutoContinuousResponse)},
+        {913, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusAutoContinuousRequest)},
+        {922, 931, -1, sizeof(::mavsdk::rpc::camera_server::RespondFocusAutoContinuousResponse)},
+        {932, -1, -1, sizeof(::mavsdk::rpc::camera_server::Information)},
+        {953, -1, -1, sizeof(::mavsdk::rpc::camera_server::VideoStreaming)},
+        {963, -1, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
+        {975, -1, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
+        {987, 1001, -1, sizeof(::mavsdk::rpc::camera_server::CaptureInfo)},
+        {1007, -1, -1, sizeof(::mavsdk::rpc::camera_server::CameraServerResult)},
+        {1017, -1, -1, sizeof(::mavsdk::rpc::camera_server::StorageInformation)},
+        {1033, -1, -1, sizeof(::mavsdk::rpc::camera_server::CaptureStatus)},
+        {1047, 1056, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingPointStatusRequest)},
+        {1057, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingPointStatusResponse)},
+        {1065, 1074, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest)},
+        {1075, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse)},
+        {1083, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest)},
+        {1091, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse)},
+        {1099, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest)},
+        {1107, 1116, -1, sizeof(::mavsdk::rpc::camera_server::TrackingPointCommandResponse)},
+        {1117, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest)},
+        {1125, 1134, -1, sizeof(::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse)},
+        {1135, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest)},
+        {1143, -1, -1, sizeof(::mavsdk::rpc::camera_server::TrackingOffCommandResponse)},
+        {1152, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest)},
+        {1161, 1170, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse)},
+        {1171, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest)},
+        {1180, 1189, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse)},
+        {1190, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest)},
+        {1199, 1208, -1, sizeof(::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse)},
+        {1209, 1218, -1, sizeof(::mavsdk::rpc::camera_server::SetPositionRequest)},
+        {1219, 1228, -1, sizeof(::mavsdk::rpc::camera_server::SetPositionResponse)},
+        {1229, 1238, -1, sizeof(::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest)},
+        {1239, 1248, -1, sizeof(::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse)},
+        {1249, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetZoomFactorRequest)},
+        {1258, 1267, -1, sizeof(::mavsdk::rpc::camera_server::SetZoomFactorResponse)},
+        {1268, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetFieldOfViewRequest)},
+        {1278, 1287, -1, sizeof(::mavsdk::rpc::camera_server::SetFieldOfViewResponse)},
+        {1288, -1, -1, sizeof(::mavsdk::rpc::camera_server::TrackPoint)},
+        {1299, -1, -1, sizeof(::mavsdk::rpc::camera_server::TrackRectangle)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::camera_server::_SetInformationRequest_default_instance_._instance,
@@ -4338,6 +4870,22 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::camera_server::_FocusRangeResponse_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_RespondFocusRangeRequest_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_RespondFocusRangeResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SubscribeFocusMetersRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_FocusMetersResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondFocusMetersRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondFocusMetersResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SubscribeFocusAutoRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_FocusAutoResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondFocusAutoRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondFocusAutoResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SubscribeFocusAutoSingleRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_FocusAutoSingleResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondFocusAutoSingleRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondFocusAutoSingleResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SubscribeFocusAutoContinuousRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_FocusAutoContinuousResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondFocusAutoContinuousRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondFocusAutoContinuousResponse_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_Information_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_VideoStreaming_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_Position_default_instance_._instance,
@@ -4540,320 +5088,378 @@ const char descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto[]
     "2(.mavsdk.rpc.camera_server.CameraFeedba"
     "ck\"g\n\031RespondFocusRangeResponse\022J\n\024camer"
     "a_server_result\030\001 \001(\0132,.mavsdk.rpc.camer"
-    "a_server.CameraServerResult\"\214\003\n\013Informat"
-    "ion\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_name\030\002"
-    " \001(\t\022\030\n\020firmware_version\030\003 \001(\t\022\027\n\017focal_"
-    "length_mm\030\004 \001(\002\022!\n\031horizontal_sensor_siz"
-    "e_mm\030\005 \001(\002\022\037\n\027vertical_sensor_size_mm\030\006 "
-    "\001(\002\022 \n\030horizontal_resolution_px\030\007 \001(\r\022\036\n"
-    "\026vertical_resolution_px\030\010 \001(\r\022\017\n\007lens_id"
-    "\030\t \001(\r\022\037\n\027definition_file_version\030\n \001(\r\022"
-    "\033\n\023definition_file_uri\030\013 \001(\t\022%\n\035image_in"
-    "_video_mode_supported\030\014 \001(\010\022%\n\035video_in_"
-    "image_mode_supported\030\r \001(\010\";\n\016VideoStrea"
-    "ming\022\027\n\017has_rtsp_server\030\001 \001(\010\022\020\n\010rtsp_ur"
-    "i\030\002 \001(\t\"q\n\010Position\022\024\n\014latitude_deg\030\001 \001("
-    "\001\022\025\n\rlongitude_deg\030\002 \001(\001\022\033\n\023absolute_alt"
-    "itude_m\030\003 \001(\002\022\033\n\023relative_altitude_m\030\004 \001"
-    "(\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t"
-    "\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\320\001\n\013CaptureInfo\0224\n\010"
-    "position\030\001 \001(\0132\".mavsdk.rpc.camera_serve"
-    "r.Position\022A\n\023attitude_quaternion\030\002 \001(\0132"
-    "$.mavsdk.rpc.camera_server.Quaternion\022\023\n"
-    "\013time_utc_us\030\003 \001(\004\022\022\n\nis_success\030\004 \001(\010\022\r"
-    "\n\005index\030\005 \001(\005\022\020\n\010file_url\030\006 \001(\t\"\263\002\n\022Came"
-    "raServerResult\022C\n\006result\030\001 \001(\01623.mavsdk."
-    "rpc.camera_server.CameraServerResult.Res"
-    "ult\022\022\n\nresult_str\030\002 \001(\t\"\303\001\n\006Result\022\022\n\016RE"
-    "SULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\026\n\022RE"
-    "SULT_IN_PROGRESS\020\002\022\017\n\013RESULT_BUSY\020\003\022\021\n\rR"
-    "ESULT_DENIED\020\004\022\020\n\014RESULT_ERROR\020\005\022\022\n\016RESU"
-    "LT_TIMEOUT\020\006\022\031\n\025RESULT_WRONG_ARGUMENT\020\007\022"
-    "\024\n\020RESULT_NO_SYSTEM\020\010\"\214\005\n\022StorageInforma"
-    "tion\022\030\n\020used_storage_mib\030\001 \001(\002\022\035\n\025availa"
-    "ble_storage_mib\030\002 \001(\002\022\031\n\021total_storage_m"
-    "ib\030\003 \001(\002\022R\n\016storage_status\030\004 \001(\0162:.mavsd"
-    "k.rpc.camera_server.StorageInformation.S"
-    "torageStatus\022\022\n\nstorage_id\030\005 \001(\r\022N\n\014stor"
-    "age_type\030\006 \001(\01628.mavsdk.rpc.camera_serve"
-    "r.StorageInformation.StorageType\022\030\n\020read"
-    "_speed_mib_s\030\007 \001(\002\022\031\n\021write_speed_mib_s\030"
-    "\010 \001(\002\"\221\001\n\rStorageStatus\022 \n\034STORAGE_STATU"
-    "S_NOT_AVAILABLE\020\000\022\036\n\032STORAGE_STATUS_UNFO"
-    "RMATTED\020\001\022\034\n\030STORAGE_STATUS_FORMATTED\020\002\022"
-    " \n\034STORAGE_STATUS_NOT_SUPPORTED\020\003\"\240\001\n\013St"
-    "orageType\022\030\n\024STORAGE_TYPE_UNKNOWN\020\000\022\032\n\026S"
-    "TORAGE_TYPE_USB_STICK\020\001\022\023\n\017STORAGE_TYPE_"
-    "SD\020\002\022\030\n\024STORAGE_TYPE_MICROSD\020\003\022\023\n\017STORAG"
-    "E_TYPE_HD\020\007\022\027\n\022STORAGE_TYPE_OTHER\020\376\001\"\356\003\n"
-    "\rCaptureStatus\022\030\n\020image_interval_s\030\001 \001(\002"
-    "\022\030\n\020recording_time_s\030\002 \001(\002\022\036\n\026available_"
-    "capacity_mib\030\003 \001(\002\022I\n\014image_status\030\004 \001(\016"
-    "23.mavsdk.rpc.camera_server.CaptureStatu"
-    "s.ImageStatus\022I\n\014video_status\030\005 \001(\01623.ma"
-    "vsdk.rpc.camera_server.CaptureStatus.Vid"
-    "eoStatus\022\023\n\013image_count\030\006 \001(\005\"\221\001\n\013ImageS"
-    "tatus\022\025\n\021IMAGE_STATUS_IDLE\020\000\022$\n IMAGE_ST"
-    "ATUS_CAPTURE_IN_PROGRESS\020\001\022\036\n\032IMAGE_STAT"
-    "US_INTERVAL_IDLE\020\002\022%\n!IMAGE_STATUS_INTER"
-    "VAL_IN_PROGRESS\020\003\"J\n\013VideoStatus\022\025\n\021VIDE"
-    "O_STATUS_IDLE\020\000\022$\n VIDEO_STATUS_CAPTURE_"
-    "IN_PROGRESS\020\001\"\\\n\035SetTrackingPointStatusR"
-    "equest\022;\n\rtracked_point\030\001 \001(\0132$.mavsdk.r"
-    "pc.camera_server.TrackPoint\" \n\036SetTracki"
-    "ngPointStatusResponse\"h\n!SetTrackingRect"
-    "angleStatusRequest\022C\n\021tracked_rectangle\030"
-    "\001 \001(\0132(.mavsdk.rpc.camera_server.TrackRe"
-    "ctangle\"$\n\"SetTrackingRectangleStatusRes"
-    "ponse\"\035\n\033SetTrackingOffStatusRequest\"\036\n\034"
-    "SetTrackingOffStatusResponse\"&\n$Subscrib"
-    "eTrackingPointCommandRequest\"Y\n\034Tracking"
-    "PointCommandResponse\0229\n\013track_point\030\001 \001("
-    "\0132$.mavsdk.rpc.camera_server.TrackPoint\""
-    "*\n(SubscribeTrackingRectangleCommandRequ"
-    "est\"e\n TrackingRectangleCommandResponse\022"
-    "A\n\017track_rectangle\030\001 \001(\0132(.mavsdk.rpc.ca"
-    "mera_server.TrackRectangle\"$\n\"SubscribeT"
-    "rackingOffCommandRequest\"+\n\032TrackingOffC"
-    "ommandResponse\022\r\n\005dummy\030\001 \001(\005\"k\n\"Respond"
-    "TrackingPointCommandRequest\022E\n\023stop_vide"
-    "o_feedback\030\001 \001(\0162(.mavsdk.rpc.camera_ser"
-    "ver.CameraFeedback\"q\n#RespondTrackingPoi"
-    "ntCommandResponse\022J\n\024camera_server_resul"
-    "t\030\001 \001(\0132,.mavsdk.rpc.camera_server.Camer"
-    "aServerResult\"o\n&RespondTrackingRectangl"
-    "eCommandRequest\022E\n\023stop_video_feedback\030\001"
-    " \001(\0162(.mavsdk.rpc.camera_server.CameraFe"
-    "edback\"u\n\'RespondTrackingRectangleComman"
+    "a_server.CameraServerResult\"\035\n\033Subscribe"
+    "FocusMetersRequest\"/\n\023FocusMetersRespons"
+    "e\022\030\n\020focus_distance_m\030\001 \001(\002\"d\n\031RespondFo"
+    "cusMetersRequest\022G\n\025focus_meters_feedbac"
+    "k\030\001 \001(\0162(.mavsdk.rpc.camera_server.Camer"
+    "aFeedback\"h\n\032RespondFocusMetersResponse\022"
+    "J\n\024camera_server_result\030\001 \001(\0132,.mavsdk.r"
+    "pc.camera_server.CameraServerResult\"\033\n\031S"
+    "ubscribeFocusAutoRequest\"%\n\021FocusAutoRes"
+    "ponse\022\020\n\010reserved\030\001 \001(\005\"`\n\027RespondFocusA"
+    "utoRequest\022E\n\023focus_auto_feedback\030\001 \001(\0162"
+    "(.mavsdk.rpc.camera_server.CameraFeedbac"
+    "k\"f\n\030RespondFocusAutoResponse\022J\n\024camera_"
+    "server_result\030\001 \001(\0132,.mavsdk.rpc.camera_"
+    "server.CameraServerResult\"!\n\037SubscribeFo"
+    "cusAutoSingleRequest\"+\n\027FocusAutoSingleR"
+    "esponse\022\020\n\010reserved\030\001 \001(\005\"m\n\035RespondFocu"
+    "sAutoSingleRequest\022L\n\032focus_auto_single_"
+    "feedback\030\001 \001(\0162(.mavsdk.rpc.camera_serve"
+    "r.CameraFeedback\"l\n\036RespondFocusAutoSing"
+    "leResponse\022J\n\024camera_server_result\030\001 \001(\013"
+    "2,.mavsdk.rpc.camera_server.CameraServer"
+    "Result\"%\n#SubscribeFocusAutoContinuousRe"
+    "quest\"/\n\033FocusAutoContinuousResponse\022\020\n\010"
+    "reserved\030\001 \001(\005\"u\n!RespondFocusAutoContin"
+    "uousRequest\022P\n\036focus_auto_continuous_fee"
+    "dback\030\001 \001(\0162(.mavsdk.rpc.camera_server.C"
+    "ameraFeedback\"p\n\"RespondFocusAutoContinu"
+    "ousResponse\022J\n\024camera_server_result\030\001 \001("
+    "\0132,.mavsdk.rpc.camera_server.CameraServe"
+    "rResult\"\214\003\n\013Information\022\023\n\013vendor_name\030\001"
+    " \001(\t\022\022\n\nmodel_name\030\002 \001(\t\022\030\n\020firmware_ver"
+    "sion\030\003 \001(\t\022\027\n\017focal_length_mm\030\004 \001(\002\022!\n\031h"
+    "orizontal_sensor_size_mm\030\005 \001(\002\022\037\n\027vertic"
+    "al_sensor_size_mm\030\006 \001(\002\022 \n\030horizontal_re"
+    "solution_px\030\007 \001(\r\022\036\n\026vertical_resolution"
+    "_px\030\010 \001(\r\022\017\n\007lens_id\030\t \001(\r\022\037\n\027definition"
+    "_file_version\030\n \001(\r\022\033\n\023definition_file_u"
+    "ri\030\013 \001(\t\022%\n\035image_in_video_mode_supporte"
+    "d\030\014 \001(\010\022%\n\035video_in_image_mode_supported"
+    "\030\r \001(\010\";\n\016VideoStreaming\022\027\n\017has_rtsp_ser"
+    "ver\030\001 \001(\010\022\020\n\010rtsp_uri\030\002 \001(\t\"q\n\010Position\022"
+    "\024\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongitude_deg\030\002"
+    " \001(\001\022\033\n\023absolute_altitude_m\030\003 \001(\002\022\033\n\023rel"
+    "ative_altitude_m\030\004 \001(\002\"8\n\nQuaternion\022\t\n\001"
+    "w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002"
+    "\"\320\001\n\013CaptureInfo\0224\n\010position\030\001 \001(\0132\".mav"
+    "sdk.rpc.camera_server.Position\022A\n\023attitu"
+    "de_quaternion\030\002 \001(\0132$.mavsdk.rpc.camera_"
+    "server.Quaternion\022\023\n\013time_utc_us\030\003 \001(\004\022\022"
+    "\n\nis_success\030\004 \001(\010\022\r\n\005index\030\005 \001(\005\022\020\n\010fil"
+    "e_url\030\006 \001(\t\"\263\002\n\022CameraServerResult\022C\n\006re"
+    "sult\030\001 \001(\01623.mavsdk.rpc.camera_server.Ca"
+    "meraServerResult.Result\022\022\n\nresult_str\030\002 "
+    "\001(\t\"\303\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RE"
+    "SULT_SUCCESS\020\001\022\026\n\022RESULT_IN_PROGRESS\020\002\022\017"
+    "\n\013RESULT_BUSY\020\003\022\021\n\rRESULT_DENIED\020\004\022\020\n\014RE"
+    "SULT_ERROR\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\031\n\025RESU"
+    "LT_WRONG_ARGUMENT\020\007\022\024\n\020RESULT_NO_SYSTEM\020"
+    "\010\"\214\005\n\022StorageInformation\022\030\n\020used_storage"
+    "_mib\030\001 \001(\002\022\035\n\025available_storage_mib\030\002 \001("
+    "\002\022\031\n\021total_storage_mib\030\003 \001(\002\022R\n\016storage_"
+    "status\030\004 \001(\0162:.mavsdk.rpc.camera_server."
+    "StorageInformation.StorageStatus\022\022\n\nstor"
+    "age_id\030\005 \001(\r\022N\n\014storage_type\030\006 \001(\01628.mav"
+    "sdk.rpc.camera_server.StorageInformation"
+    ".StorageType\022\030\n\020read_speed_mib_s\030\007 \001(\002\022\031"
+    "\n\021write_speed_mib_s\030\010 \001(\002\"\221\001\n\rStorageSta"
+    "tus\022 \n\034STORAGE_STATUS_NOT_AVAILABLE\020\000\022\036\n"
+    "\032STORAGE_STATUS_UNFORMATTED\020\001\022\034\n\030STORAGE"
+    "_STATUS_FORMATTED\020\002\022 \n\034STORAGE_STATUS_NO"
+    "T_SUPPORTED\020\003\"\240\001\n\013StorageType\022\030\n\024STORAGE"
+    "_TYPE_UNKNOWN\020\000\022\032\n\026STORAGE_TYPE_USB_STIC"
+    "K\020\001\022\023\n\017STORAGE_TYPE_SD\020\002\022\030\n\024STORAGE_TYPE"
+    "_MICROSD\020\003\022\023\n\017STORAGE_TYPE_HD\020\007\022\027\n\022STORA"
+    "GE_TYPE_OTHER\020\376\001\"\356\003\n\rCaptureStatus\022\030\n\020im"
+    "age_interval_s\030\001 \001(\002\022\030\n\020recording_time_s"
+    "\030\002 \001(\002\022\036\n\026available_capacity_mib\030\003 \001(\002\022I"
+    "\n\014image_status\030\004 \001(\01623.mavsdk.rpc.camera"
+    "_server.CaptureStatus.ImageStatus\022I\n\014vid"
+    "eo_status\030\005 \001(\01623.mavsdk.rpc.camera_serv"
+    "er.CaptureStatus.VideoStatus\022\023\n\013image_co"
+    "unt\030\006 \001(\005\"\221\001\n\013ImageStatus\022\025\n\021IMAGE_STATU"
+    "S_IDLE\020\000\022$\n IMAGE_STATUS_CAPTURE_IN_PROG"
+    "RESS\020\001\022\036\n\032IMAGE_STATUS_INTERVAL_IDLE\020\002\022%"
+    "\n!IMAGE_STATUS_INTERVAL_IN_PROGRESS\020\003\"J\n"
+    "\013VideoStatus\022\025\n\021VIDEO_STATUS_IDLE\020\000\022$\n V"
+    "IDEO_STATUS_CAPTURE_IN_PROGRESS\020\001\"\\\n\035Set"
+    "TrackingPointStatusRequest\022;\n\rtracked_po"
+    "int\030\001 \001(\0132$.mavsdk.rpc.camera_server.Tra"
+    "ckPoint\" \n\036SetTrackingPointStatusRespons"
+    "e\"h\n!SetTrackingRectangleStatusRequest\022C"
+    "\n\021tracked_rectangle\030\001 \001(\0132(.mavsdk.rpc.c"
+    "amera_server.TrackRectangle\"$\n\"SetTracki"
+    "ngRectangleStatusResponse\"\035\n\033SetTracking"
+    "OffStatusRequest\"\036\n\034SetTrackingOffStatus"
+    "Response\"&\n$SubscribeTrackingPointComman"
+    "dRequest\"Y\n\034TrackingPointCommandResponse"
+    "\0229\n\013track_point\030\001 \001(\0132$.mavsdk.rpc.camer"
+    "a_server.TrackPoint\"*\n(SubscribeTracking"
+    "RectangleCommandRequest\"e\n TrackingRecta"
+    "ngleCommandResponse\022A\n\017track_rectangle\030\001"
+    " \001(\0132(.mavsdk.rpc.camera_server.TrackRec"
+    "tangle\"$\n\"SubscribeTrackingOffCommandReq"
+    "uest\"+\n\032TrackingOffCommandResponse\022\r\n\005du"
+    "mmy\030\001 \001(\005\"k\n\"RespondTrackingPointCommand"
+    "Request\022E\n\023stop_video_feedback\030\001 \001(\0162(.m"
+    "avsdk.rpc.camera_server.CameraFeedback\"q"
+    "\n#RespondTrackingPointCommandResponse\022J\n"
+    "\024camera_server_result\030\001 \001(\0132,.mavsdk.rpc"
+    ".camera_server.CameraServerResult\"o\n&Res"
+    "pondTrackingRectangleCommandRequest\022E\n\023s"
+    "top_video_feedback\030\001 \001(\0162(.mavsdk.rpc.ca"
+    "mera_server.CameraFeedback\"u\n\'RespondTra"
+    "ckingRectangleCommandResponse\022J\n\024camera_"
+    "server_result\030\001 \001(\0132,.mavsdk.rpc.camera_"
+    "server.CameraServerResult\"i\n RespondTrac"
+    "kingOffCommandRequest\022E\n\023stop_video_feed"
+    "back\030\001 \001(\0162(.mavsdk.rpc.camera_server.Ca"
+    "meraFeedback\"o\n!RespondTrackingOffComman"
     "dResponse\022J\n\024camera_server_result\030\001 \001(\0132"
     ",.mavsdk.rpc.camera_server.CameraServerR"
-    "esult\"i\n RespondTrackingOffCommandReques"
-    "t\022E\n\023stop_video_feedback\030\001 \001(\0162(.mavsdk."
-    "rpc.camera_server.CameraFeedback\"o\n!Resp"
-    "ondTrackingOffCommandResponse\022J\n\024camera_"
-    "server_result\030\001 \001(\0132,.mavsdk.rpc.camera_"
-    "server.CameraServerResult\"J\n\022SetPosition"
-    "Request\0224\n\010position\030\001 \001(\0132\".mavsdk.rpc.c"
-    "amera_server.Position\"a\n\023SetPositionResp"
-    "onse\022J\n\024camera_server_result\030\001 \001(\0132,.mav"
-    "sdk.rpc.camera_server.CameraServerResult"
-    "\"a\n\034SetAttitudeQuaternionRequest\022A\n\023atti"
-    "tude_quaternion\030\001 \001(\0132$.mavsdk.rpc.camer"
-    "a_server.Quaternion\"k\n\035SetAttitudeQuater"
-    "nionResponse\022J\n\024camera_server_result\030\001 \001"
-    "(\0132,.mavsdk.rpc.camera_server.CameraServ"
-    "erResult\"+\n\024SetZoomFactorRequest\022\023\n\013zoom"
-    "_factor\030\001 \001(\002\"c\n\025SetZoomFactorResponse\022J"
-    "\n\024camera_server_result\030\001 \001(\0132,.mavsdk.rp"
-    "c.camera_server.CameraServerResult\"M\n\025Se"
-    "tFieldOfViewRequest\022\032\n\022horizontal_fov_de"
-    "g\030\001 \001(\002\022\030\n\020vertical_fov_deg\030\002 \001(\002\"d\n\026Set"
-    "FieldOfViewResponse\022J\n\024camera_server_res"
-    "ult\030\001 \001(\0132,.mavsdk.rpc.camera_server.Cam"
-    "eraServerResult\">\n\nTrackPoint\022\017\n\007point_x"
-    "\030\001 \001(\002\022\017\n\007point_y\030\002 \001(\002\022\016\n\006radius\030\003 \001(\002\""
-    "\204\001\n\016TrackRectangle\022\031\n\021top_left_corner_x\030"
-    "\001 \001(\002\022\031\n\021top_left_corner_y\030\002 \001(\002\022\035\n\025bott"
-    "om_right_corner_x\030\003 \001(\002\022\035\n\025bottom_right_"
-    "corner_y\030\004 \001(\002*{\n\016CameraFeedback\022\033\n\027CAME"
-    "RA_FEEDBACK_UNKNOWN\020\000\022\026\n\022CAMERA_FEEDBACK"
-    "_OK\020\001\022\030\n\024CAMERA_FEEDBACK_BUSY\020\002\022\032\n\026CAMER"
-    "A_FEEDBACK_FAILED\020\003*8\n\004Mode\022\020\n\014MODE_UNKN"
-    "OWN\020\000\022\016\n\nMODE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020\0022\214<"
-    "\n\023CameraServerService\022y\n\016SetInformation\022"
-    "/.mavsdk.rpc.camera_server.SetInformatio"
-    "nRequest\0320.mavsdk.rpc.camera_server.SetI"
-    "nformationResponse\"\004\200\265\030\001\022\202\001\n\021SetVideoStr"
-    "eaming\0222.mavsdk.rpc.camera_server.SetVid"
-    "eoStreamingRequest\0323.mavsdk.rpc.camera_s"
-    "erver.SetVideoStreamingResponse\"\004\200\265\030\001\022v\n"
-    "\rSetInProgress\022..mavsdk.rpc.camera_serve"
-    "r.SetInProgressRequest\032/.mavsdk.rpc.came"
-    "ra_server.SetInProgressResponse\"\004\200\265\030\001\022~\n"
-    "\022SubscribeTakePhoto\0223.mavsdk.rpc.camera_"
-    "server.SubscribeTakePhotoRequest\032+.mavsd"
-    "k.rpc.camera_server.TakePhotoResponse\"\004\200"
-    "\265\030\0000\001\022\177\n\020RespondTakePhoto\0221.mavsdk.rpc.c"
-    "amera_server.RespondTakePhotoRequest\0322.m"
-    "avsdk.rpc.camera_server.RespondTakePhoto"
-    "Response\"\004\200\265\030\001\022\201\001\n\023SubscribeStartVideo\0224"
-    ".mavsdk.rpc.camera_server.SubscribeStart"
-    "VideoRequest\032,.mavsdk.rpc.camera_server."
-    "StartVideoResponse\"\004\200\265\030\0000\001\022\202\001\n\021RespondSt"
-    "artVideo\0222.mavsdk.rpc.camera_server.Resp"
-    "ondStartVideoRequest\0323.mavsdk.rpc.camera"
-    "_server.RespondStartVideoResponse\"\004\200\265\030\001\022"
-    "~\n\022SubscribeStopVideo\0223.mavsdk.rpc.camer"
-    "a_server.SubscribeStopVideoRequest\032+.mav"
-    "sdk.rpc.camera_server.StopVideoResponse\""
-    "\004\200\265\030\0000\001\022\177\n\020RespondStopVideo\0221.mavsdk.rpc"
-    ".camera_server.RespondStopVideoRequest\0322"
-    ".mavsdk.rpc.camera_server.RespondStopVid"
-    "eoResponse\"\004\200\265\030\001\022\234\001\n\034SubscribeStartVideo"
-    "Streaming\022=.mavsdk.rpc.camera_server.Sub"
-    "scribeStartVideoStreamingRequest\0325.mavsd"
-    "k.rpc.camera_server.StartVideoStreamingR"
-    "esponse\"\004\200\265\030\0000\001\022\235\001\n\032RespondStartVideoStr"
-    "eaming\022;.mavsdk.rpc.camera_server.Respon"
-    "dStartVideoStreamingRequest\032<.mavsdk.rpc"
-    ".camera_server.RespondStartVideoStreamin"
-    "gResponse\"\004\200\265\030\001\022\231\001\n\033SubscribeStopVideoSt"
-    "reaming\022<.mavsdk.rpc.camera_server.Subsc"
-    "ribeStopVideoStreamingRequest\0324.mavsdk.r"
-    "pc.camera_server.StopVideoStreamingRespo"
-    "nse\"\004\200\265\030\0000\001\022\232\001\n\031RespondStopVideoStreamin"
-    "g\022:.mavsdk.rpc.camera_server.RespondStop"
-    "VideoStreamingRequest\032;.mavsdk.rpc.camer"
-    "a_server.RespondStopVideoStreamingRespon"
-    "se\"\004\200\265\030\001\022x\n\020SubscribeSetMode\0221.mavsdk.rp"
-    "c.camera_server.SubscribeSetModeRequest\032"
-    ").mavsdk.rpc.camera_server.SetModeRespon"
-    "se\"\004\200\265\030\0000\001\022y\n\016RespondSetMode\022/.mavsdk.rp"
-    "c.camera_server.RespondSetModeRequest\0320."
-    "mavsdk.rpc.camera_server.RespondSetModeR"
-    "esponse\"\004\200\265\030\001\022\231\001\n\033SubscribeStorageInform"
-    "ation\022<.mavsdk.rpc.camera_server.Subscri"
-    "beStorageInformationRequest\0324.mavsdk.rpc"
-    ".camera_server.StorageInformationRespons"
-    "e\"\004\200\265\030\0000\001\022\232\001\n\031RespondStorageInformation\022"
-    ":.mavsdk.rpc.camera_server.RespondStorag"
-    "eInformationRequest\032;.mavsdk.rpc.camera_"
-    "server.RespondStorageInformationResponse"
-    "\"\004\200\265\030\001\022\212\001\n\026SubscribeCaptureStatus\0227.mavs"
-    "dk.rpc.camera_server.SubscribeCaptureSta"
-    "tusRequest\032/.mavsdk.rpc.camera_server.Ca"
-    "ptureStatusResponse\"\004\200\265\030\0000\001\022\213\001\n\024RespondC"
-    "aptureStatus\0225.mavsdk.rpc.camera_server."
-    "RespondCaptureStatusRequest\0326.mavsdk.rpc"
-    ".camera_server.RespondCaptureStatusRespo"
-    "nse\"\004\200\265\030\001\022\212\001\n\026SubscribeFormatStorage\0227.m"
-    "avsdk.rpc.camera_server.SubscribeFormatS"
-    "torageRequest\032/.mavsdk.rpc.camera_server"
-    ".FormatStorageResponse\"\004\200\265\030\0000\001\022\213\001\n\024Respo"
-    "ndFormatStorage\0225.mavsdk.rpc.camera_serv"
-    "er.RespondFormatStorageRequest\0326.mavsdk."
-    "rpc.camera_server.RespondFormatStorageRe"
-    "sponse\"\004\200\265\030\001\022\212\001\n\026SubscribeResetSettings\022"
-    "7.mavsdk.rpc.camera_server.SubscribeRese"
-    "tSettingsRequest\032/.mavsdk.rpc.camera_ser"
-    "ver.ResetSettingsResponse\"\004\200\265\030\0000\001\022\213\001\n\024Re"
-    "spondResetSettings\0225.mavsdk.rpc.camera_s"
-    "erver.RespondResetSettingsRequest\0326.mavs"
-    "dk.rpc.camera_server.RespondResetSetting"
-    "sResponse\"\004\200\265\030\001\022\204\001\n\024SubscribeZoomInStart"
-    "\0225.mavsdk.rpc.camera_server.SubscribeZoo"
-    "mInStartRequest\032-.mavsdk.rpc.camera_serv"
-    "er.ZoomInStartResponse\"\004\200\265\030\0000\001\022\205\001\n\022Respo"
-    "ndZoomInStart\0223.mavsdk.rpc.camera_server"
-    ".RespondZoomInStartRequest\0324.mavsdk.rpc."
-    "camera_server.RespondZoomInStartResponse"
-    "\"\004\200\265\030\001\022\207\001\n\025SubscribeZoomOutStart\0226.mavsd"
-    "k.rpc.camera_server.SubscribeZoomOutStar"
-    "tRequest\032..mavsdk.rpc.camera_server.Zoom"
-    "OutStartResponse\"\004\200\265\030\0000\001\022\210\001\n\023RespondZoom"
-    "OutStart\0224.mavsdk.rpc.camera_server.Resp"
-    "ondZoomOutStartRequest\0325.mavsdk.rpc.came"
-    "ra_server.RespondZoomOutStartResponse\"\004\200"
-    "\265\030\001\022{\n\021SubscribeZoomStop\0222.mavsdk.rpc.ca"
-    "mera_server.SubscribeZoomStopRequest\032*.m"
-    "avsdk.rpc.camera_server.ZoomStopResponse"
-    "\"\004\200\265\030\0000\001\022|\n\017RespondZoomStop\0220.mavsdk.rpc"
-    ".camera_server.RespondZoomStopRequest\0321."
-    "mavsdk.rpc.camera_server.RespondZoomStop"
-    "Response\"\004\200\265\030\001\022~\n\022SubscribeZoomRange\0223.m"
-    "avsdk.rpc.camera_server.SubscribeZoomRan"
-    "geRequest\032+.mavsdk.rpc.camera_server.Zoo"
-    "mRangeResponse\"\004\200\265\030\0000\001\022\177\n\020RespondZoomRan"
-    "ge\0221.mavsdk.rpc.camera_server.RespondZoo"
-    "mRangeRequest\0322.mavsdk.rpc.camera_server"
-    ".RespondZoomRangeResponse\"\004\200\265\030\001\022\204\001\n\024Subs"
-    "cribeFocusInStep\0225.mavsdk.rpc.camera_ser"
-    "ver.SubscribeFocusInStepRequest\032-.mavsdk"
-    ".rpc.camera_server.FocusInStepResponse\"\004"
-    "\200\265\030\0000\001\022\205\001\n\022RespondFocusInStep\0223.mavsdk.r"
-    "pc.camera_server.RespondFocusInStepReque"
-    "st\0324.mavsdk.rpc.camera_server.RespondFoc"
-    "usInStepResponse\"\004\200\265\030\001\022\207\001\n\025SubscribeFocu"
-    "sOutStep\0226.mavsdk.rpc.camera_server.Subs"
-    "cribeFocusOutStepRequest\032..mavsdk.rpc.ca"
-    "mera_server.FocusOutStepResponse\"\004\200\265\030\0000\001"
-    "\022\210\001\n\023RespondFocusOutStep\0224.mavsdk.rpc.ca"
-    "mera_server.RespondFocusOutStepRequest\0325"
-    ".mavsdk.rpc.camera_server.RespondFocusOu"
-    "tStepResponse\"\004\200\265\030\001\022\207\001\n\025SubscribeFocusIn"
-    "Start\0226.mavsdk.rpc.camera_server.Subscri"
-    "beFocusInStartRequest\032..mavsdk.rpc.camer"
-    "a_server.FocusInStartResponse\"\004\200\265\030\0000\001\022\210\001"
-    "\n\023RespondFocusInStart\0224.mavsdk.rpc.camer"
-    "a_server.RespondFocusInStartRequest\0325.ma"
-    "vsdk.rpc.camera_server.RespondFocusInSta"
-    "rtResponse\"\004\200\265\030\001\022\212\001\n\026SubscribeFocusOutSt"
-    "art\0227.mavsdk.rpc.camera_server.Subscribe"
-    "FocusOutStartRequest\032/.mavsdk.rpc.camera"
-    "_server.FocusOutStartResponse\"\004\200\265\030\0000\001\022\213\001"
-    "\n\024RespondFocusOutStart\0225.mavsdk.rpc.came"
-    "ra_server.RespondFocusOutStartRequest\0326."
-    "mavsdk.rpc.camera_server.RespondFocusOut"
-    "StartResponse\"\004\200\265\030\001\022~\n\022SubscribeFocusSto"
-    "p\0223.mavsdk.rpc.camera_server.SubscribeFo"
-    "cusStopRequest\032+.mavsdk.rpc.camera_serve"
-    "r.FocusStopResponse\"\004\200\265\030\0000\001\022\177\n\020RespondFo"
-    "cusStop\0221.mavsdk.rpc.camera_server.Respo"
-    "ndFocusStopRequest\0322.mavsdk.rpc.camera_s"
-    "erver.RespondFocusStopResponse\"\004\200\265\030\001\022\201\001\n"
-    "\023SubscribeFocusRange\0224.mavsdk.rpc.camera"
-    "_server.SubscribeFocusRangeRequest\032,.mav"
-    "sdk.rpc.camera_server.FocusRangeResponse"
-    "\"\004\200\265\030\0000\001\022\202\001\n\021RespondFocusRange\0222.mavsdk."
-    "rpc.camera_server.RespondFocusRangeReque"
-    "st\0323.mavsdk.rpc.camera_server.RespondFoc"
-    "usRangeResponse\"\004\200\265\030\001\022\235\001\n\032SetTrackingRec"
-    "tangleStatus\022;.mavsdk.rpc.camera_server."
-    "SetTrackingRectangleStatusRequest\032<.mavs"
-    "dk.rpc.camera_server.SetTrackingRectangl"
-    "eStatusResponse\"\004\200\265\030\001\022\213\001\n\024SetTrackingOff"
-    "Status\0225.mavsdk.rpc.camera_server.SetTra"
-    "ckingOffStatusRequest\0326.mavsdk.rpc.camer"
-    "a_server.SetTrackingOffStatusResponse\"\004\200"
-    "\265\030\001\022\237\001\n\035SubscribeTrackingPointCommand\022>."
-    "mavsdk.rpc.camera_server.SubscribeTracki"
-    "ngPointCommandRequest\0326.mavsdk.rpc.camer"
-    "a_server.TrackingPointCommandResponse\"\004\200"
-    "\265\030\0000\001\022\253\001\n!SubscribeTrackingRectangleComm"
-    "and\022B.mavsdk.rpc.camera_server.Subscribe"
-    "TrackingRectangleCommandRequest\032:.mavsdk"
-    ".rpc.camera_server.TrackingRectangleComm"
-    "andResponse\"\004\200\265\030\0000\001\022\231\001\n\033SubscribeTrackin"
-    "gOffCommand\022<.mavsdk.rpc.camera_server.S"
-    "ubscribeTrackingOffCommandRequest\0324.mavs"
-    "dk.rpc.camera_server.TrackingOffCommandR"
-    "esponse\"\004\200\265\030\0000\001\022\240\001\n\033RespondTrackingPoint"
-    "Command\022<.mavsdk.rpc.camera_server.Respo"
-    "ndTrackingPointCommandRequest\032=.mavsdk.r"
-    "pc.camera_server.RespondTrackingPointCom"
-    "mandResponse\"\004\200\265\030\001\022\254\001\n\037RespondTrackingRe"
-    "ctangleCommand\022@.mavsdk.rpc.camera_serve"
-    "r.RespondTrackingRectangleCommandRequest"
-    "\032A.mavsdk.rpc.camera_server.RespondTrack"
-    "ingRectangleCommandResponse\"\004\200\265\030\001\022\232\001\n\031Re"
-    "spondTrackingOffCommand\022:.mavsdk.rpc.cam"
-    "era_server.RespondTrackingOffCommandRequ"
-    "est\032;.mavsdk.rpc.camera_server.RespondTr"
-    "ackingOffCommandResponse\"\004\200\265\030\001\022p\n\013SetPos"
-    "ition\022,.mavsdk.rpc.camera_server.SetPosi"
-    "tionRequest\032-.mavsdk.rpc.camera_server.S"
-    "etPositionResponse\"\004\200\265\030\001\022\216\001\n\025SetAttitude"
-    "Quaternion\0226.mavsdk.rpc.camera_server.Se"
-    "tAttitudeQuaternionRequest\0327.mavsdk.rpc."
-    "camera_server.SetAttitudeQuaternionRespo"
-    "nse\"\004\200\265\030\001\022v\n\rSetZoomFactor\022..mavsdk.rpc."
-    "camera_server.SetZoomFactorRequest\032/.mav"
-    "sdk.rpc.camera_server.SetZoomFactorRespo"
-    "nse\"\004\200\265\030\001\022y\n\016SetFieldOfView\022/.mavsdk.rpc"
-    ".camera_server.SetFieldOfViewRequest\0320.m"
-    "avsdk.rpc.camera_server.SetFieldOfViewRe"
-    "sponse\"\004\200\265\030\001B,\n\027io.mavsdk.camera_serverB"
-    "\021CameraServerProtob\006proto3"
+    "esult\"J\n\022SetPositionRequest\0224\n\010position\030"
+    "\001 \001(\0132\".mavsdk.rpc.camera_server.Positio"
+    "n\"a\n\023SetPositionResponse\022J\n\024camera_serve"
+    "r_result\030\001 \001(\0132,.mavsdk.rpc.camera_serve"
+    "r.CameraServerResult\"a\n\034SetAttitudeQuate"
+    "rnionRequest\022A\n\023attitude_quaternion\030\001 \001("
+    "\0132$.mavsdk.rpc.camera_server.Quaternion\""
+    "k\n\035SetAttitudeQuaternionResponse\022J\n\024came"
+    "ra_server_result\030\001 \001(\0132,.mavsdk.rpc.came"
+    "ra_server.CameraServerResult\"+\n\024SetZoomF"
+    "actorRequest\022\023\n\013zoom_factor\030\001 \001(\002\"c\n\025Set"
+    "ZoomFactorResponse\022J\n\024camera_server_resu"
+    "lt\030\001 \001(\0132,.mavsdk.rpc.camera_server.Came"
+    "raServerResult\"M\n\025SetFieldOfViewRequest\022"
+    "\032\n\022horizontal_fov_deg\030\001 \001(\002\022\030\n\020vertical_"
+    "fov_deg\030\002 \001(\002\"d\n\026SetFieldOfViewResponse\022"
+    "J\n\024camera_server_result\030\001 \001(\0132,.mavsdk.r"
+    "pc.camera_server.CameraServerResult\">\n\nT"
+    "rackPoint\022\017\n\007point_x\030\001 \001(\002\022\017\n\007point_y\030\002 "
+    "\001(\002\022\016\n\006radius\030\003 \001(\002\"\204\001\n\016TrackRectangle\022\031"
+    "\n\021top_left_corner_x\030\001 \001(\002\022\031\n\021top_left_co"
+    "rner_y\030\002 \001(\002\022\035\n\025bottom_right_corner_x\030\003 "
+    "\001(\002\022\035\n\025bottom_right_corner_y\030\004 \001(\002*{\n\016Ca"
+    "meraFeedback\022\033\n\027CAMERA_FEEDBACK_UNKNOWN\020"
+    "\000\022\026\n\022CAMERA_FEEDBACK_OK\020\001\022\030\n\024CAMERA_FEED"
+    "BACK_BUSY\020\002\022\032\n\026CAMERA_FEEDBACK_FAILED\020\003*"
+    "8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nMODE_PHOTO\020"
+    "\001\022\016\n\nMODE_VIDEO\020\0022\202E\n\023CameraServerServic"
+    "e\022y\n\016SetInformation\022/.mavsdk.rpc.camera_"
+    "server.SetInformationRequest\0320.mavsdk.rp"
+    "c.camera_server.SetInformationResponse\"\004"
+    "\200\265\030\001\022\202\001\n\021SetVideoStreaming\0222.mavsdk.rpc."
+    "camera_server.SetVideoStreamingRequest\0323"
+    ".mavsdk.rpc.camera_server.SetVideoStream"
+    "ingResponse\"\004\200\265\030\001\022v\n\rSetInProgress\022..mav"
+    "sdk.rpc.camera_server.SetInProgressReque"
+    "st\032/.mavsdk.rpc.camera_server.SetInProgr"
+    "essResponse\"\004\200\265\030\001\022~\n\022SubscribeTakePhoto\022"
+    "3.mavsdk.rpc.camera_server.SubscribeTake"
+    "PhotoRequest\032+.mavsdk.rpc.camera_server."
+    "TakePhotoResponse\"\004\200\265\030\0000\001\022\177\n\020RespondTake"
+    "Photo\0221.mavsdk.rpc.camera_server.Respond"
+    "TakePhotoRequest\0322.mavsdk.rpc.camera_ser"
+    "ver.RespondTakePhotoResponse\"\004\200\265\030\001\022\201\001\n\023S"
+    "ubscribeStartVideo\0224.mavsdk.rpc.camera_s"
+    "erver.SubscribeStartVideoRequest\032,.mavsd"
+    "k.rpc.camera_server.StartVideoResponse\"\004"
+    "\200\265\030\0000\001\022\202\001\n\021RespondStartVideo\0222.mavsdk.rp"
+    "c.camera_server.RespondStartVideoRequest"
+    "\0323.mavsdk.rpc.camera_server.RespondStart"
+    "VideoResponse\"\004\200\265\030\001\022~\n\022SubscribeStopVide"
+    "o\0223.mavsdk.rpc.camera_server.SubscribeSt"
+    "opVideoRequest\032+.mavsdk.rpc.camera_serve"
+    "r.StopVideoResponse\"\004\200\265\030\0000\001\022\177\n\020RespondSt"
+    "opVideo\0221.mavsdk.rpc.camera_server.Respo"
+    "ndStopVideoRequest\0322.mavsdk.rpc.camera_s"
+    "erver.RespondStopVideoResponse\"\004\200\265\030\001\022\234\001\n"
+    "\034SubscribeStartVideoStreaming\022=.mavsdk.r"
+    "pc.camera_server.SubscribeStartVideoStre"
+    "amingRequest\0325.mavsdk.rpc.camera_server."
+    "StartVideoStreamingResponse\"\004\200\265\030\0000\001\022\235\001\n\032"
+    "RespondStartVideoStreaming\022;.mavsdk.rpc."
+    "camera_server.RespondStartVideoStreaming"
+    "Request\032<.mavsdk.rpc.camera_server.Respo"
+    "ndStartVideoStreamingResponse\"\004\200\265\030\001\022\231\001\n\033"
+    "SubscribeStopVideoStreaming\022<.mavsdk.rpc"
+    ".camera_server.SubscribeStopVideoStreami"
+    "ngRequest\0324.mavsdk.rpc.camera_server.Sto"
+    "pVideoStreamingResponse\"\004\200\265\030\0000\001\022\232\001\n\031Resp"
+    "ondStopVideoStreaming\022:.mavsdk.rpc.camer"
+    "a_server.RespondStopVideoStreamingReques"
+    "t\032;.mavsdk.rpc.camera_server.RespondStop"
+    "VideoStreamingResponse\"\004\200\265\030\001\022x\n\020Subscrib"
+    "eSetMode\0221.mavsdk.rpc.camera_server.Subs"
+    "cribeSetModeRequest\032).mavsdk.rpc.camera_"
+    "server.SetModeResponse\"\004\200\265\030\0000\001\022y\n\016Respon"
+    "dSetMode\022/.mavsdk.rpc.camera_server.Resp"
+    "ondSetModeRequest\0320.mavsdk.rpc.camera_se"
+    "rver.RespondSetModeResponse\"\004\200\265\030\001\022\231\001\n\033Su"
+    "bscribeStorageInformation\022<.mavsdk.rpc.c"
+    "amera_server.SubscribeStorageInformation"
+    "Request\0324.mavsdk.rpc.camera_server.Stora"
+    "geInformationResponse\"\004\200\265\030\0000\001\022\232\001\n\031Respon"
+    "dStorageInformation\022:.mavsdk.rpc.camera_"
+    "server.RespondStorageInformationRequest\032"
+    ";.mavsdk.rpc.camera_server.RespondStorag"
+    "eInformationResponse\"\004\200\265\030\001\022\212\001\n\026Subscribe"
+    "CaptureStatus\0227.mavsdk.rpc.camera_server"
+    ".SubscribeCaptureStatusRequest\032/.mavsdk."
+    "rpc.camera_server.CaptureStatusResponse\""
+    "\004\200\265\030\0000\001\022\213\001\n\024RespondCaptureStatus\0225.mavsd"
+    "k.rpc.camera_server.RespondCaptureStatus"
+    "Request\0326.mavsdk.rpc.camera_server.Respo"
+    "ndCaptureStatusResponse\"\004\200\265\030\001\022\212\001\n\026Subscr"
+    "ibeFormatStorage\0227.mavsdk.rpc.camera_ser"
+    "ver.SubscribeFormatStorageRequest\032/.mavs"
+    "dk.rpc.camera_server.FormatStorageRespon"
+    "se\"\004\200\265\030\0000\001\022\213\001\n\024RespondFormatStorage\0225.ma"
+    "vsdk.rpc.camera_server.RespondFormatStor"
+    "ageRequest\0326.mavsdk.rpc.camera_server.Re"
+    "spondFormatStorageResponse\"\004\200\265\030\001\022\212\001\n\026Sub"
+    "scribeResetSettings\0227.mavsdk.rpc.camera_"
+    "server.SubscribeResetSettingsRequest\032/.m"
+    "avsdk.rpc.camera_server.ResetSettingsRes"
+    "ponse\"\004\200\265\030\0000\001\022\213\001\n\024RespondResetSettings\0225"
+    ".mavsdk.rpc.camera_server.RespondResetSe"
+    "ttingsRequest\0326.mavsdk.rpc.camera_server"
+    ".RespondResetSettingsResponse\"\004\200\265\030\001\022\204\001\n\024"
+    "SubscribeZoomInStart\0225.mavsdk.rpc.camera"
+    "_server.SubscribeZoomInStartRequest\032-.ma"
+    "vsdk.rpc.camera_server.ZoomInStartRespon"
+    "se\"\004\200\265\030\0000\001\022\205\001\n\022RespondZoomInStart\0223.mavs"
+    "dk.rpc.camera_server.RespondZoomInStartR"
+    "equest\0324.mavsdk.rpc.camera_server.Respon"
+    "dZoomInStartResponse\"\004\200\265\030\001\022\207\001\n\025Subscribe"
+    "ZoomOutStart\0226.mavsdk.rpc.camera_server."
+    "SubscribeZoomOutStartRequest\032..mavsdk.rp"
+    "c.camera_server.ZoomOutStartResponse\"\004\200\265"
+    "\030\0000\001\022\210\001\n\023RespondZoomOutStart\0224.mavsdk.rp"
+    "c.camera_server.RespondZoomOutStartReque"
+    "st\0325.mavsdk.rpc.camera_server.RespondZoo"
+    "mOutStartResponse\"\004\200\265\030\001\022{\n\021SubscribeZoom"
+    "Stop\0222.mavsdk.rpc.camera_server.Subscrib"
+    "eZoomStopRequest\032*.mavsdk.rpc.camera_ser"
+    "ver.ZoomStopResponse\"\004\200\265\030\0000\001\022|\n\017RespondZ"
+    "oomStop\0220.mavsdk.rpc.camera_server.Respo"
+    "ndZoomStopRequest\0321.mavsdk.rpc.camera_se"
+    "rver.RespondZoomStopResponse\"\004\200\265\030\001\022~\n\022Su"
+    "bscribeZoomRange\0223.mavsdk.rpc.camera_ser"
+    "ver.SubscribeZoomRangeRequest\032+.mavsdk.r"
+    "pc.camera_server.ZoomRangeResponse\"\004\200\265\030\000"
+    "0\001\022\177\n\020RespondZoomRange\0221.mavsdk.rpc.came"
+    "ra_server.RespondZoomRangeRequest\0322.mavs"
+    "dk.rpc.camera_server.RespondZoomRangeRes"
+    "ponse\"\004\200\265\030\001\022\204\001\n\024SubscribeFocusInStep\0225.m"
+    "avsdk.rpc.camera_server.SubscribeFocusIn"
+    "StepRequest\032-.mavsdk.rpc.camera_server.F"
+    "ocusInStepResponse\"\004\200\265\030\0000\001\022\205\001\n\022RespondFo"
+    "cusInStep\0223.mavsdk.rpc.camera_server.Res"
+    "pondFocusInStepRequest\0324.mavsdk.rpc.came"
+    "ra_server.RespondFocusInStepResponse\"\004\200\265"
+    "\030\001\022\207\001\n\025SubscribeFocusOutStep\0226.mavsdk.rp"
+    "c.camera_server.SubscribeFocusOutStepReq"
+    "uest\032..mavsdk.rpc.camera_server.FocusOut"
+    "StepResponse\"\004\200\265\030\0000\001\022\210\001\n\023RespondFocusOut"
+    "Step\0224.mavsdk.rpc.camera_server.RespondF"
+    "ocusOutStepRequest\0325.mavsdk.rpc.camera_s"
+    "erver.RespondFocusOutStepResponse\"\004\200\265\030\001\022"
+    "\207\001\n\025SubscribeFocusInStart\0226.mavsdk.rpc.c"
+    "amera_server.SubscribeFocusInStartReques"
+    "t\032..mavsdk.rpc.camera_server.FocusInStar"
+    "tResponse\"\004\200\265\030\0000\001\022\210\001\n\023RespondFocusInStar"
+    "t\0224.mavsdk.rpc.camera_server.RespondFocu"
+    "sInStartRequest\0325.mavsdk.rpc.camera_serv"
+    "er.RespondFocusInStartResponse\"\004\200\265\030\001\022\212\001\n"
+    "\026SubscribeFocusOutStart\0227.mavsdk.rpc.cam"
+    "era_server.SubscribeFocusOutStartRequest"
+    "\032/.mavsdk.rpc.camera_server.FocusOutStar"
+    "tResponse\"\004\200\265\030\0000\001\022\213\001\n\024RespondFocusOutSta"
+    "rt\0225.mavsdk.rpc.camera_server.RespondFoc"
+    "usOutStartRequest\0326.mavsdk.rpc.camera_se"
+    "rver.RespondFocusOutStartResponse\"\004\200\265\030\001\022"
+    "~\n\022SubscribeFocusStop\0223.mavsdk.rpc.camer"
+    "a_server.SubscribeFocusStopRequest\032+.mav"
+    "sdk.rpc.camera_server.FocusStopResponse\""
+    "\004\200\265\030\0000\001\022\177\n\020RespondFocusStop\0221.mavsdk.rpc"
+    ".camera_server.RespondFocusStopRequest\0322"
+    ".mavsdk.rpc.camera_server.RespondFocusSt"
+    "opResponse\"\004\200\265\030\001\022\201\001\n\023SubscribeFocusRange"
+    "\0224.mavsdk.rpc.camera_server.SubscribeFoc"
+    "usRangeRequest\032,.mavsdk.rpc.camera_serve"
+    "r.FocusRangeResponse\"\004\200\265\030\0000\001\022\202\001\n\021Respond"
+    "FocusRange\0222.mavsdk.rpc.camera_server.Re"
+    "spondFocusRangeRequest\0323.mavsdk.rpc.came"
+    "ra_server.RespondFocusRangeResponse\"\004\200\265\030"
+    "\001\022\204\001\n\024SubscribeFocusMeters\0225.mavsdk.rpc."
+    "camera_server.SubscribeFocusMetersReques"
+    "t\032-.mavsdk.rpc.camera_server.FocusMeters"
+    "Response\"\004\200\265\030\0000\001\022\205\001\n\022RespondFocusMeters\022"
+    "3.mavsdk.rpc.camera_server.RespondFocusM"
+    "etersRequest\0324.mavsdk.rpc.camera_server."
+    "RespondFocusMetersResponse\"\004\200\265\030\001\022~\n\022Subs"
+    "cribeFocusAuto\0223.mavsdk.rpc.camera_serve"
+    "r.SubscribeFocusAutoRequest\032+.mavsdk.rpc"
+    ".camera_server.FocusAutoResponse\"\004\200\265\030\0000\001"
+    "\022\177\n\020RespondFocusAuto\0221.mavsdk.rpc.camera"
+    "_server.RespondFocusAutoRequest\0322.mavsdk"
+    ".rpc.camera_server.RespondFocusAutoRespo"
+    "nse\"\004\200\265\030\001\022\220\001\n\030SubscribeFocusAutoSingle\0229"
+    ".mavsdk.rpc.camera_server.SubscribeFocus"
+    "AutoSingleRequest\0321.mavsdk.rpc.camera_se"
+    "rver.FocusAutoSingleResponse\"\004\200\265\030\0000\001\022\221\001\n"
+    "\026RespondFocusAutoSingle\0227.mavsdk.rpc.cam"
+    "era_server.RespondFocusAutoSingleRequest"
+    "\0328.mavsdk.rpc.camera_server.RespondFocus"
+    "AutoSingleResponse\"\004\200\265\030\001\022\234\001\n\034SubscribeFo"
+    "cusAutoContinuous\022=.mavsdk.rpc.camera_se"
+    "rver.SubscribeFocusAutoContinuousRequest"
+    "\0325.mavsdk.rpc.camera_server.FocusAutoCon"
+    "tinuousResponse\"\004\200\265\030\0000\001\022\235\001\n\032RespondFocus"
+    "AutoContinuous\022;.mavsdk.rpc.camera_serve"
+    "r.RespondFocusAutoContinuousRequest\032<.ma"
+    "vsdk.rpc.camera_server.RespondFocusAutoC"
+    "ontinuousResponse\"\004\200\265\030\001\022\235\001\n\032SetTrackingR"
+    "ectangleStatus\022;.mavsdk.rpc.camera_serve"
+    "r.SetTrackingRectangleStatusRequest\032<.ma"
+    "vsdk.rpc.camera_server.SetTrackingRectan"
+    "gleStatusResponse\"\004\200\265\030\001\022\213\001\n\024SetTrackingO"
+    "ffStatus\0225.mavsdk.rpc.camera_server.SetT"
+    "rackingOffStatusRequest\0326.mavsdk.rpc.cam"
+    "era_server.SetTrackingOffStatusResponse\""
+    "\004\200\265\030\001\022\237\001\n\035SubscribeTrackingPointCommand\022"
+    ">.mavsdk.rpc.camera_server.SubscribeTrac"
+    "kingPointCommandRequest\0326.mavsdk.rpc.cam"
+    "era_server.TrackingPointCommandResponse\""
+    "\004\200\265\030\0000\001\022\253\001\n!SubscribeTrackingRectangleCo"
+    "mmand\022B.mavsdk.rpc.camera_server.Subscri"
+    "beTrackingRectangleCommandRequest\032:.mavs"
+    "dk.rpc.camera_server.TrackingRectangleCo"
+    "mmandResponse\"\004\200\265\030\0000\001\022\231\001\n\033SubscribeTrack"
+    "ingOffCommand\022<.mavsdk.rpc.camera_server"
+    ".SubscribeTrackingOffCommandRequest\0324.ma"
+    "vsdk.rpc.camera_server.TrackingOffComman"
+    "dResponse\"\004\200\265\030\0000\001\022\240\001\n\033RespondTrackingPoi"
+    "ntCommand\022<.mavsdk.rpc.camera_server.Res"
+    "pondTrackingPointCommandRequest\032=.mavsdk"
+    ".rpc.camera_server.RespondTrackingPointC"
+    "ommandResponse\"\004\200\265\030\001\022\254\001\n\037RespondTracking"
+    "RectangleCommand\022@.mavsdk.rpc.camera_ser"
+    "ver.RespondTrackingRectangleCommandReque"
+    "st\032A.mavsdk.rpc.camera_server.RespondTra"
+    "ckingRectangleCommandResponse\"\004\200\265\030\001\022\232\001\n\031"
+    "RespondTrackingOffCommand\022:.mavsdk.rpc.c"
+    "amera_server.RespondTrackingOffCommandRe"
+    "quest\032;.mavsdk.rpc.camera_server.Respond"
+    "TrackingOffCommandResponse\"\004\200\265\030\001\022p\n\013SetP"
+    "osition\022,.mavsdk.rpc.camera_server.SetPo"
+    "sitionRequest\032-.mavsdk.rpc.camera_server"
+    ".SetPositionResponse\"\004\200\265\030\001\022\216\001\n\025SetAttitu"
+    "deQuaternion\0226.mavsdk.rpc.camera_server."
+    "SetAttitudeQuaternionRequest\0327.mavsdk.rp"
+    "c.camera_server.SetAttitudeQuaternionRes"
+    "ponse\"\004\200\265\030\001\022v\n\rSetZoomFactor\022..mavsdk.rp"
+    "c.camera_server.SetZoomFactorRequest\032/.m"
+    "avsdk.rpc.camera_server.SetZoomFactorRes"
+    "ponse\"\004\200\265\030\001\022y\n\016SetFieldOfView\022/.mavsdk.r"
+    "pc.camera_server.SetFieldOfViewRequest\0320"
+    ".mavsdk.rpc.camera_server.SetFieldOfView"
+    "Response\"\004\200\265\030\001B,\n\027io.mavsdk.camera_serve"
+    "rB\021CameraServerProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps[1] =
     {
@@ -4863,13 +5469,13 @@ static ::absl::once_flag descriptor_table_camera_5fserver_2fcamera_5fserver_2epr
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto = {
     false,
     false,
-    19066,
+    21388,
     descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto,
     "camera_server/camera_server.proto",
     &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
     descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps,
     1,
-    122,
+    138,
     schemas,
     file_default_instances,
     TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets,
@@ -22041,6 +22647,3073 @@ void RespondFocusRangeResponse::InternalSwap(RespondFocusRangeResponse* PROTOBUF
 }
 
 ::google::protobuf::Metadata RespondFocusRangeResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SubscribeFocusMetersRequest::_Internal {
+ public:
+};
+
+SubscribeFocusMetersRequest::SubscribeFocusMetersRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SubscribeFocusMetersRequest)
+}
+SubscribeFocusMetersRequest::SubscribeFocusMetersRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeFocusMetersRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SubscribeFocusMetersRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SubscribeFocusMetersRequest)
+}
+
+inline void* SubscribeFocusMetersRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubscribeFocusMetersRequest(arena);
+}
+constexpr auto SubscribeFocusMetersRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeFocusMetersRequest),
+                                            alignof(SubscribeFocusMetersRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SubscribeFocusMetersRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SubscribeFocusMetersRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SubscribeFocusMetersRequest::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SubscribeFocusMetersRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SubscribeFocusMetersRequest::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeFocusMetersRequest>(), &SubscribeFocusMetersRequest::ByteSizeLong,
+            &SubscribeFocusMetersRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SubscribeFocusMetersRequest, _impl_._cached_size_),
+        false,
+    },
+    &SubscribeFocusMetersRequest::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SubscribeFocusMetersRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeFocusMetersRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::SubscribeFocusMetersRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeFocusMetersRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class FocusMetersResponse::_Internal {
+ public:
+};
+
+FocusMetersResponse::FocusMetersResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.FocusMetersResponse)
+}
+FocusMetersResponse::FocusMetersResponse(
+    ::google::protobuf::Arena* arena, const FocusMetersResponse& from)
+    : FocusMetersResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE FocusMetersResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void FocusMetersResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.focus_distance_m_ = {};
+}
+FocusMetersResponse::~FocusMetersResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.FocusMetersResponse)
+  SharedDtor(*this);
+}
+inline void FocusMetersResponse::SharedDtor(MessageLite& self) {
+  FocusMetersResponse& this_ = static_cast<FocusMetersResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* FocusMetersResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) FocusMetersResponse(arena);
+}
+constexpr auto FocusMetersResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(FocusMetersResponse),
+                                            alignof(FocusMetersResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull FocusMetersResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_FocusMetersResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &FocusMetersResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<FocusMetersResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &FocusMetersResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<FocusMetersResponse>(), &FocusMetersResponse::ByteSizeLong,
+            &FocusMetersResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(FocusMetersResponse, _impl_._cached_size_),
+        false,
+    },
+    &FocusMetersResponse::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* FocusMetersResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> FocusMetersResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::FocusMetersResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // float focus_distance_m = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(FocusMetersResponse, _impl_.focus_distance_m_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float focus_distance_m = 1;
+    {PROTOBUF_FIELD_OFFSET(FocusMetersResponse, _impl_.focus_distance_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void FocusMetersResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.FocusMetersResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.focus_distance_m_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* FocusMetersResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const FocusMetersResponse& this_ = static_cast<const FocusMetersResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* FocusMetersResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const FocusMetersResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.FocusMetersResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // float focus_distance_m = 1;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_focus_distance_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                1, this_._internal_focus_distance_m(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.FocusMetersResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t FocusMetersResponse::ByteSizeLong(const MessageLite& base) {
+          const FocusMetersResponse& this_ = static_cast<const FocusMetersResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t FocusMetersResponse::ByteSizeLong() const {
+          const FocusMetersResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.FocusMetersResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // float focus_distance_m = 1;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_focus_distance_m()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void FocusMetersResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<FocusMetersResponse*>(&to_msg);
+  auto& from = static_cast<const FocusMetersResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.FocusMetersResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint32_t>(from._internal_focus_distance_m()) != 0) {
+    _this->_impl_.focus_distance_m_ = from._impl_.focus_distance_m_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void FocusMetersResponse::CopyFrom(const FocusMetersResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.FocusMetersResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void FocusMetersResponse::InternalSwap(FocusMetersResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.focus_distance_m_, other->_impl_.focus_distance_m_);
+}
+
+::google::protobuf::Metadata FocusMetersResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondFocusMetersRequest::_Internal {
+ public:
+};
+
+RespondFocusMetersRequest::RespondFocusMetersRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+}
+RespondFocusMetersRequest::RespondFocusMetersRequest(
+    ::google::protobuf::Arena* arena, const RespondFocusMetersRequest& from)
+    : RespondFocusMetersRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusMetersRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondFocusMetersRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.focus_meters_feedback_ = {};
+}
+RespondFocusMetersRequest::~RespondFocusMetersRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+  SharedDtor(*this);
+}
+inline void RespondFocusMetersRequest::SharedDtor(MessageLite& self) {
+  RespondFocusMetersRequest& this_ = static_cast<RespondFocusMetersRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondFocusMetersRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondFocusMetersRequest(arena);
+}
+constexpr auto RespondFocusMetersRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondFocusMetersRequest),
+                                            alignof(RespondFocusMetersRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondFocusMetersRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondFocusMetersRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondFocusMetersRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondFocusMetersRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondFocusMetersRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondFocusMetersRequest>(), &RespondFocusMetersRequest::ByteSizeLong,
+            &RespondFocusMetersRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondFocusMetersRequest, _impl_._cached_size_),
+        false,
+    },
+    &RespondFocusMetersRequest::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondFocusMetersRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondFocusMetersRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::RespondFocusMetersRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback focus_meters_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondFocusMetersRequest, _impl_.focus_meters_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondFocusMetersRequest, _impl_.focus_meters_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback focus_meters_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondFocusMetersRequest, _impl_.focus_meters_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondFocusMetersRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.focus_meters_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondFocusMetersRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondFocusMetersRequest& this_ = static_cast<const RespondFocusMetersRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondFocusMetersRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondFocusMetersRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // .mavsdk.rpc.camera_server.CameraFeedback focus_meters_feedback = 1;
+          if (this_._internal_focus_meters_feedback() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_focus_meters_feedback(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondFocusMetersRequest::ByteSizeLong(const MessageLite& base) {
+          const RespondFocusMetersRequest& this_ = static_cast<const RespondFocusMetersRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondFocusMetersRequest::ByteSizeLong() const {
+          const RespondFocusMetersRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.camera_server.CameraFeedback focus_meters_feedback = 1;
+            if (this_._internal_focus_meters_feedback() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_focus_meters_feedback());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondFocusMetersRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondFocusMetersRequest*>(&to_msg);
+  auto& from = static_cast<const RespondFocusMetersRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_focus_meters_feedback() != 0) {
+    _this->_impl_.focus_meters_feedback_ = from._impl_.focus_meters_feedback_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondFocusMetersRequest::CopyFrom(const RespondFocusMetersRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondFocusMetersRequest::InternalSwap(RespondFocusMetersRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.focus_meters_feedback_, other->_impl_.focus_meters_feedback_);
+}
+
+::google::protobuf::Metadata RespondFocusMetersRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondFocusMetersResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<RespondFocusMetersResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(RespondFocusMetersResponse, _impl_._has_bits_);
+};
+
+RespondFocusMetersResponse::RespondFocusMetersResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusMetersResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::camera_server::RespondFocusMetersResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondFocusMetersResponse::RespondFocusMetersResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondFocusMetersResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RespondFocusMetersResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.camera_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(
+                              arena, *from._impl_.camera_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusMetersResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondFocusMetersResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.camera_server_result_ = {};
+}
+RespondFocusMetersResponse::~RespondFocusMetersResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+  SharedDtor(*this);
+}
+inline void RespondFocusMetersResponse::SharedDtor(MessageLite& self) {
+  RespondFocusMetersResponse& this_ = static_cast<RespondFocusMetersResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.camera_server_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondFocusMetersResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondFocusMetersResponse(arena);
+}
+constexpr auto RespondFocusMetersResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondFocusMetersResponse),
+                                            alignof(RespondFocusMetersResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondFocusMetersResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondFocusMetersResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondFocusMetersResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondFocusMetersResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondFocusMetersResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondFocusMetersResponse>(), &RespondFocusMetersResponse::ByteSizeLong,
+            &RespondFocusMetersResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondFocusMetersResponse, _impl_._cached_size_),
+        false,
+    },
+    &RespondFocusMetersResponse::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondFocusMetersResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondFocusMetersResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondFocusMetersResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::RespondFocusMetersResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondFocusMetersResponse, _impl_.camera_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondFocusMetersResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondFocusMetersResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.camera_server_result_ != nullptr);
+    _impl_.camera_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondFocusMetersResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondFocusMetersResponse& this_ = static_cast<const RespondFocusMetersResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondFocusMetersResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondFocusMetersResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.camera_server_result_, this_._impl_.camera_server_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondFocusMetersResponse::ByteSizeLong(const MessageLite& base) {
+          const RespondFocusMetersResponse& this_ = static_cast<const RespondFocusMetersResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondFocusMetersResponse::ByteSizeLong() const {
+          const RespondFocusMetersResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.camera_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondFocusMetersResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondFocusMetersResponse*>(&to_msg);
+  auto& from = static_cast<const RespondFocusMetersResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.camera_server_result_ != nullptr);
+    if (_this->_impl_.camera_server_result_ == nullptr) {
+      _this->_impl_.camera_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_);
+    } else {
+      _this->_impl_.camera_server_result_->MergeFrom(*from._impl_.camera_server_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondFocusMetersResponse::CopyFrom(const RespondFocusMetersResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondFocusMetersResponse::InternalSwap(RespondFocusMetersResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
+}
+
+::google::protobuf::Metadata RespondFocusMetersResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SubscribeFocusAutoRequest::_Internal {
+ public:
+};
+
+SubscribeFocusAutoRequest::SubscribeFocusAutoRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SubscribeFocusAutoRequest)
+}
+SubscribeFocusAutoRequest::SubscribeFocusAutoRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeFocusAutoRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SubscribeFocusAutoRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SubscribeFocusAutoRequest)
+}
+
+inline void* SubscribeFocusAutoRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubscribeFocusAutoRequest(arena);
+}
+constexpr auto SubscribeFocusAutoRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeFocusAutoRequest),
+                                            alignof(SubscribeFocusAutoRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SubscribeFocusAutoRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SubscribeFocusAutoRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SubscribeFocusAutoRequest::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SubscribeFocusAutoRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SubscribeFocusAutoRequest::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeFocusAutoRequest>(), &SubscribeFocusAutoRequest::ByteSizeLong,
+            &SubscribeFocusAutoRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SubscribeFocusAutoRequest, _impl_._cached_size_),
+        false,
+    },
+    &SubscribeFocusAutoRequest::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SubscribeFocusAutoRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeFocusAutoRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::SubscribeFocusAutoRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeFocusAutoRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class FocusAutoResponse::_Internal {
+ public:
+};
+
+FocusAutoResponse::FocusAutoResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.FocusAutoResponse)
+}
+FocusAutoResponse::FocusAutoResponse(
+    ::google::protobuf::Arena* arena, const FocusAutoResponse& from)
+    : FocusAutoResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE FocusAutoResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void FocusAutoResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.reserved_ = {};
+}
+FocusAutoResponse::~FocusAutoResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.FocusAutoResponse)
+  SharedDtor(*this);
+}
+inline void FocusAutoResponse::SharedDtor(MessageLite& self) {
+  FocusAutoResponse& this_ = static_cast<FocusAutoResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* FocusAutoResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) FocusAutoResponse(arena);
+}
+constexpr auto FocusAutoResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(FocusAutoResponse),
+                                            alignof(FocusAutoResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull FocusAutoResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_FocusAutoResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &FocusAutoResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<FocusAutoResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &FocusAutoResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<FocusAutoResponse>(), &FocusAutoResponse::ByteSizeLong,
+            &FocusAutoResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(FocusAutoResponse, _impl_._cached_size_),
+        false,
+    },
+    &FocusAutoResponse::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* FocusAutoResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> FocusAutoResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::FocusAutoResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 reserved = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FocusAutoResponse, _impl_.reserved_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(FocusAutoResponse, _impl_.reserved_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 reserved = 1;
+    {PROTOBUF_FIELD_OFFSET(FocusAutoResponse, _impl_.reserved_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void FocusAutoResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.FocusAutoResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.reserved_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* FocusAutoResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const FocusAutoResponse& this_ = static_cast<const FocusAutoResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* FocusAutoResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const FocusAutoResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.FocusAutoResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // int32 reserved = 1;
+          if (this_._internal_reserved() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_reserved(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.FocusAutoResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t FocusAutoResponse::ByteSizeLong(const MessageLite& base) {
+          const FocusAutoResponse& this_ = static_cast<const FocusAutoResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t FocusAutoResponse::ByteSizeLong() const {
+          const FocusAutoResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.FocusAutoResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // int32 reserved = 1;
+            if (this_._internal_reserved() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_reserved());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void FocusAutoResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<FocusAutoResponse*>(&to_msg);
+  auto& from = static_cast<const FocusAutoResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.FocusAutoResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_reserved() != 0) {
+    _this->_impl_.reserved_ = from._impl_.reserved_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void FocusAutoResponse::CopyFrom(const FocusAutoResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.FocusAutoResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void FocusAutoResponse::InternalSwap(FocusAutoResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.reserved_, other->_impl_.reserved_);
+}
+
+::google::protobuf::Metadata FocusAutoResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondFocusAutoRequest::_Internal {
+ public:
+};
+
+RespondFocusAutoRequest::RespondFocusAutoRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+}
+RespondFocusAutoRequest::RespondFocusAutoRequest(
+    ::google::protobuf::Arena* arena, const RespondFocusAutoRequest& from)
+    : RespondFocusAutoRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondFocusAutoRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.focus_auto_feedback_ = {};
+}
+RespondFocusAutoRequest::~RespondFocusAutoRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+  SharedDtor(*this);
+}
+inline void RespondFocusAutoRequest::SharedDtor(MessageLite& self) {
+  RespondFocusAutoRequest& this_ = static_cast<RespondFocusAutoRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondFocusAutoRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondFocusAutoRequest(arena);
+}
+constexpr auto RespondFocusAutoRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondFocusAutoRequest),
+                                            alignof(RespondFocusAutoRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondFocusAutoRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondFocusAutoRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondFocusAutoRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondFocusAutoRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondFocusAutoRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondFocusAutoRequest>(), &RespondFocusAutoRequest::ByteSizeLong,
+            &RespondFocusAutoRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondFocusAutoRequest, _impl_._cached_size_),
+        false,
+    },
+    &RespondFocusAutoRequest::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondFocusAutoRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondFocusAutoRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::RespondFocusAutoRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondFocusAutoRequest, _impl_.focus_auto_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondFocusAutoRequest, _impl_.focus_auto_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondFocusAutoRequest, _impl_.focus_auto_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondFocusAutoRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.focus_auto_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondFocusAutoRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondFocusAutoRequest& this_ = static_cast<const RespondFocusAutoRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondFocusAutoRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondFocusAutoRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_feedback = 1;
+          if (this_._internal_focus_auto_feedback() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_focus_auto_feedback(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondFocusAutoRequest::ByteSizeLong(const MessageLite& base) {
+          const RespondFocusAutoRequest& this_ = static_cast<const RespondFocusAutoRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondFocusAutoRequest::ByteSizeLong() const {
+          const RespondFocusAutoRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_feedback = 1;
+            if (this_._internal_focus_auto_feedback() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_focus_auto_feedback());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondFocusAutoRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondFocusAutoRequest*>(&to_msg);
+  auto& from = static_cast<const RespondFocusAutoRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_focus_auto_feedback() != 0) {
+    _this->_impl_.focus_auto_feedback_ = from._impl_.focus_auto_feedback_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondFocusAutoRequest::CopyFrom(const RespondFocusAutoRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondFocusAutoRequest::InternalSwap(RespondFocusAutoRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.focus_auto_feedback_, other->_impl_.focus_auto_feedback_);
+}
+
+::google::protobuf::Metadata RespondFocusAutoRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondFocusAutoResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<RespondFocusAutoResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(RespondFocusAutoResponse, _impl_._has_bits_);
+};
+
+RespondFocusAutoResponse::RespondFocusAutoResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::camera_server::RespondFocusAutoResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondFocusAutoResponse::RespondFocusAutoResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondFocusAutoResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RespondFocusAutoResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.camera_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(
+                              arena, *from._impl_.camera_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondFocusAutoResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.camera_server_result_ = {};
+}
+RespondFocusAutoResponse::~RespondFocusAutoResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+  SharedDtor(*this);
+}
+inline void RespondFocusAutoResponse::SharedDtor(MessageLite& self) {
+  RespondFocusAutoResponse& this_ = static_cast<RespondFocusAutoResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.camera_server_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondFocusAutoResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondFocusAutoResponse(arena);
+}
+constexpr auto RespondFocusAutoResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondFocusAutoResponse),
+                                            alignof(RespondFocusAutoResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondFocusAutoResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondFocusAutoResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondFocusAutoResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondFocusAutoResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondFocusAutoResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondFocusAutoResponse>(), &RespondFocusAutoResponse::ByteSizeLong,
+            &RespondFocusAutoResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondFocusAutoResponse, _impl_._cached_size_),
+        false,
+    },
+    &RespondFocusAutoResponse::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondFocusAutoResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondFocusAutoResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondFocusAutoResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::RespondFocusAutoResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondFocusAutoResponse, _impl_.camera_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondFocusAutoResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondFocusAutoResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.camera_server_result_ != nullptr);
+    _impl_.camera_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondFocusAutoResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondFocusAutoResponse& this_ = static_cast<const RespondFocusAutoResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondFocusAutoResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondFocusAutoResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.camera_server_result_, this_._impl_.camera_server_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondFocusAutoResponse::ByteSizeLong(const MessageLite& base) {
+          const RespondFocusAutoResponse& this_ = static_cast<const RespondFocusAutoResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondFocusAutoResponse::ByteSizeLong() const {
+          const RespondFocusAutoResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.camera_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondFocusAutoResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondFocusAutoResponse*>(&to_msg);
+  auto& from = static_cast<const RespondFocusAutoResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.camera_server_result_ != nullptr);
+    if (_this->_impl_.camera_server_result_ == nullptr) {
+      _this->_impl_.camera_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_);
+    } else {
+      _this->_impl_.camera_server_result_->MergeFrom(*from._impl_.camera_server_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondFocusAutoResponse::CopyFrom(const RespondFocusAutoResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondFocusAutoResponse::InternalSwap(RespondFocusAutoResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
+}
+
+::google::protobuf::Metadata RespondFocusAutoResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SubscribeFocusAutoSingleRequest::_Internal {
+ public:
+};
+
+SubscribeFocusAutoSingleRequest::SubscribeFocusAutoSingleRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SubscribeFocusAutoSingleRequest)
+}
+SubscribeFocusAutoSingleRequest::SubscribeFocusAutoSingleRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeFocusAutoSingleRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SubscribeFocusAutoSingleRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SubscribeFocusAutoSingleRequest)
+}
+
+inline void* SubscribeFocusAutoSingleRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubscribeFocusAutoSingleRequest(arena);
+}
+constexpr auto SubscribeFocusAutoSingleRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeFocusAutoSingleRequest),
+                                            alignof(SubscribeFocusAutoSingleRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SubscribeFocusAutoSingleRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SubscribeFocusAutoSingleRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SubscribeFocusAutoSingleRequest::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SubscribeFocusAutoSingleRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SubscribeFocusAutoSingleRequest::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeFocusAutoSingleRequest>(), &SubscribeFocusAutoSingleRequest::ByteSizeLong,
+            &SubscribeFocusAutoSingleRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SubscribeFocusAutoSingleRequest, _impl_._cached_size_),
+        false,
+    },
+    &SubscribeFocusAutoSingleRequest::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SubscribeFocusAutoSingleRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeFocusAutoSingleRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::SubscribeFocusAutoSingleRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeFocusAutoSingleRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class FocusAutoSingleResponse::_Internal {
+ public:
+};
+
+FocusAutoSingleResponse::FocusAutoSingleResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+}
+FocusAutoSingleResponse::FocusAutoSingleResponse(
+    ::google::protobuf::Arena* arena, const FocusAutoSingleResponse& from)
+    : FocusAutoSingleResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE FocusAutoSingleResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void FocusAutoSingleResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.reserved_ = {};
+}
+FocusAutoSingleResponse::~FocusAutoSingleResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+  SharedDtor(*this);
+}
+inline void FocusAutoSingleResponse::SharedDtor(MessageLite& self) {
+  FocusAutoSingleResponse& this_ = static_cast<FocusAutoSingleResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* FocusAutoSingleResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) FocusAutoSingleResponse(arena);
+}
+constexpr auto FocusAutoSingleResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(FocusAutoSingleResponse),
+                                            alignof(FocusAutoSingleResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull FocusAutoSingleResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_FocusAutoSingleResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &FocusAutoSingleResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<FocusAutoSingleResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &FocusAutoSingleResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<FocusAutoSingleResponse>(), &FocusAutoSingleResponse::ByteSizeLong,
+            &FocusAutoSingleResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(FocusAutoSingleResponse, _impl_._cached_size_),
+        false,
+    },
+    &FocusAutoSingleResponse::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* FocusAutoSingleResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> FocusAutoSingleResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::FocusAutoSingleResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 reserved = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FocusAutoSingleResponse, _impl_.reserved_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(FocusAutoSingleResponse, _impl_.reserved_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 reserved = 1;
+    {PROTOBUF_FIELD_OFFSET(FocusAutoSingleResponse, _impl_.reserved_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void FocusAutoSingleResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.reserved_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* FocusAutoSingleResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const FocusAutoSingleResponse& this_ = static_cast<const FocusAutoSingleResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* FocusAutoSingleResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const FocusAutoSingleResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // int32 reserved = 1;
+          if (this_._internal_reserved() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_reserved(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t FocusAutoSingleResponse::ByteSizeLong(const MessageLite& base) {
+          const FocusAutoSingleResponse& this_ = static_cast<const FocusAutoSingleResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t FocusAutoSingleResponse::ByteSizeLong() const {
+          const FocusAutoSingleResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // int32 reserved = 1;
+            if (this_._internal_reserved() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_reserved());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void FocusAutoSingleResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<FocusAutoSingleResponse*>(&to_msg);
+  auto& from = static_cast<const FocusAutoSingleResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_reserved() != 0) {
+    _this->_impl_.reserved_ = from._impl_.reserved_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void FocusAutoSingleResponse::CopyFrom(const FocusAutoSingleResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void FocusAutoSingleResponse::InternalSwap(FocusAutoSingleResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.reserved_, other->_impl_.reserved_);
+}
+
+::google::protobuf::Metadata FocusAutoSingleResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondFocusAutoSingleRequest::_Internal {
+ public:
+};
+
+RespondFocusAutoSingleRequest::RespondFocusAutoSingleRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+}
+RespondFocusAutoSingleRequest::RespondFocusAutoSingleRequest(
+    ::google::protobuf::Arena* arena, const RespondFocusAutoSingleRequest& from)
+    : RespondFocusAutoSingleRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoSingleRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondFocusAutoSingleRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.focus_auto_single_feedback_ = {};
+}
+RespondFocusAutoSingleRequest::~RespondFocusAutoSingleRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+  SharedDtor(*this);
+}
+inline void RespondFocusAutoSingleRequest::SharedDtor(MessageLite& self) {
+  RespondFocusAutoSingleRequest& this_ = static_cast<RespondFocusAutoSingleRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondFocusAutoSingleRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondFocusAutoSingleRequest(arena);
+}
+constexpr auto RespondFocusAutoSingleRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondFocusAutoSingleRequest),
+                                            alignof(RespondFocusAutoSingleRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondFocusAutoSingleRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondFocusAutoSingleRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondFocusAutoSingleRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondFocusAutoSingleRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondFocusAutoSingleRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondFocusAutoSingleRequest>(), &RespondFocusAutoSingleRequest::ByteSizeLong,
+            &RespondFocusAutoSingleRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondFocusAutoSingleRequest, _impl_._cached_size_),
+        false,
+    },
+    &RespondFocusAutoSingleRequest::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondFocusAutoSingleRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondFocusAutoSingleRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::RespondFocusAutoSingleRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_single_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondFocusAutoSingleRequest, _impl_.focus_auto_single_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondFocusAutoSingleRequest, _impl_.focus_auto_single_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_single_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondFocusAutoSingleRequest, _impl_.focus_auto_single_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondFocusAutoSingleRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.focus_auto_single_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondFocusAutoSingleRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondFocusAutoSingleRequest& this_ = static_cast<const RespondFocusAutoSingleRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondFocusAutoSingleRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondFocusAutoSingleRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_single_feedback = 1;
+          if (this_._internal_focus_auto_single_feedback() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_focus_auto_single_feedback(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondFocusAutoSingleRequest::ByteSizeLong(const MessageLite& base) {
+          const RespondFocusAutoSingleRequest& this_ = static_cast<const RespondFocusAutoSingleRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondFocusAutoSingleRequest::ByteSizeLong() const {
+          const RespondFocusAutoSingleRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_single_feedback = 1;
+            if (this_._internal_focus_auto_single_feedback() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_focus_auto_single_feedback());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondFocusAutoSingleRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondFocusAutoSingleRequest*>(&to_msg);
+  auto& from = static_cast<const RespondFocusAutoSingleRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_focus_auto_single_feedback() != 0) {
+    _this->_impl_.focus_auto_single_feedback_ = from._impl_.focus_auto_single_feedback_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondFocusAutoSingleRequest::CopyFrom(const RespondFocusAutoSingleRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondFocusAutoSingleRequest::InternalSwap(RespondFocusAutoSingleRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.focus_auto_single_feedback_, other->_impl_.focus_auto_single_feedback_);
+}
+
+::google::protobuf::Metadata RespondFocusAutoSingleRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondFocusAutoSingleResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<RespondFocusAutoSingleResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(RespondFocusAutoSingleResponse, _impl_._has_bits_);
+};
+
+RespondFocusAutoSingleResponse::RespondFocusAutoSingleResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoSingleResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::camera_server::RespondFocusAutoSingleResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondFocusAutoSingleResponse::RespondFocusAutoSingleResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondFocusAutoSingleResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RespondFocusAutoSingleResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.camera_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(
+                              arena, *from._impl_.camera_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoSingleResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondFocusAutoSingleResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.camera_server_result_ = {};
+}
+RespondFocusAutoSingleResponse::~RespondFocusAutoSingleResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+  SharedDtor(*this);
+}
+inline void RespondFocusAutoSingleResponse::SharedDtor(MessageLite& self) {
+  RespondFocusAutoSingleResponse& this_ = static_cast<RespondFocusAutoSingleResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.camera_server_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondFocusAutoSingleResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondFocusAutoSingleResponse(arena);
+}
+constexpr auto RespondFocusAutoSingleResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondFocusAutoSingleResponse),
+                                            alignof(RespondFocusAutoSingleResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondFocusAutoSingleResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondFocusAutoSingleResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondFocusAutoSingleResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondFocusAutoSingleResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondFocusAutoSingleResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondFocusAutoSingleResponse>(), &RespondFocusAutoSingleResponse::ByteSizeLong,
+            &RespondFocusAutoSingleResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondFocusAutoSingleResponse, _impl_._cached_size_),
+        false,
+    },
+    &RespondFocusAutoSingleResponse::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondFocusAutoSingleResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondFocusAutoSingleResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondFocusAutoSingleResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::RespondFocusAutoSingleResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondFocusAutoSingleResponse, _impl_.camera_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondFocusAutoSingleResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondFocusAutoSingleResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.camera_server_result_ != nullptr);
+    _impl_.camera_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondFocusAutoSingleResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondFocusAutoSingleResponse& this_ = static_cast<const RespondFocusAutoSingleResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondFocusAutoSingleResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondFocusAutoSingleResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.camera_server_result_, this_._impl_.camera_server_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondFocusAutoSingleResponse::ByteSizeLong(const MessageLite& base) {
+          const RespondFocusAutoSingleResponse& this_ = static_cast<const RespondFocusAutoSingleResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondFocusAutoSingleResponse::ByteSizeLong() const {
+          const RespondFocusAutoSingleResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.camera_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondFocusAutoSingleResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondFocusAutoSingleResponse*>(&to_msg);
+  auto& from = static_cast<const RespondFocusAutoSingleResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.camera_server_result_ != nullptr);
+    if (_this->_impl_.camera_server_result_ == nullptr) {
+      _this->_impl_.camera_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_);
+    } else {
+      _this->_impl_.camera_server_result_->MergeFrom(*from._impl_.camera_server_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondFocusAutoSingleResponse::CopyFrom(const RespondFocusAutoSingleResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondFocusAutoSingleResponse::InternalSwap(RespondFocusAutoSingleResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
+}
+
+::google::protobuf::Metadata RespondFocusAutoSingleResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SubscribeFocusAutoContinuousRequest::_Internal {
+ public:
+};
+
+SubscribeFocusAutoContinuousRequest::SubscribeFocusAutoContinuousRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SubscribeFocusAutoContinuousRequest)
+}
+SubscribeFocusAutoContinuousRequest::SubscribeFocusAutoContinuousRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeFocusAutoContinuousRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SubscribeFocusAutoContinuousRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SubscribeFocusAutoContinuousRequest)
+}
+
+inline void* SubscribeFocusAutoContinuousRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubscribeFocusAutoContinuousRequest(arena);
+}
+constexpr auto SubscribeFocusAutoContinuousRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeFocusAutoContinuousRequest),
+                                            alignof(SubscribeFocusAutoContinuousRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SubscribeFocusAutoContinuousRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SubscribeFocusAutoContinuousRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SubscribeFocusAutoContinuousRequest::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SubscribeFocusAutoContinuousRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SubscribeFocusAutoContinuousRequest::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeFocusAutoContinuousRequest>(), &SubscribeFocusAutoContinuousRequest::ByteSizeLong,
+            &SubscribeFocusAutoContinuousRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SubscribeFocusAutoContinuousRequest, _impl_._cached_size_),
+        false,
+    },
+    &SubscribeFocusAutoContinuousRequest::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SubscribeFocusAutoContinuousRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeFocusAutoContinuousRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::SubscribeFocusAutoContinuousRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeFocusAutoContinuousRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class FocusAutoContinuousResponse::_Internal {
+ public:
+};
+
+FocusAutoContinuousResponse::FocusAutoContinuousResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+}
+FocusAutoContinuousResponse::FocusAutoContinuousResponse(
+    ::google::protobuf::Arena* arena, const FocusAutoContinuousResponse& from)
+    : FocusAutoContinuousResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE FocusAutoContinuousResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void FocusAutoContinuousResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.reserved_ = {};
+}
+FocusAutoContinuousResponse::~FocusAutoContinuousResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+  SharedDtor(*this);
+}
+inline void FocusAutoContinuousResponse::SharedDtor(MessageLite& self) {
+  FocusAutoContinuousResponse& this_ = static_cast<FocusAutoContinuousResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* FocusAutoContinuousResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) FocusAutoContinuousResponse(arena);
+}
+constexpr auto FocusAutoContinuousResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(FocusAutoContinuousResponse),
+                                            alignof(FocusAutoContinuousResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull FocusAutoContinuousResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_FocusAutoContinuousResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &FocusAutoContinuousResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<FocusAutoContinuousResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &FocusAutoContinuousResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<FocusAutoContinuousResponse>(), &FocusAutoContinuousResponse::ByteSizeLong,
+            &FocusAutoContinuousResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(FocusAutoContinuousResponse, _impl_._cached_size_),
+        false,
+    },
+    &FocusAutoContinuousResponse::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* FocusAutoContinuousResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> FocusAutoContinuousResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::FocusAutoContinuousResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 reserved = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FocusAutoContinuousResponse, _impl_.reserved_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(FocusAutoContinuousResponse, _impl_.reserved_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 reserved = 1;
+    {PROTOBUF_FIELD_OFFSET(FocusAutoContinuousResponse, _impl_.reserved_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void FocusAutoContinuousResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.reserved_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* FocusAutoContinuousResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const FocusAutoContinuousResponse& this_ = static_cast<const FocusAutoContinuousResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* FocusAutoContinuousResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const FocusAutoContinuousResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // int32 reserved = 1;
+          if (this_._internal_reserved() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_reserved(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t FocusAutoContinuousResponse::ByteSizeLong(const MessageLite& base) {
+          const FocusAutoContinuousResponse& this_ = static_cast<const FocusAutoContinuousResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t FocusAutoContinuousResponse::ByteSizeLong() const {
+          const FocusAutoContinuousResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // int32 reserved = 1;
+            if (this_._internal_reserved() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_reserved());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void FocusAutoContinuousResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<FocusAutoContinuousResponse*>(&to_msg);
+  auto& from = static_cast<const FocusAutoContinuousResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_reserved() != 0) {
+    _this->_impl_.reserved_ = from._impl_.reserved_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void FocusAutoContinuousResponse::CopyFrom(const FocusAutoContinuousResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void FocusAutoContinuousResponse::InternalSwap(FocusAutoContinuousResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.reserved_, other->_impl_.reserved_);
+}
+
+::google::protobuf::Metadata FocusAutoContinuousResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondFocusAutoContinuousRequest::_Internal {
+ public:
+};
+
+RespondFocusAutoContinuousRequest::RespondFocusAutoContinuousRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+}
+RespondFocusAutoContinuousRequest::RespondFocusAutoContinuousRequest(
+    ::google::protobuf::Arena* arena, const RespondFocusAutoContinuousRequest& from)
+    : RespondFocusAutoContinuousRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoContinuousRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondFocusAutoContinuousRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.focus_auto_continuous_feedback_ = {};
+}
+RespondFocusAutoContinuousRequest::~RespondFocusAutoContinuousRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+  SharedDtor(*this);
+}
+inline void RespondFocusAutoContinuousRequest::SharedDtor(MessageLite& self) {
+  RespondFocusAutoContinuousRequest& this_ = static_cast<RespondFocusAutoContinuousRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondFocusAutoContinuousRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondFocusAutoContinuousRequest(arena);
+}
+constexpr auto RespondFocusAutoContinuousRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondFocusAutoContinuousRequest),
+                                            alignof(RespondFocusAutoContinuousRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondFocusAutoContinuousRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondFocusAutoContinuousRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondFocusAutoContinuousRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondFocusAutoContinuousRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondFocusAutoContinuousRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondFocusAutoContinuousRequest>(), &RespondFocusAutoContinuousRequest::ByteSizeLong,
+            &RespondFocusAutoContinuousRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondFocusAutoContinuousRequest, _impl_._cached_size_),
+        false,
+    },
+    &RespondFocusAutoContinuousRequest::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondFocusAutoContinuousRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondFocusAutoContinuousRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::RespondFocusAutoContinuousRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_continuous_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondFocusAutoContinuousRequest, _impl_.focus_auto_continuous_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondFocusAutoContinuousRequest, _impl_.focus_auto_continuous_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_continuous_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondFocusAutoContinuousRequest, _impl_.focus_auto_continuous_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondFocusAutoContinuousRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.focus_auto_continuous_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondFocusAutoContinuousRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondFocusAutoContinuousRequest& this_ = static_cast<const RespondFocusAutoContinuousRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondFocusAutoContinuousRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondFocusAutoContinuousRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_continuous_feedback = 1;
+          if (this_._internal_focus_auto_continuous_feedback() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_focus_auto_continuous_feedback(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondFocusAutoContinuousRequest::ByteSizeLong(const MessageLite& base) {
+          const RespondFocusAutoContinuousRequest& this_ = static_cast<const RespondFocusAutoContinuousRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondFocusAutoContinuousRequest::ByteSizeLong() const {
+          const RespondFocusAutoContinuousRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_continuous_feedback = 1;
+            if (this_._internal_focus_auto_continuous_feedback() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_focus_auto_continuous_feedback());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondFocusAutoContinuousRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondFocusAutoContinuousRequest*>(&to_msg);
+  auto& from = static_cast<const RespondFocusAutoContinuousRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_focus_auto_continuous_feedback() != 0) {
+    _this->_impl_.focus_auto_continuous_feedback_ = from._impl_.focus_auto_continuous_feedback_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondFocusAutoContinuousRequest::CopyFrom(const RespondFocusAutoContinuousRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondFocusAutoContinuousRequest::InternalSwap(RespondFocusAutoContinuousRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.focus_auto_continuous_feedback_, other->_impl_.focus_auto_continuous_feedback_);
+}
+
+::google::protobuf::Metadata RespondFocusAutoContinuousRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondFocusAutoContinuousResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<RespondFocusAutoContinuousResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(RespondFocusAutoContinuousResponse, _impl_._has_bits_);
+};
+
+RespondFocusAutoContinuousResponse::RespondFocusAutoContinuousResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoContinuousResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::camera_server::RespondFocusAutoContinuousResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondFocusAutoContinuousResponse::RespondFocusAutoContinuousResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondFocusAutoContinuousResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RespondFocusAutoContinuousResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.camera_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(
+                              arena, *from._impl_.camera_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondFocusAutoContinuousResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondFocusAutoContinuousResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.camera_server_result_ = {};
+}
+RespondFocusAutoContinuousResponse::~RespondFocusAutoContinuousResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+  SharedDtor(*this);
+}
+inline void RespondFocusAutoContinuousResponse::SharedDtor(MessageLite& self) {
+  RespondFocusAutoContinuousResponse& this_ = static_cast<RespondFocusAutoContinuousResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.camera_server_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondFocusAutoContinuousResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondFocusAutoContinuousResponse(arena);
+}
+constexpr auto RespondFocusAutoContinuousResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondFocusAutoContinuousResponse),
+                                            alignof(RespondFocusAutoContinuousResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondFocusAutoContinuousResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondFocusAutoContinuousResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondFocusAutoContinuousResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondFocusAutoContinuousResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondFocusAutoContinuousResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondFocusAutoContinuousResponse>(), &RespondFocusAutoContinuousResponse::ByteSizeLong,
+            &RespondFocusAutoContinuousResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondFocusAutoContinuousResponse, _impl_._cached_size_),
+        false,
+    },
+    &RespondFocusAutoContinuousResponse::kDescriptorMethods,
+    &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondFocusAutoContinuousResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondFocusAutoContinuousResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondFocusAutoContinuousResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::RespondFocusAutoContinuousResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondFocusAutoContinuousResponse, _impl_.camera_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondFocusAutoContinuousResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondFocusAutoContinuousResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.camera_server_result_ != nullptr);
+    _impl_.camera_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondFocusAutoContinuousResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondFocusAutoContinuousResponse& this_ = static_cast<const RespondFocusAutoContinuousResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondFocusAutoContinuousResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondFocusAutoContinuousResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.camera_server_result_, this_._impl_.camera_server_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondFocusAutoContinuousResponse::ByteSizeLong(const MessageLite& base) {
+          const RespondFocusAutoContinuousResponse& this_ = static_cast<const RespondFocusAutoContinuousResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondFocusAutoContinuousResponse::ByteSizeLong() const {
+          const RespondFocusAutoContinuousResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.camera_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondFocusAutoContinuousResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondFocusAutoContinuousResponse*>(&to_msg);
+  auto& from = static_cast<const RespondFocusAutoContinuousResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.camera_server_result_ != nullptr);
+    if (_this->_impl_.camera_server_result_ == nullptr) {
+      _this->_impl_.camera_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_);
+    } else {
+      _this->_impl_.camera_server_result_->MergeFrom(*from._impl_.camera_server_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondFocusAutoContinuousResponse::CopyFrom(const RespondFocusAutoContinuousResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondFocusAutoContinuousResponse::InternalSwap(RespondFocusAutoContinuousResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
+}
+
+::google::protobuf::Metadata RespondFocusAutoContinuousResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

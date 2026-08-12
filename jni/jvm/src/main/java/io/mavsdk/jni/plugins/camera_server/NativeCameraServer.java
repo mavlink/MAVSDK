@@ -328,6 +328,26 @@ public final class NativeCameraServer {
     }
 
     @FunctionalInterface
+    public interface FocusMetersCallback {
+        void invoke(float value);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoCallback {
+        void invoke(int value);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoSingleCallback {
+        void invoke(int value);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoContinuousCallback {
+        void invoke(int value);
+    }
+
+    @FunctionalInterface
     public interface TrackingPointCommandCallback {
         void invoke(TrackPoint value);
     }
@@ -471,6 +491,30 @@ public final class NativeCameraServer {
     public static native void unsubscribeFocusRange(long pluginHandle, long subscriptionHandle);
 
     public static native int respondFocusRange(long pluginHandle, int focusRangeFeedback);
+
+    public static native long subscribeFocusMeters(long pluginHandle, FocusMetersCallback callback);
+
+    public static native void unsubscribeFocusMeters(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusMeters(long pluginHandle, int focusMetersFeedback);
+
+    public static native long subscribeFocusAuto(long pluginHandle, FocusAutoCallback callback);
+
+    public static native void unsubscribeFocusAuto(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusAuto(long pluginHandle, int focusAutoFeedback);
+
+    public static native long subscribeFocusAutoSingle(long pluginHandle, FocusAutoSingleCallback callback);
+
+    public static native void unsubscribeFocusAutoSingle(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusAutoSingle(long pluginHandle, int focusAutoSingleFeedback);
+
+    public static native long subscribeFocusAutoContinuous(long pluginHandle, FocusAutoContinuousCallback callback);
+
+    public static native void unsubscribeFocusAutoContinuous(long pluginHandle, long subscriptionHandle);
+
+    public static native int respondFocusAutoContinuous(long pluginHandle, int focusAutoContinuousFeedback);
 
     public static native void setTrackingRectangleStatus(long pluginHandle, TrackRectangle trackedRectangle);
 

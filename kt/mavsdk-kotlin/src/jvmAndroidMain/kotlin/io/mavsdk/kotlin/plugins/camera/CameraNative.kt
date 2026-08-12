@@ -698,6 +698,47 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
         }
     }
 
+    override fun focusMetersAsync(componentId: Int, distanceM: Float, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusMetersAsync(
+                handle,
+                componentId,
+                distanceM,
+                NativeCamera.FocusMetersCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusAutoAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusAutoAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusAutoCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusAutoSingleAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusAutoSingleAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusAutoSingleCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusAutoContinuousAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusAutoContinuousAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusAutoContinuousCallback { result -> callback(result) },
+            )
+        }
+    }
+
     override fun destroy() {
         lifecycle.write {
             if (destroyed) return

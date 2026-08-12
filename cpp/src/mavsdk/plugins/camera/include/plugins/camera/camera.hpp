@@ -1649,6 +1649,104 @@ public:
 
 
     /**
+     * @brief Focus at a distance in meters.
+     *
+     * Note that there is no message to get the valid focus range of the camera,
+     * so this can only be used for cameras where the range is known.
+     *
+     * This function is non-blocking. See 'focus_meters' for the blocking counterpart.
+     */
+    void focus_meters_async(int32_t component_id, float distance_m, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Focus at a distance in meters.
+     *
+     * Note that there is no message to get the valid focus range of the camera,
+     * so this can only be used for cameras where the range is known.
+     *
+     * This function is blocking. See 'focus_meters_async' for the non-blocking counterpart.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result focus_meters(int32_t component_id, float distance_m) const;
+
+
+
+
+    /**
+     * @brief Focus automatically.
+     *
+     * This function is non-blocking. See 'focus_auto' for the blocking counterpart.
+     */
+    void focus_auto_async(int32_t component_id, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Focus automatically.
+     *
+     * This function is blocking. See 'focus_auto_async' for the non-blocking counterpart.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result focus_auto(int32_t component_id) const;
+
+
+
+
+    /**
+     * @brief Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+     *
+     * This function is non-blocking. See 'focus_auto_single' for the blocking counterpart.
+     */
+    void focus_auto_single_async(int32_t component_id, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+     *
+     * This function is blocking. See 'focus_auto_single_async' for the non-blocking counterpart.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result focus_auto_single(int32_t component_id) const;
+
+
+
+
+    /**
+     * @brief Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
+     *
+     * This function is non-blocking. See 'focus_auto_continuous' for the blocking counterpart.
+     */
+    void focus_auto_continuous_async(int32_t component_id, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
+     *
+     * This function is blocking. See 'focus_auto_continuous_async' for the non-blocking counterpart.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result focus_auto_continuous(int32_t component_id) const;
+
+
+
+
+    /**
      * @brief Copy constructor.
      */
     Camera(const Camera& other);

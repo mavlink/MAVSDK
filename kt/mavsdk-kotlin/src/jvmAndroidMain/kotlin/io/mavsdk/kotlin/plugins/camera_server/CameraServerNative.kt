@@ -687,6 +687,106 @@ private class CameraServerNativeImpl(private val handle: Long) : CameraServerNat
             NativeCameraServer.respondFocusRange(handle, focusRangeFeedback.value)
         }
 
+    override fun subscribeFocusMeters(callback: (Float) -> Unit): Long = withOpen {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeFocusMeters(
+                handle,
+                NativeCameraServer.FocusMetersCallback { value -> callback(value) },
+            )
+        if (subscriptionHandle != 0L) {
+            activeSubscriptions[subscriptionHandle] = {
+                NativeCameraServer.unsubscribeFocusMeters(handle, subscriptionHandle)
+            }
+        }
+        subscriptionHandle
+    }
+
+    override fun unsubscribeFocusMeters(subscriptionHandle: Long) {
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+    }
+
+    override fun respondFocusMeters(focusMetersFeedback: CameraServer.CameraFeedback): Int =
+        withOpen {
+            NativeCameraServer.respondFocusMeters(handle, focusMetersFeedback.value)
+        }
+
+    override fun subscribeFocusAuto(callback: (Int) -> Unit): Long = withOpen {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeFocusAuto(
+                handle,
+                NativeCameraServer.FocusAutoCallback { value -> callback(value) },
+            )
+        if (subscriptionHandle != 0L) {
+            activeSubscriptions[subscriptionHandle] = {
+                NativeCameraServer.unsubscribeFocusAuto(handle, subscriptionHandle)
+            }
+        }
+        subscriptionHandle
+    }
+
+    override fun unsubscribeFocusAuto(subscriptionHandle: Long) {
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+    }
+
+    override fun respondFocusAuto(focusAutoFeedback: CameraServer.CameraFeedback): Int = withOpen {
+        NativeCameraServer.respondFocusAuto(handle, focusAutoFeedback.value)
+    }
+
+    override fun subscribeFocusAutoSingle(callback: (Int) -> Unit): Long = withOpen {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeFocusAutoSingle(
+                handle,
+                NativeCameraServer.FocusAutoSingleCallback { value -> callback(value) },
+            )
+        if (subscriptionHandle != 0L) {
+            activeSubscriptions[subscriptionHandle] = {
+                NativeCameraServer.unsubscribeFocusAutoSingle(handle, subscriptionHandle)
+            }
+        }
+        subscriptionHandle
+    }
+
+    override fun unsubscribeFocusAutoSingle(subscriptionHandle: Long) {
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+    }
+
+    override fun respondFocusAutoSingle(focusAutoSingleFeedback: CameraServer.CameraFeedback): Int =
+        withOpen {
+            NativeCameraServer.respondFocusAutoSingle(handle, focusAutoSingleFeedback.value)
+        }
+
+    override fun subscribeFocusAutoContinuous(callback: (Int) -> Unit): Long = withOpen {
+        val subscriptionHandle =
+            NativeCameraServer.subscribeFocusAutoContinuous(
+                handle,
+                NativeCameraServer.FocusAutoContinuousCallback { value -> callback(value) },
+            )
+        if (subscriptionHandle != 0L) {
+            activeSubscriptions[subscriptionHandle] = {
+                NativeCameraServer.unsubscribeFocusAutoContinuous(handle, subscriptionHandle)
+            }
+        }
+        subscriptionHandle
+    }
+
+    override fun unsubscribeFocusAutoContinuous(subscriptionHandle: Long) {
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+    }
+
+    override fun respondFocusAutoContinuous(
+        focusAutoContinuousFeedback: CameraServer.CameraFeedback
+    ): Int = withOpen {
+        NativeCameraServer.respondFocusAutoContinuous(handle, focusAutoContinuousFeedback.value)
+    }
+
     override fun setTrackingRectangleStatus(trackedRectangle: CameraServer.TrackRectangle) {
         withOpen {
             NativeCameraServer.setTrackingRectangleStatus(handle, trackedRectangle.toNative())

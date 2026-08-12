@@ -414,6 +414,47 @@ Camera::Result Camera::focus_range(int32_t component_id, float range) const
     return _impl->focus_range(component_id, range);
 }
 
+void Camera::focus_meters_async(
+    int32_t component_id, float distance_m, const ResultCallback callback)
+{
+    _impl->focus_meters_async(component_id, distance_m, callback);
+}
+
+Camera::Result Camera::focus_meters(int32_t component_id, float distance_m) const
+{
+    return _impl->focus_meters(component_id, distance_m);
+}
+
+void Camera::focus_auto_async(int32_t component_id, const ResultCallback callback)
+{
+    _impl->focus_auto_async(component_id, callback);
+}
+
+Camera::Result Camera::focus_auto(int32_t component_id) const
+{
+    return _impl->focus_auto(component_id);
+}
+
+void Camera::focus_auto_single_async(int32_t component_id, const ResultCallback callback)
+{
+    _impl->focus_auto_single_async(component_id, callback);
+}
+
+Camera::Result Camera::focus_auto_single(int32_t component_id) const
+{
+    return _impl->focus_auto_single(component_id);
+}
+
+void Camera::focus_auto_continuous_async(int32_t component_id, const ResultCallback callback)
+{
+    _impl->focus_auto_continuous_async(component_id, callback);
+}
+
+Camera::Result Camera::focus_auto_continuous(int32_t component_id) const
+{
+    return _impl->focus_auto_continuous(component_id);
+}
+
 MAVSDK_PUBLIC bool operator==(const Camera::Option& lhs, const Camera::Option& rhs)
 {
     return (rhs.option_id == lhs.option_id) && (rhs.option_description == lhs.option_description);

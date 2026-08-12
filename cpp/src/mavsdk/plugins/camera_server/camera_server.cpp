@@ -370,6 +370,71 @@ CameraServer::Result CameraServer::respond_focus_range(CameraFeedback focus_rang
     return _impl->respond_focus_range(focus_range_feedback);
 }
 
+CameraServer::FocusMetersHandle
+CameraServer::subscribe_focus_meters(const FocusMetersCallback& callback)
+{
+    return _impl->subscribe_focus_meters(callback);
+}
+
+void CameraServer::unsubscribe_focus_meters(FocusMetersHandle handle)
+{
+    _impl->unsubscribe_focus_meters(handle);
+}
+
+CameraServer::Result CameraServer::respond_focus_meters(CameraFeedback focus_meters_feedback) const
+{
+    return _impl->respond_focus_meters(focus_meters_feedback);
+}
+
+CameraServer::FocusAutoHandle CameraServer::subscribe_focus_auto(const FocusAutoCallback& callback)
+{
+    return _impl->subscribe_focus_auto(callback);
+}
+
+void CameraServer::unsubscribe_focus_auto(FocusAutoHandle handle)
+{
+    _impl->unsubscribe_focus_auto(handle);
+}
+
+CameraServer::Result CameraServer::respond_focus_auto(CameraFeedback focus_auto_feedback) const
+{
+    return _impl->respond_focus_auto(focus_auto_feedback);
+}
+
+CameraServer::FocusAutoSingleHandle
+CameraServer::subscribe_focus_auto_single(const FocusAutoSingleCallback& callback)
+{
+    return _impl->subscribe_focus_auto_single(callback);
+}
+
+void CameraServer::unsubscribe_focus_auto_single(FocusAutoSingleHandle handle)
+{
+    _impl->unsubscribe_focus_auto_single(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_focus_auto_single(CameraFeedback focus_auto_single_feedback) const
+{
+    return _impl->respond_focus_auto_single(focus_auto_single_feedback);
+}
+
+CameraServer::FocusAutoContinuousHandle
+CameraServer::subscribe_focus_auto_continuous(const FocusAutoContinuousCallback& callback)
+{
+    return _impl->subscribe_focus_auto_continuous(callback);
+}
+
+void CameraServer::unsubscribe_focus_auto_continuous(FocusAutoContinuousHandle handle)
+{
+    _impl->unsubscribe_focus_auto_continuous(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_focus_auto_continuous(CameraFeedback focus_auto_continuous_feedback) const
+{
+    return _impl->respond_focus_auto_continuous(focus_auto_continuous_feedback);
+}
+
 void CameraServer::set_tracking_rectangle_status(TrackRectangle tracked_rectangle) const
 {
     _impl->set_tracking_rectangle_status(tracked_rectangle);

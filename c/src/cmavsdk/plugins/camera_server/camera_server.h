@@ -43,6 +43,10 @@ typedef struct mavsdk_camera_server_focus_in_start_handle_s *mavsdk_camera_serve
 typedef struct mavsdk_camera_server_focus_out_start_handle_s *mavsdk_camera_server_focus_out_start_handle_t;
 typedef struct mavsdk_camera_server_focus_stop_handle_s *mavsdk_camera_server_focus_stop_handle_t;
 typedef struct mavsdk_camera_server_focus_range_handle_s *mavsdk_camera_server_focus_range_handle_t;
+typedef struct mavsdk_camera_server_focus_meters_handle_s *mavsdk_camera_server_focus_meters_handle_t;
+typedef struct mavsdk_camera_server_focus_auto_handle_s *mavsdk_camera_server_focus_auto_handle_t;
+typedef struct mavsdk_camera_server_focus_auto_single_handle_s *mavsdk_camera_server_focus_auto_single_handle_t;
+typedef struct mavsdk_camera_server_focus_auto_continuous_handle_s *mavsdk_camera_server_focus_auto_continuous_handle_t;
 typedef struct mavsdk_camera_server_tracking_point_command_handle_s *mavsdk_camera_server_tracking_point_command_handle_t;
 typedef struct mavsdk_camera_server_tracking_rectangle_command_handle_s *mavsdk_camera_server_tracking_rectangle_command_handle_t;
 typedef struct mavsdk_camera_server_tracking_off_command_handle_s *mavsdk_camera_server_tracking_off_command_handle_t;
@@ -677,6 +681,10 @@ typedef void (*mavsdk_camera_server_focus_in_start_callback_t)(const int32_t res
 typedef void (*mavsdk_camera_server_focus_out_start_callback_t)(const int32_t reserved, void* user_data);
 typedef void (*mavsdk_camera_server_focus_stop_callback_t)(const int32_t reserved, void* user_data);
 typedef void (*mavsdk_camera_server_focus_range_callback_t)(const float focus_distance_m, void* user_data);
+typedef void (*mavsdk_camera_server_focus_meters_callback_t)(const float focus_distance_m, void* user_data);
+typedef void (*mavsdk_camera_server_focus_auto_callback_t)(const int32_t reserved, void* user_data);
+typedef void (*mavsdk_camera_server_focus_auto_single_callback_t)(const int32_t reserved, void* user_data);
+typedef void (*mavsdk_camera_server_focus_auto_continuous_callback_t)(const int32_t reserved, void* user_data);
 typedef void (*mavsdk_camera_server_tracking_point_command_callback_t)(const mavsdk_camera_server_track_point_t track_point, void* user_data);
 typedef void (*mavsdk_camera_server_tracking_rectangle_command_callback_t)(const mavsdk_camera_server_track_rectangle_t track_rectangle, void* user_data);
 typedef void (*mavsdk_camera_server_tracking_off_command_callback_t)(const int32_t dummy, void* user_data);
@@ -1573,6 +1581,174 @@ mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_focus_range(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t focus_range_feedback);
+
+
+/**
+ * @brief Subscribe to focus meters command.
+ *
+ * @param camera_server The camera_server instance.
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_focus_meters() to unsubscribe.
+ */
+CMAVSDK_EXPORT mavsdk_camera_server_focus_meters_handle_t mavsdk_camera_server_subscribe_focus_meters(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_meters_callback_t callback,
+    void* user_data);
+
+/**
+ * @brief Unsubscribe from 'focus_meters' updates.
+ *
+ * Stops the subscription and frees resources associated with the handle.
+ *
+ * @param camera_server The camera_server instance.
+ * @param handle The subscription handle returned by mavsdk_camera_server_subscribe_focus_meters().
+ */
+CMAVSDK_EXPORT void mavsdk_camera_server_unsubscribe_focus_meters(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_meters_handle_t);
+
+
+/**
+ * @brief Get the current respond focus meters (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param respond_focus_meters_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_meters(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_meters_feedback);
+
+
+/**
+ * @brief Subscribe to focus auto command.
+ *
+ * @param camera_server The camera_server instance.
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_focus_auto() to unsubscribe.
+ */
+CMAVSDK_EXPORT mavsdk_camera_server_focus_auto_handle_t mavsdk_camera_server_subscribe_focus_auto(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_auto_callback_t callback,
+    void* user_data);
+
+/**
+ * @brief Unsubscribe from 'focus_auto' updates.
+ *
+ * Stops the subscription and frees resources associated with the handle.
+ *
+ * @param camera_server The camera_server instance.
+ * @param handle The subscription handle returned by mavsdk_camera_server_subscribe_focus_auto().
+ */
+CMAVSDK_EXPORT void mavsdk_camera_server_unsubscribe_focus_auto(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_auto_handle_t);
+
+
+/**
+ * @brief Get the current respond focus auto (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param respond_focus_auto_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_auto(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_auto_feedback);
+
+
+/**
+ * @brief Subscribe to focus auto single command.
+ *
+ * @param camera_server The camera_server instance.
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_focus_auto_single() to unsubscribe.
+ */
+CMAVSDK_EXPORT mavsdk_camera_server_focus_auto_single_handle_t mavsdk_camera_server_subscribe_focus_auto_single(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_auto_single_callback_t callback,
+    void* user_data);
+
+/**
+ * @brief Unsubscribe from 'focus_auto_single' updates.
+ *
+ * Stops the subscription and frees resources associated with the handle.
+ *
+ * @param camera_server The camera_server instance.
+ * @param handle The subscription handle returned by mavsdk_camera_server_subscribe_focus_auto_single().
+ */
+CMAVSDK_EXPORT void mavsdk_camera_server_unsubscribe_focus_auto_single(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_auto_single_handle_t);
+
+
+/**
+ * @brief Get the current respond focus auto single (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param respond_focus_auto_single_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_auto_single(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_auto_single_feedback);
+
+
+/**
+ * @brief Subscribe to focus auto continuous command.
+ *
+ * @param camera_server The camera_server instance.
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_focus_auto_continuous() to unsubscribe.
+ */
+CMAVSDK_EXPORT mavsdk_camera_server_focus_auto_continuous_handle_t mavsdk_camera_server_subscribe_focus_auto_continuous(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_auto_continuous_callback_t callback,
+    void* user_data);
+
+/**
+ * @brief Unsubscribe from 'focus_auto_continuous' updates.
+ *
+ * Stops the subscription and frees resources associated with the handle.
+ *
+ * @param camera_server The camera_server instance.
+ * @param handle The subscription handle returned by mavsdk_camera_server_subscribe_focus_auto_continuous().
+ */
+CMAVSDK_EXPORT void mavsdk_camera_server_unsubscribe_focus_auto_continuous(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_focus_auto_continuous_handle_t);
+
+
+/**
+ * @brief Get the current respond focus auto continuous (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param respond_focus_auto_continuous_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_focus_auto_continuous(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t focus_auto_continuous_feedback);
 
 
 /**

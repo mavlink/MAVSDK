@@ -2557,6 +2557,314 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeFocusMeters(grpc::ServerContext* /* context */, const mavsdk::rpc::camera_server::SubscribeFocusMetersRequest* /* request */, grpc::ServerWriter<rpc::camera_server::FocusMetersResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::FocusMetersHandle handle = _lazy_plugin.maybe_plugin()->subscribe_focus_meters(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const float focus_meters) {
+
+            rpc::camera_server::FocusMetersResponse rpc_response;
+        
+            rpc_response.set_focus_distance_m(focus_meters);
+        
+
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_focus_meters(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondFocusMeters(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondFocusMetersRequest* request,
+        rpc::camera_server::RespondFocusMetersResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("RespondFocusMeters sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->respond_focus_meters(translateFromRpcCameraFeedback(request->focus_meters_feedback()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeFocusAuto(grpc::ServerContext* /* context */, const mavsdk::rpc::camera_server::SubscribeFocusAutoRequest* /* request */, grpc::ServerWriter<rpc::camera_server::FocusAutoResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::FocusAutoHandle handle = _lazy_plugin.maybe_plugin()->subscribe_focus_auto(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const int32_t focus_auto) {
+
+            rpc::camera_server::FocusAutoResponse rpc_response;
+        
+            rpc_response.set_reserved(focus_auto);
+        
+
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_focus_auto(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondFocusAuto(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondFocusAutoRequest* request,
+        rpc::camera_server::RespondFocusAutoResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("RespondFocusAuto sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->respond_focus_auto(translateFromRpcCameraFeedback(request->focus_auto_feedback()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeFocusAutoSingle(grpc::ServerContext* /* context */, const mavsdk::rpc::camera_server::SubscribeFocusAutoSingleRequest* /* request */, grpc::ServerWriter<rpc::camera_server::FocusAutoSingleResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::FocusAutoSingleHandle handle = _lazy_plugin.maybe_plugin()->subscribe_focus_auto_single(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const int32_t focus_auto_single) {
+
+            rpc::camera_server::FocusAutoSingleResponse rpc_response;
+        
+            rpc_response.set_reserved(focus_auto_single);
+        
+
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_focus_auto_single(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondFocusAutoSingle(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondFocusAutoSingleRequest* request,
+        rpc::camera_server::RespondFocusAutoSingleResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("RespondFocusAutoSingle sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->respond_focus_auto_single(translateFromRpcCameraFeedback(request->focus_auto_single_feedback()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeFocusAutoContinuous(grpc::ServerContext* /* context */, const mavsdk::rpc::camera_server::SubscribeFocusAutoContinuousRequest* /* request */, grpc::ServerWriter<rpc::camera_server::FocusAutoContinuousResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::FocusAutoContinuousHandle handle = _lazy_plugin.maybe_plugin()->subscribe_focus_auto_continuous(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const int32_t focus_auto_continuous) {
+
+            rpc::camera_server::FocusAutoContinuousResponse rpc_response;
+        
+            rpc_response.set_reserved(focus_auto_continuous);
+        
+
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_focus_auto_continuous(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondFocusAutoContinuous(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondFocusAutoContinuousRequest* request,
+        rpc::camera_server::RespondFocusAutoContinuousResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("RespondFocusAutoContinuous sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->respond_focus_auto_continuous(translateFromRpcCameraFeedback(request->focus_auto_continuous_feedback()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetTrackingRectangleStatus(
         grpc::ServerContext* /* context */,
         const rpc::camera_server::SetTrackingRectangleStatusRequest* request,

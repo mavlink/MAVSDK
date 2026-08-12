@@ -1462,6 +1462,186 @@ public:
 
 
 
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_meters.
+     */
+    using FocusMetersCallback = std::function<void(float)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_meters.
+     */
+    using FocusMetersHandle = Handle<float>;
+
+    /**
+     * @brief Subscribe to focus meters command.
+     */
+    FocusMetersHandle subscribe_focus_meters(const FocusMetersCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_meters
+     */
+    void unsubscribe_focus_meters(FocusMetersHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus meters.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_meters(CameraFeedback focus_meters_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_auto.
+     */
+    using FocusAutoCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_auto.
+     */
+    using FocusAutoHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to focus auto command.
+     */
+    FocusAutoHandle subscribe_focus_auto(const FocusAutoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_auto
+     */
+    void unsubscribe_focus_auto(FocusAutoHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus auto.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_auto(CameraFeedback focus_auto_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_auto_single.
+     */
+    using FocusAutoSingleCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_auto_single.
+     */
+    using FocusAutoSingleHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to focus auto single command.
+     */
+    FocusAutoSingleHandle subscribe_focus_auto_single(const FocusAutoSingleCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_auto_single
+     */
+    void unsubscribe_focus_auto_single(FocusAutoSingleHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus auto single.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_auto_single(CameraFeedback focus_auto_single_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_focus_auto_continuous.
+     */
+    using FocusAutoContinuousCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_focus_auto_continuous.
+     */
+    using FocusAutoContinuousHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to focus auto continuous command.
+     */
+    FocusAutoContinuousHandle subscribe_focus_auto_continuous(const FocusAutoContinuousCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_focus_auto_continuous
+     */
+    void unsubscribe_focus_auto_continuous(FocusAutoContinuousHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to focus auto continuous.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_focus_auto_continuous(CameraFeedback focus_auto_continuous_feedback) const;
+
+
+
+
 
 
     /**

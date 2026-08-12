@@ -228,4 +228,24 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
         std::cout << "Focus range requested: " << focus_level << "%" << std::endl;
         camera_server.respond_focus_range(mavsdk::CameraServer::CameraFeedback::Ok);
     });
+
+    camera_server.subscribe_focus_meters([&camera_server](float focus_distance_m) {
+        std::cout << "Focus meters requested: " << focus_distance_m << "m" << std::endl;
+        camera_server.respond_focus_meters(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_auto([&camera_server](int camera_id) {
+        std::cout << "Focus auto" << std::endl;
+        camera_server.respond_focus_auto(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_auto_single([&camera_server](int camera_id) {
+        std::cout << "Focus auto single" << std::endl;
+        camera_server.respond_focus_auto_single(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
+
+    camera_server.subscribe_focus_auto_continuous([&camera_server](int camera_id) {
+        std::cout << "Focus auto continuous" << std::endl;
+        camera_server.respond_focus_auto_continuous(mavsdk::CameraServer::CameraFeedback::Ok);
+    });
 }

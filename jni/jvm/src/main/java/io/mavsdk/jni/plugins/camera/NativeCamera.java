@@ -501,6 +501,26 @@ public final class NativeCamera {
         void invoke(int result);
     }
 
+    @FunctionalInterface
+    public interface FocusMetersCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoSingleCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoContinuousCallback {
+        void invoke(int result);
+    }
+
     public static native long create(long systemHandle);
 
     public static native void destroy(long pluginHandle);
@@ -644,5 +664,21 @@ public final class NativeCamera {
     public static native int focusRange(long pluginHandle, int componentId, float range);
 
     public static native void focusRangeAsync(long pluginHandle, int componentId, float range, FocusRangeCallback callback);
+
+    public static native int focusMeters(long pluginHandle, int componentId, float distanceM);
+
+    public static native void focusMetersAsync(long pluginHandle, int componentId, float distanceM, FocusMetersCallback callback);
+
+    public static native int focusAuto(long pluginHandle, int componentId);
+
+    public static native void focusAutoAsync(long pluginHandle, int componentId, FocusAutoCallback callback);
+
+    public static native int focusAutoSingle(long pluginHandle, int componentId);
+
+    public static native void focusAutoSingleAsync(long pluginHandle, int componentId, FocusAutoSingleCallback callback);
+
+    public static native int focusAutoContinuous(long pluginHandle, int componentId);
+
+    public static native void focusAutoContinuousAsync(long pluginHandle, int componentId, FocusAutoContinuousCallback callback);
 
 }

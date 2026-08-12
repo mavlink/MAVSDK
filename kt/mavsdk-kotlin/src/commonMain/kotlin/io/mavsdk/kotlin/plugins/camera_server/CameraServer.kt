@@ -729,6 +729,82 @@ class CameraServer internal constructor(private val native: CameraServerNative) 
         Result.fromValue(native.respondFocusRange(focusRangeFeedback))
 
     /**
+     * Subscribe to focus meters command.
+     *
+     * @return The focus distance in meters.
+     */
+    fun subscribeFocusMeters(): Flow<Float> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusMeters() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusMeters(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus meters.
+     *
+     * @param focusMetersFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusMeters(focusMetersFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusMeters(focusMetersFeedback))
+
+    /**
+     * Subscribe to focus auto command.
+     *
+     * @return reserved, just make protoc-gen-mavsdk working
+     */
+    fun subscribeFocusAuto(): Flow<Int> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusAuto() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusAuto(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus auto.
+     *
+     * @param focusAutoFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusAuto(focusAutoFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusAuto(focusAutoFeedback))
+
+    /**
+     * Subscribe to focus auto single command.
+     *
+     * @return reserved, just make protoc-gen-mavsdk working
+     */
+    fun subscribeFocusAutoSingle(): Flow<Int> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusAutoSingle() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusAutoSingle(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus auto single.
+     *
+     * @param focusAutoSingleFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusAutoSingle(focusAutoSingleFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusAutoSingle(focusAutoSingleFeedback))
+
+    /**
+     * Subscribe to focus auto continuous command.
+     *
+     * @return reserved, just make protoc-gen-mavsdk working
+     */
+    fun subscribeFocusAutoContinuous(): Flow<Int> = callbackFlow {
+        val subscriptionHandle = native.subscribeFocusAutoContinuous() { value -> trySend(value) }
+        awaitClose { native.unsubscribeFocusAutoContinuous(subscriptionHandle) }
+    }
+
+    /**
+     * Respond to focus auto continuous.
+     *
+     * @param focusAutoContinuousFeedback the feedback
+     * @return The result of the request.
+     */
+    fun respondFocusAutoContinuous(focusAutoContinuousFeedback: CameraFeedback): Result =
+        Result.fromValue(native.respondFocusAutoContinuous(focusAutoContinuousFeedback))
+
+    /**
      * Set/update the current rectangle tracking status.
      *
      * @param trackedRectangle The tracked rectangle
@@ -980,6 +1056,30 @@ internal interface CameraServerNative {
     fun unsubscribeFocusRange(subscriptionHandle: Long)
 
     fun respondFocusRange(focusRangeFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusMeters(callback: (Float) -> Unit): Long
+
+    fun unsubscribeFocusMeters(subscriptionHandle: Long)
+
+    fun respondFocusMeters(focusMetersFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusAuto(callback: (Int) -> Unit): Long
+
+    fun unsubscribeFocusAuto(subscriptionHandle: Long)
+
+    fun respondFocusAuto(focusAutoFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusAutoSingle(callback: (Int) -> Unit): Long
+
+    fun unsubscribeFocusAutoSingle(subscriptionHandle: Long)
+
+    fun respondFocusAutoSingle(focusAutoSingleFeedback: CameraServer.CameraFeedback): Int
+
+    fun subscribeFocusAutoContinuous(callback: (Int) -> Unit): Long
+
+    fun unsubscribeFocusAutoContinuous(subscriptionHandle: Long)
+
+    fun respondFocusAutoContinuous(focusAutoContinuousFeedback: CameraServer.CameraFeedback): Int
 
     fun setTrackingRectangleStatus(trackedRectangle: CameraServer.TrackRectangle)
 

@@ -2951,6 +2951,138 @@ struct FocusRangeCallbackWrapper {
         }
     }
 };
+struct FocusMetersCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusMetersCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_camera_result_t result    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusAutoCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusAutoCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_camera_result_t result    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusAutoSingleCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusAutoSingleCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_camera_result_t result    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusAutoContinuousCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusAutoContinuousCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_camera_result_t result    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
 
 } // namespace
 
@@ -4662,6 +4794,186 @@ Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusRangeAsync(
         [](const mavsdk_camera_result_t result, void* userData) {
             auto* callbackWrapper =
                 static_cast<FocusRangeCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) {
+                delete callbackWrapper;
+            }
+        },
+        wrapper);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusMeters(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint component_id,
+    jfloat distance_m) {
+    if (!requireHandle(env, handle, "Camera plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_result_t result =
+        mavsdk_camera_focus_meters(
+            reinterpret_cast<mavsdk_camera_t>(handle),
+            static_cast<int32_t>(component_id),
+            static_cast<float>(distance_m));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusMetersAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint component_id,
+    jfloat distance_m,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Camera plugin") || !callback) {
+        return;
+    }
+
+    auto* wrapper = new FocusMetersCallbackWrapper(env, callback);
+    mavsdk_camera_focus_meters_async(
+        reinterpret_cast<mavsdk_camera_t>(handle),
+        static_cast<int32_t>(component_id),
+        static_cast<float>(distance_m),
+        [](const mavsdk_camera_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<FocusMetersCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) {
+                delete callbackWrapper;
+            }
+        },
+        wrapper);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusAuto(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint component_id) {
+    if (!requireHandle(env, handle, "Camera plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_result_t result =
+        mavsdk_camera_focus_auto(
+            reinterpret_cast<mavsdk_camera_t>(handle),
+            static_cast<int32_t>(component_id));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusAutoAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint component_id,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Camera plugin") || !callback) {
+        return;
+    }
+
+    auto* wrapper = new FocusAutoCallbackWrapper(env, callback);
+    mavsdk_camera_focus_auto_async(
+        reinterpret_cast<mavsdk_camera_t>(handle),
+        static_cast<int32_t>(component_id),
+        [](const mavsdk_camera_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<FocusAutoCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) {
+                delete callbackWrapper;
+            }
+        },
+        wrapper);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusAutoSingle(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint component_id) {
+    if (!requireHandle(env, handle, "Camera plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_result_t result =
+        mavsdk_camera_focus_auto_single(
+            reinterpret_cast<mavsdk_camera_t>(handle),
+            static_cast<int32_t>(component_id));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusAutoSingleAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint component_id,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Camera plugin") || !callback) {
+        return;
+    }
+
+    auto* wrapper = new FocusAutoSingleCallbackWrapper(env, callback);
+    mavsdk_camera_focus_auto_single_async(
+        reinterpret_cast<mavsdk_camera_t>(handle),
+        static_cast<int32_t>(component_id),
+        [](const mavsdk_camera_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<FocusAutoSingleCallbackWrapper*>(userData);
+            (*callbackWrapper)(result);
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) {
+                delete callbackWrapper;
+            }
+        },
+        wrapper);
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusAutoContinuous(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint component_id) {
+    if (!requireHandle(env, handle, "Camera plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_result_t result =
+        mavsdk_camera_focus_auto_continuous(
+            reinterpret_cast<mavsdk_camera_t>(handle),
+            static_cast<int32_t>(component_id));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_NativeCamera_focusAutoContinuousAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint component_id,
+    jobject callback) {
+    if (!requireHandle(env, handle, "Camera plugin") || !callback) {
+        return;
+    }
+
+    auto* wrapper = new FocusAutoContinuousCallbackWrapper(env, callback);
+    mavsdk_camera_focus_auto_continuous_async(
+        reinterpret_cast<mavsdk_camera_t>(handle),
+        static_cast<int32_t>(component_id),
+        [](const mavsdk_camera_result_t result, void* userData) {
+            auto* callbackWrapper =
+                static_cast<FocusAutoContinuousCallbackWrapper*>(userData);
             (*callbackWrapper)(result);
             if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) {
                 delete callbackWrapper;

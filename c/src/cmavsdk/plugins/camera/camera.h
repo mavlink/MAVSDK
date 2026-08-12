@@ -1011,6 +1011,10 @@ typedef void (*mavsdk_camera_focus_in_start_callback_t)(const mavsdk_camera_resu
 typedef void (*mavsdk_camera_focus_out_start_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_focus_stop_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_focus_range_callback_t)(const mavsdk_camera_result_t result, void* user_data);
+typedef void (*mavsdk_camera_focus_meters_callback_t)(const mavsdk_camera_result_t result, void* user_data);
+typedef void (*mavsdk_camera_focus_auto_callback_t)(const mavsdk_camera_result_t result, void* user_data);
+typedef void (*mavsdk_camera_focus_auto_single_callback_t)(const mavsdk_camera_result_t result, void* user_data);
+typedef void (*mavsdk_camera_focus_auto_continuous_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 
 // ===== Camera Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_camera_t mavsdk_camera_create(mavsdk_system_t system);
@@ -2179,6 +2183,141 @@ mavsdk_camera_focus_range(
     mavsdk_camera_t camera,
     int32_t component_id,
     float range);
+
+
+/**
+ * @brief Focus at a distance in meters.
+ * 
+ *  Note that there is no message to get the valid focus range of the camera,
+ *  so this can only be used for cameras where the range is known.
+ *
+ * @param camera The camera instance.
+ * @param component_id  Component ID
+ * 
+ * @param distance_m  Focus distance in meters
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_focus_meters_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    float distance_m,
+    mavsdk_camera_focus_meters_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current focus meters (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param focus_meters_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_result_t
+mavsdk_camera_focus_meters(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    float distance_m);
+
+
+/**
+ * @brief Focus automatically.
+ *
+ * @param camera The camera instance.
+ * @param component_id  Component ID
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_focus_auto_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_focus_auto_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current focus auto (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param focus_auto_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_result_t
+mavsdk_camera_focus_auto(
+    mavsdk_camera_t camera,
+    int32_t component_id);
+
+
+/**
+ * @brief Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+ *
+ * @param camera The camera instance.
+ * @param component_id  Component ID
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_focus_auto_single_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_focus_auto_single_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current focus auto single (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param focus_auto_single_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_result_t
+mavsdk_camera_focus_auto_single(
+    mavsdk_camera_t camera,
+    int32_t component_id);
+
+
+/**
+ * @brief Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
+ *
+ * @param camera The camera instance.
+ * @param component_id  Component ID
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_focus_auto_continuous_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_focus_auto_continuous_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current focus auto continuous (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param focus_auto_continuous_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_result_t
+mavsdk_camera_focus_auto_continuous(
+    mavsdk_camera_t camera,
+    int32_t component_id);
 
 
 #ifdef __cplusplus

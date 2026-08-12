@@ -152,6 +152,14 @@ void | [focus_stop_async](#classmavsdk_1_1_camera_1a562ad9fa8f29b359785069a9dc5b
 [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_stop](#classmavsdk_1_1_camera_1aed5b395a57b14da2d15395dfa2e56600) (int32_t component_id)const | Stop focus.
 void | [focus_range_async](#classmavsdk_1_1_camera_1a44cebbb36a9bc9c203dc0233f8b52f7b) (int32_t component_id, float range, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Focus with range value of full range (value between 0.0 and 100.0).
 [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_range](#classmavsdk_1_1_camera_1aec7d7a0ed5fa2ba84124f9f363e8d94a) (int32_t component_id, float range)const | Focus with range value of full range (value between 0.0 and 100.0).
+void | [focus_meters_async](#classmavsdk_1_1_camera_1a43c2fa5293b95fa4e1ac69e99d377aff) (int32_t component_id, float distance_m, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Focus at a distance in meters.
+[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_meters](#classmavsdk_1_1_camera_1aa591201c732a3e4ff515234ae1e79878) (int32_t component_id, float distance_m)const | Focus at a distance in meters.
+void | [focus_auto_async](#classmavsdk_1_1_camera_1afae9a492d20045cc61eb84359eade249) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Focus automatically.
+[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_auto](#classmavsdk_1_1_camera_1ac75ec51be83e72a123fc2aa984b71355) (int32_t component_id)const | Focus automatically.
+void | [focus_auto_single_async](#classmavsdk_1_1_camera_1adca0eeafede69b11930700b45d9c9345) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_auto_single](#classmavsdk_1_1_camera_1a53f81bb24eb49cf7a8f497c4aed0075f) (int32_t component_id)const | Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+void | [focus_auto_continuous_async](#classmavsdk_1_1_camera_1a4652d46a9c5ed8251bf9036d07fb3cbc) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
+[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_auto_continuous](#classmavsdk_1_1_camera_1ae14bd78f309cfd479b8fb2bff827c8e5) (int32_t component_id)const | Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
 const [Camera](classmavsdk_1_1_camera.md) & | [operator=](#classmavsdk_1_1_camera_1a358026db44ff9a10cf14a166d8f1da78) (const [Camera](classmavsdk_1_1_camera.md) &)=delete | Equality operator (object is not copyable).
 
 
@@ -1639,6 +1647,146 @@ This function is blocking. See 'focus_range_async' for the non-blocking counterp
 
 * int32_t **component_id** - 
 * float **range** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+
+### focus_meters_async() {#classmavsdk_1_1_camera_1a43c2fa5293b95fa4e1ac69e99d377aff}
+```cpp
+void mavsdk::Camera::focus_meters_async(int32_t component_id, float distance_m, const ResultCallback callback)
+```
+
+
+Focus at a distance in meters.
+
+Note that there is no message to get the valid focus range of the camera, so this can only be used for cameras where the range is known.
+
+
+This function is non-blocking. See 'focus_meters' for the blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+* float **distance_m** - 
+* const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) **callback** - 
+
+### focus_meters() {#classmavsdk_1_1_camera_1aa591201c732a3e4ff515234ae1e79878}
+```cpp
+Result mavsdk::Camera::focus_meters(int32_t component_id, float distance_m) const
+```
+
+
+Focus at a distance in meters.
+
+Note that there is no message to get the valid focus range of the camera, so this can only be used for cameras where the range is known.
+
+
+This function is blocking. See 'focus_meters_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+* float **distance_m** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+
+### focus_auto_async() {#classmavsdk_1_1_camera_1afae9a492d20045cc61eb84359eade249}
+```cpp
+void mavsdk::Camera::focus_auto_async(int32_t component_id, const ResultCallback callback)
+```
+
+
+Focus automatically.
+
+This function is non-blocking. See 'focus_auto' for the blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+* const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) **callback** - 
+
+### focus_auto() {#classmavsdk_1_1_camera_1ac75ec51be83e72a123fc2aa984b71355}
+```cpp
+Result mavsdk::Camera::focus_auto(int32_t component_id) const
+```
+
+
+Focus automatically.
+
+This function is blocking. See 'focus_auto_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+
+### focus_auto_single_async() {#classmavsdk_1_1_camera_1adca0eeafede69b11930700b45d9c9345}
+```cpp
+void mavsdk::Camera::focus_auto_single_async(int32_t component_id, const ResultCallback callback)
+```
+
+
+Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+
+This function is non-blocking. See 'focus_auto_single' for the blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+* const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) **callback** - 
+
+### focus_auto_single() {#classmavsdk_1_1_camera_1a53f81bb24eb49cf7a8f497c4aed0075f}
+```cpp
+Result mavsdk::Camera::focus_auto_single(int32_t component_id) const
+```
+
+
+Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+
+This function is blocking. See 'focus_auto_single_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+
+### focus_auto_continuous_async() {#classmavsdk_1_1_camera_1a4652d46a9c5ed8251bf9036d07fb3cbc}
+```cpp
+void mavsdk::Camera::focus_auto_continuous_async(int32_t component_id, const ResultCallback callback)
+```
+
+
+Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
+
+This function is non-blocking. See 'focus_auto_continuous' for the blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
+* const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) **callback** - 
+
+### focus_auto_continuous() {#classmavsdk_1_1_camera_1ae14bd78f309cfd479b8fb2bff827c8e5}
+```cpp
+Result mavsdk::Camera::focus_auto_continuous(int32_t component_id) const
+```
+
+
+Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
+
+This function is blocking. See 'focus_auto_continuous_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* int32_t **component_id** - 
 
 **Returns**
 

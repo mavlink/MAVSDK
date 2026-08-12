@@ -854,6 +854,78 @@ class CameraAsync:
             None, lambda: self._plugin.focus_range(component_id, range)
         )
 
+    async def focus_meters(self, component_id, distance_m):
+        """
+               Focus at a distance in meters.
+
+        Note that there is no message to get the valid focus range of the camera,
+        so this can only be used for cameras where the range is known.
+
+               Parameters
+               ----------
+               component_id : int
+               distance_m : float
+               Raises
+               ------
+               CameraError
+                   If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.focus_meters(component_id, distance_m)
+        )
+
+    async def focus_auto(self, component_id):
+        """
+        Focus automatically.
+
+        Parameters
+        ----------
+        component_id : int
+        Raises
+        ------
+        CameraError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.focus_auto(component_id)
+        )
+
+    async def focus_auto_single(self, component_id):
+        """
+        Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+
+        Parameters
+        ----------
+        component_id : int
+        Raises
+        ------
+        CameraError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.focus_auto_single(component_id)
+        )
+
+    async def focus_auto_continuous(self, component_id):
+        """
+        Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
+
+        Parameters
+        ----------
+        component_id : int
+        Raises
+        ------
+        CameraError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.focus_auto_continuous(component_id)
+        )
+
     def destroy(self):
         self._subscription_handles.clear()
         self._plugin.destroy()

@@ -138,6 +138,26 @@ public:
     void unsubscribe_focus_range(CameraServer::FocusRangeHandle handle);
     CameraServer::Result respond_focus_range(CameraServer::CameraFeedback focus_range_feedback);
 
+    CameraServer::FocusMetersHandle
+    subscribe_focus_meters(const CameraServer::FocusMetersCallback& callback);
+    void unsubscribe_focus_meters(CameraServer::FocusMetersHandle handle);
+    CameraServer::Result respond_focus_meters(CameraServer::CameraFeedback focus_meters_feedback);
+
+    CameraServer::FocusAutoHandle
+    subscribe_focus_auto(const CameraServer::FocusAutoCallback& callback);
+    void unsubscribe_focus_auto(CameraServer::FocusAutoHandle handle);
+    CameraServer::Result respond_focus_auto(CameraServer::CameraFeedback focus_auto_feedback);
+
+    CameraServer::FocusAutoSingleHandle
+    subscribe_focus_auto_single(const CameraServer::FocusAutoSingleCallback& callback);
+    void unsubscribe_focus_auto_single(CameraServer::FocusAutoSingleHandle handle);
+    CameraServer::Result respond_focus_auto_single(CameraServer::CameraFeedback focus_auto_single_feedback);
+
+    CameraServer::FocusAutoContinuousHandle
+    subscribe_focus_auto_continuous(const CameraServer::FocusAutoContinuousCallback& callback);
+    void unsubscribe_focus_auto_continuous(CameraServer::FocusAutoContinuousHandle handle);
+    CameraServer::Result respond_focus_auto_continuous(CameraServer::CameraFeedback focus_auto_continuous_feedback);
+
     CameraServer::TrackingPointCommandHandle
     subscribe_tracking_point_command(const CameraServer::TrackingPointCommandCallback& callback);
     void unsubscribe_tracking_point_command(CameraServer::TrackingPointCommandHandle handle);
@@ -325,6 +345,10 @@ private:
     CallbackList<int32_t> _focus_out_start_callbacks{_server_component_impl->io_context()};
     CallbackList<int32_t> _focus_stop_callbacks{_server_component_impl->io_context()};
     CallbackList<float> _focus_range_callbacks{_server_component_impl->io_context()};
+    CallbackList<float> _focus_meters_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _focus_auto_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _focus_auto_single_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _focus_auto_continuous_callbacks{_server_component_impl->io_context()};
     
     MavlinkCommandReceiver::CommandLong _last_focus_in_step_command;
     MavlinkCommandReceiver::CommandLong _last_focus_out_step_command;
@@ -332,6 +356,10 @@ private:
     MavlinkCommandReceiver::CommandLong _last_focus_out_start_command;
     MavlinkCommandReceiver::CommandLong _last_focus_stop_command;
     MavlinkCommandReceiver::CommandLong _last_focus_range_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_meters_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_auto_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_auto_single_command;
+    MavlinkCommandReceiver::CommandLong _last_focus_auto_continuous_command;
 
     MavlinkCommandReceiver::CommandLong _last_zoom_in_start_command;
     MavlinkCommandReceiver::CommandLong _last_zoom_out_start_command;

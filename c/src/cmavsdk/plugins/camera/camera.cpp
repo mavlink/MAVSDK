@@ -2580,3 +2580,146 @@ mavsdk_camera_focus_range(
 
     return translate_result(ret_value);
 }
+
+// FocusMeters async
+void mavsdk_camera_focus_meters_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    float distance_m,
+    mavsdk_camera_focus_meters_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    wrapper->cpp_plugin->focus_meters_async(
+        component_id,
+        distance_m,
+        [callback, user_data](
+            mavsdk::Camera::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// FocusMeters sync
+mavsdk_camera_result_t
+mavsdk_camera_focus_meters(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    float distance_m)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    auto ret_value = wrapper->cpp_plugin->focus_meters(        component_id,        distance_m);
+
+    return translate_result(ret_value);
+}
+
+// FocusAuto async
+void mavsdk_camera_focus_auto_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_focus_auto_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    wrapper->cpp_plugin->focus_auto_async(
+        component_id,
+        [callback, user_data](
+            mavsdk::Camera::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// FocusAuto sync
+mavsdk_camera_result_t
+mavsdk_camera_focus_auto(
+    mavsdk_camera_t camera,
+    int32_t component_id)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    auto ret_value = wrapper->cpp_plugin->focus_auto(        component_id);
+
+    return translate_result(ret_value);
+}
+
+// FocusAutoSingle async
+void mavsdk_camera_focus_auto_single_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_focus_auto_single_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    wrapper->cpp_plugin->focus_auto_single_async(
+        component_id,
+        [callback, user_data](
+            mavsdk::Camera::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// FocusAutoSingle sync
+mavsdk_camera_result_t
+mavsdk_camera_focus_auto_single(
+    mavsdk_camera_t camera,
+    int32_t component_id)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    auto ret_value = wrapper->cpp_plugin->focus_auto_single(        component_id);
+
+    return translate_result(ret_value);
+}
+
+// FocusAutoContinuous async
+void mavsdk_camera_focus_auto_continuous_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_focus_auto_continuous_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    wrapper->cpp_plugin->focus_auto_continuous_async(
+        component_id,
+        [callback, user_data](
+            mavsdk::Camera::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// FocusAutoContinuous sync
+mavsdk_camera_result_t
+mavsdk_camera_focus_auto_continuous(
+    mavsdk_camera_t camera,
+    int32_t component_id)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    auto ret_value = wrapper->cpp_plugin->focus_auto_continuous(        component_id);
+
+    return translate_result(ret_value);
+}

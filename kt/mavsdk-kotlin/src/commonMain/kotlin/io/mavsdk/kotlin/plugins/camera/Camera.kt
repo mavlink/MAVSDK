@@ -1091,6 +1091,93 @@ class Camera internal constructor(private val native: CameraNative) {
             }
         }
 
+    /**
+     * Focus at a distance in meters.
+     *
+     * Note that there is no message to get the valid focus range of the camera, so this can only be
+     * used for cameras where the range is known.
+     *
+     * @param componentId Component ID
+     * @param distanceM Focus distance in meters
+     * @return The result of the request.
+     */
+    suspend fun focusMeters(componentId: Int, distanceM: Float): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = CameraCallbackGuard()
+            native.focusMetersAsync(componentId, distanceM) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
+                    continuation.resume(parsedResult)
+                }
+            }
+        }
+
+    /**
+     * Focus automatically.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
+    suspend fun focusAuto(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
+        val callbackGuard = CameraCallbackGuard()
+        native.focusAutoAsync(componentId) { result ->
+            val parsedResult = Result.fromValue(result)
+            if (
+                continuation.isActive &&
+                    parsedResult != Result.IN_PROGRESS &&
+                    callbackGuard.tryClaim()
+            ) {
+                continuation.resume(parsedResult)
+            }
+        }
+    }
+
+    /**
+     * Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
+    suspend fun focusAutoSingle(componentId: Int): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = CameraCallbackGuard()
+            native.focusAutoSingleAsync(componentId) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
+                    continuation.resume(parsedResult)
+                }
+            }
+        }
+
+    /**
+     * Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
+     *
+     * @param componentId Component ID
+     * @return The result of the request.
+     */
+    suspend fun focusAutoContinuous(componentId: Int): Result =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = CameraCallbackGuard()
+            native.focusAutoContinuousAsync(componentId) { result ->
+                val parsedResult = Result.fromValue(result)
+                if (
+                    continuation.isActive &&
+                        parsedResult != Result.IN_PROGRESS &&
+                        callbackGuard.tryClaim()
+                ) {
+                    continuation.resume(parsedResult)
+                }
+            }
+        }
+
     internal fun destroy() {
         if (closed) return
         closed = true
@@ -1215,6 +1302,14 @@ internal interface CameraNative {
     fun focusStopAsync(componentId: Int, callback: (Int) -> Unit)
 
     fun focusRangeAsync(componentId: Int, range: Float, callback: (Int) -> Unit)
+
+    fun focusMetersAsync(componentId: Int, distanceM: Float, callback: (Int) -> Unit)
+
+    fun focusAutoAsync(componentId: Int, callback: (Int) -> Unit)
+
+    fun focusAutoSingleAsync(componentId: Int, callback: (Int) -> Unit)
+
+    fun focusAutoContinuousAsync(componentId: Int, callback: (Int) -> Unit)
 
     fun destroy()
 }

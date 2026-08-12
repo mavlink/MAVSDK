@@ -173,6 +173,34 @@ TEST(Camera, Focus)
             camera_server.respond_focus_range(CameraServer::CameraFeedback::Ok);
         });
 
+    float last_focus_distance_m = 0;
+    auto focus_meters_handle = camera_server.subscribe_focus_meters(
+        [&camera_server, &last_focus_distance_m](float focus_distance_m) {
+            LogInfo("Focus meters requested: {}", focus_distance_m);
+            last_focus_distance_m = focus_distance_m;
+            camera_server.respond_focus_meters(CameraServer::CameraFeedback::Ok);
+        });
+
+    auto focus_auto_handle = camera_server.subscribe_focus_auto([&camera_server](int32_t index) {
+        LogInfo("Focus auto {}", index);
+
+        camera_server.respond_focus_auto(CameraServer::CameraFeedback::Ok);
+    });
+
+    auto focus_auto_single_handle =
+        camera_server.subscribe_focus_auto_single([&camera_server](int32_t index) {
+            LogInfo("Focus auto single {}", index);
+
+            camera_server.respond_focus_auto_single(CameraServer::CameraFeedback::Ok);
+        });
+
+    auto focus_auto_continuous_handle =
+        camera_server.subscribe_focus_auto_continuous([&camera_server](int32_t index) {
+            LogInfo("Focus auto continuous {}", index);
+
+            camera_server.respond_focus_auto_continuous(CameraServer::CameraFeedback::Ok);
+        });
+
     auto prom = std::promise<std::shared_ptr<System>>();
     auto fut = prom.get_future();
     std::once_flag flag;
@@ -236,6 +264,30 @@ TEST(Camera, Focus)
 
     EXPECT_EQ(last_focus_level, 0.0f);
 
+    EXPECT_EQ(
+        camera.focus_meters(camera.camera_list().cameras[0].component_id, 4.2f),
+        Camera::Result::Success);
+
+    EXPECT_EQ(last_focus_distance_m, 4.2f);
+
+    // A negative distance makes no sense and is rejected.
+    EXPECT_EQ(
+        camera.focus_meters(camera.camera_list().cameras[0].component_id, -1.0f),
+        Camera::Result::Denied);
+
+    EXPECT_EQ(last_focus_distance_m, 4.2f);
+
+    EXPECT_EQ(
+        camera.focus_auto(camera.camera_list().cameras[0].component_id), Camera::Result::Success);
+
+    EXPECT_EQ(
+        camera.focus_auto_single(camera.camera_list().cameras[0].component_id),
+        Camera::Result::Success);
+
+    EXPECT_EQ(
+        camera.focus_auto_continuous(camera.camera_list().cameras[0].component_id),
+        Camera::Result::Success);
+
     camera_server.unsubscribe_focus_in_step(focus_in_step_handle);
     EXPECT_EQ(
         camera.focus_in_step(camera.camera_list().cameras[0].component_id),
@@ -259,5 +311,21 @@ TEST(Camera, Focus)
     camera_server.unsubscribe_focus_range(focus_range_handle);
     EXPECT_EQ(
         camera.focus_range(camera.camera_list().cameras[0].component_id, 50.0f),
+        Camera::Result::ActionUnsupported);
+    camera_server.unsubscribe_focus_meters(focus_meters_handle);
+    EXPECT_EQ(
+        camera.focus_meters(camera.camera_list().cameras[0].component_id, 4.2f),
+        Camera::Result::ActionUnsupported);
+    camera_server.unsubscribe_focus_auto(focus_auto_handle);
+    EXPECT_EQ(
+        camera.focus_auto(camera.camera_list().cameras[0].component_id),
+        Camera::Result::ActionUnsupported);
+    camera_server.unsubscribe_focus_auto_single(focus_auto_single_handle);
+    EXPECT_EQ(
+        camera.focus_auto_single(camera.camera_list().cameras[0].component_id),
+        Camera::Result::ActionUnsupported);
+    camera_server.unsubscribe_focus_auto_continuous(focus_auto_continuous_handle);
+    EXPECT_EQ(
+        camera.focus_auto_continuous(camera.camera_list().cameras[0].component_id),
         Camera::Result::ActionUnsupported);
 }
