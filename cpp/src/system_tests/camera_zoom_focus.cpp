@@ -2,6 +2,7 @@
 #include "plugins/camera/camera.hpp"
 #include "plugins/camera_server/camera_server.hpp"
 #include "log.hpp"
+#include <atomic>
 #include <future>
 #include <mutex>
 #include <thread>
@@ -165,7 +166,7 @@ TEST(Camera, Focus)
         camera_server.respond_focus_stop(CameraServer::CameraFeedback::Ok);
     });
 
-    float last_focus_level = 0;
+    std::atomic<float> last_focus_level = 0;
     auto focus_range_handle =
         camera_server.subscribe_focus_range([&camera_server, &last_focus_level](float focus_level) {
             LogInfo("Focus range requested: {}", focus_level);
@@ -173,7 +174,7 @@ TEST(Camera, Focus)
             camera_server.respond_focus_range(CameraServer::CameraFeedback::Ok);
         });
 
-    float last_focus_distance_m = 0;
+    std::atomic<float> last_focus_distance_m = 0;
     auto focus_meters_handle = camera_server.subscribe_focus_meters(
         [&camera_server, &last_focus_distance_m](float focus_distance_m) {
             LogInfo("Focus meters requested: {}", focus_distance_m);
