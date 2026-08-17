@@ -2441,6 +2441,72 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status FocusInStep(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::FocusInStepRequest* request,
+        rpc::camera::FocusInStepResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("FocusInStep sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_in_step(request->component_id());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status FocusOutStep(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::FocusOutStepRequest* request,
+        rpc::camera::FocusOutStepResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("FocusOutStep sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_out_step(request->component_id());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status FocusInStart(
         grpc::ServerContext* /* context */,
         const rpc::camera::FocusInStartRequest* request,
@@ -2564,6 +2630,140 @@ public:
             
         
         auto result = _lazy_plugin.maybe_plugin()->focus_range(request->component_id(), request->range());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status FocusMeters(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::FocusMetersRequest* request,
+        rpc::camera::FocusMetersResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("FocusMeters sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_meters(request->component_id(), request->distance_m());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status FocusAuto(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::FocusAutoRequest* request,
+        rpc::camera::FocusAutoResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("FocusAuto sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_auto(request->component_id());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status FocusAutoSingle(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::FocusAutoSingleRequest* request,
+        rpc::camera::FocusAutoSingleResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("FocusAutoSingle sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_auto_single(request->component_id());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status FocusAutoContinuous(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::FocusAutoContinuousRequest* request,
+        rpc::camera::FocusAutoContinuousResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("FocusAutoContinuous sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_auto_continuous(request->component_id());
         
 
         

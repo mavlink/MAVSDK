@@ -1278,6 +1278,372 @@ class CameraServer:
 
         return result
 
+    def subscribe_focus_in_step(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus in step command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_in_step callback: {e}")
+
+        cb = FocusInStepCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_in_step(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_in_step(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_in_step"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_in_step(self._handle, handle)
+
+    def respond_focus_in_step(self, focus_in_step_feedback):
+        """Get respond_focus_in_step (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_in_step(
+            self._handle,
+            focus_in_step_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_in_step failed: {result}")
+
+        return result
+
+    def subscribe_focus_out_step(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus out step command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_out_step callback: {e}")
+
+        cb = FocusOutStepCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_out_step(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_out_step(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_out_step"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_out_step(self._handle, handle)
+
+    def respond_focus_out_step(self, focus_out_step_feedback):
+        """Get respond_focus_out_step (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_out_step(
+            self._handle,
+            focus_out_step_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_out_step failed: {result}")
+
+        return result
+
+    def subscribe_focus_in_start(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus in start command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_in_start callback: {e}")
+
+        cb = FocusInStartCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_in_start(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_in_start(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_in_start"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_in_start(self._handle, handle)
+
+    def respond_focus_in_start(self, focus_in_start_feedback):
+        """Get respond_focus_in_start (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_in_start(
+            self._handle,
+            focus_in_start_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_in_start failed: {result}")
+
+        return result
+
+    def subscribe_focus_out_start(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus out start command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_out_start callback: {e}")
+
+        cb = FocusOutStartCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_out_start(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_out_start(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_out_start"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_out_start(self._handle, handle)
+
+    def respond_focus_out_start(self, focus_out_start_feedback):
+        """Get respond_focus_out_start (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_out_start(
+            self._handle,
+            focus_out_start_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_out_start failed: {result}")
+
+        return result
+
+    def subscribe_focus_stop(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus stop command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_stop callback: {e}")
+
+        cb = FocusStopCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_stop(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_stop(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_stop"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_stop(self._handle, handle)
+
+    def respond_focus_stop(self, focus_stop_feedback):
+        """Get respond_focus_stop (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_stop(
+            self._handle,
+            focus_stop_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_stop failed: {result}")
+
+        return result
+
+    def subscribe_focus_range(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus range command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_range callback: {e}")
+
+        cb = FocusRangeCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_range(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_range(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_range"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_range(self._handle, handle)
+
+    def respond_focus_range(self, focus_range_feedback):
+        """Get respond_focus_range (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_range(
+            self._handle,
+            focus_range_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_range failed: {result}")
+
+        return result
+
+    def subscribe_focus_meters(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus meters command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_meters callback: {e}")
+
+        cb = FocusMetersCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_meters(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_meters(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_meters"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_meters(self._handle, handle)
+
+    def respond_focus_meters(self, focus_meters_feedback):
+        """Get respond_focus_meters (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_meters(
+            self._handle,
+            focus_meters_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_meters failed: {result}")
+
+        return result
+
+    def subscribe_focus_auto(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus auto command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_auto callback: {e}")
+
+        cb = FocusAutoCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_auto(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_auto(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_auto"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_auto(self._handle, handle)
+
+    def respond_focus_auto(self, focus_auto_feedback):
+        """Get respond_focus_auto (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_auto(
+            self._handle,
+            focus_auto_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_auto failed: {result}")
+
+        return result
+
+    def subscribe_focus_auto_single(self, callback: Callable, user_data: Any = None):
+        """Subscribe to focus auto single command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_auto_single callback: {e}")
+
+        cb = FocusAutoSingleCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_auto_single(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_auto_single(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_auto_single"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_auto_single(
+            self._handle, handle
+        )
+
+    def respond_focus_auto_single(self, focus_auto_single_feedback):
+        """Get respond_focus_auto_single (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_auto_single(
+            self._handle,
+            focus_auto_single_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_auto_single failed: {result}")
+
+        return result
+
+    def subscribe_focus_auto_continuous(
+        self, callback: Callable, user_data: Any = None
+    ):
+        """Subscribe to focus auto continuous command."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = c_data
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_auto_continuous callback: {e}")
+
+        cb = FocusAutoContinuousCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_focus_auto_continuous(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_focus_auto_continuous(self, handle: ctypes.c_void_p):
+        """Unsubscribe from focus_auto_continuous"""
+        self._lib.mavsdk_camera_server_unsubscribe_focus_auto_continuous(
+            self._handle, handle
+        )
+
+    def respond_focus_auto_continuous(self, focus_auto_continuous_feedback):
+        """Get respond_focus_auto_continuous (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_focus_auto_continuous(
+            self._handle,
+            focus_auto_continuous_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_focus_auto_continuous failed: {result}")
+
+        return result
+
     def set_tracking_rectangle_status(self, tracked_rectangle):
         """Get set_tracking_rectangle_status (blocking)"""
 
@@ -1495,6 +1861,16 @@ ZoomInStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 ZoomOutStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 ZoomStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 ZoomRangeCallback = ctypes.CFUNCTYPE(None, ctypes.c_float, ctypes.c_void_p)
+FocusInStepCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+FocusOutStepCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+FocusInStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+FocusOutStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+FocusStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+FocusRangeCallback = ctypes.CFUNCTYPE(None, ctypes.c_float, ctypes.c_void_p)
+FocusMetersCallback = ctypes.CFUNCTYPE(None, ctypes.c_float, ctypes.c_void_p)
+FocusAutoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+FocusAutoSingleCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+FocusAutoContinuousCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 TrackingPointCommandCallback = ctypes.CFUNCTYPE(
     None, TrackPointCStruct, ctypes.c_void_p
 )
@@ -1953,6 +2329,228 @@ _cmavsdk_lib.mavsdk_camera_server_respond_zoom_range.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_respond_zoom_range.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_in_step.argtypes = [
+    ctypes.c_void_p,
+    FocusInStepCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_in_step.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_in_step.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_in_step.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_in_step.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_in_step.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_out_step.argtypes = [
+    ctypes.c_void_p,
+    FocusOutStepCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_out_step.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_out_step.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_out_step.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_out_step.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_out_step.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_in_start.argtypes = [
+    ctypes.c_void_p,
+    FocusInStartCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_in_start.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_in_start.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_in_start.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_in_start.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_in_start.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_out_start.argtypes = [
+    ctypes.c_void_p,
+    FocusOutStartCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_out_start.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_out_start.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_out_start.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_out_start.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_out_start.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_stop.argtypes = [
+    ctypes.c_void_p,
+    FocusStopCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_stop.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_stop.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_stop.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_stop.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_stop.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_range.argtypes = [
+    ctypes.c_void_p,
+    FocusRangeCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_range.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_range.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_range.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_range.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_range.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_meters.argtypes = [
+    ctypes.c_void_p,
+    FocusMetersCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_meters.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_meters.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_meters.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_meters.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_meters.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_auto.argtypes = [
+    ctypes.c_void_p,
+    FocusAutoCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_auto.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_auto.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_auto.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_auto.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_auto.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_auto_single.argtypes = [
+    ctypes.c_void_p,
+    FocusAutoSingleCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_auto_single.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_auto_single.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_auto_single.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_auto_single.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_auto_single.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_auto_continuous.argtypes = [
+    ctypes.c_void_p,
+    FocusAutoContinuousCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_focus_auto_continuous.restype = (
+    ctypes.c_void_p
+)
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_auto_continuous.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_focus_auto_continuous.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_auto_continuous.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_focus_auto_continuous.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_camera_server_set_tracking_rectangle_status.argtypes = [
     ctypes.c_void_p,

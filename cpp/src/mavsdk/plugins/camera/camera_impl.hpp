@@ -49,10 +49,16 @@ public:
         float bottom_right_x,
         float bottom_right_y);
     Camera::Result track_stop(int32_t camera_id);
+    Camera::Result focus_in_step(int32_t camera_id);
+    Camera::Result focus_out_step(int32_t camera_id);
     Camera::Result focus_in_start(int32_t camera_id);
     Camera::Result focus_out_start(int32_t camera_id);
     Camera::Result focus_stop(int32_t camera_id);
     Camera::Result focus_range(int32_t camera_id, float range);
+    Camera::Result focus_meters(int32_t camera_id, float distance_m);
+    Camera::Result focus_auto(int32_t camera_id);
+    Camera::Result focus_auto_single(int32_t camera_id);
+    Camera::Result focus_auto_continuous(int32_t camera_id);
 
     void zoom_in_start_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void zoom_out_start_async(int32_t camera_id, const Camera::ResultCallback& callback);
@@ -73,11 +79,18 @@ public:
         float bottom_right_y,
         const Camera::ResultCallback& callback);
     void track_stop_async(int32_t camera_id, const Camera::ResultCallback& callback);
-
+    
+    void focus_in_step_async(int32_t camera_id, const Camera::ResultCallback& callback);
+    void focus_out_step_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void focus_in_start_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void focus_out_start_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void focus_stop_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void focus_range_async(int32_t camera_id, float range, const Camera::ResultCallback& callback);
+    void focus_meters_async(
+        int32_t camera_id, float distance_m, const Camera::ResultCallback& callback);
+    void focus_auto_async(int32_t camera_id, const Camera::ResultCallback& callback);
+    void focus_auto_single_async(int32_t camera_id, const Camera::ResultCallback& callback);
+    void focus_auto_continuous_async(int32_t camera_id, const Camera::ResultCallback& callback);
 
     void take_photo_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void start_photo_interval_async(
@@ -339,10 +352,17 @@ private:
         float bottom_right_x,
         float bottom_right_y);
     MavlinkCommandSender::CommandLong make_command_track_stop(int32_t camera_id);
-    MavlinkCommandSender::CommandLong make_command_focus_in(int32_t camera_id);
-    MavlinkCommandSender::CommandLong make_command_focus_out(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_in_step(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_out_step(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_in_start(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_out_start(int32_t camera_id);
     MavlinkCommandSender::CommandLong make_command_focus_stop(int32_t camera_id);
     MavlinkCommandSender::CommandLong make_command_focus_range(int32_t camera_id, float range);
+    MavlinkCommandSender::CommandLong
+    make_command_focus_meters(int32_t camera_id, float distance_m);
+    MavlinkCommandSender::CommandLong make_command_focus_auto(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_auto_single(int32_t camera_id);
+    MavlinkCommandSender::CommandLong make_command_focus_auto_continuous(int32_t camera_id);
 
     void request_slower();
     void request_faster();

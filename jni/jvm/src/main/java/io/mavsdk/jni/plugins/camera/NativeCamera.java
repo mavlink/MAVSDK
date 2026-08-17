@@ -472,6 +472,16 @@ public final class NativeCamera {
     }
 
     @FunctionalInterface
+    public interface FocusInStepCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusOutStepCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
     public interface FocusInStartCallback {
         void invoke(int result);
     }
@@ -488,6 +498,26 @@ public final class NativeCamera {
 
     @FunctionalInterface
     public interface FocusRangeCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusMetersCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoSingleCallback {
+        void invoke(int result);
+    }
+
+    @FunctionalInterface
+    public interface FocusAutoContinuousCallback {
         void invoke(int result);
     }
 
@@ -611,6 +641,14 @@ public final class NativeCamera {
 
     public static native void trackStopAsync(long pluginHandle, int componentId, TrackStopCallback callback);
 
+    public static native int focusInStep(long pluginHandle, int componentId);
+
+    public static native void focusInStepAsync(long pluginHandle, int componentId, FocusInStepCallback callback);
+
+    public static native int focusOutStep(long pluginHandle, int componentId);
+
+    public static native void focusOutStepAsync(long pluginHandle, int componentId, FocusOutStepCallback callback);
+
     public static native int focusInStart(long pluginHandle, int componentId);
 
     public static native void focusInStartAsync(long pluginHandle, int componentId, FocusInStartCallback callback);
@@ -626,5 +664,21 @@ public final class NativeCamera {
     public static native int focusRange(long pluginHandle, int componentId, float range);
 
     public static native void focusRangeAsync(long pluginHandle, int componentId, float range, FocusRangeCallback callback);
+
+    public static native int focusMeters(long pluginHandle, int componentId, float distanceM);
+
+    public static native void focusMetersAsync(long pluginHandle, int componentId, float distanceM, FocusMetersCallback callback);
+
+    public static native int focusAuto(long pluginHandle, int componentId);
+
+    public static native void focusAutoAsync(long pluginHandle, int componentId, FocusAutoCallback callback);
+
+    public static native int focusAutoSingle(long pluginHandle, int componentId);
+
+    public static native void focusAutoSingleAsync(long pluginHandle, int componentId, FocusAutoSingleCallback callback);
+
+    public static native int focusAutoContinuous(long pluginHandle, int componentId);
+
+    public static native void focusAutoContinuousAsync(long pluginHandle, int componentId, FocusAutoContinuousCallback callback);
 
 }

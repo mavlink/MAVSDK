@@ -69,6 +69,36 @@ extern CaptureStatusDefaultTypeInternal _CaptureStatus_default_instance_;
 class CaptureStatusResponse;
 struct CaptureStatusResponseDefaultTypeInternal;
 extern CaptureStatusResponseDefaultTypeInternal _CaptureStatusResponse_default_instance_;
+class FocusAutoContinuousResponse;
+struct FocusAutoContinuousResponseDefaultTypeInternal;
+extern FocusAutoContinuousResponseDefaultTypeInternal _FocusAutoContinuousResponse_default_instance_;
+class FocusAutoResponse;
+struct FocusAutoResponseDefaultTypeInternal;
+extern FocusAutoResponseDefaultTypeInternal _FocusAutoResponse_default_instance_;
+class FocusAutoSingleResponse;
+struct FocusAutoSingleResponseDefaultTypeInternal;
+extern FocusAutoSingleResponseDefaultTypeInternal _FocusAutoSingleResponse_default_instance_;
+class FocusInStartResponse;
+struct FocusInStartResponseDefaultTypeInternal;
+extern FocusInStartResponseDefaultTypeInternal _FocusInStartResponse_default_instance_;
+class FocusInStepResponse;
+struct FocusInStepResponseDefaultTypeInternal;
+extern FocusInStepResponseDefaultTypeInternal _FocusInStepResponse_default_instance_;
+class FocusMetersResponse;
+struct FocusMetersResponseDefaultTypeInternal;
+extern FocusMetersResponseDefaultTypeInternal _FocusMetersResponse_default_instance_;
+class FocusOutStartResponse;
+struct FocusOutStartResponseDefaultTypeInternal;
+extern FocusOutStartResponseDefaultTypeInternal _FocusOutStartResponse_default_instance_;
+class FocusOutStepResponse;
+struct FocusOutStepResponseDefaultTypeInternal;
+extern FocusOutStepResponseDefaultTypeInternal _FocusOutStepResponse_default_instance_;
+class FocusRangeResponse;
+struct FocusRangeResponseDefaultTypeInternal;
+extern FocusRangeResponseDefaultTypeInternal _FocusRangeResponse_default_instance_;
+class FocusStopResponse;
+struct FocusStopResponseDefaultTypeInternal;
+extern FocusStopResponseDefaultTypeInternal _FocusStopResponse_default_instance_;
 class FormatStorageResponse;
 struct FormatStorageResponseDefaultTypeInternal;
 extern FormatStorageResponseDefaultTypeInternal _FormatStorageResponse_default_instance_;
@@ -90,6 +120,66 @@ extern RespondCaptureStatusRequestDefaultTypeInternal _RespondCaptureStatusReque
 class RespondCaptureStatusResponse;
 struct RespondCaptureStatusResponseDefaultTypeInternal;
 extern RespondCaptureStatusResponseDefaultTypeInternal _RespondCaptureStatusResponse_default_instance_;
+class RespondFocusAutoContinuousRequest;
+struct RespondFocusAutoContinuousRequestDefaultTypeInternal;
+extern RespondFocusAutoContinuousRequestDefaultTypeInternal _RespondFocusAutoContinuousRequest_default_instance_;
+class RespondFocusAutoContinuousResponse;
+struct RespondFocusAutoContinuousResponseDefaultTypeInternal;
+extern RespondFocusAutoContinuousResponseDefaultTypeInternal _RespondFocusAutoContinuousResponse_default_instance_;
+class RespondFocusAutoRequest;
+struct RespondFocusAutoRequestDefaultTypeInternal;
+extern RespondFocusAutoRequestDefaultTypeInternal _RespondFocusAutoRequest_default_instance_;
+class RespondFocusAutoResponse;
+struct RespondFocusAutoResponseDefaultTypeInternal;
+extern RespondFocusAutoResponseDefaultTypeInternal _RespondFocusAutoResponse_default_instance_;
+class RespondFocusAutoSingleRequest;
+struct RespondFocusAutoSingleRequestDefaultTypeInternal;
+extern RespondFocusAutoSingleRequestDefaultTypeInternal _RespondFocusAutoSingleRequest_default_instance_;
+class RespondFocusAutoSingleResponse;
+struct RespondFocusAutoSingleResponseDefaultTypeInternal;
+extern RespondFocusAutoSingleResponseDefaultTypeInternal _RespondFocusAutoSingleResponse_default_instance_;
+class RespondFocusInStartRequest;
+struct RespondFocusInStartRequestDefaultTypeInternal;
+extern RespondFocusInStartRequestDefaultTypeInternal _RespondFocusInStartRequest_default_instance_;
+class RespondFocusInStartResponse;
+struct RespondFocusInStartResponseDefaultTypeInternal;
+extern RespondFocusInStartResponseDefaultTypeInternal _RespondFocusInStartResponse_default_instance_;
+class RespondFocusInStepRequest;
+struct RespondFocusInStepRequestDefaultTypeInternal;
+extern RespondFocusInStepRequestDefaultTypeInternal _RespondFocusInStepRequest_default_instance_;
+class RespondFocusInStepResponse;
+struct RespondFocusInStepResponseDefaultTypeInternal;
+extern RespondFocusInStepResponseDefaultTypeInternal _RespondFocusInStepResponse_default_instance_;
+class RespondFocusMetersRequest;
+struct RespondFocusMetersRequestDefaultTypeInternal;
+extern RespondFocusMetersRequestDefaultTypeInternal _RespondFocusMetersRequest_default_instance_;
+class RespondFocusMetersResponse;
+struct RespondFocusMetersResponseDefaultTypeInternal;
+extern RespondFocusMetersResponseDefaultTypeInternal _RespondFocusMetersResponse_default_instance_;
+class RespondFocusOutStartRequest;
+struct RespondFocusOutStartRequestDefaultTypeInternal;
+extern RespondFocusOutStartRequestDefaultTypeInternal _RespondFocusOutStartRequest_default_instance_;
+class RespondFocusOutStartResponse;
+struct RespondFocusOutStartResponseDefaultTypeInternal;
+extern RespondFocusOutStartResponseDefaultTypeInternal _RespondFocusOutStartResponse_default_instance_;
+class RespondFocusOutStepRequest;
+struct RespondFocusOutStepRequestDefaultTypeInternal;
+extern RespondFocusOutStepRequestDefaultTypeInternal _RespondFocusOutStepRequest_default_instance_;
+class RespondFocusOutStepResponse;
+struct RespondFocusOutStepResponseDefaultTypeInternal;
+extern RespondFocusOutStepResponseDefaultTypeInternal _RespondFocusOutStepResponse_default_instance_;
+class RespondFocusRangeRequest;
+struct RespondFocusRangeRequestDefaultTypeInternal;
+extern RespondFocusRangeRequestDefaultTypeInternal _RespondFocusRangeRequest_default_instance_;
+class RespondFocusRangeResponse;
+struct RespondFocusRangeResponseDefaultTypeInternal;
+extern RespondFocusRangeResponseDefaultTypeInternal _RespondFocusRangeResponse_default_instance_;
+class RespondFocusStopRequest;
+struct RespondFocusStopRequestDefaultTypeInternal;
+extern RespondFocusStopRequestDefaultTypeInternal _RespondFocusStopRequest_default_instance_;
+class RespondFocusStopResponse;
+struct RespondFocusStopResponseDefaultTypeInternal;
+extern RespondFocusStopResponseDefaultTypeInternal _RespondFocusStopResponse_default_instance_;
 class RespondFormatStorageRequest;
 struct RespondFormatStorageRequestDefaultTypeInternal;
 extern RespondFormatStorageRequestDefaultTypeInternal _RespondFormatStorageRequest_default_instance_;
@@ -270,6 +360,36 @@ extern StorageInformationResponseDefaultTypeInternal _StorageInformationResponse
 class SubscribeCaptureStatusRequest;
 struct SubscribeCaptureStatusRequestDefaultTypeInternal;
 extern SubscribeCaptureStatusRequestDefaultTypeInternal _SubscribeCaptureStatusRequest_default_instance_;
+class SubscribeFocusAutoContinuousRequest;
+struct SubscribeFocusAutoContinuousRequestDefaultTypeInternal;
+extern SubscribeFocusAutoContinuousRequestDefaultTypeInternal _SubscribeFocusAutoContinuousRequest_default_instance_;
+class SubscribeFocusAutoRequest;
+struct SubscribeFocusAutoRequestDefaultTypeInternal;
+extern SubscribeFocusAutoRequestDefaultTypeInternal _SubscribeFocusAutoRequest_default_instance_;
+class SubscribeFocusAutoSingleRequest;
+struct SubscribeFocusAutoSingleRequestDefaultTypeInternal;
+extern SubscribeFocusAutoSingleRequestDefaultTypeInternal _SubscribeFocusAutoSingleRequest_default_instance_;
+class SubscribeFocusInStartRequest;
+struct SubscribeFocusInStartRequestDefaultTypeInternal;
+extern SubscribeFocusInStartRequestDefaultTypeInternal _SubscribeFocusInStartRequest_default_instance_;
+class SubscribeFocusInStepRequest;
+struct SubscribeFocusInStepRequestDefaultTypeInternal;
+extern SubscribeFocusInStepRequestDefaultTypeInternal _SubscribeFocusInStepRequest_default_instance_;
+class SubscribeFocusMetersRequest;
+struct SubscribeFocusMetersRequestDefaultTypeInternal;
+extern SubscribeFocusMetersRequestDefaultTypeInternal _SubscribeFocusMetersRequest_default_instance_;
+class SubscribeFocusOutStartRequest;
+struct SubscribeFocusOutStartRequestDefaultTypeInternal;
+extern SubscribeFocusOutStartRequestDefaultTypeInternal _SubscribeFocusOutStartRequest_default_instance_;
+class SubscribeFocusOutStepRequest;
+struct SubscribeFocusOutStepRequestDefaultTypeInternal;
+extern SubscribeFocusOutStepRequestDefaultTypeInternal _SubscribeFocusOutStepRequest_default_instance_;
+class SubscribeFocusRangeRequest;
+struct SubscribeFocusRangeRequestDefaultTypeInternal;
+extern SubscribeFocusRangeRequestDefaultTypeInternal _SubscribeFocusRangeRequest_default_instance_;
+class SubscribeFocusStopRequest;
+struct SubscribeFocusStopRequestDefaultTypeInternal;
+extern SubscribeFocusStopRequestDefaultTypeInternal _SubscribeFocusStopRequest_default_instance_;
 class SubscribeFormatStorageRequest;
 struct SubscribeFormatStorageRequestDefaultTypeInternal;
 extern SubscribeFormatStorageRequestDefaultTypeInternal _SubscribeFormatStorageRequest_default_instance_;
@@ -1435,7 +1555,7 @@ class VideoStreaming final
     return reinterpret_cast<const VideoStreaming*>(
         &_VideoStreaming_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 63;
+  static constexpr int kIndexInFileMessages = 103;
   friend void swap(VideoStreaming& a, VideoStreaming& b) { a.Swap(&b); }
   inline void Swap(VideoStreaming* other) {
     if (other == this) return;
@@ -1644,7 +1764,7 @@ class TrackingOffCommandResponse final
     return reinterpret_cast<const TrackingOffCommandResponse*>(
         &_TrackingOffCommandResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 81;
+  static constexpr int kIndexInFileMessages = 121;
   friend void swap(TrackingOffCommandResponse& a, TrackingOffCommandResponse& b) { a.Swap(&b); }
   inline void Swap(TrackingOffCommandResponse* other) {
     if (other == this) return;
@@ -1835,7 +1955,7 @@ class TrackRectangle final
     return reinterpret_cast<const TrackRectangle*>(
         &_TrackRectangle_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 97;
+  static constexpr int kIndexInFileMessages = 137;
   friend void swap(TrackRectangle& a, TrackRectangle& b) { a.Swap(&b); }
   inline void Swap(TrackRectangle* other) {
     if (other == this) return;
@@ -2062,7 +2182,7 @@ class TrackPoint final
     return reinterpret_cast<const TrackPoint*>(
         &_TrackPoint_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 96;
+  static constexpr int kIndexInFileMessages = 136;
   friend void swap(TrackPoint& a, TrackPoint& b) { a.Swap(&b); }
   inline void Swap(TrackPoint* other) {
     if (other == this) return;
@@ -3051,7 +3171,7 @@ class SubscribeTrackingRectangleCommandRequest final
     return reinterpret_cast<const SubscribeTrackingRectangleCommandRequest*>(
         &_SubscribeTrackingRectangleCommandRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 78;
+  static constexpr int kIndexInFileMessages = 118;
   friend void swap(SubscribeTrackingRectangleCommandRequest& a, SubscribeTrackingRectangleCommandRequest& b) { a.Swap(&b); }
   inline void Swap(SubscribeTrackingRectangleCommandRequest* other) {
     if (other == this) return;
@@ -3197,7 +3317,7 @@ class SubscribeTrackingPointCommandRequest final
     return reinterpret_cast<const SubscribeTrackingPointCommandRequest*>(
         &_SubscribeTrackingPointCommandRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 76;
+  static constexpr int kIndexInFileMessages = 116;
   friend void swap(SubscribeTrackingPointCommandRequest& a, SubscribeTrackingPointCommandRequest& b) { a.Swap(&b); }
   inline void Swap(SubscribeTrackingPointCommandRequest* other) {
     if (other == this) return;
@@ -3343,7 +3463,7 @@ class SubscribeTrackingOffCommandRequest final
     return reinterpret_cast<const SubscribeTrackingOffCommandRequest*>(
         &_SubscribeTrackingOffCommandRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 80;
+  static constexpr int kIndexInFileMessages = 120;
   friend void swap(SubscribeTrackingOffCommandRequest& a, SubscribeTrackingOffCommandRequest& b) { a.Swap(&b); }
   inline void Swap(SubscribeTrackingOffCommandRequest* other) {
     if (other == this) return;
@@ -4744,6 +4864,1466 @@ class SubscribeFormatStorageRequest final
 };
 // -------------------------------------------------------------------
 
+class SubscribeFocusStopRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusStopRequest) */ {
+ public:
+  inline SubscribeFocusStopRequest() : SubscribeFocusStopRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusStopRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusStopRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusStopRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusStopRequest(const SubscribeFocusStopRequest& from) : SubscribeFocusStopRequest(nullptr, from) {}
+  inline SubscribeFocusStopRequest(SubscribeFocusStopRequest&& from) noexcept
+      : SubscribeFocusStopRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusStopRequest& operator=(const SubscribeFocusStopRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusStopRequest& operator=(SubscribeFocusStopRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusStopRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusStopRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusStopRequest*>(
+        &_SubscribeFocusStopRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 78;
+  friend void swap(SubscribeFocusStopRequest& a, SubscribeFocusStopRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusStopRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusStopRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusStopRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusStopRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusStopRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusStopRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusStopRequest"; }
+
+ protected:
+  explicit SubscribeFocusStopRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusStopRequest(::google::protobuf::Arena* arena, const SubscribeFocusStopRequest& from);
+  SubscribeFocusStopRequest(::google::protobuf::Arena* arena, SubscribeFocusStopRequest&& from) noexcept
+      : SubscribeFocusStopRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusStopRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusStopRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusRangeRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusRangeRequest) */ {
+ public:
+  inline SubscribeFocusRangeRequest() : SubscribeFocusRangeRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusRangeRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusRangeRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusRangeRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusRangeRequest(const SubscribeFocusRangeRequest& from) : SubscribeFocusRangeRequest(nullptr, from) {}
+  inline SubscribeFocusRangeRequest(SubscribeFocusRangeRequest&& from) noexcept
+      : SubscribeFocusRangeRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusRangeRequest& operator=(const SubscribeFocusRangeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusRangeRequest& operator=(SubscribeFocusRangeRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusRangeRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusRangeRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusRangeRequest*>(
+        &_SubscribeFocusRangeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 82;
+  friend void swap(SubscribeFocusRangeRequest& a, SubscribeFocusRangeRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusRangeRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusRangeRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusRangeRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusRangeRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusRangeRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusRangeRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusRangeRequest"; }
+
+ protected:
+  explicit SubscribeFocusRangeRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusRangeRequest(::google::protobuf::Arena* arena, const SubscribeFocusRangeRequest& from);
+  SubscribeFocusRangeRequest(::google::protobuf::Arena* arena, SubscribeFocusRangeRequest&& from) noexcept
+      : SubscribeFocusRangeRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusRangeRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusRangeRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusOutStepRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusOutStepRequest) */ {
+ public:
+  inline SubscribeFocusOutStepRequest() : SubscribeFocusOutStepRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusOutStepRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusOutStepRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusOutStepRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusOutStepRequest(const SubscribeFocusOutStepRequest& from) : SubscribeFocusOutStepRequest(nullptr, from) {}
+  inline SubscribeFocusOutStepRequest(SubscribeFocusOutStepRequest&& from) noexcept
+      : SubscribeFocusOutStepRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusOutStepRequest& operator=(const SubscribeFocusOutStepRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusOutStepRequest& operator=(SubscribeFocusOutStepRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusOutStepRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusOutStepRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusOutStepRequest*>(
+        &_SubscribeFocusOutStepRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 66;
+  friend void swap(SubscribeFocusOutStepRequest& a, SubscribeFocusOutStepRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusOutStepRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusOutStepRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusOutStepRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusOutStepRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusOutStepRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusOutStepRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusOutStepRequest"; }
+
+ protected:
+  explicit SubscribeFocusOutStepRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusOutStepRequest(::google::protobuf::Arena* arena, const SubscribeFocusOutStepRequest& from);
+  SubscribeFocusOutStepRequest(::google::protobuf::Arena* arena, SubscribeFocusOutStepRequest&& from) noexcept
+      : SubscribeFocusOutStepRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusOutStepRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusOutStepRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusOutStartRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusOutStartRequest) */ {
+ public:
+  inline SubscribeFocusOutStartRequest() : SubscribeFocusOutStartRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusOutStartRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusOutStartRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusOutStartRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusOutStartRequest(const SubscribeFocusOutStartRequest& from) : SubscribeFocusOutStartRequest(nullptr, from) {}
+  inline SubscribeFocusOutStartRequest(SubscribeFocusOutStartRequest&& from) noexcept
+      : SubscribeFocusOutStartRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusOutStartRequest& operator=(const SubscribeFocusOutStartRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusOutStartRequest& operator=(SubscribeFocusOutStartRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusOutStartRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusOutStartRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusOutStartRequest*>(
+        &_SubscribeFocusOutStartRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 74;
+  friend void swap(SubscribeFocusOutStartRequest& a, SubscribeFocusOutStartRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusOutStartRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusOutStartRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusOutStartRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusOutStartRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusOutStartRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusOutStartRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusOutStartRequest"; }
+
+ protected:
+  explicit SubscribeFocusOutStartRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusOutStartRequest(::google::protobuf::Arena* arena, const SubscribeFocusOutStartRequest& from);
+  SubscribeFocusOutStartRequest(::google::protobuf::Arena* arena, SubscribeFocusOutStartRequest&& from) noexcept
+      : SubscribeFocusOutStartRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusOutStartRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusOutStartRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusMetersRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusMetersRequest) */ {
+ public:
+  inline SubscribeFocusMetersRequest() : SubscribeFocusMetersRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusMetersRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusMetersRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusMetersRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusMetersRequest(const SubscribeFocusMetersRequest& from) : SubscribeFocusMetersRequest(nullptr, from) {}
+  inline SubscribeFocusMetersRequest(SubscribeFocusMetersRequest&& from) noexcept
+      : SubscribeFocusMetersRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusMetersRequest& operator=(const SubscribeFocusMetersRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusMetersRequest& operator=(SubscribeFocusMetersRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusMetersRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusMetersRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusMetersRequest*>(
+        &_SubscribeFocusMetersRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 86;
+  friend void swap(SubscribeFocusMetersRequest& a, SubscribeFocusMetersRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusMetersRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusMetersRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusMetersRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusMetersRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusMetersRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusMetersRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusMetersRequest"; }
+
+ protected:
+  explicit SubscribeFocusMetersRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusMetersRequest(::google::protobuf::Arena* arena, const SubscribeFocusMetersRequest& from);
+  SubscribeFocusMetersRequest(::google::protobuf::Arena* arena, SubscribeFocusMetersRequest&& from) noexcept
+      : SubscribeFocusMetersRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusMetersRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusMetersRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusInStepRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusInStepRequest) */ {
+ public:
+  inline SubscribeFocusInStepRequest() : SubscribeFocusInStepRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusInStepRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusInStepRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusInStepRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusInStepRequest(const SubscribeFocusInStepRequest& from) : SubscribeFocusInStepRequest(nullptr, from) {}
+  inline SubscribeFocusInStepRequest(SubscribeFocusInStepRequest&& from) noexcept
+      : SubscribeFocusInStepRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusInStepRequest& operator=(const SubscribeFocusInStepRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusInStepRequest& operator=(SubscribeFocusInStepRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusInStepRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusInStepRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusInStepRequest*>(
+        &_SubscribeFocusInStepRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 62;
+  friend void swap(SubscribeFocusInStepRequest& a, SubscribeFocusInStepRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusInStepRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusInStepRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusInStepRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusInStepRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusInStepRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusInStepRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusInStepRequest"; }
+
+ protected:
+  explicit SubscribeFocusInStepRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusInStepRequest(::google::protobuf::Arena* arena, const SubscribeFocusInStepRequest& from);
+  SubscribeFocusInStepRequest(::google::protobuf::Arena* arena, SubscribeFocusInStepRequest&& from) noexcept
+      : SubscribeFocusInStepRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusInStepRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusInStepRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusInStartRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusInStartRequest) */ {
+ public:
+  inline SubscribeFocusInStartRequest() : SubscribeFocusInStartRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusInStartRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusInStartRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusInStartRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusInStartRequest(const SubscribeFocusInStartRequest& from) : SubscribeFocusInStartRequest(nullptr, from) {}
+  inline SubscribeFocusInStartRequest(SubscribeFocusInStartRequest&& from) noexcept
+      : SubscribeFocusInStartRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusInStartRequest& operator=(const SubscribeFocusInStartRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusInStartRequest& operator=(SubscribeFocusInStartRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusInStartRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusInStartRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusInStartRequest*>(
+        &_SubscribeFocusInStartRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 70;
+  friend void swap(SubscribeFocusInStartRequest& a, SubscribeFocusInStartRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusInStartRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusInStartRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusInStartRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusInStartRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusInStartRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusInStartRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusInStartRequest"; }
+
+ protected:
+  explicit SubscribeFocusInStartRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusInStartRequest(::google::protobuf::Arena* arena, const SubscribeFocusInStartRequest& from);
+  SubscribeFocusInStartRequest(::google::protobuf::Arena* arena, SubscribeFocusInStartRequest&& from) noexcept
+      : SubscribeFocusInStartRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusInStartRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusInStartRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusAutoSingleRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusAutoSingleRequest) */ {
+ public:
+  inline SubscribeFocusAutoSingleRequest() : SubscribeFocusAutoSingleRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusAutoSingleRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusAutoSingleRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusAutoSingleRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusAutoSingleRequest(const SubscribeFocusAutoSingleRequest& from) : SubscribeFocusAutoSingleRequest(nullptr, from) {}
+  inline SubscribeFocusAutoSingleRequest(SubscribeFocusAutoSingleRequest&& from) noexcept
+      : SubscribeFocusAutoSingleRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusAutoSingleRequest& operator=(const SubscribeFocusAutoSingleRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusAutoSingleRequest& operator=(SubscribeFocusAutoSingleRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusAutoSingleRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusAutoSingleRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusAutoSingleRequest*>(
+        &_SubscribeFocusAutoSingleRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 94;
+  friend void swap(SubscribeFocusAutoSingleRequest& a, SubscribeFocusAutoSingleRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusAutoSingleRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusAutoSingleRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusAutoSingleRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusAutoSingleRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusAutoSingleRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusAutoSingleRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusAutoSingleRequest"; }
+
+ protected:
+  explicit SubscribeFocusAutoSingleRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusAutoSingleRequest(::google::protobuf::Arena* arena, const SubscribeFocusAutoSingleRequest& from);
+  SubscribeFocusAutoSingleRequest(::google::protobuf::Arena* arena, SubscribeFocusAutoSingleRequest&& from) noexcept
+      : SubscribeFocusAutoSingleRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusAutoSingleRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusAutoSingleRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusAutoRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusAutoRequest) */ {
+ public:
+  inline SubscribeFocusAutoRequest() : SubscribeFocusAutoRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusAutoRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusAutoRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusAutoRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusAutoRequest(const SubscribeFocusAutoRequest& from) : SubscribeFocusAutoRequest(nullptr, from) {}
+  inline SubscribeFocusAutoRequest(SubscribeFocusAutoRequest&& from) noexcept
+      : SubscribeFocusAutoRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusAutoRequest& operator=(const SubscribeFocusAutoRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusAutoRequest& operator=(SubscribeFocusAutoRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusAutoRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusAutoRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusAutoRequest*>(
+        &_SubscribeFocusAutoRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 90;
+  friend void swap(SubscribeFocusAutoRequest& a, SubscribeFocusAutoRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusAutoRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusAutoRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusAutoRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusAutoRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusAutoRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusAutoRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusAutoRequest"; }
+
+ protected:
+  explicit SubscribeFocusAutoRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusAutoRequest(::google::protobuf::Arena* arena, const SubscribeFocusAutoRequest& from);
+  SubscribeFocusAutoRequest(::google::protobuf::Arena* arena, SubscribeFocusAutoRequest&& from) noexcept
+      : SubscribeFocusAutoRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusAutoRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusAutoRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeFocusAutoContinuousRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeFocusAutoContinuousRequest) */ {
+ public:
+  inline SubscribeFocusAutoContinuousRequest() : SubscribeFocusAutoContinuousRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeFocusAutoContinuousRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeFocusAutoContinuousRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFocusAutoContinuousRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFocusAutoContinuousRequest(const SubscribeFocusAutoContinuousRequest& from) : SubscribeFocusAutoContinuousRequest(nullptr, from) {}
+  inline SubscribeFocusAutoContinuousRequest(SubscribeFocusAutoContinuousRequest&& from) noexcept
+      : SubscribeFocusAutoContinuousRequest(nullptr, std::move(from)) {}
+  inline SubscribeFocusAutoContinuousRequest& operator=(const SubscribeFocusAutoContinuousRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFocusAutoContinuousRequest& operator=(SubscribeFocusAutoContinuousRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFocusAutoContinuousRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFocusAutoContinuousRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFocusAutoContinuousRequest*>(
+        &_SubscribeFocusAutoContinuousRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 98;
+  friend void swap(SubscribeFocusAutoContinuousRequest& a, SubscribeFocusAutoContinuousRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeFocusAutoContinuousRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFocusAutoContinuousRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFocusAutoContinuousRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeFocusAutoContinuousRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFocusAutoContinuousRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFocusAutoContinuousRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.SubscribeFocusAutoContinuousRequest"; }
+
+ protected:
+  explicit SubscribeFocusAutoContinuousRequest(::google::protobuf::Arena* arena);
+  SubscribeFocusAutoContinuousRequest(::google::protobuf::Arena* arena, const SubscribeFocusAutoContinuousRequest& from);
+  SubscribeFocusAutoContinuousRequest(::google::protobuf::Arena* arena, SubscribeFocusAutoContinuousRequest&& from) noexcept
+      : SubscribeFocusAutoContinuousRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SubscribeFocusAutoContinuousRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeFocusAutoContinuousRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class SubscribeCaptureStatusRequest final
     : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SubscribeCaptureStatusRequest) */ {
@@ -5141,7 +6721,7 @@ class StorageInformation final
     return reinterpret_cast<const StorageInformation*>(
         &_StorageInformation_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 68;
+  static constexpr int kIndexInFileMessages = 108;
   friend void swap(StorageInformation& a, StorageInformation& b) { a.Swap(&b); }
   inline void Swap(StorageInformation* other) {
     if (other == this) return;
@@ -6224,7 +7804,7 @@ class SetZoomFactorRequest final
     return reinterpret_cast<const SetZoomFactorRequest*>(
         &_SetZoomFactorRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 92;
+  static constexpr int kIndexInFileMessages = 132;
   friend void swap(SetZoomFactorRequest& a, SetZoomFactorRequest& b) { a.Swap(&b); }
   inline void Swap(SetZoomFactorRequest* other) {
     if (other == this) return;
@@ -6414,7 +7994,7 @@ class SetTrackingRectangleStatusResponse final
     return reinterpret_cast<const SetTrackingRectangleStatusResponse*>(
         &_SetTrackingRectangleStatusResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 73;
+  static constexpr int kIndexInFileMessages = 113;
   friend void swap(SetTrackingRectangleStatusResponse& a, SetTrackingRectangleStatusResponse& b) { a.Swap(&b); }
   inline void Swap(SetTrackingRectangleStatusResponse* other) {
     if (other == this) return;
@@ -6560,7 +8140,7 @@ class SetTrackingPointStatusResponse final
     return reinterpret_cast<const SetTrackingPointStatusResponse*>(
         &_SetTrackingPointStatusResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 71;
+  static constexpr int kIndexInFileMessages = 111;
   friend void swap(SetTrackingPointStatusResponse& a, SetTrackingPointStatusResponse& b) { a.Swap(&b); }
   inline void Swap(SetTrackingPointStatusResponse* other) {
     if (other == this) return;
@@ -6706,7 +8286,7 @@ class SetTrackingOffStatusResponse final
     return reinterpret_cast<const SetTrackingOffStatusResponse*>(
         &_SetTrackingOffStatusResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 75;
+  static constexpr int kIndexInFileMessages = 115;
   friend void swap(SetTrackingOffStatusResponse& a, SetTrackingOffStatusResponse& b) { a.Swap(&b); }
   inline void Swap(SetTrackingOffStatusResponse* other) {
     if (other == this) return;
@@ -6852,7 +8432,7 @@ class SetTrackingOffStatusRequest final
     return reinterpret_cast<const SetTrackingOffStatusRequest*>(
         &_SetTrackingOffStatusRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 74;
+  static constexpr int kIndexInFileMessages = 114;
   friend void swap(SetTrackingOffStatusRequest& a, SetTrackingOffStatusRequest& b) { a.Swap(&b); }
   inline void Swap(SetTrackingOffStatusRequest* other) {
     if (other == this) return;
@@ -7381,7 +8961,7 @@ class SetFieldOfViewRequest final
     return reinterpret_cast<const SetFieldOfViewRequest*>(
         &_SetFieldOfViewRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 94;
+  static constexpr int kIndexInFileMessages = 134;
   friend void swap(SetFieldOfViewRequest& a, SetFieldOfViewRequest& b) { a.Swap(&b); }
   inline void Swap(SetFieldOfViewRequest* other) {
     if (other == this) return;
@@ -8348,7 +9928,7 @@ class RespondTrackingRectangleCommandRequest final
     return reinterpret_cast<const RespondTrackingRectangleCommandRequest*>(
         &_RespondTrackingRectangleCommandRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 84;
+  static constexpr int kIndexInFileMessages = 124;
   friend void swap(RespondTrackingRectangleCommandRequest& a, RespondTrackingRectangleCommandRequest& b) { a.Swap(&b); }
   inline void Swap(RespondTrackingRectangleCommandRequest* other) {
     if (other == this) return;
@@ -8539,7 +10119,7 @@ class RespondTrackingPointCommandRequest final
     return reinterpret_cast<const RespondTrackingPointCommandRequest*>(
         &_RespondTrackingPointCommandRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 82;
+  static constexpr int kIndexInFileMessages = 122;
   friend void swap(RespondTrackingPointCommandRequest& a, RespondTrackingPointCommandRequest& b) { a.Swap(&b); }
   inline void Swap(RespondTrackingPointCommandRequest* other) {
     if (other == this) return;
@@ -8730,7 +10310,7 @@ class RespondTrackingOffCommandRequest final
     return reinterpret_cast<const RespondTrackingOffCommandRequest*>(
         &_RespondTrackingOffCommandRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 86;
+  static constexpr int kIndexInFileMessages = 126;
   friend void swap(RespondTrackingOffCommandRequest& a, RespondTrackingOffCommandRequest& b) { a.Swap(&b); }
   inline void Swap(RespondTrackingOffCommandRequest* other) {
     if (other == this) return;
@@ -10198,6 +11778,1916 @@ class RespondFormatStorageRequest final
 };
 // -------------------------------------------------------------------
 
+class RespondFocusStopRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusStopRequest) */ {
+ public:
+  inline RespondFocusStopRequest() : RespondFocusStopRequest(nullptr) {}
+  ~RespondFocusStopRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusStopRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusStopRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusStopRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusStopRequest(const RespondFocusStopRequest& from) : RespondFocusStopRequest(nullptr, from) {}
+  inline RespondFocusStopRequest(RespondFocusStopRequest&& from) noexcept
+      : RespondFocusStopRequest(nullptr, std::move(from)) {}
+  inline RespondFocusStopRequest& operator=(const RespondFocusStopRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusStopRequest& operator=(RespondFocusStopRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusStopRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusStopRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusStopRequest*>(
+        &_RespondFocusStopRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 80;
+  friend void swap(RespondFocusStopRequest& a, RespondFocusStopRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusStopRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusStopRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusStopRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusStopRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusStopRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusStopRequest& from) { RespondFocusStopRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusStopRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusStopRequest"; }
+
+ protected:
+  explicit RespondFocusStopRequest(::google::protobuf::Arena* arena);
+  RespondFocusStopRequest(::google::protobuf::Arena* arena, const RespondFocusStopRequest& from);
+  RespondFocusStopRequest(::google::protobuf::Arena* arena, RespondFocusStopRequest&& from) noexcept
+      : RespondFocusStopRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusStopFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_stop_feedback = 1;
+  void clear_focus_stop_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_stop_feedback() const;
+  void set_focus_stop_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_stop_feedback() const;
+  void _internal_set_focus_stop_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusStopRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusStopRequest& from_msg);
+    int focus_stop_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusRangeRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusRangeRequest) */ {
+ public:
+  inline RespondFocusRangeRequest() : RespondFocusRangeRequest(nullptr) {}
+  ~RespondFocusRangeRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusRangeRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusRangeRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusRangeRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusRangeRequest(const RespondFocusRangeRequest& from) : RespondFocusRangeRequest(nullptr, from) {}
+  inline RespondFocusRangeRequest(RespondFocusRangeRequest&& from) noexcept
+      : RespondFocusRangeRequest(nullptr, std::move(from)) {}
+  inline RespondFocusRangeRequest& operator=(const RespondFocusRangeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusRangeRequest& operator=(RespondFocusRangeRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusRangeRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusRangeRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusRangeRequest*>(
+        &_RespondFocusRangeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 84;
+  friend void swap(RespondFocusRangeRequest& a, RespondFocusRangeRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusRangeRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusRangeRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusRangeRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusRangeRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusRangeRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusRangeRequest& from) { RespondFocusRangeRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusRangeRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusRangeRequest"; }
+
+ protected:
+  explicit RespondFocusRangeRequest(::google::protobuf::Arena* arena);
+  RespondFocusRangeRequest(::google::protobuf::Arena* arena, const RespondFocusRangeRequest& from);
+  RespondFocusRangeRequest(::google::protobuf::Arena* arena, RespondFocusRangeRequest&& from) noexcept
+      : RespondFocusRangeRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusRangeFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_range_feedback = 1;
+  void clear_focus_range_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_range_feedback() const;
+  void set_focus_range_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_range_feedback() const;
+  void _internal_set_focus_range_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusRangeRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusRangeRequest& from_msg);
+    int focus_range_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusOutStepRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusOutStepRequest) */ {
+ public:
+  inline RespondFocusOutStepRequest() : RespondFocusOutStepRequest(nullptr) {}
+  ~RespondFocusOutStepRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusOutStepRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusOutStepRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusOutStepRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusOutStepRequest(const RespondFocusOutStepRequest& from) : RespondFocusOutStepRequest(nullptr, from) {}
+  inline RespondFocusOutStepRequest(RespondFocusOutStepRequest&& from) noexcept
+      : RespondFocusOutStepRequest(nullptr, std::move(from)) {}
+  inline RespondFocusOutStepRequest& operator=(const RespondFocusOutStepRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusOutStepRequest& operator=(RespondFocusOutStepRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusOutStepRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusOutStepRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusOutStepRequest*>(
+        &_RespondFocusOutStepRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 68;
+  friend void swap(RespondFocusOutStepRequest& a, RespondFocusOutStepRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusOutStepRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusOutStepRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusOutStepRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusOutStepRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusOutStepRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusOutStepRequest& from) { RespondFocusOutStepRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusOutStepRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusOutStepRequest"; }
+
+ protected:
+  explicit RespondFocusOutStepRequest(::google::protobuf::Arena* arena);
+  RespondFocusOutStepRequest(::google::protobuf::Arena* arena, const RespondFocusOutStepRequest& from);
+  RespondFocusOutStepRequest(::google::protobuf::Arena* arena, RespondFocusOutStepRequest&& from) noexcept
+      : RespondFocusOutStepRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusOutStepFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_out_step_feedback = 1;
+  void clear_focus_out_step_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_out_step_feedback() const;
+  void set_focus_out_step_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_out_step_feedback() const;
+  void _internal_set_focus_out_step_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusOutStepRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusOutStepRequest& from_msg);
+    int focus_out_step_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusOutStartRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusOutStartRequest) */ {
+ public:
+  inline RespondFocusOutStartRequest() : RespondFocusOutStartRequest(nullptr) {}
+  ~RespondFocusOutStartRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusOutStartRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusOutStartRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusOutStartRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusOutStartRequest(const RespondFocusOutStartRequest& from) : RespondFocusOutStartRequest(nullptr, from) {}
+  inline RespondFocusOutStartRequest(RespondFocusOutStartRequest&& from) noexcept
+      : RespondFocusOutStartRequest(nullptr, std::move(from)) {}
+  inline RespondFocusOutStartRequest& operator=(const RespondFocusOutStartRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusOutStartRequest& operator=(RespondFocusOutStartRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusOutStartRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusOutStartRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusOutStartRequest*>(
+        &_RespondFocusOutStartRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 76;
+  friend void swap(RespondFocusOutStartRequest& a, RespondFocusOutStartRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusOutStartRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusOutStartRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusOutStartRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusOutStartRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusOutStartRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusOutStartRequest& from) { RespondFocusOutStartRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusOutStartRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusOutStartRequest"; }
+
+ protected:
+  explicit RespondFocusOutStartRequest(::google::protobuf::Arena* arena);
+  RespondFocusOutStartRequest(::google::protobuf::Arena* arena, const RespondFocusOutStartRequest& from);
+  RespondFocusOutStartRequest(::google::protobuf::Arena* arena, RespondFocusOutStartRequest&& from) noexcept
+      : RespondFocusOutStartRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusOutStartFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_out_start_feedback = 1;
+  void clear_focus_out_start_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_out_start_feedback() const;
+  void set_focus_out_start_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_out_start_feedback() const;
+  void _internal_set_focus_out_start_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusOutStartRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusOutStartRequest& from_msg);
+    int focus_out_start_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusMetersRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusMetersRequest) */ {
+ public:
+  inline RespondFocusMetersRequest() : RespondFocusMetersRequest(nullptr) {}
+  ~RespondFocusMetersRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusMetersRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusMetersRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusMetersRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusMetersRequest(const RespondFocusMetersRequest& from) : RespondFocusMetersRequest(nullptr, from) {}
+  inline RespondFocusMetersRequest(RespondFocusMetersRequest&& from) noexcept
+      : RespondFocusMetersRequest(nullptr, std::move(from)) {}
+  inline RespondFocusMetersRequest& operator=(const RespondFocusMetersRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusMetersRequest& operator=(RespondFocusMetersRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusMetersRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusMetersRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusMetersRequest*>(
+        &_RespondFocusMetersRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 88;
+  friend void swap(RespondFocusMetersRequest& a, RespondFocusMetersRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusMetersRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusMetersRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusMetersRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusMetersRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusMetersRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusMetersRequest& from) { RespondFocusMetersRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusMetersRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusMetersRequest"; }
+
+ protected:
+  explicit RespondFocusMetersRequest(::google::protobuf::Arena* arena);
+  RespondFocusMetersRequest(::google::protobuf::Arena* arena, const RespondFocusMetersRequest& from);
+  RespondFocusMetersRequest(::google::protobuf::Arena* arena, RespondFocusMetersRequest&& from) noexcept
+      : RespondFocusMetersRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusMetersFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_meters_feedback = 1;
+  void clear_focus_meters_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_meters_feedback() const;
+  void set_focus_meters_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_meters_feedback() const;
+  void _internal_set_focus_meters_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusMetersRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusMetersRequest& from_msg);
+    int focus_meters_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusInStepRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusInStepRequest) */ {
+ public:
+  inline RespondFocusInStepRequest() : RespondFocusInStepRequest(nullptr) {}
+  ~RespondFocusInStepRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusInStepRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusInStepRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusInStepRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusInStepRequest(const RespondFocusInStepRequest& from) : RespondFocusInStepRequest(nullptr, from) {}
+  inline RespondFocusInStepRequest(RespondFocusInStepRequest&& from) noexcept
+      : RespondFocusInStepRequest(nullptr, std::move(from)) {}
+  inline RespondFocusInStepRequest& operator=(const RespondFocusInStepRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusInStepRequest& operator=(RespondFocusInStepRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusInStepRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusInStepRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusInStepRequest*>(
+        &_RespondFocusInStepRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 64;
+  friend void swap(RespondFocusInStepRequest& a, RespondFocusInStepRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusInStepRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusInStepRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusInStepRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusInStepRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusInStepRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusInStepRequest& from) { RespondFocusInStepRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusInStepRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusInStepRequest"; }
+
+ protected:
+  explicit RespondFocusInStepRequest(::google::protobuf::Arena* arena);
+  RespondFocusInStepRequest(::google::protobuf::Arena* arena, const RespondFocusInStepRequest& from);
+  RespondFocusInStepRequest(::google::protobuf::Arena* arena, RespondFocusInStepRequest&& from) noexcept
+      : RespondFocusInStepRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusInStepFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_in_step_feedback = 1;
+  void clear_focus_in_step_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_in_step_feedback() const;
+  void set_focus_in_step_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_in_step_feedback() const;
+  void _internal_set_focus_in_step_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusInStepRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusInStepRequest& from_msg);
+    int focus_in_step_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusInStartRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusInStartRequest) */ {
+ public:
+  inline RespondFocusInStartRequest() : RespondFocusInStartRequest(nullptr) {}
+  ~RespondFocusInStartRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusInStartRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusInStartRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusInStartRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusInStartRequest(const RespondFocusInStartRequest& from) : RespondFocusInStartRequest(nullptr, from) {}
+  inline RespondFocusInStartRequest(RespondFocusInStartRequest&& from) noexcept
+      : RespondFocusInStartRequest(nullptr, std::move(from)) {}
+  inline RespondFocusInStartRequest& operator=(const RespondFocusInStartRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusInStartRequest& operator=(RespondFocusInStartRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusInStartRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusInStartRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusInStartRequest*>(
+        &_RespondFocusInStartRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 72;
+  friend void swap(RespondFocusInStartRequest& a, RespondFocusInStartRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusInStartRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusInStartRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusInStartRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusInStartRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusInStartRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusInStartRequest& from) { RespondFocusInStartRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusInStartRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusInStartRequest"; }
+
+ protected:
+  explicit RespondFocusInStartRequest(::google::protobuf::Arena* arena);
+  RespondFocusInStartRequest(::google::protobuf::Arena* arena, const RespondFocusInStartRequest& from);
+  RespondFocusInStartRequest(::google::protobuf::Arena* arena, RespondFocusInStartRequest&& from) noexcept
+      : RespondFocusInStartRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusInStartFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_in_start_feedback = 1;
+  void clear_focus_in_start_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_in_start_feedback() const;
+  void set_focus_in_start_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_in_start_feedback() const;
+  void _internal_set_focus_in_start_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusInStartRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusInStartRequest& from_msg);
+    int focus_in_start_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusAutoSingleRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest) */ {
+ public:
+  inline RespondFocusAutoSingleRequest() : RespondFocusAutoSingleRequest(nullptr) {}
+  ~RespondFocusAutoSingleRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusAutoSingleRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusAutoSingleRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusAutoSingleRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusAutoSingleRequest(const RespondFocusAutoSingleRequest& from) : RespondFocusAutoSingleRequest(nullptr, from) {}
+  inline RespondFocusAutoSingleRequest(RespondFocusAutoSingleRequest&& from) noexcept
+      : RespondFocusAutoSingleRequest(nullptr, std::move(from)) {}
+  inline RespondFocusAutoSingleRequest& operator=(const RespondFocusAutoSingleRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusAutoSingleRequest& operator=(RespondFocusAutoSingleRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusAutoSingleRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusAutoSingleRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusAutoSingleRequest*>(
+        &_RespondFocusAutoSingleRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 96;
+  friend void swap(RespondFocusAutoSingleRequest& a, RespondFocusAutoSingleRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusAutoSingleRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusAutoSingleRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusAutoSingleRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusAutoSingleRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusAutoSingleRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusAutoSingleRequest& from) { RespondFocusAutoSingleRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusAutoSingleRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest"; }
+
+ protected:
+  explicit RespondFocusAutoSingleRequest(::google::protobuf::Arena* arena);
+  RespondFocusAutoSingleRequest(::google::protobuf::Arena* arena, const RespondFocusAutoSingleRequest& from);
+  RespondFocusAutoSingleRequest(::google::protobuf::Arena* arena, RespondFocusAutoSingleRequest&& from) noexcept
+      : RespondFocusAutoSingleRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusAutoSingleFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_single_feedback = 1;
+  void clear_focus_auto_single_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_auto_single_feedback() const;
+  void set_focus_auto_single_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_auto_single_feedback() const;
+  void _internal_set_focus_auto_single_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusAutoSingleRequest& from_msg);
+    int focus_auto_single_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusAutoRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusAutoRequest) */ {
+ public:
+  inline RespondFocusAutoRequest() : RespondFocusAutoRequest(nullptr) {}
+  ~RespondFocusAutoRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusAutoRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusAutoRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusAutoRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusAutoRequest(const RespondFocusAutoRequest& from) : RespondFocusAutoRequest(nullptr, from) {}
+  inline RespondFocusAutoRequest(RespondFocusAutoRequest&& from) noexcept
+      : RespondFocusAutoRequest(nullptr, std::move(from)) {}
+  inline RespondFocusAutoRequest& operator=(const RespondFocusAutoRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusAutoRequest& operator=(RespondFocusAutoRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusAutoRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusAutoRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusAutoRequest*>(
+        &_RespondFocusAutoRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 92;
+  friend void swap(RespondFocusAutoRequest& a, RespondFocusAutoRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusAutoRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusAutoRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusAutoRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusAutoRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusAutoRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusAutoRequest& from) { RespondFocusAutoRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusAutoRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusAutoRequest"; }
+
+ protected:
+  explicit RespondFocusAutoRequest(::google::protobuf::Arena* arena);
+  RespondFocusAutoRequest(::google::protobuf::Arena* arena, const RespondFocusAutoRequest& from);
+  RespondFocusAutoRequest(::google::protobuf::Arena* arena, RespondFocusAutoRequest&& from) noexcept
+      : RespondFocusAutoRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusAutoFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_feedback = 1;
+  void clear_focus_auto_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_auto_feedback() const;
+  void set_focus_auto_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_auto_feedback() const;
+  void _internal_set_focus_auto_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusAutoRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusAutoRequest& from_msg);
+    int focus_auto_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusAutoContinuousRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest) */ {
+ public:
+  inline RespondFocusAutoContinuousRequest() : RespondFocusAutoContinuousRequest(nullptr) {}
+  ~RespondFocusAutoContinuousRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusAutoContinuousRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusAutoContinuousRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusAutoContinuousRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusAutoContinuousRequest(const RespondFocusAutoContinuousRequest& from) : RespondFocusAutoContinuousRequest(nullptr, from) {}
+  inline RespondFocusAutoContinuousRequest(RespondFocusAutoContinuousRequest&& from) noexcept
+      : RespondFocusAutoContinuousRequest(nullptr, std::move(from)) {}
+  inline RespondFocusAutoContinuousRequest& operator=(const RespondFocusAutoContinuousRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusAutoContinuousRequest& operator=(RespondFocusAutoContinuousRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusAutoContinuousRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusAutoContinuousRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusAutoContinuousRequest*>(
+        &_RespondFocusAutoContinuousRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 100;
+  friend void swap(RespondFocusAutoContinuousRequest& a, RespondFocusAutoContinuousRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusAutoContinuousRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusAutoContinuousRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusAutoContinuousRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusAutoContinuousRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusAutoContinuousRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusAutoContinuousRequest& from) { RespondFocusAutoContinuousRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusAutoContinuousRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest"; }
+
+ protected:
+  explicit RespondFocusAutoContinuousRequest(::google::protobuf::Arena* arena);
+  RespondFocusAutoContinuousRequest(::google::protobuf::Arena* arena, const RespondFocusAutoContinuousRequest& from);
+  RespondFocusAutoContinuousRequest(::google::protobuf::Arena* arena, RespondFocusAutoContinuousRequest&& from) noexcept
+      : RespondFocusAutoContinuousRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusAutoContinuousFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraFeedback focus_auto_continuous_feedback = 1;
+  void clear_focus_auto_continuous_feedback() ;
+  ::mavsdk::rpc::camera_server::CameraFeedback focus_auto_continuous_feedback() const;
+  void set_focus_auto_continuous_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  private:
+  ::mavsdk::rpc::camera_server::CameraFeedback _internal_focus_auto_continuous_feedback() const;
+  void _internal_set_focus_auto_continuous_feedback(::mavsdk::rpc::camera_server::CameraFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusAutoContinuousRequest& from_msg);
+    int focus_auto_continuous_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ResetSettingsResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.ResetSettingsResponse) */ {
@@ -10449,7 +13939,7 @@ class Quaternion final
     return reinterpret_cast<const Quaternion*>(
         &_Quaternion_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 65;
+  static constexpr int kIndexInFileMessages = 105;
   friend void swap(Quaternion& a, Quaternion& b) { a.Swap(&b); }
   inline void Swap(Quaternion* other) {
     if (other == this) return;
@@ -10676,7 +14166,7 @@ class Position final
     return reinterpret_cast<const Position*>(
         &_Position_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 64;
+  static constexpr int kIndexInFileMessages = 104;
   friend void swap(Position& a, Position& b) { a.Swap(&b); }
   inline void Swap(Position* other) {
     if (other == this) return;
@@ -10903,7 +14393,7 @@ class Information final
     return reinterpret_cast<const Information*>(
         &_Information_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 62;
+  static constexpr int kIndexInFileMessages = 102;
   friend void swap(Information& a, Information& b) { a.Swap(&b); }
   inline void Swap(Information* other) {
     if (other == this) return;
@@ -11393,6 +14883,1916 @@ class FormatStorageResponse final
 };
 // -------------------------------------------------------------------
 
+class FocusStopResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusStopResponse) */ {
+ public:
+  inline FocusStopResponse() : FocusStopResponse(nullptr) {}
+  ~FocusStopResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusStopResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusStopResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusStopResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusStopResponse(const FocusStopResponse& from) : FocusStopResponse(nullptr, from) {}
+  inline FocusStopResponse(FocusStopResponse&& from) noexcept
+      : FocusStopResponse(nullptr, std::move(from)) {}
+  inline FocusStopResponse& operator=(const FocusStopResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusStopResponse& operator=(FocusStopResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusStopResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusStopResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusStopResponse*>(
+        &_FocusStopResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 79;
+  friend void swap(FocusStopResponse& a, FocusStopResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusStopResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusStopResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusStopResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusStopResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusStopResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusStopResponse& from) { FocusStopResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusStopResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusStopResponse"; }
+
+ protected:
+  explicit FocusStopResponse(::google::protobuf::Arena* arena);
+  FocusStopResponse(::google::protobuf::Arena* arena, const FocusStopResponse& from);
+  FocusStopResponse(::google::protobuf::Arena* arena, FocusStopResponse&& from) noexcept
+      : FocusStopResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusStopResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusStopResponse& from_msg);
+    ::int32_t reserved_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusRangeResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusRangeResponse) */ {
+ public:
+  inline FocusRangeResponse() : FocusRangeResponse(nullptr) {}
+  ~FocusRangeResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusRangeResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusRangeResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusRangeResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusRangeResponse(const FocusRangeResponse& from) : FocusRangeResponse(nullptr, from) {}
+  inline FocusRangeResponse(FocusRangeResponse&& from) noexcept
+      : FocusRangeResponse(nullptr, std::move(from)) {}
+  inline FocusRangeResponse& operator=(const FocusRangeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusRangeResponse& operator=(FocusRangeResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusRangeResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusRangeResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusRangeResponse*>(
+        &_FocusRangeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 83;
+  friend void swap(FocusRangeResponse& a, FocusRangeResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusRangeResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusRangeResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusRangeResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusRangeResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusRangeResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusRangeResponse& from) { FocusRangeResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusRangeResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusRangeResponse"; }
+
+ protected:
+  explicit FocusRangeResponse(::google::protobuf::Arena* arena);
+  FocusRangeResponse(::google::protobuf::Arena* arena, const FocusRangeResponse& from);
+  FocusRangeResponse(::google::protobuf::Arena* arena, FocusRangeResponse&& from) noexcept
+      : FocusRangeResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusDistanceMFieldNumber = 1,
+  };
+  // float focus_distance_m = 1;
+  void clear_focus_distance_m() ;
+  float focus_distance_m() const;
+  void set_focus_distance_m(float value);
+
+  private:
+  float _internal_focus_distance_m() const;
+  void _internal_set_focus_distance_m(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusRangeResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusRangeResponse& from_msg);
+    float focus_distance_m_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusOutStepResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusOutStepResponse) */ {
+ public:
+  inline FocusOutStepResponse() : FocusOutStepResponse(nullptr) {}
+  ~FocusOutStepResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusOutStepResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusOutStepResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusOutStepResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusOutStepResponse(const FocusOutStepResponse& from) : FocusOutStepResponse(nullptr, from) {}
+  inline FocusOutStepResponse(FocusOutStepResponse&& from) noexcept
+      : FocusOutStepResponse(nullptr, std::move(from)) {}
+  inline FocusOutStepResponse& operator=(const FocusOutStepResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusOutStepResponse& operator=(FocusOutStepResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusOutStepResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusOutStepResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusOutStepResponse*>(
+        &_FocusOutStepResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 67;
+  friend void swap(FocusOutStepResponse& a, FocusOutStepResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusOutStepResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusOutStepResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusOutStepResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusOutStepResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusOutStepResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusOutStepResponse& from) { FocusOutStepResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusOutStepResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusOutStepResponse"; }
+
+ protected:
+  explicit FocusOutStepResponse(::google::protobuf::Arena* arena);
+  FocusOutStepResponse(::google::protobuf::Arena* arena, const FocusOutStepResponse& from);
+  FocusOutStepResponse(::google::protobuf::Arena* arena, FocusOutStepResponse&& from) noexcept
+      : FocusOutStepResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusOutStepResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusOutStepResponse& from_msg);
+    ::int32_t reserved_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusOutStartResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusOutStartResponse) */ {
+ public:
+  inline FocusOutStartResponse() : FocusOutStartResponse(nullptr) {}
+  ~FocusOutStartResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusOutStartResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusOutStartResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusOutStartResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusOutStartResponse(const FocusOutStartResponse& from) : FocusOutStartResponse(nullptr, from) {}
+  inline FocusOutStartResponse(FocusOutStartResponse&& from) noexcept
+      : FocusOutStartResponse(nullptr, std::move(from)) {}
+  inline FocusOutStartResponse& operator=(const FocusOutStartResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusOutStartResponse& operator=(FocusOutStartResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusOutStartResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusOutStartResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusOutStartResponse*>(
+        &_FocusOutStartResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 75;
+  friend void swap(FocusOutStartResponse& a, FocusOutStartResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusOutStartResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusOutStartResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusOutStartResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusOutStartResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusOutStartResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusOutStartResponse& from) { FocusOutStartResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusOutStartResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusOutStartResponse"; }
+
+ protected:
+  explicit FocusOutStartResponse(::google::protobuf::Arena* arena);
+  FocusOutStartResponse(::google::protobuf::Arena* arena, const FocusOutStartResponse& from);
+  FocusOutStartResponse(::google::protobuf::Arena* arena, FocusOutStartResponse&& from) noexcept
+      : FocusOutStartResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusOutStartResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusOutStartResponse& from_msg);
+    ::int32_t reserved_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusMetersResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusMetersResponse) */ {
+ public:
+  inline FocusMetersResponse() : FocusMetersResponse(nullptr) {}
+  ~FocusMetersResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusMetersResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusMetersResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusMetersResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusMetersResponse(const FocusMetersResponse& from) : FocusMetersResponse(nullptr, from) {}
+  inline FocusMetersResponse(FocusMetersResponse&& from) noexcept
+      : FocusMetersResponse(nullptr, std::move(from)) {}
+  inline FocusMetersResponse& operator=(const FocusMetersResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusMetersResponse& operator=(FocusMetersResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusMetersResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusMetersResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusMetersResponse*>(
+        &_FocusMetersResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 87;
+  friend void swap(FocusMetersResponse& a, FocusMetersResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusMetersResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusMetersResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusMetersResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusMetersResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusMetersResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusMetersResponse& from) { FocusMetersResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusMetersResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusMetersResponse"; }
+
+ protected:
+  explicit FocusMetersResponse(::google::protobuf::Arena* arena);
+  FocusMetersResponse(::google::protobuf::Arena* arena, const FocusMetersResponse& from);
+  FocusMetersResponse(::google::protobuf::Arena* arena, FocusMetersResponse&& from) noexcept
+      : FocusMetersResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFocusDistanceMFieldNumber = 1,
+  };
+  // float focus_distance_m = 1;
+  void clear_focus_distance_m() ;
+  float focus_distance_m() const;
+  void set_focus_distance_m(float value);
+
+  private:
+  float _internal_focus_distance_m() const;
+  void _internal_set_focus_distance_m(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusMetersResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusMetersResponse& from_msg);
+    float focus_distance_m_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusInStepResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusInStepResponse) */ {
+ public:
+  inline FocusInStepResponse() : FocusInStepResponse(nullptr) {}
+  ~FocusInStepResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusInStepResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusInStepResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusInStepResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusInStepResponse(const FocusInStepResponse& from) : FocusInStepResponse(nullptr, from) {}
+  inline FocusInStepResponse(FocusInStepResponse&& from) noexcept
+      : FocusInStepResponse(nullptr, std::move(from)) {}
+  inline FocusInStepResponse& operator=(const FocusInStepResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusInStepResponse& operator=(FocusInStepResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusInStepResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusInStepResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusInStepResponse*>(
+        &_FocusInStepResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 63;
+  friend void swap(FocusInStepResponse& a, FocusInStepResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusInStepResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusInStepResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusInStepResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusInStepResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusInStepResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusInStepResponse& from) { FocusInStepResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusInStepResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusInStepResponse"; }
+
+ protected:
+  explicit FocusInStepResponse(::google::protobuf::Arena* arena);
+  FocusInStepResponse(::google::protobuf::Arena* arena, const FocusInStepResponse& from);
+  FocusInStepResponse(::google::protobuf::Arena* arena, FocusInStepResponse&& from) noexcept
+      : FocusInStepResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusInStepResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusInStepResponse& from_msg);
+    ::int32_t reserved_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusInStartResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusInStartResponse) */ {
+ public:
+  inline FocusInStartResponse() : FocusInStartResponse(nullptr) {}
+  ~FocusInStartResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusInStartResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusInStartResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusInStartResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusInStartResponse(const FocusInStartResponse& from) : FocusInStartResponse(nullptr, from) {}
+  inline FocusInStartResponse(FocusInStartResponse&& from) noexcept
+      : FocusInStartResponse(nullptr, std::move(from)) {}
+  inline FocusInStartResponse& operator=(const FocusInStartResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusInStartResponse& operator=(FocusInStartResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusInStartResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusInStartResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusInStartResponse*>(
+        &_FocusInStartResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 71;
+  friend void swap(FocusInStartResponse& a, FocusInStartResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusInStartResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusInStartResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusInStartResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusInStartResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusInStartResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusInStartResponse& from) { FocusInStartResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusInStartResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusInStartResponse"; }
+
+ protected:
+  explicit FocusInStartResponse(::google::protobuf::Arena* arena);
+  FocusInStartResponse(::google::protobuf::Arena* arena, const FocusInStartResponse& from);
+  FocusInStartResponse(::google::protobuf::Arena* arena, FocusInStartResponse&& from) noexcept
+      : FocusInStartResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusInStartResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusInStartResponse& from_msg);
+    ::int32_t reserved_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusAutoSingleResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusAutoSingleResponse) */ {
+ public:
+  inline FocusAutoSingleResponse() : FocusAutoSingleResponse(nullptr) {}
+  ~FocusAutoSingleResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusAutoSingleResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusAutoSingleResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusAutoSingleResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusAutoSingleResponse(const FocusAutoSingleResponse& from) : FocusAutoSingleResponse(nullptr, from) {}
+  inline FocusAutoSingleResponse(FocusAutoSingleResponse&& from) noexcept
+      : FocusAutoSingleResponse(nullptr, std::move(from)) {}
+  inline FocusAutoSingleResponse& operator=(const FocusAutoSingleResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusAutoSingleResponse& operator=(FocusAutoSingleResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusAutoSingleResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusAutoSingleResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusAutoSingleResponse*>(
+        &_FocusAutoSingleResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 95;
+  friend void swap(FocusAutoSingleResponse& a, FocusAutoSingleResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusAutoSingleResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusAutoSingleResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusAutoSingleResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusAutoSingleResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusAutoSingleResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusAutoSingleResponse& from) { FocusAutoSingleResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusAutoSingleResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusAutoSingleResponse"; }
+
+ protected:
+  explicit FocusAutoSingleResponse(::google::protobuf::Arena* arena);
+  FocusAutoSingleResponse(::google::protobuf::Arena* arena, const FocusAutoSingleResponse& from);
+  FocusAutoSingleResponse(::google::protobuf::Arena* arena, FocusAutoSingleResponse&& from) noexcept
+      : FocusAutoSingleResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusAutoSingleResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusAutoSingleResponse& from_msg);
+    ::int32_t reserved_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusAutoResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusAutoResponse) */ {
+ public:
+  inline FocusAutoResponse() : FocusAutoResponse(nullptr) {}
+  ~FocusAutoResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusAutoResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusAutoResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusAutoResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusAutoResponse(const FocusAutoResponse& from) : FocusAutoResponse(nullptr, from) {}
+  inline FocusAutoResponse(FocusAutoResponse&& from) noexcept
+      : FocusAutoResponse(nullptr, std::move(from)) {}
+  inline FocusAutoResponse& operator=(const FocusAutoResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusAutoResponse& operator=(FocusAutoResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusAutoResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusAutoResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusAutoResponse*>(
+        &_FocusAutoResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 91;
+  friend void swap(FocusAutoResponse& a, FocusAutoResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusAutoResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusAutoResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusAutoResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusAutoResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusAutoResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusAutoResponse& from) { FocusAutoResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusAutoResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusAutoResponse"; }
+
+ protected:
+  explicit FocusAutoResponse(::google::protobuf::Arena* arena);
+  FocusAutoResponse(::google::protobuf::Arena* arena, const FocusAutoResponse& from);
+  FocusAutoResponse(::google::protobuf::Arena* arena, FocusAutoResponse&& from) noexcept
+      : FocusAutoResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusAutoResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusAutoResponse& from_msg);
+    ::int32_t reserved_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class FocusAutoContinuousResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.FocusAutoContinuousResponse) */ {
+ public:
+  inline FocusAutoContinuousResponse() : FocusAutoContinuousResponse(nullptr) {}
+  ~FocusAutoContinuousResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(FocusAutoContinuousResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FocusAutoContinuousResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FocusAutoContinuousResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline FocusAutoContinuousResponse(const FocusAutoContinuousResponse& from) : FocusAutoContinuousResponse(nullptr, from) {}
+  inline FocusAutoContinuousResponse(FocusAutoContinuousResponse&& from) noexcept
+      : FocusAutoContinuousResponse(nullptr, std::move(from)) {}
+  inline FocusAutoContinuousResponse& operator=(const FocusAutoContinuousResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FocusAutoContinuousResponse& operator=(FocusAutoContinuousResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FocusAutoContinuousResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FocusAutoContinuousResponse* internal_default_instance() {
+    return reinterpret_cast<const FocusAutoContinuousResponse*>(
+        &_FocusAutoContinuousResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 99;
+  friend void swap(FocusAutoContinuousResponse& a, FocusAutoContinuousResponse& b) { a.Swap(&b); }
+  inline void Swap(FocusAutoContinuousResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FocusAutoContinuousResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FocusAutoContinuousResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FocusAutoContinuousResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusAutoContinuousResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FocusAutoContinuousResponse& from) { FocusAutoContinuousResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FocusAutoContinuousResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.FocusAutoContinuousResponse"; }
+
+ protected:
+  explicit FocusAutoContinuousResponse(::google::protobuf::Arena* arena);
+  FocusAutoContinuousResponse(::google::protobuf::Arena* arena, const FocusAutoContinuousResponse& from);
+  FocusAutoContinuousResponse(::google::protobuf::Arena* arena, FocusAutoContinuousResponse&& from) noexcept
+      : FocusAutoContinuousResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReservedFieldNumber = 1,
+  };
+  // int32 reserved = 1;
+  void clear_reserved() ;
+  ::int32_t reserved() const;
+  void set_reserved(::int32_t value);
+
+  private:
+  ::int32_t _internal_reserved() const;
+  void _internal_set_reserved(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.FocusAutoContinuousResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FocusAutoContinuousResponse& from_msg);
+    ::int32_t reserved_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class CaptureStatusResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.CaptureStatusResponse) */ {
@@ -11644,7 +17044,7 @@ class CaptureStatus final
     return reinterpret_cast<const CaptureStatus*>(
         &_CaptureStatus_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 69;
+  static constexpr int kIndexInFileMessages = 109;
   friend void swap(CaptureStatus& a, CaptureStatus& b) { a.Swap(&b); }
   inline void Swap(CaptureStatus* other) {
     if (other == this) return;
@@ -11935,7 +17335,7 @@ class CameraServerResult final
     return reinterpret_cast<const CameraServerResult*>(
         &_CameraServerResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 67;
+  static constexpr int kIndexInFileMessages = 107;
   friend void swap(CameraServerResult& a, CameraServerResult& b) { a.Swap(&b); }
   inline void Swap(CameraServerResult* other) {
     if (other == this) return;
@@ -12170,7 +17570,7 @@ class TrackingRectangleCommandResponse final
     return reinterpret_cast<const TrackingRectangleCommandResponse*>(
         &_TrackingRectangleCommandResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 79;
+  static constexpr int kIndexInFileMessages = 119;
   friend void swap(TrackingRectangleCommandResponse& a, TrackingRectangleCommandResponse& b) { a.Swap(&b); }
   inline void Swap(TrackingRectangleCommandResponse* other) {
     if (other == this) return;
@@ -12367,7 +17767,7 @@ class TrackingPointCommandResponse final
     return reinterpret_cast<const TrackingPointCommandResponse*>(
         &_TrackingPointCommandResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 77;
+  static constexpr int kIndexInFileMessages = 117;
   friend void swap(TrackingPointCommandResponse& a, TrackingPointCommandResponse& b) { a.Swap(&b); }
   inline void Swap(TrackingPointCommandResponse* other) {
     if (other == this) return;
@@ -12564,7 +17964,7 @@ class SetZoomFactorResponse final
     return reinterpret_cast<const SetZoomFactorResponse*>(
         &_SetZoomFactorResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 93;
+  static constexpr int kIndexInFileMessages = 133;
   friend void swap(SetZoomFactorResponse& a, SetZoomFactorResponse& b) { a.Swap(&b); }
   inline void Swap(SetZoomFactorResponse* other) {
     if (other == this) return;
@@ -13155,7 +18555,7 @@ class SetTrackingRectangleStatusRequest final
     return reinterpret_cast<const SetTrackingRectangleStatusRequest*>(
         &_SetTrackingRectangleStatusRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 72;
+  static constexpr int kIndexInFileMessages = 112;
   friend void swap(SetTrackingRectangleStatusRequest& a, SetTrackingRectangleStatusRequest& b) { a.Swap(&b); }
   inline void Swap(SetTrackingRectangleStatusRequest* other) {
     if (other == this) return;
@@ -13352,7 +18752,7 @@ class SetTrackingPointStatusRequest final
     return reinterpret_cast<const SetTrackingPointStatusRequest*>(
         &_SetTrackingPointStatusRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 70;
+  static constexpr int kIndexInFileMessages = 110;
   friend void swap(SetTrackingPointStatusRequest& a, SetTrackingPointStatusRequest& b) { a.Swap(&b); }
   inline void Swap(SetTrackingPointStatusRequest* other) {
     if (other == this) return;
@@ -13549,7 +18949,7 @@ class SetPositionResponse final
     return reinterpret_cast<const SetPositionResponse*>(
         &_SetPositionResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 89;
+  static constexpr int kIndexInFileMessages = 129;
   friend void swap(SetPositionResponse& a, SetPositionResponse& b) { a.Swap(&b); }
   inline void Swap(SetPositionResponse* other) {
     if (other == this) return;
@@ -13746,7 +19146,7 @@ class SetPositionRequest final
     return reinterpret_cast<const SetPositionRequest*>(
         &_SetPositionRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 88;
+  static constexpr int kIndexInFileMessages = 128;
   friend void swap(SetPositionRequest& a, SetPositionRequest& b) { a.Swap(&b); }
   inline void Swap(SetPositionRequest* other) {
     if (other == this) return;
@@ -14534,7 +19934,7 @@ class SetFieldOfViewResponse final
     return reinterpret_cast<const SetFieldOfViewResponse*>(
         &_SetFieldOfViewResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 95;
+  static constexpr int kIndexInFileMessages = 135;
   friend void swap(SetFieldOfViewResponse& a, SetFieldOfViewResponse& b) { a.Swap(&b); }
   inline void Swap(SetFieldOfViewResponse* other) {
     if (other == this) return;
@@ -14731,7 +20131,7 @@ class SetAttitudeQuaternionResponse final
     return reinterpret_cast<const SetAttitudeQuaternionResponse*>(
         &_SetAttitudeQuaternionResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 91;
+  static constexpr int kIndexInFileMessages = 131;
   friend void swap(SetAttitudeQuaternionResponse& a, SetAttitudeQuaternionResponse& b) { a.Swap(&b); }
   inline void Swap(SetAttitudeQuaternionResponse* other) {
     if (other == this) return;
@@ -14928,7 +20328,7 @@ class SetAttitudeQuaternionRequest final
     return reinterpret_cast<const SetAttitudeQuaternionRequest*>(
         &_SetAttitudeQuaternionRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 90;
+  static constexpr int kIndexInFileMessages = 130;
   friend void swap(SetAttitudeQuaternionRequest& a, SetAttitudeQuaternionRequest& b) { a.Swap(&b); }
   inline void Swap(SetAttitudeQuaternionRequest* other) {
     if (other == this) return;
@@ -15913,7 +21313,7 @@ class RespondTrackingRectangleCommandResponse final
     return reinterpret_cast<const RespondTrackingRectangleCommandResponse*>(
         &_RespondTrackingRectangleCommandResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 85;
+  static constexpr int kIndexInFileMessages = 125;
   friend void swap(RespondTrackingRectangleCommandResponse& a, RespondTrackingRectangleCommandResponse& b) { a.Swap(&b); }
   inline void Swap(RespondTrackingRectangleCommandResponse* other) {
     if (other == this) return;
@@ -16110,7 +21510,7 @@ class RespondTrackingPointCommandResponse final
     return reinterpret_cast<const RespondTrackingPointCommandResponse*>(
         &_RespondTrackingPointCommandResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 83;
+  static constexpr int kIndexInFileMessages = 123;
   friend void swap(RespondTrackingPointCommandResponse& a, RespondTrackingPointCommandResponse& b) { a.Swap(&b); }
   inline void Swap(RespondTrackingPointCommandResponse* other) {
     if (other == this) return;
@@ -16307,7 +21707,7 @@ class RespondTrackingOffCommandResponse final
     return reinterpret_cast<const RespondTrackingOffCommandResponse*>(
         &_RespondTrackingOffCommandResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 87;
+  static constexpr int kIndexInFileMessages = 127;
   friend void swap(RespondTrackingOffCommandResponse& a, RespondTrackingOffCommandResponse& b) { a.Swap(&b); }
   inline void Swap(RespondTrackingOffCommandResponse* other) {
     if (other == this) return;
@@ -18426,6 +23826,1976 @@ class RespondFormatStorageResponse final
 };
 // -------------------------------------------------------------------
 
+class RespondFocusStopResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusStopResponse) */ {
+ public:
+  inline RespondFocusStopResponse() : RespondFocusStopResponse(nullptr) {}
+  ~RespondFocusStopResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusStopResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusStopResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusStopResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusStopResponse(const RespondFocusStopResponse& from) : RespondFocusStopResponse(nullptr, from) {}
+  inline RespondFocusStopResponse(RespondFocusStopResponse&& from) noexcept
+      : RespondFocusStopResponse(nullptr, std::move(from)) {}
+  inline RespondFocusStopResponse& operator=(const RespondFocusStopResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusStopResponse& operator=(RespondFocusStopResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusStopResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusStopResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusStopResponse*>(
+        &_RespondFocusStopResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 81;
+  friend void swap(RespondFocusStopResponse& a, RespondFocusStopResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusStopResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusStopResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusStopResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusStopResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusStopResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusStopResponse& from) { RespondFocusStopResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusStopResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusStopResponse"; }
+
+ protected:
+  explicit RespondFocusStopResponse(::google::protobuf::Arena* arena);
+  RespondFocusStopResponse(::google::protobuf::Arena* arena, const RespondFocusStopResponse& from);
+  RespondFocusStopResponse(::google::protobuf::Arena* arena, RespondFocusStopResponse&& from) noexcept
+      : RespondFocusStopResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusStopResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusStopResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusRangeResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusRangeResponse) */ {
+ public:
+  inline RespondFocusRangeResponse() : RespondFocusRangeResponse(nullptr) {}
+  ~RespondFocusRangeResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusRangeResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusRangeResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusRangeResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusRangeResponse(const RespondFocusRangeResponse& from) : RespondFocusRangeResponse(nullptr, from) {}
+  inline RespondFocusRangeResponse(RespondFocusRangeResponse&& from) noexcept
+      : RespondFocusRangeResponse(nullptr, std::move(from)) {}
+  inline RespondFocusRangeResponse& operator=(const RespondFocusRangeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusRangeResponse& operator=(RespondFocusRangeResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusRangeResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusRangeResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusRangeResponse*>(
+        &_RespondFocusRangeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 85;
+  friend void swap(RespondFocusRangeResponse& a, RespondFocusRangeResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusRangeResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusRangeResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusRangeResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusRangeResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusRangeResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusRangeResponse& from) { RespondFocusRangeResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusRangeResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusRangeResponse"; }
+
+ protected:
+  explicit RespondFocusRangeResponse(::google::protobuf::Arena* arena);
+  RespondFocusRangeResponse(::google::protobuf::Arena* arena, const RespondFocusRangeResponse& from);
+  RespondFocusRangeResponse(::google::protobuf::Arena* arena, RespondFocusRangeResponse&& from) noexcept
+      : RespondFocusRangeResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusRangeResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusRangeResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusOutStepResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusOutStepResponse) */ {
+ public:
+  inline RespondFocusOutStepResponse() : RespondFocusOutStepResponse(nullptr) {}
+  ~RespondFocusOutStepResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusOutStepResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusOutStepResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusOutStepResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusOutStepResponse(const RespondFocusOutStepResponse& from) : RespondFocusOutStepResponse(nullptr, from) {}
+  inline RespondFocusOutStepResponse(RespondFocusOutStepResponse&& from) noexcept
+      : RespondFocusOutStepResponse(nullptr, std::move(from)) {}
+  inline RespondFocusOutStepResponse& operator=(const RespondFocusOutStepResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusOutStepResponse& operator=(RespondFocusOutStepResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusOutStepResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusOutStepResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusOutStepResponse*>(
+        &_RespondFocusOutStepResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 69;
+  friend void swap(RespondFocusOutStepResponse& a, RespondFocusOutStepResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusOutStepResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusOutStepResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusOutStepResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusOutStepResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusOutStepResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusOutStepResponse& from) { RespondFocusOutStepResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusOutStepResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusOutStepResponse"; }
+
+ protected:
+  explicit RespondFocusOutStepResponse(::google::protobuf::Arena* arena);
+  RespondFocusOutStepResponse(::google::protobuf::Arena* arena, const RespondFocusOutStepResponse& from);
+  RespondFocusOutStepResponse(::google::protobuf::Arena* arena, RespondFocusOutStepResponse&& from) noexcept
+      : RespondFocusOutStepResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusOutStepResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusOutStepResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusOutStartResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusOutStartResponse) */ {
+ public:
+  inline RespondFocusOutStartResponse() : RespondFocusOutStartResponse(nullptr) {}
+  ~RespondFocusOutStartResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusOutStartResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusOutStartResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusOutStartResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusOutStartResponse(const RespondFocusOutStartResponse& from) : RespondFocusOutStartResponse(nullptr, from) {}
+  inline RespondFocusOutStartResponse(RespondFocusOutStartResponse&& from) noexcept
+      : RespondFocusOutStartResponse(nullptr, std::move(from)) {}
+  inline RespondFocusOutStartResponse& operator=(const RespondFocusOutStartResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusOutStartResponse& operator=(RespondFocusOutStartResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusOutStartResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusOutStartResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusOutStartResponse*>(
+        &_RespondFocusOutStartResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 77;
+  friend void swap(RespondFocusOutStartResponse& a, RespondFocusOutStartResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusOutStartResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusOutStartResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusOutStartResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusOutStartResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusOutStartResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusOutStartResponse& from) { RespondFocusOutStartResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusOutStartResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusOutStartResponse"; }
+
+ protected:
+  explicit RespondFocusOutStartResponse(::google::protobuf::Arena* arena);
+  RespondFocusOutStartResponse(::google::protobuf::Arena* arena, const RespondFocusOutStartResponse& from);
+  RespondFocusOutStartResponse(::google::protobuf::Arena* arena, RespondFocusOutStartResponse&& from) noexcept
+      : RespondFocusOutStartResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusOutStartResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusOutStartResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusMetersResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusMetersResponse) */ {
+ public:
+  inline RespondFocusMetersResponse() : RespondFocusMetersResponse(nullptr) {}
+  ~RespondFocusMetersResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusMetersResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusMetersResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusMetersResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusMetersResponse(const RespondFocusMetersResponse& from) : RespondFocusMetersResponse(nullptr, from) {}
+  inline RespondFocusMetersResponse(RespondFocusMetersResponse&& from) noexcept
+      : RespondFocusMetersResponse(nullptr, std::move(from)) {}
+  inline RespondFocusMetersResponse& operator=(const RespondFocusMetersResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusMetersResponse& operator=(RespondFocusMetersResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusMetersResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusMetersResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusMetersResponse*>(
+        &_RespondFocusMetersResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 89;
+  friend void swap(RespondFocusMetersResponse& a, RespondFocusMetersResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusMetersResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusMetersResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusMetersResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusMetersResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusMetersResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusMetersResponse& from) { RespondFocusMetersResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusMetersResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusMetersResponse"; }
+
+ protected:
+  explicit RespondFocusMetersResponse(::google::protobuf::Arena* arena);
+  RespondFocusMetersResponse(::google::protobuf::Arena* arena, const RespondFocusMetersResponse& from);
+  RespondFocusMetersResponse(::google::protobuf::Arena* arena, RespondFocusMetersResponse&& from) noexcept
+      : RespondFocusMetersResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusMetersResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusMetersResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusInStepResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusInStepResponse) */ {
+ public:
+  inline RespondFocusInStepResponse() : RespondFocusInStepResponse(nullptr) {}
+  ~RespondFocusInStepResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusInStepResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusInStepResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusInStepResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusInStepResponse(const RespondFocusInStepResponse& from) : RespondFocusInStepResponse(nullptr, from) {}
+  inline RespondFocusInStepResponse(RespondFocusInStepResponse&& from) noexcept
+      : RespondFocusInStepResponse(nullptr, std::move(from)) {}
+  inline RespondFocusInStepResponse& operator=(const RespondFocusInStepResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusInStepResponse& operator=(RespondFocusInStepResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusInStepResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusInStepResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusInStepResponse*>(
+        &_RespondFocusInStepResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 65;
+  friend void swap(RespondFocusInStepResponse& a, RespondFocusInStepResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusInStepResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusInStepResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusInStepResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusInStepResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusInStepResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusInStepResponse& from) { RespondFocusInStepResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusInStepResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusInStepResponse"; }
+
+ protected:
+  explicit RespondFocusInStepResponse(::google::protobuf::Arena* arena);
+  RespondFocusInStepResponse(::google::protobuf::Arena* arena, const RespondFocusInStepResponse& from);
+  RespondFocusInStepResponse(::google::protobuf::Arena* arena, RespondFocusInStepResponse&& from) noexcept
+      : RespondFocusInStepResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusInStepResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusInStepResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusInStartResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusInStartResponse) */ {
+ public:
+  inline RespondFocusInStartResponse() : RespondFocusInStartResponse(nullptr) {}
+  ~RespondFocusInStartResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusInStartResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusInStartResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusInStartResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusInStartResponse(const RespondFocusInStartResponse& from) : RespondFocusInStartResponse(nullptr, from) {}
+  inline RespondFocusInStartResponse(RespondFocusInStartResponse&& from) noexcept
+      : RespondFocusInStartResponse(nullptr, std::move(from)) {}
+  inline RespondFocusInStartResponse& operator=(const RespondFocusInStartResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusInStartResponse& operator=(RespondFocusInStartResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusInStartResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusInStartResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusInStartResponse*>(
+        &_RespondFocusInStartResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 73;
+  friend void swap(RespondFocusInStartResponse& a, RespondFocusInStartResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusInStartResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusInStartResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusInStartResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusInStartResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusInStartResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusInStartResponse& from) { RespondFocusInStartResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusInStartResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusInStartResponse"; }
+
+ protected:
+  explicit RespondFocusInStartResponse(::google::protobuf::Arena* arena);
+  RespondFocusInStartResponse(::google::protobuf::Arena* arena, const RespondFocusInStartResponse& from);
+  RespondFocusInStartResponse(::google::protobuf::Arena* arena, RespondFocusInStartResponse&& from) noexcept
+      : RespondFocusInStartResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusInStartResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusInStartResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusAutoSingleResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse) */ {
+ public:
+  inline RespondFocusAutoSingleResponse() : RespondFocusAutoSingleResponse(nullptr) {}
+  ~RespondFocusAutoSingleResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusAutoSingleResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusAutoSingleResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusAutoSingleResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusAutoSingleResponse(const RespondFocusAutoSingleResponse& from) : RespondFocusAutoSingleResponse(nullptr, from) {}
+  inline RespondFocusAutoSingleResponse(RespondFocusAutoSingleResponse&& from) noexcept
+      : RespondFocusAutoSingleResponse(nullptr, std::move(from)) {}
+  inline RespondFocusAutoSingleResponse& operator=(const RespondFocusAutoSingleResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusAutoSingleResponse& operator=(RespondFocusAutoSingleResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusAutoSingleResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusAutoSingleResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusAutoSingleResponse*>(
+        &_RespondFocusAutoSingleResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 97;
+  friend void swap(RespondFocusAutoSingleResponse& a, RespondFocusAutoSingleResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusAutoSingleResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusAutoSingleResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusAutoSingleResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusAutoSingleResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusAutoSingleResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusAutoSingleResponse& from) { RespondFocusAutoSingleResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusAutoSingleResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse"; }
+
+ protected:
+  explicit RespondFocusAutoSingleResponse(::google::protobuf::Arena* arena);
+  RespondFocusAutoSingleResponse(::google::protobuf::Arena* arena, const RespondFocusAutoSingleResponse& from);
+  RespondFocusAutoSingleResponse(::google::protobuf::Arena* arena, RespondFocusAutoSingleResponse&& from) noexcept
+      : RespondFocusAutoSingleResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusAutoSingleResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusAutoResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusAutoResponse) */ {
+ public:
+  inline RespondFocusAutoResponse() : RespondFocusAutoResponse(nullptr) {}
+  ~RespondFocusAutoResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusAutoResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusAutoResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusAutoResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusAutoResponse(const RespondFocusAutoResponse& from) : RespondFocusAutoResponse(nullptr, from) {}
+  inline RespondFocusAutoResponse(RespondFocusAutoResponse&& from) noexcept
+      : RespondFocusAutoResponse(nullptr, std::move(from)) {}
+  inline RespondFocusAutoResponse& operator=(const RespondFocusAutoResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusAutoResponse& operator=(RespondFocusAutoResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusAutoResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusAutoResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusAutoResponse*>(
+        &_RespondFocusAutoResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 93;
+  friend void swap(RespondFocusAutoResponse& a, RespondFocusAutoResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusAutoResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusAutoResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusAutoResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusAutoResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusAutoResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusAutoResponse& from) { RespondFocusAutoResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusAutoResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusAutoResponse"; }
+
+ protected:
+  explicit RespondFocusAutoResponse(::google::protobuf::Arena* arena);
+  RespondFocusAutoResponse(::google::protobuf::Arena* arena, const RespondFocusAutoResponse& from);
+  RespondFocusAutoResponse(::google::protobuf::Arena* arena, RespondFocusAutoResponse&& from) noexcept
+      : RespondFocusAutoResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusAutoResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusAutoResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class RespondFocusAutoContinuousResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse) */ {
+ public:
+  inline RespondFocusAutoContinuousResponse() : RespondFocusAutoContinuousResponse(nullptr) {}
+  ~RespondFocusAutoContinuousResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondFocusAutoContinuousResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondFocusAutoContinuousResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondFocusAutoContinuousResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondFocusAutoContinuousResponse(const RespondFocusAutoContinuousResponse& from) : RespondFocusAutoContinuousResponse(nullptr, from) {}
+  inline RespondFocusAutoContinuousResponse(RespondFocusAutoContinuousResponse&& from) noexcept
+      : RespondFocusAutoContinuousResponse(nullptr, std::move(from)) {}
+  inline RespondFocusAutoContinuousResponse& operator=(const RespondFocusAutoContinuousResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondFocusAutoContinuousResponse& operator=(RespondFocusAutoContinuousResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondFocusAutoContinuousResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondFocusAutoContinuousResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondFocusAutoContinuousResponse*>(
+        &_RespondFocusAutoContinuousResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 101;
+  friend void swap(RespondFocusAutoContinuousResponse& a, RespondFocusAutoContinuousResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondFocusAutoContinuousResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondFocusAutoContinuousResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondFocusAutoContinuousResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondFocusAutoContinuousResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondFocusAutoContinuousResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondFocusAutoContinuousResponse& from) { RespondFocusAutoContinuousResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondFocusAutoContinuousResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse"; }
+
+ protected:
+  explicit RespondFocusAutoContinuousResponse(::google::protobuf::Arena* arena);
+  RespondFocusAutoContinuousResponse(::google::protobuf::Arena* arena, const RespondFocusAutoContinuousResponse& from);
+  RespondFocusAutoContinuousResponse(::google::protobuf::Arena* arena, RespondFocusAutoContinuousResponse&& from) noexcept
+      : RespondFocusAutoContinuousResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCameraServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  bool has_camera_server_result() const;
+  void clear_camera_server_result() ;
+  const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::CameraServerResult* release_camera_server_result();
+  ::mavsdk::rpc::camera_server::CameraServerResult* mutable_camera_server_result();
+  void set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  void unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value);
+  ::mavsdk::rpc::camera_server::CameraServerResult* unsafe_arena_release_camera_server_result();
+
+  private:
+  const ::mavsdk::rpc::camera_server::CameraServerResult& _internal_camera_server_result() const;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondFocusAutoContinuousResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class RespondCaptureStatusResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.RespondCaptureStatusResponse) */ {
@@ -18892,7 +26262,7 @@ class CaptureInfo final
     return reinterpret_cast<const CaptureInfo*>(
         &_CaptureInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 66;
+  static constexpr int kIndexInFileMessages = 106;
   friend void swap(CaptureInfo& a, CaptureInfo& b) { a.Swap(&b); }
   inline void Swap(CaptureInfo* other) {
     if (other == this) return;
@@ -22316,6 +29686,1566 @@ inline void RespondZoomRangeResponse::set_allocated_camera_server_result(::mavsd
 
   _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondZoomRangeResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusInStepRequest
+
+// -------------------------------------------------------------------
+
+// FocusInStepResponse
+
+// int32 reserved = 1;
+inline void FocusInStepResponse::clear_reserved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t FocusInStepResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusInStepResponse.reserved)
+  return _internal_reserved();
+}
+inline void FocusInStepResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusInStepResponse.reserved)
+}
+inline ::int32_t FocusInStepResponse::_internal_reserved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reserved_;
+}
+inline void FocusInStepResponse::_internal_set_reserved(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusInStepRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_in_step_feedback = 1;
+inline void RespondFocusInStepRequest::clear_focus_in_step_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_in_step_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusInStepRequest::focus_in_step_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusInStepRequest.focus_in_step_feedback)
+  return _internal_focus_in_step_feedback();
+}
+inline void RespondFocusInStepRequest::set_focus_in_step_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_in_step_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusInStepRequest.focus_in_step_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusInStepRequest::_internal_focus_in_step_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_in_step_feedback_);
+}
+inline void RespondFocusInStepRequest::_internal_set_focus_in_step_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_in_step_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusInStepResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusInStepResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusInStepResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusInStepResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusInStepResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusInStepResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusInStepResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusInStepResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusInStepResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusInStepResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusInStepResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusInStepResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusInStepResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusInStepResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusInStepResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusInStepResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusOutStepRequest
+
+// -------------------------------------------------------------------
+
+// FocusOutStepResponse
+
+// int32 reserved = 1;
+inline void FocusOutStepResponse::clear_reserved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t FocusOutStepResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusOutStepResponse.reserved)
+  return _internal_reserved();
+}
+inline void FocusOutStepResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusOutStepResponse.reserved)
+}
+inline ::int32_t FocusOutStepResponse::_internal_reserved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reserved_;
+}
+inline void FocusOutStepResponse::_internal_set_reserved(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusOutStepRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_out_step_feedback = 1;
+inline void RespondFocusOutStepRequest::clear_focus_out_step_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_out_step_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusOutStepRequest::focus_out_step_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusOutStepRequest.focus_out_step_feedback)
+  return _internal_focus_out_step_feedback();
+}
+inline void RespondFocusOutStepRequest::set_focus_out_step_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_out_step_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusOutStepRequest.focus_out_step_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusOutStepRequest::_internal_focus_out_step_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_out_step_feedback_);
+}
+inline void RespondFocusOutStepRequest::_internal_set_focus_out_step_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_out_step_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusOutStepResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusOutStepResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusOutStepResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusOutStepResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusOutStepResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusOutStepResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusOutStepResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusOutStepResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusOutStepResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusOutStepResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusOutStepResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusOutStepResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusOutStepResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusOutStepResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusOutStepResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusOutStepResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusInStartRequest
+
+// -------------------------------------------------------------------
+
+// FocusInStartResponse
+
+// int32 reserved = 1;
+inline void FocusInStartResponse::clear_reserved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t FocusInStartResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusInStartResponse.reserved)
+  return _internal_reserved();
+}
+inline void FocusInStartResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusInStartResponse.reserved)
+}
+inline ::int32_t FocusInStartResponse::_internal_reserved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reserved_;
+}
+inline void FocusInStartResponse::_internal_set_reserved(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusInStartRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_in_start_feedback = 1;
+inline void RespondFocusInStartRequest::clear_focus_in_start_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_in_start_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusInStartRequest::focus_in_start_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusInStartRequest.focus_in_start_feedback)
+  return _internal_focus_in_start_feedback();
+}
+inline void RespondFocusInStartRequest::set_focus_in_start_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_in_start_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusInStartRequest.focus_in_start_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusInStartRequest::_internal_focus_in_start_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_in_start_feedback_);
+}
+inline void RespondFocusInStartRequest::_internal_set_focus_in_start_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_in_start_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusInStartResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusInStartResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusInStartResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusInStartResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusInStartResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusInStartResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusInStartResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusInStartResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusInStartResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusInStartResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusInStartResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusInStartResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusInStartResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusInStartResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusInStartResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusInStartResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusOutStartRequest
+
+// -------------------------------------------------------------------
+
+// FocusOutStartResponse
+
+// int32 reserved = 1;
+inline void FocusOutStartResponse::clear_reserved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t FocusOutStartResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusOutStartResponse.reserved)
+  return _internal_reserved();
+}
+inline void FocusOutStartResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusOutStartResponse.reserved)
+}
+inline ::int32_t FocusOutStartResponse::_internal_reserved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reserved_;
+}
+inline void FocusOutStartResponse::_internal_set_reserved(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusOutStartRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_out_start_feedback = 1;
+inline void RespondFocusOutStartRequest::clear_focus_out_start_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_out_start_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusOutStartRequest::focus_out_start_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusOutStartRequest.focus_out_start_feedback)
+  return _internal_focus_out_start_feedback();
+}
+inline void RespondFocusOutStartRequest::set_focus_out_start_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_out_start_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusOutStartRequest.focus_out_start_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusOutStartRequest::_internal_focus_out_start_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_out_start_feedback_);
+}
+inline void RespondFocusOutStartRequest::_internal_set_focus_out_start_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_out_start_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusOutStartResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusOutStartResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusOutStartResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusOutStartResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusOutStartResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusOutStartResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusOutStartResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusOutStartResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusOutStartResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusOutStartResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusOutStartResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusOutStartResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusOutStartResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusOutStartResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusOutStartResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusOutStartResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusStopRequest
+
+// -------------------------------------------------------------------
+
+// FocusStopResponse
+
+// int32 reserved = 1;
+inline void FocusStopResponse::clear_reserved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t FocusStopResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusStopResponse.reserved)
+  return _internal_reserved();
+}
+inline void FocusStopResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusStopResponse.reserved)
+}
+inline ::int32_t FocusStopResponse::_internal_reserved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reserved_;
+}
+inline void FocusStopResponse::_internal_set_reserved(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusStopRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_stop_feedback = 1;
+inline void RespondFocusStopRequest::clear_focus_stop_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_stop_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusStopRequest::focus_stop_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusStopRequest.focus_stop_feedback)
+  return _internal_focus_stop_feedback();
+}
+inline void RespondFocusStopRequest::set_focus_stop_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_stop_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusStopRequest.focus_stop_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusStopRequest::_internal_focus_stop_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_stop_feedback_);
+}
+inline void RespondFocusStopRequest::_internal_set_focus_stop_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_stop_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusStopResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusStopResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusStopResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusStopResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusStopResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusStopResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusStopResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusStopResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusStopResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusStopResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusStopResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusStopResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusStopResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusStopResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusStopResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusStopResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusRangeRequest
+
+// -------------------------------------------------------------------
+
+// FocusRangeResponse
+
+// float focus_distance_m = 1;
+inline void FocusRangeResponse::clear_focus_distance_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_distance_m_ = 0;
+}
+inline float FocusRangeResponse::focus_distance_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusRangeResponse.focus_distance_m)
+  return _internal_focus_distance_m();
+}
+inline void FocusRangeResponse::set_focus_distance_m(float value) {
+  _internal_set_focus_distance_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusRangeResponse.focus_distance_m)
+}
+inline float FocusRangeResponse::_internal_focus_distance_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.focus_distance_m_;
+}
+inline void FocusRangeResponse::_internal_set_focus_distance_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_distance_m_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusRangeRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_range_feedback = 1;
+inline void RespondFocusRangeRequest::clear_focus_range_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_range_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusRangeRequest::focus_range_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusRangeRequest.focus_range_feedback)
+  return _internal_focus_range_feedback();
+}
+inline void RespondFocusRangeRequest::set_focus_range_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_range_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusRangeRequest.focus_range_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusRangeRequest::_internal_focus_range_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_range_feedback_);
+}
+inline void RespondFocusRangeRequest::_internal_set_focus_range_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_range_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusRangeResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusRangeResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusRangeResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusRangeResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusRangeResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusRangeResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusRangeResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusRangeResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusRangeResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusRangeResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusRangeResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusRangeResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusRangeResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusRangeResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusRangeResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusRangeResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusMetersRequest
+
+// -------------------------------------------------------------------
+
+// FocusMetersResponse
+
+// float focus_distance_m = 1;
+inline void FocusMetersResponse::clear_focus_distance_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_distance_m_ = 0;
+}
+inline float FocusMetersResponse::focus_distance_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusMetersResponse.focus_distance_m)
+  return _internal_focus_distance_m();
+}
+inline void FocusMetersResponse::set_focus_distance_m(float value) {
+  _internal_set_focus_distance_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusMetersResponse.focus_distance_m)
+}
+inline float FocusMetersResponse::_internal_focus_distance_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.focus_distance_m_;
+}
+inline void FocusMetersResponse::_internal_set_focus_distance_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_distance_m_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusMetersRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_meters_feedback = 1;
+inline void RespondFocusMetersRequest::clear_focus_meters_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_meters_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusMetersRequest::focus_meters_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusMetersRequest.focus_meters_feedback)
+  return _internal_focus_meters_feedback();
+}
+inline void RespondFocusMetersRequest::set_focus_meters_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_meters_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusMetersRequest.focus_meters_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusMetersRequest::_internal_focus_meters_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_meters_feedback_);
+}
+inline void RespondFocusMetersRequest::_internal_set_focus_meters_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_meters_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusMetersResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusMetersResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusMetersResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusMetersResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusMetersResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusMetersResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusMetersResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusMetersResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusMetersResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusMetersResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusMetersResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusMetersResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusMetersResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusMetersResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusMetersResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusMetersResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusAutoRequest
+
+// -------------------------------------------------------------------
+
+// FocusAutoResponse
+
+// int32 reserved = 1;
+inline void FocusAutoResponse::clear_reserved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t FocusAutoResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusAutoResponse.reserved)
+  return _internal_reserved();
+}
+inline void FocusAutoResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusAutoResponse.reserved)
+}
+inline ::int32_t FocusAutoResponse::_internal_reserved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reserved_;
+}
+inline void FocusAutoResponse::_internal_set_reserved(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusAutoRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_auto_feedback = 1;
+inline void RespondFocusAutoRequest::clear_focus_auto_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_auto_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusAutoRequest::focus_auto_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusAutoRequest.focus_auto_feedback)
+  return _internal_focus_auto_feedback();
+}
+inline void RespondFocusAutoRequest::set_focus_auto_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_auto_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusAutoRequest.focus_auto_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusAutoRequest::_internal_focus_auto_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_auto_feedback_);
+}
+inline void RespondFocusAutoRequest::_internal_set_focus_auto_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_auto_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusAutoResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusAutoResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusAutoResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusAutoResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusAutoResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusAutoResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusAutoResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusAutoResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusAutoResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusAutoResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusAutoResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusAutoResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusAutoSingleRequest
+
+// -------------------------------------------------------------------
+
+// FocusAutoSingleResponse
+
+// int32 reserved = 1;
+inline void FocusAutoSingleResponse::clear_reserved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t FocusAutoSingleResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusAutoSingleResponse.reserved)
+  return _internal_reserved();
+}
+inline void FocusAutoSingleResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusAutoSingleResponse.reserved)
+}
+inline ::int32_t FocusAutoSingleResponse::_internal_reserved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reserved_;
+}
+inline void FocusAutoSingleResponse::_internal_set_reserved(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusAutoSingleRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_auto_single_feedback = 1;
+inline void RespondFocusAutoSingleRequest::clear_focus_auto_single_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_auto_single_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusAutoSingleRequest::focus_auto_single_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest.focus_auto_single_feedback)
+  return _internal_focus_auto_single_feedback();
+}
+inline void RespondFocusAutoSingleRequest::set_focus_auto_single_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_auto_single_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusAutoSingleRequest.focus_auto_single_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusAutoSingleRequest::_internal_focus_auto_single_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_auto_single_feedback_);
+}
+inline void RespondFocusAutoSingleRequest::_internal_set_focus_auto_single_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_auto_single_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusAutoSingleResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusAutoSingleResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusAutoSingleResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusAutoSingleResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusAutoSingleResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusAutoSingleResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoSingleResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoSingleResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoSingleResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoSingleResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusAutoSingleResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusAutoSingleResponse.camera_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeFocusAutoContinuousRequest
+
+// -------------------------------------------------------------------
+
+// FocusAutoContinuousResponse
+
+// int32 reserved = 1;
+inline void FocusAutoContinuousResponse::clear_reserved() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = 0;
+}
+inline ::int32_t FocusAutoContinuousResponse::reserved() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.FocusAutoContinuousResponse.reserved)
+  return _internal_reserved();
+}
+inline void FocusAutoContinuousResponse::set_reserved(::int32_t value) {
+  _internal_set_reserved(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.FocusAutoContinuousResponse.reserved)
+}
+inline ::int32_t FocusAutoContinuousResponse::_internal_reserved() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reserved_;
+}
+inline void FocusAutoContinuousResponse::_internal_set_reserved(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reserved_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusAutoContinuousRequest
+
+// .mavsdk.rpc.camera_server.CameraFeedback focus_auto_continuous_feedback = 1;
+inline void RespondFocusAutoContinuousRequest::clear_focus_auto_continuous_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_auto_continuous_feedback_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusAutoContinuousRequest::focus_auto_continuous_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest.focus_auto_continuous_feedback)
+  return _internal_focus_auto_continuous_feedback();
+}
+inline void RespondFocusAutoContinuousRequest::set_focus_auto_continuous_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  _internal_set_focus_auto_continuous_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.RespondFocusAutoContinuousRequest.focus_auto_continuous_feedback)
+}
+inline ::mavsdk::rpc::camera_server::CameraFeedback RespondFocusAutoContinuousRequest::_internal_focus_auto_continuous_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::camera_server::CameraFeedback>(_impl_.focus_auto_continuous_feedback_);
+}
+inline void RespondFocusAutoContinuousRequest::_internal_set_focus_auto_continuous_feedback(::mavsdk::rpc::camera_server::CameraFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.focus_auto_continuous_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondFocusAutoContinuousResponse
+
+// .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+inline bool RespondFocusAutoContinuousResponse::has_camera_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
+  return value;
+}
+inline void RespondFocusAutoContinuousResponse::clear_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusAutoContinuousResponse::_internal_camera_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& RespondFocusAutoContinuousResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse.camera_server_result)
+  return _internal_camera_server_result();
+}
+inline void RespondFocusAutoContinuousResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
+  }
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse.camera_server_result)
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoContinuousResponse::release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* released = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoContinuousResponse::unsafe_arena_release_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse.camera_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
+  _impl_.camera_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoContinuousResponse::_internal_mutable_camera_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.camera_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::camera_server::CameraServerResult>(GetArena());
+    _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(p);
+  }
+  return _impl_.camera_server_result_;
+}
+inline ::mavsdk::rpc::camera_server::CameraServerResult* RespondFocusAutoContinuousResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse.camera_server_result)
+  return _msg;
+}
+inline void RespondFocusAutoContinuousResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.camera_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.RespondFocusAutoContinuousResponse.camera_server_result)
 }
 
 // -------------------------------------------------------------------

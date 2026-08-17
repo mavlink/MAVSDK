@@ -1477,6 +1477,346 @@ struct ZoomRangeCallbackWrapper {
         }
     }
 };
+struct FocusInStepCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusInStepCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const int32_t value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusOutStepCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusOutStepCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const int32_t value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusInStartCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusInStartCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const int32_t value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusOutStartCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusOutStartCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const int32_t value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusStopCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusStopCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const int32_t value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusRangeCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusRangeCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(F)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const float value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jfloat>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusMetersCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusMetersCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(F)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const float value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jfloat>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusAutoCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusAutoCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const int32_t value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusAutoSingleCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusAutoSingleCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const int32_t value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+struct FocusAutoContinuousCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    FocusAutoContinuousCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const int32_t value
+    ) const {
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(value)
+        );
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
 struct TrackingPointCommandCallbackWrapper {
     GlobalRefHolder callback;
     jmethodID invokeMethod;
@@ -2613,6 +2953,666 @@ JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondZoom
         mavsdk_camera_server_respond_zoom_range(
             reinterpret_cast<mavsdk_camera_server_t>(handle),
             static_cast<mavsdk_camera_server_camera_feedback_t>(zoom_range_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusInStep(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusInStepCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_in_step(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusInStepCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_in_step_handle_t,
+        FocusInStepCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusInStep(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_in_step_handle_t,
+        FocusInStepCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_in_step(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusInStep(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_in_step_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_in_step(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_in_step_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusOutStep(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusOutStepCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_out_step(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusOutStepCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_out_step_handle_t,
+        FocusOutStepCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusOutStep(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_out_step_handle_t,
+        FocusOutStepCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_out_step(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusOutStep(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_out_step_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_out_step(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_out_step_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusInStart(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusInStartCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_in_start(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusInStartCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_in_start_handle_t,
+        FocusInStartCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusInStart(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_in_start_handle_t,
+        FocusInStartCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_in_start(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusInStart(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_in_start_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_in_start(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_in_start_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusOutStart(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusOutStartCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_out_start(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusOutStartCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_out_start_handle_t,
+        FocusOutStartCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusOutStart(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_out_start_handle_t,
+        FocusOutStartCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_out_start(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusOutStart(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_out_start_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_out_start(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_out_start_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusStop(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusStopCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_stop(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusStopCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_stop_handle_t,
+        FocusStopCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusStop(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_stop_handle_t,
+        FocusStopCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_stop(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusStop(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_stop_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_stop(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_stop_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusRange(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusRangeCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_range(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const float value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusRangeCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_range_handle_t,
+        FocusRangeCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusRange(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_range_handle_t,
+        FocusRangeCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_range(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusRange(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_range_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_range(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_range_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusMeters(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusMetersCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_meters(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const float value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusMetersCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_meters_handle_t,
+        FocusMetersCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusMeters(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_meters_handle_t,
+        FocusMetersCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_meters(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusMeters(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_meters_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_meters(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_meters_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusAuto(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusAutoCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_auto(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusAutoCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_auto_handle_t,
+        FocusAutoCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusAuto(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_auto_handle_t,
+        FocusAutoCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_auto(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusAuto(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_auto_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_auto(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_auto_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusAutoSingle(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusAutoSingleCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_auto_single(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusAutoSingleCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_auto_single_handle_t,
+        FocusAutoSingleCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusAutoSingle(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_auto_single_handle_t,
+        FocusAutoSingleCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_auto_single(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusAutoSingle(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_auto_single_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_auto_single(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_auto_single_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_subscribeFocusAutoContinuous(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "CameraServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new FocusAutoContinuousCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_camera_server_subscribe_focus_auto_continuous(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            [](
+               const int32_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<FocusAutoContinuousCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_camera_server_focus_auto_continuous_handle_t,
+        FocusAutoContinuousCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_unsubscribeFocusAutoContinuous(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "CameraServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_camera_server_focus_auto_continuous_handle_t,
+        FocusAutoContinuousCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_camera_server_unsubscribe_focus_auto_continuous(
+        reinterpret_cast<mavsdk_camera_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_camera_1server_NativeCameraServer_respondFocusAutoContinuous(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint focus_auto_continuous_feedback) {
+    if (!requireHandle(env, handle, "CameraServer plugin")) {
+        return {};
+    }
+
+    mavsdk_camera_server_result_t result =
+        mavsdk_camera_server_respond_focus_auto_continuous(
+            reinterpret_cast<mavsdk_camera_server_t>(handle),
+            static_cast<mavsdk_camera_server_camera_feedback_t>(focus_auto_continuous_feedback));
     return static_cast<jint>(result);
 }
 

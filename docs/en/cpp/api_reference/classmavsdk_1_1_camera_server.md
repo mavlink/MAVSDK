@@ -65,6 +65,26 @@ std::function< void(int32_t)> [ZoomStopCallback](#classmavsdk_1_1_camera_server_
 [Handle](classmavsdk_1_1_handle.md)< int32_t > [ZoomStopHandle](#classmavsdk_1_1_camera_server_1a8bb9a99dfb5089332be6241230d54d34) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_zoom_stop.
 std::function< void(float)> [ZoomRangeCallback](#classmavsdk_1_1_camera_server_1aa23f7ca9c7bf5eee8a12846743bed3a2) | Callback type for subscribe_zoom_range.
 [Handle](classmavsdk_1_1_handle.md)< float > [ZoomRangeHandle](#classmavsdk_1_1_camera_server_1a37067e1804927f01921079dfa1e133c2) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_zoom_range.
+std::function< void(int32_t)> [FocusInStepCallback](#classmavsdk_1_1_camera_server_1a8f25d1eb4d11c29957033f4faf5b6c35) | Callback type for subscribe_focus_in_step.
+[Handle](classmavsdk_1_1_handle.md)< int32_t > [FocusInStepHandle](#classmavsdk_1_1_camera_server_1a24886394f39293a65facdcb118bb620d) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_in_step.
+std::function< void(int32_t)> [FocusOutStepCallback](#classmavsdk_1_1_camera_server_1ac74618e43c6759ad0c8492e56051ed03) | Callback type for subscribe_focus_out_step.
+[Handle](classmavsdk_1_1_handle.md)< int32_t > [FocusOutStepHandle](#classmavsdk_1_1_camera_server_1a32c13ec9701bbb79f5174740447fadf0) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_out_step.
+std::function< void(int32_t)> [FocusInStartCallback](#classmavsdk_1_1_camera_server_1a7defa232336b6dd9aedfab9be70b3c57) | Callback type for subscribe_focus_in_start.
+[Handle](classmavsdk_1_1_handle.md)< int32_t > [FocusInStartHandle](#classmavsdk_1_1_camera_server_1a00723c0fbd851504f988bfb965441803) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_in_start.
+std::function< void(int32_t)> [FocusOutStartCallback](#classmavsdk_1_1_camera_server_1aef4c0f7c2c304c2684e3933cee3a6b68) | Callback type for subscribe_focus_out_start.
+[Handle](classmavsdk_1_1_handle.md)< int32_t > [FocusOutStartHandle](#classmavsdk_1_1_camera_server_1a0caf928df97b7f60b62875be222e7782) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_out_start.
+std::function< void(int32_t)> [FocusStopCallback](#classmavsdk_1_1_camera_server_1a1ee6b49a2cb9c9c6668500edc8e308ae) | Callback type for subscribe_focus_stop.
+[Handle](classmavsdk_1_1_handle.md)< int32_t > [FocusStopHandle](#classmavsdk_1_1_camera_server_1afe0020f3ecf00b001192d663ed5b4597) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_stop.
+std::function< void(float)> [FocusRangeCallback](#classmavsdk_1_1_camera_server_1aa71fb42ea5134a898608162aab9085fb) | Callback type for subscribe_focus_range.
+[Handle](classmavsdk_1_1_handle.md)< float > [FocusRangeHandle](#classmavsdk_1_1_camera_server_1a1f3403018959b69085becff44d8b4f3d) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_range.
+std::function< void(float)> [FocusMetersCallback](#classmavsdk_1_1_camera_server_1a51a65ddbb6561ed0d67ed887fd12daad) | Callback type for subscribe_focus_meters.
+[Handle](classmavsdk_1_1_handle.md)< float > [FocusMetersHandle](#classmavsdk_1_1_camera_server_1a8217145143dbc85de0b930bcd2fe9340) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_meters.
+std::function< void(int32_t)> [FocusAutoCallback](#classmavsdk_1_1_camera_server_1ada341a56d8b2a06aa6e6c104c2e82162) | Callback type for subscribe_focus_auto.
+[Handle](classmavsdk_1_1_handle.md)< int32_t > [FocusAutoHandle](#classmavsdk_1_1_camera_server_1a8c46846f1c66f830fa741bee4d820800) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_auto.
+std::function< void(int32_t)> [FocusAutoSingleCallback](#classmavsdk_1_1_camera_server_1adf4ff37df9583d911329dbd29a41aa9a) | Callback type for subscribe_focus_auto_single.
+[Handle](classmavsdk_1_1_handle.md)< int32_t > [FocusAutoSingleHandle](#classmavsdk_1_1_camera_server_1a2a2feb660ba5ffdd97dac15602651660) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_auto_single.
+std::function< void(int32_t)> [FocusAutoContinuousCallback](#classmavsdk_1_1_camera_server_1a3a93f6e83e7041b3c2590dd09e297143) | Callback type for subscribe_focus_auto_continuous.
+[Handle](classmavsdk_1_1_handle.md)< int32_t > [FocusAutoContinuousHandle](#classmavsdk_1_1_camera_server_1acdb550989715c0966b9fc4c2ee2b7ae2) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_auto_continuous.
 std::function< void([TrackPoint](structmavsdk_1_1_camera_server_1_1_track_point.md))> [TrackingPointCommandCallback](#classmavsdk_1_1_camera_server_1afcb7cf46d38b362562653e9648191ef4) | Callback type for subscribe_tracking_point_command.
 [Handle](classmavsdk_1_1_handle.md)< [TrackPoint](structmavsdk_1_1_camera_server_1_1_track_point.md) > [TrackingPointCommandHandle](#classmavsdk_1_1_camera_server_1a38c4148c1c717351865787b1529e9617) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_tracking_point_command.
 std::function< void([TrackRectangle](structmavsdk_1_1_camera_server_1_1_track_rectangle.md))> [TrackingRectangleCommandCallback](#classmavsdk_1_1_camera_server_1aa7541523c37bb4b24246e40deb0e35a6) | Callback type for subscribe_tracking_rectangle_command.
@@ -125,6 +145,36 @@ void | [unsubscribe_zoom_stop](#classmavsdk_1_1_camera_server_1aab7d43df6c39266c
 [ZoomRangeHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a37067e1804927f01921079dfa1e133c2) | [subscribe_zoom_range](#classmavsdk_1_1_camera_server_1a6dc95f635c88749b4e2bbfa07bd5b0fd) (const [ZoomRangeCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa23f7ca9c7bf5eee8a12846743bed3a2) & callback) | Subscribe to zoom range command.
 void | [unsubscribe_zoom_range](#classmavsdk_1_1_camera_server_1a9fc5f5daed094bea620011bce222bb88) ([ZoomRangeHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a37067e1804927f01921079dfa1e133c2) handle) | Unsubscribe from subscribe_zoom_range.
 [Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_zoom_range](#classmavsdk_1_1_camera_server_1a5ea9dd6521f43d91671b0fa1eef6d0f6) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) zoom_range_feedback)const | Respond to zoom range.
+[FocusInStepHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a24886394f39293a65facdcb118bb620d) | [subscribe_focus_in_step](#classmavsdk_1_1_camera_server_1ab71c5ac27c494a23daef45e5806d17f5) (const [FocusInStepCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8f25d1eb4d11c29957033f4faf5b6c35) & callback) | Subscribe to focus in step command.
+void | [unsubscribe_focus_in_step](#classmavsdk_1_1_camera_server_1a75a28c7d2ed7548fd2b77fba0e28f26e) ([FocusInStepHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a24886394f39293a65facdcb118bb620d) handle) | Unsubscribe from subscribe_focus_in_step.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_in_step](#classmavsdk_1_1_camera_server_1a9fdac017089a2e990956da91ea0111e1) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_in_step_feedback)const | Respond to focus in step.
+[FocusOutStepHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a32c13ec9701bbb79f5174740447fadf0) | [subscribe_focus_out_step](#classmavsdk_1_1_camera_server_1a84d79fbcd94cc9c9336c7f02484efae7) (const [FocusOutStepCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1ac74618e43c6759ad0c8492e56051ed03) & callback) | Subscribe to focus out step command.
+void | [unsubscribe_focus_out_step](#classmavsdk_1_1_camera_server_1a50d671c9d2cfc97bc8ead0ab9bccaf22) ([FocusOutStepHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a32c13ec9701bbb79f5174740447fadf0) handle) | Unsubscribe from subscribe_focus_out_step.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_out_step](#classmavsdk_1_1_camera_server_1a71fd8f066fefc4ea3ba66723789fc714) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_out_step_feedback)const | Respond to focus out step.
+[FocusInStartHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a00723c0fbd851504f988bfb965441803) | [subscribe_focus_in_start](#classmavsdk_1_1_camera_server_1aa9f9fe38cbcd2ec2971339a7dfcce096) (const [FocusInStartCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a7defa232336b6dd9aedfab9be70b3c57) & callback) | Subscribe to focus in start command.
+void | [unsubscribe_focus_in_start](#classmavsdk_1_1_camera_server_1a50a4a83f0404d84067791cbe9cfb6669) ([FocusInStartHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a00723c0fbd851504f988bfb965441803) handle) | Unsubscribe from subscribe_focus_in_start.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_in_start](#classmavsdk_1_1_camera_server_1a9301135a5127fd6170b2c5d069ec150a) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_in_start_feedback)const | Respond to focus in start.
+[FocusOutStartHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a0caf928df97b7f60b62875be222e7782) | [subscribe_focus_out_start](#classmavsdk_1_1_camera_server_1a302db58054397888c39ed6e65af3844f) (const [FocusOutStartCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aef4c0f7c2c304c2684e3933cee3a6b68) & callback) | Subscribe to focus out start command.
+void | [unsubscribe_focus_out_start](#classmavsdk_1_1_camera_server_1afaa7672b671d9f43c7594dcae9774817) ([FocusOutStartHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a0caf928df97b7f60b62875be222e7782) handle) | Unsubscribe from subscribe_focus_out_start.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_out_start](#classmavsdk_1_1_camera_server_1ad1e61dc4e61e4537b760653f972216b1) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_out_start_feedback)const | Respond to focus out start.
+[FocusStopHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1afe0020f3ecf00b001192d663ed5b4597) | [subscribe_focus_stop](#classmavsdk_1_1_camera_server_1a29d34a3e62e161577f902c87287168eb) (const [FocusStopCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a1ee6b49a2cb9c9c6668500edc8e308ae) & callback) | Subscribe to focus stop command.
+void | [unsubscribe_focus_stop](#classmavsdk_1_1_camera_server_1a2837fce0fc74e63d8fcb71af13512e63) ([FocusStopHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1afe0020f3ecf00b001192d663ed5b4597) handle) | Unsubscribe from subscribe_focus_stop.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_stop](#classmavsdk_1_1_camera_server_1ace6539aef1ff67d390d596339df68876) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_stop_feedback)const | Respond to focus stop.
+[FocusRangeHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a1f3403018959b69085becff44d8b4f3d) | [subscribe_focus_range](#classmavsdk_1_1_camera_server_1a954fde18d0958a943017e710c01250ef) (const [FocusRangeCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa71fb42ea5134a898608162aab9085fb) & callback) | Subscribe to focus range command.
+void | [unsubscribe_focus_range](#classmavsdk_1_1_camera_server_1ac1410546d1554c0ff9c8aceea5aee47c) ([FocusRangeHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a1f3403018959b69085becff44d8b4f3d) handle) | Unsubscribe from subscribe_focus_range.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_range](#classmavsdk_1_1_camera_server_1a006ccea3e7a10304b35d8281da47d84c) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_range_feedback)const | Respond to focus range.
+[FocusMetersHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8217145143dbc85de0b930bcd2fe9340) | [subscribe_focus_meters](#classmavsdk_1_1_camera_server_1a6906c921dc5319be97c731471428831e) (const [FocusMetersCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a51a65ddbb6561ed0d67ed887fd12daad) & callback) | Subscribe to focus meters command.
+void | [unsubscribe_focus_meters](#classmavsdk_1_1_camera_server_1aac4a0a8594d037bb6e918f624a260b5a) ([FocusMetersHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8217145143dbc85de0b930bcd2fe9340) handle) | Unsubscribe from subscribe_focus_meters.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_meters](#classmavsdk_1_1_camera_server_1a15dc77d217b9795b98f87dc94ca7a1b7) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_meters_feedback)const | Respond to focus meters.
+[FocusAutoHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8c46846f1c66f830fa741bee4d820800) | [subscribe_focus_auto](#classmavsdk_1_1_camera_server_1aa2d43b71296879cb6ceeceb640e9a0f6) (const [FocusAutoCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1ada341a56d8b2a06aa6e6c104c2e82162) & callback) | Subscribe to focus auto command.
+void | [unsubscribe_focus_auto](#classmavsdk_1_1_camera_server_1ad86cdc9bbcf0cb0432891b7478f62616) ([FocusAutoHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8c46846f1c66f830fa741bee4d820800) handle) | Unsubscribe from subscribe_focus_auto.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_auto](#classmavsdk_1_1_camera_server_1a6e979dc4d11946b2bdd664dffd5d57c0) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_auto_feedback)const | Respond to focus auto.
+[FocusAutoSingleHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a2a2feb660ba5ffdd97dac15602651660) | [subscribe_focus_auto_single](#classmavsdk_1_1_camera_server_1ac6f0cd149419c35469ad159d74819f86) (const [FocusAutoSingleCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1adf4ff37df9583d911329dbd29a41aa9a) & callback) | Subscribe to focus auto single command.
+void | [unsubscribe_focus_auto_single](#classmavsdk_1_1_camera_server_1a9496ce8c32aeeb0f8489b7461dd531b2) ([FocusAutoSingleHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a2a2feb660ba5ffdd97dac15602651660) handle) | Unsubscribe from subscribe_focus_auto_single.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_auto_single](#classmavsdk_1_1_camera_server_1a6f50eb26a73efe0f04799277c96e3cce) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_auto_single_feedback)const | Respond to focus auto single.
+[FocusAutoContinuousHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1acdb550989715c0966b9fc4c2ee2b7ae2) | [subscribe_focus_auto_continuous](#classmavsdk_1_1_camera_server_1ac65d749b2c2d4b88244c664048b80e07) (const [FocusAutoContinuousCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a3a93f6e83e7041b3c2590dd09e297143) & callback) | Subscribe to focus auto continuous command.
+void | [unsubscribe_focus_auto_continuous](#classmavsdk_1_1_camera_server_1ad366f0e273483a55ff31931c38565512) ([FocusAutoContinuousHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1acdb550989715c0966b9fc4c2ee2b7ae2) handle) | Unsubscribe from subscribe_focus_auto_continuous.
+[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) | [respond_focus_auto_continuous](#classmavsdk_1_1_camera_server_1a117bfdaead31a6a205bcbb173ecf3ff5) ([CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) focus_auto_continuous_feedback)const | Respond to focus auto continuous.
 void | [set_tracking_rectangle_status](#classmavsdk_1_1_camera_server_1a262b7ec85fee9aa1b83eebd3ffb9abaa) ([TrackRectangle](structmavsdk_1_1_camera_server_1_1_track_rectangle.md) tracked_rectangle)const | Set/update the current rectangle tracking status.
 void | [set_tracking_off_status](#classmavsdk_1_1_camera_server_1a22ba37443a3bc69c826261964949a8d4) () const | Set the current tracking status to off.
 [TrackingPointCommandHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a38c4148c1c717351865787b1529e9617) | [subscribe_tracking_point_command](#classmavsdk_1_1_camera_server_1a474c49eff4fe7a1b707df2c610197b3d) (const [TrackingPointCommandCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1afcb7cf46d38b362562653e9648191ef4) & callback) | Subscribe to incoming tracking point command.
@@ -477,6 +527,206 @@ using mavsdk::CameraServer::ZoomRangeHandle =  Handle<float>
 
 
 [Handle](classmavsdk_1_1_handle.md) type for subscribe_zoom_range.
+
+
+### typedef FocusInStepCallback {#classmavsdk_1_1_camera_server_1a8f25d1eb4d11c29957033f4faf5b6c35}
+
+```cpp
+using mavsdk::CameraServer::FocusInStepCallback =  std::function<void(int32_t)>
+```
+
+
+Callback type for subscribe_focus_in_step.
+
+
+### typedef FocusInStepHandle {#classmavsdk_1_1_camera_server_1a24886394f39293a65facdcb118bb620d}
+
+```cpp
+using mavsdk::CameraServer::FocusInStepHandle =  Handle<int32_t>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_in_step.
+
+
+### typedef FocusOutStepCallback {#classmavsdk_1_1_camera_server_1ac74618e43c6759ad0c8492e56051ed03}
+
+```cpp
+using mavsdk::CameraServer::FocusOutStepCallback =  std::function<void(int32_t)>
+```
+
+
+Callback type for subscribe_focus_out_step.
+
+
+### typedef FocusOutStepHandle {#classmavsdk_1_1_camera_server_1a32c13ec9701bbb79f5174740447fadf0}
+
+```cpp
+using mavsdk::CameraServer::FocusOutStepHandle =  Handle<int32_t>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_out_step.
+
+
+### typedef FocusInStartCallback {#classmavsdk_1_1_camera_server_1a7defa232336b6dd9aedfab9be70b3c57}
+
+```cpp
+using mavsdk::CameraServer::FocusInStartCallback =  std::function<void(int32_t)>
+```
+
+
+Callback type for subscribe_focus_in_start.
+
+
+### typedef FocusInStartHandle {#classmavsdk_1_1_camera_server_1a00723c0fbd851504f988bfb965441803}
+
+```cpp
+using mavsdk::CameraServer::FocusInStartHandle =  Handle<int32_t>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_in_start.
+
+
+### typedef FocusOutStartCallback {#classmavsdk_1_1_camera_server_1aef4c0f7c2c304c2684e3933cee3a6b68}
+
+```cpp
+using mavsdk::CameraServer::FocusOutStartCallback =  std::function<void(int32_t)>
+```
+
+
+Callback type for subscribe_focus_out_start.
+
+
+### typedef FocusOutStartHandle {#classmavsdk_1_1_camera_server_1a0caf928df97b7f60b62875be222e7782}
+
+```cpp
+using mavsdk::CameraServer::FocusOutStartHandle =  Handle<int32_t>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_out_start.
+
+
+### typedef FocusStopCallback {#classmavsdk_1_1_camera_server_1a1ee6b49a2cb9c9c6668500edc8e308ae}
+
+```cpp
+using mavsdk::CameraServer::FocusStopCallback =  std::function<void(int32_t)>
+```
+
+
+Callback type for subscribe_focus_stop.
+
+
+### typedef FocusStopHandle {#classmavsdk_1_1_camera_server_1afe0020f3ecf00b001192d663ed5b4597}
+
+```cpp
+using mavsdk::CameraServer::FocusStopHandle =  Handle<int32_t>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_stop.
+
+
+### typedef FocusRangeCallback {#classmavsdk_1_1_camera_server_1aa71fb42ea5134a898608162aab9085fb}
+
+```cpp
+using mavsdk::CameraServer::FocusRangeCallback =  std::function<void(float)>
+```
+
+
+Callback type for subscribe_focus_range.
+
+
+### typedef FocusRangeHandle {#classmavsdk_1_1_camera_server_1a1f3403018959b69085becff44d8b4f3d}
+
+```cpp
+using mavsdk::CameraServer::FocusRangeHandle =  Handle<float>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_range.
+
+
+### typedef FocusMetersCallback {#classmavsdk_1_1_camera_server_1a51a65ddbb6561ed0d67ed887fd12daad}
+
+```cpp
+using mavsdk::CameraServer::FocusMetersCallback =  std::function<void(float)>
+```
+
+
+Callback type for subscribe_focus_meters.
+
+
+### typedef FocusMetersHandle {#classmavsdk_1_1_camera_server_1a8217145143dbc85de0b930bcd2fe9340}
+
+```cpp
+using mavsdk::CameraServer::FocusMetersHandle =  Handle<float>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_meters.
+
+
+### typedef FocusAutoCallback {#classmavsdk_1_1_camera_server_1ada341a56d8b2a06aa6e6c104c2e82162}
+
+```cpp
+using mavsdk::CameraServer::FocusAutoCallback =  std::function<void(int32_t)>
+```
+
+
+Callback type for subscribe_focus_auto.
+
+
+### typedef FocusAutoHandle {#classmavsdk_1_1_camera_server_1a8c46846f1c66f830fa741bee4d820800}
+
+```cpp
+using mavsdk::CameraServer::FocusAutoHandle =  Handle<int32_t>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_auto.
+
+
+### typedef FocusAutoSingleCallback {#classmavsdk_1_1_camera_server_1adf4ff37df9583d911329dbd29a41aa9a}
+
+```cpp
+using mavsdk::CameraServer::FocusAutoSingleCallback =  std::function<void(int32_t)>
+```
+
+
+Callback type for subscribe_focus_auto_single.
+
+
+### typedef FocusAutoSingleHandle {#classmavsdk_1_1_camera_server_1a2a2feb660ba5ffdd97dac15602651660}
+
+```cpp
+using mavsdk::CameraServer::FocusAutoSingleHandle =  Handle<int32_t>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_auto_single.
+
+
+### typedef FocusAutoContinuousCallback {#classmavsdk_1_1_camera_server_1a3a93f6e83e7041b3c2590dd09e297143}
+
+```cpp
+using mavsdk::CameraServer::FocusAutoContinuousCallback =  std::function<void(int32_t)>
+```
+
+
+Callback type for subscribe_focus_auto_continuous.
+
+
+### typedef FocusAutoContinuousHandle {#classmavsdk_1_1_camera_server_1acdb550989715c0966b9fc4c2ee2b7ae2}
+
+```cpp
+using mavsdk::CameraServer::FocusAutoContinuousHandle =  Handle<int32_t>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_focus_auto_continuous.
 
 
 ### typedef TrackingPointCommandCallback {#classmavsdk_1_1_camera_server_1afcb7cf46d38b362562653e9648191ef4}
@@ -1312,6 +1562,486 @@ This function is blocking.
 **Parameters**
 
 * [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **zoom_range_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_in_step() {#classmavsdk_1_1_camera_server_1ab71c5ac27c494a23daef45e5806d17f5}
+```cpp
+FocusInStepHandle mavsdk::CameraServer::subscribe_focus_in_step(const FocusInStepCallback &callback)
+```
+
+
+Subscribe to focus in step command.
+
+
+**Parameters**
+
+* const [FocusInStepCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8f25d1eb4d11c29957033f4faf5b6c35)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusInStepHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a24886394f39293a65facdcb118bb620d) - 
+
+### unsubscribe_focus_in_step() {#classmavsdk_1_1_camera_server_1a75a28c7d2ed7548fd2b77fba0e28f26e}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_in_step(FocusInStepHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_in_step.
+
+
+**Parameters**
+
+* [FocusInStepHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a24886394f39293a65facdcb118bb620d) **handle** - 
+
+### respond_focus_in_step() {#classmavsdk_1_1_camera_server_1a9fdac017089a2e990956da91ea0111e1}
+```cpp
+Result mavsdk::CameraServer::respond_focus_in_step(CameraFeedback focus_in_step_feedback) const
+```
+
+
+Respond to focus in step.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_in_step_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_out_step() {#classmavsdk_1_1_camera_server_1a84d79fbcd94cc9c9336c7f02484efae7}
+```cpp
+FocusOutStepHandle mavsdk::CameraServer::subscribe_focus_out_step(const FocusOutStepCallback &callback)
+```
+
+
+Subscribe to focus out step command.
+
+
+**Parameters**
+
+* const [FocusOutStepCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1ac74618e43c6759ad0c8492e56051ed03)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusOutStepHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a32c13ec9701bbb79f5174740447fadf0) - 
+
+### unsubscribe_focus_out_step() {#classmavsdk_1_1_camera_server_1a50d671c9d2cfc97bc8ead0ab9bccaf22}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_out_step(FocusOutStepHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_out_step.
+
+
+**Parameters**
+
+* [FocusOutStepHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a32c13ec9701bbb79f5174740447fadf0) **handle** - 
+
+### respond_focus_out_step() {#classmavsdk_1_1_camera_server_1a71fd8f066fefc4ea3ba66723789fc714}
+```cpp
+Result mavsdk::CameraServer::respond_focus_out_step(CameraFeedback focus_out_step_feedback) const
+```
+
+
+Respond to focus out step.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_out_step_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_in_start() {#classmavsdk_1_1_camera_server_1aa9f9fe38cbcd2ec2971339a7dfcce096}
+```cpp
+FocusInStartHandle mavsdk::CameraServer::subscribe_focus_in_start(const FocusInStartCallback &callback)
+```
+
+
+Subscribe to focus in start command.
+
+
+**Parameters**
+
+* const [FocusInStartCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a7defa232336b6dd9aedfab9be70b3c57)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusInStartHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a00723c0fbd851504f988bfb965441803) - 
+
+### unsubscribe_focus_in_start() {#classmavsdk_1_1_camera_server_1a50a4a83f0404d84067791cbe9cfb6669}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_in_start(FocusInStartHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_in_start.
+
+
+**Parameters**
+
+* [FocusInStartHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a00723c0fbd851504f988bfb965441803) **handle** - 
+
+### respond_focus_in_start() {#classmavsdk_1_1_camera_server_1a9301135a5127fd6170b2c5d069ec150a}
+```cpp
+Result mavsdk::CameraServer::respond_focus_in_start(CameraFeedback focus_in_start_feedback) const
+```
+
+
+Respond to focus in start.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_in_start_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_out_start() {#classmavsdk_1_1_camera_server_1a302db58054397888c39ed6e65af3844f}
+```cpp
+FocusOutStartHandle mavsdk::CameraServer::subscribe_focus_out_start(const FocusOutStartCallback &callback)
+```
+
+
+Subscribe to focus out start command.
+
+
+**Parameters**
+
+* const [FocusOutStartCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aef4c0f7c2c304c2684e3933cee3a6b68)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusOutStartHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a0caf928df97b7f60b62875be222e7782) - 
+
+### unsubscribe_focus_out_start() {#classmavsdk_1_1_camera_server_1afaa7672b671d9f43c7594dcae9774817}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_out_start(FocusOutStartHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_out_start.
+
+
+**Parameters**
+
+* [FocusOutStartHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a0caf928df97b7f60b62875be222e7782) **handle** - 
+
+### respond_focus_out_start() {#classmavsdk_1_1_camera_server_1ad1e61dc4e61e4537b760653f972216b1}
+```cpp
+Result mavsdk::CameraServer::respond_focus_out_start(CameraFeedback focus_out_start_feedback) const
+```
+
+
+Respond to focus out start.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_out_start_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_stop() {#classmavsdk_1_1_camera_server_1a29d34a3e62e161577f902c87287168eb}
+```cpp
+FocusStopHandle mavsdk::CameraServer::subscribe_focus_stop(const FocusStopCallback &callback)
+```
+
+
+Subscribe to focus stop command.
+
+
+**Parameters**
+
+* const [FocusStopCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a1ee6b49a2cb9c9c6668500edc8e308ae)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusStopHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1afe0020f3ecf00b001192d663ed5b4597) - 
+
+### unsubscribe_focus_stop() {#classmavsdk_1_1_camera_server_1a2837fce0fc74e63d8fcb71af13512e63}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_stop(FocusStopHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_stop.
+
+
+**Parameters**
+
+* [FocusStopHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1afe0020f3ecf00b001192d663ed5b4597) **handle** - 
+
+### respond_focus_stop() {#classmavsdk_1_1_camera_server_1ace6539aef1ff67d390d596339df68876}
+```cpp
+Result mavsdk::CameraServer::respond_focus_stop(CameraFeedback focus_stop_feedback) const
+```
+
+
+Respond to focus stop.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_stop_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_range() {#classmavsdk_1_1_camera_server_1a954fde18d0958a943017e710c01250ef}
+```cpp
+FocusRangeHandle mavsdk::CameraServer::subscribe_focus_range(const FocusRangeCallback &callback)
+```
+
+
+Subscribe to focus range command.
+
+
+**Parameters**
+
+* const [FocusRangeCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa71fb42ea5134a898608162aab9085fb)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusRangeHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a1f3403018959b69085becff44d8b4f3d) - 
+
+### unsubscribe_focus_range() {#classmavsdk_1_1_camera_server_1ac1410546d1554c0ff9c8aceea5aee47c}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_range(FocusRangeHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_range.
+
+
+**Parameters**
+
+* [FocusRangeHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a1f3403018959b69085becff44d8b4f3d) **handle** - 
+
+### respond_focus_range() {#classmavsdk_1_1_camera_server_1a006ccea3e7a10304b35d8281da47d84c}
+```cpp
+Result mavsdk::CameraServer::respond_focus_range(CameraFeedback focus_range_feedback) const
+```
+
+
+Respond to focus range.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_range_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_meters() {#classmavsdk_1_1_camera_server_1a6906c921dc5319be97c731471428831e}
+```cpp
+FocusMetersHandle mavsdk::CameraServer::subscribe_focus_meters(const FocusMetersCallback &callback)
+```
+
+
+Subscribe to focus meters command.
+
+
+**Parameters**
+
+* const [FocusMetersCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a51a65ddbb6561ed0d67ed887fd12daad)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusMetersHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8217145143dbc85de0b930bcd2fe9340) - 
+
+### unsubscribe_focus_meters() {#classmavsdk_1_1_camera_server_1aac4a0a8594d037bb6e918f624a260b5a}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_meters(FocusMetersHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_meters.
+
+
+**Parameters**
+
+* [FocusMetersHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8217145143dbc85de0b930bcd2fe9340) **handle** - 
+
+### respond_focus_meters() {#classmavsdk_1_1_camera_server_1a15dc77d217b9795b98f87dc94ca7a1b7}
+```cpp
+Result mavsdk::CameraServer::respond_focus_meters(CameraFeedback focus_meters_feedback) const
+```
+
+
+Respond to focus meters.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_meters_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_auto() {#classmavsdk_1_1_camera_server_1aa2d43b71296879cb6ceeceb640e9a0f6}
+```cpp
+FocusAutoHandle mavsdk::CameraServer::subscribe_focus_auto(const FocusAutoCallback &callback)
+```
+
+
+Subscribe to focus auto command.
+
+
+**Parameters**
+
+* const [FocusAutoCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1ada341a56d8b2a06aa6e6c104c2e82162)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusAutoHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8c46846f1c66f830fa741bee4d820800) - 
+
+### unsubscribe_focus_auto() {#classmavsdk_1_1_camera_server_1ad86cdc9bbcf0cb0432891b7478f62616}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_auto(FocusAutoHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_auto.
+
+
+**Parameters**
+
+* [FocusAutoHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a8c46846f1c66f830fa741bee4d820800) **handle** - 
+
+### respond_focus_auto() {#classmavsdk_1_1_camera_server_1a6e979dc4d11946b2bdd664dffd5d57c0}
+```cpp
+Result mavsdk::CameraServer::respond_focus_auto(CameraFeedback focus_auto_feedback) const
+```
+
+
+Respond to focus auto.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_auto_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_auto_single() {#classmavsdk_1_1_camera_server_1ac6f0cd149419c35469ad159d74819f86}
+```cpp
+FocusAutoSingleHandle mavsdk::CameraServer::subscribe_focus_auto_single(const FocusAutoSingleCallback &callback)
+```
+
+
+Subscribe to focus auto single command.
+
+
+**Parameters**
+
+* const [FocusAutoSingleCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1adf4ff37df9583d911329dbd29a41aa9a)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusAutoSingleHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a2a2feb660ba5ffdd97dac15602651660) - 
+
+### unsubscribe_focus_auto_single() {#classmavsdk_1_1_camera_server_1a9496ce8c32aeeb0f8489b7461dd531b2}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_auto_single(FocusAutoSingleHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_auto_single.
+
+
+**Parameters**
+
+* [FocusAutoSingleHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a2a2feb660ba5ffdd97dac15602651660) **handle** - 
+
+### respond_focus_auto_single() {#classmavsdk_1_1_camera_server_1a6f50eb26a73efe0f04799277c96e3cce}
+```cpp
+Result mavsdk::CameraServer::respond_focus_auto_single(CameraFeedback focus_auto_single_feedback) const
+```
+
+
+Respond to focus auto single.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_auto_single_feedback** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1aa625af622ca91165c737cffebfe57f8d) - Result of request.
+
+### subscribe_focus_auto_continuous() {#classmavsdk_1_1_camera_server_1ac65d749b2c2d4b88244c664048b80e07}
+```cpp
+FocusAutoContinuousHandle mavsdk::CameraServer::subscribe_focus_auto_continuous(const FocusAutoContinuousCallback &callback)
+```
+
+
+Subscribe to focus auto continuous command.
+
+
+**Parameters**
+
+* const [FocusAutoContinuousCallback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a3a93f6e83e7041b3c2590dd09e297143)& **callback** - 
+
+**Returns**
+
+&emsp;[FocusAutoContinuousHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1acdb550989715c0966b9fc4c2ee2b7ae2) - 
+
+### unsubscribe_focus_auto_continuous() {#classmavsdk_1_1_camera_server_1ad366f0e273483a55ff31931c38565512}
+```cpp
+void mavsdk::CameraServer::unsubscribe_focus_auto_continuous(FocusAutoContinuousHandle handle)
+```
+
+
+Unsubscribe from subscribe_focus_auto_continuous.
+
+
+**Parameters**
+
+* [FocusAutoContinuousHandle](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1acdb550989715c0966b9fc4c2ee2b7ae2) **handle** - 
+
+### respond_focus_auto_continuous() {#classmavsdk_1_1_camera_server_1a117bfdaead31a6a205bcbb173ecf3ff5}
+```cpp
+Result mavsdk::CameraServer::respond_focus_auto_continuous(CameraFeedback focus_auto_continuous_feedback) const
+```
+
+
+Respond to focus auto continuous.
+
+This function is blocking.
+
+**Parameters**
+
+* [CameraFeedback](classmavsdk_1_1_camera_server.md#classmavsdk_1_1_camera_server_1a088cdcd9da37b84f075d20d5b7458a72) **focus_auto_continuous_feedback** - 
 
 **Returns**
 

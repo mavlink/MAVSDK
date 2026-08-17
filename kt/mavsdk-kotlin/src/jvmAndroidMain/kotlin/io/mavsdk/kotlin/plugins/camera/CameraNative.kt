@@ -637,6 +637,26 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
         }
     }
 
+    override fun focusInStepAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusInStepAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusInStepCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusOutStepAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusOutStepAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusOutStepCallback { result -> callback(result) },
+            )
+        }
+    }
+
     override fun focusInStartAsync(componentId: Int, callback: (Int) -> Unit) {
         withOpen {
             NativeCamera.focusInStartAsync(
@@ -674,6 +694,47 @@ private class CameraNativeImpl(private val handle: Long) : CameraNative {
                 componentId,
                 range,
                 NativeCamera.FocusRangeCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusMetersAsync(componentId: Int, distanceM: Float, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusMetersAsync(
+                handle,
+                componentId,
+                distanceM,
+                NativeCamera.FocusMetersCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusAutoAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusAutoAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusAutoCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusAutoSingleAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusAutoSingleAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusAutoSingleCallback { result -> callback(result) },
+            )
+        }
+    }
+
+    override fun focusAutoContinuousAsync(componentId: Int, callback: (Int) -> Unit) {
+        withOpen {
+            NativeCamera.focusAutoContinuousAsync(
+                handle,
+                componentId,
+                NativeCamera.FocusAutoContinuousCallback { result -> callback(result) },
             )
         }
     }

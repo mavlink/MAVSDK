@@ -2134,6 +2134,74 @@ class Camera:
 
         return result
 
+    def focus_in_step_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
+        """Step focus in."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_in_step callback: {e}")
+
+        cb = FocusInStepCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_focus_in_step_async(
+            self._handle, component_id, cb, None
+        )
+
+    def focus_in_step(self, component_id):
+        """Get focus_in_step (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_focus_in_step(
+            self._handle,
+            component_id,
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"focus_in_step failed: {result}")
+
+        return result
+
+    def focus_out_step_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
+        """Step focus out."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_out_step callback: {e}")
+
+        cb = FocusOutStepCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_focus_out_step_async(
+            self._handle, component_id, cb, None
+        )
+
+    def focus_out_step(self, component_id):
+        """Get focus_out_step (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_focus_out_step(
+            self._handle,
+            component_id,
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"focus_out_step failed: {result}")
+
+        return result
+
     def focus_in_start_async(
         self, component_id, callback: Callable, user_data: Any = None
     ):
@@ -2267,6 +2335,142 @@ class Camera:
 
         return result
 
+    def focus_meters_async(
+        self, component_id, distance_m, callback: Callable, user_data: Any = None
+    ):
+        """Focus at a distance in meters.
+
+        Note that there is no message to get the valid focus range of the camera,
+        so this can only be used for cameras where the range is known."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_meters callback: {e}")
+
+        cb = FocusMetersCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_focus_meters_async(
+            self._handle, component_id, distance_m, cb, None
+        )
+
+    def focus_meters(self, component_id, distance_m):
+        """Get focus_meters (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_focus_meters(
+            self._handle,
+            component_id,
+            distance_m,
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"focus_meters failed: {result}")
+
+        return result
+
+    def focus_auto_async(self, component_id, callback: Callable, user_data: Any = None):
+        """Focus automatically."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_auto callback: {e}")
+
+        cb = FocusAutoCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_focus_auto_async(self._handle, component_id, cb, None)
+
+    def focus_auto(self, component_id):
+        """Get focus_auto (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_focus_auto(
+            self._handle,
+            component_id,
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"focus_auto failed: {result}")
+
+        return result
+
+    def focus_auto_single_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
+        """Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_auto_single callback: {e}")
+
+        cb = FocusAutoSingleCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_focus_auto_single_async(
+            self._handle, component_id, cb, None
+        )
+
+    def focus_auto_single(self, component_id):
+        """Get focus_auto_single (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_focus_auto_single(
+            self._handle,
+            component_id,
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"focus_auto_single failed: {result}")
+
+        return result
+
+    def focus_auto_continuous_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
+        """Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in focus_auto_continuous callback: {e}")
+
+        cb = FocusAutoContinuousCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_focus_auto_continuous_async(
+            self._handle, component_id, cb, None
+        )
+
+    def focus_auto_continuous(self, component_id):
+        """Get focus_auto_continuous (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_focus_auto_continuous(
+            self._handle,
+            component_id,
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"focus_auto_continuous failed: {result}")
+
+        return result
+
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -2317,10 +2521,16 @@ ZoomRangeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 TrackPointCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 TrackRectangleCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 TrackStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusInStepCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusOutStepCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 FocusInStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 FocusOutStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 FocusStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 FocusRangeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusMetersCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusAutoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusAutoSingleCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusAutoContinuousCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_camera_create.argtypes = [ctypes.c_void_p]
@@ -2982,6 +3192,36 @@ _cmavsdk_lib.mavsdk_camera_track_stop.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_camera_track_stop.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_in_step_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusInStepCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_in_step_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_in_step.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_in_step.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_out_step_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusOutStepCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_out_step_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_out_step.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_out_step.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_focus_in_start_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
@@ -3044,3 +3284,65 @@ _cmavsdk_lib.mavsdk_camera_focus_range.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_camera_focus_range.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_meters_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    FocusMetersCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_meters_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_meters.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_meters.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_auto_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusAutoCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_auto_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_auto.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_auto.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_auto_single_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusAutoSingleCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_auto_single_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_auto_single.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_auto_single.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_auto_continuous_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusAutoContinuousCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_auto_continuous_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_auto_continuous.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_auto_continuous.restype = ctypes.c_int

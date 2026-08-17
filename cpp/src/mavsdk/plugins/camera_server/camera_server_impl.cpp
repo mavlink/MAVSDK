@@ -194,6 +194,16 @@ void CameraServerImpl::deinit()
     _zoom_out_start_callbacks.clear();
     _zoom_stop_callbacks.clear();
     _zoom_range_callbacks.clear();
+    _focus_in_step_callbacks.clear();
+    _focus_out_step_callbacks.clear();
+    _focus_in_start_callbacks.clear();
+    _focus_out_start_callbacks.clear();
+    _focus_stop_callbacks.clear();
+    _focus_range_callbacks.clear();
+    _focus_meters_callbacks.clear();
+    _focus_auto_callbacks.clear();
+    _focus_auto_single_callbacks.clear();
+    _focus_auto_continuous_callbacks.clear();
 }
 
 bool CameraServerImpl::is_command_sender_ok(const MavlinkCommandReceiver::CommandLong& command)
@@ -1213,6 +1223,14 @@ CameraServerImpl::send_camera_information(const MavlinkCommandReceiver::CommandL
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM;
     }
 
+    if (!_focus_in_step_callbacks.empty() || !_focus_out_step_callbacks.empty() ||
+        !_focus_in_start_callbacks.empty() || !_focus_out_start_callbacks.empty() ||
+        !_focus_stop_callbacks.empty() || !_focus_range_callbacks.empty() ||
+        !_focus_meters_callbacks.empty() || !_focus_auto_callbacks.empty() ||
+        !_focus_auto_single_callbacks.empty() || !_focus_auto_continuous_callbacks.empty()) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS;
+    }
+
     _information.vendor_name.resize(sizeof(mavlink_camera_information_t::vendor_name));
     _information.model_name.resize(sizeof(mavlink_camera_information_t::model_name));
     _information.definition_file_uri.resize(
@@ -1644,7 +1662,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 if (_zoom_out_start_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_zoom_out_start_command = command;
                     int dummy = 0;
@@ -1656,7 +1674,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 if (_zoom_in_start_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_zoom_in_start_command = command;
                     int dummy = 0;
@@ -1668,7 +1686,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 if (_zoom_stop_callbacks.empty()) {
                     unsupported();
                     return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
                 } else {
                     _last_zoom_stop_command = command;
                     int dummy = 0;
@@ -1686,7 +1704,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
             if (_zoom_range_callbacks.empty()) {
                 unsupported();
                 return _server_component_impl->make_command_ack_message(
-                    command, MAV_RESULT::MAV_RESULT_DENIED);
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
 
             } else {
                 _last_zoom_range_command = command;
@@ -1718,13 +1736,185 @@ CameraServerImpl::process_set_camera_focus(const MavlinkCommandReceiver::Command
     auto focus_type = static_cast<SET_FOCUS_TYPE>(command.params.param1);
     auto focus_value = command.params.param2;
 
-    UNUSED(focus_type);
-    UNUSED(focus_value);
+    std::lock_guard<std::mutex> lg{_mutex};
 
-    LogDebug("Unsupported set camera focus request");
+    if (_focus_in_step_callbacks.empty() && _focus_out_step_callbacks.empty() &&
+        _focus_in_start_callbacks.empty() && _focus_out_start_callbacks.empty() &&
+        _focus_stop_callbacks.empty() && _focus_range_callbacks.empty() &&
+        _focus_meters_callbacks.empty() && _focus_auto_callbacks.empty() &&
+        _focus_auto_single_callbacks.empty() && _focus_auto_continuous_callbacks.empty()) {
+        LogWarn("No camera focus is supported");
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    auto unsupported = [&]() {
+        LogWarn("Unsupported set camera focus type ({}) request", (int)focus_type);
+    };
+
+    switch (focus_type) {
+        case FOCUS_TYPE_STEP:
+            // Negative: In, Positive: Out
+            if (focus_value == -1.f) {
+                if (_focus_in_step_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+                } else {
+                    _last_focus_in_step_command = command;
+                    int dummy = 0;
+                    _focus_in_step_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
+                }
+            } else if (focus_value == 1.f) {
+                if (_focus_out_step_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+                } else {
+                    _last_focus_out_step_command = command;
+                    int dummy = 0;
+                    _focus_out_step_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
+                }
+            } else {
+                LogWarn("Invalid focus step value: {}", focus_value);
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_DENIED);
+            }
+            break;
+        case FOCUS_TYPE_CONTINUOUS:
+            // Negative: In, Positive: Out, 0: Stop
+            if (focus_value == -1.f) {
+                if (_focus_in_start_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+                } else {
+                    _last_focus_in_start_command = command;
+                    int dummy = 0;
+                    _focus_in_start_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
+                }
+            } else if (focus_value == 1.f) {
+                if (_focus_out_start_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+                } else {
+                    _last_focus_out_start_command = command;
+                    int dummy = 0;
+                    _focus_out_start_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
+                }
+            } else if (focus_value == 0.f) {
+                if (_focus_stop_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+                } else {
+                    _last_focus_stop_command = command;
+                    int dummy = 0;
+                    _focus_stop_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
+                }
+            } else {
+                LogWarn("Invalid continuous focus value: {}", focus_value);
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_DENIED);
+            }
+            break;
+        case FOCUS_TYPE_RANGE:
+            if (_focus_range_callbacks.empty()) {
+                unsupported();
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+
+            } else {
+                if (focus_value < 0.0f || focus_value > 100.0f) {
+                    LogWarn("Invalid focus range value: {}", focus_value);
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                }
+                _last_focus_range_command = command;
+                _focus_range_callbacks.queue(focus_value, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
+            }
+            break;
+        case FOCUS_TYPE_METERS:
+            if (_focus_meters_callbacks.empty()) {
+                unsupported();
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+
+            } else {
+                if (focus_value < 0.0f) {
+                    LogWarn("Invalid focus meters value: {}", focus_value);
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                }
+                _last_focus_meters_command = command;
+                _focus_meters_callbacks.queue(focus_value, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
+            }
+            break;
+        case FOCUS_TYPE_AUTO:
+            if (_focus_auto_callbacks.empty()) {
+                unsupported();
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+
+            } else {
+                _last_focus_auto_command = command;
+                int dummy = 0;
+                _focus_auto_callbacks.queue(dummy, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
+            }
+            break;
+        case FOCUS_TYPE_AUTO_SINGLE:
+            if (_focus_auto_single_callbacks.empty()) {
+                unsupported();
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+
+            } else {
+                _last_focus_auto_single_command = command;
+                int dummy = 0;
+                _focus_auto_single_callbacks.queue(dummy, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
+            }
+            break;
+        case FOCUS_TYPE_AUTO_CONTINUOUS:
+            if (_focus_auto_continuous_callbacks.empty()) {
+                unsupported();
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+
+            } else {
+                _last_focus_auto_continuous_command = command;
+                int dummy = 0;
+                _focus_auto_continuous_callbacks.queue(dummy, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
+            }
+            break;
+        default:
+            unsupported();
+            return _server_component_impl->make_command_ack_message(
+                command, MAV_RESULT::MAV_RESULT_DENIED);
+    }
+
+    // For any success so far, we don't ack yet, but later when the respond function is called.
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>
@@ -2158,6 +2348,437 @@ CameraServerImpl::respond_zoom_range(CameraServer::CameraFeedback zoom_range_fee
         case CameraServer::CameraFeedback::Failed: {
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_zoom_range_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusInStepHandle
+CameraServerImpl::subscribe_focus_in_step(const CameraServer::FocusInStepCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_in_step_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_in_step(CameraServer::FocusInStepHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_in_step_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_in_step(CameraServer::CameraFeedback focus_in_step_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_in_step_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_in_step_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_in_step_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_in_step_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusOutStepHandle
+CameraServerImpl::subscribe_focus_out_step(const CameraServer::FocusOutStepCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_out_step_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_out_step(CameraServer::FocusOutStepHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_out_step_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_out_step(CameraServer::CameraFeedback focus_out_step_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_out_step_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_out_step_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_out_step_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_out_step_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusInStartHandle
+CameraServerImpl::subscribe_focus_in_start(const CameraServer::FocusInStartCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_in_start_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_in_start(CameraServer::FocusInStartHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_in_start_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_in_start(CameraServer::CameraFeedback focus_in_start_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_in_start_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_in_start_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_in_start_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_in_start_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusOutStartHandle
+CameraServerImpl::subscribe_focus_out_start(const CameraServer::FocusOutStartCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_out_start_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_out_start(CameraServer::FocusOutStartHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_out_start_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_out_start(CameraServer::CameraFeedback focus_out_start_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_out_start_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_out_start_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_out_start_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_out_start_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusStopHandle
+CameraServerImpl::subscribe_focus_stop(const CameraServer::FocusStopCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_stop_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_stop(CameraServer::FocusStopHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_stop_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_stop(CameraServer::CameraFeedback focus_stop_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_stop_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_stop_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_stop_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_stop_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusRangeHandle
+CameraServerImpl::subscribe_focus_range(const CameraServer::FocusRangeCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_range_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_range(CameraServer::FocusRangeHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_range_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_range(CameraServer::CameraFeedback focus_range_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_range_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_range_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_range_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_range_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusMetersHandle
+CameraServerImpl::subscribe_focus_meters(const CameraServer::FocusMetersCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_meters_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_meters(CameraServer::FocusMetersHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_meters_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_meters(CameraServer::CameraFeedback focus_meters_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_meters_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_meters_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_meters_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_meters_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusAutoHandle
+CameraServerImpl::subscribe_focus_auto(const CameraServer::FocusAutoCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_auto_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_auto(CameraServer::FocusAutoHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_auto_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_auto(CameraServer::CameraFeedback focus_auto_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_auto_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusAutoSingleHandle
+CameraServerImpl::subscribe_focus_auto_single(const CameraServer::FocusAutoSingleCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_auto_single_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_auto_single(CameraServer::FocusAutoSingleHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_auto_single_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_focus_auto_single(CameraServer::CameraFeedback focus_auto_single_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_auto_single_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_single_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_single_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_single_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+CameraServer::FocusAutoContinuousHandle CameraServerImpl::subscribe_focus_auto_continuous(
+    const CameraServer::FocusAutoContinuousCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _focus_auto_continuous_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_focus_auto_continuous(
+    CameraServer::FocusAutoContinuousHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _focus_auto_continuous_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result CameraServerImpl::respond_focus_auto_continuous(
+    CameraServer::CameraFeedback focus_auto_continuous_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    switch (focus_auto_continuous_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_continuous_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_continuous_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_focus_auto_continuous_command, MAV_RESULT_FAILED);
             _server_component_impl->send_command_ack(command_ack);
             return CameraServer::Result::Success;
         }
