@@ -26,6 +26,11 @@ class System;class ShellImpl;
 
 /**
  * @brief Allow to communicate with the vehicle's system shell.
+ *
+ * Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+ * SERIAL_CONTROL_DEV_SHELL; set_device can target other SERIAL_CONTROL_DEV
+ * ports (for example TELEM2) when the same framing is used for non-nsh
+ * serial bridges.
  */
 class MAVSDK_PUBLIC Shell : public PluginBase {
 public:
@@ -66,6 +71,43 @@ public:
 
 
 
+    /**
+     * @brief MAVLink SERIAL_CONTROL_DEV values used by the shell plugin.
+     */
+    enum class Device {
+        Telem1, /**< @brief SERIAL_CONTROL_DEV_TELEM1. */
+        Telem2, /**< @brief SERIAL_CONTROL_DEV_TELEM2. */
+        Gps1, /**< @brief SERIAL_CONTROL_DEV_GPS1. */
+        Gps2, /**< @brief SERIAL_CONTROL_DEV_GPS2. */
+        Shell, /**< @brief SERIAL_CONTROL_DEV_SHELL (default). */
+        Serial0, /**< @brief SERIAL_CONTROL_SERIAL0. */
+        Serial1, /**< @brief SERIAL_CONTROL_SERIAL1. */
+        Serial2, /**< @brief SERIAL_CONTROL_SERIAL2. */
+        Serial3, /**< @brief SERIAL_CONTROL_SERIAL3. */
+        Serial4, /**< @brief SERIAL_CONTROL_SERIAL4. */
+        Serial5, /**< @brief SERIAL_CONTROL_SERIAL5. */
+        Serial6, /**< @brief SERIAL_CONTROL_SERIAL6. */
+        Serial7, /**< @brief SERIAL_CONTROL_SERIAL7. */
+        Serial8, /**< @brief SERIAL_CONTROL_SERIAL8. */
+        Serial9, /**< @brief SERIAL_CONTROL_SERIAL9. */
+    };
+
+    /**
+     * @brief Convert `Shell::Device` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Shell::Device const& device);
+
+    /**
+     * @brief Stream operator to print information about a `Shell::Device`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Device const& device);
+
+
+
 
     /**
      * @brief Possible results returned for shell requests
@@ -77,6 +119,7 @@ public:
         ConnectionError, /**< @brief Connection error. */
         NoResponse, /**< @brief Response was not received. */
         Busy, /**< @brief Shell busy (transfer in progress). */
+        InvalidArgument, /**< @brief Invalid device / argument. */
     };
 
     /**
@@ -145,7 +188,20 @@ public:
 
         
 
-
+    /**
+     * @brief Select the SERIAL_CONTROL device used for send/receive.
+     *
+     * Default is DEVICE_SHELL. Other values map to MAVLink SERIAL_CONTROL_DEV
+     * (TELEM1/2, GPS1/2, SERIALn). Incoming SERIAL_CONTROL messages for other
+     * devices are ignored while a device is selected.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_device(Device device) const;
 
 
 

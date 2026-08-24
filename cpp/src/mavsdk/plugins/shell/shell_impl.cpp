@@ -60,6 +60,72 @@ Shell::Result ShellImpl::send(std::string command)
     return Shell::Result::Success;
 }
 
+Shell::Result ShellImpl::set_device(Shell::Device device)
+{
+    uint8_t mav_device = 0;
+    if (!device_to_mavlink(device, mav_device)) {
+        return Shell::Result::InvalidArgument;
+    }
+
+    std::lock_guard<std::mutex> lock(_device_mutex);
+    _device = mav_device;
+    return Shell::Result::Success;
+}
+
+bool ShellImpl::device_to_mavlink(Shell::Device device, uint8_t& out_device)
+{
+    // Numeric values match MAVLink SERIAL_CONTROL_DEV (common.xml).
+    switch (device) {
+        case Shell::Device::Telem1:
+            out_device = 0;
+            return true;
+        case Shell::Device::Telem2:
+            out_device = 1;
+            return true;
+        case Shell::Device::Gps1:
+            out_device = 2;
+            return true;
+        case Shell::Device::Gps2:
+            out_device = 3;
+            return true;
+        case Shell::Device::Shell:
+            out_device = 10;
+            return true;
+        case Shell::Device::Serial0:
+            out_device = 100;
+            return true;
+        case Shell::Device::Serial1:
+            out_device = 101;
+            return true;
+        case Shell::Device::Serial2:
+            out_device = 102;
+            return true;
+        case Shell::Device::Serial3:
+            out_device = 103;
+            return true;
+        case Shell::Device::Serial4:
+            out_device = 104;
+            return true;
+        case Shell::Device::Serial5:
+            out_device = 105;
+            return true;
+        case Shell::Device::Serial6:
+            out_device = 106;
+            return true;
+        case Shell::Device::Serial7:
+            out_device = 107;
+            return true;
+        case Shell::Device::Serial8:
+            out_device = 108;
+            return true;
+        case Shell::Device::Serial9:
+            out_device = 109;
+            return true;
+        default:
+            return false;
+    }
+}
+
 Shell::ReceiveHandle ShellImpl::subscribe_receive(const Shell::ReceiveCallback& callback)
 {
     return _receive.callbacks.subscribe(callback);
@@ -73,6 +139,11 @@ void ShellImpl::unsubscribe_receive(Shell::ReceiveHandle handle)
 bool ShellImpl::send_command_message(std::string command)
 {
     mavlink_message_t message;
+    uint8_t device;
+    {
+        std::lock_guard<std::mutex> lock(_device_mutex);
+        device = _device;
+    }
 
     while (command.length() > MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN) {
         if (!_system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
@@ -81,7 +152,7 @@ bool ShellImpl::send_command_message(std::string command)
                     mavlink_address.component_id,
                     channel,
                     &message,
-                    static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
+                    device,
                     0,
                     timeout_ms,
                     0,
@@ -113,7 +184,7 @@ bool ShellImpl::send_command_message(std::string command)
             mavlink_address.component_id,
             channel,
             &message,
-            static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
+            device,
             flags,
             timeout_ms,
             0,
@@ -129,6 +200,13 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
 {
     mavlink_serial_control_t serial_control;
     mavlink_msg_serial_control_decode(&message, &serial_control);
+
+    {
+        std::lock_guard<std::mutex> lock(_device_mutex);
+        if (serial_control.device != _device) {
+            return;
+        }
+    }
 
     // This adds an additional byte for the null termination.
     char str_copy[sizeof(serial_control.data) + 1]{0};

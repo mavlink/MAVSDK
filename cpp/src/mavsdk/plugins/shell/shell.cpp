@@ -33,6 +33,54 @@ void Shell::unsubscribe_receive(ReceiveHandle handle)
     _impl->unsubscribe_receive(handle);
 }
 
+Shell::Result Shell::set_device(Device device) const
+{
+    return _impl->set_device(device);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Shell::Device const& device)
+{
+    switch (device) {
+        case Shell::Device::Telem1:
+            return "Telem1";
+        case Shell::Device::Telem2:
+            return "Telem2";
+        case Shell::Device::Gps1:
+            return "Gps1";
+        case Shell::Device::Gps2:
+            return "Gps2";
+        case Shell::Device::Shell:
+            return "Shell";
+        case Shell::Device::Serial0:
+            return "Serial0";
+        case Shell::Device::Serial1:
+            return "Serial1";
+        case Shell::Device::Serial2:
+            return "Serial2";
+        case Shell::Device::Serial3:
+            return "Serial3";
+        case Shell::Device::Serial4:
+            return "Serial4";
+        case Shell::Device::Serial5:
+            return "Serial5";
+        case Shell::Device::Serial6:
+            return "Serial6";
+        case Shell::Device::Serial7:
+            return "Serial7";
+        case Shell::Device::Serial8:
+            return "Serial8";
+        case Shell::Device::Serial9:
+            return "Serial9";
+        default:
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Device const& device)
+{
+    return str << to_string(device);
+}
+
 MAVSDK_PUBLIC std::string_view to_string(Shell::Result const& result)
 {
     switch (result) {
@@ -48,6 +96,8 @@ MAVSDK_PUBLIC std::string_view to_string(Shell::Result const& result)
             return "No Response";
         case Shell::Result::Busy:
             return "Busy";
+        case Shell::Result::InvalidArgument:
+            return "Invalid Argument";
         default:
             return "Unknown";
     }
