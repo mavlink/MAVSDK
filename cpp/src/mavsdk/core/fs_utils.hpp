@@ -21,10 +21,4 @@ create_tmp_directory(const std::string& prefix);
 
 MAVSDK_TEST_EXPORT std::string replace_non_ascii_and_whitespace(const std::string& input);
 
-#ifdef ANDROID
-extern "C" {
-extern char* mavsdk_temp_path;
-}
-#endif
-
 } // namespace mavsdk
