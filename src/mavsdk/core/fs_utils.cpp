@@ -3,8 +3,10 @@
 #include "log.h"
 #include <algorithm>
 #include <cctype>
+#include <cstdlib>
 #include <fstream>
 #include <random>
+#include <sstream>
 #include <string>
 
 #if defined(LINUX) || defined(APPLE)
@@ -19,13 +21,6 @@
 #endif
 
 namespace mavsdk {
-
-#ifdef ANDROID
-extern "C" {
-// Default Android temp path that can be overridden by JNI if needed
-char* mavsdk_temp_path = const_cast<char*>("/data/local/tmp");
-}
-#endif
 
 #ifdef WINDOWS
 static std::optional<std::filesystem::path> get_known_windows_path(REFKNOWNFOLDERID folderId)
@@ -101,7 +96,14 @@ std::optional<std::filesystem::path> create_tmp_directory(const std::string& pre
 {
     // Inspired by https://stackoverflow.com/a/58454949/8548472
 #ifdef ANDROID
-    const auto tmp_dir = std::filesystem::path(mavsdk_temp_path);
+    // Android points TMPDIR at the app's cache directory, which is the only
+    // temporary location an app process may write to.
+    const char* env_tmp_dir = std::getenv("TMPDIR");
+    if (env_tmp_dir == nullptr || env_tmp_dir[0] == '\0') {
+        LogErr() << "TMPDIR is not set; cannot create a temporary directory.";
+        return std::nullopt;
+    }
+    const auto tmp_dir = std::filesystem::path(env_tmp_dir);
 #else
     const auto tmp_dir = std::filesystem::temp_directory_path();
 #endif
@@ -117,8 +119,8 @@ std::optional<std::filesystem::path> create_tmp_directory(const std::string& pre
         ss << prefix << '-' << std::hex << rand(prng);
         auto path = tmp_dir / ss.str();
 
-        const auto created = std::filesystem::create_directory(path);
-        if (created) {
+        std::error_code ec;
+        if (std::filesystem::create_directory(path, ec)) {
             return path.string();
         }
     }
