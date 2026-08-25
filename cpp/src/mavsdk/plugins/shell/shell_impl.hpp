@@ -1,6 +1,7 @@
 #pragma once
 
-#include <mutex>
+#include <atomic>
+#include <optional>
 
 #include "plugins/shell/shell.hpp"
 #include "mavlink_include.hpp"
@@ -35,7 +36,7 @@ public:
 private:
     bool send_command_message(std::string command);
     void process_shell_message(const mavlink_message_t& message);
-    static bool device_to_mavlink(Shell::Device device, uint8_t& out_device);
+    static std::optional<uint8_t> device_to_mavlink(Shell::Device device);
 
     static constexpr uint16_t timeout_ms = 1000;
 
@@ -44,7 +45,7 @@ private:
         CallbackList<std::string> callbacks;
     } _receive;
 
-    std::mutex _device_mutex{};
-    uint8_t _device{10}; // SERIAL_CONTROL_DEV_SHELL
+    std::atomic<uint8_t> _device{
+        static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL)};
 };
 } // namespace mavsdk

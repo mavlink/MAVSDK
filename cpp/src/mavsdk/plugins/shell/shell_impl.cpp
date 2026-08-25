@@ -4,6 +4,8 @@
 #include "callback_list.tpp"
 #include "mavsdk_export.h"
 
+#include <optional>
+
 namespace mavsdk {
 
 template class MAVSDK_TEMPL_INST CallbackList<std::string>;
@@ -62,67 +64,50 @@ Shell::Result ShellImpl::send(std::string command)
 
 Shell::Result ShellImpl::set_device(Shell::Device device)
 {
-    uint8_t mav_device = 0;
-    if (!device_to_mavlink(device, mav_device)) {
+    const auto mav_device = device_to_mavlink(device);
+    if (!mav_device) {
         return Shell::Result::InvalidArgument;
     }
 
-    std::lock_guard<std::mutex> lock(_device_mutex);
-    _device = mav_device;
+    _device.store(*mav_device, std::memory_order_relaxed);
     return Shell::Result::Success;
 }
 
-bool ShellImpl::device_to_mavlink(Shell::Device device, uint8_t& out_device)
+std::optional<uint8_t> ShellImpl::device_to_mavlink(Shell::Device device)
 {
-    // Numeric values match MAVLink SERIAL_CONTROL_DEV (common.xml).
     switch (device) {
         case Shell::Device::Telem1:
-            out_device = 0;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_TELEM1);
         case Shell::Device::Telem2:
-            out_device = 1;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_TELEM2);
         case Shell::Device::Gps1:
-            out_device = 2;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_GPS1);
         case Shell::Device::Gps2:
-            out_device = 3;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_GPS2);
         case Shell::Device::Shell:
-            out_device = 10;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL);
         case Shell::Device::Serial0:
-            out_device = 100;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL0);
         case Shell::Device::Serial1:
-            out_device = 101;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL1);
         case Shell::Device::Serial2:
-            out_device = 102;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL2);
         case Shell::Device::Serial3:
-            out_device = 103;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL3);
         case Shell::Device::Serial4:
-            out_device = 104;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL4);
         case Shell::Device::Serial5:
-            out_device = 105;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL5);
         case Shell::Device::Serial6:
-            out_device = 106;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL6);
         case Shell::Device::Serial7:
-            out_device = 107;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL7);
         case Shell::Device::Serial8:
-            out_device = 108;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL8);
         case Shell::Device::Serial9:
-            out_device = 109;
-            return true;
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL9);
         default:
-            return false;
+            return std::nullopt;
     }
 }
 
@@ -139,11 +124,7 @@ void ShellImpl::unsubscribe_receive(Shell::ReceiveHandle handle)
 bool ShellImpl::send_command_message(std::string command)
 {
     mavlink_message_t message;
-    uint8_t device;
-    {
-        std::lock_guard<std::mutex> lock(_device_mutex);
-        device = _device;
-    }
+    const uint8_t device = _device.load(std::memory_order_relaxed);
 
     while (command.length() > MAVLINK_MSG_SERIAL_CONTROL_FIELD_DATA_LEN) {
         if (!_system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
@@ -201,11 +182,8 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
     mavlink_serial_control_t serial_control;
     mavlink_msg_serial_control_decode(&message, &serial_control);
 
-    {
-        std::lock_guard<std::mutex> lock(_device_mutex);
-        if (serial_control.device != _device) {
-            return;
-        }
+    if (serial_control.device != _device.load(std::memory_order_relaxed)) {
+        return;
     }
 
     // This adds an additional byte for the null termination.
