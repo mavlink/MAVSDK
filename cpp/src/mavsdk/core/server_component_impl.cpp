@@ -49,7 +49,7 @@ ServerComponentImpl::ServerComponentImpl(
 
     _mavlink_request_message_handler.register_handler(
         MAVLINK_MSG_ID_PROTOCOL_VERSION,
-        [this](uint8_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
+        [this](uint32_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
             send_protocol_version();
             return MAV_RESULT_ACCEPTED;
         },
@@ -57,7 +57,7 @@ ServerComponentImpl::ServerComponentImpl(
 
     _mavlink_request_message_handler.register_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        [this](uint8_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
+        [this](uint32_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
             send_autopilot_version();
             return MAV_RESULT_ACCEPTED;
         },
