@@ -29,13 +29,13 @@ Type | Name | Description
 ---: | --- | ---
 &nbsp; | [~System](#classmavsdk_1_1_system_1abdc4208c07d776c628acdc037a881ea6) () | Destructor.
 &nbsp; | [System](#classmavsdk_1_1_system_1ac0e97e92181683f6b31fe208165dc35c) (const [System](classmavsdk_1_1_system.md) &)=delete | Copy constructor (object is not copyable).
-void | [init](#classmavsdk_1_1_system_1a5c4c30affa7abbe06cc809187f3ddcb3) (uint8_t system_id, uint8_t component_id)const | Initialize the system.
+void | [init](#classmavsdk_1_1_system_1a80c88a6e14e1b14c0e8bc1b6bd42407b) (uint32_t system_id, uint8_t component_id)const | Initialize the system.
 bool | [has_autopilot](#classmavsdk_1_1_system_1a0c3d766baa73f5b35e2950a6f0a38c02) () const | Checks whether the system has an autopilot.
 bool | [is_standalone](#classmavsdk_1_1_system_1a7fb7ed01204498dcaa2ab7d9cc31acf2) () const | Checks whether the system is a standalone (non-autopilot).
 bool | [has_camera](#classmavsdk_1_1_system_1a440fd601ed2120e1e41d9eab536a7da8) (int camera_id=-1)const | Checks whether the system has a camera with the given camera ID.
 bool | [has_gimbal](#classmavsdk_1_1_system_1ad66c3ecc096970d40c34610e49dba929) () const | Checks whether the system has a gimbal.
 bool | [is_connected](#classmavsdk_1_1_system_1ad07991ae044bc367e27f544db40d065b) () const | Checks if the system is connected.
-uint8_t | [get_system_id](#classmavsdk_1_1_system_1a091d793db29719f4996040886ad951a6) () const | MAVLink [System](classmavsdk_1_1_system.md) ID of connected system.
+uint32_t | [get_system_id](#classmavsdk_1_1_system_1adabe6abe9cf955ad6b017004f009281c) () const | MAVLink [System](classmavsdk_1_1_system.md) ID of connected system.
 std::vector< uint8_t > | [component_ids](#classmavsdk_1_1_system_1a8ef8d3f5c4b59aa71b6b0e92587185d4) () const | MAVLink component IDs of connected system.
 [IsConnectedHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1adedf1d76e922076dfd3ca3c726443efd) | [subscribe_is_connected](#classmavsdk_1_1_system_1aae68747c23976fa7eb63ec0762493263) (const [IsConnectedCallback](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1a0e56bb48498100fde0872a3ec376f282) & callback) | Subscribe to callback to be called when system connection state changes.
 void | [unsubscribe_is_connected](#classmavsdk_1_1_system_1a2f1927d56c14a7ad44995bd56afb706f) ([IsConnectedHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1adedf1d76e922076dfd3ca3c726443efd) handle) | Unsubscribe from subscribe_is_connected.
@@ -140,9 +140,9 @@ type for component discovery callback handle with component ID
 ## Member Function Documentation
 
 
-### init() {#classmavsdk_1_1_system_1a5c4c30affa7abbe06cc809187f3ddcb3}
+### init() {#classmavsdk_1_1_system_1a80c88a6e14e1b14c0e8bc1b6bd42407b}
 ```cpp
-void mavsdk::System::init(uint8_t system_id, uint8_t component_id) const
+void mavsdk::System::init(uint32_t system_id, uint8_t component_id) const
 ```
 
 
@@ -152,7 +152,7 @@ This is not (and should not be) directly called by application code.
 
 **Parameters**
 
-* uint8_t **system_id** - [System](classmavsdk_1_1_system.md) id.
+* uint32_t **system_id** - [System](classmavsdk_1_1_system.md) id.
 * uint8_t **component_id** - Component id.
 
 ### has_autopilot() {#classmavsdk_1_1_system_1a0c3d766baa73f5b35e2950a6f0a38c02}
@@ -226,9 +226,9 @@ A system is connected when heartbeats are arriving (discovered and not timed out
 
 &emsp;bool - `true` if the system is connected.
 
-### get_system_id() {#classmavsdk_1_1_system_1a091d793db29719f4996040886ad951a6}
+### get_system_id() {#classmavsdk_1_1_system_1adabe6abe9cf955ad6b017004f009281c}
 ```cpp
-uint8_t mavsdk::System::get_system_id() const
+uint32_t mavsdk::System::get_system_id() const
 ```
 
 
@@ -240,7 +240,7 @@ MAVLink [System](classmavsdk_1_1_system.md) ID of connected system.
 
 **Returns**
 
-&emsp;uint8_t - the system ID.
+&emsp;uint32_t - the system ID.
 
 ### component_ids() {#classmavsdk_1_1_system_1a8ef8d3f5c4b59aa71b6b0e92587185d4}
 ```cpp

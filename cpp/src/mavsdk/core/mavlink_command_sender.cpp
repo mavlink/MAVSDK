@@ -376,7 +376,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
         } else {
             // We have tried retransmitting, giving up now.
             if (work->identification.command == 512) {
-                uint8_t target_sysid;
+                uint32_t target_sysid;
                 uint8_t target_compid;
                 if (auto command_int = std::get_if<CommandInt>(&work->command)) {
                     target_sysid = command_int->target_system_id;

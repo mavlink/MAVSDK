@@ -180,7 +180,7 @@ _cmavsdk_lib.mavsdk_system_is_connected.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_system_is_connected.restype = ctypes.c_bool
 
 _cmavsdk_lib.mavsdk_system_get_system_id.argtypes = [ctypes.c_void_p]
-_cmavsdk_lib.mavsdk_system_get_system_id.restype = ctypes.c_uint8
+_cmavsdk_lib.mavsdk_system_get_system_id.restype = ctypes.c_uint32
 
 _cmavsdk_lib.mavsdk_system_component_ids.argtypes = [
     ctypes.c_void_p,

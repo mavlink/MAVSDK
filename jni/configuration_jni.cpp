@@ -30,7 +30,7 @@ Java_io_mavsdk_jni_NativeConfiguration_createManual(
     jboolean always_send_heartbeats) {
 
     const auto handle = mavsdk_configuration_create_manual(
-        static_cast<uint8_t>(system_id),
+        static_cast<uint32_t>(system_id),
         static_cast<uint8_t>(component_id),
         always_send_heartbeats);
     if (!handle) {
@@ -47,8 +47,10 @@ Java_io_mavsdk_jni_NativeConfiguration_getSystemId(
     jlong handle) {
 
     if (!requireHandle(env, handle, "configuration")) return 0;
-    return mavsdk_configuration_get_system_id(
-        reinterpret_cast<mavsdk_configuration_t>(handle));
+    // jint is signed, so a system ID above 2^31-1 shows up negative on the
+    // Kotlin side. All 32 bits survive; read it back with toUInt() if needed.
+    return static_cast<jint>(mavsdk_configuration_get_system_id(
+        reinterpret_cast<mavsdk_configuration_t>(handle)));
 }
 
 JNIEXPORT void JNICALL
@@ -61,7 +63,7 @@ Java_io_mavsdk_jni_NativeConfiguration_setSystemId(
     if (!requireHandle(env, handle, "configuration")) return;
     mavsdk_configuration_set_system_id(
         reinterpret_cast<mavsdk_configuration_t>(handle),
-        static_cast<uint8_t>(value));
+        static_cast<uint32_t>(value));
 }
 
 JNIEXPORT jint JNICALL

@@ -15,10 +15,15 @@ endif()
 if(SUPERBUILD)
     build_target(fmt)
 
-    set(MAVLINK_HASH "d6a7eeaf43319ce6da19a1973ca40180a4210643"
+    set(MAVLINK_HASH "85a6bf81b6aeda9267bb55d1b44d16bfb9ab3006"
         CACHE STRING "Hash for the MAVLink Repository")
     set(MAVLINK_URL "https://github.com/mavlink/mavlink"
         CACHE STRING "URL for the MAVLink Repository")
+
+    set(LIBMAVLIKE_HASH "fbcb13faa08f80fa1830c297fdbc51900d9a0306"
+        CACHE STRING "Hash for the libmavlike Repository")
+    set(LIBMAVLIKE_URL "https://github.com/julianoes/libmavlike"
+        CACHE STRING "URL for the libmavlike Repository")
 
     build_target(asio)
     build_target(mavlink)

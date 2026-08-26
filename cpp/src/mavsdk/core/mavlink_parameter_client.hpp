@@ -38,7 +38,7 @@ public:
         TimeoutHandler& timeout_handler,
         TimeoutSCallback timeout_s_callback,
         AutopilotCallback autopilot_callback,
-        uint8_t target_system_id,
+        uint32_t target_system_id,
         uint8_t target_component_id = MAV_COMP_ID_AUTOPILOT1,
         bool use_extended_protocol = false);
     ~MavlinkParameterClient();
@@ -213,7 +213,7 @@ private:
     TimeoutHandler& _timeout_handler;
     TimeoutSCallback _timeout_s_callback;
     AutopilotCallback _autopilot_callback;
-    uint8_t _target_system_id = 0;
+    uint32_t _target_system_id = 0;
     uint8_t _target_component_id = MAV_COMP_ID_AUTOPILOT1;
     bool _use_extended = false;
 

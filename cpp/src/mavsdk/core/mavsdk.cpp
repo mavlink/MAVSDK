@@ -107,7 +107,7 @@ std::shared_ptr<ServerComponent> Mavsdk::server_component_by_id(uint8_t componen
 }
 
 Mavsdk::Configuration::Configuration(
-    uint8_t system_id, uint8_t component_id, bool always_send_heartbeats) :
+    uint32_t system_id, uint8_t component_id, bool always_send_heartbeats) :
     _system_id(system_id),
     _component_id(component_id),
     _always_send_heartbeats(always_send_heartbeats),
@@ -180,12 +180,12 @@ Mavsdk::Configuration::Configuration(ComponentType component_type) :
     }
 }
 
-uint8_t Mavsdk::Configuration::get_system_id() const
+uint32_t Mavsdk::Configuration::get_system_id() const
 {
     return _system_id;
 }
 
-void Mavsdk::Configuration::set_system_id(uint8_t system_id)
+void Mavsdk::Configuration::set_system_id(uint32_t system_id)
 {
     _system_id = system_id;
 }

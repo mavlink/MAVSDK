@@ -45,6 +45,7 @@ add_executable(system_tests_runner
     mission_transfer_lossy.cpp
     connections.cpp
     raw_bytes.cpp
+    sysid32.cpp
     system_tests_runner.cpp
 )
 

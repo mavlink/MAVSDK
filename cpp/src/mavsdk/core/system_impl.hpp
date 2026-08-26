@@ -51,7 +51,7 @@ public:
     explicit SystemImpl(MavsdkImpl& parent);
     ~SystemImpl();
 
-    void init(uint8_t system_id, uint8_t comp_id);
+    void init(uint32_t system_id, uint8_t comp_id);
 
     void enable_timesync();
 
@@ -159,12 +159,12 @@ public:
     bool has_camera(int camera_id = -1) const;
     bool has_gimbal() const;
 
-    uint8_t get_system_id() const;
+    uint32_t get_system_id() const;
     std::vector<uint8_t> component_ids() const;
 
-    void set_system_id(uint8_t system_id);
+    void set_system_id(uint32_t system_id);
 
-    uint8_t get_own_system_id() const;
+    uint32_t get_own_system_id() const;
     uint8_t get_own_component_id() const;
     uint8_t get_own_mav_type() const;
     asio::io_context& io_context();
