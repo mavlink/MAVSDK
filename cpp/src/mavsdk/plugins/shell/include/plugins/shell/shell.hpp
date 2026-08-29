@@ -107,12 +107,12 @@ public:
 
 
     /**
-     * @brief 
+     * @brief Received shell data and source device.
      */
     struct Receive {
         
         std::string data{}; /**< @brief Received data. */
-        Device device{}; /**< @brief */
+        Device device{}; /**< @brief SERIAL_CONTROL device the data came from. */
     };
 
     /**

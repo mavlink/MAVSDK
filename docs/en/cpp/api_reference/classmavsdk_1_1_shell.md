@@ -180,7 +180,7 @@ Value | Description
 ### struct Receive {#struct-receive}
 
 
-Received shell data.
+Received shell data and source device.
 
 
 Field | Type | Description
