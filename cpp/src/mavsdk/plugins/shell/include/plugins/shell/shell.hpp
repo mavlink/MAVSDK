@@ -28,9 +28,9 @@ class System;class ShellImpl;
  * @brief Allow to communicate with the vehicle's system shell.
  *
  * Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
- * SERIAL_CONTROL_DEV_SHELL; set_device can target other SERIAL_CONTROL_DEV
- * ports (for example TELEM2) when the same framing is used for non-nsh
- * serial bridges.
+ * SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+ * Send (and observe the device on Receive) when the same framing is used for
+ * non-nsh serial bridges (for example TELEM2).
  */
 class MAVSDK_PUBLIC Shell : public PluginBase {
 public:
@@ -68,9 +68,6 @@ public:
     ~Shell() override;
 
 
-
-
-
     /**
      * @brief MAVLink SERIAL_CONTROL_DEV values used by the shell plugin.
      */
@@ -105,6 +102,33 @@ public:
      * @return A reference to the stream.
      */
     friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Device const& device);
+
+
+
+
+    /**
+     * @brief 
+     */
+    struct Receive {
+        
+        std::string data{}; /**< @brief Received data. */
+        Device device{}; /**< @brief */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Shell::Receive` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const Shell::Receive& lhs, const Shell::Receive& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Shell::Receive`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Receive const& receive);
+
 
 
 
@@ -157,7 +181,7 @@ public:
      * @return Result of request.
      
      */
-    Result send(std::string command) const;
+    Result send(std::string command, Device device) const;
 
 
 
@@ -167,12 +191,12 @@ public:
     /**
      * @brief Callback type for subscribe_receive.
      */
-    using ReceiveCallback = std::function<void(std::string)>;
+    using ReceiveCallback = std::function<void(Receive)>;
 
     /**
      * @brief Handle type for subscribe_receive.
      */
-    using ReceiveHandle = Handle<std::string>;
+    using ReceiveHandle = Handle<Receive>;
 
     /**
      * @brief Receive feedback from a sent command line.
@@ -188,20 +212,7 @@ public:
 
         
 
-    /**
-     * @brief Select the SERIAL_CONTROL device used for send/receive.
-     *
-     * Default is DEVICE_SHELL. Other values map to MAVLink SERIAL_CONTROL_DEV
-     * (TELEM1/2, GPS1/2, SERIALn). Incoming SERIAL_CONTROL messages for other
-     * devices are ignored while a device is selected.
-     *
-     * This function is blocking.
-     *
-     
-     * @return Result of request.
-     
-     */
-    Result set_device(Device device) const;
+
 
 
 

@@ -51,7 +51,7 @@ void run_interactive_shell(std::shared_ptr<System> system)
 {
     Shell shell{system};
 
-    shell.subscribe_receive([](const std::string output) { std::cout << output; });
+    shell.subscribe_receive([](Shell::Receive receive) { std::cout << receive.data; });
 
     while (true) {
         std::string command;
@@ -61,7 +61,7 @@ void run_interactive_shell(std::shared_ptr<System> system)
             break;
         }
 
-        shell.send(command);
+        shell.send(command, Shell::Device::Shell);
     }
     std::cout << '\n';
 }

@@ -47,6 +47,123 @@ public:
     }
 
 
+    static rpc::shell::Device translateToRpcDevice(const mavsdk::Shell::Device& device)
+    {
+        switch (device) {
+            default:
+                LogErr("Unknown device enum value: {}", static_cast<int>(device));
+            // FALLTHROUGH
+            case mavsdk::Shell::Device::Telem1:
+                return rpc::shell::DEVICE_TELEM1;
+            case mavsdk::Shell::Device::Telem2:
+                return rpc::shell::DEVICE_TELEM2;
+            case mavsdk::Shell::Device::Gps1:
+                return rpc::shell::DEVICE_GPS1;
+            case mavsdk::Shell::Device::Gps2:
+                return rpc::shell::DEVICE_GPS2;
+            case mavsdk::Shell::Device::Shell:
+                return rpc::shell::DEVICE_SHELL;
+            case mavsdk::Shell::Device::Serial0:
+                return rpc::shell::DEVICE_SERIAL0;
+            case mavsdk::Shell::Device::Serial1:
+                return rpc::shell::DEVICE_SERIAL1;
+            case mavsdk::Shell::Device::Serial2:
+                return rpc::shell::DEVICE_SERIAL2;
+            case mavsdk::Shell::Device::Serial3:
+                return rpc::shell::DEVICE_SERIAL3;
+            case mavsdk::Shell::Device::Serial4:
+                return rpc::shell::DEVICE_SERIAL4;
+            case mavsdk::Shell::Device::Serial5:
+                return rpc::shell::DEVICE_SERIAL5;
+            case mavsdk::Shell::Device::Serial6:
+                return rpc::shell::DEVICE_SERIAL6;
+            case mavsdk::Shell::Device::Serial7:
+                return rpc::shell::DEVICE_SERIAL7;
+            case mavsdk::Shell::Device::Serial8:
+                return rpc::shell::DEVICE_SERIAL8;
+            case mavsdk::Shell::Device::Serial9:
+                return rpc::shell::DEVICE_SERIAL9;
+        }
+    }
+
+    static mavsdk::Shell::Device translateFromRpcDevice(const rpc::shell::Device device)
+    {
+        switch (device) {
+            default:
+                LogErr("Unknown device enum value: {}", static_cast<int>(device));
+            // FALLTHROUGH
+            case rpc::shell::DEVICE_TELEM1:
+                return mavsdk::Shell::Device::Telem1;
+            case rpc::shell::DEVICE_TELEM2:
+                return mavsdk::Shell::Device::Telem2;
+            case rpc::shell::DEVICE_GPS1:
+                return mavsdk::Shell::Device::Gps1;
+            case rpc::shell::DEVICE_GPS2:
+                return mavsdk::Shell::Device::Gps2;
+            case rpc::shell::DEVICE_SHELL:
+                return mavsdk::Shell::Device::Shell;
+            case rpc::shell::DEVICE_SERIAL0:
+                return mavsdk::Shell::Device::Serial0;
+            case rpc::shell::DEVICE_SERIAL1:
+                return mavsdk::Shell::Device::Serial1;
+            case rpc::shell::DEVICE_SERIAL2:
+                return mavsdk::Shell::Device::Serial2;
+            case rpc::shell::DEVICE_SERIAL3:
+                return mavsdk::Shell::Device::Serial3;
+            case rpc::shell::DEVICE_SERIAL4:
+                return mavsdk::Shell::Device::Serial4;
+            case rpc::shell::DEVICE_SERIAL5:
+                return mavsdk::Shell::Device::Serial5;
+            case rpc::shell::DEVICE_SERIAL6:
+                return mavsdk::Shell::Device::Serial6;
+            case rpc::shell::DEVICE_SERIAL7:
+                return mavsdk::Shell::Device::Serial7;
+            case rpc::shell::DEVICE_SERIAL8:
+                return mavsdk::Shell::Device::Serial8;
+            case rpc::shell::DEVICE_SERIAL9:
+                return mavsdk::Shell::Device::Serial9;
+        }
+    }
+
+
+
+    static std::unique_ptr<rpc::shell::Receive> translateToRpcReceive(const mavsdk::Shell::Receive &receive)
+    {
+        auto rpc_obj = std::make_unique<rpc::shell::Receive>();
+
+
+            
+        rpc_obj->set_data(receive.data);
+            
+        
+            
+                
+        rpc_obj->set_device(translateToRpcDevice(receive.device));
+                
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Shell::Receive translateFromRpcReceive(const rpc::shell::Receive& receive)
+    {
+        mavsdk::Shell::Receive obj;
+
+
+            
+        obj.data = receive.data();
+            
+        
+            
+        obj.device = translateFromRpcDevice(receive.device());
+            
+        
+        return obj;
+    }
+
+
+
 
     static rpc::shell::ShellResult::Result translateToRpcResult(const mavsdk::Shell::Result& result)
     {
@@ -66,6 +183,8 @@ public:
                 return rpc::shell::ShellResult_Result_RESULT_NO_RESPONSE;
             case mavsdk::Shell::Result::Busy:
                 return rpc::shell::ShellResult_Result_RESULT_BUSY;
+            case mavsdk::Shell::Result::InvalidArgument:
+                return rpc::shell::ShellResult_Result_RESULT_INVALID_ARGUMENT;
         }
     }
 
@@ -87,6 +206,8 @@ public:
                 return mavsdk::Shell::Result::NoResponse;
             case rpc::shell::ShellResult_Result_RESULT_BUSY:
                 return mavsdk::Shell::Result::Busy;
+            case rpc::shell::ShellResult_Result_RESULT_INVALID_ARGUMENT:
+                return mavsdk::Shell::Result::InvalidArgument;
         }
     }
 
@@ -114,7 +235,9 @@ public:
         }
             
         
-        auto result = _lazy_plugin.maybe_plugin()->send(request->command());
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->send(request->command(), translateFromRpcDevice(request->device()));
         
 
         
@@ -141,11 +264,11 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Shell::ReceiveHandle handle = _lazy_plugin.maybe_plugin()->subscribe_receive(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const std::string receive) {
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Shell::Receive receive) {
 
             rpc::shell::ReceiveResponse rpc_response;
         
-            rpc_response.set_data(receive);
+            rpc_response.set_allocated_receive(translateToRpcReceive(receive).release());
         
 
         

@@ -24,6 +24,7 @@
 #include <grpcpp/support/status.h>
 #include <grpcpp/support/stub_options.h>
 #include <grpcpp/support/sync_stream.h>
+#include <grpcpp/ports_def.inc>
 
 namespace mavsdk {
 namespace rpc {
@@ -31,6 +32,11 @@ namespace shell {
 
 //
 // Allow to communicate with the vehicle's system shell.
+//
+// Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+// SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+// Send (and observe the device on Receive) when the same framing is used for
+// non-nsh serial bridges (for example TELEM2).
 class ShellService final {
  public:
   static constexpr char const* service_full_name() {
@@ -417,4 +423,5 @@ class ShellService final {
 }  // namespace mavsdk
 
 
+#include <grpcpp/ports_undef.inc>
 #endif  // GRPC_shell_2fshell_2eproto__INCLUDED
