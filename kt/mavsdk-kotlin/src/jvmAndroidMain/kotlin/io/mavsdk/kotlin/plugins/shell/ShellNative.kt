@@ -5,12 +5,26 @@
 package io.mavsdk.kotlin.plugins.shell
 
 import io.mavsdk.jni.plugins.shell.NativeShell
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
+import java.util.concurrent.ConcurrentHashMap
 
-private class ShellNativeImpl(private val handle: Long) : ShellNative {
+private fun Shell.Receive.toNative(): NativeShell.Receive =
+    NativeShell.Receive(
+        data,
+        device.value
+    )
+
+private fun NativeShell.Receive.toKotlin(): Shell.Receive =
+    Shell.Receive(
+        data,
+        Shell..fromValue(device)
+    )
+
+private class ShellNativeImpl(
+    private val handle: Long
+) : ShellNative {
     // The read lock keeps `handle` alive for the duration of a native call; destroy()
     // takes the write lock, which waits for in-flight calls to finish. Readers do not
     // exclude each other, so independent calls on this plugin still run concurrently
@@ -19,18 +33,26 @@ private class ShellNativeImpl(private val handle: Long) : ShellNative {
     @Volatile private var destroyed = false
     private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
-    private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
-        check(!destroyed) { "Shell is closed" }
-        action()
-    }
+    private inline fun <Value> withOpen(action: () -> Value): Value =
+        lifecycle.read {
+            check(!destroyed) { "Shell is closed" }
+            action()
+        }
 
-    override fun send(command: String): Int = withOpen { NativeShell.send(handle, command) }
+    override fun send(command: String, device: Shell.): Int =
+        withOpen {
+            NativeShell.send(handle, command, device.value)
+        }
 
-    override fun subscribeReceive(callback: (String) -> Unit): Long = withOpen {
+    override fun subscribeReceive(
+        callback: (Shell.) -> Unit
+    ): Long = withOpen {
         val subscriptionHandle =
             NativeShell.subscribeReceive(
                 handle,
-                NativeShell.ReceiveCallback { value -> callback(value) },
+                NativeShell.ReceiveCallback {
+                    value -> callback(value.toKotlin())
+                }
             )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {
@@ -43,7 +65,9 @@ private class ShellNativeImpl(private val handle: Long) : ShellNative {
     override fun unsubscribeReceive(subscriptionHandle: Long) {
         // No destroyed check: flow cancellation races teardown, and destroy() already
         // drained the map, so this is a no-op rather than an error after close.
-        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+        lifecycle.read {
+            activeSubscriptions.remove(subscriptionHandle)?.invoke()
+        }
     }
 
     override fun destroy() {

@@ -3,17 +3,26 @@
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/shell/shell.proto)
 """
 Allow to communicate with the vehicle's system shell.
+
+ Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+ SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+ Send (and observe the device on Receive) when the same framing is used for
+ non-nsh serial bridges (for example TELEM2).
 """
 
 from .shell import ShellAsync
 
 from mavsdk.plugins.shell import (
     Shell,
+    Device,
     ShellResult,
+    Receive,
 )
 
 __all__ = [
     "ShellAsync",
     "Shell",
+    "Device",
     "ShellResult",
+    "Receive",
 ]

@@ -17,10 +17,102 @@ using namespace mavsdk::jni;
 namespace {
 
 
+struct ReceiveFromJava;
+struct ReceiveArrayFromJava;
 
+struct ReceiveFromJava {
+    mavsdk_shell_receive_t value{};
+    std::string dataValue;
 
+    ReceiveFromJava(JNIEnv* env, jobject object);
+    ~ReceiveFromJava();
+};
 
+struct ReceiveArrayFromJava {
+    std::vector<std::unique_ptr<ReceiveFromJava>> holders;
+    std::vector<mavsdk_shell_receive_t> values;
 
+    ReceiveArrayFromJava(JNIEnv* env, jobjectArray array) {
+        const jsize count = array ? env->GetArrayLength(array) : 0;
+        holders.reserve(static_cast<size_t>(count));
+        values.reserve(static_cast<size_t>(count));
+        for (jsize i = 0; i < count; ++i) {
+            jobject element = env->GetObjectArrayElement(array, i);
+            auto holder = std::make_unique<ReceiveFromJava>(env, element);
+            values.push_back(holder->value);
+            holders.push_back(std::move(holder));
+            env->DeleteLocalRef(element);
+        }
+    }
+};
+
+ReceiveFromJava::ReceiveFromJava(JNIEnv* env, jobject object) {
+    if (!object) {
+        return;
+    }
+    jclass clazz = env->GetObjectClass(object);
+    jfieldID dataField = env->GetFieldID(
+        clazz, "data", "Ljava/lang/String;");
+    auto dataString =
+        static_cast<jstring>(env->GetObjectField(object, dataField));
+    JStringHolder dataHolder(env, dataString);
+    dataValue =
+        dataHolder.c_str() ? dataHolder.c_str() : "";
+    value.data = const_cast<char*>(dataValue.c_str());
+    env->DeleteLocalRef(dataString);
+    jfieldID deviceField = env->GetFieldID(
+        clazz, "device", "I");
+    value.device =
+        static_cast<mavsdk_shell__t>(env->GetIntField(object, deviceField));
+    env->DeleteLocalRef(clazz);
+}
+
+ReceiveFromJava::~ReceiveFromJava() = default;
+
+jobject toJavaReceive(
+    JNIEnv* env, const mavsdk_shell_receive_t& value);
+jobjectArray toJavaReceiveArray(
+    JNIEnv* env,
+    const mavsdk_shell_receive_t* values,
+    size_t count);
+
+jobject toJavaReceive(
+    JNIEnv* env, const mavsdk_shell_receive_t& value) {
+    jclass carrierClass = findClass(env, "io/mavsdk/jni/plugins/shell/NativeShell$Receive");
+    if (!carrierClass) {
+        return nullptr;
+    }
+    jmethodID constructor = env->GetMethodID(
+        carrierClass, "<init>", "(Ljava/lang/String;I)V");
+    if (!constructor) {
+        return nullptr;
+    }
+    jstring dataValue =
+        toJavaString(env, value.data);
+    jobject result = env->NewObject(carrierClass, constructor
+        , dataValue
+        , static_cast<jint>(value.device)
+    );
+    env->DeleteLocalRef(dataValue);
+    return result;
+}
+
+jobjectArray toJavaReceiveArray(
+    JNIEnv* env,
+    const mavsdk_shell_receive_t* values,
+    size_t count) {
+    jclass elementClass = findClass(env, "io/mavsdk/jni/plugins/shell/NativeShell$Receive");
+    if (!elementClass) {
+        return nullptr;
+    }
+    jobjectArray result = env->NewObjectArray(static_cast<jsize>(count), elementClass, nullptr);
+    for (size_t i = 0; i < count; ++i) {
+        jobject item = toJavaReceive(env, values[i]);
+        env->SetObjectArrayElement(result, static_cast<jsize>(i), item);
+        env->DeleteLocalRef(item);
+    }
+    return result;
+}
 
 struct ReceiveCallbackWrapper {
     GlobalRefHolder callback;
@@ -30,20 +122,20 @@ struct ReceiveCallbackWrapper {
         : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
             jclass callbackClass = env->GetObjectClass(callbackObject);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Ljava/lang/String;)V");
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/shell/NativeShell$;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
     void operator()(
-        const char* value
+        const mavsdk_shell__t value
     ) const {
         struct ValueGuard {
-            char* value;
+            mavsdk_shell__t value;
             ~ValueGuard() {
-                mavsdk_shell_string_destroy(&value);
+                mavsdk_shell__destroy(&value);
             }
-        } valueGuard{const_cast<char*>(value)};
+        } valueGuard{value};
 
         if (!callback.isValid() || !invokeMethod || !g_jvm) {
             return;
@@ -53,7 +145,8 @@ struct ReceiveCallbackWrapper {
         if (!env) {
             return;
         }
-        jstring javaValue = toJavaString(env, value);
+        jobject javaValue =
+            toJava(env, value);
         env->CallVoidMethod(callback.get(), invokeMethod
             , javaValue
         );
@@ -100,7 +193,8 @@ JNICALL Java_io_mavsdk_jni_plugins_shell_NativeShell_send(
     JNIEnv* env,
     jclass,
     jlong handle,
-    jobject command) {
+    jobject command,
+    jint device) {
     if (!requireHandle(env, handle, "Shell plugin")) {
         return {};
     }
@@ -109,7 +203,8 @@ JNICALL Java_io_mavsdk_jni_plugins_shell_NativeShell_send(
     mavsdk_shell_result_t result =
         mavsdk_shell_send(
             reinterpret_cast<mavsdk_shell_t>(handle),
-            const_cast<char*>(commandHolder.c_str()));
+            const_cast<char*>(commandHolder.c_str()),
+            static_cast<mavsdk_shell__t>(device));
     return static_cast<jint>(result);
 }
 
@@ -128,7 +223,7 @@ Java_io_mavsdk_jni_plugins_shell_NativeShell_subscribeReceive(
         mavsdk_shell_subscribe_receive(
             reinterpret_cast<mavsdk_shell_t>(handle),
             [](
-               const char* value,
+               const mavsdk_shell__t value,
                void* userData) {
                 auto* callbackWrapper =
                     static_cast<ReceiveCallbackWrapper*>(userData);
