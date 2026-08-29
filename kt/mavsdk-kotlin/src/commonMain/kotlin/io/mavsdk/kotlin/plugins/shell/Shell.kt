@@ -81,8 +81,10 @@ class Shell internal constructor(private val native: ShellNative) {
     }
 
     /**
+     * Received shell data and source device.
+     *
      * @property data Received data.
-     * @property device
+     * @property device SERIAL_CONTROL device the data came from.
      */
     data class Receive(val data: String, val device: Device)
 

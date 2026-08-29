@@ -70,7 +70,7 @@ typedef enum {
 
 // ===== Structs =====
 /**
- * @brief 
+ * @brief Received shell data and source device.
  *
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_shell_receive_destroy() when done to avoid memory leaks.
@@ -78,7 +78,7 @@ typedef enum {
 typedef struct CMAVSDK_EXPORT {
     /**  Received data. */
     char* data;
-    /**  */
+    /**  SERIAL_CONTROL device the data came from. */
     mavsdk_shell_device_t device;
 } mavsdk_shell_receive_t;
 

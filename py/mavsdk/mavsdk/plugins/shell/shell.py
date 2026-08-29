@@ -70,7 +70,9 @@ class ReceiveCStruct(ctypes.Structure):
 
 # ===== Structures =====
 class Receive:
-    """ """
+    """
+    Received shell data and source device.
+    """
 
     def __init__(self, data=None, device=None):
         self.data = data
