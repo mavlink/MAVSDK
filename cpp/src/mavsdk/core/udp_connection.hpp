@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <mutex>
 #include <array>
 #include <vector>
@@ -10,6 +11,7 @@
 #include <asio/ip/udp.hpp>
 
 #include "connection.hpp"
+#include "tx_queue.hpp"
 
 namespace mavsdk {
 
@@ -38,6 +40,7 @@ public:
 private:
     ConnectionResult setup_port();
     void do_receive();
+    void start_write();
 
     enum class RemoteOption {
         Fixed,
@@ -67,10 +70,19 @@ private:
     };
     std::vector<Remote> _remotes{};
 
-    // Asio socket — owned by this connection, driven by MavsdkImpl::_io_context
+    // One queued datagram, addressed to a single remote. The payload is shared because
+    // the same datagram usually goes to several remotes.
+    struct TxItem {
+        std::shared_ptr<const std::vector<char>> bytes;
+        asio::ip::udp::endpoint endpoint;
+    };
+
+    // Asio socket and the send queue — owned by this connection and only touched on
+    // MavsdkImpl::_io_context's thread, which is why neither needs a lock.
     asio::ip::udp::socket _socket;
     asio::ip::udp::endpoint _sender_endpoint{};
     std::array<uint8_t, 2048> _recv_buffer{};
+    TxQueue<TxItem> _tx_queue{MAX_TX_QUEUE_ITEMS};
 
     // Timeout for inactive connections in seconds
     static constexpr std::chrono::seconds REMOTE_TIMEOUT{10};

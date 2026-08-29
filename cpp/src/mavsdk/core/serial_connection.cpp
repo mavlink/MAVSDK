@@ -8,6 +8,7 @@
 #endif
 
 #include <asio/buffer.hpp>
+#include <asio/dispatch.hpp>
 #include <asio/error.hpp>
 #include <asio/post.hpp>
 #include <asio/write.hpp>
@@ -219,36 +220,42 @@ ConnectionResult SerialConnection::setup_port()
     }
 #endif
 
+    _port_open = true;
+
     return ConnectionResult::Success;
 }
 
 ConnectionResult SerialConnection::stop()
 {
+    _stopping = true;
+    _port_open = false;
+
     auto& io_ctx = static_cast<asio::io_context&>(_serial_port.get_executor().context());
     if (!io_ctx.stopped()) {
         // Close the serial port from the io_context thread to avoid a data race
-        // with a concurrent async_read_some() reading the port's state.
+        // with a concurrent async_read_some() / async_write() reading the port's state.
         // Because io_ctx is driven by a single thread, posting here serialises
         // the close with all in-flight port access.
         std::promise<void> close_done;
         asio::post(io_ctx, [this, &close_done]() {
-            std::lock_guard<std::mutex> lock(_send_mutex);
+            _tx_queue.clear();
             if (_serial_port.is_open()) {
                 asio::error_code ec;
-                _serial_port.cancel(ec); // cancel outstanding async_read_some
+                _serial_port.cancel(ec); // cancel outstanding async_read_some/async_write
                 _serial_port.close(ec);
             }
             close_done.set_value();
         });
         close_done.get_future().wait();
 
-        // Drain any operation_aborted handlers queued by the close.
+        // Drain any operation_aborted handlers queued by the close. This also means the
+        // in-flight write (if any) has completed, so its buffer is no longer referenced.
         std::promise<void> fence;
         asio::post(io_ctx, [&fence]() { fence.set_value(); });
         fence.get_future().wait();
     } else {
         // io_context already stopped — no concurrent async operations are running.
-        std::lock_guard<std::mutex> lock(_send_mutex);
+        _tx_queue.clear();
         if (_serial_port.is_open()) {
             asio::error_code ec;
             _serial_port.cancel(ec);
@@ -279,22 +286,69 @@ std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes,
         return {false, "Baudrate unknown"};
     }
 
-    std::lock_guard<std::mutex> lock(_send_mutex);
-
-    if (!_serial_port.is_open()) {
+    if (!_port_open) {
         return {false, "Port not open"};
     }
 
-    asio::error_code ec;
-    asio::write(_serial_port, asio::buffer(bytes, length), ec);
+    // Queue the bytes and let the async write chain drain them on the io thread. A
+    // synchronous write here would hold the io thread for as long as the link needs to
+    // drain the bytes -- at 57600 baud a single MAVLink frame is already tens of
+    // milliseconds -- stalling every other connection, timer and plugin meanwhile.
+    //
+    // The flip side is that a write failure is only known later; it reaches the user
+    // through report_send_error() instead of this return value.
+    std::vector<char> buf(bytes, bytes + length);
 
-    if (ec) {
-        std::string msg = "write failure: " + ec.message();
-        LogErr("{}", msg);
-        return {false, std::move(msg)};
-    }
+    // dispatch() rather than post(): callers are normally already on the io thread (the
+    // send path runs there), and running inline keeps the enqueue ordered with respect
+    // to the writes already queued.
+    asio::dispatch(_serial_port.get_executor(), [this, buf = std::move(buf)]() mutable {
+        if (_stopping || !_serial_port.is_open()) {
+            return;
+        }
+
+        const auto dropped = _tx_queue.push(std::move(buf));
+        if (dropped > 0) {
+            LogErr("Serial send queue full, dropped {} message(s)", dropped);
+            report_send_error("Send queue full, dropped oldest message(s)");
+        }
+
+        start_write();
+    });
 
     return {true, {}};
+}
+
+void SerialConnection::start_write()
+{
+    // Runs on the io thread. One write is in flight at a time; its completion handler
+    // starts the next.
+    if (_tx_queue.busy() || _tx_queue.empty()) {
+        return;
+    }
+
+    if (_stopping || !_serial_port.is_open()) {
+        _tx_queue.clear();
+        return;
+    }
+
+    const auto& item = _tx_queue.start();
+    asio::async_write(
+        _serial_port, asio::buffer(item), [this](const asio::error_code& ec, std::size_t) {
+            _tx_queue.finish();
+
+            if (ec) {
+                if (ec != asio::error::operation_aborted && !_stopping) {
+                    const std::string msg = "write failure: " + ec.message();
+                    LogErr("{}", msg);
+                    report_send_error(msg);
+                }
+                _tx_queue.clear();
+                return;
+            }
+
+            start_write();
+        });
 }
 
 void SerialConnection::do_receive()
@@ -319,7 +373,10 @@ void SerialConnection::do_receive()
 
             if (ec) {
                 LogErr("Read failure: {}", ec.message());
-                // Do not re-arm on hard errors (port removed, etc.).
+                // Do not re-arm on hard errors (port removed, etc.). Nothing more will
+                // go out either, so stop accepting sends and drop what is queued.
+                _port_open = false;
+                _tx_queue.clear();
                 return;
             }
 

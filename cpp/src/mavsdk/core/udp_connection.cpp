@@ -3,6 +3,7 @@
 #include "log.hpp"
 
 #include <asio/buffer.hpp>
+#include <asio/dispatch.hpp>
 #include <asio/error.hpp>
 #include <asio/ip/address.hpp>
 #include <asio/post.hpp>
@@ -97,35 +98,32 @@ ConnectionResult UdpConnection::stop()
 
         if (!io_ctx.stopped()) {
             // Close the socket from the io_context thread to avoid a data race
-            // with a concurrent async_receive_from() call. Because io_ctx is
-            // driven by a single thread, posting the close here serialises it
+            // with a concurrent async_receive_from() / async_send_to() call. Because
+            // io_ctx is driven by a single thread, posting the close here serialises it
             // with any in-flight socket access — the close can only run between
             // handler invocations, never while async_receive_from() is reading
             // the socket's internal state.
             std::promise<void> close_done;
             asio::post(io_ctx, [this, &close_done]() {
-                // send_raw_bytes() calls _socket.send_to() synchronously on a caller
-                // thread while holding _remote_mutex, so take it here too: closing the
-                // socket concurrently with an in-flight send_to is a data race.
-                std::lock_guard<std::mutex> lock(_remote_mutex);
+                _tx_queue.clear();
                 asio::error_code ec;
                 _socket.close(ec);
                 close_done.set_value();
             });
             close_done.get_future().wait();
 
-            // close() cancelled any pending async_receive_from, so the
-            // operation_aborted completion handler is now queued. Wait for it
-            // to run (it will not re-post do_receive) before returning, so that
-            // callers can safely destroy UdpConnection's members.
+            // close() cancelled any pending async_receive_from / async_send_to, so the
+            // operation_aborted completion handlers are now queued. Wait for them
+            // to run (they will not re-arm) before returning, so that callers can
+            // safely destroy UdpConnection's members.
             std::promise<void> fence;
             asio::post(io_ctx, [&fence]() { fence.set_value(); });
             fence.get_future().wait();
         } else {
             // io_context has already been stopped (io_thread joined) — no
-            // concurrent async operation can be running, but a user thread could
-            // still call send_raw_bytes(), so guard the close with _remote_mutex.
-            std::lock_guard<std::mutex> lock(_remote_mutex);
+            // concurrent async operation can be running, and send_raw_bytes() no
+            // longer touches the socket from a caller thread.
+            _tx_queue.clear();
             asio::error_code ec;
             _socket.close(ec);
         }
@@ -150,77 +148,132 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
 {
     std::pair<bool, std::string> result;
 
-    std::lock_guard<std::mutex> lock(_remote_mutex);
+    // Work out the destinations synchronously (so "no remotes" is still an accurate,
+    // immediate answer), then hand the actual sending to the async write chain on the io
+    // thread. Nothing below holds _remote_mutex across I/O any more.
+    std::vector<asio::ip::udp::endpoint> destinations;
+    {
+        std::lock_guard<std::mutex> lock(_remote_mutex);
 
-    // Remove inactive remotes before sending messages
-    auto now = std::chrono::steady_clock::now();
+        // Remove inactive remotes before sending messages
+        auto now = std::chrono::steady_clock::now();
 
-    _remotes.erase(
-        std::remove_if(
-            _remotes.begin(),
-            _remotes.end(),
-            [&now, this](const Remote& remote) {
-                const auto elapsed = now - remote.last_activity;
-                const bool inactive = elapsed > REMOTE_TIMEOUT;
+        _remotes.erase(
+            std::remove_if(
+                _remotes.begin(),
+                _remotes.end(),
+                [&now, this](const Remote& remote) {
+                    const auto elapsed = now - remote.last_activity;
+                    const bool inactive = elapsed > REMOTE_TIMEOUT;
 
-                const bool should_remove = inactive && remote.remote_option == RemoteOption::Found;
+                    const bool should_remove =
+                        inactive && remote.remote_option == RemoteOption::Found;
 
-                if (should_remove) {
-                    LogInfo("Removing inactive remote: {}:{}", remote.ip, remote.port_number);
+                    if (should_remove) {
+                        LogInfo("Removing inactive remote: {}:{}", remote.ip, remote.port_number);
+                    }
+
+                    return should_remove;
+                }),
+            _remotes.end());
+
+        if (_remotes.empty()) {
+            result.first = false;
+            result.second = "no remotes";
+            return result;
+        }
+
+        destinations.reserve(_remotes.size());
+
+        // As before, a remote we cannot even address counts as a failure for the caller,
+        // even if the other remotes are fine.
+        result.first = true;
+
+        for (const auto& remote : _remotes) {
+            asio::error_code ec;
+            asio::ip::address dest_addr = asio::ip::make_address(remote.ip, ec);
+            if (ec) {
+                std::stringstream ss;
+                ss << "make_address failure for: " << remote.ip << ":" << remote.port_number << ": "
+                   << ec.message();
+                LogErr("{}", ss.str());
+                result.first = false;
+                if (!result.second.empty()) {
+                    result.second += ", ";
                 }
+                result.second += ss.str();
+                continue;
+            }
 
-                return should_remove;
-            }),
-        _remotes.end());
+            destinations.emplace_back(dest_addr, static_cast<unsigned short>(remote.port_number));
+        }
+    }
 
-    if (_remotes.empty()) {
-        result.first = false;
-        result.second = "no remotes";
+    if (destinations.empty()) {
+        // Every remote failed to parse; result already says so and describes why.
         return result;
     }
 
-    // Send the raw bytes to all the remotes synchronously.
-    result.first = true;
+    // One shared payload, one queue entry per destination.
+    auto payload = std::make_shared<const std::vector<char>>(bytes, bytes + length);
 
-    for (auto& remote : _remotes) {
-        asio::error_code ec;
-        asio::ip::address dest_addr = asio::ip::make_address(remote.ip, ec);
-        if (ec) {
-            std::stringstream ss;
-            ss << "make_address failure for: " << remote.ip << ":" << remote.port_number << ": "
-               << ec.message();
-            LogErr("{}", ss.str());
-            result.first = false;
-            if (!result.second.empty()) {
-                result.second += ", ";
+    // dispatch() rather than post(): callers are normally already on the io thread (the
+    // send path runs there), and running inline keeps the enqueue ordered with respect
+    // to the datagrams already queued.
+    asio::dispatch(
+        _socket.get_executor(),
+        [this, payload = std::move(payload), destinations = std::move(destinations)]() {
+            if (!_socket.is_open()) {
+                return;
             }
-            result.second += ss.str();
-            continue;
-        }
 
-        asio::ip::udp::endpoint dest_endpoint(
-            dest_addr, static_cast<unsigned short>(remote.port_number));
-
-        const auto send_len = _socket.send_to(asio::buffer(bytes, length), dest_endpoint, 0, ec);
-
-        if (ec || send_len != length) {
-            std::stringstream ss;
-            ss << "send_to failure";
-            if (ec) {
-                ss << ": " << ec.message();
+            std::size_t dropped = 0;
+            for (const auto& endpoint : destinations) {
+                dropped += _tx_queue.push(TxItem{payload, endpoint});
             }
-            ss << " for: " << remote.ip << ":" << remote.port_number;
-            LogErr("{}", ss.str());
-            result.first = false;
-            if (!result.second.empty()) {
-                result.second += ", ";
+            if (dropped > 0) {
+                LogErr("UDP send queue full, dropped {} datagram(s)", dropped);
+                report_send_error("Send queue full, dropped oldest datagram(s)");
             }
-            result.second += ss.str();
-            continue;
-        }
-    }
+
+            start_write();
+        });
 
     return result;
+}
+
+void UdpConnection::start_write()
+{
+    // Runs on the io thread. One datagram is in flight at a time; its completion handler
+    // sends the next.
+    if (_tx_queue.busy() || _tx_queue.empty()) {
+        return;
+    }
+
+    if (!_socket.is_open()) {
+        _tx_queue.clear();
+        return;
+    }
+
+    const auto& item = _tx_queue.start();
+    _socket.async_send_to(
+        asio::buffer(*item.bytes),
+        item.endpoint,
+        [this, endpoint = item.endpoint](const asio::error_code& ec, std::size_t) {
+            _tx_queue.finish();
+
+            if (ec && ec != asio::error::operation_aborted) {
+                std::stringstream ss;
+                ss << "send_to failure: " << ec.message() << " for: " << endpoint.address() << ":"
+                   << endpoint.port();
+                LogErr("{}", ss.str());
+                report_send_error(ss.str());
+            }
+
+            // Unlike a stream, one failed datagram says nothing about the next, so keep
+            // draining the queue either way.
+            start_write();
+        });
 }
 
 void UdpConnection::add_remote_to_keep(const std::string& remote_ip, const int remote_port)

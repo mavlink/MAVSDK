@@ -114,6 +114,11 @@ void Connection::receive_message(
     _receiver_callback(result, message, connection);
 }
 
+void Connection::report_send_error(const std::string& message)
+{
+    _mavsdk_impl.report_connection_error(message, _handle);
+}
+
 bool Connection::should_forward_messages() const
 {
     return _forwarding_option == ForwardingOption::ForwardingOn;
