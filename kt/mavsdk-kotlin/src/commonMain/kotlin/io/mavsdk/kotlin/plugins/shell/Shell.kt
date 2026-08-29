@@ -5,28 +5,21 @@
 
 package io.mavsdk.kotlin.plugins.shell
 
-
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
 /**
  * Allow to communicate with the vehicle's system shell.
- * 
- *  Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
- *  SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
- *  Send (and observe the device on Receive) when the same framing is used for
- *  non-nsh serial bridges (for example TELEM2).
+ *
+ * Under the hood this uses MAVLink SERIAL_CONTROL. The default device is SERIAL_CONTROL_DEV_SHELL.
+ * Callers can pass another SERIAL_CONTROL_DEV on Send (and observe the device on Receive) when the
+ * same framing is used for non-nsh serial bridges (for example TELEM2).
  */
-class Shell internal constructor(
-    private val native: ShellNative
-) {
+class Shell internal constructor(private val native: ShellNative) {
     private var closed = false
 
-    /**
-     * Possible results returned for shell requests
-     */
+    /** Possible results returned for shell requests */
     enum class Result(val value: Int) {
         /** Unknown result */
         UNKNOWN(0),
@@ -41,18 +34,14 @@ class Shell internal constructor(
         /** Shell busy (transfer in progress) */
         BUSY(5),
         /** Invalid device / argument */
-        INVALID_ARGUMENT(6),
-        ;
+        INVALID_ARGUMENT(6);
 
         companion object {
-            fun fromValue(value: Int): Result =
-                entries.find { it.value == value } ?: UNKNOWN
+            fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
-    /**
-     * MAVLink SERIAL_CONTROL_DEV values used by the shell plugin.
-     */
+    /** MAVLink SERIAL_CONTROL_DEV values used by the shell plugin. */
     enum class Device(val value: Int) {
         /** SERIAL_CONTROL_DEV_TELEM1 */
         TELEM1(0),
@@ -83,8 +72,7 @@ class Shell internal constructor(
         /** SERIAL_CONTROL_SERIAL8 */
         SERIAL8(13),
         /** SERIAL_CONTROL_SERIAL9 */
-        SERIAL9(14),
-        ;
+        SERIAL9(14);
 
         companion object {
             fun fromValue(value: Int): Device =
@@ -93,41 +81,31 @@ class Shell internal constructor(
     }
 
     /**
-     * 
-     *
      * @property data Received data.
-     *
-     * @property device 
+     * @property device
      */
-    data class Receive(
-        val data: String,
-        val device: ,
-    )
+    data class Receive(val data: String, val device: Device)
 
-/**
+    /**
      * Send a command line.
      *
      * @param command The command line to send
-     *
-     * @param device 
-     *
+     * @param device
      * @return The result of the request.
      */
-    fun send(command: String, device: ): Result =
+    fun send(command: String, device: Device): Result =
         Result.fromValue(native.send(command, device))
 
-/**
+    /**
      * Receive feedback from a sent command line.
-     * 
-     *  This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
+     *
+     * This subscription needs to be made before a command line is sent, otherwise, no response will
+     * be sent.
      *
      * @return Received data.
      */
-    fun subscribeReceive(): Flow<> = callbackFlow {
-        val subscriptionHandle = native.subscribeReceive(
-                    ) { value ->
-            trySend(value)
-        }
+    fun subscribeReceive(): Flow<Receive> = callbackFlow {
+        val subscriptionHandle = native.subscribeReceive() { value -> trySend(value) }
         awaitClose { native.unsubscribeReceive(subscriptionHandle) }
     }
 
@@ -137,17 +115,16 @@ class Shell internal constructor(
         native.destroy()
     }
 
-    class ShellException(
-        val result: Result,
-        message: String
-    ) : Exception(message)
-
+    class ShellException(val result: Result, message: String) : Exception(message)
 }
 
 internal interface ShellNative {
-    fun send(command: String, device: Shell.): Int
-    fun subscribeReceive(callback: (Shell.) -> Unit): Long
+    fun send(command: String, device: Shell.Device): Int
+
+    fun subscribeReceive(callback: (Shell.Receive) -> Unit): Long
+
     fun unsubscribeReceive(subscriptionHandle: Long)
+
     fun destroy()
 }
 

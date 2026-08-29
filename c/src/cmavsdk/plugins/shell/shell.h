@@ -79,7 +79,7 @@ typedef struct CMAVSDK_EXPORT {
     /**  Received data. */
     char* data;
     /**  */
-    mavsdk_shell__t device;
+    mavsdk_shell_device_t device;
 } mavsdk_shell_receive_t;
 
 /**
@@ -207,7 +207,7 @@ CMAVSDK_EXPORT void mavsdk_shell_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_shell_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_shell_receive_callback_t)(const mavsdk_shell__t receive, void* user_data);
+typedef void (*mavsdk_shell_receive_callback_t)(const mavsdk_shell_receive_t receive, void* user_data);
 
 // ===== Shell Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_shell_t mavsdk_shell_create(mavsdk_system_t system);
@@ -228,7 +228,7 @@ mavsdk_shell_result_t
 mavsdk_shell_send(
     mavsdk_shell_t shell,
     char* command,
-    mavsdk_shell__t device);
+    mavsdk_shell_device_t device);
 
 
 /**

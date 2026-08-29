@@ -114,7 +114,7 @@ translate_receive_from_c(const mavsdk_shell_receive_t& c_struct) {
     if (c_struct.data) {
         cpp_struct.data = c_struct.data;
     }
-    cpp_struct.device = translate__from_c(c_struct.device);
+    cpp_struct.device = translate_device_from_c(c_struct.device);
     return cpp_struct;
 }
 
@@ -122,7 +122,7 @@ static mavsdk_shell_receive_t
 translate_receive_to_c(const mavsdk::Shell::Receive& cpp_struct) {
     mavsdk_shell_receive_t c_struct{};
     c_struct.data = strdup(cpp_struct.data.c_str());
-    c_struct.device = translate__to_c(cpp_struct.device);
+    c_struct.device = translate_device_to_c(cpp_struct.device);
     return c_struct;
 }
 
@@ -256,11 +256,11 @@ mavsdk_shell_result_t
 mavsdk_shell_send(
     mavsdk_shell_t shell,
     char* command,
-    mavsdk_shell__t device)
+    mavsdk_shell_device_t device)
 {
     auto wrapper = reinterpret_cast<mavsdk_shell_wrapper*>(shell);
 
-    auto ret_value = wrapper->cpp_plugin->send(        command,        translate__from_c(device));
+    auto ret_value = wrapper->cpp_plugin->send(        command,        translate_device_from_c(device));
 
     return translate_result(ret_value);
 }
@@ -275,10 +275,10 @@ mavsdk_shell_receive_handle_t mavsdk_shell_subscribe_receive(
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_receive(
         [callback, user_data](
-            mavsdk::Shell:: value) {
+            mavsdk::Shell::Receive value) {
                 if (callback) {
                     callback(
-                        translate__to_c(value),
+                        translate_receive_to_c(value),
                         user_data);
                 }
         });

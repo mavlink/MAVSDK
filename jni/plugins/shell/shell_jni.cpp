@@ -63,7 +63,7 @@ ReceiveFromJava::ReceiveFromJava(JNIEnv* env, jobject object) {
     jfieldID deviceField = env->GetFieldID(
         clazz, "device", "I");
     value.device =
-        static_cast<mavsdk_shell__t>(env->GetIntField(object, deviceField));
+        static_cast<mavsdk_shell_device_t>(env->GetIntField(object, deviceField));
     env->DeleteLocalRef(clazz);
 }
 
@@ -122,18 +122,18 @@ struct ReceiveCallbackWrapper {
         : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
             jclass callbackClass = env->GetObjectClass(callbackObject);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/shell/NativeShell$;)V");
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/shell/NativeShell$Receive;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
 
     void operator()(
-        const mavsdk_shell__t value
+        const mavsdk_shell_receive_t value
     ) const {
         struct ValueGuard {
-            mavsdk_shell__t value;
+            mavsdk_shell_receive_t value;
             ~ValueGuard() {
-                mavsdk_shell__destroy(&value);
+                mavsdk_shell_receive_destroy(&value);
             }
         } valueGuard{value};
 
@@ -146,7 +146,7 @@ struct ReceiveCallbackWrapper {
             return;
         }
         jobject javaValue =
-            toJava(env, value);
+            toJavaReceive(env, value);
         env->CallVoidMethod(callback.get(), invokeMethod
             , javaValue
         );
@@ -204,7 +204,7 @@ JNICALL Java_io_mavsdk_jni_plugins_shell_NativeShell_send(
         mavsdk_shell_send(
             reinterpret_cast<mavsdk_shell_t>(handle),
             const_cast<char*>(commandHolder.c_str()),
-            static_cast<mavsdk_shell__t>(device));
+            static_cast<mavsdk_shell_device_t>(device));
     return static_cast<jint>(result);
 }
 
@@ -223,7 +223,7 @@ Java_io_mavsdk_jni_plugins_shell_NativeShell_subscribeReceive(
         mavsdk_shell_subscribe_receive(
             reinterpret_cast<mavsdk_shell_t>(handle),
             [](
-               const mavsdk_shell__t value,
+               const mavsdk_shell_receive_t value,
                void* userData) {
                 auto* callbackWrapper =
                     static_cast<ReceiveCallbackWrapper*>(userData);

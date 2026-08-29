@@ -29,7 +29,7 @@ public final class NativeShell {
 
     @FunctionalInterface
     public interface ReceiveCallback {
-        void invoke( value);
+        void invoke(Receive value);
     }
 
     public static native long create(long systemHandle);

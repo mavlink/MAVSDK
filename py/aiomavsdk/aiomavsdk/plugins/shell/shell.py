@@ -10,6 +10,7 @@ Allow to communicate with the vehicle's system shell.
  Send (and observe the device on Receive) when the same framing is used for
  non-nsh serial bridges (for example TELEM2).
 """
+
 import asyncio
 from typing import AsyncGenerator
 from mavsdk.plugins.shell import (
@@ -34,15 +35,15 @@ class ShellError(Exception):
 
 class ShellAsync:
     """
-    Allow to communicate with the vehicle's system shell.
+       Allow to communicate with the vehicle's system shell.
 
- Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
- SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
- Send (and observe the device on Receive) when the same framing is used for
- non-nsh serial bridges (for example TELEM2).
+    Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+    SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+    Send (and observe the device on Receive) when the same framing is used for
+    non-nsh serial bridges (for example TELEM2).
 
-    Async wrapper around :class:`Shell` that mirrors the gRPC-based
-    asyncio API while using the ctypes-based C library directly.
+       Async wrapper around :class:`Shell` that mirrors the gRPC-based
+       asyncio API while using the ctypes-based C library directly.
     """
 
     def __init__(self, system):
@@ -64,20 +65,19 @@ class ShellAsync:
         """
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
-            None,
-            lambda: self._plugin.send(command, device)
+            None, lambda: self._plugin.send(command, device)
         )
 
     async def subscribe_receive(self) -> AsyncGenerator[Receive, None]:
         """
-        Receive feedback from a sent command line.
+               Receive feedback from a sent command line.
 
- This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
+        This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
 
-        Yields
-        ------
-        receive : Receive
-             The next update
+               Yields
+               ------
+               receive : Receive
+                    The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
