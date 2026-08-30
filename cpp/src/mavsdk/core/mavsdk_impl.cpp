@@ -104,8 +104,13 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
             [this]() { maybe_send_heartbeats(); }, HEARTBEAT_SEND_INTERVAL_S);
     }
 
-    // Start the recurring timer that drives TimeoutHandler and CallEveryHandler
-    // on the io_context thread every 5 ms.
+    // Let the handlers re-arm the timer below when something becomes due sooner than what
+    // it is currently waiting for.
+    timeout_handler.set_wakeup_callback([this]() { wake_timers_poll(); });
+    call_every_handler.set_wakeup_callback([this]() { wake_timers_poll(); });
+
+    // Start the timer that drives TimeoutHandler and CallEveryHandler on the io_context
+    // thread, armed for whichever of them is due next.
     schedule_timers_poll();
 
     // Start the recurring timer that drives ServerComponent::do_work() on the io_context thread.
@@ -1164,6 +1169,15 @@ Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&
     new_connection->set_handle(handle);
     _connections.emplace_back(ConnectionEntry{std::move(new_connection), handle});
 
+    // The heartbeat tick runs whether or not there is anywhere to send, and
+    // maybe_send_heartbeats() just returns when there is not -- which costs a whole
+    // interval. Make the next one due now that there is a connection, so the first
+    // heartbeat does not depend on how long the application took to get here.
+    {
+        std::lock_guard<std::mutex> heartbeat_lock(_heartbeat_mutex);
+        call_every_handler.call_soon(_heartbeat_send_cookie);
+    }
+
     return handle;
 }
 
@@ -1427,16 +1441,57 @@ void MavsdkImpl::schedule_do_work()
 
 void MavsdkImpl::schedule_timers_poll()
 {
-    // Run TimeoutHandler and CallEveryHandler on the io_context thread every 5 ms.
-    // This gives ~5 ms timer resolution without a separate polling thread.
-    _timers_poll_timer.expires_after(std::chrono::milliseconds(5));
+    // Arm for whichever of the two handlers is due first, rather than ticking at a fixed
+    // rate: an idle instance then does not wake up at all until something is actually due,
+    // and a timeout fires at its deadline instead of at the next tick after it.
+    //
+    // add()/refresh() call wake_timers_poll() when they move the earliest deadline earlier,
+    // so a new short timeout does not have to wait for the current wait to expire.
+    std::optional<SteadyTimePoint> next = timeout_handler.next_deadline();
+    if (const auto call_every_next = call_every_handler.next_deadline()) {
+        if (!next || *call_every_next < *next) {
+            next = call_every_next;
+        }
+    }
+
+    auto wait = MAX_TIMERS_POLL_WAIT;
+    if (next) {
+        const auto now = time.steady_time();
+        if (*next <= now) {
+            wait = std::chrono::milliseconds(0);
+        } else {
+            // Round up by a millisecond: run_once() only fires a timeout once its deadline
+            // is strictly in the past, so waking exactly on it would just re-arm at zero.
+            const auto until = std::chrono::duration_cast<std::chrono::milliseconds>(*next - now) +
+                               std::chrono::milliseconds(1);
+            wait = std::min(until, MAX_TIMERS_POLL_WAIT);
+        }
+    }
+
+    _timers_poll_timer.expires_after(wait);
     _timers_poll_timer.async_wait([this](const asio::error_code& ec) {
         if (ec) {
-            // Cancelled (e.g. during shutdown) — do not reschedule.
+            // Cancelled — either during shutdown, or by wake_timers_poll() re-arming us,
+            // which schedules the next wait itself. Either way, do not reschedule here.
             return;
         }
         timeout_handler.run_once();
         call_every_handler.run_once();
+        schedule_timers_poll();
+    });
+}
+
+void MavsdkImpl::wake_timers_poll()
+{
+    if (_should_exit || _io_context.stopped()) {
+        return;
+    }
+
+    // Callable from any thread, so hop onto the io thread: _timers_poll_timer belongs to it.
+    asio::post(_io_context, [this]() {
+        if (_should_exit) {
+            return;
+        }
         schedule_timers_poll();
     });
 }

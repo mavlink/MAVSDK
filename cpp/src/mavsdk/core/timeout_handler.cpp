@@ -7,28 +7,76 @@ TimeoutHandler::TimeoutHandler(Time& time) : _time(time) {}
 
 TimeoutHandler::Cookie TimeoutHandler::add(std::function<void()> callback, double duration_s)
 {
-    std::lock_guard<std::mutex> lock(_timeouts_mutex);
-    auto new_timeout = Timeout{};
-    new_timeout.callback = std::move(callback);
-    new_timeout.time = _time.steady_time_in_future(duration_s);
-    new_timeout.duration_s = duration_s;
-    new_timeout.cookie = _next_cookie++;
-    _timeouts.push_back(new_timeout);
+    Cookie cookie;
+    bool moved_earlier;
 
-    return new_timeout.cookie;
+    {
+        std::lock_guard<std::mutex> lock(_timeouts_mutex);
+
+        const auto previous_earliest = earliest_with_lock();
+
+        auto new_timeout = Timeout{};
+        new_timeout.callback = std::move(callback);
+        new_timeout.time = _time.steady_time_in_future(duration_s);
+        new_timeout.duration_s = duration_s;
+        new_timeout.cookie = _next_cookie++;
+        _timeouts.push_back(new_timeout);
+
+        cookie = new_timeout.cookie;
+        moved_earlier = !previous_earliest || new_timeout.time < *previous_earliest;
+    }
+
+    if (moved_earlier && _wakeup_callback) {
+        _wakeup_callback();
+    }
+
+    return cookie;
 }
 
 void TimeoutHandler::refresh(Cookie cookie)
 {
-    std::lock_guard<std::mutex> lock(_timeouts_mutex);
+    bool moved_earlier = false;
 
-    auto it = std::find_if(_timeouts.begin(), _timeouts.end(), [&](const Timeout& timeout) {
-        return timeout.cookie == cookie;
-    });
-    if (it != _timeouts.end()) {
-        auto future_time = _time.steady_time_in_future(it->duration_s);
-        it->time = future_time;
+    {
+        std::lock_guard<std::mutex> lock(_timeouts_mutex);
+
+        auto it = std::find_if(_timeouts.begin(), _timeouts.end(), [&](const Timeout& timeout) {
+            return timeout.cookie == cookie;
+        });
+        if (it == _timeouts.end()) {
+            return;
+        }
+
+        const auto previous_earliest = earliest_with_lock();
+        it->time = _time.steady_time_in_future(it->duration_s);
+        moved_earlier = !previous_earliest || it->time < *previous_earliest;
     }
+
+    if (moved_earlier && _wakeup_callback) {
+        _wakeup_callback();
+    }
+}
+
+std::optional<SteadyTimePoint> TimeoutHandler::next_deadline()
+{
+    std::lock_guard<std::mutex> lock(_timeouts_mutex);
+    return earliest_with_lock();
+}
+
+std::optional<SteadyTimePoint> TimeoutHandler::earliest_with_lock() const
+{
+    std::optional<SteadyTimePoint> earliest;
+    for (const auto& timeout : _timeouts) {
+        if (!earliest || timeout.time < *earliest) {
+            earliest = timeout.time;
+        }
+    }
+    return earliest;
+}
+
+void TimeoutHandler::set_wakeup_callback(std::function<void()> callback)
+{
+    _wakeup_callback = std::move(callback);
 }
 
 void TimeoutHandler::remove(Cookie cookie)

@@ -5,6 +5,7 @@
 #include <mutex>
 #include <functional>
 #include <list>
+#include <optional>
 #include <thread>
 #include "mavsdk_time.hpp"
 #include "mavsdk_export.h"
@@ -53,8 +54,24 @@ public:
 
     void run_once();
 
+    // Make an entry due on the next run_once(), regardless of when it last ran, and wake the
+    // owner's timer. For when something happens that the callback should react to right away
+    // rather than at its next interval. No-op for an unknown cookie.
+    void call_soon(Cookie cookie);
+
+    // The earliest time run_once() would have something to do, or nothing when no entry is
+    // registered. Lets the caller arm a timer for that instant rather than poll.
+    [[nodiscard]] std::optional<SteadyTimePoint> next_deadline();
+
+    // Called whenever add() or reset() moves the earliest deadline earlier, so the caller can
+    // re-arm. Invoked on the calling thread with no lock held, so it must not block.
+    void set_wakeup_callback(std::function<void()> callback);
+
 private:
     void remove_impl(Cookie cookie, bool blocking);
+
+    // Earliest time any entry is due, or nothing when there are none. Call with the lock held.
+    [[nodiscard]] std::optional<SteadyTimePoint> earliest_with_lock() const;
 
     struct Entry {
         std::function<void()> callback{nullptr};
@@ -77,6 +94,9 @@ private:
     // Guarded by _mutex.
     Cookie _executing_cookie{0};
     std::thread::id _executing_thread{};
+
+    // Set once at construction time by the owner and then only read, so no lock.
+    std::function<void()> _wakeup_callback{};
 
     Time& _time;
 
