@@ -11,35 +11,45 @@ Timesync::Timesync(SystemImpl& parent) : _system_impl(parent) {}
 
 Timesync::~Timesync()
 {
-    // Blocking, so that no message can be dispatched into us while we are destroyed.
+    // Blocking variants, so that neither the tick nor a message can be dispatched into us
+    // while we are being destroyed.
+    _system_impl.remove_call_every_blocking(_send_cookie);
     _system_impl.unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void Timesync::enable()
 {
+    if (_is_enabled) {
+        // System::enable_timesync() is public API and used to be idempotent, so keep it that
+        // way: registering the tick twice would double the timesync rate and leak a cookie.
+        return;
+    }
+
     _is_enabled = true;
     _system_impl.register_mavlink_message_handler(
         MAVLINK_MSG_ID_TIMESYNC,
         [this](const mavlink_message_t& message) { process_timesync(message); },
         this);
+
+    // This used to be a do_work() that compared elapsed time on every pass of the system
+    // work poll. It is just a fixed interval, so let CallEveryHandler keep the time.
+    _send_cookie = _system_impl.add_call_every(
+        [this]() { send_timesync_tick(); }, static_cast<float>(TIMESYNC_SEND_INTERVAL_S));
 }
 
-void Timesync::do_work()
+void Timesync::send_timesync_tick()
 {
     if (!_is_enabled) {
         return;
     }
 
-    if (_system_impl.get_time().elapsed_since_s(_last_time) >= TIMESYNC_SEND_INTERVAL_S) {
-        if (_system_impl.is_connected()) {
-            uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                                  _system_impl.get_autopilot_time().now().time_since_epoch())
-                                  .count();
-            send_timesync(0, now_ns);
-        } else {
-            _autopilot_timesync_acquired = false;
-        }
-        _last_time = _system_impl.get_time().steady_time();
+    if (_system_impl.is_connected()) {
+        uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                              _system_impl.get_autopilot_time().now().time_since_epoch())
+                              .count();
+        send_timesync(0, now_ns);
+    } else {
+        _autopilot_timesync_acquired = false;
     }
 }
 

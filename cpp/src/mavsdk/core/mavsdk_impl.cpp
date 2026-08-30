@@ -113,9 +113,6 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     // thread, armed for whichever of them is due next.
     schedule_timers_poll();
 
-    // Start the recurring timer that drives ServerComponent::do_work() on the io_context thread.
-    schedule_do_work();
-
     // Start the Asio io_context on its own thread.  All async I/O completions,
     // message dispatch, and timer callbacks are dispatched here.
     _io_thread = std::make_unique<std::thread>([this]() {
@@ -1419,30 +1416,6 @@ bool MavsdkImpl::is_any_system_connected() const
     std::vector<std::shared_ptr<System>> connected_systems = systems();
     return std::any_of(connected_systems.cbegin(), connected_systems.cend(), [](auto& system) {
         return system->is_connected();
-    });
-}
-
-void MavsdkImpl::schedule_do_work()
-{
-    // Drive ServerComponent protocol-handler state machines (command sender, parameter client,
-    // mission transfer, FTP client, …) on the io_context thread every 10 ms.
-    // Using dispatch() would execute immediately on first call but we want a timer-driven cadence,
-    // so async_wait is correct here — same pattern as schedule_timers_poll().
-    _do_work_timer.expires_after(std::chrono::milliseconds(10));
-    _do_work_timer.async_wait([this](const asio::error_code& ec) {
-        if (ec) {
-            // Cancelled (e.g. during shutdown) — do not reschedule.
-            return;
-        }
-        {
-            std::lock_guard lock(_server_components_mutex);
-            for (auto& it : _server_components) {
-                if (it.second != nullptr) {
-                    it.second->_impl->do_work();
-                }
-            }
-        }
-        schedule_do_work();
     });
 }
 

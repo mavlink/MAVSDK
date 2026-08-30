@@ -45,6 +45,11 @@ MavlinkMissionTransferServer::receive_incoming_items_async(
         _debugging);
 
     asio::post(_io_context, [this, ptr]() {
+        // do_work() only retires the front item once it reports done, so the item has to
+        // say when that happens -- otherwise the queue sits on a finished item until
+        // something else happens to call do_work().
+        ptr->set_done_callback([this]() { asio::post(_io_context, [this] { do_work(); }); });
+
         const bool was_empty = _work_queue.empty();
         _work_queue.push_back(ptr);
         if (was_empty) {
@@ -76,6 +81,11 @@ MavlinkMissionTransferServer::send_outgoing_items_async(
         _debugging);
 
     asio::post(_io_context, [this, ptr]() {
+        // do_work() only retires the front item once it reports done, so the item has to
+        // say when that happens -- otherwise the queue sits on a finished item until
+        // something else happens to call do_work().
+        ptr->set_done_callback([this]() { asio::post(_io_context, [this] { do_work(); }); });
+
         const bool was_empty = _work_queue.empty();
         _work_queue.push_back(ptr);
         if (was_empty) {
@@ -131,6 +141,29 @@ bool MavlinkMissionTransferServer::WorkItem::has_started()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return _started;
+}
+
+void MavlinkMissionTransferServer::WorkItem::set_done_callback(std::function<void()> callback)
+{
+    // Set on the io thread when the item is enqueued, before anything can start it.
+    _done_callback = std::move(callback);
+}
+
+void MavlinkMissionTransferServer::WorkItem::set_done()
+{
+    // No lock here: every caller reaches this through callback_and_reset(), which already
+    // holds _mutex. That is also why the callback must only post and never block -- it runs
+    // with _mutex held, and the do_work() it schedules calls is_done(), which takes it.
+    // Posting is required for a second reason: retiring this item drops the last reference
+    // to it, which must not happen while we are still on its stack.
+    if (_done) {
+        return;
+    }
+    _done = true;
+
+    if (_done_callback) {
+        _done_callback();
+    }
 }
 
 bool MavlinkMissionTransferServer::WorkItem::is_done()
@@ -335,7 +368,7 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::callback_and_reset(Re
         _callback(result, _type, _items);
     }
     _callback = nullptr;
-    _done = true;
+    set_done();
 }
 
 MavlinkMissionTransferServer::SendOutgoingMission::SendOutgoingMission(
@@ -667,7 +700,7 @@ void MavlinkMissionTransferServer::SendOutgoingMission::callback_and_reset(Resul
         _callback(result);
     }
     _callback = nullptr;
-    _done = true;
+    set_done();
 }
 
 } // namespace mavsdk

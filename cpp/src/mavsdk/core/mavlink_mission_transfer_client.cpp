@@ -56,6 +56,11 @@ MavlinkMissionTransferClient::upload_items_async(
         _autopilot_callback());
 
     asio::post(_io_context, [this, ptr]() {
+        // do_work() only retires the front item once it reports done, so the item has to
+        // say when that happens -- otherwise the queue sits on a finished item until
+        // something else happens to call do_work().
+        ptr->set_done_callback([this]() { asio::post(_io_context, [this] { do_work(); }); });
+
         const bool was_empty = _work_queue.empty();
         _work_queue.push_back(ptr);
         if (was_empty) {
@@ -93,6 +98,11 @@ MavlinkMissionTransferClient::download_items_async(
         target_system_id);
 
     asio::post(_io_context, [this, ptr]() {
+        // do_work() only retires the front item once it reports done, so the item has to
+        // say when that happens -- otherwise the queue sits on a finished item until
+        // something else happens to call do_work().
+        ptr->set_done_callback([this]() { asio::post(_io_context, [this] { do_work(); }); });
+
         const bool was_empty = _work_queue.empty();
         _work_queue.push_back(ptr);
         if (was_empty) {
@@ -117,6 +127,11 @@ void MavlinkMissionTransferClient::clear_items_async(
         target_system_id);
 
     asio::post(_io_context, [this, ptr]() {
+        // do_work() only retires the front item once it reports done, so the item has to
+        // say when that happens -- otherwise the queue sits on a finished item until
+        // something else happens to call do_work().
+        ptr->set_done_callback([this]() { asio::post(_io_context, [this] { do_work(); }); });
+
         const bool was_empty = _work_queue.empty();
         _work_queue.push_back(ptr);
         if (was_empty) {
@@ -139,6 +154,11 @@ void MavlinkMissionTransferClient::set_current_item_async(
         target_system_id);
 
     asio::post(_io_context, [this, ptr]() {
+        // do_work() only retires the front item once it reports done, so the item has to
+        // say when that happens -- otherwise the queue sits on a finished item until
+        // something else happens to call do_work().
+        ptr->set_done_callback([this]() { asio::post(_io_context, [this] { do_work(); }); });
+
         const bool was_empty = _work_queue.empty();
         _work_queue.push_back(ptr);
         if (was_empty) {
@@ -192,6 +212,29 @@ bool MavlinkMissionTransferClient::WorkItem::has_started()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return _started;
+}
+
+void MavlinkMissionTransferClient::WorkItem::set_done_callback(std::function<void()> callback)
+{
+    // Set on the io thread when the item is enqueued, before anything can start it.
+    _done_callback = std::move(callback);
+}
+
+void MavlinkMissionTransferClient::WorkItem::set_done()
+{
+    // No lock here: every caller reaches this through callback_and_reset(), which already
+    // holds _mutex. That is also why the callback must only post and never block -- it runs
+    // with _mutex held, and the do_work() it schedules calls is_done(), which takes it.
+    // Posting is required for a second reason: retiring this item drops the last reference
+    // to it, which must not happen while we are still on its stack.
+    if (_done) {
+        return;
+    }
+    _done = true;
+
+    if (_done_callback) {
+        _done_callback();
+    }
 }
 
 bool MavlinkMissionTransferClient::WorkItem::is_done()
@@ -587,7 +630,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::callback_and_reset(Result res
         _callback(result);
     }
     _callback = nullptr;
-    _done = true;
+    set_done();
 }
 
 void MavlinkMissionTransferClient::UploadWorkItem::update_progress(float progress)
@@ -835,7 +878,7 @@ void MavlinkMissionTransferClient::DownloadWorkItem::callback_and_reset(Result r
         _callback(result, _items);
     }
     _callback = nullptr;
-    _done = true;
+    set_done();
 }
 
 void MavlinkMissionTransferClient::DownloadWorkItem::update_progress(float progress)
@@ -984,7 +1027,7 @@ void MavlinkMissionTransferClient::ClearWorkItem::callback_and_reset(Result resu
         _callback(result);
     }
     _callback = nullptr;
-    _done = true;
+    set_done();
 }
 
 void MavlinkMissionTransferClient::set_int_messages_supported(bool supported)
@@ -1106,6 +1149,6 @@ void MavlinkMissionTransferClient::SetCurrentWorkItem::callback_and_reset(Result
         _callback(result);
     }
     _callback = nullptr;
-    _done = true;
+    set_done();
 }
 } // namespace mavsdk

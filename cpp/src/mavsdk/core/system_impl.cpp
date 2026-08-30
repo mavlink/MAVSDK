@@ -28,7 +28,6 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
     // ctor parameter rather than the not-yet-bound _mavsdk_impl reference.
     _mavlink_message_handler(mavsdk_impl.io_context()),
     _mavsdk_impl(mavsdk_impl),
-    _system_work_timer(mavsdk_impl.io_context()),
     _command_sender(*this),
     _timesync(*this),
     _ping(*this),
@@ -49,13 +48,14 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         }
     }
 
-    schedule_system_work();
+    schedule_ping();
 }
 
 SystemImpl::~SystemImpl()
 {
     _should_exit = true;
-    _system_work_timer.cancel();
+    // Blocking, so the ping tick cannot be running while we tear the rest down.
+    remove_call_every_blocking(_ping_cookie);
     // Use blocking version to ensure any in-flight callbacks complete before destruction.
     _mavlink_message_handler.unregister_all_blocking(this);
     // Clear all libmav message callbacks
@@ -414,38 +414,19 @@ void SystemImpl::heartbeats_timed_out()
     set_disconnected();
 }
 
-void SystemImpl::schedule_system_work()
+void SystemImpl::schedule_ping()
 {
-    // Run do_work() on all protocol handlers at 100 Hz when connected, 10 Hz otherwise.
-    // By running on the io_context thread we eliminate all data races on the work queues.
-    auto delay = _connected ? std::chrono::milliseconds(10) : std::chrono::milliseconds(100);
-    _system_work_timer.expires_after(delay);
-    _system_work_timer.async_wait([this](const asio::error_code& ec) {
-        if (ec) {
-            // Timer was cancelled (shutdown) — stop rescheduling.
-            return;
-        }
-
-        {
-            std::lock_guard<std::mutex> lock(_mavlink_parameter_clients_mutex);
-            for (auto& entry : _mavlink_parameter_clients) {
-                entry.parameter_client->do_work();
-            }
-        }
-        _command_sender.do_work();
-        _timesync.do_work();
-        _mission_transfer_client.do_work();
-        _mavlink_ftp_client.do_work();
-
-        if (_mavsdk_impl.time.elapsed_since_s(_last_ping_time) >= SystemImpl::_ping_interval_s) {
+    // The protocol handlers (command sender, parameter clients, mission transfer, FTP) used
+    // to be driven from here at 10 ms whether or not they had anything queued. They now run
+    // their do_work() when something is enqueued and when an item finishes, so all that is
+    // left on a timer is the ping, which is genuinely periodic.
+    _ping_cookie = add_call_every(
+        [this]() {
             if (_connected && _autopilot != Autopilot::ArduPilot) {
                 _ping.run_once();
             }
-            _last_ping_time = _mavsdk_impl.time.steady_time();
-        }
-
-        schedule_system_work();
-    });
+        },
+        static_cast<float>(SystemImpl::_ping_interval_s));
 }
 
 std::string SystemImpl::component_name(uint8_t component_id)

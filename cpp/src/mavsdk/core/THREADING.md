@@ -83,17 +83,35 @@ Everything time-based is driven from the io thread:
   when they move the earliest deadline earlier, which re-arms from whatever thread they were
   called on. The wait is capped at `MAX_TIMERS_POLL_WAIT` so that a wakeup we somehow miss
   can only make a timer late, never stall it.
-- `MavsdkImpl::schedule_do_work()` — every 10 ms, `ServerComponentImpl::do_work()` for every
-  server component.
-- `SystemImpl::schedule_system_work()` — every 10 ms when connected, 100 ms otherwise; runs
-  `do_work()` on the command sender, timesync, mission transfer, FTP and parameter clients,
-  plus the 5 s ping.
+- `SystemImpl::schedule_ping()` — the 5 s ping, as a `CallEveryHandler` entry.
+- `Timesync` registers its own `CallEveryHandler` entry in `enable()`.
 
-The two `do_work()` chains are still fixed-cadence polls that run whether or not their work
-queues have anything in them. Making them event-driven means giving every work queue
-(command sender, parameter clients, mission transfer, FTP) a "something was enqueued" signal
-and its own retry deadline, which is a larger change than the timer one above. Known
-trade-off, not an invariant.
+Nothing polls any more. The protocol handlers used to be driven by two fixed-cadence
+`do_work()` chains (`ServerComponentImpl` at 10 ms, `SystemImpl` at 10/100 ms) that ran
+whether or not their queues had anything in them. Each work queue now runs its own
+`do_work()` when something happens to it instead:
+
+- **On enqueue** — every queue already did this (`if (was_empty) do_work();` inside the
+  posted enqueue). `MavlinkCommandSender` is the exception and kicks unconditionally,
+  because its `do_work()` walks the whole queue rather than just the front item.
+- **On completion** — the FTP client, the parameter client and the parameter server already
+  posted `do_work()` wherever they retired an item.
+
+Two places did not, and needed the poll to make progress:
+
+- `MavlinkMissionTransferClient` / `...Server` only retire the front item once it reports
+  `is_done()`, and nothing told them when that became true. `WorkItem::set_done()` now
+  notifies the owner. It runs with the item's `_mutex` held (every caller reaches it through
+  `callback_and_reset()`, which holds it), so the notification must only *post* — never
+  block, and never call `do_work()` inline, since retiring the item drops the last reference
+  to the object we are standing on.
+- `MavlinkCommandSender::do_work()` skips a queued command while another with the same
+  command id is in flight, and nothing re-ran it when the first one finished. Both
+  `receive_command_ack()` and `receive_timeout()` now post one.
+
+**If you add a work queue, or a path that retires an item, it has to kick `do_work()`
+itself.** There is no periodic sweep left to cover for a missing one — the symptom is work
+that sits in the queue forever.
 
 ## Locks that remain
 
