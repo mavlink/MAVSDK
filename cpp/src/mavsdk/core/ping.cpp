@@ -15,7 +15,8 @@ Ping::Ping(SystemImpl& system_impl) : _system_impl(system_impl)
 
 Ping::~Ping()
 {
-    _system_impl.unregister_all_mavlink_message_handlers(this);
+    // Blocking, so that no message can be dispatched into us while we are destroyed.
+    _system_impl.unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void Ping::run_once()

@@ -20,7 +20,6 @@
 #include <filesystem>
 #include <functional>
 #include <string>
-#include <thread>
 
 #include "mavsdk_export.h"
 
@@ -129,18 +128,16 @@ void CameraImpl::deinit()
 
     _system_impl->cancel_all_param(this);
 
-    _system_impl->remove_call_every(_request_missing_capture_info_cookie);
-    _system_impl->remove_call_every(_request_slower_call_every_cookie);
-    _system_impl->remove_call_every(_request_faster_call_every_cookie);
+    // Blocking, so that a call_every lambda that is mid-flight has returned by the time we
+    // get here. We hold no lock at this point, so waiting for it is safe.
+    _system_impl->remove_call_every_blocking(_request_missing_capture_info_cookie);
+    _system_impl->remove_call_every_blocking(_request_slower_call_every_cookie);
+    _system_impl->remove_call_every_blocking(_request_faster_call_every_cookie);
 
     // Cancel any pending MAVLink FTP operations so their callbacks don't fire
     // after we are gone.  This is synchronous: once it returns no further FTP
     // callbacks will be dispatched from the io_context thread.
     _system_impl->mavlink_ftp_client().cancel_all_operations();
-
-    // Wait briefly for call_every lambdas that may already be mid-flight
-    // (remove_call_every only prevents future invocations).
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     std::lock_guard lock(_mutex);
     // Signal any user-callback-queued lambdas that slipped through before

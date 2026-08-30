@@ -251,6 +251,11 @@ void ServerComponentImpl::remove_call_every(CallEveryHandler::Cookie cookie)
     _mavsdk_impl.call_every_handler.remove(cookie);
 }
 
+void ServerComponentImpl::remove_call_every_blocking(CallEveryHandler::Cookie cookie)
+{
+    _mavsdk_impl.call_every_handler.remove_blocking(cookie);
+}
+
 mavlink_command_ack_t ServerComponentImpl::make_command_ack_message(
     const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result)
 {
@@ -349,6 +354,11 @@ void ServerComponentImpl::refresh_timeout_handler(TimeoutHandler::Cookie cookie)
 void ServerComponentImpl::unregister_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.remove(cookie);
+}
+
+void ServerComponentImpl::unregister_timeout_handler_blocking(TimeoutHandler::Cookie cookie)
+{
+    _mavsdk_impl.timeout_handler.remove_blocking(cookie);
 }
 
 void ServerComponentImpl::add_capabilities(uint64_t add_capabilities)

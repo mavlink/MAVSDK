@@ -83,7 +83,9 @@ EventHandler::EventHandler(
 EventHandler::~EventHandler()
 {
     if (_timer_cookie != 0) {
-        _system_impl.unregister_timeout_handler(_timer_cookie);
+        // Blocking: the timeout callback captures 'this' and takes _protocol_mutex, which
+        // we do not hold here.
+        _system_impl.unregister_timeout_handler_blocking(_timer_cookie);
     }
     // Use blocking version to ensure any in-flight callbacks complete before destruction.
     for (size_t i = 0; i < _message_handler_cookies.size(); ++i) {

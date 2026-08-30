@@ -25,7 +25,8 @@ MavlinkRequestMessageHandler::MavlinkRequestMessageHandler(
 
 MavlinkRequestMessageHandler::~MavlinkRequestMessageHandler()
 {
-    _mavsdk_impl.mavlink_message_handler.unregister_all(this);
+    // Blocking, so that no message can be dispatched into us while we are destroyed.
+    _mavsdk_impl.mavlink_message_handler.unregister_all_blocking(this);
 }
 
 bool MavlinkRequestMessageHandler::register_handler(

@@ -374,7 +374,7 @@ void ActionServerImpl::init()
 void ActionServerImpl::deinit()
 {
     _server_component_impl->unregister_all_mavlink_command_handlers(this);
-    _server_component_impl->remove_call_every(_send_version_cookie);
+    _server_component_impl->remove_call_every_blocking(_send_version_cookie);
     _server_component_impl->unregister_all_mavlink_command_handlers(this);
 }
 

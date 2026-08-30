@@ -203,15 +203,13 @@ void TelemetryImpl::enable()
 
 void TelemetryImpl::disable()
 {
-    _system_impl->remove_call_every(_homepos_cookie);
+    // Blocking, so that request_home_position_again() cannot still be executing once we
+    // return. It takes _health_mutex, so this has to happen before we take it below.
+    _system_impl->remove_call_every_blocking(_homepos_cookie);
     {
         std::lock_guard<std::mutex> lock(_health_mutex);
         _health.is_home_position_ok = false;
     }
-
-    // FIXME: this is a race condition where request_home_position_again
-    //        could still be executing after we have removed it.
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 
 void TelemetryImpl::request_home_position_again()

@@ -35,8 +35,10 @@ MavlinkFtpClient::MavlinkFtpClient(SystemImpl& system_impl) :
 
 MavlinkFtpClient::~MavlinkFtpClient()
 {
-    stop_timer();
-    _system_impl.unregister_all_mavlink_message_handlers(this);
+    // Blocking variants, so that neither a timeout nor a message can be dispatched into us
+    // while we are being destroyed.
+    _system_impl.unregister_timeout_handler_blocking(_timeout_cookie);
+    _system_impl.unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void MavlinkFtpClient::do_work()

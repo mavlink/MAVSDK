@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <string>
+#include <vector>
 
 namespace mavsdk {
 
@@ -35,9 +36,19 @@ MavlinkRequestMessage::~MavlinkRequestMessage()
     // In-flight requests schedule timeouts that also capture 'this'. Cancel any that
     // are still pending, otherwise TimeoutHandler could fire handle_timeout on us
     // after destruction (use-after-free).
-    std::lock_guard<std::mutex> lock(_mutex);
-    for (const auto& item : _work_items) {
-        _timeout_handler.remove(item.timeout_cookie);
+    std::vector<TimeoutHandler::Cookie> cookies;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        cookies.reserve(_work_items.size());
+        for (const auto& item : _work_items) {
+            cookies.push_back(item.timeout_cookie);
+        }
+    }
+
+    // Outside _mutex: the blocking removal waits for a handle_timeout() that is running
+    // right now, and that takes _mutex itself.
+    for (const auto cookie : cookies) {
+        _timeout_handler.remove_blocking(cookie);
     }
 }
 

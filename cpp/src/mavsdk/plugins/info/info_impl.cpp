@@ -63,7 +63,7 @@ void InfoImpl::enable()
 
 void InfoImpl::disable()
 {
-    _system_impl->remove_call_every(_call_every_cookie);
+    _system_impl->remove_call_every_blocking(_call_every_cookie);
 
     std::lock_guard<std::mutex> lock(_mutex);
     _identification_received = false;
