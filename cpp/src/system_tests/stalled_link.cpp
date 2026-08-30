@@ -123,9 +123,8 @@ TEST(Connections, StalledLinkDoesNotStallOtherConnections)
     message.component_id = 1;
     message.target_system_id = 0;
     message.target_component_id = 0;
-    message.fields_json =
-        R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,)"
-        R"("relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
+    message.fields_json = R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,)"
+                          R"("relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
     // A GLOBAL_POSITION_INT is about 40 bytes on the wire and a pty buffer is a few
     // kilobytes, so this is comfortably more than the link can absorb -- and still well

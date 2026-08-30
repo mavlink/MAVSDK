@@ -166,24 +166,23 @@ void TcpClientConnection::start_write()
     }
 
     const auto& item = _tx_queue.start();
-    asio::async_write(
-        _socket, asio::buffer(item), [this](const asio::error_code& ec, std::size_t) {
-            _tx_queue.finish();
+    asio::async_write(_socket, asio::buffer(item), [this](const asio::error_code& ec, std::size_t) {
+        _tx_queue.finish();
 
-            if (ec) {
-                if (ec != asio::error::operation_aborted && !_stopping) {
-                    const std::string msg = "Send failure: " + ec.message();
-                    LogErr("{}", msg);
-                    report_send_error(msg);
-                }
-                // do_receive() sees the same disconnect and drives the reconnect. Drop
-                // what is queued so we don't replay stale traffic onto a new connection.
-                _tx_queue.clear();
-                return;
+        if (ec) {
+            if (ec != asio::error::operation_aborted && !_stopping) {
+                const std::string msg = "Send failure: " + ec.message();
+                LogErr("{}", msg);
+                report_send_error(msg);
             }
+            // do_receive() sees the same disconnect and drives the reconnect. Drop
+            // what is queued so we don't replay stale traffic onto a new connection.
+            _tx_queue.clear();
+            return;
+        }
 
-            start_write();
-        });
+        start_write();
+    });
 }
 
 void TcpClientConnection::do_connect()
