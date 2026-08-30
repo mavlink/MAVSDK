@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <chrono>
 #include <cinttypes>
 #include <fstream>
 #include <unordered_map>
@@ -10,7 +11,8 @@
 #include <utility>
 #include <variant>
 #include <vector>
-#include <thread>
+
+#include <asio/steady_timer.hpp>
 
 #include "mavlink_include.hpp"
 
@@ -139,6 +141,8 @@ private:
 
     bool _send_burst_packet(); // Requires _mutex to be held.
     void _make_burst_packet(PayloadHeader& packet);
+    // Arm _burst_timer to send the next burst packet on the io_context thread.
+    void _schedule_burst_packet(std::chrono::milliseconds delay);
 
     std::mutex _mutex{};
     struct SessionInfo {
@@ -147,16 +151,19 @@ private:
         uint8_t burst_chunk_size{0};
         std::ifstream ifstream;
         std::ofstream ofstream;
-        // Atomic so the burst worker can observe a stop request without holding
-        // _mutex, which lets a thread that holds _mutex join the worker without
-        // deadlocking (the worker would otherwise block trying to re-acquire _mutex).
-        std::atomic<bool> burst_stop{false};
-        std::thread burst_thread;
+        // Whether a burst read is in progress. Guarded by _mutex.
+        bool burst_active{false};
     } _session_info{};
 
+    // Drives a burst read one packet per io_context turn. A burst used to run on its own
+    // thread that spun on try_lock() and sent as fast as it could; chaining a timer here
+    // instead keeps the sending on the io thread and lets everything else -- including the
+    // FTP message that terminates the burst -- get a turn in between.
+    asio::steady_timer _burst_timer;
+
     uint8_t _network_id = 0;
-    // Written from the message-processing thread and read from the burst thread
-    // (via _send_mavlink_ftp_message), so keep these atomic.
+    // Written from the message-processing thread and read wherever a message is built, so
+    // keep these atomic.
     std::atomic<uint8_t> _target_system_id{0};
     std::atomic<uint8_t> _target_component_id{0};
     std::string _root_dir{};

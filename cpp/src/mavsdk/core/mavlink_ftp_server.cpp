@@ -14,7 +14,8 @@ namespace mavsdk {
 namespace fs = std::filesystem;
 
 MavlinkFtpServer::MavlinkFtpServer(ServerComponentImpl& server_component_impl) :
-    _server_component_impl(server_component_impl)
+    _server_component_impl(server_component_impl),
+    _burst_timer(server_component_impl.io_context())
 {
     if (const char* env_p = std::getenv("MAVSDK_FTP_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -847,34 +848,46 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     _session_info.burst_chunk_size = payload.size;
     _burst_seq = payload.seq_number + 1;
 
-    if (_session_info.burst_thread.joinable()) {
-        _session_info.burst_stop = true;
-        _session_info.burst_thread.join();
-    }
-
-    _session_info.burst_stop = false;
+    // Cancel a burst that may still be running for the previous request.
+    _burst_timer.cancel();
+    _session_info.burst_active = true;
 
     // Schedule sending out burst messages.
-    _session_info.burst_thread = std::thread([this]() {
-        while (!_session_info.burst_stop) {
-            // Try to grab the lock rather than blocking on it. If another thread holds
-            // _mutex to stop and join us, blocking here would deadlock; instead we fall
-            // back to observing burst_stop (atomic) and exit.
-            std::unique_lock<std::mutex> burst_lock(_mutex, std::try_to_lock);
-            if (!burst_lock.owns_lock()) {
-                std::this_thread::yield();
-                continue;
-            }
-            if (_session_info.burst_stop) {
-                break;
-            }
-            if (_send_burst_packet()) {
-                break;
-            }
-        }
-    });
+    _schedule_burst_packet(std::chrono::milliseconds(0));
 
-    // Don't send response as that's done in the call every burst call above.
+    // Don't send response as that's done from the burst timer above.
+}
+
+void MavlinkFtpServer::_schedule_burst_packet(std::chrono::milliseconds delay)
+{
+    _burst_timer.expires_after(delay);
+    _burst_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Cancelled, e.g. by a new burst request or by _reset().
+            return;
+        }
+
+        std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
+        if (!lock.owns_lock()) {
+            // Someone is working on the session right now. Come back in a moment rather
+            // than blocking the io thread waiting for them.
+            _schedule_burst_packet(std::chrono::milliseconds(1));
+            return;
+        }
+
+        if (!_session_info.burst_active) {
+            return;
+        }
+
+        if (_send_burst_packet()) {
+            _session_info.burst_active = false;
+            return;
+        }
+
+        // No delay: send as fast as we can, just not all in one go without letting any
+        // other handler on the io_context run.
+        _schedule_burst_packet(std::chrono::milliseconds(0));
+    });
 }
 
 // Requires _mutex to be held. Returns true if sending is complete.
@@ -997,10 +1010,8 @@ void MavlinkFtpServer::_reset()
         _session_info.ofstream.close();
     }
 
-    _session_info.burst_stop = true;
-    if (_session_info.burst_thread.joinable()) {
-        _session_info.burst_thread.join();
-    }
+    _session_info.burst_active = false;
+    _burst_timer.cancel();
 }
 
 void MavlinkFtpServer::_work_reset(const PayloadHeader& payload)
