@@ -12,6 +12,9 @@
 
 namespace mavsdk {
 
+// A TCP server that serves exactly one client at a time: there is a single _client_socket,
+// and do_accept() only accepts the next connection once the current client has gone away.
+// A second client trying to connect meanwhile waits in the listen backlog.
 class TcpServerConnection : public Connection {
 public:
     TcpServerConnection(

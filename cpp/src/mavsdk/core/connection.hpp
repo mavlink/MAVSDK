@@ -3,6 +3,7 @@
 #include "mavsdk.hpp"
 #include "mavlink_receiver.hpp"
 #include "libmav_receiver.hpp"
+#include <asio/io_context.hpp>
 #include <atomic>
 #include <memory>
 #include <mutex>
@@ -67,6 +68,19 @@ protected:
     bool start_libmav_receiver();
     void stop_libmav_receiver();
     void receive_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
+
+    // The io_context every connection does its async I/O on, owned by MavsdkImpl.
+    // Preferable to static_cast-ing socket.get_executor().context() back to an
+    // io_context&, which is only correct as long as nothing rebinds the executor.
+    asio::io_context& io_context();
+
+    // Post an empty handler onto the io_context and wait for it, so that every handler
+    // queued before it has run. Used by stop() to make sure no completion handler still
+    // references the connection once it returns. No-op if the io_context is already
+    // stopped, in which case nothing can be running anymore anyway.
+    //
+    // Must not be called from the io_context thread -- it would wait for itself.
+    void drain_io_context();
 
     // Report a send failure that was only discovered asynchronously, i.e. after
     // send_message()/send_raw_bytes() already returned. Reaches the same

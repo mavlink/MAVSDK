@@ -357,8 +357,15 @@ private:
     // is a leaf, so taking it under _heartbeat_mutex is safe.
     HeartbeatWatchdog _heartbeat_watchdog{time};
 
+    using CallbackExecutor = std::function<void(std::function<void()>)>;
+    // Serialises set_callback_executor() calls against each other: they start and join
+    // _process_user_callbacks_thread, which nothing else guards.
+    std::mutex _callback_executor_change_mutex{};
+    // Held only to read or swap the pointer, never while the executor runs -- a slow user
+    // executor must not block whoever else wants to queue a callback. Held as a shared_ptr
+    // so a caller can keep it alive across the invocation without copying the std::function.
     std::mutex _callback_executor_mutex{};
-    std::function<void(std::function<void()>)> _callback_executor{};
+    std::shared_ptr<const CallbackExecutor> _callback_executor{};
 
     std::atomic<bool> _should_exit{false};
 
@@ -374,6 +381,16 @@ private:
     void schedule_do_work();
 
     std::unique_ptr<std::thread> _io_thread{};
+    // The io thread's own id, recorded by the thread itself when it starts. Asserts use
+    // this instead of asio's running_in_this_thread(), whose thread-local is instantiated
+    // per DSO with header-only asio plus hidden visibility, and so cannot be trusted from
+    // inside libmavsdk when something outside it drives the io_context.
+    std::atomic<std::thread::id> _io_thread_id{};
+
+public:
+    // Whether the caller is the io_context thread. Only meant for asserts and for picking
+    // between an inline and a posted path, not for synchronisation.
+    bool on_io_thread() const;
 };
 
 } // namespace mavsdk

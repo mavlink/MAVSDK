@@ -2,6 +2,8 @@
 #include "mavsdk_impl.hpp"
 #include "log.hpp"
 
+#include <cassert>
+
 #include <asio/buffer.hpp>
 #include <asio/error.hpp>
 #include <asio/ip/address.hpp>
@@ -92,8 +94,11 @@ ConnectionResult UdpConnection::setup_port()
 
 ConnectionResult UdpConnection::stop()
 {
+    // This posts onto the io_context and waits, so it must not run on the io thread.
+    assert(!_mavsdk_impl.on_io_thread());
+
     if (_socket.is_open()) {
-        auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
+        auto& io_ctx = io_context();
 
         if (!io_ctx.stopped()) {
             // Close the socket from the io_context thread to avoid a data race

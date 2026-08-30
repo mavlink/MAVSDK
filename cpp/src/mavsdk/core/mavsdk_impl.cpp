@@ -1,5 +1,6 @@
 #include "mavsdk_impl.hpp"
 
+#include <asio/dispatch.hpp>
 #include <asio/post.hpp>
 
 #include <algorithm>
@@ -112,7 +113,10 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
 
     // Start the Asio io_context on its own thread.  All async I/O completions,
     // message dispatch, and timer callbacks are dispatched here.
-    _io_thread = std::make_unique<std::thread>([this]() { _io_context.run(); });
+    _io_thread = std::make_unique<std::thread>([this]() {
+        _io_thread_id.store(std::this_thread::get_id(), std::memory_order_relaxed);
+        _io_context.run();
+    });
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -366,11 +370,10 @@ MavsdkImpl::server_component_by_id_with_lock(uint8_t component_id, uint8_t mav_t
 {
     for (auto& it : _server_components) {
         if (it.first == component_id) {
-            if (it.second != nullptr) {
-                return it.second;
-            } else {
+            if (it.second == nullptr) {
                 it.second = std::make_shared<ServerComponent>(*this, component_id, mav_type);
             }
+            return it.second;
         }
     }
 
@@ -427,10 +430,11 @@ void MavsdkImpl::receive_message(
     MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection)
 {
     if (result == MavlinkReceiver::ParseResult::MessageParsed) {
-        // Post directly to the io_context — no intermediate queue needed.
-        // The io_context thread already owns all connection callbacks, so this
-        // keeps message processing single-threaded on that same executor.
-        asio::post(_io_context, [this, msg = message, conn = connection]() mutable {
+        // Dispatch, not post: every connection already parses on the io_context thread, so
+        // this runs inline and saves a deferred turn plus a mavlink_message_t copy per
+        // received message. If a caller ever does arrive on another thread, dispatch()
+        // falls back to posting, so message processing stays on the one executor either way.
+        asio::dispatch(_io_context, [this, msg = message, conn = connection]() mutable {
             process_message(msg, conn);
         });
     } else if (result == MavlinkReceiver::ParseResult::BadCrc) {
@@ -442,8 +446,8 @@ void MavsdkImpl::receive_message(
 void MavsdkImpl::receive_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* connection)
 {
-    // Post directly to the io_context — no intermediate queue needed.
-    asio::post(_io_context, [this, message, conn = connection]() {
+    // Dispatch, not post: see receive_message() above.
+    asio::dispatch(_io_context, [this, message, conn = connection]() {
         process_libmav_message(message, conn);
     });
 }
@@ -656,6 +660,9 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
 
     mavlink_message_handler.process_message(message);
 
+    // Deliberately outside _mutex: this dispatches into plugin code, which must not run
+    // with the instance lock held. It is safe because _systems is only ever written on the
+    // io_context thread, which is the thread we are on here.
     for (auto& system : _systems) {
         if (system.first == message.sysid) {
             system.second->system_impl()->process_mavlink_message(message);
@@ -769,7 +776,9 @@ void MavsdkImpl::process_libmav_message(
         }
     }
 
-    // Distribute libmav message to systems for libmav-specific handling
+    // Distribute libmav message to systems for libmav-specific handling.
+    // Deliberately outside _mutex, same as in process_message(): this dispatches into
+    // plugin code, and _systems is only ever written on the io_context thread.
     bool found_system = false;
     for (auto& system : _systems) {
         if (system.first == message.system_id) {
@@ -807,9 +816,14 @@ void MavsdkImpl::process_libmav_message(
 
 bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
-    // Post directly to the io_context — no intermediate queue needed.
-    // deliver_message() always runs on the io_context thread, so ordering
-    // is preserved (posts are executed FIFO) and no mutex is required.
+    // Post, not dispatch: deliver_message() always runs on the io_context thread, so
+    // ordering is preserved (posts are executed FIFO) and no mutex is required. Dispatching
+    // would let a send made from the io thread jump ahead of user-thread sends that are
+    // already queued.
+    //
+    // Note that the return value only says the message was queued, never that it went out:
+    // the actual send happens later on the io thread. Failures are reported through
+    // Mavsdk::subscribe_connection_errors() instead.
     asio::post(_io_context, [this, msg = message]() mutable { deliver_message(msg); });
 
     return true;
@@ -1429,14 +1443,21 @@ void MavsdkImpl::schedule_timers_poll()
 
 void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)> executor)
 {
-    bool has_executor;
-    {
-        std::lock_guard<std::mutex> lock(_callback_executor_mutex);
-        _callback_executor = std::move(executor);
-        has_executor = !!_callback_executor;
+    // Two concurrent calls would otherwise race on _process_user_callbacks_thread, which
+    // the branches below start, join and reset without any other synchronisation.
+    std::lock_guard<std::mutex> change_lock(_callback_executor_change_mutex);
+
+    std::shared_ptr<const CallbackExecutor> new_executor;
+    if (executor) {
+        new_executor = std::make_shared<const CallbackExecutor>(std::move(executor));
     }
 
-    if (has_executor) {
+    {
+        std::lock_guard<std::mutex> lock(_callback_executor_mutex);
+        _callback_executor = new_executor;
+    }
+
+    if (new_executor) {
         // Stop the internal callback thread since user will handle callbacks
         if (_process_user_callbacks_thread) {
             _user_callback_queue.stop();
@@ -1444,15 +1465,13 @@ void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)
             _process_user_callbacks_thread.reset();
         }
 
-        // Drain any remaining callbacks through the executor
+        // Drain any remaining callbacks through the executor. Uses the local copy, so
+        // _callback_executor_mutex is not held while the user's executor runs.
         {
-            std::lock_guard<std::mutex> lock(_callback_executor_mutex);
-            if (_callback_executor) {
-                LockedQueue<UserCallback>::Guard guard(_user_callback_queue);
-                while (auto ptr = guard.get_front()) {
-                    _callback_executor(ptr->func);
-                    guard.pop_front();
-                }
+            LockedQueue<UserCallback>::Guard guard(_user_callback_queue);
+            while (auto ptr = guard.get_front()) {
+                (*new_executor)(ptr->func);
+                guard.pop_front();
             }
         }
     } else {
@@ -1473,12 +1492,17 @@ void MavsdkImpl::call_user_callback_located(
         return;
     }
 
+    // Take a reference to the executor under the lock, but call it outside: this runs on the
+    // io thread, and a slow user executor must not hold up everyone else queuing a callback.
+    std::shared_ptr<const CallbackExecutor> executor;
     {
         std::lock_guard<std::mutex> lock(_callback_executor_mutex);
-        if (_callback_executor) {
-            _callback_executor(func);
-            return;
-        }
+        executor = _callback_executor;
+    }
+
+    if (executor) {
+        (*executor)(func);
+        return;
     }
 
     auto callback_size = _user_callback_queue.size();
@@ -1729,6 +1753,11 @@ void MavsdkImpl::unsubscribe_outgoing_messages_json(Mavsdk::InterceptJsonHandle 
     if (it != _outgoing_json_message_subscriptions.end()) {
         _outgoing_json_message_subscriptions.erase(it);
     }
+}
+
+bool MavsdkImpl::on_io_thread() const
+{
+    return _io_thread_id.load(std::memory_order_relaxed) == std::this_thread::get_id();
 }
 
 RawConnection* MavsdkImpl::find_raw_connection()
