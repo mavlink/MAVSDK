@@ -37,12 +37,28 @@ CallEveryHandler::Cookie CallEveryHandler::add(std::function<void()> callback, d
 
 void CallEveryHandler::change(double interval_s, Cookie cookie)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-    auto it = std::find_if(_entries.begin(), _entries.end(), [&](const Entry& entry) {
-        return entry.cookie == cookie;
-    });
-    if (it != _entries.end()) {
+    bool moved_earlier = false;
+
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        auto it = std::find_if(_entries.begin(), _entries.end(), [&](const Entry& entry) {
+            return entry.cookie == cookie;
+        });
+        if (it == _entries.end()) {
+            return;
+        }
+
+        const auto previous_earliest = earliest_with_lock();
         it->interval_s = interval_s;
+        const auto new_earliest = earliest_with_lock();
+        moved_earlier = new_earliest && (!previous_earliest || *new_earliest < *previous_earliest);
+    }
+
+    // Shortening an interval brings the deadline forward, so the owner's timer has to be
+    // re-armed -- otherwise it stays parked on the old deadline (or the safety cap) and the
+    // catch-up in run_once() then delivers the intervals it slept through back to back.
+    if (moved_earlier && _wakeup_callback) {
+        _wakeup_callback();
     }
 }
 

@@ -63,8 +63,9 @@ public:
     // registered. Lets the caller arm a timer for that instant rather than poll.
     [[nodiscard]] std::optional<SteadyTimePoint> next_deadline();
 
-    // Called whenever add() or reset() moves the earliest deadline earlier, so the caller can
-    // re-arm. Invoked on the calling thread with no lock held, so it must not block.
+    // Called whenever add(), change() or call_soon() moves the earliest deadline earlier, so
+    // the caller can re-arm. (reset() only ever pushes a deadline further out, so it does
+    // not.) Invoked on the calling thread with no lock held, so it must not block.
     void set_wakeup_callback(std::function<void()> callback);
 
 private:
