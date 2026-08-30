@@ -295,11 +295,18 @@ jobs:
         run: cmake --build examples/build -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
+        env:
+          MALLOC_PERTURB_: "165"
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
         timeout-minutes: 15
+        env:
+          MALLOC_PERTURB_: "165"
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
+      - name: analyze core dumps
+        if: failure()
+        run: tools/analyze_core_dumps.sh build/release
       - name: upload core dumps
         if: failure()
         uses: actions/upload-artifact@v7
@@ -508,9 +515,16 @@ jobs:
         run: cmake --build build/release -- -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
+        env:
+          MALLOC_PERTURB_: "165"
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
         timeout-minutes: 15
+        env:
+          MALLOC_PERTURB_: "165"
+      - name: analyze core dumps
+        if: failure()
+        run: tools/analyze_core_dumps.sh build/release
       - name: upload core dumps
         if: failure()
         uses: actions/upload-artifact@v7
