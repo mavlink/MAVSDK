@@ -1391,13 +1391,20 @@ void MavsdkImpl::notify_on_timeout()
 Mavsdk::NewSystemHandle
 MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback)
 {
-    std::lock_guard lock(_mutex);
-
     const auto handle = _new_system_callbacks.subscribe(callback);
 
-    if (is_any_system_connected()) {
-        _new_system_callbacks.queue([this](const auto& func) { call_user_callback(func); });
-    }
+    // The catch-up check for an already connected system has to run *after* the
+    // subscription above has landed, so post it: subscribe() only posts its list
+    // insertion, which lands on the next io turn. Checking here, on the caller's thread,
+    // loses a system that connects in between -- if the io thread is inside the very
+    // handler that completes discovery, its notify_on_discover() iterates a list that does
+    // not contain this callback yet, and nothing else will ever tell the subscriber. Both
+    // are posted onto the same io_context, so post FIFO puts them in the right order.
+    asio::post(_io_context, [this]() {
+        if (is_any_system_connected()) {
+            _new_system_callbacks.queue([this](const auto& func) { call_user_callback(func); });
+        }
+    });
 
     return handle;
 }
