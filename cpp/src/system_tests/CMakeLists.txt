@@ -26,6 +26,7 @@ add_executable(system_tests_runner
     plugin_lifetime_churn.cpp
     mavsdk_outlived.cpp
     first_heartbeat.cpp
+    callback_queue_overflow.cpp
     telemetry_home_position.cpp
     request_message_rapid.cpp
     fs_helpers.cpp

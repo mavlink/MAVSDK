@@ -37,6 +37,11 @@
 
 #define call_user_callback(...) call_user_callback_located(FILENAME, __LINE__, __VA_ARGS__)
 
+// For a subscription delivering a stream, where an old value may be discarded if the
+// subscriber cannot keep up. Never use it where something waits for the callback.
+#define call_user_callback_droppable(...) \
+    call_user_callback_droppable_located(FILENAME, __LINE__, __VA_ARGS__)
+
 #define LogDebug(...) \
     ::mavsdk::log_message(::mavsdk::log::Level::Debug, FILENAME, __LINE__, __VA_ARGS__)
 #define LogInfo(...) \

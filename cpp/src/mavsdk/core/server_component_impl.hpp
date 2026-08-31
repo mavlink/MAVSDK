@@ -169,6 +169,11 @@ public:
     void call_user_callback_located(
         const std::string& filename, const int linenumber, const std::function<void()>& func);
 
+    // For a subscription delivering a stream: may be discarded when the user cannot keep up.
+    // Never use it where somebody waits for the callback -- see MavsdkImpl.
+    void call_user_callback_droppable_located(
+        const std::string& filename, const int linenumber, const std::function<void()>& func);
+
     // Autopilot version data
     void add_capabilities(uint64_t capabilities);
     void set_flight_sw_version(uint32_t flight_sw_version);

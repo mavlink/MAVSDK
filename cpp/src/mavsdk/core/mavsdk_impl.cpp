@@ -1592,6 +1592,21 @@ void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)
 void MavsdkImpl::call_user_callback_located(
     const std::string& filename, const int linenumber, const std::function<void()>& func)
 {
+    enqueue_user_callback(filename, linenumber, func, false);
+}
+
+void MavsdkImpl::call_user_callback_droppable_located(
+    const std::string& filename, const int linenumber, const std::function<void()>& func)
+{
+    enqueue_user_callback(filename, linenumber, func, true);
+}
+
+void MavsdkImpl::enqueue_user_callback(
+    const std::string& filename,
+    const int linenumber,
+    const std::function<void()>& func,
+    bool droppable)
+{
     // Don't enqueue callbacks if we're shutting down
     if (_should_exit) {
         return;
@@ -1610,32 +1625,74 @@ void MavsdkImpl::call_user_callback_located(
         return;
     }
 
-    auto callback_size = _user_callback_queue.size();
+    const auto callback_size = _user_callback_queue.size();
 
     if (_callback_tracker) {
         _callback_tracker->record_queued(filename, linenumber);
         _callback_tracker->maybe_print_stats(callback_size);
     }
 
-    if (callback_size >= 100) {
-        return;
+    // We only need to keep track of filename and linenumber if we're actually debugging this.
+    auto user_callback =
+        _callback_debugging ? UserCallback{func, filename, linenumber} : UserCallback{func};
+    user_callback.droppable = droppable;
 
-    } else if (callback_size == 99) {
-        LogErr(
-            "User callback queue overflown\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks");
-        return;
+    auto ptr = std::make_shared<UserCallback>(std::move(user_callback));
 
-    } else if (callback_size >= 10) {
-        LogWarn(
-            "User callback queue slow (queue size: {}).\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
-            callback_size);
+    if (!droppable) {
+        // Somebody may be blocked waiting for this one, so it goes in regardless of how far
+        // behind the subscriber is. These are one per user action rather than one per
+        // message, so the queue cannot run away on them.
+        _user_callback_queue.push_back(ptr);
+        return;
     }
 
-    // We only need to keep track of filename and linenumber if we're actually debugging this.
-    UserCallback user_callback =
-        _callback_debugging ? UserCallback{func, filename, linenumber} : UserCallback{func};
+    const auto result = _user_callback_queue.push_back_bounded(
+        ptr, MAX_DROPPABLE_USER_CALLBACKS, [](const UserCallback& queued) {
+            return queued.droppable;
+        });
 
-    _user_callback_queue.push_back(std::make_shared<UserCallback>(user_callback));
+    switch (result) {
+        case LockedQueue<UserCallback>::BoundedPush::Pushed:
+            break;
+        case LockedQueue<UserCallback>::BoundedPush::PushedAfterDropping:
+            // An older value of this stream made way for the new one.
+            note_user_callbacks_dropped();
+            break;
+        case LockedQueue<UserCallback>::BoundedPush::Rejected:
+            // The queue is entirely callbacks that must be delivered, so this stream value
+            // is the one that gives way.
+            note_user_callbacks_dropped();
+            break;
+    }
+}
+
+void MavsdkImpl::note_user_callbacks_dropped()
+{
+    const auto total = ++_user_callbacks_dropped;
+
+    const auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                            std::chrono::steady_clock::now().time_since_epoch())
+                            .count();
+
+    // Rate limited, and it reports the running total rather than the individual drop: the
+    // old code warned on every enqueue once the queue passed ten, which drowned out the one
+    // message that mattered, and then went silent exactly when data started disappearing.
+    constexpr int64_t report_interval_ms = 5000;
+
+    auto last_ms = _user_callbacks_report_ms.load(std::memory_order_relaxed);
+    if (now_ms - last_ms < report_interval_ms) {
+        return;
+    }
+    if (!_user_callbacks_report_ms.compare_exchange_strong(last_ms, now_ms)) {
+        // Somebody else is reporting right now.
+        return;
+    }
+
+    LogErr(
+        "Dropping subscription callbacks ({} so far): a subscriber is not keeping up.\n"
+        "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
+        total);
 }
 
 void MavsdkImpl::process_user_callbacks_thread()

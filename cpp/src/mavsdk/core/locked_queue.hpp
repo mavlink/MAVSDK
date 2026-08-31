@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <queue>
 #include <mutex>
 #include <memory>
@@ -17,6 +18,41 @@ public:
         std::lock_guard<std::mutex> lock(_mutex);
         _queue.push_back(item_ptr);
         _condition_var.notify_one();
+    }
+
+    // Outcome of push_back_bounded().
+    enum class BoundedPush {
+        Pushed, // There was room.
+        PushedAfterDropping, // Room was made by dropping an older droppable item.
+        Rejected, // No room and nothing droppable to evict, so the item was not pushed.
+    };
+
+    // Push, but keep the queue to max_size entries worth of droppable work. When it is
+    // already that long, make room by dropping the *oldest* item that pred accepts --
+    // oldest, so that what does get through stays current rather than lagging further and
+    // further behind. If nothing in the queue may be dropped, the new item is refused
+    // instead, and the caller decides what that means.
+    template<class Predicate>
+    BoundedPush push_back_bounded(std::shared_ptr<T> item_ptr, size_t max_size, Predicate pred)
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+
+        auto result = BoundedPush::Pushed;
+
+        if (_queue.size() >= max_size) {
+            auto it = std::find_if(_queue.begin(), _queue.end(), [&](const auto& entry) {
+                return entry != nullptr && pred(*entry);
+            });
+            if (it == _queue.end()) {
+                return BoundedPush::Rejected;
+            }
+            _queue.erase(it);
+            result = BoundedPush::PushedAfterDropping;
+        }
+
+        _queue.push_back(item_ptr);
+        _condition_var.notify_one();
+        return result;
     }
 
     size_t size()

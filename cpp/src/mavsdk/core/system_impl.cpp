@@ -1414,6 +1414,12 @@ void SystemImpl::call_user_callback_located(
     _mavsdk_impl.call_user_callback_located(filename, linenumber, func);
 }
 
+void SystemImpl::call_user_callback_droppable_located(
+    const std::string& filename, const int linenumber, const std::function<void()>& func)
+{
+    _mavsdk_impl.call_user_callback_droppable_located(filename, linenumber, func);
+}
+
 void SystemImpl::param_changed(const std::string& name)
 {
     // Copy the callbacks out under the lock and invoke them afterwards, so a callback
