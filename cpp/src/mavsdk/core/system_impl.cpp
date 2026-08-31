@@ -71,17 +71,23 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
     // We use this as a default.
     _target_address.component_id = MAV_COMP_ID_AUTOPILOT1;
 
-    _mavlink_message_handler.register_one(
+    // Registered synchronously rather than with the usual posted register_one(): init() runs
+    // on the io thread, from MavsdkImpl::process_message(), while it is handling the very
+    // message that caused this system to be created. A posted registration would land an io
+    // turn later, so that first message -- normally the heartbeat that would mark the system
+    // connected -- would arrive before the handler existed and be dropped, leaving discovery
+    // to wait for the next one.
+    _mavlink_message_handler.register_one_on_io_thread(
         MAVLINK_MSG_ID_HEARTBEAT,
         [this](const mavlink_message_t& message) { process_heartbeat(message); },
         this);
 
-    _mavlink_message_handler.register_one(
+    _mavlink_message_handler.register_one_on_io_thread(
         MAVLINK_MSG_ID_STATUSTEXT,
         [this](const mavlink_message_t& message) { process_statustext(message); },
         this);
 
-    _mavlink_message_handler.register_one(
+    _mavlink_message_handler.register_one_on_io_thread(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         [this](const mavlink_message_t& message) { process_autopilot_version(message); },
         this);
