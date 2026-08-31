@@ -31,6 +31,9 @@ That is what removes most of the locking. Concretely:
   already on the io thread.
 - The work queues in `MavlinkCommandSender`, the mission transfer classes, the FTP client and
   the parameter clients are io-thread-only; enqueuing from elsewhere is posted.
+- `SystemImpl::_plugin_impls` is io-thread-only, and so is every `enable()`/`disable()` call.
+  See **Plugin lifetime** below -- this one is load-bearing, because the entries are raw
+  pointers to objects that user code owns and destroys.
 
 `MavlinkMessageHandler` and `MavlinkParameterSubscription` each have a debug-only
 `note_*_thread()` that records the accessing `std::thread::id` and asserts if it ever changes.
@@ -113,6 +116,34 @@ Two places did not, and needed the poll to make progress:
 itself.** There is no periodic sweep left to cover for a missing one — the symptom is work
 that sits in the queue forever.
 
+## Plugin lifetime
+
+Plugins are the one place where the io thread holds a bare pointer to an object *user code*
+owns: `SystemImpl::_plugin_impls` is a `std::vector<PluginImplBase*>`, and the plugin is
+destroyed on whatever thread the user drops it on. Meanwhile the io thread calls `enable()` on
+every entry when the system connects and `disable()` when it times out.
+
+So the registry is io-thread-only, and the two ends are asymmetric on purpose:
+
+- `register_plugin()` **posts** the insertion (and the `if (_connected) enable()` that goes
+  with it). Posting rather than waiting means a plugin constructor can never block on the io
+  thread. Doing the `_connected` test there, rather than on the caller's thread, is what makes
+  it atomic against `set_connected()`/`set_disconnected()` — otherwise a plugin registering
+  just as the system connects gets `enable()`d twice, or not at all.
+- `unregister_plugin()` **posts and waits** for the removal, and only then calls `disable()`
+  and `deinit()`. Once the removal has run, the io thread cannot reach the plugin and any
+  `enable()`/`disable()` it had started has finished, because the removal is serialized behind
+  them on that same thread.
+
+Both of those matter. Before they were in place, ThreadSanitizer reported two races on a
+plugin's own members in `system_tests/plugin_lifetime_churn.cpp`: `register_plugin()` calling
+`enable()` on the caller's thread against the io thread's `disable()`, and the io thread's
+`enable()` against a user thread inside the plugin's destructor. The second is a
+use-after-free waiting to happen.
+
+**If you add anything else the io thread reaches through a raw pointer into user-owned memory,
+it needs the same treatment.**
+
 ## Locks that remain
 
 Locks are for state genuinely reachable from user threads. The order is documented where the
@@ -126,8 +157,8 @@ members are declared in `mavsdk_impl.hpp`; the summary:
   `send_heartbeats()` would take `_server_components_mutex` then `_mutex`, inverting the io
   thread's order.
 
-Per-connection and per-system locks (`_send_mutex`, `_remote_mutex`, `_components_mutex`,
-`_plugin_impls_mutex`, …) are local to their object and do not participate in the order above.
+Per-connection and per-system locks (`_send_mutex`, `_remote_mutex`, `_components_mutex`, …)
+are local to their object and do not participate in the order above.
 
 ## Teardown
 

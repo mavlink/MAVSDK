@@ -23,6 +23,7 @@ add_executable(system_tests_runner
     telemetry_rc_status.cpp
     geofence_download.cpp
     heartbeat_watchdog.cpp
+    plugin_lifetime_churn.cpp
     telemetry_home_position.cpp
     request_message_rapid.cpp
     fs_helpers.cpp
