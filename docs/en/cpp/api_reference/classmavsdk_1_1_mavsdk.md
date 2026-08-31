@@ -377,6 +377,9 @@ std::vector< std::shared_ptr< System > > mavsdk::Mavsdk::systems() const
 
 Get a vector of systems which have been discovered or set-up.
 
+::: info
+The returned [System](classmavsdk_1_1_system.md) must not outlive this [Mavsdk](classmavsdk_1_1_mavsdk.md) instance. It holds a reference back into it, so using a [System](classmavsdk_1_1_system.md) after its [Mavsdk](classmavsdk_1_1_mavsdk.md) is gone is a use-after-free, and so is merely letting it be destroyed. The same applies to any plugin constructed from it.
+:::
 
 **Returns**
 
@@ -392,6 +395,11 @@ Get the first autopilot that has been discovered.
 
 ::: info
 This requires a MAVLink component with component ID 1 sending heartbeats.
+:::
+
+
+::: info
+The returned [System](classmavsdk_1_1_system.md) must not outlive this [Mavsdk](classmavsdk_1_1_mavsdk.md) instance. It holds a reference back into it, so using a [System](classmavsdk_1_1_system.md) after its [Mavsdk](classmavsdk_1_1_mavsdk.md) is gone is a use-after-free, and so is merely letting it be destroyed. The same applies to any plugin constructed from it.
 :::
 
 **Parameters**
@@ -558,6 +566,9 @@ std::shared_ptr< ServerComponent > mavsdk::Mavsdk::server_component(unsigned ins
 
 Get server component with default type of [Mavsdk](classmavsdk_1_1_mavsdk.md) instance.
 
+::: info
+The returned [ServerComponent](classmavsdk_1_1_server_component.md) must not outlive this [Mavsdk](classmavsdk_1_1_mavsdk.md) instance. It holds a reference back into it, so using one after its [Mavsdk](classmavsdk_1_1_mavsdk.md) is gone is a use-after-free, and so is merely letting it be destroyed.
+:::
 
 **Parameters**
 

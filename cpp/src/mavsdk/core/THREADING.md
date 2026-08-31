@@ -144,6 +144,21 @@ use-after-free waiting to happen.
 **If you add anything else the io thread reaches through a raw pointer into user-owned memory,
 it needs the same treatment.**
 
+## Object lifetime
+
+`System`, `ServerComponent` and every plugin hold a reference back into `MavsdkImpl`, so none
+of them may outlive the `Mavsdk` instance they came from. That is not just a rule about
+*using* them afterwards: `~SystemImpl` itself reaches back in (`remove_call_every_blocking()`,
+`unregister_timeout_handler_blocking()`), so a leaked `System` is a use-after-free even if it
+is never touched again.
+
+Since there is no harmless version of getting it wrong, `~MavsdkImpl` looks for outstanding
+references and aborts with an explanation rather than leaving a segfault to surface elsewhere
+later — see `MavsdkImpl::abort_if_references_outlive_us()` and
+`system_tests/mavsdk_outlived.cpp`. Note that a couple of those references are our own
+(`_default_server_component` points at an entry that is also in `_server_components`), so the
+check compares against a baseline rather than against 1.
+
 ## Locks that remain
 
 Locks are for state genuinely reachable from user threads. The order is documented where the

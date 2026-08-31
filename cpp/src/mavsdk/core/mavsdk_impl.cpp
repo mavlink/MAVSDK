@@ -1,5 +1,7 @@
 #include "mavsdk_impl.hpp"
 
+#include <cstdio>
+#include <cstdlib>
 #include <asio/dispatch.hpp>
 #include <asio/post.hpp>
 
@@ -156,8 +158,76 @@ MavsdkImpl::~MavsdkImpl()
         pair.second->_system_impl->signal_exit();
     }
 
+    abort_if_references_outlive_us();
+
     _systems.clear();
     _connections.clear();
+}
+
+void MavsdkImpl::abort_if_references_outlive_us()
+{
+    // Everything handed out by systems(), first_autopilot() and server_component() keeps a
+    // raw reference back to this MavsdkImpl, so none of it may outlive us. There is no
+    // harmless version of getting this wrong: SystemImpl's *destructor* alone reaches back
+    // in here (remove_call_every_blocking(), unregister_timeout_handler_blocking()), so even
+    // a reference that is never used again is a use-after-free when it finally goes away.
+    //
+    // Since it is fatal either way, say so here -- where we can still name the mistake --
+    // rather than leaving a segfault somewhere else later.
+    unsigned dangling_systems = 0;
+    unsigned dangling_system_impls = 0;
+    unsigned dangling_server_components = 0;
+
+    for (auto& pair : _systems) {
+        // One reference is the entry in _systems itself.
+        if (pair.second.use_count() > 1) {
+            ++dangling_systems;
+        }
+        // And one is System's own member. Anything beyond that is a plugin, or a caller who
+        // kept what System::system_impl() handed them.
+        if (pair.second->_system_impl.use_count() > 1) {
+            ++dangling_system_impls;
+        }
+    }
+
+    for (auto& pair : _server_components) {
+        if (pair.second == nullptr) {
+            continue;
+        }
+        // One reference is the entry in _server_components. _default_server_component points
+        // at one of them as well, so that entry legitimately has two of our own.
+        const auto ours = (pair.second == _default_server_component) ? 2 : 1;
+        if (pair.second.use_count() > ours) {
+            ++dangling_server_components;
+        }
+    }
+
+    if (dangling_systems == 0 && dangling_system_impls == 0 && dangling_server_components == 0) {
+        return;
+    }
+
+    LogErr("Mavsdk is being destroyed while things it handed out are still alive:");
+    if (dangling_systems > 0) {
+        LogErr(
+            "  - {} System(s) still referenced (from systems() or first_autopilot())",
+            dangling_systems);
+    }
+    if (dangling_system_impls > 0) {
+        LogErr("  - {} System(s) still referenced by a plugin", dangling_system_impls);
+    }
+    if (dangling_server_components > 0) {
+        LogErr("  - {} ServerComponent(s) still referenced", dangling_server_components);
+    }
+    // One complete sentence per line, so each stands on its own in a log and can be grepped.
+    LogErr("A System, a ServerComponent or a plugin must not outlive the Mavsdk instance.");
+    LogErr("They hold a reference back into it, so using one afterwards -- or merely letting "
+           "it be destroyed -- is a use-after-free.");
+    LogErr("Keep the Mavsdk instance alive at least as long as everything obtained from it.");
+    LogErr("Aborting now: continuing would crash later and much less clearly.");
+
+    fflush(stdout);
+    fflush(stderr);
+    std::abort();
 }
 
 std::string MavsdkImpl::version()
