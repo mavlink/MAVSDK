@@ -664,14 +664,10 @@ void SystemImpl::set_connected()
             send_autopilot_version_request();
         }
 
-        // Enable plugins
-        std::vector<PluginImplBase*> plugin_impls_to_enable;
-        {
-            std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-            plugin_impls_to_enable = _plugin_impls;
-        }
-
-        for (auto plugin_impl : plugin_impls_to_enable) {
+        // Enable plugins. No lock and no copy: _plugin_impls is only touched on this
+        // thread, and a plugin cannot go away underneath us because unregister_plugin()
+        // removes it from here, on this thread, before it tears the plugin down.
+        for (auto plugin_impl : _plugin_impls) {
             plugin_impl->enable();
         }
     }
@@ -691,11 +687,10 @@ void SystemImpl::set_disconnected()
     }
     _mavsdk_impl.notify_on_timeout();
 
-    {
-        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-        for (auto plugin_impl : _plugin_impls) {
-            plugin_impl->disable();
-        }
+    // Same as in set_connected(): the registry belongs to this thread, so no lock. Dropping
+    // it also removes the _plugin_impls_mutex -> plugin-lock nesting this used to create.
+    for (auto plugin_impl : _plugin_impls) {
+        plugin_impl->disable();
     }
 }
 
@@ -1330,38 +1325,81 @@ SystemImpl::make_command_msg_rate(uint16_t message_id, double rate_hz, uint8_t c
     return command;
 }
 
+void SystemImpl::run_on_io_thread(const std::function<void()>& task, bool wait)
+{
+    auto& io_context = _mavsdk_impl.io_context();
+
+    if (io_context.stopped() || _mavsdk_impl.on_io_thread()) {
+        // Either nothing else can be running any more, or we already are the thread that
+        // owns this state. Run inline -- posting and waiting would wait for ourselves.
+        task();
+        return;
+    }
+
+    if (!wait) {
+        asio::post(io_context, task);
+        return;
+    }
+
+    std::promise<void> done;
+    asio::post(io_context, [&task, &done]() {
+        task();
+        done.set_value();
+    });
+    done.get_future().wait();
+}
+
 void SystemImpl::register_plugin(PluginImplBase* plugin_impl)
 {
     assert(plugin_impl);
 
+    // init() only posts its registrations, so it is safe from any thread and keeps the
+    // ordering it has always had.
     plugin_impl->init();
 
-    {
-        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-        _plugin_impls.push_back(plugin_impl);
-    }
+    // _plugin_impls, and every enable()/disable() call, belong to the io thread -- see
+    // unregister_plugin() for why. Posted rather than posted-and-waited so that a plugin
+    // constructor can never block on the io thread: the only cost is that enable() lands an
+    // io turn later.
+    run_on_io_thread(
+        [this, plugin_impl]() {
+            _plugin_impls.push_back(plugin_impl);
 
-    // If we're connected already, let's enable it straightaway.
-    if (_connected) {
-        plugin_impl->enable();
-    }
+            // Testing _connected here rather than on the caller's thread makes the insertion
+            // and the test atomic with respect to set_connected()/set_disconnected(), which
+            // run on this same thread. Done on the caller's thread, a plugin registering just
+            // as the system connects could be enabled twice -- by this path and by
+            // set_connected()'s loop -- or by neither.
+            if (_connected) {
+                plugin_impl->enable();
+            }
+        },
+        false);
 }
 
 void SystemImpl::unregister_plugin(PluginImplBase* plugin_impl)
 {
     assert(plugin_impl);
 
+    // Take the plugin out of the registry first, and wait for that to happen. Once this
+    // returns, the io thread can no longer reach the plugin, and any enable()/disable() it
+    // had already started has finished -- the removal is serialized behind them on that same
+    // thread. Only then is it safe to tear the plugin down from here.
+    //
+    // This is what stops the io thread calling into a plugin that a user thread is
+    // destroying, and what stops unregister_plugin()'s disable() below from running
+    // concurrently with set_disconnected()'s.
+    run_on_io_thread(
+        [this, plugin_impl]() {
+            auto found = std::find(_plugin_impls.begin(), _plugin_impls.end(), plugin_impl);
+            if (found != _plugin_impls.end()) {
+                _plugin_impls.erase(found);
+            }
+        },
+        true);
+
     plugin_impl->disable();
     plugin_impl->deinit();
-
-    // Remove first, so it won't get enabled/disabled anymore.
-    {
-        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-        auto found = std::find(_plugin_impls.begin(), _plugin_impls.end(), plugin_impl);
-        if (found != _plugin_impls.end()) {
-            _plugin_impls.erase(found);
-        }
-    }
 }
 
 void SystemImpl::call_user_callback_located(

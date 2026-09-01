@@ -360,6 +360,12 @@ private:
 
     void schedule_ping();
 
+    // Run task on the io thread. Runs inline when already there, or when the io_context has
+    // stopped and nothing else can be running. With wait set, does not return until the task
+    // has run -- which is what makes removal from _plugin_impls a real barrier against the io
+    // thread. Do not wait while holding a lock the io thread needs.
+    void run_on_io_thread(const std::function<void()>& task, bool wait);
+
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
 
@@ -444,7 +450,11 @@ private:
     MavlinkFtpClient _mavlink_ftp_client;
     MavlinkComponentMetadata _mavlink_component_metadata;
 
-    std::mutex _plugin_impls_mutex{};
+    // Only touched on the io thread (or during teardown, once the io_context is stopped),
+    // so no mutex. register_plugin()/unregister_plugin() hop over there via
+    // run_on_io_thread(); set_connected()/set_disconnected() already run there. This is what
+    // keeps the io thread from calling enable()/disable() on a plugin that user code is
+    // destroying -- the entries are raw pointers to objects the user owns.
     std::vector<PluginImplBase*> _plugin_impls{};
 
     // We used set to maintain unique component ids
