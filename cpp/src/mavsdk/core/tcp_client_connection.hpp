@@ -53,6 +53,7 @@ private:
     // Asio objects and the send queue — all only touched on MavsdkImpl::_io_context's
     // thread, which is why none of them need a lock.
     asio::ip::tcp::socket _socket;
+    asio::ip::tcp::resolver _resolver;
     asio::steady_timer _reconnect_timer;
     std::array<char, 2048> _recv_buffer{};
     TxQueue<std::vector<char>> _tx_queue{MAX_TX_QUEUE_ITEMS};

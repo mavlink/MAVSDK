@@ -31,6 +31,7 @@ TcpClientConnection::TcpClientConnection(
     _remote_ip(std::move(remote_ip)),
     _remote_port_number(remote_port),
     _socket(mavsdk_impl.io_context()),
+    _resolver(mavsdk_impl.io_context()),
     _reconnect_timer(mavsdk_impl.io_context())
 {}
 
@@ -72,16 +73,18 @@ ConnectionResult TcpClientConnection::stop()
     _stopping = true;
     _connected = false;
 
-    _reconnect_timer.cancel();
-
     auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
     if (!io_ctx.stopped()) {
-        // Close the socket from the io_context thread to avoid a data race with
-        // a concurrent async_read_some() / async_connect() / async_write() reading
-        // socket state. Because io_ctx is driven by a single thread, posting here
-        // serialises the close with all in-flight socket access.
+        // Cancel and close from the io_context thread to avoid a data race with
+        // a concurrent async_read_some() / async_connect() / async_write() /
+        // async_resolve() touching the same object. Because io_ctx is driven by a
+        // single thread, posting here serialises all of it with the in-flight work.
+        // (The timer cancel used to happen on the caller's thread, which was the same
+        // kind of cross-thread access this avoids.)
         std::promise<void> close_done;
         asio::post(io_ctx, [this, &close_done]() {
+            _reconnect_timer.cancel();
+            _resolver.cancel();
             _tx_queue.clear();
             if (_socket.is_open()) {
                 asio::error_code ec;
@@ -98,6 +101,8 @@ ConnectionResult TcpClientConnection::stop()
         fence.get_future().wait();
     } else {
         // io_context already stopped — no concurrent async operations are running.
+        _reconnect_timer.cancel();
+        _resolver.cancel();
         _tx_queue.clear();
         if (_socket.is_open()) {
             asio::error_code ec;
@@ -187,48 +192,65 @@ void TcpClientConnection::start_write()
 
 void TcpClientConnection::do_connect()
 {
-    // Resolve the remote hostname/IP synchronously. This is called rarely (once at startup,
-    // then on each reconnect) so blocking briefly here is acceptable.
-    asio::error_code ec;
-    asio::ip::tcp::resolver resolver(_socket.get_executor());
-    auto endpoints = resolver.resolve(_remote_ip, std::to_string(_remote_port_number), ec);
-
-    if (ec) {
-        LogErr(
-            "Resolve error for {}:{}: {}, trying to reconnect...",
-            _remote_ip,
-            _remote_port_number,
-            ec.message());
-        start_reconnect();
-        return;
-    }
-
-    // Ensure the socket is in a clean state before connecting.
-    if (_socket.is_open()) {
-        asio::error_code close_ec;
-        _socket.close(close_ec);
-    }
-
-    asio::async_connect(
-        _socket,
-        endpoints,
-        [this](const asio::error_code& connect_ec, const asio::ip::tcp::endpoint&) {
-            if (connect_ec == asio::error::operation_aborted || _stopping) {
-                // stop() was called — do not reconnect.
+    // Resolve asynchronously. A synchronous resolve() would run getaddrinfo() on the io
+    // thread, and this is not a one-off: the reconnect path calls it again every second
+    // for as long as the peer is unreachable. A DNS server that is itself unreachable
+    // then freezes the whole SDK -- message dispatch, timers, every other connection --
+    // for the resolver timeout, over and over. Asio runs the lookup on its own internal
+    // thread and delivers the result back here on the io thread.
+    _resolver.async_resolve(
+        _remote_ip,
+        std::to_string(_remote_port_number),
+        [this](const asio::error_code& ec, const asio::ip::tcp::resolver::results_type& endpoints) {
+            // The operation_aborted check must stay FIRST, and the || must short-circuit
+            // before `_stopping` dereferences `this`. resolver::cancel() cannot interrupt
+            // a getaddrinfo() already running on Asio's internal resolver thread: it only
+            // expires the cancellation token, so this handler is still invoked afterwards
+            // -- possibly after stop() has returned and the connection has been
+            // destroyed. Reading `ec` is safe then; touching a member would not be.
+            if (ec == asio::error::operation_aborted || _stopping) {
+                // stop() cancelled the resolve — do not reconnect.
                 return;
             }
-            if (connect_ec) {
-                LogErr("Connect error: {}", connect_ec.message());
-                if (!_stopping) {
-                    start_reconnect();
-                }
+
+            if (ec) {
+                LogErr(
+                    "Resolve error for {}:{}: {}, trying to reconnect...",
+                    _remote_ip,
+                    _remote_port_number,
+                    ec.message());
+                start_reconnect();
                 return;
             }
-            _connected = true;
-            do_receive();
-            // Anything queued while we were disconnected is stale by now, but a send
-            // that raced the connect completing is not, so drain whatever is waiting.
-            start_write();
+
+            // Ensure the socket is in a clean state before connecting.
+            if (_socket.is_open()) {
+                asio::error_code close_ec;
+                _socket.close(close_ec);
+            }
+
+            asio::async_connect(
+                _socket,
+                endpoints,
+                [this](const asio::error_code& connect_ec, const asio::ip::tcp::endpoint&) {
+                    if (connect_ec == asio::error::operation_aborted || _stopping) {
+                        // stop() was called — do not reconnect.
+                        return;
+                    }
+                    if (connect_ec) {
+                        LogErr("Connect error: {}", connect_ec.message());
+                        if (!_stopping) {
+                            start_reconnect();
+                        }
+                        return;
+                    }
+                    _connected = true;
+                    do_receive();
+                    // Anything queued while we were disconnected is stale by now, but a
+                    // send that raced the connect completing is not, so drain whatever
+                    // is waiting.
+                    start_write();
+                });
         });
 }
 
