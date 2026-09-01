@@ -334,6 +334,12 @@ void ServerComponentImpl::call_user_callback_located(
     _mavsdk_impl.call_user_callback_located(filename, linenumber, func);
 }
 
+void ServerComponentImpl::call_user_callback_droppable_located(
+    const std::string& filename, const int linenumber, const std::function<void()>& func)
+{
+    _mavsdk_impl.call_user_callback_droppable_located(filename, linenumber, func);
+}
+
 TimeoutHandler::Cookie ServerComponentImpl::register_timeout_handler(
     const std::function<void()>& callback, double duration_s)
 {

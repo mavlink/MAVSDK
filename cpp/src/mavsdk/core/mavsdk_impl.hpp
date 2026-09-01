@@ -151,7 +151,15 @@ public:
     TimeoutHandler timeout_handler;
     CallEveryHandler call_every_handler;
 
+    // Queue a callback for the user callback thread. Never dropped: blocking API calls wait
+    // on promises that are only satisfied by one of these, so losing one hangs the caller.
     void call_user_callback_located(
+        const std::string& filename, int linenumber, const std::function<void()>& func);
+
+    // Same, but for a subscription delivering a stream, where the newest value matters and
+    // an old one may be discarded if the subscriber cannot keep up. Use this only where
+    // losing a callback is a gap in data, never where somebody is waiting for it.
+    void call_user_callback_droppable_located(
         const std::string& filename, int linenumber, const std::function<void()>& func);
 
     void set_timeout_s(double timeout_s) { _timeout_s = timeout_s; }
@@ -305,6 +313,10 @@ private:
             linenumber(linenumber_)
         {}
 
+        // Whether this callback may be discarded when the queue is backed up. See
+        // call_user_callback_droppable_located().
+        bool droppable{false};
+
         std::function<void()> func{};
         std::string filename{};
         int linenumber{};
@@ -366,6 +378,22 @@ private:
     // so a caller can keep it alive across the invocation without copying the std::function.
     std::mutex _callback_executor_mutex{};
     std::shared_ptr<const CallbackExecutor> _callback_executor{};
+
+    // How much droppable work the user callback queue holds before it starts discarding the
+    // oldest of it. Callbacks that must be delivered are never counted out by this.
+    static constexpr size_t MAX_DROPPABLE_USER_CALLBACKS = 100;
+
+    void enqueue_user_callback(
+        const std::string& filename,
+        int linenumber,
+        const std::function<void()>& func,
+        bool droppable);
+
+    // Count drops and say so, at most every few seconds: whatever causes drops causes a lot
+    // of them, and a line per drop buries the message.
+    void note_user_callbacks_dropped();
+    std::atomic<uint64_t> _user_callbacks_dropped{0};
+    std::atomic<int64_t> _user_callbacks_report_ms{0};
 
     std::atomic<bool> _should_exit{false};
 

@@ -326,6 +326,11 @@ public:
     void call_user_callback_located(
         const std::string& filename, int linenumber, const std::function<void()>& func);
 
+    // For a subscription delivering a stream: may be discarded when the user cannot keep up.
+    // Never use it where somebody waits for the callback -- see MavsdkImpl.
+    void call_user_callback_droppable_located(
+        const std::string& filename, int linenumber, const std::function<void()>& func);
+
     void send_autopilot_version_request();
 
     MavlinkMissionTransferClient& mission_transfer_client() { return _mission_transfer_client; }

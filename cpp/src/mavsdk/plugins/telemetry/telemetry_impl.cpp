@@ -753,7 +753,7 @@ void TelemetryImpl::process_position_velocity_ned(const mavlink_message_t& messa
     set_position_velocity_ned(position_velocity);
 
     _position_velocity_ned_subscriptions.queue(position_velocity_ned(), [this](const auto& func) {
-        _system_impl->call_user_callback(func);
+        _system_impl->call_user_callback_droppable(func);
     });
 
     set_health_local_position(true);
@@ -790,13 +790,14 @@ void TelemetryImpl::process_global_position_int(const mavlink_message_t& message
     }
 
     _position_subscriptions.queue(
-        position(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        position(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 
-    _velocity_ned_subscriptions.queue(
-        velocity_ned(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _velocity_ned_subscriptions.queue(velocity_ned(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 
     _heading_subscriptions.queue(
-        heading(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        heading(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_home_position(const mavlink_message_t& message)
@@ -826,7 +827,7 @@ void TelemetryImpl::process_home_position(const mavlink_message_t& message)
     set_health_home_position(true);
 
     _home_position_subscriptions.queue(
-        home(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        home(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_attitude(const mavlink_message_t& message)
@@ -847,12 +848,13 @@ void TelemetryImpl::process_attitude(const mavlink_message_t& message)
     angular_velocity_body.yaw_rad_s = attitude.yawspeed;
     set_attitude_angular_velocity_body(angular_velocity_body);
 
-    _attitude_euler_angle_subscriptions.queue(
-        attitude_euler(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _attitude_euler_angle_subscriptions.queue(attitude_euler(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 
     _attitude_angular_velocity_body_subscriptions.queue(
         attitude_angular_velocity_body(),
-        [this](const auto& func) { _system_impl->call_user_callback(func); });
+        [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message)
@@ -878,12 +880,12 @@ void TelemetryImpl::process_attitude_quaternion(const mavlink_message_t& message
     set_attitude_angular_velocity_body(angular_velocity_body);
 
     _attitude_quaternion_angle_subscriptions.queue(attitude_quaternion(), [this](const auto& func) {
-        _system_impl->call_user_callback(func);
+        _system_impl->call_user_callback_droppable(func);
     });
 
     _attitude_angular_velocity_body_subscriptions.queue(
         attitude_angular_velocity_body(),
-        [this](const auto& func) { _system_impl->call_user_callback(func); });
+        [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_altitude(const mavlink_message_t& message)
@@ -903,7 +905,7 @@ void TelemetryImpl::process_altitude(const mavlink_message_t& message)
     set_altitude(new_altitude);
 
     _altitude_subscriptions.queue(
-        altitude(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        altitude(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_wind(const mavlink_message_t& message)
@@ -924,7 +926,7 @@ void TelemetryImpl::process_wind(const mavlink_message_t& message)
     set_wind(new_wind);
 
     _wind_subscriptions.queue(
-        wind(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        wind(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
@@ -947,7 +949,7 @@ void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
     set_imu_reading_ned(new_imu);
 
     _imu_reading_ned_subscriptions.queue(
-        imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        imu(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
@@ -972,8 +974,9 @@ void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
 
     set_scaled_imu(new_imu);
 
-    _scaled_imu_subscriptions.queue(
-        scaled_imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _scaled_imu_subscriptions.queue(scaled_imu(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 void TelemetryImpl::process_raw_imu(const mavlink_message_t& message)
@@ -996,7 +999,7 @@ void TelemetryImpl::process_raw_imu(const mavlink_message_t& message)
     set_raw_imu(new_imu);
 
     _raw_imu_subscriptions.queue(
-        raw_imu(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        raw_imu(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
@@ -1057,10 +1060,12 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
     set_raw_gps(raw_gps_info);
 
     {
-        _gps_info_subscriptions.queue(
-            gps_info(), [this](const auto& func) { _system_impl->call_user_callback(func); });
-        _raw_gps_subscriptions.queue(
-            raw_gps(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        _gps_info_subscriptions.queue(gps_info(), [this](const auto& func) {
+            _system_impl->call_user_callback_droppable(func);
+        });
+        _raw_gps_subscriptions.queue(raw_gps(), [this](const auto& func) {
+            _system_impl->call_user_callback_droppable(func);
+        });
     }
 }
 
@@ -1077,8 +1082,9 @@ void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)
 
     set_ground_truth(new_ground_truth);
 
-    _ground_truth_subscriptions.queue(
-        ground_truth(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _ground_truth_subscriptions.queue(ground_truth(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
@@ -1094,11 +1100,13 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
         set_vtol_state(vtol_state);
     }
 
-    _landed_state_subscriptions.queue(
-        landed_state(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _landed_state_subscriptions.queue(landed_state(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 
-    _vtol_state_subscriptions.queue(
-        vtol_state(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _vtol_state_subscriptions.queue(vtol_state(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 
     if (extended_sys_state.landed_state == MAV_LANDED_STATE_IN_AIR ||
         extended_sys_state.landed_state == MAV_LANDED_STATE_TAKEOFF ||
@@ -1110,7 +1118,7 @@ void TelemetryImpl::process_extended_sys_state(const mavlink_message_t& message)
     // If landed_state is undefined, we use what we have received last.
 
     _in_air_subscriptions.queue(
-        in_air(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        in_air(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
 {
@@ -1127,8 +1135,9 @@ void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
 
     set_fixedwing_metrics(new_fixedwing_metrics);
 
-    _fixedwing_metrics_subscriptions.queue(
-        fixedwing_metrics(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _fixedwing_metrics_subscriptions.queue(fixedwing_metrics(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
@@ -1144,8 +1153,9 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
         set_battery(new_battery);
 
         {
-            _battery_subscriptions.queue(
-                battery(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+            _battery_subscriptions.queue(battery(), [this](const auto& func) {
+                _system_impl->call_user_callback_droppable(func);
+            });
         }
     }
 
@@ -1188,13 +1198,15 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 
     set_rc_status({rc_ok}, std::nullopt);
 
-    _rc_status_subscriptions.queue(
-        rc_status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _rc_status_subscriptions.queue(rc_status(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 
     const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
     set_health_armable(armable);
-    _health_all_ok_subscriptions.queue(
-        health_all_ok(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _health_all_ok_subscriptions.queue(health_all_ok(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 bool TelemetryImpl::sys_status_present_enabled_health(
@@ -1272,8 +1284,9 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
     set_battery(new_battery);
 
     {
-        _battery_subscriptions.queue(
-            battery(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        _battery_subscriptions.queue(battery(), [this](const auto& func) {
+            _system_impl->call_user_callback_droppable(func);
+        });
     }
 }
 
@@ -1289,17 +1302,18 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t& message)
     set_armed(((heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false));
 
     _armed_subscriptions.queue(
-        armed(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        armed(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 
     _flight_mode_subscriptions.queue(
         telemetry_flight_mode_from_flight_mode(_system_impl->get_flight_mode()),
-        [this](const auto& func) { _system_impl->call_user_callback(func); });
+        [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 
     _health_subscriptions.queue(
-        health(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        health(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 
-    _health_all_ok_subscriptions.queue(
-        health_all_ok(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _health_all_ok_subscriptions.queue(health_all_ok(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustext& statustext)
@@ -1341,8 +1355,9 @@ void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustex
 
     set_status_text(new_status_text);
 
-    _status_text_subscriptions.queue(
-        status_text(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _status_text_subscriptions.queue(status_text(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
@@ -1354,8 +1369,9 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
         set_rc_status(std::nullopt, {rc_channels.rssi});
     }
 
-    _rc_status_subscriptions.queue(
-        rc_status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _rc_status_subscriptions.queue(rc_status(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
@@ -1365,8 +1381,9 @@ void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
 
     set_unix_epoch_time_us(system_time.time_unix_usec);
 
-    _unix_epoch_time_subscriptions.queue(
-        unix_epoch_time(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _unix_epoch_time_subscriptions.queue(unix_epoch_time(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& message)
@@ -1387,7 +1404,7 @@ void TelemetryImpl::process_actuator_control_target(const mavlink_message_t& mes
 
     _actuator_control_target_subscriptions.queue(
         actuator_control_target(),
-        [this](const auto& func) { _system_impl->call_user_callback(func); });
+        [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& message)
@@ -1407,7 +1424,7 @@ void TelemetryImpl::process_actuator_output_status(const mavlink_message_t& mess
     set_actuator_output_status(active, actuators);
 
     _actuator_output_status_subscriptions.queue(actuator_output_status(), [this](const auto& func) {
-        _system_impl->call_user_callback(func);
+        _system_impl->call_user_callback_droppable(func);
     });
 }
 
@@ -1457,7 +1474,7 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
     set_odometry(odometry_struct);
 
     _odometry_subscriptions.queue(
-        odometry(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+        odometry(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
 }
 
 void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
@@ -1477,8 +1494,9 @@ void TelemetryImpl::process_distance_sensor(const mavlink_message_t& message)
 
     set_distance_sensor(distance_sensor_struct);
 
-    _distance_sensor_subscriptions.queue(
-        distance_sensor(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _distance_sensor_subscriptions.queue(distance_sensor(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 Telemetry::EulerAngle
@@ -1709,8 +1727,9 @@ void TelemetryImpl::process_scaled_pressure(const mavlink_message_t& message)
 
     set_scaled_pressure(scaled_pressure_struct);
 
-    _scaled_pressure_subscriptions.queue(
-        scaled_pressure(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _scaled_pressure_subscriptions.queue(scaled_pressure(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
 }
 
 Telemetry::LandedState

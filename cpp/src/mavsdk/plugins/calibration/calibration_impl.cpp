@@ -89,8 +89,15 @@ void CalibrationImpl::call_callback(
     const Calibration::ProgressData progress_data)
 {
     if (callback) {
-        _system_impl->call_user_callback(
-            [callback, result, progress_data]() { callback(result, progress_data); });
+        auto deliver = [callback, result, progress_data]() { callback(result, progress_data); };
+
+        // Result::Next is an intermediate progress update, so it may be dropped if the
+        // subscriber cannot keep up. Anything else is the outcome somebody is waiting for.
+        if (result == Calibration::Result::Next) {
+            _system_impl->call_user_callback_droppable(deliver);
+        } else {
+            _system_impl->call_user_callback(deliver);
+        }
     }
 }
 

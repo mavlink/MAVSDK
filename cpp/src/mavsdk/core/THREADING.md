@@ -144,6 +144,31 @@ use-after-free waiting to happen.
 **If you add anything else the io thread reaches through a raw pointer into user-owned memory,
 it needs the same treatment.**
 
+## User callbacks: two classes
+
+Everything the user sees arrives through one bounded queue drained by the user-callback
+thread, and *blocking API calls depend on it*. `Action::arm()` waits on a promise that is
+only satisfied when the command-result callback runs, so a result that gets dropped is not a
+gap in data -- it is `arm()` never returning.
+
+So the queue distinguishes two kinds of work:
+
+| | Use | Dropped? |
+|---|---|---|
+| `call_user_callback()` | Anything somebody may be waiting for: command results, mission and parameter completions, one-shot requests. | **Never.** These are one per user action, so they cannot run the queue away. |
+| `call_user_callback_droppable()` | A subscription delivering a stream, where the newest value is what matters. | Yes, once `MAX_DROPPABLE_USER_CALLBACKS` of them are queued. |
+
+Must-deliver is the default, so a new call site is safe until somebody deliberately opts into
+dropping. When the droppable bound is reached, the **oldest** droppable entry is evicted
+rather than the new one refused, so a subscriber that cannot keep up sees fresh data with
+gaps instead of falling further and further behind.
+
+Drops are counted and reported at most every few seconds with a running total, rather than
+per drop -- whatever causes drops causes a great many of them.
+
+`system_tests/callback_queue_overflow.cpp` pins the property that matters: a slow subscriber
+must not stop a blocking call from returning.
+
 ## Object lifetime
 
 `System`, `ServerComponent` and every plugin hold a reference back into `MavsdkImpl`, so none
