@@ -28,11 +28,17 @@ public:
     std::pair<bool, std::string> send_message(const mavlink_message_t& message) override;
     std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) override;
 
+    // Hand raw bytes in from an arbitrary user thread. The actual parsing is posted onto
+    // the io_context, so it happens on the same thread as for every other connection.
     void receive(const char* bytes, size_t length);
 
     // Non-copyable
     RawConnection(const RawConnection&) = delete;
     const RawConnection& operator=(const RawConnection&) = delete;
+
+private:
+    // Runs on the io_context thread.
+    void parse(char* bytes, size_t length);
 };
 
 } // namespace mavsdk

@@ -2,6 +2,8 @@
 #include "mavsdk_impl.hpp"
 #include "log.hpp"
 
+#include <cassert>
+
 #include <asio/buffer.hpp>
 #include <asio/error.hpp>
 #include <asio/ip/address.hpp>
@@ -88,13 +90,16 @@ ConnectionResult TcpServerConnection::start()
 
 ConnectionResult TcpServerConnection::stop()
 {
+    // This posts onto the io_context and waits, so it must not run on the io thread.
+    assert(!_mavsdk_impl.on_io_thread());
+
     // Signal handlers to stop re-arming.  Must be set before closing sockets so
     // that any handler seeing operation_aborted (or a stale non-error code) does
     // not re-arm a new async_accept / async_read_some.
     _stopping = true;
     _client_connected = false;
 
-    auto& io_ctx = static_cast<asio::io_context&>(_acceptor.get_executor().context());
+    auto& io_ctx = io_context();
     if (!io_ctx.stopped()) {
         // Close the acceptor and client socket ON the io_context thread.  This
         // serialises the close with do_accept() / do_receive() — both of which

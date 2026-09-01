@@ -1,5 +1,8 @@
 #include "connection.hpp"
 
+#include <asio/post.hpp>
+#include <cassert>
+#include <future>
 #include <memory>
 #include <utility>
 #include "mavsdk_impl.hpp"
@@ -12,6 +15,27 @@
 namespace mavsdk {
 
 std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
+
+asio::io_context& Connection::io_context()
+{
+    return _mavsdk_impl.io_context();
+}
+
+void Connection::drain_io_context()
+{
+    // Waiting for the io thread from the io thread would wait for ourselves. Nothing does
+    // this today; the assert is here so it stays that way.
+    assert(!_mavsdk_impl.on_io_thread());
+
+    auto& io_ctx = io_context();
+    if (io_ctx.stopped()) {
+        return;
+    }
+
+    std::promise<void> fence;
+    asio::post(io_ctx, [&fence]() { fence.set_value(); });
+    fence.get_future().wait();
+}
 
 Connection::Connection(
     ReceiverCallback receiver_callback,

@@ -2,6 +2,8 @@
 #include "mavsdk_impl.hpp"
 #include "log.hpp"
 
+#include <cassert>
+
 #if defined(APPLE) || defined(LINUX)
 #include <termios.h>
 #include <unistd.h>
@@ -227,10 +229,13 @@ ConnectionResult SerialConnection::setup_port()
 
 ConnectionResult SerialConnection::stop()
 {
+    // This posts onto the io_context and waits, so it must not run on the io thread.
+    assert(!_mavsdk_impl.on_io_thread());
+
     _stopping = true;
     _port_open = false;
 
-    auto& io_ctx = static_cast<asio::io_context&>(_serial_port.get_executor().context());
+    auto& io_ctx = io_context();
     if (!io_ctx.stopped()) {
         // Close the serial port from the io_context thread to avoid a data race
         // with a concurrent async_read_some() / async_write() reading the port's state.

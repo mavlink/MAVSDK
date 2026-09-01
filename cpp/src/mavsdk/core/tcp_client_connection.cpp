@@ -2,6 +2,8 @@
 #include "mavsdk_impl.hpp"
 #include "log.hpp"
 
+#include <cassert>
+
 #include <asio/buffer.hpp>
 #include <asio/connect.hpp>
 #include <asio/error.hpp>
@@ -66,6 +68,9 @@ ConnectionResult TcpClientConnection::start()
 
 ConnectionResult TcpClientConnection::stop()
 {
+    // This posts onto the io_context and waits, so it must not run on the io thread.
+    assert(!_mavsdk_impl.on_io_thread());
+
     // Signal handlers to stop re-arming BEFORE cancelling/closing.  An EOF
     // handler that was already queued (ec == eof, not operation_aborted) would
     // otherwise call start_reconnect() after we've cancelled the timer and
@@ -73,7 +78,7 @@ ConnectionResult TcpClientConnection::stop()
     _stopping = true;
     _connected = false;
 
-    auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
+    auto& io_ctx = io_context();
     if (!io_ctx.stopped()) {
         // Cancel and close from the io_context thread to avoid a data race with
         // a concurrent async_read_some() / async_connect() / async_write() /
