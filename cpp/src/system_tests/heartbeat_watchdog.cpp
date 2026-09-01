@@ -1,11 +1,13 @@
 #include "mavsdk.hpp"
 #include "mavlink_include.hpp"
 #include "mavlink_channels.hpp"
+#include "log_callback.hpp"
 
 #include <gtest/gtest.h>
 
 #include <atomic>
 #include <chrono>
+#include <string>
 #include <thread>
 
 using namespace mavsdk;
@@ -44,6 +46,37 @@ bool wait_for(Predicate predicate, std::chrono::milliseconds timeout = flow_time
     }
     return predicate();
 }
+
+// Swallows log messages containing a given phrase for as long as it is in scope.
+//
+// Only for output a test deliberately provokes in bulk. Feeding the watchdog logs once per
+// NeedsFeed -> Armed transition, which is right for an application -- it complements the
+// expiry warning -- but a test that thrashes that transition in a tight loop turns it into
+// tens of thousands of lines and buries everything else.
+class SuppressLogsContaining {
+public:
+    explicit SuppressLogsContaining(std::string phrase) : _phrase(std::move(phrase))
+    {
+        const auto phrase_copy = _phrase;
+        log::subscribe(
+            [phrase_copy](log::Level, const std::string& message, const std::string&, int) {
+                // Returning true drops the message, false lets the default logging have it.
+                return message.find(phrase_copy) != std::string::npos;
+            });
+    }
+
+    ~SuppressLogsContaining()
+    {
+        // An empty callback restores the default logging.
+        log::subscribe({});
+    }
+
+    SuppressLogsContaining(const SuppressLogsContaining&) = delete;
+    SuppressLogsContaining& operator=(const SuppressLogsContaining&) = delete;
+
+private:
+    std::string _phrase;
+};
 
 // Message ID of a raw MAVLink frame, or -1 if it does not look like one.
 int msgid_from_bytes(const char* bytes, size_t length)
@@ -181,6 +214,11 @@ TEST(HeartbeatWatchdog, GatesHeartbeatsOnTheWire)
 
 TEST(HeartbeatWatchdog, ConcurrentReconfigurationDoesNotDeadlock)
 {
+    // The loop below re-arms the watchdog as fast as it can, on purpose: this is a race
+    // test, and throttling it would cost the very interleaving it is looking for. Each
+    // re-arm logs, so silence that one message rather than slowing the test down.
+    SuppressLogsContaining suppress_watchdog_fed{"Heartbeat watchdog fed"};
+
     Mavsdk mavsdk{ground_station_configuration(true)};
     // Checked out after the Mavsdk, so the test packs on a different channel
     // than the library's own server component.
