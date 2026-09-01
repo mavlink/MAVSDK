@@ -26,6 +26,11 @@ class System;class ShellImpl;
 
 /**
  * @brief Allow to communicate with the vehicle's system shell.
+ *
+ * Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+ * SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+ * Send (and observe the device on Receive) when the same framing is used for
+ * non-nsh serial bridges (for example TELEM2).
  */
 class MAVSDK_PUBLIC Shell : public PluginBase {
 public:
@@ -63,6 +68,67 @@ public:
     ~Shell() override;
 
 
+    /**
+     * @brief MAVLink SERIAL_CONTROL_DEV values used by the shell plugin.
+     */
+    enum class Device {
+        Telem1, /**< @brief SERIAL_CONTROL_DEV_TELEM1. */
+        Telem2, /**< @brief SERIAL_CONTROL_DEV_TELEM2. */
+        Gps1, /**< @brief SERIAL_CONTROL_DEV_GPS1. */
+        Gps2, /**< @brief SERIAL_CONTROL_DEV_GPS2. */
+        Shell, /**< @brief SERIAL_CONTROL_DEV_SHELL (default). */
+        Serial0, /**< @brief SERIAL_CONTROL_SERIAL0. */
+        Serial1, /**< @brief SERIAL_CONTROL_SERIAL1. */
+        Serial2, /**< @brief SERIAL_CONTROL_SERIAL2. */
+        Serial3, /**< @brief SERIAL_CONTROL_SERIAL3. */
+        Serial4, /**< @brief SERIAL_CONTROL_SERIAL4. */
+        Serial5, /**< @brief SERIAL_CONTROL_SERIAL5. */
+        Serial6, /**< @brief SERIAL_CONTROL_SERIAL6. */
+        Serial7, /**< @brief SERIAL_CONTROL_SERIAL7. */
+        Serial8, /**< @brief SERIAL_CONTROL_SERIAL8. */
+        Serial9, /**< @brief SERIAL_CONTROL_SERIAL9. */
+    };
+
+    /**
+     * @brief Convert `Shell::Device` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Shell::Device const& device);
+
+    /**
+     * @brief Stream operator to print information about a `Shell::Device`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Device const& device);
+
+
+
+
+    /**
+     * @brief Received shell data and source device.
+     */
+    struct Receive {
+        
+        std::string data{}; /**< @brief Received data. */
+        Device device{}; /**< @brief SERIAL_CONTROL device the data came from. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Shell::Receive` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const Shell::Receive& lhs, const Shell::Receive& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Shell::Receive`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Receive const& receive);
+
 
 
 
@@ -77,6 +143,7 @@ public:
         ConnectionError, /**< @brief Connection error. */
         NoResponse, /**< @brief Response was not received. */
         Busy, /**< @brief Shell busy (transfer in progress). */
+        InvalidArgument, /**< @brief Invalid device / argument. */
     };
 
     /**
@@ -114,7 +181,7 @@ public:
      * @return Result of request.
      
      */
-    Result send(std::string command) const;
+    Result send(std::string command, Device device) const;
 
 
 
@@ -124,12 +191,12 @@ public:
     /**
      * @brief Callback type for subscribe_receive.
      */
-    using ReceiveCallback = std::function<void(std::string)>;
+    using ReceiveCallback = std::function<void(Receive)>;
 
     /**
      * @brief Handle type for subscribe_receive.
      */
-    using ReceiveHandle = Handle<std::string>;
+    using ReceiveHandle = Handle<Receive>;
 
     /**
      * @brief Receive feedback from a sent command line.

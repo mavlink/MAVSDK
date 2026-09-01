@@ -14,16 +14,29 @@ package io.mavsdk.jni.plugins.shell;
 public final class NativeShell {
     private NativeShell() {}
 
+    public static final class Receive {
+        public final String data;
+        public final int device;
+
+        public Receive(
+            String data,
+            int device
+        ) {
+            this.data = data;
+            this.device = device;
+        }
+    }
+
     @FunctionalInterface
     public interface ReceiveCallback {
-        void invoke(String value);
+        void invoke(Receive value);
     }
 
     public static native long create(long systemHandle);
 
     public static native void destroy(long pluginHandle);
 
-    public static native int send(long pluginHandle, String command);
+    public static native int send(long pluginHandle, String command, int device);
 
     public static native long subscribeReceive(long pluginHandle, ReceiveCallback callback);
 

@@ -79,6 +79,7 @@ inline constexpr SendRequest::Impl_::Impl_(
       : command_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        device_{static_cast< ::mavsdk::rpc::shell::Device >(0)},
         _cached_size_{0} {}
 
 template <typename>
@@ -101,15 +102,16 @@ struct SendRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendRequestDefaultTypeInternal _SendRequest_default_instance_;
 
-inline constexpr ReceiveResponse::Impl_::Impl_(
+inline constexpr Receive::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : data_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        device_{static_cast< ::mavsdk::rpc::shell::Device >(0)},
         _cached_size_{0} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR ReceiveResponse::ReceiveResponse(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR Receive::Receive(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
@@ -117,16 +119,16 @@ PROTOBUF_CONSTEXPR ReceiveResponse::ReceiveResponse(::_pbi::ConstantInitialized)
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct ReceiveResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ReceiveResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ReceiveResponseDefaultTypeInternal() {}
+struct ReceiveDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ReceiveDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ReceiveDefaultTypeInternal() {}
   union {
-    ReceiveResponse _instance;
+    Receive _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReceiveResponseDefaultTypeInternal _ReceiveResponse_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReceiveDefaultTypeInternal _Receive_default_instance_;
 
 inline constexpr SendResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -152,10 +154,35 @@ struct SendResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendResponseDefaultTypeInternal _SendResponse_default_instance_;
+
+inline constexpr ReceiveResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        receive_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ReceiveResponse::ReceiveResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ReceiveResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ReceiveResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ReceiveResponseDefaultTypeInternal() {}
+  union {
+    ReceiveResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReceiveResponseDefaultTypeInternal _ReceiveResponse_default_instance_;
 }  // namespace shell
 }  // namespace rpc
 }  // namespace mavsdk
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_shell_2fshell_2eproto[1];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_shell_2fshell_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_shell_2fshell_2eproto = nullptr;
 const ::uint32_t
@@ -170,6 +197,7 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendRequest, _impl_.command_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendRequest, _impl_.device_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendResponse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::SendResponse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -189,6 +217,16 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::Receive, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::Receive, _impl_.data_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::Receive, _impl_.device_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ReceiveResponse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ReceiveResponse, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -196,7 +234,8 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ReceiveResponse, _impl_.data_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ReceiveResponse, _impl_.receive_),
+        0,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::shell::ShellResult, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -212,38 +251,52 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::mavsdk::rpc::shell::SendRequest)},
-        {9, 18, -1, sizeof(::mavsdk::rpc::shell::SendResponse)},
-        {19, -1, -1, sizeof(::mavsdk::rpc::shell::SubscribeReceiveRequest)},
-        {27, -1, -1, sizeof(::mavsdk::rpc::shell::ReceiveResponse)},
-        {36, -1, -1, sizeof(::mavsdk::rpc::shell::ShellResult)},
+        {10, 19, -1, sizeof(::mavsdk::rpc::shell::SendResponse)},
+        {20, -1, -1, sizeof(::mavsdk::rpc::shell::SubscribeReceiveRequest)},
+        {28, -1, -1, sizeof(::mavsdk::rpc::shell::Receive)},
+        {38, 47, -1, sizeof(::mavsdk::rpc::shell::ReceiveResponse)},
+        {48, -1, -1, sizeof(::mavsdk::rpc::shell::ShellResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::shell::_SendRequest_default_instance_._instance,
     &::mavsdk::rpc::shell::_SendResponse_default_instance_._instance,
     &::mavsdk::rpc::shell::_SubscribeReceiveRequest_default_instance_._instance,
+    &::mavsdk::rpc::shell::_Receive_default_instance_._instance,
     &::mavsdk::rpc::shell::_ReceiveResponse_default_instance_._instance,
     &::mavsdk::rpc::shell::_ShellResult_default_instance_._instance,
 };
 const char descriptor_table_protodef_shell_2fshell_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\021shell/shell.proto\022\020mavsdk.rpc.shell\032\024m"
-    "avsdk_options.proto\"\036\n\013SendRequest\022\017\n\007co"
-    "mmand\030\001 \001(\t\"C\n\014SendResponse\0223\n\014shell_res"
-    "ult\030\001 \001(\0132\035.mavsdk.rpc.shell.ShellResult"
-    "\"\031\n\027SubscribeReceiveRequest\"\037\n\017ReceiveRe"
-    "sponse\022\014\n\004data\030\001 \001(\t\"\346\001\n\013ShellResult\0224\n\006"
-    "result\030\001 \001(\0162$.mavsdk.rpc.shell.ShellRes"
-    "ult.Result\022\022\n\nresult_str\030\002 \001(\t\"\214\001\n\006Resul"
-    "t\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020"
-    "\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNEC"
-    "TION_ERROR\020\003\022\026\n\022RESULT_NO_RESPONSE\020\004\022\017\n\013"
-    "RESULT_BUSY\020\0052\305\001\n\014ShellService\022K\n\004Send\022\035"
-    ".mavsdk.rpc.shell.SendRequest\032\036.mavsdk.r"
-    "pc.shell.SendResponse\"\004\200\265\030\001\022h\n\020Subscribe"
-    "Receive\022).mavsdk.rpc.shell.SubscribeRece"
-    "iveRequest\032!.mavsdk.rpc.shell.ReceiveRes"
-    "ponse\"\004\200\265\030\0000\001B\035\n\017io.mavsdk.shellB\nShellP"
-    "rotob\006proto3"
+    "avsdk_options.proto\"H\n\013SendRequest\022\017\n\007co"
+    "mmand\030\001 \001(\t\022(\n\006device\030\002 \001(\0162\030.mavsdk.rpc"
+    ".shell.Device\"C\n\014SendResponse\0223\n\014shell_r"
+    "esult\030\001 \001(\0132\035.mavsdk.rpc.shell.ShellResu"
+    "lt\"\031\n\027SubscribeReceiveRequest\"A\n\007Receive"
+    "\022\014\n\004data\030\001 \001(\t\022(\n\006device\030\002 \001(\0162\030.mavsdk."
+    "rpc.shell.Device\"=\n\017ReceiveResponse\022*\n\007r"
+    "eceive\030\001 \001(\0132\031.mavsdk.rpc.shell.Receive\""
+    "\203\002\n\013ShellResult\0224\n\006result\030\001 \001(\0162$.mavsdk"
+    ".rpc.shell.ShellResult.Result\022\022\n\nresult_"
+    "str\030\002 \001(\t\"\251\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000"
+    "\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM"
+    "\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\026\n\022RESUL"
+    "T_NO_RESPONSE\020\004\022\017\n\013RESULT_BUSY\020\005\022\033\n\027RESU"
+    "LT_INVALID_ARGUMENT\020\006*\252\002\n\006Device\022\021\n\rDEVI"
+    "CE_TELEM1\020\000\022\021\n\rDEVICE_TELEM2\020\001\022\017\n\013DEVICE"
+    "_GPS1\020\002\022\017\n\013DEVICE_GPS2\020\003\022\020\n\014DEVICE_SHELL"
+    "\020\n\022\022\n\016DEVICE_SERIAL0\020d\022\022\n\016DEVICE_SERIAL1"
+    "\020e\022\022\n\016DEVICE_SERIAL2\020f\022\022\n\016DEVICE_SERIAL3"
+    "\020g\022\022\n\016DEVICE_SERIAL4\020h\022\022\n\016DEVICE_SERIAL5"
+    "\020i\022\022\n\016DEVICE_SERIAL6\020j\022\022\n\016DEVICE_SERIAL7"
+    "\020k\022\022\n\016DEVICE_SERIAL8\020l\022\022\n\016DEVICE_SERIAL9"
+    "\020m2\305\001\n\014ShellService\022K\n\004Send\022\035.mavsdk.rpc"
+    ".shell.SendRequest\032\036.mavsdk.rpc.shell.Se"
+    "ndResponse\"\004\200\265\030\001\022h\n\020SubscribeReceive\022).m"
+    "avsdk.rpc.shell.SubscribeReceiveRequest\032"
+    "!.mavsdk.rpc.shell.ReceiveResponse\"\004\200\265\030\000"
+    "0\001B\035\n\017io.mavsdk.shellB\nShellProtob\006proto"
+    "3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_shell_2fshell_2eproto_deps[1] =
     {
@@ -253,13 +306,13 @@ static ::absl::once_flag descriptor_table_shell_2fshell_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_shell_2fshell_2eproto = {
     false,
     false,
-    692,
+    1161,
     descriptor_table_protodef_shell_2fshell_2eproto,
     "shell/shell.proto",
     &descriptor_table_shell_2fshell_2eproto_once,
     descriptor_table_shell_2fshell_2eproto_deps,
     1,
-    5,
+    6,
     schemas,
     file_default_instances,
     TableStruct_shell_2fshell_2eproto::offsets,
@@ -274,9 +327,9 @@ const ::google::protobuf::EnumDescriptor* ShellResult_Result_descriptor() {
   return file_level_enum_descriptors_shell_2fshell_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ShellResult_Result_internal_data_[] = {
-    393216u, 0u, };
+    458752u, 0u, };
 bool ShellResult_Result_IsValid(int value) {
-  return 0 <= value && value <= 5;
+  return 0 <= value && value <= 6;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -287,12 +340,22 @@ constexpr ShellResult_Result ShellResult::RESULT_NO_SYSTEM;
 constexpr ShellResult_Result ShellResult::RESULT_CONNECTION_ERROR;
 constexpr ShellResult_Result ShellResult::RESULT_NO_RESPONSE;
 constexpr ShellResult_Result ShellResult::RESULT_BUSY;
+constexpr ShellResult_Result ShellResult::RESULT_INVALID_ARGUMENT;
 constexpr ShellResult_Result ShellResult::Result_MIN;
 constexpr ShellResult_Result ShellResult::Result_MAX;
 constexpr int ShellResult::Result_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* Device_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_shell_2fshell_2eproto);
+  return file_level_enum_descriptors_shell_2fshell_2eproto[1];
+}
+PROTOBUF_CONSTINIT const uint32_t Device_internal_data_[] = {
+    262144u, 128u, 64u, 0u, 0u, 1023u, };
+bool Device_IsValid(int value) {
+  return ::_pbi::ValidateEnum(value, Device_internal_data_);
+}
 // ===================================================================
 
 class SendRequest::_Internal {
@@ -327,6 +390,7 @@ SendRequest::SendRequest(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.device_ = from._impl_.device_;
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.SendRequest)
 }
@@ -338,6 +402,7 @@ inline PROTOBUF_NDEBUG_INLINE SendRequest::Impl_::Impl_(
 
 inline void SendRequest::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.device_ = {};
 }
 SendRequest::~SendRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.shell.SendRequest)
@@ -387,15 +452,15 @@ const ::google::protobuf::internal::ClassData* SendRequest::GetClassData() const
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 44, 2> SendRequest::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 0, 44, 2> SendRequest::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -405,6 +470,9 @@ const ::_pbi::TcParseTable<0, 1, 0, 44, 2> SendRequest::_table_ = {
     ::_pbi::TcParser::GetTable<::mavsdk::rpc::shell::SendRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
+    // .mavsdk.rpc.shell.Device device = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SendRequest, _impl_.device_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(SendRequest, _impl_.device_)}},
     // string command = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(SendRequest, _impl_.command_)}},
@@ -414,6 +482,9 @@ const ::_pbi::TcParseTable<0, 1, 0, 44, 2> SendRequest::_table_ = {
     // string command = 1;
     {PROTOBUF_FIELD_OFFSET(SendRequest, _impl_.command_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .mavsdk.rpc.shell.Device device = 2;
+    {PROTOBUF_FIELD_OFFSET(SendRequest, _impl_.device_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
   }},
   // no aux_entries
   {{
@@ -431,6 +502,7 @@ PROTOBUF_NOINLINE void SendRequest::Clear() {
   (void) cached_has_bits;
 
   _impl_.command_.ClearToEmpty();
+  _impl_.device_ = 0;
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -457,6 +529,13 @@ PROTOBUF_NOINLINE void SendRequest::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
+          // .mavsdk.rpc.shell.Device device = 2;
+          if (this_._internal_device() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_device(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -480,11 +559,17 @@ PROTOBUF_NOINLINE void SendRequest::Clear() {
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
            {
             // string command = 1;
             if (!this_._internal_command().empty()) {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_command());
+            }
+            // .mavsdk.rpc.shell.Device device = 2;
+            if (this_._internal_device() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_device());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -501,6 +586,9 @@ void SendRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goo
 
   if (!from._internal_command().empty()) {
     _this->_internal_set_command(from._internal_command());
+  }
+  if (from._internal_device() != 0) {
+    _this->_impl_.device_ = from._impl_.device_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -519,6 +607,7 @@ void SendRequest::InternalSwap(SendRequest* PROTOBUF_RESTRICT other) {
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.command_, &other->_impl_.command_, arena);
+  swap(_impl_.device_, other->_impl_.device_);
 }
 
 ::google::protobuf::Metadata SendRequest::GetMetadata() const {
@@ -879,8 +968,269 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeReceiveRequest::_table_ = {
 }
 // ===================================================================
 
+class Receive::_Internal {
+ public:
+};
+
+Receive::Receive(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.shell.Receive)
+}
+inline PROTOBUF_NDEBUG_INLINE Receive::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::shell::Receive& from_msg)
+      : data_(arena, from.data_),
+        _cached_size_{0} {}
+
+Receive::Receive(
+    ::google::protobuf::Arena* arena,
+    const Receive& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  Receive* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.device_ = from._impl_.device_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.Receive)
+}
+inline PROTOBUF_NDEBUG_INLINE Receive::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : data_(arena),
+        _cached_size_{0} {}
+
+inline void Receive::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.device_ = {};
+}
+Receive::~Receive() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.shell.Receive)
+  SharedDtor(*this);
+}
+inline void Receive::SharedDtor(MessageLite& self) {
+  Receive& this_ = static_cast<Receive&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.data_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* Receive::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) Receive(arena);
+}
+constexpr auto Receive::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(Receive),
+                                            alignof(Receive));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull Receive::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_Receive_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &Receive::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<Receive>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &Receive::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<Receive>(), &Receive::ByteSizeLong,
+            &Receive::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(Receive, _impl_._cached_size_),
+        false,
+    },
+    &Receive::kDescriptorMethods,
+    &descriptor_table_shell_2fshell_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* Receive::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 37, 2> Receive::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::shell::Receive>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.shell.Device device = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Receive, _impl_.device_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Receive, _impl_.device_)}},
+    // string data = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Receive, _impl_.data_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string data = 1;
+    {PROTOBUF_FIELD_OFFSET(Receive, _impl_.data_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .mavsdk.rpc.shell.Device device = 2;
+    {PROTOBUF_FIELD_OFFSET(Receive, _impl_.device_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+    "\30\4\0\0\0\0\0\0"
+    "mavsdk.rpc.shell.Receive"
+    "data"
+  }},
+};
+
+PROTOBUF_NOINLINE void Receive::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.shell.Receive)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.data_.ClearToEmpty();
+  _impl_.device_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* Receive::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const Receive& this_ = static_cast<const Receive&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* Receive::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const Receive& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.shell.Receive)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string data = 1;
+          if (!this_._internal_data().empty()) {
+            const std::string& _s = this_._internal_data();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.shell.Receive.data");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // .mavsdk.rpc.shell.Device device = 2;
+          if (this_._internal_device() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_device(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.shell.Receive)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t Receive::ByteSizeLong(const MessageLite& base) {
+          const Receive& this_ = static_cast<const Receive&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t Receive::ByteSizeLong() const {
+          const Receive& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.shell.Receive)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string data = 1;
+            if (!this_._internal_data().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_data());
+            }
+            // .mavsdk.rpc.shell.Device device = 2;
+            if (this_._internal_device() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_device());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void Receive::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<Receive*>(&to_msg);
+  auto& from = static_cast<const Receive&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.Receive)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_data().empty()) {
+    _this->_internal_set_data(from._internal_data());
+  }
+  if (from._internal_device() != 0) {
+    _this->_impl_.device_ = from._impl_.device_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Receive::CopyFrom(const Receive& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.shell.Receive)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void Receive::InternalSwap(Receive* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.data_, &other->_impl_.data_, arena);
+  swap(_impl_.device_, other->_impl_.device_);
+}
+
+::google::protobuf::Metadata Receive::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class ReceiveResponse::_Internal {
  public:
+  using HasBits =
+      decltype(std::declval<ReceiveResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(ReceiveResponse, _impl_._has_bits_);
 };
 
 ReceiveResponse::ReceiveResponse(::google::protobuf::Arena* arena)
@@ -895,7 +1245,7 @@ ReceiveResponse::ReceiveResponse(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE ReceiveResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::mavsdk::rpc::shell::ReceiveResponse& from_msg)
-      : data_(arena, from.data_),
+      : _has_bits_{from._has_bits_},
         _cached_size_{0} {}
 
 ReceiveResponse::ReceiveResponse(
@@ -911,17 +1261,21 @@ ReceiveResponse::ReceiveResponse(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.receive_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::shell::Receive>(
+                              arena, *from._impl_.receive_)
+                        : nullptr;
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.shell.ReceiveResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE ReceiveResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : data_(arena),
-        _cached_size_{0} {}
+      : _cached_size_{0} {}
 
 inline void ReceiveResponse::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.receive_ = {};
 }
 ReceiveResponse::~ReceiveResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.shell.ReceiveResponse)
@@ -931,7 +1285,7 @@ inline void ReceiveResponse::SharedDtor(MessageLite& self) {
   ReceiveResponse& this_ = static_cast<ReceiveResponse&>(self);
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.data_.Destroy();
+  delete this_._impl_.receive_;
   this_._impl_.~Impl_();
 }
 
@@ -940,7 +1294,7 @@ inline void* ReceiveResponse::PlacementNew_(const void*, void* mem,
   return ::new (mem) ReceiveResponse(arena);
 }
 constexpr auto ReceiveResponse::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ReceiveResponse),
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ReceiveResponse),
                                             alignof(ReceiveResponse));
 }
 PROTOBUF_CONSTINIT
@@ -971,17 +1325,17 @@ const ::google::protobuf::internal::ClassData* ReceiveResponse::GetClassData() c
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 45, 2> ReceiveResponse::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ReceiveResponse::_table_ = {
   {
-    0,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(ReceiveResponse, _impl_._has_bits_),
     0, // no _extensions_
     1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
     4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
     1,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -989,21 +1343,18 @@ const ::_pbi::TcParseTable<0, 1, 0, 45, 2> ReceiveResponse::_table_ = {
     ::_pbi::TcParser::GetTable<::mavsdk::rpc::shell::ReceiveResponse>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // string data = 1;
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ReceiveResponse, _impl_.data_)}},
+    // .mavsdk.rpc.shell.Receive receive = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ReceiveResponse, _impl_.receive_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string data = 1;
-    {PROTOBUF_FIELD_OFFSET(ReceiveResponse, _impl_.data_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\40\4\0\0\0\0\0\0"
-    "mavsdk.rpc.shell.ReceiveResponse"
-    "data"
+    // .mavsdk.rpc.shell.Receive receive = 1;
+    {PROTOBUF_FIELD_OFFSET(ReceiveResponse, _impl_.receive_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::shell::Receive>()},
+  }}, {{
   }},
 };
 
@@ -1014,7 +1365,12 @@ PROTOBUF_NOINLINE void ReceiveResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.data_.ClearToEmpty();
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.receive_ != nullptr);
+    _impl_.receive_->Clear();
+  }
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1033,12 +1389,12 @@ PROTOBUF_NOINLINE void ReceiveResponse::Clear() {
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // string data = 1;
-          if (!this_._internal_data().empty()) {
-            const std::string& _s = this_._internal_data();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.shell.ReceiveResponse.data");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.shell.Receive receive = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.receive_, this_._impl_.receive_->GetCachedSize(), target,
+                stream);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -1065,10 +1421,11 @@ PROTOBUF_NOINLINE void ReceiveResponse::Clear() {
           (void)cached_has_bits;
 
            {
-            // string data = 1;
-            if (!this_._internal_data().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_data());
+            // .mavsdk.rpc.shell.Receive receive = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.receive_);
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -1078,14 +1435,23 @@ PROTOBUF_NOINLINE void ReceiveResponse::Clear() {
 void ReceiveResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<ReceiveResponse*>(&to_msg);
   auto& from = static_cast<const ReceiveResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.shell.ReceiveResponse)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_data().empty()) {
-    _this->_internal_set_data(from._internal_data());
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.receive_ != nullptr);
+    if (_this->_impl_.receive_ == nullptr) {
+      _this->_impl_.receive_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::shell::Receive>(arena, *from._impl_.receive_);
+    } else {
+      _this->_impl_.receive_->MergeFrom(*from._impl_.receive_);
+    }
   }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1099,10 +1465,9 @@ void ReceiveResponse::CopyFrom(const ReceiveResponse& from) {
 
 void ReceiveResponse::InternalSwap(ReceiveResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.data_, &other->_impl_.data_, arena);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.receive_, other->_impl_.receive_);
 }
 
 ::google::protobuf::Metadata ReceiveResponse::GetMetadata() const {

@@ -16,6 +16,11 @@ extern "C" {
 
 /**
  * @brief Allow to communicate with the vehicle's system shell.
+ *
+ * Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+ * SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+ * Send (and observe the device on Receive) when the same framing is used for
+ * non-nsh serial bridges (for example TELEM2).
  */
 
 // ===== Forward Declarations =====
@@ -26,8 +31,83 @@ typedef struct mavsdk_shell_s *mavsdk_shell_t;
 typedef struct mavsdk_shell_receive_handle_s *mavsdk_shell_receive_handle_t;
 
 // ===== Enums =====
+/**
+ * @brief MAVLink SERIAL_CONTROL_DEV values used by the shell plugin.
+ */
+typedef enum {
+    /**  SERIAL_CONTROL_DEV_TELEM1. */
+    MAVSDK_SHELL_DEVICE_TELEM1 = 0,
+    /**  SERIAL_CONTROL_DEV_TELEM2. */
+    MAVSDK_SHELL_DEVICE_TELEM2 = 1,
+    /**  SERIAL_CONTROL_DEV_GPS1. */
+    MAVSDK_SHELL_DEVICE_GPS1 = 2,
+    /**  SERIAL_CONTROL_DEV_GPS2. */
+    MAVSDK_SHELL_DEVICE_GPS2 = 3,
+    /**  SERIAL_CONTROL_DEV_SHELL (default). */
+    MAVSDK_SHELL_DEVICE_SHELL = 4,
+    /**  SERIAL_CONTROL_SERIAL0. */
+    MAVSDK_SHELL_DEVICE_SERIAL0 = 5,
+    /**  SERIAL_CONTROL_SERIAL1. */
+    MAVSDK_SHELL_DEVICE_SERIAL1 = 6,
+    /**  SERIAL_CONTROL_SERIAL2. */
+    MAVSDK_SHELL_DEVICE_SERIAL2 = 7,
+    /**  SERIAL_CONTROL_SERIAL3. */
+    MAVSDK_SHELL_DEVICE_SERIAL3 = 8,
+    /**  SERIAL_CONTROL_SERIAL4. */
+    MAVSDK_SHELL_DEVICE_SERIAL4 = 9,
+    /**  SERIAL_CONTROL_SERIAL5. */
+    MAVSDK_SHELL_DEVICE_SERIAL5 = 10,
+    /**  SERIAL_CONTROL_SERIAL6. */
+    MAVSDK_SHELL_DEVICE_SERIAL6 = 11,
+    /**  SERIAL_CONTROL_SERIAL7. */
+    MAVSDK_SHELL_DEVICE_SERIAL7 = 12,
+    /**  SERIAL_CONTROL_SERIAL8. */
+    MAVSDK_SHELL_DEVICE_SERIAL8 = 13,
+    /**  SERIAL_CONTROL_SERIAL9. */
+    MAVSDK_SHELL_DEVICE_SERIAL9 = 14,
+} mavsdk_shell_device_t;
+
 
 // ===== Structs =====
+/**
+ * @brief Received shell data and source device.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_shell_receive_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Received data. */
+    char* data;
+    /**  SERIAL_CONTROL device the data came from. */
+    mavsdk_shell_device_t device;
+} mavsdk_shell_receive_t;
+
+/**
+ * @brief Destroy a receive struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_shell_receive_destroy(
+    mavsdk_shell_receive_t* target);
+
+/**
+ * @brief Destroy an array of receive structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_shell_receive_array_destroy(
+    mavsdk_shell_receive_t** array,
+    size_t size);
+
 /**
  * @brief Possible results returned for shell requests
  */
@@ -44,6 +124,8 @@ typedef enum {
     MAVSDK_SHELL_RESULT_NO_RESPONSE = 4,
     /**  Shell busy (transfer in progress). */
     MAVSDK_SHELL_RESULT_BUSY = 5,
+    /**  Invalid device / argument. */
+    MAVSDK_SHELL_RESULT_INVALID_ARGUMENT = 6,
 } mavsdk_shell_result_t;
 
 
@@ -125,7 +207,7 @@ CMAVSDK_EXPORT void mavsdk_shell_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_shell_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_shell_receive_callback_t)(const char* data, void* user_data);
+typedef void (*mavsdk_shell_receive_callback_t)(const mavsdk_shell_receive_t receive, void* user_data);
 
 // ===== Shell Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_shell_t mavsdk_shell_create(mavsdk_system_t system);
@@ -145,7 +227,8 @@ CMAVSDK_EXPORT
 mavsdk_shell_result_t
 mavsdk_shell_send(
     mavsdk_shell_t shell,
-    char* command);
+    char* command,
+    mavsdk_shell_device_t device);
 
 
 /**

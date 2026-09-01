@@ -4,20 +4,29 @@
 
 """
 Allow to communicate with the vehicle's system shell.
+
+ Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+ SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+ Send (and observe the device on Receive) when the same framing is used for
+ non-nsh serial bridges (for example TELEM2).
 """
 
 # Import main plugin class
 from .shell import Shell
 
 # Import enums
+from .shell import Device
 
 # Import result enum
 from .shell import ShellResult
 
 # Import data structures
+from .shell import Receive
 
 # Define __all__ for explicit exports
 __all__ = [
     "Shell",
+    "Device",
     "ShellResult",
+    "Receive",
 ]
