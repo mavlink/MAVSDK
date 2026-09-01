@@ -220,7 +220,8 @@ void MissionRawImpl::upload_mission_with_progress_async(
             }
         },
         [this, callback](float progress) {
-            _system_impl->call_user_callback([callback, progress]() {
+            // Progress only: the final result comes from the other callback above.
+            _system_impl->call_user_callback_droppable([callback, progress]() {
                 if (callback) {
                     callback(MissionRaw::Result::Next, MissionRaw::ProgressData{progress});
                 }

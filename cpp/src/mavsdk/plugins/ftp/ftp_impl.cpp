@@ -47,12 +47,20 @@ void FtpImpl::download_async(
         [callback, this](
             MavlinkFtpClient::ClientResult result, MavlinkFtpClient::ProgressData progress_data) {
             if (callback) {
-                _system_impl->call_user_callback(
-                    [temp_callback = callback, result, progress_data, this]() {
-                        temp_callback(
-                            result_from_mavlink_ftp_result(result),
-                            progress_data_from_mavlink_ftp_progress_data(progress_data));
-                    });
+                auto deliver = [temp_callback = callback, result, progress_data, this]() {
+                    temp_callback(
+                        result_from_mavlink_ftp_result(result),
+                        progress_data_from_mavlink_ftp_progress_data(progress_data));
+                };
+
+                // ClientResult::Next is an intermediate progress update. A large transfer
+                // emits a great many of them, and losing one only costs a percentage, while
+                // the final result is what a blocking download()/upload() waits for.
+                if (result == MavlinkFtpClient::ClientResult::Next) {
+                    _system_impl->call_user_callback_droppable(deliver);
+                } else {
+                    _system_impl->call_user_callback(deliver);
+                }
             }
         });
 }
@@ -68,12 +76,20 @@ void FtpImpl::upload_async(
         [callback, this](
             MavlinkFtpClient::ClientResult result, MavlinkFtpClient::ProgressData progress_data) {
             if (callback) {
-                _system_impl->call_user_callback(
-                    [temp_callback = callback, result, progress_data, this]() {
-                        temp_callback(
-                            result_from_mavlink_ftp_result(result),
-                            progress_data_from_mavlink_ftp_progress_data(progress_data));
-                    });
+                auto deliver = [temp_callback = callback, result, progress_data, this]() {
+                    temp_callback(
+                        result_from_mavlink_ftp_result(result),
+                        progress_data_from_mavlink_ftp_progress_data(progress_data));
+                };
+
+                // ClientResult::Next is an intermediate progress update. A large transfer
+                // emits a great many of them, and losing one only costs a percentage, while
+                // the final result is what a blocking download()/upload() waits for.
+                if (result == MavlinkFtpClient::ClientResult::Next) {
+                    _system_impl->call_user_callback_droppable(deliver);
+                } else {
+                    _system_impl->call_user_callback(deliver);
+                }
             }
         });
 }

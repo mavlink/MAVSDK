@@ -462,8 +462,15 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
         // Update progress
         const auto cb = _download_data.user_callback;
         if (cb) {
-            _system_impl->call_user_callback(
-                [cb, progress_data, result]() { cb(result, progress_data); });
+            auto deliver = [cb, progress_data, result]() { cb(result, progress_data); };
+
+            // Result::Next is a chunk-progress update; the final result is what the blocking
+            // download_log_file() is waiting for and must not be dropped.
+            if (result == LogFiles::Result::Next) {
+                _system_impl->call_user_callback_droppable(deliver);
+            } else {
+                _system_impl->call_user_callback(deliver);
+            }
         }
     } else {
         // Check for missing bins when we might have all bins for this chunk

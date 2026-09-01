@@ -167,7 +167,9 @@ void MissionImpl::upload_mission_with_progress_async(
             });
         },
         [this, callback](float progress) {
-            _system_impl->call_user_callback([callback, progress]() {
+            // Progress only: the final result comes from the other callback above, so a
+            // subscriber falling behind should lose percentages rather than block the queue.
+            _system_impl->call_user_callback_droppable([callback, progress]() {
                 if (callback) {
                     callback(Mission::Result::Next, Mission::ProgressData{progress});
                 }
@@ -275,7 +277,8 @@ void MissionImpl::download_mission_with_progress_async(
             });
         },
         [this, callback](float progress) {
-            _system_impl->call_user_callback([callback, progress]() {
+            // Progress only, as above.
+            _system_impl->call_user_callback_droppable([callback, progress]() {
                 Mission::ProgressDataOrMission progress_data_or_mission{};
                 progress_data_or_mission.has_progress = true;
                 progress_data_or_mission.progress = progress;
