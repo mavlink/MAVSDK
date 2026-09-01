@@ -1,4 +1,5 @@
 include(ProcessorCount)
+include(${CMAKE_CURRENT_LIST_DIR}/cross_compile_args.cmake)
 
 function(build_target TARGET_NAME)
     set(TARGET_SOURCE_DIR "${PROJECT_SOURCE_DIR}/${TARGET_NAME}")
@@ -11,12 +12,16 @@ function(build_target TARGET_NAME)
         set(PLATFORM_ARGUMENT "-A${CMAKE_GENERATOR_PLATFORM}")
     endif()
 
+    set(TARGET_CROSS_COMPILE_ARGS)
+    mavsdk_append_cross_compile_args(TARGET_CROSS_COMPILE_ARGS)
+
     execute_process(
         COMMAND ${CMAKE_COMMAND}
             "-G${CMAKE_GENERATOR}"
             "${PLATFORM_ARGUMENT}"
             "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
             "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
+            ${TARGET_CROSS_COMPILE_ARGS}
             "-DCMAKE_INSTALL_PREFIX:PATH=${TARGET_INSTALL_DIR}"
             "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
             "-DPLATFORM=${PLATFORM}" # for iOS toolchain
@@ -25,6 +30,7 @@ function(build_target TARGET_NAME)
             "-DMAVLINK_DIALECT=${MAVLINK_DIALECT}"
             "-DMAVLINK_URL=${MAVLINK_URL}"
             "-DMAVLINK_HASH=${MAVLINK_HASH}"
+            "-DMAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES=${MAVSDK_USE_SYSTEM_COMMON_DEPENDENCIES}"
             "${TARGET_SOURCE_DIR}"
         WORKING_DIRECTORY "${TARGET_BINARY_DIR}"
         RESULT_VARIABLE CONFIGURE_FAILED
