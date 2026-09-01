@@ -34,6 +34,15 @@ public:
     };
 
     void register_one(uint16_t msg_id, const Callback& callback, const void* cookie);
+    // Direct, synchronous registration, for an owner that is created ON the io thread while
+    // handling a message it must itself receive -- a SystemImpl built by the very heartbeat
+    // that discovered the system. The posted register_one() would land an io turn too late
+    // and drop that first message.
+    //
+    // Must be called on the io thread, and not from within a message callback: growing the
+    // table underneath process_message()'s loop would invalidate its iteration. Same
+    // constraints as unregister_all_on_io_thread().
+    void register_one_on_io_thread(uint16_t msg_id, const Callback& callback, const void* cookie);
     void register_one_with_component_id(
         uint16_t msg_id, uint8_t component_id, const Callback& callback, const void* cookie);
     void unregister_one(uint16_t msg_id, const void* cookie);

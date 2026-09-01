@@ -43,6 +43,15 @@ void MavlinkMessageHandler::register_one_impl(
     });
 }
 
+void MavlinkMessageHandler::register_one_on_io_thread(
+    uint16_t msg_id, const Callback& callback, const void* cookie)
+{
+    // See the header for why this exists and when it is allowed.
+    assert(!_processing);
+    note_table_thread();
+    _table.push_back(Entry{msg_id, {}, callback, cookie});
+}
+
 void MavlinkMessageHandler::unregister_one(uint16_t msg_id, const void* cookie)
 {
     unregister_impl({msg_id}, cookie);
