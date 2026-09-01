@@ -281,6 +281,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/ringbuffer_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/timeout_handler_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/tx_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/unittests_main.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_cache_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/string_utils_test.cpp

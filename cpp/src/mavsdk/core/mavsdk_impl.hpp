@@ -131,6 +131,10 @@ public:
     subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback);
     void unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle);
 
+    // Hand a send failure to the connection-error subscribers. Used by the connections'
+    // async write chains, which discover failures after send_raw_bytes() has returned.
+    void report_connection_error(const std::string& message, Mavsdk::ConnectionHandle handle);
+
     // Raw bytes API
     void pass_received_raw_bytes(const char* bytes, size_t length);
     Mavsdk::RawBytesHandle subscribe_raw_bytes_to_be_sent(const Mavsdk::RawBytesCallback& callback);

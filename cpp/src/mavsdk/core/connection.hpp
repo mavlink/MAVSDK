@@ -40,6 +40,11 @@ public:
     bool should_forward_messages() const;
     static unsigned forwarding_connections_count();
 
+    // Called by MavsdkImpl::add_connection() while the connection is being registered,
+    // before anything can send through it. Lets the connection attribute an
+    // asynchronous send failure to itself; see report_send_error().
+    void set_handle(Mavsdk::ConnectionHandle handle) { _handle = handle; }
+
     // Access to libmav receiver for message creation.
     // Returns a shared_ptr so the caller can safely use the object even if
     // stop_libmav_receiver() is called concurrently on another thread.
@@ -63,6 +68,16 @@ protected:
     void stop_libmav_receiver();
     void receive_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
+    // Report a send failure that was only discovered asynchronously, i.e. after
+    // send_message()/send_raw_bytes() already returned. Reaches the same
+    // Mavsdk::subscribe_connection_errors() subscribers as a synchronous failure.
+    // Must be called on the io_context thread.
+    void report_send_error(const std::string& message);
+
+    // How many datagrams/chunks a connection queues for sending before the oldest is
+    // dropped. At the MAVLink maximum of 280 bytes this caps a stalled link at ~280 KiB.
+    static constexpr std::size_t MAX_TX_QUEUE_ITEMS = 1024;
+
     ReceiverCallback _receiver_callback{};
     LibmavReceiverCallback _libmav_receiver_callback{};
     MavsdkImpl& _mavsdk_impl; // For thread-safe MessageSet access
@@ -72,6 +87,12 @@ protected:
     ForwardingOption _forwarding_option;
     std::mutex _system_ids_mutex;
     std::unordered_set<uint8_t> _system_ids;
+
+    // Set once by set_handle() during registration, read afterwards by
+    // report_send_error() on the io thread. The registration happens under
+    // MavsdkImpl::_mutex, which the io thread also takes before it can reach this
+    // connection at all, so no further synchronisation is needed.
+    Mavsdk::ConnectionHandle _handle{};
 
     bool _debugging = false;
 

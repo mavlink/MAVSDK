@@ -1145,6 +1145,9 @@ Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&
 {
     std::lock_guard lock(_mutex);
     auto handle = _connections_handle_factory.create();
+    // Tell the connection its own handle before publishing it, so that a send failure
+    // discovered by its async write chain can be attributed to the right connection.
+    new_connection->set_handle(handle);
     _connections.emplace_back(ConnectionEntry{std::move(new_connection), handle});
 
     return handle;
@@ -1792,6 +1795,14 @@ void MavsdkImpl::unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle han
 {
     std::lock_guard lock(_mutex);
     _connections_errors_subscriptions.unsubscribe(handle);
+}
+
+void MavsdkImpl::report_connection_error(
+    const std::string& message, Mavsdk::ConnectionHandle handle)
+{
+    _connections_errors_subscriptions.queue(
+        Mavsdk::ConnectionError{message, handle},
+        [this](const auto& func) { call_user_callback(func); });
 }
 
 uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)

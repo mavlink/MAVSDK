@@ -92,6 +92,7 @@ ConnectionResult TcpServerConnection::stop()
     // that any handler seeing operation_aborted (or a stale non-error code) does
     // not re-arm a new async_accept / async_read_some.
     _stopping = true;
+    _client_connected = false;
 
     auto& io_ctx = static_cast<asio::io_context&>(_acceptor.get_executor().context());
     if (!io_ctx.stopped()) {
@@ -111,15 +112,14 @@ ConnectionResult TcpServerConnection::stop()
                 asio::error_code ec;
                 _acceptor.close(ec);
             }
-            {
-                std::lock_guard<std::mutex> lock(_send_mutex);
-                if (_client_socket.is_open()) {
-                    asio::error_code ec;
-                    _client_socket.close(ec);
-                }
+            _tx_queue.clear();
+            if (_client_socket.is_open()) {
+                asio::error_code ec;
+                _client_socket.close(ec);
             }
             // Post a second fence so that the cancellation callbacks queued
-            // by close() above are dispatched before stop() returns.
+            // by close() above are dispatched before stop() returns. That also means
+            // the in-flight write (if any) has completed and released its buffer.
             asio::post(io_ctx, [p = std::move(p)]() mutable { p.set_value(); });
         });
         done_future.wait();
@@ -128,7 +128,7 @@ ConnectionResult TcpServerConnection::stop()
         // to close from the calling thread.
         asio::error_code ec;
         _acceptor.close(ec);
-        std::lock_guard<std::mutex> lock(_send_mutex);
+        _tx_queue.clear();
         if (_client_socket.is_open()) {
             asio::error_code ec2;
             _client_socket.close(ec2);
@@ -150,38 +150,72 @@ std::pair<bool, std::string> TcpServerConnection::send_message(const mavlink_mes
 
 std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* bytes, size_t length)
 {
-    // Copy bytes into a heap buffer that outlives this stack frame while the
-    // posted work runs on the io_context thread.
-    auto buf = std::make_shared<std::vector<char>>(bytes, bytes + length);
+    // Queue the bytes and let the async write chain drain them on the io thread. This
+    // never blocks the caller and never occupies the io thread with a synchronous write,
+    // so a client that has stopped reading can no longer stall the rest of the SDK.
+    //
+    // The flip side is that a write failure is only known later; it reaches the user
+    // through report_send_error() instead of this return value.
+    if (!_client_connected) {
+        return {false, "Not connected"};
+    }
 
-    std::promise<std::pair<bool, std::string>> promise;
-    auto future = promise.get_future();
+    std::vector<char> buf(bytes, bytes + length);
 
-    // Dispatch to the io_context so the synchronous write runs on the same thread as
-    // async_accept / async_read_some — eliminating data races on socket internals.
-    // dispatch() (rather than post()) executes immediately when called from the io_context
-    // thread itself (e.g. from do_work() protocol handlers), preventing a future.get() deadlock.
-    asio::dispatch(
-        _acceptor.get_executor(), [this, buf = std::move(buf), p = std::move(promise)]() mutable {
-            std::lock_guard<std::mutex> lock(_send_mutex);
-            if (!_client_socket.is_open()) {
-                p.set_value({false, "Not connected"});
-                return;
-            }
-            asio::error_code ec;
-            asio::write(_client_socket, asio::buffer(*buf), ec);
+    // dispatch() rather than post(): callers are normally already on the io thread (the
+    // send path runs there), and running inline keeps the enqueue ordered with respect
+    // to the writes already queued.
+    asio::dispatch(_acceptor.get_executor(), [this, buf = std::move(buf)]() mutable {
+        if (_stopping || !_client_socket.is_open()) {
+            return;
+        }
+
+        const auto dropped = _tx_queue.push(std::move(buf));
+        if (dropped > 0) {
+            LogErr("TCP send queue full, dropped {} message(s)", dropped);
+            report_send_error("Send queue full, dropped oldest message(s)");
+        }
+
+        start_write();
+    });
+
+    return {true, {}};
+}
+
+void TcpServerConnection::start_write()
+{
+    // Runs on the io thread. One write is in flight at a time; its completion handler
+    // starts the next.
+    if (_tx_queue.busy() || _tx_queue.empty()) {
+        return;
+    }
+
+    if (_stopping || !_client_socket.is_open()) {
+        _tx_queue.clear();
+        return;
+    }
+
+    const auto& item = _tx_queue.start();
+    asio::async_write(
+        _client_socket, asio::buffer(item), [this](const asio::error_code& ec, std::size_t) {
+            _tx_queue.finish();
+
             if (ec) {
                 // Broken pipe / connection reset during shutdown are expected.
-                if (ec != asio::error::broken_pipe && ec != asio::error::connection_reset) {
-                    LogErr("Send failure: {}", ec.message());
+                if (ec != asio::error::operation_aborted && ec != asio::error::broken_pipe &&
+                    ec != asio::error::connection_reset && !_stopping) {
+                    const std::string msg = "Send failure: " + ec.message();
+                    LogErr("{}", msg);
+                    report_send_error(msg);
                 }
-                p.set_value({false, "Send failure: " + ec.message()});
-            } else {
-                p.set_value({true, {}});
+                // do_receive() sees the same disconnect and goes back to accepting. Drop
+                // what is queued so we don't replay stale traffic onto the next client.
+                _tx_queue.clear();
+                return;
             }
-        });
 
-    return future.get();
+            start_write();
+        });
 }
 
 void TcpServerConnection::do_accept()
@@ -203,12 +237,11 @@ void TcpServerConnection::do_accept()
             return;
         }
 
-        // Assign under the mutex so stop()'s close() and our send_raw_bytes are
-        // properly serialised against this assignment.
-        {
-            std::lock_guard<std::mutex> lock(_send_mutex);
-            _client_socket = std::move(peer);
-        }
+        // Everything that touches _client_socket runs on this thread, so the assignment
+        // needs no lock. Anything left over from the previous client is stale.
+        _tx_queue.clear();
+        _client_socket = std::move(peer);
+        _client_connected = true;
 
         // Start receiving from the newly accepted client.
         do_receive();
@@ -230,8 +263,9 @@ void TcpServerConnection::do_receive()
                 } else {
                     LogErr("TCP receive error: {}", ec.message());
                 }
+                _client_connected = false;
+                _tx_queue.clear();
                 {
-                    std::lock_guard<std::mutex> lock(_send_mutex);
                     asio::error_code close_ec;
                     _client_socket.close(close_ec);
                 }

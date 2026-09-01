@@ -51,7 +51,14 @@ ConnectionResult TcpClientConnection::start()
     }
 
     // Kick off the first async connect — subsequent ones follow from do_receive() errors.
-    do_connect();
+    // Posted rather than called inline so that every access to _socket happens on the
+    // io_context thread, which is what lets the send path run without a lock.
+    asio::post(_socket.get_executor(), [this]() {
+        if (_stopping) {
+            return;
+        }
+        do_connect();
+    });
 
     return ConnectionResult::Success;
 }
@@ -63,18 +70,19 @@ ConnectionResult TcpClientConnection::stop()
     // otherwise call start_reconnect() after we've cancelled the timer and
     // closed the socket, leaving a dangling async_wait handler after destruction.
     _stopping = true;
+    _connected = false;
 
     _reconnect_timer.cancel();
 
     auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
     if (!io_ctx.stopped()) {
         // Close the socket from the io_context thread to avoid a data race with
-        // a concurrent async_read_some() / async_connect() reading socket state.
-        // Because io_ctx is driven by a single thread, posting here serialises
-        // the close with all in-flight socket access.
+        // a concurrent async_read_some() / async_connect() / async_write() reading
+        // socket state. Because io_ctx is driven by a single thread, posting here
+        // serialises the close with all in-flight socket access.
         std::promise<void> close_done;
         asio::post(io_ctx, [this, &close_done]() {
-            std::lock_guard<std::mutex> lock(_send_mutex);
+            _tx_queue.clear();
             if (_socket.is_open()) {
                 asio::error_code ec;
                 _socket.close(ec);
@@ -83,13 +91,14 @@ ConnectionResult TcpClientConnection::stop()
         });
         close_done.get_future().wait();
 
-        // Drain any operation_aborted handlers queued by the close.
+        // Drain any operation_aborted handlers queued by the close. This also means the
+        // in-flight write (if any) has completed, so its buffer is no longer referenced.
         std::promise<void> fence;
         asio::post(io_ctx, [&fence]() { fence.set_value(); });
         fence.get_future().wait();
     } else {
         // io_context already stopped — no concurrent async operations are running.
-        std::lock_guard<std::mutex> lock(_send_mutex);
+        _tx_queue.clear();
         if (_socket.is_open()) {
             asio::error_code ec;
             _socket.close(ec);
@@ -111,36 +120,69 @@ std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_mes
 
 std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* bytes, size_t length)
 {
-    // Copy bytes into a heap buffer that outlives this stack frame while the
-    // posted work runs on the io_context thread.
-    auto buf = std::make_shared<std::vector<char>>(bytes, bytes + length);
+    // Queue the bytes and let the async write chain drain them on the io thread. This
+    // never blocks the caller and never occupies the io thread with a synchronous write,
+    // so a wedged peer can no longer stall every other connection, timer and plugin.
+    //
+    // The flip side is that a write failure is only known later; it reaches the user
+    // through report_send_error() instead of this return value.
+    if (!_connected) {
+        return {false, "Not connected"};
+    }
 
-    std::promise<std::pair<bool, std::string>> promise;
-    auto future = promise.get_future();
+    std::vector<char> buf(bytes, bytes + length);
 
-    // Dispatch to the io_context so the synchronous write runs on the same thread as
-    // async_connect / async_read_some — eliminating data races on socket internals.
-    // dispatch() (rather than post()) executes immediately when called from the io_context
-    // thread itself (e.g. from do_work() protocol handlers), preventing a future.get() deadlock.
-    asio::dispatch(
-        _socket.get_executor(), [this, buf = std::move(buf), p = std::move(promise)]() mutable {
-            std::lock_guard<std::mutex> lock(_send_mutex);
-            if (!_socket.is_open()) {
-                p.set_value({false, "Not connected"});
-                return;
-            }
-            asio::error_code ec;
-            asio::write(_socket, asio::buffer(*buf), ec);
-            if (ec) {
-                std::string msg = "Send failure: " + ec.message();
+    // dispatch() rather than post(): callers are normally already on the io thread (the
+    // send path runs there), and running inline keeps the enqueue ordered with respect
+    // to the writes already queued.
+    asio::dispatch(_socket.get_executor(), [this, buf = std::move(buf)]() mutable {
+        if (_stopping || !_socket.is_open()) {
+            return;
+        }
+
+        const auto dropped = _tx_queue.push(std::move(buf));
+        if (dropped > 0) {
+            LogErr("TCP send queue full, dropped {} message(s)", dropped);
+            report_send_error("Send queue full, dropped oldest message(s)");
+        }
+
+        start_write();
+    });
+
+    return {true, {}};
+}
+
+void TcpClientConnection::start_write()
+{
+    // Runs on the io thread. One write is in flight at a time; its completion handler
+    // starts the next.
+    if (_tx_queue.busy() || _tx_queue.empty()) {
+        return;
+    }
+
+    if (_stopping || !_socket.is_open()) {
+        _tx_queue.clear();
+        return;
+    }
+
+    const auto& item = _tx_queue.start();
+    asio::async_write(_socket, asio::buffer(item), [this](const asio::error_code& ec, std::size_t) {
+        _tx_queue.finish();
+
+        if (ec) {
+            if (ec != asio::error::operation_aborted && !_stopping) {
+                const std::string msg = "Send failure: " + ec.message();
                 LogErr("{}", msg);
-                p.set_value({false, std::move(msg)});
-            } else {
-                p.set_value({true, {}});
+                report_send_error(msg);
             }
-        });
+            // do_receive() sees the same disconnect and drives the reconnect. Drop
+            // what is queued so we don't replay stale traffic onto a new connection.
+            _tx_queue.clear();
+            return;
+        }
 
-    return future.get();
+        start_write();
+    });
 }
 
 void TcpClientConnection::do_connect()
@@ -162,13 +204,9 @@ void TcpClientConnection::do_connect()
     }
 
     // Ensure the socket is in a clean state before connecting.
-    // Hold _send_mutex so this close() is serialised with send_raw_bytes.
-    {
-        std::lock_guard<std::mutex> lock(_send_mutex);
-        if (_socket.is_open()) {
-            asio::error_code close_ec;
-            _socket.close(close_ec);
-        }
+    if (_socket.is_open()) {
+        asio::error_code close_ec;
+        _socket.close(close_ec);
     }
 
     asio::async_connect(
@@ -186,7 +224,11 @@ void TcpClientConnection::do_connect()
                 }
                 return;
             }
+            _connected = true;
             do_receive();
+            // Anything queued while we were disconnected is stale by now, but a send
+            // that raced the connect completing is not, so drain whatever is waiting.
+            start_write();
         });
 }
 
@@ -205,8 +247,9 @@ void TcpClientConnection::do_receive()
                 } else {
                     LogErr("TCP receive error: {}, trying to reconnect...", ec.message());
                 }
+                _connected = false;
+                _tx_queue.clear();
                 {
-                    std::lock_guard<std::mutex> lock(_send_mutex);
                     asio::error_code close_ec;
                     _socket.close(close_ec);
                 }

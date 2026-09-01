@@ -2,13 +2,14 @@
 
 #include <array>
 #include <atomic>
-#include <mutex>
 #include <string>
+#include <vector>
 
 #include <asio/ip/tcp.hpp>
 #include <asio/steady_timer.hpp>
 
 #include "connection.hpp"
+#include "tx_queue.hpp"
 
 namespace mavsdk {
 
@@ -36,6 +37,7 @@ private:
     void do_connect();
     void do_receive();
     void start_reconnect();
+    void start_write();
 
     std::string _remote_ip;
     int _remote_port_number;
@@ -43,13 +45,17 @@ private:
     // Set to true by stop() before cancelling/closing; prevents handlers from re-arming.
     std::atomic<bool> _stopping{false};
 
-    // Protects synchronous sends against concurrent close/reconnect on the io_thread.
-    std::mutex _send_mutex{};
+    // Whether the socket is currently connected. Maintained by the io thread, read by
+    // send_raw_bytes() from any thread so that it can reject a send up front rather than
+    // silently queueing for a peer that isn't there.
+    std::atomic<bool> _connected{false};
 
-    // Asio objects — driven by MavsdkImpl::_io_context.
+    // Asio objects and the send queue — all only touched on MavsdkImpl::_io_context's
+    // thread, which is why none of them need a lock.
     asio::ip::tcp::socket _socket;
     asio::steady_timer _reconnect_timer;
     std::array<char, 2048> _recv_buffer{};
+    TxQueue<std::vector<char>> _tx_queue{MAX_TX_QUEUE_ITEMS};
 };
 
 } // namespace mavsdk
