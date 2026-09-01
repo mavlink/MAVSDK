@@ -1,6 +1,7 @@
 #include "log.hpp"
 #include "unused.hpp"
 
+#include <memory>
 #include <mutex>
 
 #if defined(WINDOWS)
@@ -25,6 +26,13 @@ namespace mavsdk {
 static std::mutex callback_mutex_{};
 static log::Callback callback_{nullptr};
 
+// What emit_log() actually uses. Held as a shared_ptr so the logging path can take a
+// reference to the callback under callback_mutex_ and then invoke it with the lock released:
+// the callback is user code, and calling it under the lock would deadlock the moment it logs
+// anything itself. Copying the std::function on every log line instead would mean an
+// allocation per line, whereas copying the shared_ptr is one atomic increment.
+static std::shared_ptr<const log::Callback> callback_in_use_{nullptr};
+
 // Dedicated mutex for logging operations - moved from header to avoid inlining issues
 static std::mutex log_mutex_{};
 
@@ -33,6 +41,9 @@ MAVSDK_TEST_EXPORT std::mutex& get_log_mutex()
     return log_mutex_;
 }
 
+// Note that this hands out a reference to the stored callback, so it is only safe as long as
+// nobody calls subscribe() concurrently. It is kept because it is public API; the logging
+// path deliberately does not use it, see callback_in_use_ and emit_log().
 MAVSDK_PUBLIC log::Callback& log::get_callback()
 {
     std::lock_guard<std::mutex> lock(callback_mutex_);
@@ -43,6 +54,7 @@ void log::subscribe(const log::Callback& callback)
 {
     std::lock_guard<std::mutex> lock(callback_mutex_);
     callback_ = callback;
+    callback_in_use_ = callback ? std::make_shared<const log::Callback>(callback) : nullptr;
 }
 
 MAVSDK_TEST_EXPORT void set_color(Color color)
@@ -97,7 +109,17 @@ MAVSDK_TEST_EXPORT void set_color(Color color)
 
 void emit_log(log::Level level, const std::string& message, const char* filename, int line)
 {
-    if (log::get_callback() && log::get_callback()(level, message, filename, line)) {
+    // Fetched once, and invoked with the lock released. Fetching twice -- once to test it
+    // and once to call it -- let a subscribe() in between turn the second fetch into an
+    // empty std::function, and calling one of those throws, which with -fno-exceptions ends
+    // the process.
+    std::shared_ptr<const log::Callback> callback;
+    {
+        std::lock_guard<std::mutex> lock(callback_mutex_);
+        callback = callback_in_use_;
+    }
+
+    if (callback && (*callback)(level, message, filename, line)) {
         return;
     }
 

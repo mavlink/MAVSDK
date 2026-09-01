@@ -266,6 +266,7 @@ install(DIRECTORY ${MAVLINK_INCLUDE_DIR}/mavlink
 
 list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/callback_list_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/log_race_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/call_every_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/cli_arg_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/file_cache_test.cpp
