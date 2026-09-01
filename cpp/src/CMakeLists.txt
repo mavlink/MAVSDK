@@ -109,8 +109,29 @@ configure_file(MAVSDKConfig.cmake.in
     "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/MAVSDKConfig.cmake" @ONLY)
 
 # Pkg-config
+set(MAVSDK_PC_REQUIRES_PRIVATE "")
+if(NOT BUILD_SHARED_LIBS)
+    set(_mavsdk_pc_requires_private "nlohmann_json tinyxml2")
+    if(NOT BUILD_WITHOUT_CURL)
+        set(_mavsdk_pc_requires_private "libcurl ${_mavsdk_pc_requires_private}")
+    endif()
+
+    set(MAVSDK_PC_REQUIRES_PRIVATE "Requires.private: ${_mavsdk_pc_requires_private}")
+endif()
+
 configure_file(mavsdk.pc.in
     "${PROJECT_BINARY_DIR}/mavsdk.pc" @ONLY)
+
+if(BUILD_TESTING)
+    add_test(
+        NAME mavsdk_pkg_config_metadata
+        COMMAND ${CMAKE_COMMAND}
+            -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
+            -DBUILD_WITHOUT_CURL=${BUILD_WITHOUT_CURL}
+            -DPC_FILE=${PROJECT_BINARY_DIR}/mavsdk.pc
+            -P ${CMAKE_CURRENT_SOURCE_DIR}/validate_mavsdk_pc.cmake
+    )
+endif()
 
 include(CMakePackageConfigHelpers)
 # Supply version to config
