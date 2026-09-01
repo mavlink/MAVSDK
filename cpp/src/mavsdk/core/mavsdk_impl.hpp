@@ -371,10 +371,16 @@ private:
 
     // _io_context and _io_work_guard are declared at the very top of the class so that the
     // io_context outlives every member that posts onto it during teardown.
-    // Recurring timer that drives TimeoutHandler::run_once() and
-    // CallEveryHandler::run_once() on the io_context thread.
+    // Timer that drives TimeoutHandler::run_once() and CallEveryHandler::run_once() on the
+    // io_context thread, armed for whichever of them is due next rather than at a fixed rate.
     asio::steady_timer _timers_poll_timer{_io_context};
     void schedule_timers_poll();
+    // Re-arm _timers_poll_timer from any thread, because a timeout or a recurring callback
+    // was added that is due sooner than what the timer is currently waiting for.
+    void wake_timers_poll();
+    // Longest _timers_poll_timer ever waits, even with nothing scheduled. Bounds how late a
+    // deadline change we somehow did not get woken for can make a timer fire.
+    static constexpr std::chrono::milliseconds MAX_TIMERS_POLL_WAIT{100};
 
     // Recurring timer that drives ServerComponent::do_work() on the io_context thread.
     asio::steady_timer _do_work_timer{_io_context};

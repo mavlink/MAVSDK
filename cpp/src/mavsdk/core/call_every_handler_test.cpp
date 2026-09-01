@@ -289,3 +289,45 @@ TEST(CallEveryHandler, RemoveBlockingUnsetCookieReturns)
     ceh.remove_blocking(never_registered);
     ceh.remove_blocking(static_cast<CallEveryHandler::Cookie>(999999));
 }
+
+TEST(CallEveryHandler, WakeupOnlyWhenDeadlineMovesEarlier)
+{
+    Time time{};
+    CallEveryHandler ceh(time);
+
+    int wakeups = 0;
+    ceh.set_wakeup_callback([&wakeups]() { ++wakeups; });
+
+    // A new entry is due straight away, so the owner's timer has to be re-armed.
+    auto cookie = ceh.add([]() {}, 1.0);
+    EXPECT_EQ(wakeups, 1);
+
+    // Consume that first due, leaving the entry due one interval from now.
+    ceh.run_once();
+
+    // Shortening the interval brings the deadline forward: without a wakeup the owner's
+    // timer stays parked on the old one and only catches up at its safety cap.
+    wakeups = 0;
+    ceh.change(0.01, cookie);
+    EXPECT_EQ(wakeups, 1);
+
+    // Lengthening it pushes the deadline out, so there is nothing to re-arm for.
+    wakeups = 0;
+    ceh.change(10.0, cookie);
+    EXPECT_EQ(wakeups, 0);
+
+    // reset() only ever pushes the deadline further out too.
+    wakeups = 0;
+    ceh.reset(cookie);
+    EXPECT_EQ(wakeups, 0);
+
+    // call_soon() makes it due now, so it always re-arms.
+    wakeups = 0;
+    ceh.call_soon(cookie);
+    EXPECT_EQ(wakeups, 1);
+
+    // Removing an entry can only push the earliest deadline out, never pull it in.
+    wakeups = 0;
+    ceh.remove(cookie);
+    EXPECT_EQ(wakeups, 0);
+}

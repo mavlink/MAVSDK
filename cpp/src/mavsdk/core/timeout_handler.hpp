@@ -8,6 +8,7 @@
 #include <mutex>
 #include <functional>
 #include <list>
+#include <optional>
 #include <thread>
 
 namespace mavsdk {
@@ -53,8 +54,19 @@ public:
 
     void run_once();
 
+    // The earliest time run_once() would have something to do, or nothing when no timeout is
+    // scheduled. Lets the caller arm a timer for that instant rather than poll.
+    [[nodiscard]] std::optional<SteadyTimePoint> next_deadline();
+
+    // Called whenever add() or refresh() moves the earliest deadline earlier, so the caller
+    // can re-arm. Invoked on the calling thread with no lock held, so it must not block.
+    void set_wakeup_callback(std::function<void()> callback);
+
 private:
     void remove_impl(Cookie cookie, bool blocking);
+
+    // Earliest deadline in _timeouts, or nothing when empty. Call with the lock held.
+    [[nodiscard]] std::optional<SteadyTimePoint> earliest_with_lock() const;
 
     struct Timeout {
         std::function<void()> callback{};
@@ -77,6 +89,9 @@ private:
     // on itself. Guarded by _timeouts_mutex.
     Cookie _executing_cookie{0};
     std::thread::id _executing_thread{};
+
+    // Set once at construction time by the owner and then only read, so no lock.
+    std::function<void()> _wakeup_callback{};
 
     Time& _time;
 

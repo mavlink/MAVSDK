@@ -17,21 +17,48 @@ CallEveryHandler::Cookie CallEveryHandler::add(std::function<void()> callback, d
     _time.shift_steady_time_by(before, -interval_s - 0.001);
     new_entry.last_time = before;
     new_entry.interval_s = interval_s;
-    std::lock_guard<std::mutex> lock(_mutex);
-    new_entry.cookie = _next_cookie++;
-    _entries.push_back(new_entry);
 
-    return new_entry.cookie;
+    Cookie cookie;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        new_entry.cookie = _next_cookie++;
+        _entries.push_back(new_entry);
+        cookie = new_entry.cookie;
+    }
+
+    // last_time was deliberately shifted into the past above, so this entry is due right
+    // away and the owner's timer needs to fire now rather than at its current deadline.
+    if (_wakeup_callback) {
+        _wakeup_callback();
+    }
+
+    return cookie;
 }
 
 void CallEveryHandler::change(double interval_s, Cookie cookie)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-    auto it = std::find_if(_entries.begin(), _entries.end(), [&](const Entry& entry) {
-        return entry.cookie == cookie;
-    });
-    if (it != _entries.end()) {
+    bool moved_earlier = false;
+
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        auto it = std::find_if(_entries.begin(), _entries.end(), [&](const Entry& entry) {
+            return entry.cookie == cookie;
+        });
+        if (it == _entries.end()) {
+            return;
+        }
+
+        const auto previous_earliest = earliest_with_lock();
         it->interval_s = interval_s;
+        const auto new_earliest = earliest_with_lock();
+        moved_earlier = new_earliest && (!previous_earliest || *new_earliest < *previous_earliest);
+    }
+
+    // Shortening an interval brings the deadline forward, so the owner's timer has to be
+    // re-armed -- otherwise it stays parked on the old deadline (or the safety cap) and the
+    // catch-up in run_once() then delivers the intervals it slept through back to back.
+    if (moved_earlier && _wakeup_callback) {
+        _wakeup_callback();
     }
 }
 
@@ -44,6 +71,50 @@ void CallEveryHandler::reset(Cookie cookie)
     if (it != _entries.end()) {
         it->last_time = _time.steady_time();
     }
+}
+
+void CallEveryHandler::call_soon(Cookie cookie)
+{
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        auto it = std::find_if(_entries.begin(), _entries.end(), [&](const Entry& entry) {
+            return entry.cookie == cookie;
+        });
+        if (it == _entries.end()) {
+            return;
+        }
+        // Same shift as add() uses to make a new entry run straightaway.
+        it->last_time = _time.steady_time();
+        _time.shift_steady_time_by(it->last_time, -it->interval_s - 0.001);
+    }
+
+    if (_wakeup_callback) {
+        _wakeup_callback();
+    }
+}
+
+std::optional<SteadyTimePoint> CallEveryHandler::next_deadline()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    return earliest_with_lock();
+}
+
+std::optional<SteadyTimePoint> CallEveryHandler::earliest_with_lock() const
+{
+    std::optional<SteadyTimePoint> earliest;
+    for (const auto& entry : _entries) {
+        auto due = entry.last_time;
+        _time.shift_steady_time_by(due, entry.interval_s);
+        if (!earliest || due < *earliest) {
+            earliest = due;
+        }
+    }
+    return earliest;
+}
+
+void CallEveryHandler::set_wakeup_callback(std::function<void()> callback)
+{
+    _wakeup_callback = std::move(callback);
 }
 
 void CallEveryHandler::remove(Cookie cookie)

@@ -76,16 +76,23 @@ in `process_message()`. Use the posted `unregister_all()` there.
 
 Everything time-based is driven from the io thread:
 
-- `MavsdkImpl::schedule_timers_poll()` — every 5 ms, runs `TimeoutHandler::run_once()` and
-  `CallEveryHandler::run_once()`.
+- `MavsdkImpl::schedule_timers_poll()` — runs `TimeoutHandler::run_once()` and
+  `CallEveryHandler::run_once()`. **Deadline-driven**: it asks both handlers for their next
+  deadline and arms for that, so a timeout fires at its deadline rather than at the next
+  tick after it. `add()` and `refresh()` call back into `MavsdkImpl::wake_timers_poll()`
+  when they move the earliest deadline earlier, which re-arms from whatever thread they were
+  called on. The wait is capped at `MAX_TIMERS_POLL_WAIT` so that a wakeup we somehow miss
+  can only make a timer late, never stall it.
 - `MavsdkImpl::schedule_do_work()` — every 10 ms, `ServerComponentImpl::do_work()` for every
   server component.
 - `SystemImpl::schedule_system_work()` — every 10 ms when connected, 100 ms otherwise; runs
   `do_work()` on the command sender, timesync, mission transfer, FTP and parameter clients,
   plus the 5 s ping.
 
-These are fixed-cadence polls rather than deadline-driven timers, so timeout resolution is
-capped at the 5 ms tick and an idle instance still wakes up regularly. That is a known
+The two `do_work()` chains are still fixed-cadence polls that run whether or not their work
+queues have anything in them. Making them event-driven means giving every work queue
+(command sender, parameter clients, mission transfer, FTP) a "something was enqueued" signal
+and its own retry deadline, which is a larger change than the timer one above. Known
 trade-off, not an invariant.
 
 ## Locks that remain
