@@ -393,6 +393,14 @@ public:
     // Whether the caller is the io_context thread. Only meant for asserts and for picking
     // between an inline and a posted path, not for synchronisation.
     bool on_io_thread() const;
+
+private:
+    // Called at the very end of ~MavsdkImpl: complains and aborts if a System, a
+    // ServerComponent or a plugin is still alive, since all of them hold a reference back
+    // into this object. See the definition for why this is fatal rather than merely wrong.
+    void abort_if_references_outlive_us();
+
+public:
 };
 
 } // namespace mavsdk

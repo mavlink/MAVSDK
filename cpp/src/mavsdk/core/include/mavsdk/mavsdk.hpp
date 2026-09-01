@@ -170,6 +170,11 @@ public:
      * @brief Get a vector of systems which have been discovered or set-up.
      *
      * @return The vector of systems which are available.
+     *
+     * @note The returned System must not outlive this Mavsdk instance. It holds a reference
+     *       back into it, so using a System after its Mavsdk is gone is a use-after-free,
+     *       and so is merely letting it be destroyed. The same applies to any plugin
+     *       constructed from it.
      */
     std::vector<std::shared_ptr<System>> systems() const;
 
@@ -184,6 +189,11 @@ public:
      *                  A negative timeout will wait forever.
      *
      * @return A system or nothing if nothing was discovered within the timeout.
+     *
+     * @note The returned System must not outlive this Mavsdk instance. It holds a reference
+     *       back into it, so using a System after its Mavsdk is gone is a use-after-free,
+     *       and so is merely letting it be destroyed. The same applies to any plugin
+     *       constructed from it.
      */
     std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s) const;
 
@@ -513,6 +523,10 @@ public:
      *
      * @return A valid shared pointer to a server component if it was successful, an empty pointer
      * otherwise.
+     *
+     * @note The returned ServerComponent must not outlive this Mavsdk instance. It holds a
+     *       reference back into it, so using one after its Mavsdk is gone is a
+     *       use-after-free, and so is merely letting it be destroyed.
      */
     std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);
 
