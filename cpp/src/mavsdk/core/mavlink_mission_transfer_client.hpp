@@ -87,6 +87,11 @@ public:
         bool has_started();
         bool is_done();
 
+        // Called once, on the io thread, when this item has finished, so that the queue
+        // owner can retire it and start the next one instead of polling is_done(). Set by
+        // the owner when the item is enqueued.
+        void set_done_callback(std::function<void()> callback);
+
         WorkItem(const WorkItem&) = delete;
         WorkItem(WorkItem&&) = delete;
         WorkItem& operator=(const WorkItem&) = delete;
@@ -98,8 +103,13 @@ public:
         TimeoutHandler& _timeout_handler;
         uint8_t _type;
         double _timeout_s;
+        // Mark this item finished and notify the owner. Must be the last thing a work item
+        // does: the notification lets the owner drop the last reference to it.
+        void set_done();
+
         bool _started{false};
         bool _done{false};
+        std::function<void()> _done_callback{};
         std::mutex _mutex{};
         bool _debugging;
     };

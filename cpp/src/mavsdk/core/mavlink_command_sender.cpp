@@ -113,11 +113,11 @@ void MavlinkCommandSender::queue_command_async(
                 return;
             }
         }
-        const bool was_empty = _work_queue.empty();
         _work_queue.push_back(new_work);
-        if (was_empty) {
-            do_work();
-        }
+        // Unconditional, unlike the other work queues: do_work() here walks the whole queue
+        // and sends everything not sent yet, so a command queued behind another one still
+        // needs it to run.
+        do_work();
     });
 }
 
@@ -150,11 +150,11 @@ void MavlinkCommandSender::queue_command_async(
                 return;
             }
         }
-        const bool was_empty = _work_queue.empty();
         _work_queue.push_back(new_work);
-        if (was_empty) {
-            do_work();
-        }
+        // Unconditional, unlike the other work queues: do_work() here walks the whole queue
+        // and sends everything not sent yet, so a command queued behind another one still
+        // needs it to run.
+        do_work();
     });
 }
 
@@ -306,6 +306,10 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
             call_callback(temp_callback, temp_result.first, temp_result.second);
         }
 
+        // This command may have been blocking another queued one with the same command id,
+        // which do_work() skips while the first is in flight.
+        asio::post(_io_context, [this] { do_work(); });
+
         return;
     }
 
@@ -412,6 +416,10 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
     if (temp_callback != nullptr) {
         call_callback(temp_callback, temp_result.first, temp_result.second);
     }
+
+    // Same as in receive_command_ack(): giving up on a command can unblock another queued
+    // one with the same command id.
+    asio::post(_io_context, [this] { do_work(); });
 
     if (!found_command) {
         LogWarn(

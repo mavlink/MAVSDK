@@ -189,7 +189,6 @@ public:
     }
     MavlinkFtpServer& mavlink_ftp_server() { return _mavlink_ftp_server; }
 
-    void do_work();
 
     Sender& sender();
 

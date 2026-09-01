@@ -161,12 +161,6 @@ void ServerComponentImpl::process_libmav_message(const Mavsdk::MavlinkMessage& m
         message, [this](const std::function<void()>& callback) { callback(); });
 }
 
-void ServerComponentImpl::do_work()
-{
-    _mavlink_parameter_server.do_work();
-    _mission_transfer_server.do_work();
-}
-
 Sender& ServerComponentImpl::sender()
 {
     return _our_sender;

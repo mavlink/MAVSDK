@@ -382,10 +382,6 @@ private:
     // deadline change we somehow did not get woken for can make a timer fire.
     static constexpr std::chrono::milliseconds MAX_TIMERS_POLL_WAIT{100};
 
-    // Recurring timer that drives ServerComponent::do_work() on the io_context thread.
-    asio::steady_timer _do_work_timer{_io_context};
-    void schedule_do_work();
-
     std::unique_ptr<std::thread> _io_thread{};
     // The io thread's own id, recorded by the thread itself when it starts. Asserts use
     // this instead of asio's running_in_this_thread(), whose thread-local is instantiated

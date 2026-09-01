@@ -342,11 +342,7 @@ public:
 
     double timeout_s() const;
 
-    void signal_exit()
-    {
-        _should_exit = true;
-        _system_work_timer.cancel();
-    }
+    void signal_exit() { _should_exit = true; }
 
 private:
     static bool is_autopilot(uint8_t comp_id);
@@ -362,7 +358,7 @@ private:
     static std::string component_name(uint8_t component_id);
     static ComponentType component_type(uint8_t component_id);
 
-    void schedule_system_work();
+    void schedule_ping();
 
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
@@ -420,8 +416,7 @@ private:
     // Libmav message handling using CallbackList for thread safety
     CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{io_context()};
 
-    asio::steady_timer _system_work_timer;
-    SteadyTimePoint _last_ping_time{};
+    CallEveryHandler::Cookie _ping_cookie{};
     std::atomic<bool> _should_exit{false};
 
     std::atomic<bool> _connected{false};
