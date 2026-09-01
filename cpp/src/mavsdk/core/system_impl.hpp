@@ -100,11 +100,19 @@ public:
     register_timeout_handler(const std::function<void()>& callback, double duration_s);
     void refresh_timeout_handler(TimeoutHandler::Cookie cookie);
     void unregister_timeout_handler(TimeoutHandler::Cookie cookie);
+    // Blocking variant for owners about to be destroyed: once it returns, the timeout
+    // callback is neither running nor going to run. Must not be called while holding a lock
+    // that the callback itself takes.
+    void unregister_timeout_handler_blocking(TimeoutHandler::Cookie cookie);
 
     CallEveryHandler::Cookie add_call_every(std::function<void()> callback, float interval_s);
     void change_call_every(float interval_s, CallEveryHandler::Cookie cookie);
     void reset_call_every(CallEveryHandler::Cookie cookie);
     void remove_call_every(CallEveryHandler::Cookie cookie);
+    // Blocking variant for owners about to be destroyed: once it returns, the callback is
+    // neither running nor going to run. Must not be called while holding a lock that the
+    // callback itself takes.
+    void remove_call_every_blocking(CallEveryHandler::Cookie cookie);
 
     void register_statustext_handler(
         std::function<void(const MavlinkStatustextHandler::Statustext&)>, void* cookie);

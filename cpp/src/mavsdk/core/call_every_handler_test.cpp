@@ -1,5 +1,9 @@
 #include "call_every_handler.hpp"
 #include "unused.hpp"
+#include <atomic>
+#include <chrono>
+#include <future>
+#include <thread>
 #include <gtest/gtest.h>
 
 #ifdef FAKE_TIME
@@ -187,4 +191,101 @@ TEST(CallEveryHandler, AllHandlersRemovedDuringCallback)
 
     time.sleep_for(std::chrono::milliseconds(200));
     ceh.run_once();
+}
+
+TEST(CallEveryHandler, RemovingDueHandlerDuringCallbackPreventsIt)
+{
+    Time time{};
+    CallEveryHandler ceh(time);
+
+    bool second_called = false;
+    CallEveryHandler::Cookie cookie2{};
+
+    // Both entries are due in the same run_once(). The first one removes the second,
+    // which has to actually stop it from being called.
+    CallEveryHandler::Cookie cookie1 = ceh.add([&ceh, &cookie2]() { ceh.remove(cookie2); }, 0.1);
+    cookie2 = ceh.add([&second_called]() { second_called = true; }, 0.1);
+
+    time.sleep_for(std::chrono::milliseconds(200));
+    ceh.run_once();
+
+    EXPECT_FALSE(second_called);
+
+    UNUSED(cookie1);
+}
+
+TEST(CallEveryHandler, RemoveBlockingWaitsForRunningCallback)
+{
+    Time time{};
+    CallEveryHandler ceh(time);
+
+    std::promise<void> callback_entered;
+    std::atomic<bool> release{false};
+    std::atomic<bool> callback_returned{false};
+
+    auto cookie = ceh.add(
+        [&]() {
+            callback_entered.set_value();
+            while (!release) {
+                std::this_thread::yield();
+            }
+            callback_returned = true;
+        },
+        0.1);
+
+    time.sleep_for(std::chrono::milliseconds(200));
+
+    std::thread runner([&ceh]() { ceh.run_once(); });
+
+    // Only call remove_blocking() once we know the callback is actually running.
+    callback_entered.get_future().wait();
+
+    std::thread releaser([&release]() {
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        release = true;
+    });
+
+    ceh.remove_blocking(cookie);
+
+    // The whole point: remove_blocking() does not return while the callback is running.
+    EXPECT_TRUE(callback_returned);
+
+    releaser.join();
+    runner.join();
+}
+
+TEST(CallEveryHandler, RemoveBlockingFromOwnCallbackDoesNotDeadlock)
+{
+    Time time{};
+    CallEveryHandler ceh(time);
+
+    int num_called = 0;
+    CallEveryHandler::Cookie cookie{};
+
+    cookie = ceh.add(
+        [&ceh, &cookie, &num_called]() {
+            ++num_called;
+            // Waiting for ourselves here would hang forever.
+            ceh.remove_blocking(cookie);
+        },
+        0.1);
+
+    time.sleep_for(std::chrono::milliseconds(200));
+    ceh.run_once();
+    time.sleep_for(std::chrono::milliseconds(200));
+    ceh.run_once();
+
+    EXPECT_EQ(num_called, 1);
+}
+
+TEST(CallEveryHandler, RemoveBlockingUnsetCookieReturns)
+{
+    Time time{};
+    CallEveryHandler ceh(time);
+
+    // A default-initialised cookie means "never registered". Nothing is executing, so this
+    // has to return rather than wait for a callback that does not exist.
+    CallEveryHandler::Cookie never_registered{};
+    ceh.remove_blocking(never_registered);
+    ceh.remove_blocking(static_cast<CallEveryHandler::Cookie>(999999));
 }

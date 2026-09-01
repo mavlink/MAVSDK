@@ -88,15 +88,22 @@ void LogFilesImpl::init()
 
 void LogFilesImpl::deinit()
 {
+    TimeoutHandler::Cookie entries_cookie{};
+    TimeoutHandler::Cookie download_cookie{};
     {
         std::lock_guard<std::mutex> lock(_entries_mutex);
-        _system_impl->unregister_timeout_handler(_entries_timeout_cookie);
+        entries_cookie = _entries_timeout_cookie;
     }
-
     {
         std::lock_guard<std::mutex> lock(_download_data_mutex);
-        _system_impl->unregister_timeout_handler(_download_data.timeout_cookie);
+        download_cookie = _download_data.timeout_cookie;
     }
+
+    // Outside those mutexes: the blocking removals wait for entries_timeout() /
+    // data_timeout() if one is running right now, and those take the mutexes themselves.
+    _system_impl->unregister_timeout_handler_blocking(entries_cookie);
+    _system_impl->unregister_timeout_handler_blocking(download_cookie);
+
     _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 

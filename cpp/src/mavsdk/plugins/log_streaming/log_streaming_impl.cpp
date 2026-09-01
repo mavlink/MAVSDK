@@ -41,18 +41,20 @@ void LogStreamingImpl::init()
 void LogStreamingImpl::deinit()
 {
     std::unique_ptr<LogStreamingBackend> backend;
+    CallEveryHandler::Cookie check_autopilot_cookie{};
     {
         std::lock_guard<std::mutex> lock(_mutex);
 
-        // Cancel any pending autopilot type polling
-        if (_check_autopilot_cookie) {
-            _system_impl->remove_call_every(_check_autopilot_cookie);
-            _check_autopilot_cookie = {};
-        }
+        // Cancel any pending autopilot type polling. The blocking removal happens below,
+        // outside _mutex, because the callback takes _mutex itself.
+        check_autopilot_cookie = _check_autopilot_cookie;
+        _check_autopilot_cookie = {};
         _start_callback = nullptr;
 
         backend = std::move(_backend);
     }
+
+    _system_impl->remove_call_every_blocking(check_autopilot_cookie);
 
     // Deinit (and destroy) the backend outside of _mutex: its blocking unregister can wait
     // for an in-flight message callback to finish, and that callback may be in

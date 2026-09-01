@@ -32,7 +32,8 @@ MavlinkCommandReceiver::MavlinkCommandReceiver(ServerComponentImpl& server_compo
 MavlinkCommandReceiver::~MavlinkCommandReceiver()
 {
     _server_component_impl.unregister_all_mavlink_command_handlers(this);
-    _server_component_impl.unregister_all_mavlink_message_handlers(this);
+    // Blocking, so that no message can be dispatched into us while we are destroyed.
+    _server_component_impl.unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& message)

@@ -21,7 +21,7 @@ FollowMeImpl::FollowMeImpl(std::shared_ptr<System> system) : PluginImplBase(std:
 
 FollowMeImpl::~FollowMeImpl()
 {
-    _system_impl->remove_call_every(_target_location_cookie);
+    _system_impl->remove_call_every_blocking(_target_location_cookie);
     _system_impl->unregister_plugin(this);
 }
 

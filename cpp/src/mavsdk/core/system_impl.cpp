@@ -61,7 +61,8 @@ SystemImpl::~SystemImpl()
     // Clear all libmav message callbacks
     _libmav_message_callbacks.clear();
 
-    unregister_timeout_handler(_heartbeat_timeout_cookie);
+    // Blocking, so a heartbeat timeout that is running right now cannot outlive us.
+    unregister_timeout_handler_blocking(_heartbeat_timeout_cookie);
 }
 
 void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
@@ -254,6 +255,11 @@ void SystemImpl::unregister_timeout_handler(TimeoutHandler::Cookie cookie)
     _mavsdk_impl.timeout_handler.remove(cookie);
 }
 
+void SystemImpl::unregister_timeout_handler_blocking(TimeoutHandler::Cookie cookie)
+{
+    _mavsdk_impl.timeout_handler.remove_blocking(cookie);
+}
+
 double SystemImpl::timeout_s() const
 {
     return _mavsdk_impl.timeout_s();
@@ -300,6 +306,11 @@ void SystemImpl::reset_call_every(CallEveryHandler::Cookie cookie)
 void SystemImpl::remove_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.remove(cookie);
+}
+
+void SystemImpl::remove_call_every_blocking(CallEveryHandler::Cookie cookie)
+{
+    _mavsdk_impl.call_every_handler.remove_blocking(cookie);
 }
 
 void SystemImpl::register_statustext_handler(

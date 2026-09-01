@@ -30,10 +30,11 @@ MavlinkCommandSender::~MavlinkCommandSender()
     if (_command_debugging) {
         LogDebug("CommandSender destroyed");
     }
-    _system_impl.unregister_all_mavlink_message_handlers(this);
+    // Blocking, so that nothing can be dispatched into us while we are being destroyed.
+    _system_impl.unregister_all_mavlink_message_handlers_blocking(this);
 
     for (const auto& work : _work_queue) {
-        _system_impl.unregister_timeout_handler(work->timeout_cookie);
+        _system_impl.unregister_timeout_handler_blocking(work->timeout_cookie);
     }
 }
 

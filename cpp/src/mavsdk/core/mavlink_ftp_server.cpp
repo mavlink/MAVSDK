@@ -207,7 +207,8 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
 MavlinkFtpServer::~MavlinkFtpServer()
 {
-    _server_component_impl.unregister_all_mavlink_message_handlers(this);
+    // Blocking, so that no message can be dispatched into us while we are destroyed.
+    _server_component_impl.unregister_all_mavlink_message_handlers_blocking(this);
 
     std::lock_guard<std::mutex> lock(_mutex);
     _reset();

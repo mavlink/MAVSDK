@@ -11,7 +11,8 @@ Timesync::Timesync(SystemImpl& parent) : _system_impl(parent) {}
 
 Timesync::~Timesync()
 {
-    _system_impl.unregister_all_mavlink_message_handlers(this);
+    // Blocking, so that no message can be dispatched into us while we are destroyed.
+    _system_impl.unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void Timesync::enable()
