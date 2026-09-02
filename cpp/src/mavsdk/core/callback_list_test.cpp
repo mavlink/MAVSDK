@@ -282,7 +282,10 @@ TEST_F(CallbackListTest, SubscribeAndUnsubscribeWithinCallbacks2)
 {
     const int test_value1 = 42;
     const double test_value2 = 3.14;
-    const int thread_count = 50000;
+    // We want a lot of subscriptions happening at once, but one thread each would
+    // need more address space for the stacks than a 32-bit process has.
+    const int thread_count = 64;
+    const int subscriptions_per_thread = 800;
     std::atomic<int> nested_callback_count{0};
     CallbackList<int, double> cl{_io_context};
 
@@ -308,18 +311,20 @@ TEST_F(CallbackListTest, SubscribeAndUnsubscribeWithinCallbacks2)
     std::vector<std::thread> threads;
     for (int i = 0; i < thread_count; ++i) {
         threads.emplace_back([&]() {
-            // Add a burst of subscriptions in a multithreaded env all at once
-            auto handle_ptr = std::make_shared<std::optional<Handle<int, double>>>();
-            addSubCallback(handle_ptr); // this will get deferred sub
+            for (int j = 0; j < subscriptions_per_thread; ++j) {
+                // Add a burst of subscriptions in a multithreaded env all at once
+                auto handle_ptr = std::make_shared<std::optional<Handle<int, double>>>();
+                addSubCallback(handle_ptr); // this will get deferred sub
 
-            // safely put them in a vec for later comparison
-            std::lock_guard<std::mutex> guard(mutex_);
-            if (handle_ptr && handle_ptr->has_value()) {
-                if (!handle_set.insert(handle_ptr->value()).second) {
-                    EXPECT_TRUE(false); // handles are not unique
+                // safely put them in a vec for later comparison
+                std::lock_guard<std::mutex> guard(mutex_);
+                if (handle_ptr && handle_ptr->has_value()) {
+                    if (!handle_set.insert(handle_ptr->value()).second) {
+                        EXPECT_TRUE(false); // handles are not unique
+                    }
+                } else {
+                    EXPECT_TRUE(false); // handles not filled in
                 }
-            } else {
-                EXPECT_TRUE(false); // handles not filled in
             }
         });
     }
