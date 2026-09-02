@@ -5,6 +5,9 @@
 
 namespace fs = std::filesystem;
 
+// Directory for test data, inside the temp directory of whatever system we run on.
+fs::path test_data_dir();
+
 bool create_temp_file(const fs::path& path, size_t len, uint8_t start = 0);
 
 bool reset_directories(const fs::path& path);

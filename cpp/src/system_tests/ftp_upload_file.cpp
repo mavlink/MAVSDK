@@ -16,12 +16,10 @@ using namespace mavsdk;
 
 static constexpr double reduced_timeout_s = 0.1;
 
-// TODO: make this compatible for Windows using GetTempPath2
-
 namespace fs = std::filesystem;
 
-static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/provided";
-static const fs::path temp_dir_to_upload = "/tmp/mavsdk_systemtest_temp_data/to_upload";
+static const fs::path temp_dir_provided = test_data_dir() / "provided";
+static const fs::path temp_dir_to_upload = test_data_dir() / "to_upload";
 
 static const fs::path temp_file = "data.bin";
 
