@@ -1,6 +1,7 @@
 #include "log.hpp"
 #include "mavsdk.hpp"
 #include "example_plan.hpp"
+#include "fs_helpers.hpp"
 #include "plugins/mission_raw/mission_raw.hpp"
 #include "plugins/mission_raw_server/mission_raw_server.hpp"
 #include <string>
@@ -31,13 +32,15 @@ TEST(Mission, RawUpload)
     ASSERT_TRUE(system->has_autopilot());
 
     // We take an example mission plan, write it to a temp file and then import it.
-    auto constexpr path = "/tmp/example.plan";
+    const auto temp_dir = test_data_dir() / "mission";
+    ASSERT_TRUE(reset_directories(temp_dir));
+    const auto path = temp_dir / "example.plan";
     std::ofstream out(path);
     out << plan;
     out.close();
 
     auto mission_raw = MissionRaw{system};
-    auto result_pair = mission_raw.import_qgroundcontrol_mission(path);
+    auto result_pair = mission_raw.import_qgroundcontrol_mission(path.string());
     ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
 
     EXPECT_EQ(
