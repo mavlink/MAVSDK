@@ -16,6 +16,12 @@ namespace mavsdk {
 
 std::optional<std::string> resolve_hostname_to_ip(const std::string& hostname)
 {
+    // Windows resolves an empty hostname to the wildcard address because of AI_PASSIVE
+    // below, while Linux and macOS reject it. Reject it everywhere.
+    if (hostname.empty()) {
+        return {};
+    }
+
 #if defined(WINDOWS)
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
