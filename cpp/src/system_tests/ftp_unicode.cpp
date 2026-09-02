@@ -84,12 +84,11 @@ Ftp::Result upload(Ftp& ftp, const std::string& local_file_path, const std::stri
 {
     auto prom = std::promise<Ftp::Result>();
     auto fut = prom.get_future();
-    ftp.upload_async(
-        local_file_path, remote_dir, [&prom](Ftp::Result result, Ftp::ProgressData) {
-            if (result != Ftp::Result::Next) {
-                prom.set_value(result);
-            }
-        });
+    ftp.upload_async(local_file_path, remote_dir, [&prom](Ftp::Result result, Ftp::ProgressData) {
+        if (result != Ftp::Result::Next) {
+            prom.set_value(result);
+        }
+    });
 
     if (fut.wait_for(std::chrono::seconds(5)) != std::future_status::ready) {
         return Ftp::Result::Timeout;
@@ -142,12 +141,11 @@ TEST(FtpUnicode, UploadAndDownloadFile)
 
     // The CRC32 of the remote file should match the local one.
     EXPECT_EQ(
-        ftp.are_files_identical((temp_dir_to_upload / fs::path(emoji_file)).string(),
-                                remote_file_path),
+        ftp.are_files_identical(
+            (temp_dir_to_upload / fs::path(emoji_file)).string(), remote_file_path),
         std::make_pair(Ftp::Result::Success, true));
 
-    EXPECT_EQ(
-        download(ftp, remote_file_path, temp_dir_downloaded.string()), Ftp::Result::Success);
+    EXPECT_EQ(download(ftp, remote_file_path, temp_dir_downloaded.string()), Ftp::Result::Success);
     EXPECT_TRUE(are_files_identical(
         temp_dir_to_upload / fs::path(emoji_file), temp_dir_downloaded / fs::path(emoji_file)));
 
