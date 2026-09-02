@@ -39,6 +39,7 @@ add_executable(system_tests_runner
     ftp_remove_dir.cpp
     ftp_compare_files.cpp
     ftp_list_dir.cpp
+    ftp_unicode.cpp
     intercept.cpp
     mavlink_direct.cpp
     mavlink_direct_forwarding.cpp
