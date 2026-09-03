@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mavlinkcamera>
+    <definition version="1">
+        <model>MAVSDK Camera Server</model>
+        <vendor>MAVSDK</vendor>
+    </definition>
+    <parameters>
+        <parameter name="CAM_MODE" type="uint32" default="1">
+            <description>Camera Mode</description>
+            <options>
+                <option name="Photo" value="0" />
+                <option name="Video" value="1" />
+            </options>
+        </parameter>
+        <parameter name="CAM_EXPMODE" type="uint32" default="0">
+            <description>Exposure Mode</description>
+            <options default="0">
+                <!-- The camera picks both shutter speed and aperture, so neither is settable -->
+                <option name="Auto" value="0">
+                    <exclusions>
+                        <exclude>CAM_SHUTTERSPD</exclude>
+                        <exclude>CAM_APERTURE</exclude>
+                    </exclusions>
+                </option>
+                <!-- Nothing is automatic, so there is no exposure to compensate -->
+                <option name="Manual" value="1">
+                    <exclusions>
+                        <exclude>CAM_EV</exclude>
+                    </exclusions>
+                </option>
+                <option name="Shutter Priority" value="2">
+                    <exclusions>
+                        <exclude>CAM_APERTURE</exclude>
+                    </exclusions>
+                </option>
+                <option name="Aperture Priority" value="3">
+                    <exclusions>
+                        <exclude>CAM_SHUTTERSPD</exclude>
+                    </exclusions>
+                </option>
+            </options>
+        </parameter>
+        <parameter name="CAM_SHUTTERSPD" type="float" default="0.016666">
+            <description>Shutter Speed</description>
+            <options>
+                <option name="1/30" value="0.033333" />
+                <option name="1/60" value="0.016666" />
+                <option name="1/125" value="0.008" />
+                <option name="1/250" value="0.004" />
+                <option name="1/500" value="0.002" />
+                <option name="1/1000" value="0.001" />
+            </options>
+        </parameter>
+        <parameter name="CAM_APERTURE" type="uint32" default="2">
+            <description>Aperture</description>
+            <options>
+                <option name="1.8" value="0" />
+                <option name="2.8" value="1" />
+                <option name="4" value="2" />
+                <option name="5.6" value="3" />
+                <option name="8" value="4" />
+                <option name="11" value="5" />
+            </options>
+        </parameter>
+        <parameter name="CAM_EV" type="float" default="0">
+            <description>Exposure Compensation</description>
+            <options>
+                <option name="-2" value="-2" />
+                <option name="-1" value="-1" />
+                <option name="0" value="0" />
+                <option name="+1" value="1" />
+                <option name="+2" value="2" />
+            </options>
+        </parameter>
+    </parameters>
+</mavlinkcamera>

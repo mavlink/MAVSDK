@@ -1,14 +1,37 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <filesystem>
 #include <future>
+#include <string>
 #include <mavsdk/mavsdk.hpp>
 #include <mavsdk/plugins/camera_server/camera_server.hpp>
+#include <mavsdk/plugins/ftp_server/ftp_server.hpp>
+#include <mavsdk/plugins/param_server/param_server.hpp>
+
+static constexpr const char* kDefinitionFile = "camera_definition.xml";
 
 static void subscribe_camera_operation(mavsdk::CameraServer& camera_server);
+static void provide_camera_settings(mavsdk::ParamServer& param_server);
+
+static void usage(const std::string& bin_name)
+{
+    std::cerr << "Usage: " << bin_name << " [definition dir]\n"
+              << '\n'
+              << "The definition dir is served over MAVLink FTP and must contain\n"
+              << kDefinitionFile << ". It is resolved against the working directory\n"
+              << "and defaults to it, so pass the dir explicitly when running the\n"
+              << "binary from elsewhere (e.g. " << bin_name << " ../).\n";
+}
 
 int main(int argc, char** argv)
 {
+    if (argc > 2) {
+        usage(argv[0]);
+        return 1;
+    }
+    const std::string definition_dir = (argc == 2) ? argv[1] : ".";
+
     mavsdk::Mavsdk mavsdk{mavsdk::Mavsdk::Configuration{mavsdk::ComponentType::Camera}};
 
     // 14030 is the default camera port for PX4 SITL
@@ -20,6 +43,28 @@ int main(int argc, char** argv)
     std::cout << "Created camera server connection" << std::endl;
 
     auto camera_server = mavsdk::CameraServer{mavsdk.server_component()};
+
+    // The camera definition is fetched by the ground station over MAVLink FTP. The root dir is
+    // resolved against the working directory, so say where we ended up looking rather than
+    // leaving a bare "file doesn't exist" from the FTP server later on.
+    const auto definition_path = std::filesystem::absolute(definition_dir) / kDefinitionFile;
+    if (!std::filesystem::exists(definition_path)) {
+        std::cerr << "Camera definition not found: " << definition_path << '\n';
+        usage(argv[0]);
+        return 1;
+    }
+
+    auto ftp_server = mavsdk::FtpServer{mavsdk.server_component()};
+    const auto ftp_result = ftp_server.set_root_dir(definition_dir);
+    if (ftp_result != mavsdk::FtpServer::Result::Success) {
+        std::cerr << "Could not serve '" << definition_dir << "': " << ftp_result << std::endl;
+        return 1;
+    }
+    std::cout << "Serving camera definition " << definition_path << std::endl;
+
+    // The settings described by the definition file are exchanged as extended parameters
+    auto param_server = mavsdk::ParamServer{mavsdk.server_component()};
+    provide_camera_settings(param_server);
 
     // First add all subscriptions. This defines the camera capabilities.
     subscribe_camera_operation(camera_server);
@@ -41,8 +86,9 @@ int main(int argc, char** argv)
     information.horizontal_resolution_px = 3280;
     information.vertical_resolution_px = 2464;
     information.lens_id = 0;
-    information.definition_file_version = 0; // TODO: add this
-    information.definition_file_uri = ""; // TODO: implement this using MAVLink FTP
+    information.definition_file_version = 1;
+    // "mftp" is the scheme ground stations use to fetch this over MAVLink FTP
+    information.definition_file_uri = std::string("mftp://") + kDefinitionFile;
     information.image_in_video_mode_supported = false;
     information.video_in_image_mode_supported = false;
 
@@ -59,6 +105,28 @@ int main(int argc, char** argv)
     }
 
     return 0;
+}
+
+// The settings from camera_definition.xml. Keep the names and defaults in sync with it:
+// a ground station reads the definition to build its UI, then reads and writes these
+// values over the extended parameter protocol.
+static void provide_camera_settings(mavsdk::ParamServer& param_server)
+{
+    param_server.provide_param_int("CAM_MODE", 1); // Video
+    param_server.provide_param_int("CAM_EXPMODE", 0); // Auto
+    param_server.provide_param_float("CAM_SHUTTERSPD", 0.016666f); // 1/60
+    param_server.provide_param_int("CAM_APERTURE", 2); // f/4
+    param_server.provide_param_float("CAM_EV", 0.0f);
+
+    // A real camera would apply the setting to the hardware here. The server has already stored
+    // the new value, so don't call provide_param_*() again from here - that counts as another
+    // change and the subscription would retrigger itself forever.
+    param_server.subscribe_changed_param_int([](mavsdk::ParamServer::IntParam param) {
+        std::cout << "Camera setting changed: " << param.name << " = " << param.value << std::endl;
+    });
+    param_server.subscribe_changed_param_float([](mavsdk::ParamServer::FloatParam param) {
+        std::cout << "Camera setting changed: " << param.name << " = " << param.value << std::endl;
+    });
 }
 
 // sample for camera current status
