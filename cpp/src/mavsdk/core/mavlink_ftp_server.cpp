@@ -853,7 +853,7 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     _session_info.burst_active = true;
 
     // Schedule sending out burst messages.
-    _schedule_burst_packet(std::chrono::milliseconds(0));
+    _schedule_burst_packet(kBurstPacketInterval);
 
     // Don't send response as that's done from the burst timer above.
 }
@@ -884,9 +884,7 @@ void MavlinkFtpServer::_schedule_burst_packet(std::chrono::milliseconds delay)
             return;
         }
 
-        // No delay: send as fast as we can, just not all in one go without letting any
-        // other handler on the io_context run.
-        _schedule_burst_packet(std::chrono::milliseconds(0));
+        _schedule_burst_packet(kBurstPacketInterval);
     });
 }
 
