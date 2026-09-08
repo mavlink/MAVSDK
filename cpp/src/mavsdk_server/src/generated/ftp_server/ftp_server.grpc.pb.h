@@ -45,6 +45,10 @@ class FtpServerService final {
     // The directory needs to exist when this is called.
     // The permissions are the same as the file permission for the user running the server.
     // The root directory can't be changed while an FTP process is in progress.
+    //
+    // The contents of the root directory are trusted: symbolic links inside it are
+    // followed even when they point outside of the root directory. Only place symlinks
+    // there if exposing their targets to a client is intended.
     virtual ::grpc::Status SetRootDir(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp_server::SetRootDirRequest& request, ::mavsdk::rpc::ftp_server::SetRootDirResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::ftp_server::SetRootDirResponse>> AsyncSetRootDir(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp_server::SetRootDirRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::ftp_server::SetRootDirResponse>>(AsyncSetRootDirRaw(context, request, cq));
@@ -62,6 +66,10 @@ class FtpServerService final {
       // The directory needs to exist when this is called.
       // The permissions are the same as the file permission for the user running the server.
       // The root directory can't be changed while an FTP process is in progress.
+      //
+      // The contents of the root directory are trusted: symbolic links inside it are
+      // followed even when they point outside of the root directory. Only place symlinks
+      // there if exposing their targets to a client is intended.
       virtual void SetRootDir(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp_server::SetRootDirRequest* request, ::mavsdk::rpc::ftp_server::SetRootDirResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetRootDir(::grpc::ClientContext* context, const ::mavsdk::rpc::ftp_server::SetRootDirRequest* request, ::mavsdk::rpc::ftp_server::SetRootDirResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
@@ -115,6 +123,10 @@ class FtpServerService final {
     // The directory needs to exist when this is called.
     // The permissions are the same as the file permission for the user running the server.
     // The root directory can't be changed while an FTP process is in progress.
+    //
+    // The contents of the root directory are trusted: symbolic links inside it are
+    // followed even when they point outside of the root directory. Only place symlinks
+    // there if exposing their targets to a client is intended.
     virtual ::grpc::Status SetRootDir(::grpc::ServerContext* context, const ::mavsdk::rpc::ftp_server::SetRootDirRequest* request, ::mavsdk::rpc::ftp_server::SetRootDirResponse* response);
   };
   template <class BaseClass>
