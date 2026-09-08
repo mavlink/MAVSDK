@@ -4,7 +4,6 @@
 #include <chrono>
 #include <cinttypes>
 #include <fstream>
-#include <unordered_map>
 #include <mutex>
 #include <optional>
 #include <string>
@@ -167,10 +166,6 @@ private:
     std::atomic<uint8_t> _target_system_id{0};
     std::atomic<uint8_t> _target_component_id{0};
     std::string _root_dir{};
-
-    std::mutex _tmp_files_mutex{};
-    std::unordered_map<std::string, std::string> _tmp_files{};
-    std::string _tmp_dir{};
 
     uint16_t _burst_seq = 0;
 

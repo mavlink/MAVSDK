@@ -500,22 +500,16 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
 
     std::string path;
     {
-        std::lock_guard<std::mutex> tmp_lock(_tmp_files_mutex);
-        const auto it = _tmp_files.find(_data_as_string(payload));
-        if (it != _tmp_files.end()) {
-            path = it->second;
-        } else {
-            auto maybe_path = _path_from_payload(payload);
-            if (std::holds_alternative<ServerResult>(maybe_path)) {
-                response.opcode = Opcode::RSP_NAK;
-                response.size = 1;
-                response.data[0] = std::get<ServerResult>(maybe_path);
-                _send_mavlink_ftp_message(response);
-                return;
-            }
-
-            path = std::get<std::string>(maybe_path);
+        auto maybe_path = _path_from_payload(payload);
+        if (std::holds_alternative<ServerResult>(maybe_path)) {
+            response.opcode = Opcode::RSP_NAK;
+            response.size = 1;
+            response.data[0] = std::get<ServerResult>(maybe_path);
+            _send_mavlink_ftp_message(response);
+            return;
         }
+
+        path = std::get<std::string>(maybe_path);
     }
 
     if (_debugging) {
@@ -592,22 +586,16 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
 
     std::string path;
     {
-        std::lock_guard<std::mutex> tmp_lock(_tmp_files_mutex);
-        const auto it = _tmp_files.find(_data_as_string(payload));
-        if (it != _tmp_files.end()) {
-            path = it->second;
-        } else {
-            auto maybe_path = _path_from_payload(payload);
-            if (std::holds_alternative<ServerResult>(maybe_path)) {
-                response.opcode = Opcode::RSP_NAK;
-                response.size = 1;
-                response.data[0] = std::get<ServerResult>(maybe_path);
-                _send_mavlink_ftp_message(response);
-                return;
-            }
-
-            path = std::get<std::string>(maybe_path);
+        auto maybe_path = _path_from_payload(payload);
+        if (std::holds_alternative<ServerResult>(maybe_path)) {
+            response.opcode = Opcode::RSP_NAK;
+            response.size = 1;
+            response.data[0] = std::get<ServerResult>(maybe_path);
+            _send_mavlink_ftp_message(response);
+            return;
         }
+
+        path = std::get<std::string>(maybe_path);
     }
 
     if (path.empty()) {
@@ -691,22 +679,16 @@ void MavlinkFtpServer::_work_create_file(const PayloadHeader& payload)
 
     std::string path;
     {
-        std::lock_guard<std::mutex> tmp_lock(_tmp_files_mutex);
-        const auto it = _tmp_files.find(_data_as_string(payload));
-        if (it != _tmp_files.end()) {
-            path = it->second;
-        } else {
-            auto maybe_path = _path_from_payload(payload);
-            if (std::holds_alternative<ServerResult>(maybe_path)) {
-                response.opcode = Opcode::RSP_NAK;
-                response.size = 1;
-                response.data[0] = std::get<ServerResult>(maybe_path);
-                _send_mavlink_ftp_message(response);
-                return;
-            }
-
-            path = std::get<std::string>(maybe_path);
+        auto maybe_path = _path_from_payload(payload);
+        if (std::holds_alternative<ServerResult>(maybe_path)) {
+            response.opcode = Opcode::RSP_NAK;
+            response.size = 1;
+            response.data[0] = std::get<ServerResult>(maybe_path);
+            _send_mavlink_ftp_message(response);
+            return;
         }
+
+        path = std::get<std::string>(maybe_path);
     }
 
     if (path.empty()) {
