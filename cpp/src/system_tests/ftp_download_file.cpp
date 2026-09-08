@@ -366,3 +366,66 @@ TEST(Ftp, DownloadFileOutsideOfRoot)
         EXPECT_EQ(fut.get(), Ftp::Result::ProtocolError);
     }
 }
+
+TEST(Ftp, DownloadFileOutsideOfRootSharedPrefix)
+{
+    // Regression test for a path traversal where a sibling directory whose name
+    // shares a prefix with the root dir (e.g. root "provided", sibling
+    // "provided_secret") slipped past a plain string-prefix containment check.
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
+
+    // Create a sibling directory next to the root whose name starts with the
+    // root dir's name, and put a secret file in it.
+    const fs::path sibling_dir =
+        temp_dir_provided.parent_path() / (temp_dir_provided.filename().string() + "_secret");
+    const fs::path secret_file = "secret.bin";
+    ASSERT_TRUE(reset_directories(sibling_dir));
+    ASSERT_TRUE(create_temp_file(sibling_dir / secret_file, 50));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto ftp = Ftp{system};
+
+    ftp_server.set_root_dir(temp_dir_provided.string());
+
+    {
+        // Try to reach the sibling directory via "../provided_secret/secret.bin".
+        const auto escape_path = (fs::path("..") / sibling_dir.filename() / secret_file).string();
+
+        auto prom = std::promise<Ftp::Result>();
+        auto fut = prom.get_future();
+        ftp.download_async(
+            escape_path,
+            temp_dir_downloaded.string(),
+            false,
+            [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+                UNUSED(progress_data);
+                if (result != Ftp::Result::Next) {
+                    prom.set_value(result);
+                }
+            });
+
+        auto future_status = fut.wait_for(std::chrono::seconds(1));
+        ASSERT_EQ(future_status, std::future_status::ready);
+        EXPECT_EQ(fut.get(), Ftp::Result::ProtocolError);
+    }
+}
