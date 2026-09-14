@@ -21,7 +21,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 class {{ enum.name.upper_camel_case }}(IntEnum):
     """{{ enum.enum_description }}"""
     {% for value in enum.values %}
-    {{ value.name.uppercase }} = {{ loop.index0 }}
+    {{ value.name.uppercase }} = {{ value.number }}
     {% endfor %}
 
 {% endfor %}
@@ -35,7 +35,7 @@ class {{ enum.name.upper_camel_case }}(IntEnum):
 class {{ result_enum }}(IntEnum):
     """{{ nested_enum.enum_description }}"""
     {% for value in nested_enum.values %}
-    {{ value.name.uppercase }} = {{ loop.index0 }}
+    {{ value.name.uppercase }} = {{ value.number }}
     {% endfor %}
 
       {% endif %}
@@ -89,7 +89,7 @@ class {{ struct.name.upper_camel_case }}:
     class {{ nested_enum.name.upper_camel_case }}(IntEnum):
         """{{ nested_enum.enum_description }}"""
         {% for value in nested_enum.values %}
-        {{ value.name.uppercase }} = {{ loop.index0 }}
+        {{ value.name.uppercase }} = {{ value.number }}
         {% endfor %}
 
     {% endfor %}

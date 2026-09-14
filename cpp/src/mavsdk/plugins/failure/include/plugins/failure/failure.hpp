@@ -67,21 +67,21 @@ public:
      * @brief A failure unit.
      */
     enum class FailureUnit {
-        SensorGyro, /**< @brief Gyro. */
-        SensorAccel, /**< @brief Accelerometer. */
-        SensorMag, /**< @brief Magnetometer. */
-        SensorBaro, /**< @brief Barometer. */
-        SensorGps, /**< @brief GPS. */
-        SensorOpticalFlow, /**< @brief Optical flow. */
-        SensorVio, /**< @brief Visual inertial odometry. */
-        SensorDistanceSensor, /**< @brief Distance sensor. */
-        SensorAirspeed, /**< @brief Airspeed. */
-        SystemBattery, /**< @brief Battery. */
-        SystemMotor, /**< @brief Motor. */
-        SystemServo, /**< @brief Servo. */
-        SystemAvoidance, /**< @brief Avoidance. */
-        SystemRcSignal, /**< @brief RC signal. */
-        SystemMavlinkSignal, /**< @brief MAVLink signal. */
+        SensorGyro = 0, /**< @brief Gyro. */
+        SensorAccel = 1, /**< @brief Accelerometer. */
+        SensorMag = 2, /**< @brief Magnetometer. */
+        SensorBaro = 3, /**< @brief Barometer. */
+        SensorGps = 4, /**< @brief GPS. */
+        SensorOpticalFlow = 5, /**< @brief Optical flow. */
+        SensorVio = 6, /**< @brief Visual inertial odometry. */
+        SensorDistanceSensor = 7, /**< @brief Distance sensor. */
+        SensorAirspeed = 8, /**< @brief Airspeed. */
+        SystemBattery = 100, /**< @brief Battery. */
+        SystemMotor = 101, /**< @brief Motor. */
+        SystemServo = 102, /**< @brief Servo. */
+        SystemAvoidance = 103, /**< @brief Avoidance. */
+        SystemRcSignal = 104, /**< @brief RC signal. */
+        SystemMavlinkSignal = 105, /**< @brief MAVLink signal. */
     };
 
     /**
@@ -102,14 +102,14 @@ public:
      * @brief A failure type
      */
     enum class FailureType {
-        Ok, /**< @brief No failure injected, used to reset a previous failure. */
-        Off, /**< @brief Sets unit off, so completely non-responsive. */
-        Stuck, /**< @brief Unit is stuck e.g. keeps reporting the same value. */
-        Garbage, /**< @brief Unit is reporting complete garbage. */
-        Wrong, /**< @brief Unit is consistently wrong. */
-        Slow, /**< @brief Unit is slow, so e.g. reporting at slower than expected rate. */
-        Delayed, /**< @brief Data of unit is delayed in time. */
-        Intermittent, /**< @brief Unit is sometimes working, sometimes not. */
+        Ok = 0, /**< @brief No failure injected, used to reset a previous failure. */
+        Off = 1, /**< @brief Sets unit off, so completely non-responsive. */
+        Stuck = 2, /**< @brief Unit is stuck e.g. keeps reporting the same value. */
+        Garbage = 3, /**< @brief Unit is reporting complete garbage. */
+        Wrong = 4, /**< @brief Unit is consistently wrong. */
+        Slow = 5, /**< @brief Unit is slow, so e.g. reporting at slower than expected rate. */
+        Delayed = 6, /**< @brief Data of unit is delayed in time. */
+        Intermittent = 7, /**< @brief Unit is sometimes working, sometimes not. */
     };
 
     /**
@@ -134,14 +134,14 @@ public:
      * @brief Possible results returned for failure requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Unsupported, /**< @brief Failure not supported. */
-        Denied, /**< @brief Failure injection denied. */
-        Disabled, /**< @brief Failure injection is disabled. */
-        Timeout, /**< @brief Request timed out. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Unsupported = 4, /**< @brief Failure not supported. */
+        Denied = 5, /**< @brief Failure injection denied. */
+        Disabled = 6, /**< @brief Failure injection is disabled. */
+        Timeout = 7, /**< @brief Request timed out. */
     };
 
     /**

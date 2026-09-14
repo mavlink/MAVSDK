@@ -77,9 +77,9 @@ public:
      * @brief Altitude mode to configure which altitude the follow me will assume the target to be at.
      */
     enum class FollowAltitudeMode {
-        Constant, /**< @brief Target assumed to be mobing at a constant altitude of home position (where the vehicle armed). */
-        Terrain, /**< @brief Target assumed to be at the terrain level sensed by the distance sensor. */
-        TargetGps, /**< @brief Target GPS altitude taken into account to do 3D tracking. */
+        Constant = 0, /**< @brief Target assumed to be mobing at a constant altitude of home position (where the vehicle armed). */
+        Terrain = 1, /**< @brief Target assumed to be at the terrain level sensed by the distance sensor. */
+        TargetGps = 2, /**< @brief Target GPS altitude taken into account to do 3D tracking. */
     };
 
     /**
@@ -156,15 +156,15 @@ public:
      * @brief Possible results returned for followme operations
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        NoSystem, /**< @brief No system connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command denied. */
-        Timeout, /**< @brief Request timed out. */
-        NotActive, /**< @brief FollowMe is not active. */
-        SetConfigFailed, /**< @brief Failed to set FollowMe configuration. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        NoSystem = 2, /**< @brief No system connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        CommandDenied = 5, /**< @brief Command denied. */
+        Timeout = 6, /**< @brief Request timed out. */
+        NotActive = 7, /**< @brief FollowMe is not active. */
+        SetConfigFailed = 8, /**< @brief Failed to set FollowMe configuration. */
     };
 
     /**

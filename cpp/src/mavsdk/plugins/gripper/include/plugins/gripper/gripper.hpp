@@ -70,8 +70,8 @@ public:
      * https://mavlink.io/en/messages/common.html#GRIPPER_ACTIONS
      */
     enum class GripperAction {
-        Release, /**< @brief Open the gripper to release the cargo. */
-        Grab, /**< @brief Close the gripper and grab onto cargo. */
+        Release = 0, /**< @brief Open the gripper to release the cargo. */
+        Grab = 1, /**< @brief Close the gripper and grab onto cargo. */
     };
 
     /**
@@ -96,13 +96,13 @@ public:
      * @brief Possible results returned for gripper action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request was successful. */
-        NoSystem, /**< @brief No system is connected. */
-        Busy, /**< @brief Temporarily rejected. */
-        Timeout, /**< @brief Request timed out. */
-        Unsupported, /**< @brief Action not supported. */
-        Failed, /**< @brief Action failed. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request was successful. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        Busy = 3, /**< @brief Temporarily rejected. */
+        Timeout = 4, /**< @brief Request timed out. */
+        Unsupported = 5, /**< @brief Action not supported. */
+        Failed = 6, /**< @brief Action failed. */
     };
 
     /**

@@ -139,9 +139,9 @@ class Camera internal constructor(private val native: CameraNative) {
         /** Storage type MicroSD card */
         MICROSD(3),
         /** Storage type HD mass storage */
-        HD(4),
+        HD(7),
         /** Storage type other, not listed */
-        OTHER(5);
+        OTHER(254);
 
         companion object {
             fun fromValue(value: Int): StorageType = entries.find { it.value == value } ?: UNKNOWN

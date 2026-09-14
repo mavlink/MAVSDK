@@ -114,7 +114,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
     enum class Result(val value: Int) {
 {% for value in nested_enum.values %}
         /** {{ value.description | trim | replace('\n', '\n         * ') }} */
-        {{ value.name.uppercase }}({{ loop.index0 }}),
+        {{ value.name.uppercase }}({{ value.number }}),
 {% endfor %}
         ;
 
@@ -145,7 +145,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
     enum class {{ enum.name.upper_camel_case }}(val value: Int) {
 {% for value in enum.values %}
         /** {{ value.description | trim | replace('\n', '\n         * ') }} */
-        {{ value.name.uppercase }}({{ loop.index0 }}),
+        {{ value.name.uppercase }}({{ value.number }}),
 {% endfor %}
         ;
 
@@ -172,7 +172,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(
     enum class {{ nested_enum.name.upper_camel_case }}(val value: Int) {
 {% for value in nested_enum.values %}
         /** {{ value.description | trim | replace('\n', '\n         * ') }} */
-        {{ value.name.uppercase }}({{ loop.index0 }}),
+        {{ value.name.uppercase }}({{ value.number }}),
 {% endfor %}
         ;
 

@@ -55,9 +55,9 @@ public:
      * @brief The metadata type
      */
     enum class MetadataType {
-        Parameter, /**< @brief Parameter metadata. */
-        Events, /**< @brief Event definitions. */
-        Actuators, /**< @brief Actuator definitions. */
+        Parameter = 0, /**< @brief Parameter metadata. */
+        Events = 1, /**< @brief Event definitions. */
+        Actuators = 2, /**< @brief Actuator definitions. */
     };
 
     /**

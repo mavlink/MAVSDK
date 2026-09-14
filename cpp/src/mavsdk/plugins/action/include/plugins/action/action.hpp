@@ -67,11 +67,11 @@ public:
      * @brief Yaw behaviour during orbit flight.
      */
     enum class OrbitYawBehavior {
-        HoldFrontToCircleCenter, /**< @brief Vehicle front points to the center (default). */
-        HoldInitialHeading, /**< @brief Vehicle front holds heading when message received. */
-        Uncontrolled, /**< @brief Yaw uncontrolled. */
-        HoldFrontTangentToCircle, /**< @brief Vehicle front follows flight path (tangential to circle). */
-        RcControlled, /**< @brief Yaw controlled by RC input. */
+        HoldFrontToCircleCenter = 0, /**< @brief Vehicle front points to the center (default). */
+        HoldInitialHeading = 1, /**< @brief Vehicle front holds heading when message received. */
+        Uncontrolled = 2, /**< @brief Yaw uncontrolled. */
+        HoldFrontTangentToCircle = 3, /**< @brief Vehicle front follows flight path (tangential to circle). */
+        RcControlled = 4, /**< @brief Yaw controlled by RC input. */
     };
 
     /**
@@ -92,8 +92,8 @@ public:
      * @brief Commanded values for relays
      */
     enum class RelayCommand {
-        On, /**< @brief Turn the relay off. */
-        Off, /**< @brief Turn the relay on.. */
+        On = 0, /**< @brief Turn the relay off. */
+        Off = 1, /**< @brief Turn the relay on.. */
     };
 
     /**
@@ -118,21 +118,21 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request was successful. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command refused by vehicle. */
-        CommandDeniedLandedStateUnknown, /**< @brief Command refused because landed state is unknown. */
-        CommandDeniedNotLanded, /**< @brief Command refused because vehicle not landed. */
-        Timeout, /**< @brief Request timed out. */
-        VtolTransitionSupportUnknown, /**< @brief Hybrid/VTOL transition support is unknown. */
-        NoVtolTransitionSupport, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
-        ParameterError, /**< @brief Error getting or setting parameter. */
-        Unsupported, /**< @brief Action not supported. */
-        Failed, /**< @brief Action failed. */
-        InvalidArgument, /**< @brief Invalid argument. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request was successful. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        CommandDenied = 5, /**< @brief Command refused by vehicle. */
+        CommandDeniedLandedStateUnknown = 6, /**< @brief Command refused because landed state is unknown. */
+        CommandDeniedNotLanded = 7, /**< @brief Command refused because vehicle not landed. */
+        Timeout = 8, /**< @brief Request timed out. */
+        VtolTransitionSupportUnknown = 9, /**< @brief Hybrid/VTOL transition support is unknown. */
+        NoVtolTransitionSupport = 10, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
+        ParameterError = 11, /**< @brief Error getting or setting parameter. */
+        Unsupported = 12, /**< @brief Action not supported. */
+        Failed = 13, /**< @brief Action failed. */
+        InvalidArgument = 14, /**< @brief Invalid argument. */
     };
 
     /**

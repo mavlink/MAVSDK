@@ -82,14 +82,14 @@ public:
      * @brief Possible camera actions at a mission item.
      */
     enum class CameraAction {
-        None, /**< @brief No action. */
-        TakePhoto, /**< @brief Take a single photo. */
-        StartPhotoInterval, /**< @brief Start capturing photos at regular intervals. */
-        StopPhotoInterval, /**< @brief Stop capturing photos at regular intervals. */
-        StartVideo, /**< @brief Start capturing video. */
-        StopVideo, /**< @brief Stop capturing video. */
-        StartPhotoDistance, /**< @brief Start capturing photos at regular distance. */
-        StopPhotoDistance, /**< @brief Stop capturing photos at regular distance. */
+        None = 0, /**< @brief No action. */
+        TakePhoto = 1, /**< @brief Take a single photo. */
+        StartPhotoInterval = 2, /**< @brief Start capturing photos at regular intervals. */
+        StopPhotoInterval = 3, /**< @brief Stop capturing photos at regular intervals. */
+        StartVideo = 4, /**< @brief Start capturing video. */
+        StopVideo = 5, /**< @brief Stop capturing video. */
+        StartPhotoDistance = 6, /**< @brief Start capturing photos at regular distance. */
+        StopPhotoDistance = 7, /**< @brief Stop capturing photos at regular distance. */
     };
 
     /**
@@ -110,11 +110,11 @@ public:
      * @brief Possible vehicle actions at a mission item
      */
     enum class VehicleAction {
-        None, /**< @brief No action. */
-        Takeoff, /**< @brief Vehicle will takeoff and go to defined waypoint. */
-        Land, /**< @brief When a waypoint is reached vehicle will land at current position. */
-        TransitionToFw, /**< @brief When a waypoint is reached vehicle will transition to fixed-wing mode. */
-        TransitionToMc, /**< @brief When a waypoint is reached vehicle will transition to multi-copter mode. */
+        None = 0, /**< @brief No action. */
+        Takeoff = 1, /**< @brief Vehicle will takeoff and go to defined waypoint. */
+        Land = 2, /**< @brief When a waypoint is reached vehicle will land at current position. */
+        TransitionToFw = 3, /**< @brief When a waypoint is reached vehicle will transition to fixed-wing mode. */
+        TransitionToMc = 4, /**< @brief When a waypoint is reached vehicle will transition to multi-copter mode. */
     };
 
     /**
@@ -220,22 +220,22 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        Error, /**< @brief Error. */
-        TooManyMissionItems, /**< @brief Too many mission items in the mission. */
-        Busy, /**< @brief Vehicle is busy. */
-        Timeout, /**< @brief Request timed out. */
-        InvalidArgument, /**< @brief Invalid argument. */
-        Unsupported, /**< @brief Mission downloaded from the system is not supported. */
-        NoMissionAvailable, /**< @brief No mission available on the system. */
-        UnsupportedMissionCmd, /**< @brief Unsupported mission command. */
-        TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
-        NoSystem, /**< @brief No system connected. */
-        Next, /**< @brief Intermediate message showing progress. */
-        Denied, /**< @brief Request denied. */
-        ProtocolError, /**< @brief There was a protocol error. */
-        IntMessagesNotSupported, /**< @brief The system does not support the MISSION_INT protocol. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        Error = 2, /**< @brief Error. */
+        TooManyMissionItems = 3, /**< @brief Too many mission items in the mission. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        Timeout = 5, /**< @brief Request timed out. */
+        InvalidArgument = 6, /**< @brief Invalid argument. */
+        Unsupported = 7, /**< @brief Mission downloaded from the system is not supported. */
+        NoMissionAvailable = 8, /**< @brief No mission available on the system. */
+        UnsupportedMissionCmd = 11, /**< @brief Unsupported mission command. */
+        TransferCancelled = 12, /**< @brief Mission transfer (upload or download) has been cancelled. */
+        NoSystem = 13, /**< @brief No system connected. */
+        Next = 14, /**< @brief Intermediate message showing progress. */
+        Denied = 15, /**< @brief Request denied. */
+        ProtocolError = 16, /**< @brief There was a protocol error. */
+        IntMessagesNotSupported = 17, /**< @brief The system does not support the MISSION_INT protocol. */
     };
 
     /**

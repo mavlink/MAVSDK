@@ -372,9 +372,9 @@ typedef enum {
     /**  Storage type MicroSD card. */
     MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_TYPE_MICROSD = 3,
     /**  Storage type HD mass storage. */
-    MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_TYPE_HD = 4,
+    MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_TYPE_HD = 7,
     /**  Storage type other, not listed. */
-    MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_TYPE_OTHER = 5,
+    MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_TYPE_OTHER = 254,
 } mavsdk_camera_server_storage_information_storage_type_t;
 
 /**

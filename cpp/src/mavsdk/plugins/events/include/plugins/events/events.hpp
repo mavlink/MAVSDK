@@ -67,14 +67,14 @@ public:
      * @brief Log level type
      */
     enum class LogLevel {
-        Emergency, /**< @brief Emergency. */
-        Alert, /**< @brief Alert. */
-        Critical, /**< @brief Critical. */
-        Error, /**< @brief Error. */
-        Warning, /**< @brief Warning. */
-        Notice, /**< @brief Notice. */
-        Info, /**< @brief Info. */
-        Debug, /**< @brief Debug. */
+        Emergency = 0, /**< @brief Emergency. */
+        Alert = 1, /**< @brief Alert. */
+        Critical = 2, /**< @brief Critical. */
+        Error = 3, /**< @brief Error. */
+        Warning = 4, /**< @brief Warning. */
+        Notice = 5, /**< @brief Notice. */
+        Info = 6, /**< @brief Info. */
+        Debug = 7, /**< @brief Debug. */
     };
 
     /**
@@ -240,15 +240,15 @@ public:
      * @brief Possible results returned
      */
     enum class Result {
-        Success, /**< @brief Successful result. */
-        NotAvailable, /**< @brief Not available. */
-        ConnectionError, /**< @brief Connection error. */
-        Unsupported, /**< @brief Unsupported. */
-        Denied, /**< @brief Denied. */
-        Failed, /**< @brief Failed. */
-        Timeout, /**< @brief Timeout. */
-        NoSystem, /**< @brief No system available. */
-        Unknown, /**< @brief Unknown result. */
+        Success = 0, /**< @brief Successful result. */
+        NotAvailable = 1, /**< @brief Not available. */
+        ConnectionError = 2, /**< @brief Connection error. */
+        Unsupported = 3, /**< @brief Unsupported. */
+        Denied = 4, /**< @brief Denied. */
+        Failed = 5, /**< @brief Failed. */
+        Timeout = 6, /**< @brief Timeout. */
+        NoSystem = 7, /**< @brief No system available. */
+        Unknown = 8, /**< @brief Unknown result. */
     };
 
     /**

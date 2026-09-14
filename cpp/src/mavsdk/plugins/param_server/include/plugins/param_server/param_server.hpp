@@ -164,14 +164,14 @@ public:
      * @brief Possible results returned for param requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        NotFound, /**< @brief Not Found. */
-        WrongType, /**< @brief Wrong type. */
-        ParamNameTooLong, /**< @brief Parameter name too long (> 16). */
-        NoSystem, /**< @brief No system available. */
-        ParamValueTooLong, /**< @brief Parameter name too long (> 128). */
-        ParamProvidedTooLate, /**< @brief New params have to be provided before the param set is locked down. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        NotFound = 2, /**< @brief Not Found. */
+        WrongType = 3, /**< @brief Wrong type. */
+        ParamNameTooLong = 4, /**< @brief Parameter name too long (> 16). */
+        NoSystem = 5, /**< @brief No system available. */
+        ParamValueTooLong = 6, /**< @brief Parameter name too long (> 128). */
+        ParamProvidedTooLate = 7, /**< @brief New params have to be provided before the param set is locked down. */
     };
 
     /**

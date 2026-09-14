@@ -76,9 +76,9 @@ public:
      * @brief The type of a file system entry.
      */
     enum class EntryType {
-        Unknown, /**< @brief Unknown entry type. */
-        File, /**< @brief A regular file. */
-        Directory, /**< @brief A directory. */
+        Unknown = 0, /**< @brief Unknown entry type. */
+        File = 1, /**< @brief A regular file. */
+        Directory = 2, /**< @brief A directory. */
     };
 
     /**
@@ -174,19 +174,19 @@ public:
      * @brief Possible results returned for FTP commands
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Success. */
-        Next, /**< @brief Intermediate message showing progress. */
-        Timeout, /**< @brief Timeout. */
-        Busy, /**< @brief Operation is already in progress. */
-        FileIoError, /**< @brief File IO operation error. */
-        FileExists, /**< @brief File exists already. */
-        FileDoesNotExist, /**< @brief File does not exist. */
-        FileProtected, /**< @brief File is write protected. */
-        InvalidParameter, /**< @brief Invalid parameter. */
-        Unsupported, /**< @brief Unsupported command. */
-        ProtocolError, /**< @brief General protocol error. */
-        NoSystem, /**< @brief No system connected. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Success. */
+        Next = 2, /**< @brief Intermediate message showing progress. */
+        Timeout = 3, /**< @brief Timeout. */
+        Busy = 4, /**< @brief Operation is already in progress. */
+        FileIoError = 5, /**< @brief File IO operation error. */
+        FileExists = 6, /**< @brief File exists already. */
+        FileDoesNotExist = 7, /**< @brief File does not exist. */
+        FileProtected = 8, /**< @brief File is write protected. */
+        InvalidParameter = 9, /**< @brief Invalid parameter. */
+        Unsupported = 10, /**< @brief Unsupported command. */
+        ProtocolError = 11, /**< @brief General protocol error. */
+        NoSystem = 12, /**< @brief No system connected. */
     };
 
     /**

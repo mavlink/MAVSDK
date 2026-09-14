@@ -33,10 +33,10 @@ class MissionRawServerResult(IntEnum):
     INVALID_ARGUMENT = 6
     UNSUPPORTED = 7
     NO_MISSION_AVAILABLE = 8
-    UNSUPPORTED_MISSION_CMD = 9
-    TRANSFER_CANCELLED = 10
-    NO_SYSTEM = 11
-    NEXT = 12
+    UNSUPPORTED_MISSION_CMD = 11
+    TRANSFER_CANCELLED = 12
+    NO_SYSTEM = 13
+    NEXT = 14
 
 
 # ===== Internal C Structures =====

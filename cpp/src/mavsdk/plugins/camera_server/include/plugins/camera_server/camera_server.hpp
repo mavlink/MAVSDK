@@ -55,10 +55,10 @@ public:
      * @brief Possible feedback results for camera respond command.
      */
     enum class CameraFeedback {
-        Unknown, /**< @brief Unknown. */
-        Ok, /**< @brief Ok. */
-        Busy, /**< @brief Busy. */
-        Failed, /**< @brief Failed. */
+        Unknown = 0, /**< @brief Unknown. */
+        Ok = 1, /**< @brief Ok. */
+        Busy = 2, /**< @brief Busy. */
+        Failed = 3, /**< @brief Failed. */
     };
 
     /**
@@ -79,9 +79,9 @@ public:
      * @brief Camera mode type.
      */
     enum class Mode {
-        Unknown, /**< @brief Unknown mode. */
-        Photo, /**< @brief Photo mode. */
-        Video, /**< @brief Video mode. */
+        Unknown = 0, /**< @brief Unknown mode. */
+        Photo = 1, /**< @brief Photo mode. */
+        Video = 2, /**< @brief Video mode. */
     };
 
     /**
@@ -262,15 +262,15 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Command executed successfully. */
-        InProgress, /**< @brief Command in progress. */
-        Busy, /**< @brief Camera is busy and rejected command. */
-        Denied, /**< @brief Camera denied the command. */
-        Error, /**< @brief An error has occurred while executing the command. */
-        Timeout, /**< @brief Command timed out. */
-        WrongArgument, /**< @brief Command has wrong argument(s). */
-        NoSystem, /**< @brief No system connected. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Command executed successfully. */
+        InProgress = 2, /**< @brief Command in progress. */
+        Busy = 3, /**< @brief Camera is busy and rejected command. */
+        Denied = 4, /**< @brief Camera denied the command. */
+        Error = 5, /**< @brief An error has occurred while executing the command. */
+        Timeout = 6, /**< @brief Command timed out. */
+        WrongArgument = 7, /**< @brief Command has wrong argument(s). */
+        NoSystem = 8, /**< @brief No system connected. */
     };
 
     /**
@@ -302,10 +302,10 @@ public:
      * @brief Storage status type.
      */
     enum class StorageStatus {
-        NotAvailable, /**< @brief Storage not available. */
-        Unformatted, /**< @brief Storage is not formatted (i.e. has no recognized file system). */
-        Formatted, /**< @brief Storage is formatted (i.e. has recognized a file system). */
-        NotSupported, /**< @brief Storage status is not supported. */
+        NotAvailable = 0, /**< @brief Storage not available. */
+        Unformatted = 1, /**< @brief Storage is not formatted (i.e. has no recognized file system). */
+        Formatted = 2, /**< @brief Storage is formatted (i.e. has recognized a file system). */
+        NotSupported = 3, /**< @brief Storage status is not supported. */
     };
 
     /**
@@ -326,12 +326,12 @@ public:
      * @brief Storage type.
      */
     enum class StorageType {
-        Unknown, /**< @brief Storage type unknown. */
-        UsbStick, /**< @brief Storage type USB stick. */
-        Sd, /**< @brief Storage type SD card. */
-        Microsd, /**< @brief Storage type MicroSD card. */
-        Hd, /**< @brief Storage type HD mass storage. */
-        Other, /**< @brief Storage type other, not listed. */
+        Unknown = 0, /**< @brief Storage type unknown. */
+        UsbStick = 1, /**< @brief Storage type USB stick. */
+        Sd = 2, /**< @brief Storage type SD card. */
+        Microsd = 3, /**< @brief Storage type MicroSD card. */
+        Hd = 7, /**< @brief Storage type HD mass storage. */
+        Other = 254, /**< @brief Storage type other, not listed. */
     };
 
     /**
@@ -386,10 +386,10 @@ public:
      * @brief The image status
      */
     enum class ImageStatus {
-        Idle, /**< @brief idle. */
-        CaptureInProgress, /**< @brief capture in progress. */
-        IntervalIdle, /**< @brief interval set but idle. */
-        IntervalInProgress, /**< @brief interval set and capture in progress). */
+        Idle = 0, /**< @brief idle. */
+        CaptureInProgress = 1, /**< @brief capture in progress. */
+        IntervalIdle = 2, /**< @brief interval set but idle. */
+        IntervalInProgress = 3, /**< @brief interval set and capture in progress). */
     };
 
     /**
@@ -410,8 +410,8 @@ public:
      * @brief The video status
      */
     enum class VideoStatus {
-        Idle, /**< @brief idle. */
-        CaptureInProgress, /**< @brief capture in progress. */
+        Idle = 0, /**< @brief idle. */
+        CaptureInProgress = 1, /**< @brief capture in progress. */
     };
 
     /**

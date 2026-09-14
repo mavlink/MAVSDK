@@ -36,19 +36,19 @@ class Mission internal constructor(private val native: MissionNative) {
         /** No mission available on the system */
         NO_MISSION_AVAILABLE(8),
         /** Unsupported mission command */
-        UNSUPPORTED_MISSION_CMD(9),
+        UNSUPPORTED_MISSION_CMD(11),
         /** Mission transfer (upload or download) has been cancelled */
-        TRANSFER_CANCELLED(10),
+        TRANSFER_CANCELLED(12),
         /** No system connected */
-        NO_SYSTEM(11),
+        NO_SYSTEM(13),
         /** Intermediate message showing progress */
-        NEXT(12),
+        NEXT(14),
         /** Request denied */
-        DENIED(13),
+        DENIED(15),
         /** There was a protocol error */
-        PROTOCOL_ERROR(14),
+        PROTOCOL_ERROR(16),
         /** The system does not support the MISSION_INT protocol */
-        INT_MESSAGES_NOT_SUPPORTED(15);
+        INT_MESSAGES_NOT_SUPPORTED(17);
 
         companion object {
             fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN

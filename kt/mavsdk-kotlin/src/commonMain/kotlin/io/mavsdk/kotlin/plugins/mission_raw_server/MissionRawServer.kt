@@ -38,13 +38,13 @@ class MissionRawServer internal constructor(private val native: MissionRawServer
         /** No mission available on the system */
         NO_MISSION_AVAILABLE(8),
         /** Unsupported mission command */
-        UNSUPPORTED_MISSION_CMD(9),
+        UNSUPPORTED_MISSION_CMD(11),
         /** Mission transfer (upload or download) has been cancelled */
-        TRANSFER_CANCELLED(10),
+        TRANSFER_CANCELLED(12),
         /** No system connected */
-        NO_SYSTEM(11),
+        NO_SYSTEM(13),
         /** Intermediate message showing progress or instructions on the next steps */
-        NEXT(12);
+        NEXT(14);
 
         companion object {
             fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN

@@ -96,14 +96,14 @@ public:
      * @brief Possible results returned for logging requests
      */
     enum class Result {
-        Success, /**< @brief Request succeeded. */
-        NoSystem, /**< @brief No system connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief System busy. */
-        CommandDenied, /**< @brief Command denied. */
-        Timeout, /**< @brief Timeout. */
-        Unsupported, /**< @brief Unsupported. */
-        Unknown, /**< @brief Unknown error. */
+        Success = 0, /**< @brief Request succeeded. */
+        NoSystem = 1, /**< @brief No system connected. */
+        ConnectionError = 2, /**< @brief Connection error. */
+        Busy = 3, /**< @brief System busy. */
+        CommandDenied = 4, /**< @brief Command denied. */
+        Timeout = 5, /**< @brief Timeout. */
+        Unsupported = 6, /**< @brief Unsupported. */
+        Unknown = 7, /**< @brief Unknown error. */
     };
 
     /**

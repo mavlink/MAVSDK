@@ -41,7 +41,7 @@ typedef struct mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_sn
 typedef enum {
     {% for value in enum.values %}
     /** {{ value.description.rstrip() }}. */
-    MAVSDK_{{ plugin_name.uppercase }}_{{ enum.name.uppercase }}_{{ value.name.uppercase }} = {{ loop.index0 }},
+    MAVSDK_{{ plugin_name.uppercase }}_{{ enum.name.uppercase }}_{{ value.name.uppercase }} = {{ value.number }},
     {% endfor %}
 } mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.lower_snake_case }}_t;
 
@@ -58,7 +58,7 @@ typedef enum {
 typedef enum {
     {% for value in nested_enum.values %}
     /** {{ value.description.rstrip() }}. */
-    MAVSDK_{{ plugin_name.uppercase }}_RESULT_{{ value.name.uppercase }} = {{ loop.index0 }},
+    MAVSDK_{{ plugin_name.uppercase }}_RESULT_{{ value.name.uppercase }} = {{ value.number }},
     {% endfor %}
 } mavsdk_{{ plugin_name.lower_snake_case }}_result_t;
 
@@ -72,7 +72,7 @@ typedef enum {
 typedef enum {
     {% for value in nested_enum.values %}
     /** {{ value.description.rstrip() }}. */
-    MAVSDK_{{ plugin_name.uppercase }}_{{ struct.name.uppercase }}_{{ nested_enum.name.uppercase }}_{{ value.name.uppercase }} = {{ loop.index0 }},
+    MAVSDK_{{ plugin_name.uppercase }}_{{ struct.name.uppercase }}_{{ nested_enum.name.uppercase }}_{{ value.name.uppercase }} = {{ value.number }},
     {% endfor %}
 } mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_t;
 

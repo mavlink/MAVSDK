@@ -55,12 +55,12 @@ public:
      * @brief The rejection reason
      */
     enum class RejectionReason {
-        Generic, /**< @brief Not a specific reason. */
-        None, /**< @brief Authorizer will send the error as string to GCS. */
-        InvalidWaypoint, /**< @brief At least one waypoint have a invalid value. */
-        Timeout, /**< @brief Timeout in the authorizer process(in case it depends on network). */
-        AirspaceInUse, /**< @brief Airspace of the mission in use by another vehicle, second result parameter can have the waypoint id that caused it to be denied.. */
-        BadWeather, /**< @brief Weather is not good to fly. */
+        Generic = 0, /**< @brief Not a specific reason. */
+        None = 1, /**< @brief Authorizer will send the error as string to GCS. */
+        InvalidWaypoint = 2, /**< @brief At least one waypoint have a invalid value. */
+        Timeout = 3, /**< @brief Timeout in the authorizer process(in case it depends on network). */
+        AirspaceInUse = 4, /**< @brief Airspace of the mission in use by another vehicle, second result parameter can have the waypoint id that caused it to be denied.. */
+        BadWeather = 5, /**< @brief Weather is not good to fly. */
     };
 
     /**
@@ -85,9 +85,9 @@ public:
      * @brief The result
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Command accepted. */
-        Failed, /**< @brief Command failed. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Command accepted. */
+        Failed = 2, /**< @brief Command failed. */
     };
 
     /**

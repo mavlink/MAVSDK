@@ -186,28 +186,28 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        Error, /**< @brief Error. */
-        TooManyMissionItems, /**< @brief Too many mission items in the mission. */
-        Busy, /**< @brief Vehicle is busy. */
-        Timeout, /**< @brief Request timed out. */
-        InvalidArgument, /**< @brief Invalid argument. */
-        Unsupported, /**< @brief Mission downloaded from the system is not supported. */
-        NoMissionAvailable, /**< @brief No mission available on the system. */
-        TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
-        FailedToOpenQgcPlan, /**< @brief Failed to open the QGroundControl plan. */
-        FailedToParseQgcPlan, /**< @brief Failed to parse the QGroundControl plan. */
-        NoSystem, /**< @brief No system connected. */
-        Denied, /**< @brief Request denied. */
-        MissionTypeNotConsistent, /**< @brief Mission type is not consistent. */
-        InvalidSequence, /**< @brief The mission item sequences are not increasing correctly. */
-        CurrentInvalid, /**< @brief The current item is not set correctly. */
-        ProtocolError, /**< @brief There was a protocol error. */
-        IntMessagesNotSupported, /**< @brief The system does not support the MISSION_INT protocol. */
-        FailedToOpenMissionPlannerPlan, /**< @brief Failed to open the Mission Planner plan. */
-        FailedToParseMissionPlannerPlan, /**< @brief Failed to parse the Mission Planner plan. */
-        Next, /**< @brief Intermediate message showing progress. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        Error = 2, /**< @brief Error. */
+        TooManyMissionItems = 3, /**< @brief Too many mission items in the mission. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        Timeout = 5, /**< @brief Request timed out. */
+        InvalidArgument = 6, /**< @brief Invalid argument. */
+        Unsupported = 7, /**< @brief Mission downloaded from the system is not supported. */
+        NoMissionAvailable = 8, /**< @brief No mission available on the system. */
+        TransferCancelled = 9, /**< @brief Mission transfer (upload or download) has been cancelled. */
+        FailedToOpenQgcPlan = 10, /**< @brief Failed to open the QGroundControl plan. */
+        FailedToParseQgcPlan = 11, /**< @brief Failed to parse the QGroundControl plan. */
+        NoSystem = 12, /**< @brief No system connected. */
+        Denied = 13, /**< @brief Request denied. */
+        MissionTypeNotConsistent = 14, /**< @brief Mission type is not consistent. */
+        InvalidSequence = 15, /**< @brief The mission item sequences are not increasing correctly. */
+        CurrentInvalid = 16, /**< @brief The current item is not set correctly. */
+        ProtocolError = 17, /**< @brief There was a protocol error. */
+        IntMessagesNotSupported = 18, /**< @brief The system does not support the MISSION_INT protocol. */
+        FailedToOpenMissionPlannerPlan = 19, /**< @brief Failed to open the Mission Planner plan. */
+        FailedToParseMissionPlannerPlan = 20, /**< @brief Failed to parse the Mission Planner plan. */
+        Next = 21, /**< @brief Intermediate message showing progress. */
     };
 
     /**

@@ -56,13 +56,13 @@ public:
      * @brief GPS fix type.
      */
     enum class FixType {
-        NoGps, /**< @brief No GPS connected. */
-        NoFix, /**< @brief No position information, GPS is connected. */
-        Fix2D, /**< @brief 2D position. */
-        Fix3D, /**< @brief 3D position. */
-        FixDgps, /**< @brief DGPS/SBAS aided 3D position. */
-        RtkFloat, /**< @brief RTK float, 3D position. */
-        RtkFixed, /**< @brief RTK Fixed, 3D position. */
+        NoGps = 0, /**< @brief No GPS connected. */
+        NoFix = 1, /**< @brief No position information, GPS is connected. */
+        Fix2D = 2, /**< @brief 2D position. */
+        Fix3D = 3, /**< @brief 3D position. */
+        FixDgps = 4, /**< @brief DGPS/SBAS aided 3D position. */
+        RtkFloat = 5, /**< @brief RTK float, 3D position. */
+        RtkFixed = 6, /**< @brief RTK Fixed, 3D position. */
     };
 
     /**
@@ -83,11 +83,11 @@ public:
      * @brief Maps to MAV_VTOL_STATE
      */
     enum class VtolState {
-        Undefined, /**< @brief Not VTOL. */
-        TransitionToFw, /**< @brief Transitioning to fixed-wing. */
-        TransitionToMc, /**< @brief Transitioning to multi-copter. */
-        Mc, /**< @brief Multi-copter. */
-        Fw, /**< @brief Fixed-wing. */
+        Undefined = 0, /**< @brief Not VTOL. */
+        TransitionToFw = 1, /**< @brief Transitioning to fixed-wing. */
+        TransitionToMc = 2, /**< @brief Transitioning to multi-copter. */
+        Mc = 3, /**< @brief Multi-copter. */
+        Fw = 4, /**< @brief Fixed-wing. */
     };
 
     /**
@@ -108,14 +108,14 @@ public:
      * @brief Status types.
      */
     enum class StatusTextType {
-        Debug, /**< @brief Debug. */
-        Info, /**< @brief Information. */
-        Notice, /**< @brief Notice. */
-        Warning, /**< @brief Warning. */
-        Error, /**< @brief Error. */
-        Critical, /**< @brief Critical. */
-        Alert, /**< @brief Alert. */
-        Emergency, /**< @brief Emergency. */
+        Debug = 0, /**< @brief Debug. */
+        Info = 1, /**< @brief Information. */
+        Notice = 2, /**< @brief Notice. */
+        Warning = 3, /**< @brief Warning. */
+        Error = 4, /**< @brief Error. */
+        Critical = 5, /**< @brief Critical. */
+        Alert = 6, /**< @brief Alert. */
+        Emergency = 7, /**< @brief Emergency. */
     };
 
     /**
@@ -136,11 +136,11 @@ public:
      * @brief Landed State enumeration.
      */
     enum class LandedState {
-        Unknown, /**< @brief Landed state is unknown. */
-        OnGround, /**< @brief The vehicle is on the ground. */
-        InAir, /**< @brief The vehicle is in the air. */
-        TakingOff, /**< @brief The vehicle is taking off. */
-        Landing, /**< @brief The vehicle is landing. */
+        Unknown = 0, /**< @brief Landed state is unknown. */
+        OnGround = 1, /**< @brief The vehicle is on the ground. */
+        InAir = 2, /**< @brief The vehicle is in the air. */
+        TakingOff = 3, /**< @brief The vehicle is taking off. */
+        Landing = 4, /**< @brief The vehicle is landing. */
     };
 
     /**
@@ -600,10 +600,10 @@ public:
      * @brief Mavlink frame id
      */
     enum class MavFrame {
-        Undef, /**< @brief Frame is undefined.. */
-        BodyNed, /**< @brief Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.. */
-        VisionNed, /**< @brief Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).. */
-        EstimNed, /**< @brief Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
+        Undef = 0, /**< @brief Frame is undefined.. */
+        BodyNed = 8, /**< @brief Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.. */
+        VisionNed = 16, /**< @brief Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).. */
+        EstimNed = 18, /**< @brief Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
     };
 
     /**
@@ -957,14 +957,14 @@ public:
      * @brief Possible results returned for telemetry requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Success: the telemetry command was accepted by the vehicle. */
-        NoSystem, /**< @brief No system connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command refused by vehicle. */
-        Timeout, /**< @brief Request timed out. */
-        Unsupported, /**< @brief Request not supported. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Success: the telemetry command was accepted by the vehicle. */
+        NoSystem = 2, /**< @brief No system connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        CommandDenied = 5, /**< @brief Command refused by vehicle. */
+        Timeout = 6, /**< @brief Request timed out. */
+        Unsupported = 7, /**< @brief Request not supported. */
     };
 
     /**

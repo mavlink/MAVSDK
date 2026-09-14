@@ -68,8 +68,8 @@ public:
      * @brief Gimbal mode type.
      */
     enum class GimbalMode {
-        YawFollow, /**< @brief Yaw follow will point the gimbal to the vehicle heading. */
-        YawLock, /**< @brief Yaw lock will fix the gimbal pointing to an absolute direction. */
+        YawFollow = 0, /**< @brief Yaw follow will point the gimbal to the vehicle heading. */
+        YawLock = 1, /**< @brief Yaw lock will fix the gimbal pointing to an absolute direction. */
     };
 
     /**
@@ -90,9 +90,9 @@ public:
      * @brief Control mode
      */
     enum class ControlMode {
-        None, /**< @brief Indicates that the component does not have control over the gimbal. */
-        Primary, /**< @brief To take primary control over the gimbal. */
-        Secondary, /**< @brief To take secondary control over the gimbal. */
+        None = 0, /**< @brief Indicates that the component does not have control over the gimbal. */
+        Primary = 1, /**< @brief To take primary control over the gimbal. */
+        Secondary = 2, /**< @brief To take secondary control over the gimbal. */
     };
 
     /**
@@ -113,8 +113,8 @@ public:
      * @brief The send mode type
      */
     enum class SendMode {
-        Once, /**< @brief Send command exactly once with quality of service (use for sporadic commands slower than 1 Hz). */
-        Stream, /**< @brief Stream setpoint without quality of service (use for setpoints faster than 1 Hz).. */
+        Once = 0, /**< @brief Send command exactly once with quality of service (use for sporadic commands slower than 1 Hz). */
+        Stream = 1, /**< @brief Stream setpoint without quality of service (use for setpoints faster than 1 Hz).. */
     };
 
     /**
@@ -350,13 +350,13 @@ public:
      * @brief Possible results returned for gimbal commands.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Command was accepted. */
-        Error, /**< @brief Error occurred sending the command. */
-        Timeout, /**< @brief Command timed out. */
-        Unsupported, /**< @brief Functionality not supported. */
-        NoSystem, /**< @brief No system connected. */
-        InvalidArgument, /**< @brief Invalid argument. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Command was accepted. */
+        Error = 2, /**< @brief Error occurred sending the command. */
+        Timeout = 3, /**< @brief Command timed out. */
+        Unsupported = 4, /**< @brief Functionality not supported. */
+        NoSystem = 5, /**< @brief No system connected. */
+        InvalidArgument = 6, /**< @brief Invalid argument. */
     };
 
     /**

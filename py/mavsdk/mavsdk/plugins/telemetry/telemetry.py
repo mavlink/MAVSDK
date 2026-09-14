@@ -1393,9 +1393,9 @@ class Odometry:
         """Mavlink frame id"""
 
         UNDEF = 0
-        BODY_NED = 1
-        VISION_NED = 2
-        ESTIM_NED = 3
+        BODY_NED = 8
+        VISION_NED = 16
+        ESTIM_NED = 18
 
     def __init__(
         self,

@@ -236,19 +236,19 @@ typedef enum {
     /**  No mission available on the system. */
     MAVSDK_MISSION_RESULT_NO_MISSION_AVAILABLE = 8,
     /**  Unsupported mission command. */
-    MAVSDK_MISSION_RESULT_UNSUPPORTED_MISSION_CMD = 9,
+    MAVSDK_MISSION_RESULT_UNSUPPORTED_MISSION_CMD = 11,
     /**  Mission transfer (upload or download) has been cancelled. */
-    MAVSDK_MISSION_RESULT_TRANSFER_CANCELLED = 10,
+    MAVSDK_MISSION_RESULT_TRANSFER_CANCELLED = 12,
     /**  No system connected. */
-    MAVSDK_MISSION_RESULT_NO_SYSTEM = 11,
+    MAVSDK_MISSION_RESULT_NO_SYSTEM = 13,
     /**  Intermediate message showing progress. */
-    MAVSDK_MISSION_RESULT_NEXT = 12,
+    MAVSDK_MISSION_RESULT_NEXT = 14,
     /**  Request denied. */
-    MAVSDK_MISSION_RESULT_DENIED = 13,
+    MAVSDK_MISSION_RESULT_DENIED = 15,
     /**  There was a protocol error. */
-    MAVSDK_MISSION_RESULT_PROTOCOL_ERROR = 14,
+    MAVSDK_MISSION_RESULT_PROTOCOL_ERROR = 16,
     /**  The system does not support the MISSION_INT protocol. */
-    MAVSDK_MISSION_RESULT_INT_MESSAGES_NOT_SUPPORTED = 15,
+    MAVSDK_MISSION_RESULT_INT_MESSAGES_NOT_SUPPORTED = 17,
 } mavsdk_mission_result_t;
 
 

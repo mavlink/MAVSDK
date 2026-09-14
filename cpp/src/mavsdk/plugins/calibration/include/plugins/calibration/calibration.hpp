@@ -71,18 +71,18 @@ public:
      * @brief Possible results returned for calibration commands
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief The calibration succeeded. */
-        Next, /**< @brief Intermediate message showing progress or instructions on the next steps. */
-        Failed, /**< @brief Calibration failed. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command refused by vehicle. */
-        Timeout, /**< @brief Command timed out. */
-        Cancelled, /**< @brief Calibration process was cancelled. */
-        FailedArmed, /**< @brief Calibration process failed since the vehicle is armed. */
-        Unsupported, /**< @brief Functionality not supported. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief The calibration succeeded. */
+        Next = 2, /**< @brief Intermediate message showing progress or instructions on the next steps. */
+        Failed = 3, /**< @brief Calibration failed. */
+        NoSystem = 4, /**< @brief No system is connected. */
+        ConnectionError = 5, /**< @brief Connection error. */
+        Busy = 6, /**< @brief Vehicle is busy. */
+        CommandDenied = 7, /**< @brief Command refused by vehicle. */
+        Timeout = 8, /**< @brief Command timed out. */
+        Cancelled = 9, /**< @brief Calibration process was cancelled. */
+        FailedArmed = 10, /**< @brief Calibration process failed since the vehicle is armed. */
+        Unsupported = 11, /**< @brief Functionality not supported. */
     };
 
     /**

@@ -71,15 +71,15 @@ public:
      * @brief Possible results returned for manual control requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request was successful. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command refused by vehicle. */
-        Timeout, /**< @brief Request timed out. */
-        InputOutOfRange, /**< @brief Input out of range. */
-        InputNotSet, /**< @brief No Input set. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request was successful. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        CommandDenied = 5, /**< @brief Command refused by vehicle. */
+        Timeout = 6, /**< @brief Request timed out. */
+        InputOutOfRange = 7, /**< @brief Input out of range. */
+        InputNotSet = 8, /**< @brief No Input set. */
     };
 
     /**

@@ -93,14 +93,14 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        Error, /**< @brief Error. */
-        InvalidMessage, /**< @brief Invalid MAVLink message. */
-        InvalidField, /**< @brief Invalid field name or value. */
-        ConnectionError, /**< @brief Connection error. */
-        NoSystem, /**< @brief No system connected. */
-        Timeout, /**< @brief Request timed out. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        Error = 2, /**< @brief Error. */
+        InvalidMessage = 3, /**< @brief Invalid MAVLink message. */
+        InvalidField = 4, /**< @brief Invalid field name or value. */
+        ConnectionError = 5, /**< @brief Connection error. */
+        NoSystem = 6, /**< @brief No system connected. */
+        Timeout = 7, /**< @brief Request timed out. */
     };
 
     /**

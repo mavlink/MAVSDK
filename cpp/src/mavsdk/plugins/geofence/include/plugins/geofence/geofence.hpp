@@ -67,8 +67,8 @@ public:
      * @brief Geofence types.
      */
     enum class FenceType {
-        Inclusion, /**< @brief Type representing an inclusion fence. */
-        Exclusion, /**< @brief Type representing an exclusion fence. */
+        Inclusion = 0, /**< @brief Type representing an inclusion fence. */
+        Exclusion = 1, /**< @brief Type representing an exclusion fence. */
     };
 
     /**
@@ -198,14 +198,14 @@ public:
      * @brief Possible results returned for geofence requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        Error, /**< @brief Error. */
-        TooManyGeofenceItems, /**< @brief Too many objects in the geofence. */
-        Busy, /**< @brief Vehicle is busy. */
-        Timeout, /**< @brief Request timed out. */
-        InvalidArgument, /**< @brief Invalid argument. */
-        NoSystem, /**< @brief No system connected. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        Error = 2, /**< @brief Error. */
+        TooManyGeofenceItems = 3, /**< @brief Too many objects in the geofence. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        Timeout = 5, /**< @brief Request timed out. */
+        InvalidArgument = 6, /**< @brief Invalid argument. */
+        NoSystem = 7, /**< @brief No system connected. */
     };
 
     /**

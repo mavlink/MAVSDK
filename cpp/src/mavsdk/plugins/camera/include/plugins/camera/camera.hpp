@@ -73,9 +73,9 @@ public:
      * @brief Camera mode type.
      */
     enum class Mode {
-        Unknown, /**< @brief Unknown. */
-        Photo, /**< @brief Photo mode. */
-        Video, /**< @brief Video mode. */
+        Unknown = 0, /**< @brief Unknown. */
+        Photo = 1, /**< @brief Photo mode. */
+        Video = 2, /**< @brief Video mode. */
     };
 
     /**
@@ -96,8 +96,8 @@ public:
      * @brief Photos range type.
      */
     enum class PhotosRange {
-        All, /**< @brief All the photos present on the camera. */
-        SinceConnection, /**< @brief Photos taken since MAVSDK got connected. */
+        All = 0, /**< @brief All the photos present on the camera. */
+        SinceConnection = 1, /**< @brief Photos taken since MAVSDK got connected. */
     };
 
     /**
@@ -242,8 +242,8 @@ public:
      * @brief Video stream status type.
      */
     enum class VideoStreamStatus {
-        NotRunning, /**< @brief Video stream is not running. */
-        InProgress, /**< @brief Video stream is running. */
+        NotRunning = 0, /**< @brief Video stream is not running. */
+        InProgress = 1, /**< @brief Video stream is running. */
     };
 
     /**
@@ -264,9 +264,9 @@ public:
      * @brief Video stream light spectrum type
      */
     enum class VideoStreamSpectrum {
-        Unknown, /**< @brief Unknown. */
-        VisibleLight, /**< @brief Visible light. */
-        Infrared, /**< @brief Infrared. */
+        Unknown = 0, /**< @brief Unknown. */
+        VisibleLight = 1, /**< @brief Visible light. */
+        Infrared = 2, /**< @brief Infrared. */
     };
 
     /**
@@ -369,10 +369,10 @@ public:
      * @brief Storage status type.
      */
     enum class StorageStatus {
-        NotAvailable, /**< @brief Status not available. */
-        Unformatted, /**< @brief Storage is not formatted (i.e. has no recognized file system). */
-        Formatted, /**< @brief Storage is formatted (i.e. has recognized a file system). */
-        NotSupported, /**< @brief Storage status is not supported. */
+        NotAvailable = 0, /**< @brief Status not available. */
+        Unformatted = 1, /**< @brief Storage is not formatted (i.e. has no recognized file system). */
+        Formatted = 2, /**< @brief Storage is formatted (i.e. has recognized a file system). */
+        NotSupported = 3, /**< @brief Storage status is not supported. */
     };
 
     /**
@@ -393,12 +393,12 @@ public:
      * @brief Storage type.
      */
     enum class StorageType {
-        Unknown, /**< @brief Storage type unknown. */
-        UsbStick, /**< @brief Storage type USB stick. */
-        Sd, /**< @brief Storage type SD card. */
-        Microsd, /**< @brief Storage type MicroSD card. */
-        Hd, /**< @brief Storage type HD mass storage. */
-        Other, /**< @brief Storage type other, not listed. */
+        Unknown = 0, /**< @brief Storage type unknown. */
+        UsbStick = 1, /**< @brief Storage type USB stick. */
+        Sd = 2, /**< @brief Storage type SD card. */
+        Microsd = 3, /**< @brief Storage type MicroSD card. */
+        Hd = 7, /**< @brief Storage type HD mass storage. */
+        Other = 254, /**< @brief Storage type other, not listed. */
     };
 
     /**
@@ -528,19 +528,19 @@ public:
      * @brief Possible results returned for camera commands
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Command executed successfully. */
-        InProgress, /**< @brief Command in progress. */
-        Busy, /**< @brief Camera is busy and rejected command. */
-        Denied, /**< @brief Camera denied the command. */
-        Error, /**< @brief An error has occurred while executing the command. */
-        Timeout, /**< @brief Command timed out. */
-        WrongArgument, /**< @brief Command has wrong argument(s). */
-        NoSystem, /**< @brief No system connected. */
-        ProtocolUnsupported, /**< @brief Definition file protocol not supported. */
-        Unavailable, /**< @brief Not available (yet). */
-        CameraIdInvalid, /**< @brief Camera with camera ID not found. */
-        ActionUnsupported, /**< @brief Camera action not supported. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Command executed successfully. */
+        InProgress = 2, /**< @brief Command in progress. */
+        Busy = 3, /**< @brief Camera is busy and rejected command. */
+        Denied = 4, /**< @brief Camera denied the command. */
+        Error = 5, /**< @brief An error has occurred while executing the command. */
+        Timeout = 6, /**< @brief Command timed out. */
+        WrongArgument = 7, /**< @brief Command has wrong argument(s). */
+        NoSystem = 8, /**< @brief No system connected. */
+        ProtocolUnsupported = 9, /**< @brief Definition file protocol not supported. */
+        Unavailable = 10, /**< @brief Not available (yet). */
+        CameraIdInvalid = 11, /**< @brief Camera with camera ID not found. */
+        ActionUnsupported = 12, /**< @brief Camera action not supported. */
     };
 
     /**
