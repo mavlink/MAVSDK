@@ -21,6 +21,7 @@ add_executable(system_tests_runner
     telemetry_subscription.cpp
     telemetry_timestamp.cpp
     telemetry_rc_status.cpp
+    telemetry_odometry.cpp
     geofence_download.cpp
     heartbeat_watchdog.cpp
     plugin_lifetime_churn.cpp
