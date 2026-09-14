@@ -9,6 +9,10 @@
 #endif
 #include <lzma.h>
 
+// Camera definitions and component metadata are small documents. Cap the output so a
+// malicious .xz cannot decompress until the disk is full.
+static constexpr uint64_t max_output_bytes = 64ULL * 1024 * 1024;
+
 // The following code is from the liblzma example:
 // https://github.com/tukaani-project/xz/blob/master/doc/examples/02_decompress.c
 static bool init_decoder(lzma_stream* strm)
@@ -101,6 +105,7 @@ static bool decompress(lzma_stream* strm, const char* inname, FILE* infile, FILE
 
     uint8_t inbuf[BUFSIZ];
     uint8_t outbuf[BUFSIZ];
+    uint64_t written = 0;
 
     strm->next_in = nullptr;
     strm->avail_in = 0;
@@ -139,6 +144,15 @@ static bool decompress(lzma_stream* strm, const char* inname, FILE* infile, FILE
 
         if (strm->avail_out == 0 || ret == LZMA_STREAM_END) {
             size_t write_size = sizeof(outbuf) - strm->avail_out;
+
+            if ((written += write_size) > max_output_bytes) {
+                fprintf(stderr, "%s: Decompressed output above the limit\n", inname);
+                strm->next_in = nullptr;
+                strm->avail_in = 0;
+                strm->next_out = nullptr;
+                strm->avail_out = 0;
+                return false;
+            }
 
             if (fwrite(outbuf, 1, write_size, outfile) != write_size) {
                 fprintf(stderr, "Write error: %s\n", strerror(errno));
@@ -285,6 +299,10 @@ bool InflateLZMA::inflateLZMAFile(
     const bool success = decompress(&strm, lzma_filename.string().c_str(), infile, outfile);
     fclose(infile);
     fclose(outfile);
+
+    if (!success) {
+        std::filesystem::remove(decompressed_filename);
+    }
 
     lzma_end(&strm);
 
