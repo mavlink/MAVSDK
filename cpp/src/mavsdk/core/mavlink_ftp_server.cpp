@@ -460,6 +460,16 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
 
         // Do we have room for the dir entry and the null terminator?
         if (offset + required_len > max_data_length) {
+            if (offset == 0) {
+                // The entry doesn't even fit into an empty payload, e.g. because the
+                // name is very long. We can't ever send it, so we send a skip entry
+                // instead. Otherwise the listing would stall here and all entries
+                // after this one would be lost.
+                LogWarn("Skipping entry '{}', name too long for one payload", name.string());
+                response.data[offset++] = 'S';
+                response.data[offset++] = '\0';
+                continue;
+            }
             break;
         }
 
