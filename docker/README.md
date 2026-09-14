@@ -14,7 +14,6 @@ These images include all the dependencies needed for development, CI builds, and
 
 ### Debian Images
 
-- `Dockerfile-debian-11`: Debian 11 (Bullseye)
 - `Dockerfile-debian-12`: Debian 12 (Bookworm)
 - `Dockerfile-debian-13`: Debian 13 (Trixie)
 
