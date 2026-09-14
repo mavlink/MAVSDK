@@ -144,6 +144,15 @@ private:
     // Arm _burst_timer to send the next burst packet on the io_context thread.
     void _schedule_burst_packet(std::chrono::milliseconds delay);
 
+    // A burst streams packets until the end of the file and the protocol gives the client no way
+    // to ask for less, so the pace is ours to choose and we have no idea what the link can absorb.
+    // Sending as fast as the io_context allows overwhelms anything forwarding for us: PX4 moves
+    // one message per mavlink loop iteration (1 to 10 ms) through a two message buffer, so an
+    // unpaced burst loses all but the first couple of packets and the download fails. This is a
+    // compromise, not a guarantee - it is comfortable against a 1 ms loop and still too quick for
+    // a 10 ms one - so clients are expected to cope with a truncated burst regardless.
+    static constexpr std::chrono::milliseconds kBurstPacketInterval{2};
+
     std::mutex _mutex{};
     struct SessionInfo {
         uint32_t file_size{0};
