@@ -16,10 +16,8 @@ using namespace mavsdk;
 
 static constexpr double reduced_timeout_s = 0.1;
 
-// TODO: make this compatible for Windows using GetTempPath2
-
-static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/provided";
-static const fs::path temp_dir_downloaded = "/tmp/mavsdk_systemtest_temp_data/downloaded";
+static const fs::path temp_dir_provided = test_data_dir() / "provided";
+static const fs::path temp_dir_downloaded = test_data_dir() / "downloaded";
 
 static const fs::path temp_file = "data.bin";
 

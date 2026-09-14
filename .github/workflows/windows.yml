@@ -200,6 +200,18 @@ jobs:
           -S.
       - name: build
         run: cmake --build build -j4 --config ${{ matrix.config }} --target install
+      - name: unit tests
+        # The arm64 build is cross-compiled, so we can't run it here.
+        if: matrix.arch != 'arm64'
+        run: |
+          $env:PATH = "$PWD\install\bin;$env:PATH"
+          .\build\src\unit_tests\${{ matrix.config }}\unit_tests_runner.exe
+      - name: system tests
+        if: matrix.arch != 'arm64'
+        timeout-minutes: 10
+        run: |
+          $env:PATH = "$PWD\install\bin;$env:PATH"
+          .\build\src\system_tests\${{ matrix.config }}\system_tests_runner.exe
       - name: Create zip file from mavsdk libraries
         run: (cd install && 7z.exe a -tzip ../mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip .)
       - name: Upload mavsdk library as artifact
@@ -217,6 +229,55 @@ jobs:
           asset_name: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip
           tag: ${{ github.ref }}
           overwrite: true
+
+  Windows-arm64-tests:
+    name: Windows arm64 tests (${{ matrix.config }})
+    runs-on: windows-11-arm
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [Debug, RelWithDebInfo]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v5
+        id: cache
+        with:
+          path: ./cpp/build/third_party/install
+          key: ${{ github.job }}-arm64-${{ matrix.config }}-${{ hashFiles('./cpp/third_party/**') }}-1
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+            echo "superbuild=-DSUPERBUILD=OFF" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: configure
+        # The platform is what openssl uses to pick its target, so set it even though
+        # it is what we would build natively anyway.
+        run: cmake -A ARM64
+          $env:superbuild
+          $env:cmake_prefix_path
+          -DCMAKE_BUILD_TYPE=${{ matrix.config }}
+          -DCMAKE_INSTALL_PREFIX=install
+          -DBUILD_MAVSDK_SERVER=OFF
+          -DBUILD_SHARED_LIBS=ON
+          -DWERROR=ON
+          -Bbuild
+          -S.
+      - name: build
+        run: cmake --build build -j4 --config ${{ matrix.config }} --target install
+      - name: unit tests
+        run: |
+          $env:PATH = "$PWD\install\bin;$env:PATH"
+          .\build\src\unit_tests\${{ matrix.config }}\unit_tests_runner.exe
+      - name: system tests
+        timeout-minutes: 10
+        run: |
+          $env:PATH = "$PWD\install\bin;$env:PATH"
+          .\build\src\system_tests\${{ matrix.config }}\system_tests_runner.exe
 
   Windows-mavsdk-library-combine:
     name: Combine Windows mavsdk library artifacts

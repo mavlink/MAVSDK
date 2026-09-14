@@ -4,6 +4,11 @@
 
 #include <cassert>
 
+#if defined(WINDOWS)
+#include <winsock2.h>
+#include <mswsock.h>
+#endif
+
 #include <asio/buffer.hpp>
 #include <asio/error.hpp>
 #include <asio/ip/address.hpp>
@@ -82,6 +87,26 @@ ConnectionResult UdpConnection::setup_port()
     }
 
     _socket.set_option(asio::socket_base::reuse_address(true), ec);
+
+#if defined(WINDOWS)
+    // By default, Windows reports an ICMP port unreachable caused by one of our sends
+    // as an error on the next receive on this socket. Switch that off, otherwise a
+    // remote that goes away can take down a socket which is otherwise fine.
+    BOOL report_icmp_errors = FALSE;
+    DWORD bytes_returned = 0;
+    if (WSAIoctl(
+            _socket.native_handle(),
+            SIO_UDP_CONNRESET,
+            &report_icmp_errors,
+            sizeof(report_icmp_errors),
+            nullptr,
+            0,
+            &bytes_returned,
+            nullptr,
+            nullptr) == SOCKET_ERROR) {
+        LogWarn("Could not disable ICMP error reporting: {}", WSAGetLastError());
+    }
+#endif
 
     _socket.bind(local_endpoint, ec);
     if (ec) {
@@ -273,6 +298,16 @@ void UdpConnection::do_receive()
         _sender_endpoint,
         [this](const asio::error_code& ec, std::size_t recv_len) {
             if (ec) {
+                // These are errors about one datagram, not about the socket. Windows
+                // reports an ICMP unreachable from an earlier send this way, meaning a
+                // remote that has gone away would otherwise end our receiving for good.
+                if (ec == asio::error::connection_refused || ec == asio::error::connection_reset ||
+                    ec == asio::error::network_reset || ec == asio::error::message_size) {
+                    LogDebug("Ignoring error from async_receive_from: {}", ec.message());
+                    do_receive();
+                    return;
+                }
+
                 // operation_aborted happens when the socket is closed (stop()), which is normal.
                 if (ec != asio::error::operation_aborted) {
                     LogErr("Error from async_receive_from: {}", ec.message());

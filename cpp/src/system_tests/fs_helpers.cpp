@@ -9,6 +9,18 @@
 
 using namespace mavsdk;
 
+fs::path test_data_dir()
+{
+    std::error_code ec;
+    const auto temp_dir = fs::temp_directory_path(ec);
+    if (ec) {
+        LogErr("Could not determine temp directory: {}", ec.message());
+        return fs::path("mavsdk_systemtest_temp_data");
+    }
+
+    return temp_dir / "mavsdk_systemtest_temp_data";
+}
+
 bool create_temp_file(const fs::path& path, size_t len, uint8_t start)
 {
     const auto parent_path = path.parent_path();
