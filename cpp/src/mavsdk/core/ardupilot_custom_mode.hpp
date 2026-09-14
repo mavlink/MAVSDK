@@ -37,7 +37,7 @@ enum class CopterMode {
     PosHold = 16,
     Break = 17,
     Throw = 18,
-    AvoidAdbs = 19,
+    AvoidAdsb = 19,
     GuidedNoGps = 20,
     SmartRtl = 21,
     FlowHold = 22,
