@@ -14,7 +14,8 @@ EOF
 # Get the directory where this script is located
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/.." && pwd)"
-proto_dir="$project_root/../proto/protos"
+proto_dir="$project_root/proto/protos"
+pb_plugins_dir="$project_root/proto/pb_plugins"
 
 build_dir_args=()
 options=$(getopt -l "help,build-dir:" -o "hb:" -a -- "$@")
@@ -52,13 +53,16 @@ setup_venv() {
         echo "Activating virtual environment..."
         source "$project_root/venv/bin/activate"
 
-        echo "Installing dependencies..."
-        pip install protoc-gen-mavsdk
 
         echo "Virtual environment setup complete."
     else
         echo "Already in a virtual environment: $VIRTUAL_ENV"
     fi
+
+    # Always install the generator from the proto submodule so that the
+    # templates and the generator can't drift apart.
+    echo "Installing protoc-gen-mavsdk from the proto submodule..."
+    pip install --quiet "$pb_plugins_dir"
 }
 
 # Main execution
