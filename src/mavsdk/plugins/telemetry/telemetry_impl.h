@@ -283,6 +283,7 @@ private:
 
     static Telemetry::LandedState to_landed_state(mavlink_extended_sys_state_t extended_sys_state);
     static Telemetry::VtolState to_vtol_state(mavlink_extended_sys_state_t extended_sys_state);
+    static Telemetry::Odometry::MavFrame to_mav_frame(uint8_t frame_id);
 
     static Telemetry::FlightMode telemetry_flight_mode_from_flight_mode(FlightMode flight_mode);
 
