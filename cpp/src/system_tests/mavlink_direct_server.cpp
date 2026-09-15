@@ -5,6 +5,8 @@
 #include <chrono>
 #include <thread>
 #include <future>
+#include <mutex>
+#include <memory>
 #include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
 
@@ -37,13 +39,14 @@ TEST(MavlinkDirectServer, BroadcastToClient)
     auto sender = MavlinkDirectServer{mavsdk_autopilot.server_component()};
     auto receiver = MavlinkDirect{system};
 
-    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<MavlinkDirect::MavlinkMessage>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
     auto handle = receiver.subscribe_message(
-        "GLOBAL_POSITION_INT", [&prom](MavlinkDirect::MavlinkMessage message) {
+        "GLOBAL_POSITION_INT", [prom, flag](MavlinkDirect::MavlinkMessage message) {
             LogInfo("Received GLOBAL_POSITION_INT: {}", message.fields_json);
-            prom.set_value(message);
+            std::call_once(*flag, [&]() { prom->set_value(message); });
         });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -97,13 +100,14 @@ TEST(MavlinkDirectServer, SubscribeFromClient)
     auto receiver = MavlinkDirectServer{mavsdk_autopilot.server_component()};
     auto sender = MavlinkDirect{system};
 
-    auto prom = std::promise<MavlinkDirectServer::MavlinkMessage>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<MavlinkDirectServer::MavlinkMessage>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
     auto handle = receiver.subscribe_message(
-        "GLOBAL_POSITION_INT", [&prom](MavlinkDirectServer::MavlinkMessage message) {
+        "GLOBAL_POSITION_INT", [prom, flag](MavlinkDirectServer::MavlinkMessage message) {
             LogInfo("Server received GLOBAL_POSITION_INT: {}", message.fields_json);
-            prom.set_value(message);
+            std::call_once(*flag, [&]() { prom->set_value(message); });
         });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -169,13 +173,14 @@ TEST(MavlinkDirectServer, LoadCustomXml)
     EXPECT_EQ(sender.load_custom_xml(custom_xml), MavlinkDirectServer::Result::Success);
     EXPECT_EQ(receiver.load_custom_xml(custom_xml), MavlinkDirect::Result::Success);
 
-    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<MavlinkDirect::MavlinkMessage>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
     auto handle = receiver.subscribe_message(
-        "CUSTOM_TEST_MESSAGE", [&prom](MavlinkDirect::MavlinkMessage message) {
+        "CUSTOM_TEST_MESSAGE", [prom, flag](MavlinkDirect::MavlinkMessage message) {
             LogInfo("Received CUSTOM_TEST_MESSAGE: {}", message.fields_json);
-            prom.set_value(message);
+            std::call_once(*flag, [&]() { prom->set_value(message); });
         });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -223,13 +228,14 @@ TEST(MavlinkDirectServer, TargetedSendFromClient)
     auto receiver = MavlinkDirectServer{mavsdk_autopilot.server_component()};
     auto sender = MavlinkDirect{system};
 
-    auto prom = std::promise<MavlinkDirectServer::MavlinkMessage>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<MavlinkDirectServer::MavlinkMessage>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
     auto handle = receiver.subscribe_message(
-        "PARAM_SET", [&prom](MavlinkDirectServer::MavlinkMessage message) {
+        "PARAM_SET", [prom, flag](MavlinkDirectServer::MavlinkMessage message) {
             LogInfo("Server received PARAM_SET: {}", message.fields_json);
-            prom.set_value(message);
+            std::call_once(*flag, [&]() { prom->set_value(message); });
         });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -275,13 +281,14 @@ TEST(MavlinkDirectServer, TargetedSendFromServer)
     auto sender = MavlinkDirectServer{mavsdk_autopilot.server_component()};
     auto receiver = MavlinkDirect{system};
 
-    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<MavlinkDirect::MavlinkMessage>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle =
-        receiver.subscribe_message("PARAM_SET", [&prom](MavlinkDirect::MavlinkMessage message) {
+    auto handle = receiver.subscribe_message(
+        "PARAM_SET", [prom, flag](MavlinkDirect::MavlinkMessage message) {
             LogInfo("Received PARAM_SET: {}", message.fields_json);
-            prom.set_value(message);
+            std::call_once(*flag, [&]() { prom->set_value(message); });
         });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

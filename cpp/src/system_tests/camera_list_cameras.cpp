@@ -4,6 +4,7 @@
 #include "log.hpp"
 #include <atomic>
 #include <future>
+#include <memory>
 #include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
@@ -32,16 +33,17 @@ TEST(Camera, ListCameras)
     information.definition_file_uri = "";
     camera_server.set_information(information);
 
-    auto prom = std::promise<std::shared_ptr<System>>();
-    auto fut = prom.get_future();
-    std::once_flag flag;
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
-        const auto system = mavsdk_groundstation.systems().back();
-        if (system->is_connected() && system->has_camera()) {
-            std::call_once(flag, [&]() { prom.set_value(system); });
-        }
-    });
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([prom, flag, &mavsdk_groundstation]() {
+            const auto system = mavsdk_groundstation.systems().back();
+            if (system->is_connected() && system->has_camera()) {
+                std::call_once(*flag, [&]() { prom->set_value(system); });
+            }
+        });
 
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);
@@ -49,18 +51,19 @@ TEST(Camera, ListCameras)
 
     auto camera = Camera{system};
 
-    std::atomic<bool> found_camera{false};
-    auto camera_list_handle = camera.subscribe_camera_list([&](Camera::CameraList camera_list) {
-        if (!camera_list.cameras.empty()) {
-            found_camera = true;
-        }
-    });
+    auto found_camera = std::make_shared<std::atomic<bool>>(false);
+    auto camera_list_handle =
+        camera.subscribe_camera_list([found_camera](Camera::CameraList camera_list) {
+            if (!camera_list.cameras.empty()) {
+                *found_camera = true;
+            }
+        });
 
     // We have to wait until camera is found.
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
     EXPECT_EQ(camera.camera_list().cameras.size(), 1);
-    EXPECT_TRUE(found_camera);
+    EXPECT_TRUE(*found_camera);
 
     camera.unsubscribe_camera_list(camera_list_handle);
 }

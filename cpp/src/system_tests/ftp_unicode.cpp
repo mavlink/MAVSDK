@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <chrono>
 #include <future>
+#include <memory>
 #include <optional>
 #include <string>
 #include <thread>
@@ -83,11 +84,11 @@ private:
 
 Ftp::Result upload(Ftp& ftp, const std::string& local_file_path, const std::string& remote_dir)
 {
-    auto prom = std::promise<Ftp::Result>();
-    auto fut = prom.get_future();
-    ftp.upload_async(local_file_path, remote_dir, [&prom](Ftp::Result result, Ftp::ProgressData) {
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
+    auto fut = prom->get_future();
+    ftp.upload_async(local_file_path, remote_dir, [prom](Ftp::Result result, Ftp::ProgressData) {
         if (result != Ftp::Result::Next) {
-            prom.set_value(result);
+            prom->set_value(result);
         }
     });
 
@@ -100,12 +101,12 @@ Ftp::Result upload(Ftp& ftp, const std::string& local_file_path, const std::stri
 
 Ftp::Result download(Ftp& ftp, const std::string& remote_file_path, const std::string& local_dir)
 {
-    auto prom = std::promise<Ftp::Result>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
+    auto fut = prom->get_future();
     ftp.download_async(
-        remote_file_path, local_dir, false, [&prom](Ftp::Result result, Ftp::ProgressData) {
+        remote_file_path, local_dir, false, [prom](Ftp::Result result, Ftp::ProgressData) {
             if (result != Ftp::Result::Next) {
-                prom.set_value(result);
+                prom->set_value(result);
             }
         });
 

@@ -6,6 +6,7 @@
 #include <chrono>
 #include <thread>
 #include <future>
+#include <memory>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -19,13 +20,13 @@ TEST(RawBytes, SendReceive)
     auto telemetry_server = std::make_shared<TelemetryServer>(mavsdk_autopilot.server_component());
 
     // Set up to capture outgoing raw bytes
-    auto prom = std::promise<void>();
-    auto fut = prom.get_future();
-    std::atomic<bool> message_captured{false};
+    auto prom = std::make_shared<std::promise<void>>();
+    auto fut = prom->get_future();
+    auto message_captured = std::make_shared<std::atomic<bool>>(false);
 
     // Subscribe to outgoing raw bytes
     auto handle = mavsdk_autopilot.subscribe_raw_bytes_to_be_sent(
-        [&prom, &message_captured](const char* bytes, size_t length) {
+        [prom, message_captured](const char* bytes, size_t length) {
             // Parse with our own buffers: mavlink_parse_char() would use the global state of
             // a channel, which the library packs and parses on from other threads. Each
             // callback carries one whole message, so the buffers don't need to outlive it.
@@ -42,9 +43,9 @@ TEST(RawBytes, SendReceive)
 
                     // Look for GLOBAL_POSITION_INT message
                     if (msg.msgid == MAVLINK_MSG_ID_GLOBAL_POSITION_INT &&
-                        !message_captured.exchange(true)) {
+                        !message_captured->exchange(true)) {
                         LogInfo("Captured GLOBAL_POSITION_INT being sent");
-                        prom.set_value();
+                        prom->set_value();
                     }
                 }
             }

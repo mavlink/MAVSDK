@@ -7,6 +7,7 @@
 
 #include <atomic>
 #include <chrono>
+#include <memory>
 #include <string>
 #include <thread>
 
@@ -98,21 +99,23 @@ class HeartbeatCounter {
 public:
     explicit HeartbeatCounter(Mavsdk& mavsdk) : _mavsdk(mavsdk)
     {
-        _handle = _mavsdk.subscribe_raw_bytes_to_be_sent([this](const char* bytes, size_t length) {
-            if (msgid_from_bytes(bytes, length) == MAVLINK_MSG_ID_HEARTBEAT) {
-                ++_count;
-            }
-        });
+        // The count is shared with the callback rather than reached through this: the
+        // unsubscribe in the destructor is only posted to the io thread, so the callback can
+        // still run once more after this object is gone.
+        _handle = _mavsdk.subscribe_raw_bytes_to_be_sent(
+            [count = _count](const char* bytes, size_t length) {
+                if (msgid_from_bytes(bytes, length) == MAVLINK_MSG_ID_HEARTBEAT) {
+                    ++(*count);
+                }
+            });
     }
 
-    // Unsubscribe while the Mavsdk instance is still alive, so the callback
-    // cannot outlive this object.
     ~HeartbeatCounter() { _mavsdk.unsubscribe_raw_bytes_to_be_sent(_handle); }
 
     HeartbeatCounter(const HeartbeatCounter&) = delete;
     HeartbeatCounter& operator=(const HeartbeatCounter&) = delete;
 
-    int count() const { return _count.load(); }
+    int count() const { return _count->load(); }
 
     bool wait_for_more_than(int previous) const
     {
@@ -121,7 +124,7 @@ public:
 
 private:
     Mavsdk& _mavsdk;
-    std::atomic<int> _count{0};
+    std::shared_ptr<std::atomic<int>> _count{std::make_shared<std::atomic<int>>(0)};
     Mavsdk::RawBytesHandle _handle{};
 };
 

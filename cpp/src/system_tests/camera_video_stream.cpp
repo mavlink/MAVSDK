@@ -3,6 +3,7 @@
 #include "plugins/camera_server/camera_server.hpp"
 #include "log.hpp"
 #include <future>
+#include <memory>
 #include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
@@ -39,16 +40,17 @@ TEST(Camera, VideoStreamSettings)
 
     camera_server.set_video_streaming(video_streaming);
 
-    auto prom = std::promise<std::shared_ptr<System>>();
-    auto fut = prom.get_future();
-    std::once_flag flag;
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
-        const auto system = mavsdk_groundstation.systems().back();
-        if (system->is_connected() && system->has_camera()) {
-            std::call_once(flag, [&]() { prom.set_value(system); });
-        }
-    });
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([prom, flag, &mavsdk_groundstation]() {
+            const auto system = mavsdk_groundstation.systems().back();
+            if (system->is_connected() && system->has_camera()) {
+                std::call_once(*flag, [&]() { prom->set_value(system); });
+            }
+        });
 
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);
@@ -57,13 +59,14 @@ TEST(Camera, VideoStreamSettings)
     auto camera = Camera{system};
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-    auto prom_got_info = std::promise<void>();
-    auto fut_got_info = prom_got_info.get_future();
-    std::once_flag flag2;
-    camera.subscribe_video_stream_info([&](const Camera::VideoStreamUpdate& update) {
-        EXPECT_EQ(update.video_stream_info.settings.uri, example_rtsp_url);
-        std::call_once(flag2, [&]() { prom_got_info.set_value(); });
-    });
+    auto prom_got_info = std::make_shared<std::promise<void>>();
+    auto fut_got_info = prom_got_info->get_future();
+    auto flag_got_info = std::make_shared<std::once_flag>();
+    camera.subscribe_video_stream_info(
+        [prom_got_info, flag_got_info, example_rtsp_url](const Camera::VideoStreamUpdate& update) {
+            EXPECT_EQ(update.video_stream_info.settings.uri, example_rtsp_url);
+            std::call_once(*flag_got_info, [&]() { prom_got_info->set_value(); });
+        });
 
     // We expect to find one camera.
     EXPECT_EQ(camera.camera_list().cameras.size(), 1);

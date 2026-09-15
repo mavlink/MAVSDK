@@ -3,8 +3,9 @@
 #include "plugins/mission_raw/mission_raw.hpp"
 #include "plugins/mission_raw_server/mission_raw_server.hpp"
 #include <cmath>
-#include <atomic>
 #include <future>
+#include <memory>
+#include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -43,18 +44,16 @@ TEST(Mission, Changed)
 
     auto mission_raw = MissionRaw{system};
 
-    std::promise<void> prom_changed{};
-    std::future<void> fut_changed = prom_changed.get_future();
-
-    std::atomic<bool> called_once{false};
+    auto prom_changed = std::make_shared<std::promise<void>>();
+    std::future<void> fut_changed = prom_changed->get_future();
+    auto flag_changed = std::make_shared<std::once_flag>();
 
     LogInfo("Subscribe for mission changed notificatio");
-    mission_raw.subscribe_mission_changed([&prom_changed, &called_once](bool) {
-        bool flag = false;
-        if (called_once.compare_exchange_strong(flag, true)) {
+    mission_raw.subscribe_mission_changed([prom_changed, flag_changed](bool) {
+        std::call_once(*flag_changed, [&]() {
             LogInfo("Mission changed notification received!");
-            prom_changed.set_value();
-        }
+            prom_changed->set_value();
+        });
     });
 
     // The mission change callback should not trigger yet.
@@ -103,11 +102,11 @@ TEST(Mission, Changed)
 
     {
         LogInfo("Uploading mission...");
-        std::promise<void> prom{};
-        std::future<void> fut = prom.get_future();
-        mission_raw.upload_mission_async(mission_raw_items, [&prom](MissionRaw::Result result) {
+        auto prom = std::make_shared<std::promise<void>>();
+        std::future<void> fut = prom->get_future();
+        mission_raw.upload_mission_async(mission_raw_items, [prom](MissionRaw::Result result) {
             ASSERT_EQ(result, MissionRaw::Result::Success);
-            prom.set_value();
+            prom->set_value();
             LogInfo("Mission uploaded.");
         });
 
@@ -121,14 +120,14 @@ TEST(Mission, Changed)
     LogInfo("Mission changed notification was triggered as expected.");
 
     {
-        std::promise<void> prom{};
-        std::future<void> fut = prom.get_future();
+        auto prom = std::make_shared<std::promise<void>>();
+        std::future<void> fut = prom->get_future();
         LogInfo("Download raw mission items.");
         mission_raw.download_mission_async(
-            [&prom](MissionRaw::Result result, const std::vector<MissionRaw::MissionItem> items) {
+            [prom](MissionRaw::Result result, const std::vector<MissionRaw::MissionItem> items) {
                 EXPECT_EQ(result, MissionRaw::Result::Success);
                 validate_items(items);
-                prom.set_value();
+                prom->set_value();
             });
         auto status = fut.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);

@@ -5,6 +5,7 @@
 
 #include <atomic>
 #include <chrono>
+#include <memory>
 #include <string>
 #include <thread>
 
@@ -109,10 +110,10 @@ TEST(Connections, StalledLinkDoesNotStallOtherConnections)
 
     // MAVSDK sends a heartbeat every second by itself, so this keeps ticking on its own
     // for as long as the io thread is alive to do it.
-    std::atomic<int> heartbeats{0};
+    auto heartbeats = std::make_shared<std::atomic<int>>(0);
     MavlinkDirect gcs_mavlink{maybe_system.value()};
     auto handle = gcs_mavlink.subscribe_message(
-        "HEARTBEAT", [&heartbeats](MavlinkDirect::MavlinkMessage) { ++heartbeats; });
+        "HEARTBEAT", [heartbeats](MavlinkDirect::MavlinkMessage) { ++(*heartbeats); });
 
     // Flood both connections. These messages are untargeted, so they go out on every
     // connection -- including the serial link that will never drain them.
@@ -139,9 +140,9 @@ TEST(Connections, StalledLinkDoesNotStallOtherConnections)
     std::this_thread::sleep_for(1s);
 
     LogInfo("Checking that the UDP link is still alive...");
-    const int heartbeats_before = heartbeats;
+    const int heartbeats_before = *heartbeats;
     std::this_thread::sleep_for(3s);
-    const int heartbeats_after = heartbeats;
+    const int heartbeats_after = *heartbeats;
 
     gcs_mavlink.unsubscribe_message(handle);
 

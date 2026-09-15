@@ -3,6 +3,8 @@
 #include <vector>
 #include <atomic>
 #include <future>
+#include <memory>
+#include <mutex>
 #include <thread>
 
 #include "mavsdk.hpp"
@@ -175,15 +177,15 @@ TEST(ComponentMetadata, InformationConnect)
         mavsdk_companion.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     // Wait for companion system to connect
-    auto prom = std::promise<std::shared_ptr<System>>();
-    std::once_flag flag;
-    mavsdk_groundstation.subscribe_on_new_system([&]() {
-        std::call_once(flag, [&prom, &mavsdk_groundstation]() {
-            prom.set_value(mavsdk_groundstation.systems().at(0));
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([prom, flag, &mavsdk_groundstation]() {
+            std::call_once(*flag, [&]() { prom->set_value(mavsdk_groundstation.systems().at(0)); });
         });
-    });
-    auto fut = prom.get_future();
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+    mavsdk_groundstation.unsubscribe_on_new_system(handle);
     auto system = fut.get();
 
     auto server = ComponentMetadataServer{mavsdk_companion.server_component()};
@@ -199,34 +201,35 @@ TEST(ComponentMetadata, InformationConnect)
     // Ask for metadata
     auto client = ComponentMetadata{system};
     client.request_component(MAV_COMP_ID_ONBOARD_COMPUTER);
-    std::atomic_bool received_parameters{false};
-    std::atomic_bool received_events{false};
-    std::atomic_bool all_completed{false};
-    client.subscribe_metadata_available([&received_events, &received_parameters, &all_completed](
+    auto received_parameters = std::make_shared<std::atomic_bool>(false);
+    auto received_events = std::make_shared<std::atomic_bool>(false);
+    auto all_completed = std::make_shared<std::atomic_bool>(false);
+    client.subscribe_metadata_available([received_events, received_parameters, all_completed](
                                             ComponentMetadata::MetadataUpdate data) {
         LogInfo("Got metadata, type: {}", to_string(data.type));
         EXPECT_EQ(data.compid, MAV_COMP_ID_ONBOARD_COMPUTER);
         switch (data.type) {
             case ComponentMetadata::MetadataType::Parameter:
                 EXPECT_EQ(data.json_metadata, parameter_json_metadata);
-                received_parameters = true;
+                *received_parameters = true;
                 break;
             case ComponentMetadata::MetadataType::Events:
                 EXPECT_EQ(data.json_metadata, events_json_metadata);
-                received_events = true;
+                *received_events = true;
                 break;
             case ComponentMetadata::MetadataType::AllCompleted:
-                all_completed = true;
+                *all_completed = true;
                 break;
             default:
                 ASSERT_TRUE(false) << "Unexpected metadata type " << data.type;
         }
     });
 
-    for (int i = 0; i < 100 && (!received_events || !received_parameters || !all_completed); ++i) {
+    for (int i = 0; i < 100 && (!*received_events || !*received_parameters || !*all_completed);
+         ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
-    ASSERT_TRUE(received_events) << "timeout, metadata not received";
-    ASSERT_TRUE(received_parameters) << "timeout, metadata not received";
-    ASSERT_TRUE(all_completed) << "timeout, metadata not received";
+    ASSERT_TRUE(*received_events) << "timeout, metadata not received";
+    ASSERT_TRUE(*received_parameters) << "timeout, metadata not received";
+    ASSERT_TRUE(*all_completed) << "timeout, metadata not received";
 }

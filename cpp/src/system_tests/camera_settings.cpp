@@ -3,6 +3,7 @@
 #include "plugins/camera_server/camera_server.hpp"
 #include "plugins/ftp_server/ftp_server.hpp"
 #include <future>
+#include <memory>
 #include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
@@ -25,7 +26,8 @@ TEST(Camera, Settings)
 
     EXPECT_EQ(ftp_server.set_root_dir("src/mavsdk/plugins/camera/"), FtpServer::Result::Success);
 
-    auto camera_server = CameraServer{mavsdk_camera.server_component()};
+    auto camera_server = std::make_shared<CameraServer>(mavsdk_camera.server_component());
+    std::weak_ptr<CameraServer> camera_server_weak = camera_server;
 
     CameraServer::Information information{};
     information.vendor_name = "UVC";
@@ -33,42 +35,43 @@ TEST(Camera, Settings)
     information.firmware_version = "4.0.0";
     information.definition_file_version = 2;
     information.definition_file_uri = "mavlinkftp://uvc_camera.xml";
-    EXPECT_EQ(camera_server.set_information(information), CameraServer::Result::Success);
+    EXPECT_EQ(camera_server->set_information(information), CameraServer::Result::Success);
 
-    auto param_server = ParamServer{mavsdk_camera.server_component()};
+    auto param_server = std::make_shared<ParamServer>(mavsdk_camera.server_component());
+    std::weak_ptr<ParamServer> param_server_weak = param_server;
 
-    const auto reset_params = [&]() {
-        EXPECT_EQ(param_server.provide_param_int("CAM_MODE", 0), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("BRIGHTNESS", 128), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("CONTRAST", 32), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("SATURATION", 32), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("GAIN", 64), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("SHARPNESS", 24), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("BACKLIGHT", 0), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("POWER_MODE", 0), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("WB_MODE", 1), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("EXP_MODE", 3), ParamServer::Result::Success);
-        EXPECT_EQ(
-            param_server.provide_param_int("EXP_ABSOLUTE", 166), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("WB_TEMP", 4000), ParamServer::Result::Success);
-        EXPECT_EQ(param_server.provide_param_int("EXP_PRIORITY", 1), ParamServer::Result::Success);
+    const auto reset_params = [](ParamServer& server) {
+        EXPECT_EQ(server.provide_param_int("CAM_MODE", 0), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("BRIGHTNESS", 128), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("CONTRAST", 32), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("SATURATION", 32), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("GAIN", 64), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("SHARPNESS", 24), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("BACKLIGHT", 0), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("POWER_MODE", 0), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("WB_MODE", 1), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("EXP_MODE", 3), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("EXP_ABSOLUTE", 166), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("WB_TEMP", 4000), ParamServer::Result::Success);
+        EXPECT_EQ(server.provide_param_int("EXP_PRIORITY", 1), ParamServer::Result::Success);
     };
-    reset_params();
+    reset_params(*param_server);
 
     // Don't use the default for these two.
-    EXPECT_EQ(param_server.provide_param_int("WB_MODE", 0), ParamServer::Result::Success);
-    EXPECT_EQ(param_server.provide_param_int("WB_TEMP", 5000), ParamServer::Result::Success);
+    EXPECT_EQ(param_server->provide_param_int("WB_MODE", 0), ParamServer::Result::Success);
+    EXPECT_EQ(param_server->provide_param_int("WB_TEMP", 5000), ParamServer::Result::Success);
 
-    auto prom = std::promise<std::shared_ptr<System>>();
-    auto fut = prom.get_future();
-    std::once_flag flag;
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
-        const auto system = mavsdk_groundstation.systems().back();
-        if (system->is_connected() && system->has_camera()) {
-            std::call_once(flag, [&]() { prom.set_value(system); });
-        }
-    });
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([prom, flag, &mavsdk_groundstation]() {
+            const auto system = mavsdk_groundstation.systems().back();
+            if (system->is_connected() && system->has_camera()) {
+                std::call_once(*flag, [&]() { prom->set_value(system); });
+            }
+        });
 
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);
@@ -144,12 +147,19 @@ TEST(Camera, Settings)
     EXPECT_EQ(current_setting.first, Camera::Result::Success);
     EXPECT_EQ(current_setting.second.size(), 10);
 
-    camera_server.subscribe_reset_settings([&](uint32_t) {
-        reset_params();
-        EXPECT_EQ(
-            camera_server.respond_reset_settings(CameraServer::CameraFeedback::Ok),
-            CameraServer::Result::Success);
-    });
+    camera_server->subscribe_reset_settings(
+        [camera_server_weak, param_server_weak, reset_params](uint32_t) {
+            auto server = camera_server_weak.lock();
+            auto params = param_server_weak.lock();
+            if (!server || !params) {
+                return;
+            }
+
+            reset_params(*params);
+            EXPECT_EQ(
+                server->respond_reset_settings(CameraServer::CameraFeedback::Ok),
+                CameraServer::Result::Success);
+        });
 
     // And reset settings again.
     EXPECT_EQ(
@@ -220,16 +230,17 @@ TEST(Camera, SettingsAsync)
     };
     reset_params();
 
-    auto prom = std::promise<std::shared_ptr<System>>();
-    auto fut = prom.get_future();
-    std::once_flag flag;
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
-        const auto system = mavsdk_groundstation.systems().back();
-        if (system->is_connected() && system->has_camera()) {
-            std::call_once(flag, [&]() { prom.set_value(system); });
-        }
-    });
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([prom, flag, &mavsdk_groundstation]() {
+            const auto system = mavsdk_groundstation.systems().back();
+            if (system->is_connected() && system->has_camera()) {
+                std::call_once(*flag, [&]() { prom->set_value(system); });
+            }
+        });
 
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(3)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);
@@ -247,15 +258,15 @@ TEST(Camera, SettingsAsync)
 
     ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
-    std::promise<void> prom_found_wb_temp;
-    auto fut_found_wb_temp = prom_found_wb_temp.get_future();
+    auto prom_found_wb_temp = std::make_shared<std::promise<void>>();
+    auto fut_found_wb_temp = prom_found_wb_temp->get_future();
+    auto flag_found_wb_temp = std::make_shared<std::once_flag>();
 
-    Camera::CurrentSettingsHandle handle_settings =
-        camera.subscribe_current_settings([&](const Camera::CurrentSettingsUpdate& update) {
+    auto handle_settings = camera.subscribe_current_settings(
+        [prom_found_wb_temp, flag_found_wb_temp](const Camera::CurrentSettingsUpdate& update) {
             for (auto& setting : update.current_settings) {
                 if (setting.setting_id == "WB_TEMP") {
-                    camera.unsubscribe_current_settings(handle_settings);
-                    prom_found_wb_temp.set_value();
+                    std::call_once(*flag_found_wb_temp, [&]() { prom_found_wb_temp->set_value(); });
                 }
             }
         });
@@ -269,14 +280,18 @@ TEST(Camera, SettingsAsync)
         Camera::Result::Success);
 
     EXPECT_EQ(fut_found_wb_temp.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    camera.unsubscribe_current_settings(handle_settings);
 
-    std::promise<void> prom_found_exp_absolute;
-    auto fut_found_exp_absolute = prom_found_exp_absolute.get_future();
-    camera.subscribe_possible_setting_options(
-        [&](const Camera::PossibleSettingOptionsUpdate& update) {
+    auto prom_found_exp_absolute = std::make_shared<std::promise<void>>();
+    auto fut_found_exp_absolute = prom_found_exp_absolute->get_future();
+    auto flag_found_exp_absolute = std::make_shared<std::once_flag>();
+    auto handle_setting_options = camera.subscribe_possible_setting_options(
+        [prom_found_exp_absolute,
+         flag_found_exp_absolute](const Camera::PossibleSettingOptionsUpdate& update) {
             for (auto& setting_options : update.setting_options) {
                 if (setting_options.setting_id == "EXP_ABSOLUTE") {
-                    prom_found_exp_absolute.set_value();
+                    std::call_once(
+                        *flag_found_exp_absolute, [&]() { prom_found_exp_absolute->set_value(); });
                 }
             }
         });
@@ -289,4 +304,5 @@ TEST(Camera, SettingsAsync)
         Camera::Result::Success);
 
     EXPECT_EQ(fut_found_exp_absolute.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    camera.unsubscribe_possible_setting_options(handle_setting_options);
 }

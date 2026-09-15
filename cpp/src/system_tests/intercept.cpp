@@ -2,9 +2,12 @@
 #include "mavsdk.hpp"
 #include "plugins/telemetry/telemetry.hpp"
 #include "plugins/telemetry_server/telemetry_server.hpp"
+#include <atomic>
 #include <chrono>
+#include <memory>
 #include <thread>
 #include <future>
+#include <mutex>
 #include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
 
@@ -44,20 +47,20 @@ TEST(Intercept, IncomingDrop)
     auto telemetry_server = TelemetryServer{mavsdk_sender.server_component()};
 
     // Drop all GLOBAL_POSITION_INT messages at the interceptor using the JSON API
-    std::atomic<bool> intercept_called{false};
+    auto intercept_called = std::make_shared<std::atomic<bool>>(false);
     auto drop_handle = mavsdk_interceptor.subscribe_incoming_messages_json(
-        [&intercept_called](Mavsdk::MavlinkMessage message) {
+        [intercept_called](Mavsdk::MavlinkMessage message) {
             if (message.message_name == "GLOBAL_POSITION_INT") {
-                intercept_called = true;
+                *intercept_called = true;
                 return false; // drop
             }
             return true;
         });
 
     // Interceptor should NOT receive a position update
-    std::atomic<bool> interceptor_received{false};
+    auto interceptor_received = std::make_shared<std::atomic<bool>>(false);
     auto interceptor_handle = telemetry_interceptor.subscribe_position(
-        [&interceptor_received](Telemetry::Position) { interceptor_received = true; });
+        [interceptor_received](Telemetry::Position) { *interceptor_received = true; });
 
     TelemetryServer::Position position{};
     position.latitude_deg = 47.3977421;
@@ -74,12 +77,12 @@ TEST(Intercept, IncomingDrop)
     // Give time for messages to propagate (or not)
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-    EXPECT_TRUE(intercept_called.load());
-    EXPECT_FALSE(interceptor_received.load());
+    EXPECT_TRUE(intercept_called->load());
+    EXPECT_FALSE(interceptor_received->load());
 
     LogInfo("Test completed: GLOBAL_POSITION_INT was dropped by interceptor");
-    LogInfo("  - Interceptor JSON callback was called: {}", intercept_called.load());
-    LogInfo("  - Interceptor telemetry NOT received: {}", !interceptor_received.load());
+    LogInfo("  - Interceptor JSON callback was called: {}", intercept_called->load());
+    LogInfo("  - Interceptor telemetry NOT received: {}", !interceptor_received->load());
 
     telemetry_interceptor.unsubscribe_position(interceptor_handle);
     mavsdk_interceptor.unsubscribe_incoming_messages_json(drop_handle);
@@ -109,12 +112,13 @@ TEST(Intercept, JsonIncoming)
     auto telemetry = Telemetry{system};
     auto telemetry_server = TelemetryServer{mavsdk_autopilot.server_component()};
 
-    auto json_prom = std::promise<Mavsdk::MavlinkMessage>();
-    auto json_fut = json_prom.get_future();
-    std::atomic<bool> intercept_called{false};
+    auto json_prom = std::make_shared<std::promise<Mavsdk::MavlinkMessage>>();
+    auto json_fut = json_prom->get_future();
+    auto json_flag = std::make_shared<std::once_flag>();
+    auto intercept_called = std::make_shared<std::atomic<bool>>(false);
 
     auto json_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
-        [&json_prom, &intercept_called](Mavsdk::MavlinkMessage json_message) {
+        [json_prom, json_flag, intercept_called](Mavsdk::MavlinkMessage json_message) {
             LogInfo(
                 "Intercepted incoming JSON message: {} from system {} with fields: {}",
                 json_message.message_name,
@@ -122,8 +126,8 @@ TEST(Intercept, JsonIncoming)
                 json_message.fields_json);
 
             if (json_message.message_name == "GLOBAL_POSITION_INT") {
-                intercept_called = true;
-                json_prom.set_value(json_message);
+                *intercept_called = true;
+                std::call_once(*json_flag, [&]() { json_prom->set_value(json_message); });
                 return true;
             }
             return true;
@@ -146,7 +150,7 @@ TEST(Intercept, JsonIncoming)
         TelemetryServer::Result::Success);
 
     ASSERT_EQ(json_fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
-    ASSERT_TRUE(intercept_called.load());
+    ASSERT_TRUE(intercept_called->load());
 
     auto intercepted_message = json_fut.get();
     EXPECT_EQ(intercepted_message.message_name, "GLOBAL_POSITION_INT");
@@ -200,12 +204,13 @@ TEST(Intercept, JsonOutgoing)
     auto telemetry = Telemetry{system};
     auto telemetry_server = TelemetryServer{mavsdk_autopilot.server_component()};
 
-    auto json_prom = std::promise<Mavsdk::MavlinkMessage>();
-    auto json_fut = json_prom.get_future();
-    std::atomic<bool> intercept_called{false};
+    auto json_prom = std::make_shared<std::promise<Mavsdk::MavlinkMessage>>();
+    auto json_fut = json_prom->get_future();
+    auto json_flag = std::make_shared<std::once_flag>();
+    auto intercept_called = std::make_shared<std::atomic<bool>>(false);
 
     auto json_handle = mavsdk_autopilot.subscribe_outgoing_messages_json(
-        [&json_prom, &intercept_called](Mavsdk::MavlinkMessage json_message) {
+        [json_prom, json_flag, intercept_called](Mavsdk::MavlinkMessage json_message) {
             LogInfo(
                 "Intercepted outgoing JSON message: {} to system {} with fields: {}",
                 json_message.message_name,
@@ -213,8 +218,8 @@ TEST(Intercept, JsonOutgoing)
                 json_message.fields_json);
 
             if (json_message.message_name == "GPS_RAW_INT") {
-                intercept_called = true;
-                json_prom.set_value(json_message);
+                *intercept_called = true;
+                std::call_once(*json_flag, [&]() { json_prom->set_value(json_message); });
                 return true;
             }
             return true;
@@ -244,7 +249,7 @@ TEST(Intercept, JsonOutgoing)
         telemetry_server.publish_raw_gps(raw_gps, gps_info), TelemetryServer::Result::Success);
 
     ASSERT_EQ(json_fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
-    ASSERT_TRUE(intercept_called.load());
+    ASSERT_TRUE(intercept_called->load());
 
     auto intercepted_message = json_fut.get();
     EXPECT_EQ(intercepted_message.message_name, "GPS_RAW_INT");

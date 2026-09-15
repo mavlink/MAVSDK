@@ -3,6 +3,7 @@
 #include "plugins/param/param.hpp"
 #include "plugins/param_server/param_server.hpp"
 #include <atomic>
+#include <memory>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -91,8 +92,8 @@ TEST(Param, CustomSetAndGetLossy)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message
-    std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 3 != 0; };
+    auto counter = std::make_shared<std::atomic<unsigned>>(0);
+    auto drop_some = [counter](Mavsdk::MavlinkMessage) -> bool { return (*counter)++ % 3 != 0; };
 
     auto drop_some_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_some);
 
@@ -139,8 +140,6 @@ TEST(Param, CustomSetAndGetLossy)
     EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
     EXPECT_EQ(server_result_pair.second, data_shorter);
 
-    // Before going out of scope, we need to make sure to no longer access the
-    // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_some_handle);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

@@ -4,6 +4,7 @@
 #include "plugins/param_server/param_server.hpp"
 #include <atomic>
 #include <chrono>
+#include <memory>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -103,9 +104,9 @@ TEST(Param, SetAndGetLossy)
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message to simulate a lossy link
-    std::atomic<unsigned> counter = 0;
+    auto counter = std::make_shared<std::atomic<unsigned>>(0);
     auto drop_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
-        [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 3 != 0; });
+        [counter](Mavsdk::MavlinkMessage) -> bool { return (*counter)++ % 3 != 0; });
 
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
@@ -173,7 +174,7 @@ TEST(Param, SetAndGetLossy)
     EXPECT_EQ(server_result_all_params.int_params.size(), 1);
     EXPECT_EQ(server_result_all_params.float_params.size(), 1);
 
-    // Stop dropping before going out of scope
+    // Stop dropping
     mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_handle);
 }
 
