@@ -303,6 +303,22 @@ class {{ plugin_name.upper_camel_case }}:
         cb = {{ method.name.upper_camel_case }}Callback(c_callback)
         self._callbacks.append(cb)
 
+        {# Convert repeated params to C arrays ahead of the call #}
+        {% for param in method.params %}
+          {% if param.type_info.is_repeated %}
+            {% if param.type_info.is_primitive %}
+        _{{ param.name.lower_snake_case }}_array_type = ctypes.{{ param.type_info.inner_name }} * len({{ param.name.lower_snake_case }})
+        _{{ param.name.lower_snake_case }}_array = _{{ param.name.lower_snake_case }}_array_type(*{{ param.name.lower_snake_case }})
+            {% else %}
+        _{{ param.name.lower_snake_case }}_array_type = {{ param.type_info.inner_name.upper_camel_case }}CStruct * len({{ param.name.lower_snake_case }})
+        _{{ param.name.lower_snake_case }}_array = _{{ param.name.lower_snake_case }}_array_type()
+        for _i, _item in enumerate({{ param.name.lower_snake_case }}):
+            _{{ param.name.lower_snake_case }}_array[_i] = _item.to_c_struct()
+            {% endif %}
+        _{{ param.name.lower_snake_case }}_size = len({{ param.name.lower_snake_case }})
+          {% endif %}
+        {% endfor %}
+
         {% if method.is_stream and not method.is_finite %}
         return self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_subscribe_{{ method.name.lower_snake_case }}(
         {% else %}
@@ -312,8 +328,13 @@ class {{ plugin_name.upper_camel_case }}:
             {% for param in method.params %}
             {% if param.type_info.is_string %}
             {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
-            {% else %}
+            {% elif param.type_info.is_repeated %}
+            _{{ param.name.lower_snake_case }}_array,
+            _{{ param.name.lower_snake_case }}_size,
+            {% elif param.type_info.is_primitive or param.type_info.is_enum %}
             {{ param.name.lower_snake_case }},
+            {% else %}
+            {{ param.name.lower_snake_case }}.to_c_struct(),
             {% endif %}
             {% endfor %}
             cb,
@@ -349,6 +370,22 @@ class {{ plugin_name.upper_camel_case }}:
           {% endif %}
         {% endif %}
 
+        {# Convert repeated params to C arrays ahead of the call #}
+        {% for param in method.params %}
+          {% if param.type_info.is_repeated %}
+            {% if param.type_info.is_primitive %}
+        _{{ param.name.lower_snake_case }}_array_type = ctypes.{{ param.type_info.inner_name }} * len({{ param.name.lower_snake_case }})
+        _{{ param.name.lower_snake_case }}_array = _{{ param.name.lower_snake_case }}_array_type(*{{ param.name.lower_snake_case }})
+            {% else %}
+        _{{ param.name.lower_snake_case }}_array_type = {{ param.type_info.inner_name.upper_camel_case }}CStruct * len({{ param.name.lower_snake_case }})
+        _{{ param.name.lower_snake_case }}_array = _{{ param.name.lower_snake_case }}_array_type()
+        for _i, _item in enumerate({{ param.name.lower_snake_case }}):
+            _{{ param.name.lower_snake_case }}_array[_i] = _item.to_c_struct()
+            {% endif %}
+        _{{ param.name.lower_snake_case }}_size = len({{ param.name.lower_snake_case }})
+          {% endif %}
+        {% endfor %}
+
         {# Make the function call #}
         {% if method.has_result %}
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
@@ -356,6 +393,9 @@ class {{ plugin_name.upper_camel_case }}:
           {% for param in method.params %}
             {% if param.type_info.is_string %}
             {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
+            {% elif param.type_info.is_repeated %}
+            _{{ param.name.lower_snake_case }}_array,
+            _{{ param.name.lower_snake_case }}_size,
             {% elif param.type_info.is_primitive or param.type_info.is_enum %}
             {{ param.name.lower_snake_case }},
             {% else %}
@@ -380,6 +420,9 @@ class {{ plugin_name.upper_camel_case }}:
           {% for param in method.params %}
             {% if param.type_info.is_string %}
             {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
+            {% elif param.type_info.is_repeated %}
+            _{{ param.name.lower_snake_case }}_array,
+            _{{ param.name.lower_snake_case }}_size,
             {% elif param.type_info.is_primitive or param.type_info.is_enum %}
             {{ param.name.lower_snake_case }},
             {% else %}

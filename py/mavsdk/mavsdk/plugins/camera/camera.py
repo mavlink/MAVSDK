@@ -1741,7 +1741,7 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_set_setting_async(
-            self._handle, component_id, setting, cb, None
+            self._handle, component_id, setting.to_c_struct(), cb, None
         )
 
     def set_setting(self, component_id, setting):
@@ -1782,7 +1782,7 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_get_setting_async(
-            self._handle, component_id, setting, cb, None
+            self._handle, component_id, setting.to_c_struct(), cb, None
         )
 
     def get_setting(self, component_id, setting):

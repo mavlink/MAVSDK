@@ -51,7 +51,7 @@ class FtpAsync:
         def callback(result, data, _user_data=None):
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
-        self._plugin.download_async(callback)
+        self._plugin.download_async(remote_file_path, local_dir, use_burst, callback)
         while True:
             result, data = await queue.get()
             yield result, data
@@ -68,7 +68,7 @@ class FtpAsync:
         def callback(result, data, _user_data=None):
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
-        self._plugin.upload_async(callback)
+        self._plugin.upload_async(local_file_path, remote_dir, callback)
         while True:
             result, data = await queue.get()
             yield result, data

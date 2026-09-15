@@ -104,9 +104,16 @@ class ComponentMetadataServer:
     def set_metadata(self, metadata):
         """Get set_metadata (blocking)"""
 
+        _metadata_array_type = MetadataCStruct * len(metadata)
+        _metadata_array = _metadata_array_type()
+        for _i, _item in enumerate(metadata):
+            _metadata_array[_i] = _item.to_c_struct()
+        _metadata_size = len(metadata)
+
         self._lib.mavsdk_component_metadata_server_set_metadata(
             self._handle,
-            metadata.to_c_struct(),
+            _metadata_array,
+            _metadata_size,
         )
 
     def destroy(self):
