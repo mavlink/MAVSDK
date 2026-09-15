@@ -4,6 +4,7 @@
 #include "plugins/telemetry_server/telemetry_server.hpp"
 #include <atomic>
 #include <future>
+#include <memory>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -31,31 +32,30 @@ TEST(Telemetry, Subscription)
 
     auto telemetry = Telemetry{system};
 
-    auto prom1 = std::promise<void>{};
-    auto fut1 = prom1.get_future();
-    std::atomic<unsigned> num_subscription1_called{0};
-    auto handle1 = telemetry.subscribe_status_text([&](const Telemetry::StatusText& status_text) {
-        LogInfo("Received: {}", status_text.text);
-        ++num_subscription1_called;
-        if (num_subscription1_called == 2) {
-            prom1.set_value();
-        }
-    });
+    auto prom1 = std::make_shared<std::promise<void>>();
+    auto fut1 = prom1->get_future();
+    auto num_subscription1_called = std::make_shared<std::atomic<unsigned>>(0);
+    auto handle1 = telemetry.subscribe_status_text(
+        [prom1, num_subscription1_called](const Telemetry::StatusText& status_text) {
+            LogInfo("Received: {}", status_text.text);
+            if (++(*num_subscription1_called) == 2) {
+                prom1->set_value();
+            }
+        });
 
-    auto prom2 = std::promise<void>{};
-    auto fut2 = prom2.get_future();
-    std::atomic<unsigned> num_subscription2_called{0};
+    auto prom2 = std::make_shared<std::promise<void>>();
+    auto fut2 = prom2->get_future();
+    auto num_subscription2_called = std::make_shared<std::atomic<unsigned>>(0);
 
     std::function<void(Telemetry::StatusText)> callback =
-        [&](const Telemetry::StatusText& status_text) {
+        [prom2, num_subscription2_called](const Telemetry::StatusText& status_text) {
             LogInfo("Also received: {}", status_text.text);
-            ++num_subscription2_called;
-            if (num_subscription2_called == 3) {
-                prom2.set_value();
+            if (++(*num_subscription2_called) == 3) {
+                prom2->set_value();
             }
         };
 
-    telemetry.subscribe_status_text(std::move(callback));
+    auto handle2 = telemetry.subscribe_status_text(std::move(callback));
 
     telemetry_server.publish_status_text(
         {TelemetryServer::StatusTextType::Info, "I'm a test message"});
@@ -71,8 +71,10 @@ TEST(Telemetry, Subscription)
 
     EXPECT_EQ(fut2.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    EXPECT_EQ(num_subscription1_called, 2);
-    EXPECT_EQ(num_subscription2_called, 3);
+    EXPECT_EQ(*num_subscription1_called, 2);
+    EXPECT_EQ(*num_subscription2_called, 3);
+
+    telemetry.unsubscribe_status_text(handle2);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

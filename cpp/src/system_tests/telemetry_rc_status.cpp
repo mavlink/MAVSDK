@@ -2,9 +2,10 @@
 #include "mavsdk.hpp"
 #include "plugins/telemetry/telemetry.hpp"
 #include "plugins/mavlink_direct/mavlink_direct.hpp"
-#include <atomic>
 #include <chrono>
 #include <future>
+#include <memory>
+#include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -36,14 +37,12 @@ TEST(Telemetry, RcStatusViaSysStatus)
     auto telemetry = Telemetry{system};
     auto sender = MavlinkDirect{gs_system};
 
-    auto prom = std::promise<Telemetry::RcStatus>{};
-    auto fut = prom.get_future();
-    std::atomic<bool> received{false};
+    auto prom = std::make_shared<std::promise<Telemetry::RcStatus>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = telemetry.subscribe_rc_status([&](const Telemetry::RcStatus& rc_status) {
-        if (!received.exchange(true)) {
-            prom.set_value(rc_status);
-        }
+    auto handle = telemetry.subscribe_rc_status([prom, flag](const Telemetry::RcStatus& rc_status) {
+        std::call_once(*flag, [&]() { prom->set_value(rc_status); });
     });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -103,14 +102,14 @@ TEST(Telemetry, RcStatusViaRcChannels)
     auto telemetry = Telemetry{system};
     auto sender = MavlinkDirect{gs_system};
 
-    auto prom = std::promise<Telemetry::RcStatus>{};
-    auto fut = prom.get_future();
-    std::atomic<bool> received{false};
+    auto prom = std::make_shared<std::promise<Telemetry::RcStatus>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = telemetry.subscribe_rc_status([&](const Telemetry::RcStatus& rc_status) {
+    auto handle = telemetry.subscribe_rc_status([prom, flag](const Telemetry::RcStatus& rc_status) {
         // Wait for a callback that has signal_strength set (from RC_CHANNELS)
-        if (rc_status.signal_strength_percent > 0.0f && !received.exchange(true)) {
-            prom.set_value(rc_status);
+        if (rc_status.signal_strength_percent > 0.0f) {
+            std::call_once(*flag, [&]() { prom->set_value(rc_status); });
         }
     });
 
@@ -166,14 +165,12 @@ TEST(Telemetry, RcStatusUnavailableViaSysStatus)
     auto telemetry = Telemetry{system};
     auto sender = MavlinkDirect{gs_system};
 
-    auto prom = std::promise<Telemetry::RcStatus>{};
-    auto fut = prom.get_future();
-    std::atomic<bool> received{false};
+    auto prom = std::make_shared<std::promise<Telemetry::RcStatus>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = telemetry.subscribe_rc_status([&](const Telemetry::RcStatus& rc_status) {
-        if (!received.exchange(true)) {
-            prom.set_value(rc_status);
-        }
+    auto handle = telemetry.subscribe_rc_status([prom, flag](const Telemetry::RcStatus& rc_status) {
+        std::call_once(*flag, [&]() { prom->set_value(rc_status); });
     });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

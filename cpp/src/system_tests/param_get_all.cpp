@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <atomic>
 #include <chrono>
+#include <memory>
 #include <vector>
 #include <thread>
 #include <map>
@@ -127,8 +128,8 @@ TEST(Param, GetAllLossy)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message
-    std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 5 != 0; };
+    auto counter = std::make_shared<std::atomic<unsigned>>(0);
+    auto drop_some = [counter](Mavsdk::MavlinkMessage) -> bool { return (*counter)++ % 5 != 0; };
 
     auto drop_some_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_some);
     auto drop_some_out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(drop_some);
@@ -181,8 +182,6 @@ TEST(Param, GetAllLossy)
         assert_equal<std::string, Param::CustomParam>(test_string_params, all_params.custom_params);
     }
 
-    // Before going out of scope, we need to make sure to no longer access the
-    // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_some_in_handle);
     mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_some_out_handle);
 

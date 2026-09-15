@@ -4,6 +4,7 @@
 #include <chrono>
 #include <thread>
 #include <atomic>
+#include <memory>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -39,19 +40,19 @@ TEST(Connections, TcpConnectionReconnectionFromServerSide)
     LogInfo("=== Phase 2: Verify initial connectivity ===");
 
     // Track automatic heartbeats (MAVSDK sends these every second automatically)
-    std::atomic<int> message_count{0};
+    auto message_count = std::make_shared<std::atomic<int>>(0);
     MavlinkDirect client_mavlink{system};
 
     auto handle = client_mavlink.subscribe_message(
-        "HEARTBEAT", [&message_count](MavlinkDirect::MavlinkMessage) {
-            message_count++;
-            LogInfo("Client received HEARTBEAT (total: {})", message_count.load());
+        "HEARTBEAT", [message_count](MavlinkDirect::MavlinkMessage) {
+            (*message_count)++;
+            LogInfo("Client received HEARTBEAT (total: {})", message_count->load());
         });
 
     // Wait for automatic heartbeats to arrive (sent every 1 second by MAVSDK)
     LogInfo("Waiting for automatic heartbeats...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    int messages_before = message_count.load();
+    int messages_before = message_count->load();
     EXPECT_GE(messages_before, 1) << "Client didn't receive automatic heartbeats";
     LogInfo("Received {} automatic heartbeat(s) from server", messages_before);
 
@@ -74,7 +75,7 @@ TEST(Connections, TcpConnectionReconnectionFromServerSide)
 
     LogInfo("=== Phase 5: Verify message flow after reconnection ===");
 
-    int messages_before_reconnect = message_count.load();
+    int messages_before_reconnect = message_count->load();
     LogInfo("Messages before waiting: {}", messages_before_reconnect);
 
     // Wait for automatic heartbeats to resume after reconnection. Poll instead of
@@ -83,11 +84,11 @@ TEST(Connections, TcpConnectionReconnectionFromServerSide)
     // made a single snapshot comparison flaky under CI load.
     LogInfo("Waiting for automatic heartbeats to resume...");
     const auto reconnect_deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
-    while (message_count.load() <= messages_before_reconnect &&
+    while (message_count->load() <= messages_before_reconnect &&
            std::chrono::steady_clock::now() < reconnect_deadline) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
-    int messages_after_reconnect = message_count.load();
+    int messages_after_reconnect = message_count->load();
 
     LogInfo("Messages after waiting: {}", messages_after_reconnect);
 
@@ -95,7 +96,7 @@ TEST(Connections, TcpConnectionReconnectionFromServerSide)
         << "Client did NOT receive automatic heartbeats after reconnection!";
 
     LogInfo("=== SUCCESS: TCP client reconnection verified! ===");
-    LogInfo("Total messages received: {}", message_count.load());
+    LogInfo("Total messages received: {}", message_count->load());
 
     // Cleanup
     client_mavlink.unsubscribe_message(handle);
@@ -135,19 +136,19 @@ TEST(Connections, TcpConnectionReconnectionFromClientSide)
     auto system = maybe_system.value();
 
     // Track automatic heartbeats (MAVSDK sends these every second automatically)
-    std::atomic<int> message_count{0};
+    auto message_count = std::make_shared<std::atomic<int>>(0);
     MavlinkDirect client_mavlink{system};
 
     auto handle = client_mavlink.subscribe_message(
-        "HEARTBEAT", [&message_count](MavlinkDirect::MavlinkMessage) {
-            message_count++;
-            LogInfo("Client received HEARTBEAT (total: {})", message_count.load());
+        "HEARTBEAT", [message_count](MavlinkDirect::MavlinkMessage) {
+            (*message_count)++;
+            LogInfo("Client received HEARTBEAT (total: {})", message_count->load());
         });
 
     // Wait for automatic heartbeats to arrive (sent every 1 second by MAVSDK)
     LogInfo("Waiting for automatic heartbeats...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    int messages_before = message_count.load();
+    int messages_before = message_count->load();
     EXPECT_GE(messages_before, 1) << "Client didn't receive automatic heartbeats";
     LogInfo("Received {} automatic heartbeat(s) from server", messages_before);
 
@@ -173,19 +174,19 @@ TEST(Connections, TcpConnectionReconnectionFromClientSide)
     LogInfo("=== Phase 5: Verify message flow after reconnection ===");
 
     // Re-subscribe using the original system (system objects persist)
-    std::atomic<int> message_count2{0};
+    auto message_count2 = std::make_shared<std::atomic<int>>(0);
 
     auto handle2 = client_mavlink.subscribe_message(
-        "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
-            message_count2++;
+        "HEARTBEAT", [message_count2](MavlinkDirect::MavlinkMessage) {
+            (*message_count2)++;
             LogInfo(
-                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2->load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection
     LogInfo("Waiting for automatic heartbeats after reconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    int messages_after = message_count2.load();
+    int messages_after = message_count2->load();
 
     LogInfo("Messages after reconnection: {}", messages_after);
 
@@ -235,19 +236,19 @@ TEST(Connections, UdpConnectionReconnectionFromClientSide)
     LogInfo("=== Phase 2: Verify initial connectivity ===");
 
     // Track automatic heartbeats
-    std::atomic<int> message_count{0};
+    auto message_count = std::make_shared<std::atomic<int>>(0);
     MavlinkDirect client_mavlink{system};
 
     auto handle = client_mavlink.subscribe_message(
-        "HEARTBEAT", [&message_count](MavlinkDirect::MavlinkMessage) {
-            message_count++;
-            LogInfo("Client received HEARTBEAT (total: {})", message_count.load());
+        "HEARTBEAT", [message_count](MavlinkDirect::MavlinkMessage) {
+            (*message_count)++;
+            LogInfo("Client received HEARTBEAT (total: {})", message_count->load());
         });
 
     // Wait for automatic heartbeats to arrive
     LogInfo("Waiting for automatic heartbeats...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    int messages_before = message_count.load();
+    int messages_before = message_count->load();
     EXPECT_GE(messages_before, 1) << "Client didn't receive automatic heartbeats";
     LogInfo("Received {} automatic heartbeat(s) from server", messages_before);
 
@@ -271,19 +272,19 @@ TEST(Connections, UdpConnectionReconnectionFromClientSide)
     LogInfo("=== Phase 4: Verify message flow after reconnection ===");
 
     // Re-subscribe using the original system (system objects persist)
-    std::atomic<int> message_count2{0};
+    auto message_count2 = std::make_shared<std::atomic<int>>(0);
 
     auto handle2 = client_mavlink.subscribe_message(
-        "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
-            message_count2++;
+        "HEARTBEAT", [message_count2](MavlinkDirect::MavlinkMessage) {
+            (*message_count2)++;
             LogInfo(
-                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2->load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection
     LogInfo("Waiting for automatic heartbeats after reconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    int messages_after = message_count2.load();
+    int messages_after = message_count2->load();
 
     LogInfo("Messages after reconnection: {}", messages_after);
 
@@ -333,19 +334,19 @@ TEST(Connections, UdpConnectionReconnectionFromServerSide)
     LogInfo("=== Phase 2: Verify initial connectivity ===");
 
     // Track automatic heartbeats
-    std::atomic<int> message_count{0};
+    auto message_count = std::make_shared<std::atomic<int>>(0);
     MavlinkDirect client_mavlink{system};
 
     auto handle = client_mavlink.subscribe_message(
-        "HEARTBEAT", [&message_count](MavlinkDirect::MavlinkMessage) {
-            message_count++;
-            LogInfo("Client received HEARTBEAT (total: {})", message_count.load());
+        "HEARTBEAT", [message_count](MavlinkDirect::MavlinkMessage) {
+            (*message_count)++;
+            LogInfo("Client received HEARTBEAT (total: {})", message_count->load());
         });
 
     // Wait for automatic heartbeats to arrive
     LogInfo("Waiting for automatic heartbeats...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
-    int messages_before = message_count.load();
+    int messages_before = message_count->load();
     EXPECT_GE(messages_before, 1) << "Client didn't receive automatic heartbeats";
     LogInfo("Received {} automatic heartbeat(s) from server", messages_before);
 
@@ -369,19 +370,19 @@ TEST(Connections, UdpConnectionReconnectionFromServerSide)
     LogInfo("=== Phase 4: Verify message flow after reconnection ===");
 
     // Re-subscribe using the original system (system objects persist)
-    std::atomic<int> message_count2{0};
+    auto message_count2 = std::make_shared<std::atomic<int>>(0);
 
     auto handle2 = client_mavlink.subscribe_message(
-        "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
-            message_count2++;
+        "HEARTBEAT", [message_count2](MavlinkDirect::MavlinkMessage) {
+            (*message_count2)++;
             LogInfo(
-                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2->load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection
     LogInfo("Waiting for automatic heartbeats after reconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    int messages_after = message_count2.load();
+    int messages_after = message_count2->load();
 
     LogInfo("Messages after reconnection: {}", messages_after);
 

@@ -4,6 +4,7 @@
 #include "plugins/ftp_server/ftp_server.hpp"
 #include "log.hpp"
 #include <future>
+#include <memory>
 #include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
@@ -21,32 +22,39 @@ TEST(Camera, Storage)
     ASSERT_EQ(
         mavsdk_camera.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto camera_server = CameraServer{mavsdk_camera.server_component()};
+    auto camera_server = std::make_shared<CameraServer>(mavsdk_camera.server_component());
+    std::weak_ptr<CameraServer> camera_server_weak = camera_server;
 
     CameraServer::Information information{};
     information.vendor_name = "UVC";
     information.model_name = "Some random camera";
     information.firmware_version = "1.0.0";
     information.definition_file_uri = "";
-    EXPECT_EQ(camera_server.set_information(information), CameraServer::Result::Success);
+    EXPECT_EQ(camera_server->set_information(information), CameraServer::Result::Success);
 
-    camera_server.subscribe_storage_information([&](int32_t) {
+    camera_server->subscribe_storage_information([camera_server_weak](int32_t) {
+        auto server = camera_server_weak.lock();
+        if (!server) {
+            return;
+        }
+
         CameraServer::StorageInformation storage_info{};
         storage_info.available_storage_mib = 1000.0f;
         storage_info.storage_status = CameraServer::StorageInformation::StorageStatus::Formatted;
-        camera_server.respond_storage_information(CameraServer::CameraFeedback::Ok, storage_info);
+        server->respond_storage_information(CameraServer::CameraFeedback::Ok, storage_info);
     });
 
-    auto prom = std::promise<std::shared_ptr<System>>();
-    auto fut = prom.get_future();
-    std::once_flag flag;
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
-        const auto system = mavsdk_groundstation.systems().back();
-        if (system->is_connected() && system->has_camera()) {
-            std::call_once(flag, [&]() { prom.set_value(system); });
-        }
-    });
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([prom, flag, &mavsdk_groundstation]() {
+            const auto system = mavsdk_groundstation.systems().back();
+            if (system->is_connected() && system->has_camera()) {
+                std::call_once(*flag, [&]() { prom->set_value(system); });
+            }
+        });
 
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(2)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);

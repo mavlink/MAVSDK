@@ -2,9 +2,10 @@
 #include "mavsdk.hpp"
 #include "plugins/telemetry/telemetry.hpp"
 #include "plugins/mavlink_direct/mavlink_direct.hpp"
-#include <atomic>
 #include <chrono>
 #include <future>
+#include <memory>
+#include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -36,14 +37,12 @@ TEST(Telemetry, OdometryFrameIds)
     auto telemetry = Telemetry{system};
     auto sender = MavlinkDirect{gs_system};
 
-    auto prom = std::promise<Telemetry::Odometry>{};
-    auto fut = prom.get_future();
-    std::atomic<bool> received{false};
+    auto prom = std::make_shared<std::promise<Telemetry::Odometry>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = telemetry.subscribe_odometry([&](const Telemetry::Odometry& odometry) {
-        if (!received.exchange(true)) {
-            prom.set_value(odometry);
-        }
+    auto handle = telemetry.subscribe_odometry([prom, flag](const Telemetry::Odometry& odometry) {
+        std::call_once(*flag, [&]() { prom->set_value(odometry); });
     });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));

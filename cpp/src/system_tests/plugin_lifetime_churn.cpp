@@ -83,7 +83,12 @@ TEST(PluginLifetime, ChurnPluginsWhileLinkFlaps)
     });
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
-    ASSERT_TRUE(maybe_system) << "system never showed up";
+    if (!maybe_system) {
+        // Returning with the flapper still running would terminate the whole runner.
+        stop = true;
+        flapper.join();
+        FAIL() << "system never showed up";
+    }
     auto system = maybe_system.value();
 
     // Meanwhile, create and destroy a plugin over and over on this thread. Telemetry is a

@@ -4,6 +4,8 @@
 #include <chrono>
 #include <thread>
 #include <future>
+#include <mutex>
+#include <memory>
 #include <atomic>
 #include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
@@ -65,13 +67,14 @@ TEST(MavlinkDirect, ForwardingKnownMessage)
     auto receiver_mavlink_direct = MavlinkDirect{system};
 
     // Set up receiver subscription for a known message (GLOBAL_POSITION_INT)
-    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<MavlinkDirect::MavlinkMessage>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
     auto handle = receiver_mavlink_direct.subscribe_message(
-        "GLOBAL_POSITION_INT", [&prom](const MavlinkDirect::MavlinkMessage& message) {
+        "GLOBAL_POSITION_INT", [prom, flag](const MavlinkDirect::MavlinkMessage& message) {
             LogInfo("Receiver got forwarded known message: {}", message.fields_json);
-            prom.set_value(message);
+            std::call_once(*flag, [&]() { prom->set_value(message); });
         });
 
     // Send known message from sender
@@ -188,19 +191,15 @@ TEST(MavlinkDirect, ForwardingUnknownMessage)
     EXPECT_EQ(MavlinkDirect::Result::Success, sender_mavlink_direct.load_custom_xml(custom_xml));
     EXPECT_EQ(MavlinkDirect::Result::Success, receiver_mavlink_direct.load_custom_xml(custom_xml));
 
-    // Set up receiver subscription - handle potential duplicate messages
-    std::atomic<bool> message_received{false};
-    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
-    auto fut = prom.get_future();
+    // Set up receiver subscription - only set the promise once, even if we receive duplicates
+    auto prom = std::make_shared<std::promise<MavlinkDirect::MavlinkMessage>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
     auto handle = receiver_mavlink_direct.subscribe_message(
-        "CUSTOM_FORWARD_TEST",
-        [&prom, &message_received](const MavlinkDirect::MavlinkMessage& message) {
+        "CUSTOM_FORWARD_TEST", [prom, flag](const MavlinkDirect::MavlinkMessage& message) {
             LogInfo("Receiver got forwarded custom message: {}", message.fields_json);
-            if (!message_received.exchange(true)) {
-                // Only set the promise once, even if we receive the message multiple times
-                prom.set_value(message);
-            }
+            std::call_once(*flag, [&]() { prom->set_value(message); });
         });
 
     // Send custom message from sender

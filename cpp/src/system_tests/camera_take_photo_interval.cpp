@@ -4,6 +4,7 @@
 #include "log.hpp"
 #include <atomic>
 #include <future>
+#include <memory>
 #include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
@@ -22,7 +23,8 @@ TEST(Camera, TakePhotoInterval)
     ASSERT_EQ(
         mavsdk_camera.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto camera_server = CameraServer{mavsdk_camera.server_component()};
+    auto camera_server = std::make_shared<CameraServer>(mavsdk_camera.server_component());
+    std::weak_ptr<CameraServer> camera_server_weak = camera_server;
 
     CameraServer::Information information{};
     information.vendor_name = "CoolCameras";
@@ -30,28 +32,34 @@ TEST(Camera, TakePhotoInterval)
     information.firmware_version = "4.0.0";
     information.definition_file_version = 0;
     information.definition_file_uri = "";
-    camera_server.set_information(information);
+    camera_server->set_information(information);
 
-    camera_server.subscribe_take_photo([&camera_server](int32_t index) {
+    camera_server->subscribe_take_photo([camera_server_weak](int32_t index) {
+        auto server = camera_server_weak.lock();
+        if (!server) {
+            return;
+        }
+
         LogInfo("Let's take photo {}", index);
 
         CameraServer::CaptureInfo info;
         info.index = index;
         info.is_success = true;
 
-        camera_server.respond_take_photo(CameraServer::CameraFeedback::Ok, info);
+        server->respond_take_photo(CameraServer::CameraFeedback::Ok, info);
     });
 
-    auto prom = std::promise<std::shared_ptr<System>>();
-    auto fut = prom.get_future();
-    std::once_flag flag;
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
-        const auto system = mavsdk_groundstation.systems().back();
-        if (system->is_connected() && system->has_camera()) {
-            std::call_once(flag, [&]() { prom.set_value(system); });
-        }
-    });
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([prom, flag, &mavsdk_groundstation]() {
+            const auto system = mavsdk_groundstation.systems().back();
+            if (system->is_connected() && system->has_camera()) {
+                std::call_once(*flag, [&]() { prom->set_value(system); });
+            }
+        });
 
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);

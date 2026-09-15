@@ -3,6 +3,7 @@
 #include "plugins/camera_server/camera_server.hpp"
 #include "log.hpp"
 #include <future>
+#include <memory>
 #include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
@@ -21,7 +22,8 @@ TEST(Camera, FormatStorage)
     ASSERT_EQ(
         mavsdk_camera.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto camera_server = CameraServer{mavsdk_camera.server_component()};
+    auto camera_server = std::make_shared<CameraServer>(mavsdk_camera.server_component());
+    std::weak_ptr<CameraServer> camera_server_weak = camera_server;
 
     CameraServer::Information information{};
     information.vendor_name = "CoolCameras";
@@ -29,25 +31,31 @@ TEST(Camera, FormatStorage)
     information.firmware_version = "4.0.0";
     information.definition_file_version = 0;
     information.definition_file_uri = "";
-    camera_server.set_information(information);
+    camera_server->set_information(information);
 
     auto format_storage_handle =
-        camera_server.subscribe_format_storage([&camera_server](int32_t index) {
+        camera_server->subscribe_format_storage([camera_server_weak](int32_t index) {
+            auto server = camera_server_weak.lock();
+            if (!server) {
+                return;
+            }
+
             LogInfo("Let's format {}", index);
 
-            camera_server.respond_format_storage(CameraServer::CameraFeedback::Ok);
+            server->respond_format_storage(CameraServer::CameraFeedback::Ok);
         });
 
-    auto prom = std::promise<std::shared_ptr<System>>();
-    auto fut = prom.get_future();
-    std::once_flag flag;
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
-        const auto system = mavsdk_groundstation.systems().back();
-        if (system->is_connected() && system->has_camera()) {
-            std::call_once(flag, [&]() { prom.set_value(system); });
-        }
-    });
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([prom, flag, &mavsdk_groundstation]() {
+            const auto system = mavsdk_groundstation.systems().back();
+            if (system->is_connected() && system->has_camera()) {
+                std::call_once(*flag, [&]() { prom->set_value(system); });
+            }
+        });
 
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);
@@ -65,5 +73,5 @@ TEST(Camera, FormatStorage)
         camera.format_storage(camera.camera_list().cameras[0].component_id, 0),
         Camera::Result::Success);
 
-    camera_server.unsubscribe_format_storage(format_storage_handle);
+    camera_server->unsubscribe_format_storage(format_storage_handle);
 }

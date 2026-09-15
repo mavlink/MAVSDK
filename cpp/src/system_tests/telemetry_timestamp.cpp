@@ -2,10 +2,11 @@
 #include "mavsdk.hpp"
 #include "plugins/telemetry/telemetry.hpp"
 #include "plugins/mavlink_direct/mavlink_direct.hpp"
-#include <atomic>
 #include <cmath>
 #include <chrono>
 #include <future>
+#include <memory>
+#include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -79,14 +80,12 @@ TEST(Telemetry, AltitudeTimestamp)
     auto sender = MavlinkDirect{gs_system};
 
     const uint64_t expected_timestamp_us = 123456789ULL;
-    auto prom = std::promise<Telemetry::Altitude>{};
-    auto fut = prom.get_future();
-    std::atomic<bool> received{false};
+    auto prom = std::make_shared<std::promise<Telemetry::Altitude>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = telemetry.subscribe_altitude([&](const Telemetry::Altitude& altitude) {
-        if (!received.exchange(true)) {
-            prom.set_value(altitude);
-        }
+    auto handle = telemetry.subscribe_altitude([prom, flag](const Telemetry::Altitude& altitude) {
+        std::call_once(*flag, [&]() { prom->set_value(altitude); });
     });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -144,15 +143,14 @@ TEST(Telemetry, GroundTruthTimestamp)
     auto sender = MavlinkDirect{gs_system};
 
     const uint64_t expected_timestamp_us = 987654321ULL;
-    auto prom = std::promise<Telemetry::GroundTruth>{};
-    auto fut = prom.get_future();
-    std::atomic<bool> received{false};
+    auto prom = std::make_shared<std::promise<Telemetry::GroundTruth>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = telemetry.subscribe_ground_truth([&](const Telemetry::GroundTruth& ground_truth) {
-        if (!received.exchange(true)) {
-            prom.set_value(ground_truth);
-        }
-    });
+    auto handle =
+        telemetry.subscribe_ground_truth([prom, flag](const Telemetry::GroundTruth& ground_truth) {
+            std::call_once(*flag, [&]() { prom->set_value(ground_truth); });
+        });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 

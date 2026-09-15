@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <chrono>
 #include <future>
+#include <memory>
 #include <fstream>
 #include <thread>
 #include "plugins/ftp/ftp.hpp"
@@ -51,13 +52,17 @@ TEST(Ftp, DownloadFile)
     // First we try to access the file without the root directory set.
     // We expect that an error as we don't have any permission.
     {
-        auto prom = std::promise<Ftp::Result>();
-        auto fut = prom.get_future();
+        auto prom = std::make_shared<std::promise<Ftp::Result>>();
+        auto fut = prom->get_future();
         ftp.download_async(
             temp_file.string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom](Ftp::Result result, Ftp::ProgressData) { prom.set_value(result); });
+            [prom](Ftp::Result result, Ftp::ProgressData) {
+                if (result != Ftp::Result::Next) {
+                    prom->set_value(result);
+                }
+            });
 
         auto future_status = fut.wait_for(std::chrono::seconds(1));
         ASSERT_EQ(future_status, std::future_status::ready);
@@ -68,15 +73,15 @@ TEST(Ftp, DownloadFile)
     ftp_server.set_root_dir(temp_dir_provided.string());
 
     {
-        auto prom = std::promise<Ftp::Result>();
-        auto fut = prom.get_future();
+        auto prom = std::make_shared<std::promise<Ftp::Result>>();
+        auto fut = prom->get_future();
         ftp.download_async(
             temp_file.string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+            [prom](Ftp::Result result, Ftp::ProgressData progress_data) {
                 if (result != Ftp::Result::Next) {
-                    prom.set_value(result);
+                    prom->set_value(result);
                 } else {
                     LogDebug(
                         "Download progress: {}/{} bytes",
@@ -125,15 +130,15 @@ TEST(Ftp, DownloadBigFile)
 
     auto ftp = Ftp{system};
 
-    auto prom = std::promise<Ftp::Result>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
+    auto fut = prom->get_future();
     ftp.download_async(
         temp_file.string(),
         temp_dir_downloaded.string(),
         false,
-        [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+        [prom](Ftp::Result result, Ftp::ProgressData progress_data) {
             if (result != Ftp::Result::Next) {
-                prom.set_value(result);
+                prom->set_value(result);
             } else {
                 LogDebug(
                     "Download progress: {}/{} bytes",
@@ -163,8 +168,8 @@ TEST(Ftp, DownloadBigFileLossy)
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 5 != 0; };
+    auto counter = std::make_shared<std::atomic<unsigned>>(0);
+    auto drop_some = [counter](Mavsdk::MavlinkMessage) -> bool { return (*counter)++ % 5 != 0; };
 
     auto drop_some_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_some);
     auto drop_some_out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(drop_some);
@@ -187,18 +192,18 @@ TEST(Ftp, DownloadBigFileLossy)
 
     auto ftp = Ftp{system};
 
-    unsigned slow_down_counter = 0;
-    auto prom = std::promise<Ftp::Result>();
-    auto fut = prom.get_future();
+    auto slow_down_counter = std::make_shared<unsigned>(0);
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
+    auto fut = prom->get_future();
     ftp.download_async(
         ("" / temp_file).string(),
         temp_dir_downloaded.string(),
         false,
-        [&prom, &slow_down_counter](Ftp::Result result, Ftp::ProgressData progress_data) {
+        [prom, slow_down_counter](Ftp::Result result, Ftp::ProgressData progress_data) {
             if (result != Ftp::Result::Next) {
-                prom.set_value(result);
+                prom->set_value(result);
             } else {
-                if (slow_down_counter++ % 10 == 0) {
+                if ((*slow_down_counter)++ % 10 == 0) {
                     LogDebug(
                         "Download progress: {}/{} bytes",
                         progress_data.bytes_transferred,
@@ -214,8 +219,6 @@ TEST(Ftp, DownloadBigFileLossy)
     EXPECT_TRUE(
         are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
 
-    // Before going out of scope, we need to make sure to no longer access the
-    // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_some_in_handle);
     mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_some_out_handle);
 }
@@ -232,8 +235,8 @@ TEST(Ftp, DownloadStopAndTryAgain)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Once we received some, we want to stop all traffic.
-    std::atomic<bool> got_some = false;
-    auto drop_at_some_point = [&got_some](Mavsdk::MavlinkMessage) -> bool { return !got_some; };
+    auto got_some = std::make_shared<std::atomic<bool>>(false);
+    auto drop_at_some_point = [got_some](Mavsdk::MavlinkMessage) -> bool { return !*got_some; };
 
     auto drop_at_in_handle =
         mavsdk_groundstation.subscribe_incoming_messages_json(drop_at_some_point);
@@ -259,19 +262,19 @@ TEST(Ftp, DownloadStopAndTryAgain)
     auto ftp = Ftp{system};
 
     {
-        auto prom = std::promise<Ftp::Result>();
-        auto fut = prom.get_future();
+        auto prom = std::make_shared<std::promise<Ftp::Result>>();
+        auto fut = prom->get_future();
         ftp.download_async(
             ("" / temp_file).string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom, &got_some](Ftp::Result result, Ftp::ProgressData progress_data) {
+            [prom, got_some](Ftp::Result result, Ftp::ProgressData progress_data) {
                 if (progress_data.bytes_transferred > 500) {
-                    got_some = true;
+                    *got_some = true;
                 }
                 if (result != Ftp::Result::Next) {
                     LogDebug("Got result: {}", to_string(result));
-                    prom.set_value(result);
+                    prom->set_value(result);
                 } else {
                     LogDebug(
                         "Download progress: {}/{} bytes",
@@ -285,22 +288,21 @@ TEST(Ftp, DownloadStopAndTryAgain)
         EXPECT_EQ(fut.get(), Ftp::Result::Timeout);
     }
 
-    // Before going out of scope, we need to make sure to no longer access the
-    // drop_at_some_point callback which accesses the local got_some variable.
+    // Let the traffic through again for the next attempt.
     mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_at_in_handle);
     mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_at_out_handle);
 
     {
         // Now try again
-        auto prom = std::promise<Ftp::Result>();
-        auto fut = prom.get_future();
+        auto prom = std::make_shared<std::promise<Ftp::Result>>();
+        auto fut = prom->get_future();
         ftp.download_async(
             ("" / temp_file).string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+            [prom](Ftp::Result result, Ftp::ProgressData progress_data) {
                 if (result != Ftp::Result::Next) {
-                    prom.set_value(result);
+                    prom->set_value(result);
                 } else {
                     LogDebug(
                         "Download progress: {}/{} bytes",
@@ -348,15 +350,17 @@ TEST(Ftp, DownloadFileOutsideOfRoot)
     ftp_server.set_root_dir(temp_dir_provided.string());
 
     {
-        auto prom = std::promise<Ftp::Result>();
-        auto fut = prom.get_future();
+        auto prom = std::make_shared<std::promise<Ftp::Result>>();
+        auto fut = prom->get_future();
         ftp.download_async(
             (fs::path("") / ".." / temp_file).string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+            [prom](Ftp::Result result, Ftp::ProgressData progress_data) {
                 UNUSED(progress_data);
-                prom.set_value(result);
+                if (result != Ftp::Result::Next) {
+                    prom->set_value(result);
+                }
             });
 
         auto future_status = fut.wait_for(std::chrono::seconds(1));
@@ -409,16 +413,16 @@ TEST(Ftp, DownloadFileOutsideOfRootSharedPrefix)
         // Try to reach the sibling directory via "../provided_secret/secret.bin".
         const auto escape_path = (fs::path("..") / sibling_dir.filename() / secret_file).string();
 
-        auto prom = std::promise<Ftp::Result>();
-        auto fut = prom.get_future();
+        auto prom = std::make_shared<std::promise<Ftp::Result>>();
+        auto fut = prom->get_future();
         ftp.download_async(
             escape_path,
             temp_dir_downloaded.string(),
             false,
-            [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+            [prom](Ftp::Result result, Ftp::ProgressData progress_data) {
                 UNUSED(progress_data);
                 if (result != Ftp::Result::Next) {
-                    prom.set_value(result);
+                    prom->set_value(result);
                 }
             });
 

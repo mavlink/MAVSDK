@@ -4,6 +4,7 @@
 
 #include <atomic>
 #include <chrono>
+#include <memory>
 #include <thread>
 
 #include <gtest/gtest.h>
@@ -46,16 +47,16 @@ TEST(Connections, UnresolvableTcpHostDoesNotDisturbOtherConnections)
     ASSERT_TRUE(maybe_system) << "Ground station did not discover the autopilot over UDP "
                                  "while a TCP connection was stuck retrying a bad name";
 
-    std::atomic<int> heartbeats{0};
+    auto heartbeats = std::make_shared<std::atomic<int>>(0);
     MavlinkDirect gcs_mavlink{maybe_system.value()};
     auto handle = gcs_mavlink.subscribe_message(
-        "HEARTBEAT", [&heartbeats](MavlinkDirect::MavlinkMessage) { ++heartbeats; });
+        "HEARTBEAT", [heartbeats](MavlinkDirect::MavlinkMessage) { ++(*heartbeats); });
 
     // Several reconnect attempts happen in this window (the retry timer is 1 s), so the
     // resolve failure path is exercised repeatedly rather than just once.
-    const int heartbeats_before = heartbeats;
+    const int heartbeats_before = *heartbeats;
     std::this_thread::sleep_for(3s);
-    const int heartbeats_after = heartbeats;
+    const int heartbeats_after = *heartbeats;
 
     gcs_mavlink.unsubscribe_message(handle);
 

@@ -4,6 +4,7 @@
 #include "plugins/mission_raw_server/mission_raw_server.hpp"
 #include <atomic>
 #include <future>
+#include <memory>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -49,29 +50,36 @@ TEST(Mission, UploadCancellation)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto mission = Mission{system};
+    auto mission = std::make_shared<Mission>(system);
+    std::weak_ptr<Mission> mission_weak = mission;
     auto mission_plan = create_mission_plan();
 
-    std::promise<Mission::Result> result_prom{};
-    std::future<Mission::Result> result_fut = result_prom.get_future();
-    std::atomic<bool> cancel_triggered{false};
+    auto result_prom = std::make_shared<std::promise<Mission::Result>>();
+    std::future<Mission::Result> result_fut = result_prom->get_future();
+    auto cancel_triggered = std::make_shared<std::atomic<bool>>(false);
 
     // Use the progress variant so we can cancel the moment the first progress
     // update arrives.  That guarantees cancel() is called while the transfer is
     // still in flight, regardless of how fast the loopback link is.
     LogInfo("Starting mission upload...");
-    mission.upload_mission_with_progress_async(
-        mission_plan, [&](Mission::Result result, Mission::ProgressData /*progress_data*/) {
+    mission->upload_mission_with_progress_async(
+        mission_plan,
+        [result_prom, cancel_triggered, mission_weak](
+            Mission::Result result, Mission::ProgressData /*progress_data*/) {
             if (result == Mission::Result::Next) {
                 // Cancel exactly once, on the first progress update.
-                if (!cancel_triggered.exchange(true)) {
+                if (!cancel_triggered->exchange(true)) {
+                    auto locked_mission = mission_weak.lock();
+                    if (!locked_mission) {
+                        return;
+                    }
                     LogInfo("Upload is in flight, cancelling...");
-                    mission.cancel_mission_upload();
+                    locked_mission->cancel_mission_upload();
                 }
                 return;
             }
             // Final callback: TransferCancelled expected.
-            result_prom.set_value(result);
+            result_prom->set_value(result);
         });
 
     // Allow generous time: the cancel result is delivered via the async
@@ -101,33 +109,39 @@ TEST(Mission, DownloadCancellation)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto mission = Mission{system};
+    auto mission = std::make_shared<Mission>(system);
+    std::weak_ptr<Mission> mission_weak = mission;
     auto mission_plan = create_mission_plan();
 
     // Upload synchronously first (separate from the cancellation test).
     LogInfo("Uploading mission first...");
-    ASSERT_EQ(mission.upload_mission(mission_plan), Mission::Result::Success);
+    ASSERT_EQ(mission->upload_mission(mission_plan), Mission::Result::Success);
     LogInfo("Mission uploaded successfully.");
 
     // Download and cancel once we know the transfer is in flight.
-    std::promise<Mission::Result> result_prom{};
-    std::future<Mission::Result> result_fut = result_prom.get_future();
-    std::atomic<bool> cancel_triggered{false};
+    auto result_prom = std::make_shared<std::promise<Mission::Result>>();
+    std::future<Mission::Result> result_fut = result_prom->get_future();
+    auto cancel_triggered = std::make_shared<std::atomic<bool>>(false);
 
     LogInfo("Starting mission download...");
-    mission.download_mission_with_progress_async(
-        [&](Mission::Result result, Mission::ProgressDataOrMission progress_data) {
+    mission->download_mission_with_progress_async(
+        [result_prom, cancel_triggered, mission_weak](
+            Mission::Result result, Mission::ProgressDataOrMission progress_data) {
             if (result == Mission::Result::Next) {
                 // has_progress == true during the item exchange;
                 // has_mission == true only at successful completion — don't cancel then.
-                if (progress_data.has_progress && !cancel_triggered.exchange(true)) {
+                if (progress_data.has_progress && !cancel_triggered->exchange(true)) {
+                    auto locked_mission = mission_weak.lock();
+                    if (!locked_mission) {
+                        return;
+                    }
                     LogInfo("Download is in flight, cancelling...");
-                    mission.cancel_mission_download();
+                    locked_mission->cancel_mission_download();
                 }
                 return;
             }
             // Final callback: TransferCancelled expected.
-            result_prom.set_value(result);
+            result_prom->set_value(result);
         });
 
     ASSERT_EQ(result_fut.wait_for(std::chrono::seconds(30)), std::future_status::ready);
