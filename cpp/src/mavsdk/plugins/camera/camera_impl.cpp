@@ -1644,7 +1644,14 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                             return;
                         }
 
-                        auto downloaded_filepath = _tmp_download_path / downloaded_filename;
+                        // downloaded_filename is the vehicle's uri with only its scheme
+                        // removed, so it can still contain "..", and operator/ does not
+                        // normalise. The FTP client writes to local_folder / filename(),
+                        // so reduce this the same way: it is both where the file actually
+                        // is, and inside _tmp_download_path.
+                        auto downloaded_filepath =
+                            _tmp_download_path /
+                            std::filesystem::path(downloaded_filename).filename();
 
                         LogDebug("File download finished to {}", downloaded_filepath.string());
                         if (downloaded_filepath.extension() == ".xz") {
