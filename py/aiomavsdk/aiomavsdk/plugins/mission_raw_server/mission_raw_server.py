@@ -8,7 +8,7 @@ Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format
 """
 
 import asyncio
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Tuple
 from mavsdk.plugins.mission_raw_server import (
     MissionRawServer,
     MissionRawServerResult,
@@ -43,20 +43,24 @@ class MissionRawServerAsync:
         self._subscription_handles: dict = {}
         self._plugin = MissionRawServer(server_component)
 
-    async def subscribe_incoming_mission(self) -> AsyncGenerator[MissionPlan, None]:
+    async def subscribe_incoming_mission(
+        self,
+    ) -> AsyncGenerator[Tuple[MissionRawServerResult, MissionPlan], None]:
         """
         Subscribe to when a new mission is uploaded (asynchronous).
 
         Yields
         ------
+        result : MissionRawServerResult
+             The result reported alongside the update
         mission_plan : MissionPlan
              The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback(result, data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_incoming_mission(callback)
         self._subscription_handles[id(queue)] = handle

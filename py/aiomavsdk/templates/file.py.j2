@@ -6,7 +6,7 @@
 {{ class_description }}
 """
 import asyncio
-from typing import AsyncGenerator
+from typing import AsyncGenerator{{ ", Tuple" if methods | selectattr("is_async") | selectattr("is_stream") | rejectattr("is_finite") | selectattr("has_result") | list else "" }}
 from mavsdk.plugins.{{ plugin_name.lower_snake_case }} import (
     {{ plugin_name.upper_camel_case }},
     {{ plugin_name.upper_camel_case }}Result,
@@ -47,12 +47,17 @@ class {{ plugin_name.upper_camel_case }}Async:
 
     {% for method in methods %}
     {% if method.is_async and method.is_stream and not method.is_finite %}
-    async def subscribe_{{ method.name.lower_snake_case }}(self) -> AsyncGenerator[{% if not method.return_type %}bool{% elif method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}{{ method.return_type.inner_name.upper_camel_case }}{% endif %}, None]:
+    {% set yield_type %}{% if not method.return_type %}bool{% elif method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}{{ method.return_type.inner_name.upper_camel_case }}{% endif %}{% endset %}
+    async def subscribe_{{ method.name.lower_snake_case }}(self) -> AsyncGenerator[{% if method.has_result %}Tuple[{{ plugin_name.upper_camel_case }}Result, {{ yield_type }}]{% else %}{{ yield_type }}{% endif %}, None]:
         """
         {{ method.method_description }}
 
         Yields
         ------
+        {% if method.has_result %}
+        result : {{ plugin_name.upper_camel_case }}Result
+             The result reported alongside the update
+        {% endif %}
         {% if method.return_type %}
         {% if method.return_type.is_primitive %}
         {{ method.return_type.name.lower_snake_case }} : {{ method.return_type.name }}
@@ -65,8 +70,8 @@ class {{ plugin_name.upper_camel_case }}Async:
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback({% if method.has_result %}result, {% endif %}data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, {% if method.has_result %}(result, data){% else %}data{% endif %})
 
         handle = self._plugin.subscribe_{{ method.name.lower_snake_case }}(callback)
         self._subscription_handles[id(queue)] = handle

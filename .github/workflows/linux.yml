@@ -304,6 +304,36 @@ jobs:
           MALLOC_PERTURB_: "165"
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
+      # The Python bindings need a MAVSDK build to run against, and this job
+      # already has one. The C bindings on top of it are seconds of work, so the
+      # tests ride along here instead of paying for a second full build.
+      - name: build C bindings
+        if: matrix.cc == 'gcc-13'
+        working-directory: ./c
+        run: |
+          cmake -DCMAKE_INSTALL_PREFIX=build/install -DBUILD_SHARED_LIBS=ON -DCMAKE_PREFIX_PATH="$(pwd)/../cpp/install;$(pwd)/../cpp/build/release/third_party/install" -Bbuild -S.
+          cmake --build build --target install -- -j$(nproc)
+      - name: stage libcmavsdk for the Python package
+        if: matrix.cc == 'gcc-13'
+        working-directory: .
+        run: |
+          mkdir -p py/mavsdk/mavsdk/lib
+          cp -a c/build/install/lib/libcmavsdk.so* py/mavsdk/mavsdk/lib/
+      # In a venv, because pip cannot upgrade the image's apt-installed Python
+      # packages (they carry no RECORD file) and refuses the install outright.
+      - name: install the Python bindings and test dependencies
+        if: matrix.cc == 'gcc-13'
+        working-directory: .
+        run: |
+          sudo apt-get install -y python3-venv
+          python3 -m venv venv
+          ./venv/bin/pip install -r py/requirements-dev.txt -e py/mavsdk -e py/aiomavsdk
+      # MAVSDK is built shared here, so libcmavsdk.so is not self-contained.
+      - name: python system tests
+        if: matrix.cc == 'gcc-13'
+        working-directory: ./py/test
+        run: LD_LIBRARY_PATH=$GITHUB_WORKSPACE/cpp/install/lib $GITHUB_WORKSPACE/venv/bin/pytest -v
+        timeout-minutes: 5
       - name: analyze core dumps
         if: failure()
         run: tools/analyze_core_dumps.sh build/release
