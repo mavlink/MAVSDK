@@ -8,6 +8,7 @@
 #include "server_component_impl.hpp"
 #include "unused.hpp"
 #include "crc32.hpp"
+#include "fs_utils.hpp"
 
 namespace mavsdk {
 
@@ -298,7 +299,7 @@ MavlinkFtpServer::_path_from_string(const std::string& payload_path)
         temp_path = temp_path.substr(1, temp_path.size());
     }
 
-    fs::path combined_path = (fs::path(_root_dir) / temp_path).lexically_normal();
+    fs::path combined_path = (utf8_path(_root_dir) / utf8_path(temp_path)).lexically_normal();
 
     // Check whether the combined path is actually inside the root dir.
     //
@@ -307,13 +308,13 @@ MavlinkFtpServer::_path_from_string(const std::string& payload_path)
     // root dir. We therefore use lexically_relative and reject any result that
     // climbs out with "..". lexically_relative works purely lexically, which is
     // what we want here as combined_path is already normalized.
-    const auto relative = combined_path.lexically_relative(_root_dir);
+    const auto relative = combined_path.lexically_relative(utf8_path(_root_dir));
     if (relative.empty() || *relative.begin() == "..") {
-        LogWarn("Not inside root dir: {}, root dir: {}", combined_path.string(), _root_dir);
+        LogWarn("Not inside root dir: {}, root dir: {}", utf8_string(combined_path), _root_dir);
         return ServerResult::ERR_FAIL;
     }
 
-    return combined_path.string();
+    return utf8_string(combined_path);
 }
 
 void MavlinkFtpServer::set_root_directory(const std::string& root_dir)
@@ -321,7 +322,7 @@ void MavlinkFtpServer::set_root_directory(const std::string& root_dir)
     std::lock_guard<std::mutex> lock(_mutex);
 
     std::error_code ec;
-    _root_dir = fs::canonical(fs::path(root_dir), ec).string();
+    _root_dir = utf8_string(fs::canonical(utf8_path(root_dir), ec));
     if (ec) {
         LogWarn("Root dir could not be made absolute: {}", ec.message());
     }
@@ -347,7 +348,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
         return;
     }
 
-    fs::path path = std::get<std::string>(maybe_path);
+    fs::path path = utf8_path(std::get<std::string>(maybe_path));
 
     uint8_t offset = 0;
 
@@ -356,7 +357,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
 
     std::error_code ec;
     if (!fs::exists(path, ec)) {
-        LogWarn("FTP: can't open path {}", path.string());
+        LogWarn("FTP: can't open path {}", utf8_string(path));
         // this is not an FTP error, abort directory by simulating eof
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
@@ -366,7 +367,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
     }
 
     if (_debugging) {
-        LogDebug("Opening path: {}", path.string());
+        LogDebug("Opening path: {}", utf8_string(path));
     }
 
     for (const auto& entry : fs::directory_iterator(fs::canonical(path))) {
@@ -375,6 +376,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
             continue;
         }
         const auto name = entry.path().filename();
+        const auto name_utf8 = utf8_string(name);
 
         std::string payload_str;
 
@@ -382,7 +384,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
         if (ec) {
             LogWarn(
                 "Could not determine whether '{}' is a file: {}",
-                entry.path().string(),
+                utf8_string(entry.path()),
                 ec.message());
             continue;
         }
@@ -391,7 +393,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
         if (ec) {
             LogWarn(
                 "Could not determine whether '{}' is a directory: {}",
-                entry.path().string(),
+                utf8_string(entry.path()),
                 ec.message());
             continue;
         }
@@ -424,16 +426,17 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
         if (is_regular_file) {
             const auto filesize = fs::file_size(entry.path(), ec);
             if (ec) {
-                LogWarn("Could not get file size of '{}': {}", entry.path().string(), ec.message());
+                LogWarn(
+                    "Could not get file size of '{}': {}", utf8_string(entry.path()), ec.message());
                 continue;
             }
 
             if (_debugging) {
-                LogDebug("Found file: {}, size: {} bytes", name.string(), filesize);
+                LogDebug("Found file: {}, size: {} bytes", name_utf8, filesize);
             }
 
             payload_str += 'F';
-            payload_str += name.string();
+            payload_str += name_utf8;
             payload_str += '\t';
             payload_str += std::to_string(filesize);
             if (with_time) {
@@ -443,11 +446,11 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
 
         } else if (is_directory) {
             if (_debugging) {
-                LogDebug("Found directory: {}", name.string());
+                LogDebug("Found directory: {}", name_utf8);
             }
 
             payload_str += 'D';
-            payload_str += name.string();
+            payload_str += name_utf8;
             if (with_time) {
                 // Directories have no meaningful size; report 0.
                 payload_str += '\t';
@@ -470,7 +473,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
                 // name is very long. We can't ever send it, so we send a skip entry
                 // instead. Otherwise the listing would stall here and all entries
                 // after this one would be lost.
-                LogWarn("Skipping entry '{}', name too long for one payload", name.string());
+                LogWarn("Skipping entry '{}', name too long for one payload", name_utf8);
                 response.data[offset++] = 'S';
                 response.data[offset++] = '\0';
                 continue;
@@ -539,7 +542,7 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
     }
 
     std::error_code ec;
-    if (!fs::exists(path, ec)) {
+    if (!fs::exists(utf8_path(path), ec)) {
         LogErr("FTP: Open failed - file doesn't exist");
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
@@ -548,7 +551,7 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
         return;
     }
 
-    auto file_size = static_cast<uint32_t>(fs::file_size(path, ec));
+    auto file_size = static_cast<uint32_t>(fs::file_size(utf8_path(path), ec));
     if (ec) {
         LogErr("Could not determine file size of '{}': {}", path, ec.message());
         return;
@@ -559,7 +562,7 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
     }
 
     std::ifstream ifstream;
-    ifstream.open(path, std::ios::in | std::ios::binary);
+    ifstream.open(utf8_path(path), std::ios::in | std::ios::binary);
 
     if (!ifstream.is_open()) {
         LogWarn("FTP: Open failed");
@@ -634,7 +637,7 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
 
     // fail only if requested open for read
     std::error_code ec;
-    if (!fs::exists(path, ec)) {
+    if (!fs::exists(utf8_path(path), ec)) {
         LogWarn("FTP: Open failed - file not found");
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
@@ -643,7 +646,7 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
         return;
     }
 
-    auto file_size = static_cast<uint32_t>(fs::file_size(path, ec));
+    auto file_size = static_cast<uint32_t>(fs::file_size(utf8_path(path), ec));
     if (ec) {
         LogErr("Could not determine file size of '{}': {}", path, ec.message());
         return;
@@ -654,7 +657,7 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
     }
 
     std::ofstream ofstream;
-    ofstream.open(path, std::ios::out | std::ios::binary);
+    ofstream.open(utf8_path(path), std::ios::out | std::ios::binary);
 
     if (!ofstream.is_open()) {
         LogWarn("FTP: Open failed");
@@ -726,7 +729,7 @@ void MavlinkFtpServer::_work_create_file(const PayloadHeader& payload)
     }
 
     std::ofstream ofstream;
-    ofstream.open(path, std::ios::out | std::ios::binary);
+    ofstream.open(utf8_path(path), std::ios::out | std::ios::binary);
 
     if (!ofstream.is_open()) {
         LogWarn("FTP: Open failed");
@@ -1041,7 +1044,7 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
         return;
     }
 
-    fs::path path = std::get<std::string>(maybe_path);
+    fs::path path = utf8_path(std::get<std::string>(maybe_path));
 
     std::error_code ec;
     if (!fs::exists(path, ec)) {
@@ -1052,7 +1055,7 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
         return;
     }
     if (ec) {
-        LogErr("Call fs::exists for {} returned error: {}", path.string(), ec.message());
+        LogErr("Call fs::exists for {} returned error: {}", utf8_string(path), ec.message());
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
@@ -1094,7 +1097,7 @@ void MavlinkFtpServer::_work_create_directory(const PayloadHeader& payload)
     auto path = std::get<std::string>(maybe_path);
 
     std::error_code ec;
-    if (fs::exists(path, ec)) {
+    if (fs::exists(utf8_path(path), ec)) {
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL_FILE_EXISTS;
@@ -1102,7 +1105,7 @@ void MavlinkFtpServer::_work_create_directory(const PayloadHeader& payload)
         return;
     }
 
-    if (fs::create_directory(path, ec)) {
+    if (fs::create_directory(utf8_path(path), ec)) {
         response.opcode = Opcode::RSP_ACK;
     } else {
         response.opcode = Opcode::RSP_NAK;
@@ -1134,14 +1137,14 @@ void MavlinkFtpServer::_work_remove_file(const PayloadHeader& payload)
     auto path = std::get<std::string>(maybe_path);
 
     std::error_code ec;
-    if (!fs::exists(path, ec)) {
+    if (!fs::exists(utf8_path(path), ec)) {
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
         _send_mavlink_ftp_message(response);
         return;
     }
-    if (fs::remove(path, ec)) {
+    if (fs::remove(utf8_path(path), ec)) {
         response.opcode = Opcode::RSP_ACK;
     } else {
         response.opcode = Opcode::RSP_NAK;
@@ -1189,7 +1192,7 @@ void MavlinkFtpServer::_work_rename(const PayloadHeader& payload)
     }
 
     std::error_code ec;
-    if (!fs::exists(old_name, ec)) {
+    if (!fs::exists(utf8_path(old_name), ec)) {
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
@@ -1197,7 +1200,7 @@ void MavlinkFtpServer::_work_rename(const PayloadHeader& payload)
         return;
     }
 
-    fs::rename(old_name, new_name, ec);
+    fs::rename(utf8_path(old_name), utf8_path(new_name), ec);
     if (ec) {
         LogErr(
             "Call fs::rename from {} to {} returned error: {}", old_name, new_name, ec.message());
@@ -1216,12 +1219,12 @@ MavlinkFtpServer::ServerResult
 MavlinkFtpServer::_calc_local_file_crc32(const std::string& path, uint32_t& csum)
 {
     std::error_code ec;
-    if (!fs::exists(path, ec)) {
+    if (!fs::exists(utf8_path(path), ec)) {
         return ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
     }
 
     std::ifstream ifstream;
-    ifstream.open(path, std::ios::in | std::ios::binary);
+    ifstream.open(utf8_path(path), std::ios::in | std::ios::binary);
 
     if (!ifstream.is_open()) {
         return ServerResult::ERR_FILE_IO_ERROR;
@@ -1270,7 +1273,7 @@ void MavlinkFtpServer::_work_calc_file_CRC32(const PayloadHeader& payload)
     auto path = std::get<std::string>(maybe_path);
 
     std::error_code ec;
-    if (!fs::exists(path, ec)) {
+    if (!fs::exists(utf8_path(path), ec)) {
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
