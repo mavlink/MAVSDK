@@ -1313,15 +1313,13 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 
 void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuration)
 {
-    // The API takes 32 bit system IDs, but they are not implemented yet.
+    // The API takes 32 bit system IDs, but they are not implemented yet. This is void, so
+    // there is no Result to report a bad system ID through.
     if (new_configuration.get_system_id() > std::numeric_limits<uint8_t>::max()) {
-        const auto fallback_system_id =
-            Mavsdk::Configuration{new_configuration.get_component_type()}.get_system_id();
-        LogErr(
-            "System ID {} is not supported yet, using {} instead",
-            new_configuration.get_system_id(),
-            fallback_system_id);
-        new_configuration.set_system_id(fallback_system_id);
+        LogErr("System ID {} is not supported yet", new_configuration.get_system_id());
+        fflush(stdout);
+        fflush(stderr);
+        std::abort();
     }
 
     // Requires _configuration_update_mutex. Take _server_components_mutex only
