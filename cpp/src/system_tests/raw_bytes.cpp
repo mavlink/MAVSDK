@@ -26,13 +26,18 @@ TEST(RawBytes, SendReceive)
     // Subscribe to outgoing raw bytes
     auto handle = mavsdk_autopilot.subscribe_raw_bytes_to_be_sent(
         [&prom, &message_captured](const char* bytes, size_t length) {
-            // Parse the bytes
+            // Parse with our own buffers: mavlink_parse_char() would use the global state of
+            // a channel, which the library packs and parses on from other threads. Each
+            // callback carries one whole message, so the buffers don't need to outlive it.
+            mavlink_message_t buffer = {};
+            mavlink_status_t buffer_status = {};
             mavlink_message_t msg = {};
             mavlink_status_t status = {};
 
             for (size_t i = 0; i < length; ++i) {
-                if (mavlink_parse_char(
-                        MAVLINK_COMM_0, static_cast<uint8_t>(bytes[i]), &msg, &status)) {
+                if (mavlink_frame_char_buffer(
+                        &buffer, &buffer_status, static_cast<uint8_t>(bytes[i]), &msg, &status) ==
+                    MAVLINK_FRAMING_OK) {
                     LogInfo("Captured outgoing message ID {}", (int)msg.msgid);
 
                     // Look for GLOBAL_POSITION_INT message
