@@ -124,14 +124,14 @@ public:
      * @brief Possible results returned for calibration commands
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        Next, /**< @brief Progress update. */
-        NoLogfiles, /**< @brief No log files found. */
-        Timeout, /**< @brief A timeout happened. */
-        InvalidArgument, /**< @brief Invalid argument. */
-        FileOpenFailed, /**< @brief File open failed. */
-        NoSystem, /**< @brief No system is connected. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        Next = 2, /**< @brief Progress update. */
+        NoLogfiles = 3, /**< @brief No log files found. */
+        Timeout = 4, /**< @brief A timeout happened. */
+        InvalidArgument = 5, /**< @brief Invalid argument. */
+        FileOpenFailed = 6, /**< @brief File open failed. */
+        NoSystem = 7, /**< @brief No system is connected. */
     };
 
     /**

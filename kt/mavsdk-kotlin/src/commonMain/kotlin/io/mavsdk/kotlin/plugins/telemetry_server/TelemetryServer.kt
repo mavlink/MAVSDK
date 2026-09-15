@@ -130,17 +130,17 @@ class TelemetryServer internal constructor(private val native: TelemetryServerNa
          * Setpoint in body NED frame. This makes sense if all position control is externalized -
          * e.g. useful to command 2 m/s^2 acceleration to the right.
          */
-        BODY_NED(1),
+        BODY_NED(8),
         /**
          * Odometry local coordinate frame of data given by a vision estimation system, Z-down (x:
          * north, y: east, z: down).
          */
-        VISION_NED(2),
+        VISION_NED(16),
         /**
          * Odometry local coordinate frame of data given by an estimator running onboard the
          * vehicle, Z-down (x: north, y: east, z: down).
          */
-        ESTIM_NED(3);
+        ESTIM_NED(18);
 
         companion object {
             fun fromValue(value: Int): MavFrame =

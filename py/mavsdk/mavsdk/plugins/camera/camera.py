@@ -633,8 +633,8 @@ class Storage:
         USB_STICK = 1
         SD = 2
         MICROSD = 3
-        HD = 4
-        OTHER = 5
+        HD = 7
+        OTHER = 254
 
     def __init__(
         self,

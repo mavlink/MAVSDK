@@ -59,10 +59,10 @@ public:
      * @brief Possible results returned for FTP server requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        DoesNotExist, /**< @brief Directory does not exist. */
-        Busy, /**< @brief Operations in progress. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        DoesNotExist = 2, /**< @brief Directory does not exist. */
+        Busy = 3, /**< @brief Operations in progress. */
     };
 
     /**

@@ -67,16 +67,16 @@ public:
      * @brief Winch Action type.
      */
     enum class WinchAction {
-        Relaxed, /**< @brief Allow motor to freewheel. */
-        RelativeLengthControl, /**< @brief Wind or unwind specified length of line, optionally using specified rate. */
-        RateControl, /**< @brief Wind or unwind line at specified rate. */
-        Lock, /**< @brief Perform the locking sequence to relieve motor while in the fully retracted position. */
-        Deliver, /**< @brief Sequence of drop, slow down, touch down, reel up, lock. */
-        Hold, /**< @brief Engage motor and hold current position. */
-        Retract, /**< @brief Return the reel to the fully retracted position. */
-        LoadLine, /**< @brief Load the reel with line. The winch will calculate the total loaded length and stop when the tension exceeds a threshold. */
-        AbandonLine, /**< @brief Spool out the entire length of the line. */
-        LoadPayload, /**< @brief Spools out just enough to present the hook to the user to load the payload. */
+        Relaxed = 0, /**< @brief Allow motor to freewheel. */
+        RelativeLengthControl = 1, /**< @brief Wind or unwind specified length of line, optionally using specified rate. */
+        RateControl = 2, /**< @brief Wind or unwind line at specified rate. */
+        Lock = 3, /**< @brief Perform the locking sequence to relieve motor while in the fully retracted position. */
+        Deliver = 4, /**< @brief Sequence of drop, slow down, touch down, reel up, lock. */
+        Hold = 5, /**< @brief Engage motor and hold current position. */
+        Retract = 6, /**< @brief Return the reel to the fully retracted position. */
+        LoadLine = 7, /**< @brief Load the reel with line. The winch will calculate the total loaded length and stop when the tension exceeds a threshold. */
+        AbandonLine = 8, /**< @brief Spool out the entire length of the line. */
+        LoadPayload = 9, /**< @brief Spools out just enough to present the hook to the user to load the payload. */
     };
 
     /**
@@ -177,13 +177,13 @@ public:
      * @brief Possible results returned for winch action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request was successful. */
-        NoSystem, /**< @brief No system is connected. */
-        Busy, /**< @brief Temporarily rejected. */
-        Timeout, /**< @brief Request timed out. */
-        Unsupported, /**< @brief Action not supported. */
-        Failed, /**< @brief Action failed. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request was successful. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        Busy = 3, /**< @brief Temporarily rejected. */
+        Timeout = 4, /**< @brief Request timed out. */
+        Unsupported = 5, /**< @brief Action not supported. */
+        Failed = 6, /**< @brief Action failed. */
     };
 
     /**

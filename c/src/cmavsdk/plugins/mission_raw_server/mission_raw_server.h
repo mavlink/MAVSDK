@@ -192,13 +192,13 @@ typedef enum {
     /**  No mission available on the system. */
     MAVSDK_MISSION_RAW_SERVER_RESULT_NO_MISSION_AVAILABLE = 8,
     /**  Unsupported mission command. */
-    MAVSDK_MISSION_RAW_SERVER_RESULT_UNSUPPORTED_MISSION_CMD = 9,
+    MAVSDK_MISSION_RAW_SERVER_RESULT_UNSUPPORTED_MISSION_CMD = 11,
     /**  Mission transfer (upload or download) has been cancelled. */
-    MAVSDK_MISSION_RAW_SERVER_RESULT_TRANSFER_CANCELLED = 10,
+    MAVSDK_MISSION_RAW_SERVER_RESULT_TRANSFER_CANCELLED = 12,
     /**  No system connected. */
-    MAVSDK_MISSION_RAW_SERVER_RESULT_NO_SYSTEM = 11,
+    MAVSDK_MISSION_RAW_SERVER_RESULT_NO_SYSTEM = 13,
     /**  Intermediate message showing progress or instructions on the next steps. */
-    MAVSDK_MISSION_RAW_SERVER_RESULT_NEXT = 12,
+    MAVSDK_MISSION_RAW_SERVER_RESULT_NEXT = 14,
 } mavsdk_mission_raw_server_result_t;
 
 

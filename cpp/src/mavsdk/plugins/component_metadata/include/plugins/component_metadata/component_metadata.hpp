@@ -67,10 +67,10 @@ public:
      * @brief The metadata type
      */
     enum class MetadataType {
-        AllCompleted, /**< @brief This is set in the subscription callback when all metadata types completed for a given component ID. */
-        Parameter, /**< @brief Parameter metadata. */
-        Events, /**< @brief Event definitions. */
-        Actuators, /**< @brief Actuator definitions. */
+        AllCompleted = 0, /**< @brief This is set in the subscription callback when all metadata types completed for a given component ID. */
+        Parameter = 1, /**< @brief Parameter metadata. */
+        Events = 2, /**< @brief Event definitions. */
+        Actuators = 3, /**< @brief Actuator definitions. */
     };
 
     /**
@@ -120,15 +120,15 @@ public:
      * @brief Possible results returned
      */
     enum class Result {
-        Success, /**< @brief Success. */
-        NotAvailable, /**< @brief Not available. */
-        ConnectionError, /**< @brief Connection error. */
-        Unsupported, /**< @brief Unsupported. */
-        Denied, /**< @brief Denied. */
-        Failed, /**< @brief Failed. */
-        Timeout, /**< @brief Timeout. */
-        NoSystem, /**< @brief No system. */
-        NotRequested, /**< @brief Not requested. */
+        Success = 0, /**< @brief Success. */
+        NotAvailable = 1, /**< @brief Not available. */
+        ConnectionError = 2, /**< @brief Connection error. */
+        Unsupported = 3, /**< @brief Unsupported. */
+        Denied = 4, /**< @brief Denied. */
+        Failed = 5, /**< @brief Failed. */
+        Timeout = 6, /**< @brief Timeout. */
+        NoSystem = 7, /**< @brief No system. */
+        NotRequested = 8, /**< @brief Not requested. */
     };
 
     /**

@@ -67,8 +67,8 @@ public:
      * @brief Parameter version
      */
     enum class ProtocolVersion {
-        V1, /**< @brief Original v1 version. */
-        Ext, /**< @brief Extended param version. */
+        V1 = 0, /**< @brief Original v1 version. */
+        Ext = 1, /**< @brief Extended param version. */
     };
 
     /**
@@ -198,23 +198,23 @@ public:
      * @brief Possible results returned for param requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        Timeout, /**< @brief Request timed out. */
-        ConnectionError, /**< @brief Connection error. */
-        WrongType, /**< @brief Wrong type. */
-        ParamNameTooLong, /**< @brief Parameter name too long (> 16). */
-        NoSystem, /**< @brief No system connected. */
-        ParamValueTooLong, /**< @brief Param value too long (> 128). */
-        Failed, /**< @brief Operation failed.. */
-        DoesNotExist, /**< @brief Parameter does not exist. */
-        ValueOutOfRange, /**< @brief Parameter value does not fit within accepted range. */
-        PermissionDenied, /**< @brief Caller is not permitted to set the value of this parameter. */
-        ComponentNotFound, /**< @brief Unknown component specified. */
-        ReadOnly, /**< @brief Parameter is read-only. */
-        TypeUnsupported, /**< @brief Parameter data type is not supported by flight stack. */
-        TypeMismatch, /**< @brief Parameter type does not match expected type. */
-        ReadFail, /**< @brief Parameter exists but reading failed. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        Timeout = 2, /**< @brief Request timed out. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        WrongType = 4, /**< @brief Wrong type. */
+        ParamNameTooLong = 5, /**< @brief Parameter name too long (> 16). */
+        NoSystem = 6, /**< @brief No system connected. */
+        ParamValueTooLong = 7, /**< @brief Param value too long (> 128). */
+        Failed = 8, /**< @brief Operation failed.. */
+        DoesNotExist = 9, /**< @brief Parameter does not exist. */
+        ValueOutOfRange = 10, /**< @brief Parameter value does not fit within accepted range. */
+        PermissionDenied = 11, /**< @brief Caller is not permitted to set the value of this parameter. */
+        ComponentNotFound = 12, /**< @brief Unknown component specified. */
+        ReadOnly = 13, /**< @brief Parameter is read-only. */
+        TypeUnsupported = 14, /**< @brief Parameter data type is not supported by flight stack. */
+        TypeMismatch = 15, /**< @brief Parameter type does not match expected type. */
+        ReadFail = 16, /**< @brief Parameter exists but reading failed. */
     };
 
     /**

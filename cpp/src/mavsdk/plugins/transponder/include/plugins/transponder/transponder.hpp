@@ -68,26 +68,26 @@ public:
      * @brief ADSB classification for the type of vehicle emitting the transponder signal.
      */
     enum class AdsbEmitterType {
-        NoInfo, /**< @brief No emitter info.. */
-        Light, /**< @brief Light emitter.. */
-        Small, /**< @brief Small emitter.. */
-        Large, /**< @brief Large emitter.. */
-        HighVortexLarge, /**< @brief High vortex emitter.. */
-        Heavy, /**< @brief Heavy emitter.. */
-        HighlyManuv, /**< @brief Highly maneuverable emitter.. */
-        Rotocraft, /**< @brief Rotorcraft emitter.. */
-        Unassigned, /**< @brief Unassigned emitter.. */
-        Glider, /**< @brief Glider emitter.. */
-        LighterAir, /**< @brief Lighter air emitter.. */
-        Parachute, /**< @brief Parachute emitter.. */
-        UltraLight, /**< @brief Ultra light emitter.. */
-        Unassigned2, /**< @brief Unassigned2 emitter.. */
-        Uav, /**< @brief UAV emitter.. */
-        Space, /**< @brief Space emitter.. */
-        Unassgined3, /**< @brief Unassigned3 emitter.. */
-        EmergencySurface, /**< @brief Emergency emitter.. */
-        ServiceSurface, /**< @brief Service surface emitter.. */
-        PointObstacle, /**< @brief Point obstacle emitter.. */
+        NoInfo = 0, /**< @brief No emitter info.. */
+        Light = 1, /**< @brief Light emitter.. */
+        Small = 2, /**< @brief Small emitter.. */
+        Large = 3, /**< @brief Large emitter.. */
+        HighVortexLarge = 4, /**< @brief High vortex emitter.. */
+        Heavy = 5, /**< @brief Heavy emitter.. */
+        HighlyManuv = 6, /**< @brief Highly maneuverable emitter.. */
+        Rotocraft = 7, /**< @brief Rotorcraft emitter.. */
+        Unassigned = 8, /**< @brief Unassigned emitter.. */
+        Glider = 9, /**< @brief Glider emitter.. */
+        LighterAir = 10, /**< @brief Lighter air emitter.. */
+        Parachute = 11, /**< @brief Parachute emitter.. */
+        UltraLight = 12, /**< @brief Ultra light emitter.. */
+        Unassigned2 = 13, /**< @brief Unassigned2 emitter.. */
+        Uav = 14, /**< @brief UAV emitter.. */
+        Space = 15, /**< @brief Space emitter.. */
+        Unassgined3 = 16, /**< @brief Unassigned3 emitter.. */
+        EmergencySurface = 17, /**< @brief Emergency emitter.. */
+        ServiceSurface = 18, /**< @brief Service surface emitter.. */
+        PointObstacle = 19, /**< @brief Point obstacle emitter.. */
     };
 
     /**
@@ -108,8 +108,8 @@ public:
      * @brief Altitude type used in AdsbVehicle message
      */
     enum class AdsbAltitudeType {
-        PressureQnh, /**< @brief Altitude reported from a Baro source using QNH reference. */
-        Geometric, /**< @brief Altitude reported from a GNSS source. */
+        PressureQnh = 0, /**< @brief Altitude reported from a Baro source using QNH reference. */
+        Geometric = 1, /**< @brief Altitude reported from a GNSS source. */
     };
 
     /**
@@ -170,13 +170,13 @@ public:
      * @brief Possible results returned for transponder requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Success: the transponder command was accepted by the vehicle. */
-        NoSystem, /**< @brief No system connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command refused by vehicle. */
-        Timeout, /**< @brief Request timed out. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Success: the transponder command was accepted by the vehicle. */
+        NoSystem = 2, /**< @brief No system connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        CommandDenied = 5, /**< @brief Command refused by vehicle. */
+        Timeout = 6, /**< @brief Request timed out. */
     };
 
     /**

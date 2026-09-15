@@ -54,17 +54,17 @@ class Failure internal constructor(private val native: FailureNative) {
         /** Airspeed */
         SENSOR_AIRSPEED(8),
         /** Battery */
-        SYSTEM_BATTERY(9),
+        SYSTEM_BATTERY(100),
         /** Motor */
-        SYSTEM_MOTOR(10),
+        SYSTEM_MOTOR(101),
         /** Servo */
-        SYSTEM_SERVO(11),
+        SYSTEM_SERVO(102),
         /** Avoidance */
-        SYSTEM_AVOIDANCE(12),
+        SYSTEM_AVOIDANCE(103),
         /** RC signal */
-        SYSTEM_RC_SIGNAL(13),
+        SYSTEM_RC_SIGNAL(104),
         /** MAVLink signal */
-        SYSTEM_MAVLINK_SIGNAL(14);
+        SYSTEM_MAVLINK_SIGNAL(105);
 
         companion object {
             fun fromValue(value: Int): FailureUnit =

@@ -148,19 +148,19 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        Error, /**< @brief Error. */
-        TooManyMissionItems, /**< @brief Too many mission items in the mission. */
-        Busy, /**< @brief Vehicle is busy. */
-        Timeout, /**< @brief Request timed out. */
-        InvalidArgument, /**< @brief Invalid argument. */
-        Unsupported, /**< @brief Mission downloaded from the system is not supported. */
-        NoMissionAvailable, /**< @brief No mission available on the system. */
-        UnsupportedMissionCmd, /**< @brief Unsupported mission command. */
-        TransferCancelled, /**< @brief Mission transfer (upload or download) has been cancelled. */
-        NoSystem, /**< @brief No system connected. */
-        Next, /**< @brief Intermediate message showing progress or instructions on the next steps. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        Error = 2, /**< @brief Error. */
+        TooManyMissionItems = 3, /**< @brief Too many mission items in the mission. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        Timeout = 5, /**< @brief Request timed out. */
+        InvalidArgument = 6, /**< @brief Invalid argument. */
+        Unsupported = 7, /**< @brief Mission downloaded from the system is not supported. */
+        NoMissionAvailable = 8, /**< @brief No mission available on the system. */
+        UnsupportedMissionCmd = 11, /**< @brief Unsupported mission command. */
+        TransferCancelled = 12, /**< @brief Mission transfer (upload or download) has been cancelled. */
+        NoSystem = 13, /**< @brief No system connected. */
+        Next = 14, /**< @brief Intermediate message showing progress or instructions on the next steps. */
     };
 
     /**

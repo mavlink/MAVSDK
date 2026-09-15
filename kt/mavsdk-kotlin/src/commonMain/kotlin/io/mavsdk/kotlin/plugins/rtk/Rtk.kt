@@ -18,9 +18,9 @@ class Rtk internal constructor(private val native: RtkNative) {
         /** Passed data is too long */
         TOO_LONG(2),
         /** No system connected */
-        NO_SYSTEM(3),
+        NO_SYSTEM(5),
         /** Connection error */
-        CONNECTION_ERROR(4);
+        CONNECTION_ERROR(6);
 
         companion object {
             fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN

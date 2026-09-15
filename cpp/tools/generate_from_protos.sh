@@ -92,7 +92,7 @@ if ! command -v "${protoc_binary}" > /dev/null || ! command -v "${protoc_grpc_bi
 fi
 
 echo "Installing protoc-gen-mavsdk locally into build folder"
-python3 -m pip install --upgrade --target="${build_dir}/pb_plugins" "protoc-gen-mavsdk~=1.2"
+python3 -m pip install --upgrade --target="${build_dir}/pb_plugins" "${repo_dir}/proto/pb_plugins"
 
 protoc_gen_mavsdk="${build_dir}/pb_plugins/bin/protoc-gen-mavsdk"
 export PYTHONPATH="${build_dir}/pb_plugins:${PYTHONPATH}"

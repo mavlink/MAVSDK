@@ -362,8 +362,8 @@ public:
      * @brief Mavlink frame id
      */
     enum class MavFrame {
-        MocapNed, /**< @brief Legacy mocap NED frame. Deprecated in MAVLink and replaced by MAV_FRAME_LOCAL_FRD.. */
-        LocalFrd, /**< @brief Local FRD frame (x: forward, y: right, z: down).. */
+        MocapNed = 0, /**< @brief Legacy mocap NED frame. Deprecated in MAVLink and replaced by MAV_FRAME_LOCAL_FRD.. */
+        LocalFrd = 1, /**< @brief Local FRD frame (x: forward, y: right, z: down).. */
     };
 
     /**
@@ -384,15 +384,15 @@ public:
      * @brief Estimator type, matching MAVLink MAV_ESTIMATOR_TYPE.
      */
     enum class MavEstimatorType {
-        Unknown, /**< @brief Unknown estimator type.. */
-        Naive, /**< @brief Naive estimator.. */
-        Vision, /**< @brief Computer vision-based estimate.. */
-        Vio, /**< @brief Visual-inertial estimate.. */
-        Gps, /**< @brief Plain GPS estimate.. */
-        GpsIns, /**< @brief GPS and inertial navigation estimate.. */
-        Mocap, /**< @brief Motion capture estimate.. */
-        Lidar, /**< @brief Lidar estimate.. */
-        Autopilot, /**< @brief Autopilot estimate.. */
+        Unknown = 0, /**< @brief Unknown estimator type.. */
+        Naive = 1, /**< @brief Naive estimator.. */
+        Vision = 2, /**< @brief Computer vision-based estimate.. */
+        Vio = 3, /**< @brief Visual-inertial estimate.. */
+        Gps = 4, /**< @brief Plain GPS estimate.. */
+        GpsIns = 5, /**< @brief GPS and inertial navigation estimate.. */
+        Mocap = 6, /**< @brief Motion capture estimate.. */
+        Lidar = 7, /**< @brief Lidar estimate.. */
+        Autopilot = 8, /**< @brief Autopilot estimate.. */
     };
 
     /**
@@ -444,12 +444,12 @@ public:
      * @brief Possible results returned for mocap requests
      */
     enum class Result {
-        Unknown, /**< @brief Unknown error. */
-        Success, /**< @brief Request succeeded. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        InvalidRequestData, /**< @brief Invalid request data. */
-        Unsupported, /**< @brief Function unsupported. */
+        Unknown = 0, /**< @brief Unknown error. */
+        Success = 1, /**< @brief Request succeeded. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        InvalidRequestData = 4, /**< @brief Invalid request data. */
+        Unsupported = 5, /**< @brief Function unsupported. */
     };
 
     /**

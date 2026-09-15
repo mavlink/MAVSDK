@@ -75,9 +75,9 @@ typedef enum {
     /**  Passed data is too long. */
     MAVSDK_RTK_RESULT_TOO_LONG = 2,
     /**  No system connected. */
-    MAVSDK_RTK_RESULT_NO_SYSTEM = 3,
+    MAVSDK_RTK_RESULT_NO_SYSTEM = 5,
     /**  Connection error. */
-    MAVSDK_RTK_RESULT_CONNECTION_ERROR = 4,
+    MAVSDK_RTK_RESULT_CONNECTION_ERROR = 6,
 } mavsdk_rtk_result_t;
 
 

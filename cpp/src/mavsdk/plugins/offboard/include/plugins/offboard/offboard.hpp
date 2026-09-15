@@ -232,9 +232,9 @@ public:
      * @brief Possible altitude options
      */
     enum class AltitudeType {
-        RelHome, /**< @brief Altitude relative to the Home position. */
-        Amsl, /**< @brief Altitude above mean sea level (AMSL). */
-        Agl, /**< @brief Altitude above ground level (AGL). */
+        RelHome = 0, /**< @brief Altitude relative to the Home position. */
+        Amsl = 1, /**< @brief Altitude above mean sea level (AMSL). */
+        Agl = 2, /**< @brief Altitude above ground level (AGL). */
     };
 
     /**
@@ -363,15 +363,15 @@ public:
      * @brief Possible results returned for offboard requests
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command denied. */
-        Timeout, /**< @brief Request timed out. */
-        NoSetpointSet, /**< @brief Cannot start without setpoint set. */
-        Failed, /**< @brief Request failed. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        CommandDenied = 5, /**< @brief Command denied. */
+        Timeout = 6, /**< @brief Request timed out. */
+        NoSetpointSet = 7, /**< @brief Cannot start without setpoint set. */
+        Failed = 8, /**< @brief Request failed. */
     };
 
     /**

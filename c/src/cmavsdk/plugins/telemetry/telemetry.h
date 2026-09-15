@@ -970,11 +970,11 @@ typedef enum {
     /**  Frame is undefined.. */
     MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_UNDEF = 0,
     /**  Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.. */
-    MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_BODY_NED = 1,
+    MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_BODY_NED = 8,
     /**  Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).. */
-    MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_VISION_NED = 2,
+    MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_VISION_NED = 16,
     /**  Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
-    MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_ESTIM_NED = 3,
+    MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_ESTIM_NED = 18,
 } mavsdk_telemetry_odometry_mav_frame_t;
 
 /**

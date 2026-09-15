@@ -6,6 +6,7 @@ set -e  # Exit on any error
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/.." && pwd)"
 proto_dir="$project_root/../proto/protos"
+pb_plugins_dir="$project_root/../proto/pb_plugins"
 
 # Default plugins if none provided
 default_plugins=("action" "action_server" "arm_authorizer_server" "calibration" "camera" "camera_server" "component_metadata" "component_metadata_server" "events" "failure" "follow_me" "ftp" "ftp_server" "geofence" "gimbal" "gripper" "info" "log_files" "log_streaming" "manual_control" "mavlink_direct" "mission" "mission_raw" "mission_raw_server" "mocap" "offboard" "param" "param_server" "rtk" "server_utility" "shell" "telemetry" "telemetry_server" "transponder" "tune" "winch")
@@ -26,13 +27,16 @@ setup_venv() {
         echo "Activating virtual environment..."
         source "$project_root/venv/bin/activate"
         
-        echo "Installing dependencies..."
-        pip install protoc-gen-mavsdk
         
         echo "Virtual environment setup complete."
     else
         echo "Already in a virtual environment: $VIRTUAL_ENV"
     fi
+
+    # Always install the generator from the proto submodule so that the
+    # templates and the generator can't drift apart.
+    echo "Installing protoc-gen-mavsdk from the proto submodule..."
+    pip install --quiet "$pb_plugins_dir"
 }
 
 # Function to run protoc commands for a plugin

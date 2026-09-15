@@ -96,11 +96,11 @@ public:
      * @brief Possible results returned for rtk requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        TooLong, /**< @brief Passed data is too long. */
-        NoSystem, /**< @brief No system connected. */
-        ConnectionError, /**< @brief Connection error. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        TooLong = 2, /**< @brief Passed data is too long. */
+        NoSystem = 5, /**< @brief No system connected. */
+        ConnectionError = 6, /**< @brief Connection error. */
     };
 
     /**

@@ -69,13 +69,13 @@ public:
      * @brief GPS fix type.
      */
     enum class FixType {
-        NoGps, /**< @brief No GPS connected. */
-        NoFix, /**< @brief No position information, GPS is connected. */
-        Fix2D, /**< @brief 2D position. */
-        Fix3D, /**< @brief 3D position. */
-        FixDgps, /**< @brief DGPS/SBAS aided 3D position. */
-        RtkFloat, /**< @brief RTK float, 3D position. */
-        RtkFixed, /**< @brief RTK Fixed, 3D position. */
+        NoGps = 0, /**< @brief No GPS connected. */
+        NoFix = 1, /**< @brief No position information, GPS is connected. */
+        Fix2D = 2, /**< @brief 2D position. */
+        Fix3D = 3, /**< @brief 3D position. */
+        FixDgps = 4, /**< @brief DGPS/SBAS aided 3D position. */
+        RtkFloat = 5, /**< @brief RTK float, 3D position. */
+        RtkFixed = 6, /**< @brief RTK Fixed, 3D position. */
     };
 
     /**
@@ -96,11 +96,11 @@ public:
      * @brief Battery function type.
      */
     enum class BatteryFunction {
-        Unknown, /**< @brief Battery function is unknown. */
-        All, /**< @brief Battery supports all flight systems. */
-        Propulsion, /**< @brief Battery for the propulsion system. */
-        Avionics, /**< @brief Avionics battery. */
-        Payload, /**< @brief Payload battery. */
+        Unknown = 0, /**< @brief Battery function is unknown. */
+        All = 1, /**< @brief Battery supports all flight systems. */
+        Propulsion = 2, /**< @brief Battery for the propulsion system. */
+        Avionics = 3, /**< @brief Avionics battery. */
+        Payload = 4, /**< @brief Payload battery. */
     };
 
     /**
@@ -124,21 +124,21 @@ public:
      * https://docs.px4.io/main/en/config/flight_mode.html.
      */
     enum class FlightMode {
-        Unknown, /**< @brief Mode not known. */
-        Ready, /**< @brief Armed and ready to take off. */
-        Takeoff, /**< @brief Taking off. */
-        Hold, /**< @brief Holding (hovering in place (or circling for fixed-wing vehicles). */
-        Mission, /**< @brief In mission. */
-        ReturnToLaunch, /**< @brief Returning to launch position (then landing). */
-        Land, /**< @brief Landing. */
-        Offboard, /**< @brief In 'offboard' mode. */
-        FollowMe, /**< @brief In 'follow-me' mode. */
-        Manual, /**< @brief In 'Manual' mode. */
-        Altctl, /**< @brief In 'Altitude Control' mode. */
-        Posctl, /**< @brief In 'Position Control' mode. */
-        Acro, /**< @brief In 'Acro' mode. */
-        Stabilized, /**< @brief In 'Stabilize' mode. */
-        Rattitude, /**< @brief In 'Rattitude' mode. */
+        Unknown = 0, /**< @brief Mode not known. */
+        Ready = 1, /**< @brief Armed and ready to take off. */
+        Takeoff = 2, /**< @brief Taking off. */
+        Hold = 3, /**< @brief Holding (hovering in place (or circling for fixed-wing vehicles). */
+        Mission = 4, /**< @brief In mission. */
+        ReturnToLaunch = 5, /**< @brief Returning to launch position (then landing). */
+        Land = 6, /**< @brief Landing. */
+        Offboard = 7, /**< @brief In 'offboard' mode. */
+        FollowMe = 8, /**< @brief In 'follow-me' mode. */
+        Manual = 9, /**< @brief In 'Manual' mode. */
+        Altctl = 10, /**< @brief In 'Altitude Control' mode. */
+        Posctl = 11, /**< @brief In 'Position Control' mode. */
+        Acro = 12, /**< @brief In 'Acro' mode. */
+        Stabilized = 13, /**< @brief In 'Stabilize' mode. */
+        Rattitude = 14, /**< @brief In 'Rattitude' mode. */
     };
 
     /**
@@ -159,14 +159,14 @@ public:
      * @brief Status types.
      */
     enum class StatusTextType {
-        Debug, /**< @brief Debug. */
-        Info, /**< @brief Information. */
-        Notice, /**< @brief Notice. */
-        Warning, /**< @brief Warning. */
-        Error, /**< @brief Error. */
-        Critical, /**< @brief Critical. */
-        Alert, /**< @brief Alert. */
-        Emergency, /**< @brief Emergency. */
+        Debug = 0, /**< @brief Debug. */
+        Info = 1, /**< @brief Information. */
+        Notice = 2, /**< @brief Notice. */
+        Warning = 3, /**< @brief Warning. */
+        Error = 4, /**< @brief Error. */
+        Critical = 5, /**< @brief Critical. */
+        Alert = 6, /**< @brief Alert. */
+        Emergency = 7, /**< @brief Emergency. */
     };
 
     /**
@@ -187,11 +187,11 @@ public:
      * @brief Landed State enumeration.
      */
     enum class LandedState {
-        Unknown, /**< @brief Landed state is unknown. */
-        OnGround, /**< @brief The vehicle is on the ground. */
-        InAir, /**< @brief The vehicle is in the air. */
-        TakingOff, /**< @brief The vehicle is taking off. */
-        Landing, /**< @brief The vehicle is landing. */
+        Unknown = 0, /**< @brief Landed state is unknown. */
+        OnGround = 1, /**< @brief The vehicle is on the ground. */
+        InAir = 2, /**< @brief The vehicle is in the air. */
+        TakingOff = 3, /**< @brief The vehicle is taking off. */
+        Landing = 4, /**< @brief The vehicle is landing. */
     };
 
     /**
@@ -212,11 +212,11 @@ public:
      * @brief VTOL State enumeration
      */
     enum class VtolState {
-        Undefined, /**< @brief MAV is not configured as VTOL. */
-        TransitionToFw, /**< @brief VTOL is in transition from multicopter to fixed-wing. */
-        TransitionToMc, /**< @brief VTOL is in transition from fixed-wing to multicopter. */
-        Mc, /**< @brief VTOL is in multicopter state. */
-        Fw, /**< @brief VTOL is in fixed-wing state. */
+        Undefined = 0, /**< @brief MAV is not configured as VTOL. */
+        TransitionToFw = 1, /**< @brief VTOL is in transition from multicopter to fixed-wing. */
+        TransitionToMc = 2, /**< @brief VTOL is in transition from fixed-wing to multicopter. */
+        Mc = 3, /**< @brief VTOL is in multicopter state. */
+        Fw = 4, /**< @brief VTOL is in fixed-wing state. */
     };
 
     /**
@@ -752,10 +752,10 @@ public:
      * @brief Mavlink frame id
      */
     enum class MavFrame {
-        Undef, /**< @brief Frame is undefined.. */
-        BodyNed, /**< @brief Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.. */
-        VisionNed, /**< @brief Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).. */
-        EstimNed, /**< @brief Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
+        Undef = 0, /**< @brief Frame is undefined.. */
+        BodyNed = 8, /**< @brief Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.. */
+        VisionNed = 16, /**< @brief Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).. */
+        EstimNed = 18, /**< @brief Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
     };
 
     /**
@@ -1200,14 +1200,14 @@ public:
      * @brief Possible results returned for telemetry requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Success: the telemetry command was accepted by the vehicle. */
-        NoSystem, /**< @brief No system connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command refused by vehicle. */
-        Timeout, /**< @brief Request timed out. */
-        Unsupported, /**< @brief Request not supported. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Success: the telemetry command was accepted by the vehicle. */
+        NoSystem = 2, /**< @brief No system connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        CommandDenied = 5, /**< @brief Command refused by vehicle. */
+        Timeout = 6, /**< @brief Request timed out. */
+        Unsupported = 7, /**< @brief Request not supported. */
     };
 
     /**

@@ -58,20 +58,20 @@ public:
      * https://docs.px4.io/main/en/config/flight_mode.html.
      */
     enum class FlightMode {
-        Unknown, /**< @brief Mode not known. */
-        Ready, /**< @brief Armed and ready to take off. */
-        Takeoff, /**< @brief Taking off. */
-        Hold, /**< @brief Holding (hovering in place (or circling for fixed-wing vehicles). */
-        Mission, /**< @brief In mission. */
-        ReturnToLaunch, /**< @brief Returning to launch position (then landing). */
-        Land, /**< @brief Landing. */
-        Offboard, /**< @brief In 'offboard' mode. */
-        FollowMe, /**< @brief In 'follow-me' mode. */
-        Manual, /**< @brief In 'Manual' mode. */
-        Altctl, /**< @brief In 'Altitude Control' mode. */
-        Posctl, /**< @brief In 'Position Control' mode. */
-        Acro, /**< @brief In 'Acro' mode. */
-        Stabilized, /**< @brief In 'Stabilize' mode. */
+        Unknown = 0, /**< @brief Mode not known. */
+        Ready = 1, /**< @brief Armed and ready to take off. */
+        Takeoff = 2, /**< @brief Taking off. */
+        Hold = 3, /**< @brief Holding (hovering in place (or circling for fixed-wing vehicles). */
+        Mission = 4, /**< @brief In mission. */
+        ReturnToLaunch = 5, /**< @brief Returning to launch position (then landing). */
+        Land = 6, /**< @brief Landing. */
+        Offboard = 7, /**< @brief In 'offboard' mode. */
+        FollowMe = 8, /**< @brief In 'follow-me' mode. */
+        Manual = 9, /**< @brief In 'Manual' mode. */
+        Altctl = 10, /**< @brief In 'Altitude Control' mode. */
+        Posctl = 11, /**< @brief In 'Position Control' mode. */
+        Acro = 12, /**< @brief In 'Acro' mode. */
+        Stabilized = 13, /**< @brief In 'Stabilize' mode. */
     };
 
     /**
@@ -154,19 +154,19 @@ public:
      * @brief Possible results returned for action requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request was successful. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        Busy, /**< @brief Vehicle is busy. */
-        CommandDenied, /**< @brief Command refused by vehicle. */
-        CommandDeniedLandedStateUnknown, /**< @brief Command refused because landed state is unknown. */
-        CommandDeniedNotLanded, /**< @brief Command refused because vehicle not landed. */
-        Timeout, /**< @brief Request timed out. */
-        VtolTransitionSupportUnknown, /**< @brief Hybrid/VTOL transition support is unknown. */
-        NoVtolTransitionSupport, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
-        ParameterError, /**< @brief Error getting or setting parameter. */
-        Next, /**< @brief Intermediate message showing progress or instructions on the next steps. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request was successful. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        Busy = 4, /**< @brief Vehicle is busy. */
+        CommandDenied = 5, /**< @brief Command refused by vehicle. */
+        CommandDeniedLandedStateUnknown = 6, /**< @brief Command refused because landed state is unknown. */
+        CommandDeniedNotLanded = 7, /**< @brief Command refused because vehicle not landed. */
+        Timeout = 8, /**< @brief Request timed out. */
+        VtolTransitionSupportUnknown = 9, /**< @brief Hybrid/VTOL transition support is unknown. */
+        NoVtolTransitionSupport = 10, /**< @brief Vehicle does not support hybrid/VTOL transitions. */
+        ParameterError = 11, /**< @brief Error getting or setting parameter. */
+        Next = 12, /**< @brief Intermediate message showing progress or instructions on the next steps. */
     };
 
     /**

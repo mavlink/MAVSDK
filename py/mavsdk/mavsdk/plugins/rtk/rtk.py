@@ -26,8 +26,8 @@ class RtkResult(IntEnum):
     UNKNOWN = 0
     SUCCESS = 1
     TOO_LONG = 2
-    NO_SYSTEM = 3
-    CONNECTION_ERROR = 4
+    NO_SYSTEM = 5
+    CONNECTION_ERROR = 6
 
 
 # ===== Internal C Structures =====

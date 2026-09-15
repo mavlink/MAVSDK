@@ -67,14 +67,14 @@ public:
      * @brief Status types.
      */
     enum class StatusTextType {
-        Debug, /**< @brief Debug. */
-        Info, /**< @brief Information. */
-        Notice, /**< @brief Notice. */
-        Warning, /**< @brief Warning. */
-        Error, /**< @brief Error. */
-        Critical, /**< @brief Critical. */
-        Alert, /**< @brief Alert. */
-        Emergency, /**< @brief Emergency. */
+        Debug = 0, /**< @brief Debug. */
+        Info = 1, /**< @brief Information. */
+        Notice = 2, /**< @brief Notice. */
+        Warning = 3, /**< @brief Warning. */
+        Error = 4, /**< @brief Error. */
+        Critical = 5, /**< @brief Critical. */
+        Alert = 6, /**< @brief Alert. */
+        Emergency = 7, /**< @brief Emergency. */
     };
 
     /**
@@ -99,11 +99,11 @@ public:
      * @brief Possible results returned for server utility requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        InvalidArgument, /**< @brief Invalid argument. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        InvalidArgument = 4, /**< @brief Invalid argument. */
     };
 
     /**

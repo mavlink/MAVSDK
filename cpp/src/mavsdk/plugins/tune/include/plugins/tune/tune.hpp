@@ -67,27 +67,27 @@ public:
      * @brief An element of the tune
      */
     enum class SongElement {
-        StyleLegato, /**< @brief After this element, start playing legato. */
-        StyleNormal, /**< @brief After this element, start playing normal. */
-        StyleStaccato, /**< @brief After this element, start playing staccato. */
-        Duration1, /**< @brief After this element, set the note duration to 1. */
-        Duration2, /**< @brief After this element, set the note duration to 2. */
-        Duration4, /**< @brief After this element, set the note duration to 4. */
-        Duration8, /**< @brief After this element, set the note duration to 8. */
-        Duration16, /**< @brief After this element, set the note duration to 16. */
-        Duration32, /**< @brief After this element, set the note duration to 32. */
-        NoteA, /**< @brief Play note A. */
-        NoteB, /**< @brief Play note B. */
-        NoteC, /**< @brief Play note C. */
-        NoteD, /**< @brief Play note D. */
-        NoteE, /**< @brief Play note E. */
-        NoteF, /**< @brief Play note F. */
-        NoteG, /**< @brief Play note G. */
-        NotePause, /**< @brief Play a rest. */
-        Sharp, /**< @brief After this element, sharp the note (half a step up). */
-        Flat, /**< @brief After this element, flat the note (half a step down). */
-        OctaveUp, /**< @brief After this element, shift the note 1 octave up. */
-        OctaveDown, /**< @brief After this element, shift the note 1 octave down. */
+        StyleLegato = 0, /**< @brief After this element, start playing legato. */
+        StyleNormal = 1, /**< @brief After this element, start playing normal. */
+        StyleStaccato = 2, /**< @brief After this element, start playing staccato. */
+        Duration1 = 3, /**< @brief After this element, set the note duration to 1. */
+        Duration2 = 4, /**< @brief After this element, set the note duration to 2. */
+        Duration4 = 5, /**< @brief After this element, set the note duration to 4. */
+        Duration8 = 6, /**< @brief After this element, set the note duration to 8. */
+        Duration16 = 7, /**< @brief After this element, set the note duration to 16. */
+        Duration32 = 8, /**< @brief After this element, set the note duration to 32. */
+        NoteA = 9, /**< @brief Play note A. */
+        NoteB = 10, /**< @brief Play note B. */
+        NoteC = 11, /**< @brief Play note C. */
+        NoteD = 12, /**< @brief Play note D. */
+        NoteE = 13, /**< @brief Play note E. */
+        NoteF = 14, /**< @brief Play note F. */
+        NoteG = 15, /**< @brief Play note G. */
+        NotePause = 16, /**< @brief Play a rest. */
+        Sharp = 17, /**< @brief After this element, sharp the note (half a step up). */
+        Flat = 18, /**< @brief After this element, flat the note (half a step down). */
+        OctaveUp = 19, /**< @brief After this element, shift the note 1 octave up. */
+        OctaveDown = 20, /**< @brief After this element, shift the note 1 octave down. */
     };
 
     /**
@@ -138,12 +138,12 @@ public:
      * @brief Possible results returned for tune requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        InvalidTempo, /**< @brief Invalid tempo (range: 32 - 255). */
-        TuneTooLong, /**< @brief Invalid tune: encoded string must be at most 247 chars. */
-        Error, /**< @brief Failed to send the request. */
-        NoSystem, /**< @brief No system connected. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        InvalidTempo = 2, /**< @brief Invalid tempo (range: 32 - 255). */
+        TuneTooLong = 3, /**< @brief Invalid tune: encoded string must be at most 247 chars. */
+        Error = 4, /**< @brief Failed to send the request. */
+        NoSystem = 5, /**< @brief No system connected. */
     };
 
     /**

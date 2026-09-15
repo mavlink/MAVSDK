@@ -158,12 +158,12 @@ public:
      * @brief These values define the type of firmware/flight software release
      */
     enum class FlightSoftwareVersionType {
-        Unknown, /**< @brief Unknown type. */
-        Dev, /**< @brief Development release. */
-        Alpha, /**< @brief Alpha release. */
-        Beta, /**< @brief Beta release. */
-        Rc, /**< @brief Release candidate. */
-        Release, /**< @brief Official stable release. */
+        Unknown = 0, /**< @brief Unknown type. */
+        Dev = 1, /**< @brief Development release. */
+        Alpha = 2, /**< @brief Alpha release. */
+        Beta = 3, /**< @brief Beta release. */
+        Rc = 4, /**< @brief Release candidate. */
+        Release = 5, /**< @brief Official stable release. */
     };
 
     /**
@@ -216,10 +216,10 @@ public:
      * @brief Possible results returned for info requests.
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        InformationNotReceivedYet, /**< @brief Information has not been received yet. */
-        NoSystem, /**< @brief No system is connected. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        InformationNotReceivedYet = 2, /**< @brief Information has not been received yet. */
+        NoSystem = 3, /**< @brief No system is connected. */
     };
 
     /**
