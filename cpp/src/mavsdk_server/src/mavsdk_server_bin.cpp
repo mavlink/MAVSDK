@@ -121,7 +121,7 @@ int main(int argc, char** argv)
         mavsdk_server,
         connection_url.c_str(),
         mavsdk_server_port,
-        static_cast<uint8_t>(mavsdk_sysid),
+        static_cast<uint32_t>(mavsdk_sysid),
         static_cast<uint8_t>(mavsdk_compid));
 
     if (ret != 0) {

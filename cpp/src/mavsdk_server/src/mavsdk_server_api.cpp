@@ -28,7 +28,7 @@ int mavsdk_server_run_with_mavlink_ids(
     MavsdkServer* mavsdk_server,
     const char* system_address,
     const int mavsdk_server_port,
-    const uint8_t system_id,
+    const uint32_t system_id,
     const uint8_t component_id)
 {
     mavsdk_server->setMavlinkIds(system_id, component_id);
