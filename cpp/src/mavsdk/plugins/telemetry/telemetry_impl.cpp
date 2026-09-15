@@ -1436,9 +1436,8 @@ void TelemetryImpl::process_odometry(const mavlink_message_t& message)
     Telemetry::Odometry odometry_struct{};
 
     odometry_struct.time_usec = odometry_msg.time_usec;
-    odometry_struct.frame_id = static_cast<Telemetry::Odometry::MavFrame>(odometry_msg.frame_id);
-    odometry_struct.child_frame_id =
-        static_cast<Telemetry::Odometry::MavFrame>(odometry_msg.child_frame_id);
+    odometry_struct.frame_id = to_mav_frame(odometry_msg.frame_id);
+    odometry_struct.child_frame_id = to_mav_frame(odometry_msg.child_frame_id);
 
     odometry_struct.position_body.x_m = odometry_msg.x;
     odometry_struct.position_body.y_m = odometry_msg.y;
@@ -1762,6 +1761,24 @@ Telemetry::VtolState TelemetryImpl::to_vtol_state(mavlink_extended_sys_state_t e
             return Telemetry::VtolState::Fw;
         default:
             return Telemetry::VtolState::Undefined;
+    }
+}
+
+Telemetry::Odometry::MavFrame TelemetryImpl::to_mav_frame(uint8_t frame_id)
+{
+    // The MAVLink MAV_FRAME values (0, 8, 16, 18) do not match the sequential
+    // values of the generated C++ enum, so a static_cast is not enough.
+    // MAV_FRAME_VISION_NED and MAV_FRAME_ESTIM_NED are now MAV_FRAME_RESERVED_16/18
+    // in the MAVLink headers, so use the numbers directly.
+    switch (frame_id) {
+        case MAV_FRAME_BODY_NED: // 8
+            return Telemetry::Odometry::MavFrame::BodyNed;
+        case 16: // MAV_FRAME_VISION_NED
+            return Telemetry::Odometry::MavFrame::VisionNed;
+        case 18: // MAV_FRAME_ESTIM_NED
+            return Telemetry::Odometry::MavFrame::EstimNed;
+        default:
+            return Telemetry::Odometry::MavFrame::Undef;
     }
 }
 
