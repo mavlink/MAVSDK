@@ -1,8 +1,10 @@
 #include <functional>
+#include <limits>
 #include "mavlink_passthrough_impl.hpp"
 #include "plugins/mavlink_passthrough/mavlink_passthrough.hpp"
 #include "system.hpp"
 #include "callback_list.tpp"
+#include "log.hpp"
 #include "mavsdk_export.h"
 
 namespace mavsdk {
@@ -55,8 +57,13 @@ MavlinkPassthrough::Result MavlinkPassthroughImpl::queue_message(
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong& command)
 {
+    if (command.target_sysid > std::numeric_limits<uint8_t>::max()) {
+        LogErr("Target system ID {} is not supported yet", command.target_sysid);
+        return MavlinkPassthrough::Result::CommandNoSystem;
+    }
+
     MavlinkCommandSender::CommandLong command_internal{};
-    command_internal.target_system_id = command.target_sysid;
+    command_internal.target_system_id = static_cast<uint8_t>(command.target_sysid);
     command_internal.target_component_id = command.target_compid;
     command_internal.command = command.command;
     command_internal.params.maybe_param1 = command.param1;
@@ -74,8 +81,13 @@ MavlinkPassthroughImpl::send_command_long(const MavlinkPassthrough::CommandLong&
 MavlinkPassthrough::Result
 MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& command)
 {
+    if (command.target_sysid > std::numeric_limits<uint8_t>::max()) {
+        LogErr("Target system ID {} is not supported yet", command.target_sysid);
+        return MavlinkPassthrough::Result::CommandNoSystem;
+    }
+
     MavlinkCommandSender::CommandInt command_internal{};
-    command_internal.target_system_id = command.target_sysid;
+    command_internal.target_system_id = static_cast<uint8_t>(command.target_sysid);
     command_internal.target_component_id = command.target_compid;
     command_internal.frame = command.frame;
     command_internal.command = command.command;
@@ -92,7 +104,7 @@ MavlinkPassthroughImpl::send_command_int(const MavlinkPassthrough::CommandInt& c
 }
 
 mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
-    const uint8_t target_sysid,
+    const uint32_t target_sysid,
     const uint8_t target_compid,
     const uint16_t command,
     MAV_RESULT result)
@@ -110,7 +122,7 @@ mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
         result,
         progress,
         result_param2,
-        target_sysid,
+        static_cast<uint8_t>(target_sysid),
         target_compid);
     return msg;
 }
@@ -225,7 +237,7 @@ void MavlinkPassthroughImpl::receive_mavlink_message(const mavlink_message_t& me
             message, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
-uint8_t MavlinkPassthroughImpl::get_our_sysid() const
+uint32_t MavlinkPassthroughImpl::get_our_sysid() const
 {
     return _system_impl->get_own_system_id();
 }
@@ -235,7 +247,7 @@ uint8_t MavlinkPassthroughImpl::get_our_compid() const
     return _system_impl->get_own_component_id();
 }
 
-uint8_t MavlinkPassthroughImpl::get_target_sysid() const
+uint32_t MavlinkPassthroughImpl::get_target_sysid() const
 {
     return _system_impl->get_system_id();
 }

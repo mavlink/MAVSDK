@@ -37,7 +37,7 @@ MavlinkPassthrough::Result MavlinkPassthrough::send_command_long(const CommandLo
 }
 
 mavlink_message_t MavlinkPassthrough::make_command_ack_message(
-    const uint8_t target_sysid,
+    const uint32_t target_sysid,
     const uint8_t target_compid,
     const uint16_t command,
     MAV_RESULT result)
@@ -106,7 +106,7 @@ std::ostream& operator<<(std::ostream& str, MavlinkPassthrough::Result const& re
     }
 }
 
-uint8_t MavlinkPassthrough::get_our_sysid() const
+uint32_t MavlinkPassthrough::get_our_sysid() const
 {
     return _impl->get_our_sysid();
 }
@@ -115,7 +115,7 @@ uint8_t MavlinkPassthrough::get_our_compid() const
     return _impl->get_our_compid();
 }
 
-uint8_t MavlinkPassthrough::get_target_sysid() const
+uint32_t MavlinkPassthrough::get_target_sysid() const
 {
     return _impl->get_target_sysid();
 }

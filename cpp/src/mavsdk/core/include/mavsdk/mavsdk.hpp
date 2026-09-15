@@ -210,7 +210,7 @@ public:
          * @param always_send_heartbeats send heartbeats by default even without a system connected
          */
         explicit Configuration(
-            uint8_t system_id, uint8_t component_id, bool always_send_heartbeats);
+            uint32_t system_id, uint8_t component_id, bool always_send_heartbeats);
         /**
          * @brief Create new Configuration using a component type.
          * In this mode, the system and component ID will be automatically chosen.
@@ -223,14 +223,18 @@ public:
 
         /**
          * @brief Get the system id of this configuration
-         * @return `uint8_t` the system id stored in this configuration, from 1-255
+         * @return `uint32_t` the system id stored in this configuration
          */
-        uint8_t get_system_id() const;
+        uint32_t get_system_id() const;
 
         /**
          * @brief Set the system id of this configuration.
+         *
+         * The type is 32 bits wide for MAVLink's extended system ids, which
+         * are not supported yet. When the configuration is applied, ids above
+         * 255 are replaced by the default system id for the component type.
          */
-        void set_system_id(uint8_t system_id);
+        void set_system_id(uint32_t system_id);
 
         /**
          * @brief Get the component id of this configuration
@@ -354,7 +358,7 @@ public:
         void set_compatibility_mode(CompatibilityMode mode);
 
     private:
-        uint8_t _system_id;
+        uint32_t _system_id;
         uint8_t _component_id;
         bool _always_send_heartbeats;
         double _heartbeat_watchdog_timeout_s{0.0};

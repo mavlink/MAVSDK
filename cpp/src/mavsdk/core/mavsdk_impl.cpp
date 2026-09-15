@@ -9,6 +9,7 @@
 #include <array>
 #include <chrono>
 #include <fstream>
+#include <limits>
 #include <mutex>
 #include <thread>
 #include "connection.hpp"
@@ -1312,6 +1313,17 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 
 void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuration)
 {
+    // The API takes 32 bit system IDs, but they are not implemented yet.
+    if (new_configuration.get_system_id() > std::numeric_limits<uint8_t>::max()) {
+        const auto fallback_system_id =
+            Mavsdk::Configuration{new_configuration.get_component_type()}.get_system_id();
+        LogErr(
+            "System ID {} is not supported yet, using {} instead",
+            new_configuration.get_system_id(),
+            fallback_system_id);
+        new_configuration.set_system_id(fallback_system_id);
+    }
+
     // Requires _configuration_update_mutex. Take _server_components_mutex only
     // for the default-component update below; do not hold it across later work.
     {
@@ -1328,7 +1340,7 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
         _configuration = new_configuration;
     }
     // We cache these values as atomic to avoid having to lock any mutex for them.
-    _our_system_id = new_configuration.get_system_id();
+    _our_system_id = static_cast<uint8_t>(new_configuration.get_system_id());
     _our_component_id = new_configuration.get_component_id();
     _our_mav_type = new_configuration.get_mav_type();
     _our_autopilot = new_configuration.get_autopilot();

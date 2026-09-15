@@ -78,10 +78,10 @@ typedef void (*mavsdk_raw_bytes_callback_t)(const uint8_t *bytes, size_t length,
 
 // ===== Configuration =====
 CMAVSDK_EXPORT mavsdk_configuration_t mavsdk_configuration_create_with_component_type(mavsdk_component_type_t type);
-CMAVSDK_EXPORT mavsdk_configuration_t mavsdk_configuration_create_manual(uint8_t system_id, uint8_t component_id, int always_send_heartbeats);
+CMAVSDK_EXPORT mavsdk_configuration_t mavsdk_configuration_create_manual(uint32_t system_id, uint8_t component_id, int always_send_heartbeats);
 CMAVSDK_EXPORT void mavsdk_configuration_destroy(mavsdk_configuration_t config);
-CMAVSDK_EXPORT uint8_t mavsdk_configuration_get_system_id(mavsdk_configuration_t config);
-CMAVSDK_EXPORT void mavsdk_configuration_set_system_id(mavsdk_configuration_t config, uint8_t system_id);
+CMAVSDK_EXPORT uint32_t mavsdk_configuration_get_system_id(mavsdk_configuration_t config);
+CMAVSDK_EXPORT void mavsdk_configuration_set_system_id(mavsdk_configuration_t config, uint32_t system_id);
 CMAVSDK_EXPORT uint8_t mavsdk_configuration_get_component_id(mavsdk_configuration_t config);
 CMAVSDK_EXPORT void mavsdk_configuration_set_component_id(mavsdk_configuration_t config, uint8_t component_id);
 CMAVSDK_EXPORT int mavsdk_configuration_get_always_send_heartbeats(mavsdk_configuration_t config);
