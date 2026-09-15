@@ -1302,3 +1302,58 @@ TEST(MavlinkDirect, ParamExtValueBinaryRoundtrip)
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+// MAVLink system/component IDs are still 1 byte on the wire (sysid32 isn't supported yet),
+// but MavlinkMessage.target_system_id/target_component_id are uint32 in the API. Values that
+// don't fit in a byte used to be silently truncated (e.g. 256 -> 0); they must be rejected
+// with Result::InvalidField instead, on both the client and server send paths.
+TEST(MavlinkDirect, TargetIdsOutOfRangeRejected)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:18011"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:18011"), ConnectionResult::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto client = MavlinkDirect{system};
+    auto server = MavlinkDirectServer{mavsdk_autopilot.server_component()};
+
+    // Server (autopilot) send path: mavlink_direct_server_impl.cpp.
+    MavlinkDirectServer::MavlinkMessage server_message;
+    server_message.message_name = "HEARTBEAT";
+    server_message.fields_json = "{}";
+
+    server_message.target_system_id = 256;
+    EXPECT_EQ(server.send_message(server_message), MavlinkDirectServer::Result::InvalidField);
+    server_message.target_system_id = 0;
+
+    server_message.target_component_id = 256;
+    EXPECT_EQ(server.send_message(server_message), MavlinkDirectServer::Result::InvalidField);
+    server_message.target_component_id = 0;
+
+    // In-range values are unaffected.
+    EXPECT_EQ(server.send_message(server_message), MavlinkDirectServer::Result::Success);
+
+    // Client (ground station) send path: mavlink_direct_impl.cpp.
+    MavlinkDirect::MavlinkMessage client_message;
+    client_message.message_name = "HEARTBEAT";
+    client_message.fields_json = "{}";
+
+    client_message.target_system_id = 4294967295; // uint32 max
+    EXPECT_EQ(client.send_message(client_message), MavlinkDirect::Result::InvalidField);
+    client_message.target_system_id = 0;
+
+    client_message.target_component_id = 300;
+    EXPECT_EQ(client.send_message(client_message), MavlinkDirect::Result::InvalidField);
+    client_message.target_component_id = 0;
+
+    EXPECT_EQ(client.send_message(client_message), MavlinkDirect::Result::Success);
+}

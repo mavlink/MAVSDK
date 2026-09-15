@@ -108,7 +108,17 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
         LogDebug("Successfully populated fields for {}", message.message_name);
     }
 
-    // Set target system/component if specified
+    // Set target system/component if specified.
+    // MAVLink system/component IDs are still 1 byte on the wire (sysid32 not yet supported),
+    // so reject anything that wouldn't round-trip instead of silently truncating it.
+    if (message.target_system_id > 255) {
+        LogErr("target_system_id {} out of range (max 255)", message.target_system_id);
+        return MavlinkDirect::Result::InvalidField;
+    }
+    if (message.target_component_id > 255) {
+        LogErr("target_component_id {} out of range (max 255)", message.target_component_id);
+        return MavlinkDirect::Result::InvalidField;
+    }
     if (message.target_system_id != 0) {
         // For messages that have target_system field, set it
         libmav_message.set("target_system", static_cast<uint8_t>(message.target_system_id));
