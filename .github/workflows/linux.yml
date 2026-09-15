@@ -376,6 +376,62 @@ jobs:
         run: ./build-release/src/system_tests/system_tests_runner
         timeout-minutes: 15
 
+  ubuntu-python-system-tests:
+    name: Ubuntu 24.04 (Python system tests)
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v5
+        id: cache
+        with:
+          path: ./cpp/build/release/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-1
+          restore-keys: |
+            ubuntu-superbuild-24.04-gcc-13-${{ hashFiles('./cpp/third_party/**') }}-
+            ubuntu-superbuild-
+      - name: disable superbuild on cache restore
+        run: |
+          if [ -f "build/release/third_party/install/bin/protoc" ]; then
+            echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
+          fi
+      - name: configure
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release --target install -- -j$(nproc)
+      # Static C++ above, shared C bindings here: that makes libcmavsdk.so
+      # self-contained, so the Python loader needs no LD_LIBRARY_PATH.
+      - name: build C bindings
+        working-directory: ./c
+        run: |
+          cmake -DCMAKE_INSTALL_PREFIX=build/install -DBUILD_SHARED_LIBS=ON -DCMAKE_PREFIX_PATH="$(pwd)/../cpp/install;$(pwd)/../cpp/build/release/third_party/install" -Bbuild -S.
+          cmake --build build --target install -- -j$(nproc)
+      - name: stage libcmavsdk for the Python package
+        working-directory: .
+        run: |
+          mkdir -p py/mavsdk/mavsdk/lib
+          cp -a c/build/install/lib/libcmavsdk.so* py/mavsdk/mavsdk/lib/
+      - name: install Python test dependencies
+        working-directory: .
+        run: python3 -m pip install --break-system-packages -r py/requirements-dev.txt
+      - name: python system tests
+        working-directory: ./py/test
+        run: python3 -m pytest -v
+        timeout-minutes: 5
+
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
     needs: [check-docker-changes, update-docker-images]
