@@ -1,3 +1,5 @@
+#include <cstdio>
+#include <cstdlib>
 #include <functional>
 #include <limits>
 #include "mavlink_passthrough_impl.hpp"
@@ -109,6 +111,15 @@ mavlink_message_t MavlinkPassthroughImpl::make_command_ack_message(
     const uint16_t command,
     MAV_RESULT result)
 {
+    // This returns a mavlink_message_t by value, so there is no Result to report a bad
+    // target_sysid through. It's temporary, until sysid32 is supported.
+    if (target_sysid > std::numeric_limits<uint8_t>::max()) {
+        LogErr("Target system ID {} is not supported yet", target_sysid);
+        fflush(stdout);
+        fflush(stderr);
+        std::abort();
+    }
+
     /* copied over from system impl */
     const uint8_t progress = std::numeric_limits<uint8_t>::max();
     const uint8_t result_param2 = 0;
