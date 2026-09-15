@@ -775,19 +775,28 @@ void mavsdk_gimbal_unsubscribe_gimbal_list(
     mavsdk_gimbal_t gimbal,
     mavsdk_gimbal_gimbal_list_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
-        auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::GimbalListHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->gimbal_list_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_gimbal_list(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (gimbal == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::GimbalListHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->gimbal_list_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_gimbal_list(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // GimbalList sync
@@ -837,19 +846,28 @@ void mavsdk_gimbal_unsubscribe_control_status(
     mavsdk_gimbal_t gimbal,
     mavsdk_gimbal_control_status_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
-        auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::ControlStatusHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->control_status_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_control_status(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (gimbal == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::ControlStatusHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->control_status_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_control_status(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -905,19 +923,28 @@ void mavsdk_gimbal_unsubscribe_attitude(
     mavsdk_gimbal_t gimbal,
     mavsdk_gimbal_attitude_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
-        auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::AttitudeHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->attitude_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_attitude(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (gimbal == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::AttitudeHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->attitude_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_attitude(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 

@@ -473,18 +473,27 @@ void mavsdk_info_unsubscribe_flight_information(
     mavsdk_info_t info,
     mavsdk_info_flight_information_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
-        auto cpp_handle = reinterpret_cast<mavsdk::Info::FlightInformationHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->flight_information_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_flight_information(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (info == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
+    auto cpp_handle = reinterpret_cast<mavsdk::Info::FlightInformationHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->flight_information_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_flight_information(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 

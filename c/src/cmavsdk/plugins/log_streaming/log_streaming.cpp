@@ -272,18 +272,27 @@ void mavsdk_log_streaming_unsubscribe_log_streaming_raw(
     mavsdk_log_streaming_t log_streaming,
     mavsdk_log_streaming_log_streaming_raw_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
-        auto cpp_handle = reinterpret_cast<mavsdk::LogStreaming::LogStreamingRawHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->log_streaming_raw_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_log_streaming_raw(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (log_streaming == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+    auto cpp_handle = reinterpret_cast<mavsdk::LogStreaming::LogStreamingRawHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->log_streaming_raw_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_log_streaming_raw(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 

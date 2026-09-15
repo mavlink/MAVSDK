@@ -295,6 +295,10 @@ void mavsdk_unsubscribe_connection_errors(
     mavsdk_t mavsdk,
     mavsdk_connection_error_handle_t handle
 ) {
+    if (mavsdk == nullptr || handle == nullptr) {
+        return;
+    }
+
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
     auto* pair = reinterpret_cast<std::pair<Mavsdk::ConnectionErrorHandle, CallbackContext*>*>(handle);
 
@@ -334,6 +338,10 @@ void mavsdk_unsubscribe_on_new_system(
     mavsdk_t mavsdk,
     mavsdk_new_system_handle_t handle
 ) {
+    if (mavsdk == nullptr || handle == nullptr) {
+        return;
+    }
+
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
     auto* pair = reinterpret_cast<std::pair<Mavsdk::NewSystemHandle, CallbackContext*>*>(handle);
 
@@ -449,6 +457,10 @@ void mavsdk_unsubscribe_incoming_messages_json(
     mavsdk_t mavsdk,
     mavsdk_intercept_json_handle_t handle
 ) {
+    if (mavsdk == nullptr || handle == nullptr) {
+        return;
+    }
+
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
     auto* pair = reinterpret_cast<std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>*>(handle);
 
@@ -502,6 +514,10 @@ void mavsdk_unsubscribe_outgoing_messages_json(
     mavsdk_t mavsdk,
     mavsdk_intercept_json_handle_t handle
 ) {
+    if (mavsdk == nullptr || handle == nullptr) {
+        return;
+    }
+
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
     auto* pair = reinterpret_cast<std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>*>(handle);
 
@@ -546,6 +562,10 @@ void mavsdk_unsubscribe_raw_bytes_to_be_sent(
     mavsdk_t mavsdk,
     mavsdk_raw_bytes_handle_t handle
 ) {
+    if (mavsdk == nullptr || handle == nullptr) {
+        return;
+    }
+
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
     auto* pair = reinterpret_cast<std::pair<Mavsdk::RawBytesHandle, CallbackContext*>*>(handle);
 

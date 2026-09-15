@@ -240,19 +240,28 @@ void mavsdk_mavlink_direct_unsubscribe_message(
     mavsdk_mavlink_direct_t mavlink_direct,
     mavsdk_mavlink_direct_message_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
-        auto cpp_handle = reinterpret_cast<mavsdk::MavlinkDirect::MessageHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->message_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_message(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (mavlink_direct == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
+    auto cpp_handle = reinterpret_cast<mavsdk::MavlinkDirect::MessageHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->message_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_message(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
