@@ -77,9 +77,16 @@ TEST(Connections, TcpConnectionReconnectionFromServerSide)
     int messages_before_reconnect = message_count.load();
     LogInfo("Messages before waiting: {}", messages_before_reconnect);
 
-    // Wait for automatic heartbeats to resume after reconnection
+    // Wait for automatic heartbeats to resume after reconnection. Poll instead of
+    // sleeping a fixed duration: the 1s reconnect-retry delay plus up to 1s until
+    // the next heartbeat tick can together approach a short fixed window, which
+    // made a single snapshot comparison flaky under CI load.
     LogInfo("Waiting for automatic heartbeats to resume...");
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    const auto reconnect_deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+    while (message_count.load() <= messages_before_reconnect &&
+           std::chrono::steady_clock::now() < reconnect_deadline) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
     int messages_after_reconnect = message_count.load();
 
     LogInfo("Messages after waiting: {}", messages_after_reconnect);
