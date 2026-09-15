@@ -11,6 +11,7 @@
 #include <numeric>
 
 #include "crc32.hpp"
+#include "fs_utils.hpp"
 
 namespace mavsdk {
 
@@ -527,11 +528,11 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
 bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
 {
-    fs::path local_path = fs::path(item.local_folder) / fs::path(item.remote_path).filename();
+    fs::path local_path = fs::path(item.local_folder) / utf8_path(item.remote_path).filename();
     fs::create_directories(fs::path(item.local_folder));
 
     if (_debugging) {
-        LogDebug("Trying to open write to local path: {}", local_path.string());
+        LogDebug("Trying to open write to local path: {}", utf8_string(local_path));
     }
 
     item.ofstream.open(local_path, std::fstream::trunc | std::fstream::binary);
@@ -627,10 +628,10 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
 
 bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
 {
-    fs::path local_path = fs::path(item.local_folder) / fs::path(item.remote_path).filename();
+    fs::path local_path = fs::path(item.local_folder) / utf8_path(item.remote_path).filename();
 
     if (_debugging) {
-        LogDebug("Trying to open write to local path: {}", local_path.string());
+        LogDebug("Trying to open write to local path: {}", utf8_string(local_path));
     }
 
     item.ofstream.open(local_path, std::fstream::trunc | std::fstream::binary);
@@ -903,27 +904,28 @@ size_t MavlinkFtpClient::burst_bytes_transferred(DownloadBurstItem& item)
 bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
 {
     std::error_code ec;
-    if (!fs::exists(item.local_file_path, ec)) {
+    const fs::path local_file_path = utf8_path(item.local_file_path);
+    if (!fs::exists(local_file_path, ec)) {
         item.callback(ClientResult::FileDoesNotExist, {});
         return false;
     }
 
-    item.ifstream.open(item.local_file_path, std::fstream::binary);
+    item.ifstream.open(local_file_path, std::fstream::binary);
     if (!item.ifstream) {
         item.callback(ClientResult::FileIoError, {});
         return false;
     }
 
-    item.file_size = fs::file_size(item.local_file_path, ec);
+    item.file_size = fs::file_size(local_file_path, ec);
     if (ec) {
         LogWarn("Could not get file size of '{}': {}", item.local_file_path, ec.message());
         return false;
     }
 
-    fs::path remote_file_path =
-        fs::path(item.remote_folder) / fs::path(item.local_file_path).filename();
+    fs::path remote_file_path = utf8_path(item.remote_folder) / local_file_path.filename();
+    const std::string remote_file_path_str = utf8_string(remote_file_path);
 
-    if (remote_file_path.string().size() >= max_data_length) {
+    if (remote_file_path_str.size() >= max_data_length) {
         item.callback(ClientResult::InvalidParameter, {});
         return false;
     }
@@ -936,9 +938,9 @@ bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
     work.payload.offset = 0;
     strncpy(
         reinterpret_cast<char*>(work.payload.data),
-        remote_file_path.string().c_str(),
+        remote_file_path_str.c_str(),
         max_data_length - 1);
-    work.payload.size = remote_file_path.string().size() + 1;
+    work.payload.size = remote_file_path_str.size() + 1;
 
     start_timer();
     send_mavlink_ftp_message(work.payload, work.target_compid);
@@ -1664,11 +1666,12 @@ MavlinkFtpClient::ClientResult
 MavlinkFtpClient::calc_local_file_crc32(const std::string& path, uint32_t& csum)
 {
     std::error_code ec;
-    if (!fs::exists(path, ec)) {
+    const fs::path local_path = utf8_path(path);
+    if (!fs::exists(local_path, ec)) {
         return ClientResult::FileDoesNotExist;
     }
 
-    std::ifstream stream(path, std::fstream::binary);
+    std::ifstream stream(local_path, std::fstream::binary);
     if (!stream) {
         return ClientResult::FileIoError;
     }

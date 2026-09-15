@@ -12,6 +12,7 @@
 #include "plugins/ftp/ftp.hpp"
 #include "plugins/ftp_server/ftp_server.hpp"
 #include "fs_helpers.hpp"
+#include "fs_utils.hpp"
 
 using namespace mavsdk;
 
@@ -55,7 +56,7 @@ public:
         }
 
         _ftp_server.emplace(_mavsdk_autopilot.server_component());
-        _ftp_server->set_root_dir(root_dir.string());
+        _ftp_server->set_root_dir(utf8_string(root_dir));
 
         auto maybe_system = _mavsdk_groundstation.first_autopilot(10.0);
         if (!maybe_system) {
@@ -122,7 +123,7 @@ TEST(FtpUnicode, UploadAndDownloadFile)
     ASSERT_TRUE(reset_directories(temp_dir_provided));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
     ASSERT_TRUE(reset_directories(temp_dir_to_upload));
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / fs::path(emoji_file), 50));
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / utf8_path(emoji_file), 50));
 
     FtpTestSetup setup;
     ASSERT_TRUE(setup.connect(temp_dir_provided));
@@ -130,24 +131,25 @@ TEST(FtpUnicode, UploadAndDownloadFile)
 
     // The remote directory has an emoji in it as well.
     EXPECT_EQ(ftp.create_directory(emoji_dir), Ftp::Result::Success);
-    EXPECT_TRUE(file_exists(temp_dir_provided / fs::path(emoji_dir)));
+    EXPECT_TRUE(file_exists(temp_dir_provided / utf8_path(emoji_dir)));
 
     EXPECT_EQ(
-        upload(ftp, (temp_dir_to_upload / fs::path(emoji_file)).string(), emoji_dir),
+        upload(ftp, utf8_string(temp_dir_to_upload / utf8_path(emoji_file)), emoji_dir),
         Ftp::Result::Success);
-    EXPECT_TRUE(file_exists(temp_dir_provided / fs::path(emoji_dir) / fs::path(emoji_file)));
+    EXPECT_TRUE(file_exists(temp_dir_provided / utf8_path(emoji_dir) / utf8_path(emoji_file)));
 
     const auto remote_file_path = emoji_dir + "/" + emoji_file;
 
     // The CRC32 of the remote file should match the local one.
     EXPECT_EQ(
         ftp.are_files_identical(
-            (temp_dir_to_upload / fs::path(emoji_file)).string(), remote_file_path),
+            utf8_string(temp_dir_to_upload / utf8_path(emoji_file)), remote_file_path),
         std::make_pair(Ftp::Result::Success, true));
 
-    EXPECT_EQ(download(ftp, remote_file_path, temp_dir_downloaded.string()), Ftp::Result::Success);
+    EXPECT_EQ(
+        download(ftp, remote_file_path, utf8_string(temp_dir_downloaded)), Ftp::Result::Success);
     EXPECT_TRUE(are_files_identical(
-        temp_dir_to_upload / fs::path(emoji_file), temp_dir_downloaded / fs::path(emoji_file)));
+        temp_dir_to_upload / utf8_path(emoji_file), temp_dir_downloaded / utf8_path(emoji_file)));
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
@@ -160,10 +162,10 @@ TEST(FtpUnicode, ListDirectory)
     const std::vector<std::string> truth_dirs{emoji_dir, cyrillic_dir};
 
     for (const auto& file : truth_files) {
-        ASSERT_TRUE(create_temp_file(temp_dir_provided / fs::path(file), 10));
+        ASSERT_TRUE(create_temp_file(temp_dir_provided / utf8_path(file), 10));
     }
     for (const auto& dir : truth_dirs) {
-        ASSERT_TRUE(reset_directories(temp_dir_provided / fs::path(dir)));
+        ASSERT_TRUE(reset_directories(temp_dir_provided / utf8_path(dir)));
     }
 
     FtpTestSetup setup;
@@ -206,20 +208,20 @@ TEST(FtpUnicode, RenameAndRemove)
 
     // Rename from ASCII to Unicode, and then from Unicode to Unicode.
     EXPECT_EQ(ftp.rename("data.bin", emoji_file), Ftp::Result::Success);
-    EXPECT_TRUE(file_exists(temp_dir_provided / fs::path(emoji_file)));
+    EXPECT_TRUE(file_exists(temp_dir_provided / utf8_path(emoji_file)));
 
     EXPECT_EQ(ftp.rename(emoji_file, japanese_file), Ftp::Result::Success);
-    EXPECT_TRUE(file_exists(temp_dir_provided / fs::path(japanese_file)));
-    EXPECT_FALSE(file_exists(temp_dir_provided / fs::path(emoji_file)));
+    EXPECT_TRUE(file_exists(temp_dir_provided / utf8_path(japanese_file)));
+    EXPECT_FALSE(file_exists(temp_dir_provided / utf8_path(emoji_file)));
 
     EXPECT_EQ(ftp.remove_file(japanese_file), Ftp::Result::Success);
-    EXPECT_FALSE(file_exists(temp_dir_provided / fs::path(japanese_file)));
+    EXPECT_FALSE(file_exists(temp_dir_provided / utf8_path(japanese_file)));
 
     EXPECT_EQ(ftp.create_directory(cyrillic_dir), Ftp::Result::Success);
-    EXPECT_TRUE(file_exists(temp_dir_provided / fs::path(cyrillic_dir)));
+    EXPECT_TRUE(file_exists(temp_dir_provided / utf8_path(cyrillic_dir)));
 
     EXPECT_EQ(ftp.remove_directory(cyrillic_dir), Ftp::Result::Success);
-    EXPECT_FALSE(file_exists(temp_dir_provided / fs::path(cyrillic_dir)));
+    EXPECT_FALSE(file_exists(temp_dir_provided / utf8_path(cyrillic_dir)));
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
@@ -242,7 +244,7 @@ TEST(FtpUnicode, NameTooLongIsRejected)
     ASSERT_GT(too_long.size(), 239u);
 
     EXPECT_EQ(ftp.create_directory(too_long), Ftp::Result::InvalidParameter);
-    EXPECT_FALSE(file_exists(temp_dir_provided / fs::path(too_long)));
+    EXPECT_FALSE(file_exists(temp_dir_provided / utf8_path(too_long)));
 
     // A name which just about fits should still work.
     std::string just_fits;
@@ -252,7 +254,7 @@ TEST(FtpUnicode, NameTooLongIsRejected)
     ASSERT_LT(just_fits.size(), 239u);
 
     EXPECT_EQ(ftp.create_directory(just_fits), Ftp::Result::Success);
-    EXPECT_TRUE(file_exists(temp_dir_provided / fs::path(just_fits)));
+    EXPECT_TRUE(file_exists(temp_dir_provided / utf8_path(just_fits)));
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
@@ -269,9 +271,9 @@ TEST(FtpUnicode, ListDirectoryWithNameTooLongForPayload)
         too_long_for_payload += "🚁";
     }
 
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / fs::path(too_long_for_payload), 10));
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / fs::path(japanese_file), 10));
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / fs::path(combining_file), 10));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / utf8_path(too_long_for_payload), 10));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / utf8_path(japanese_file), 10));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / utf8_path(combining_file), 10));
 
     FtpTestSetup setup;
     ASSERT_TRUE(setup.connect(temp_dir_provided));

@@ -144,4 +144,15 @@ std::string replace_non_ascii_and_whitespace(const std::string& input)
     return result;
 }
 
+std::filesystem::path utf8_path(const std::string& utf8)
+{
+    return std::filesystem::path(std::u8string(utf8.begin(), utf8.end()));
+}
+
+std::string utf8_string(const std::filesystem::path& path)
+{
+    const auto u8 = path.u8string();
+    return std::string(u8.begin(), u8.end());
+}
+
 } // namespace mavsdk
