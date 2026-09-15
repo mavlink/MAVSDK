@@ -22,9 +22,13 @@ class ServerComponent:
         """Register a server plugin so it is destroyed before this component goes.
 
         Same reasoning as :meth:`mavsdk.system.System._track_plugin`: the plugin
-        owns a C++ object reaching into MavsdkImpl and must not outlive it.
+        owns a C++ object reaching into MavsdkImpl and must not outlive it, and
+        the strong reference back keeps this component alive for as long as the
+        plugin is -- otherwise ``MissionRawServer(mavsdk.server_component())``
+        destroys the plugin as soon as the temporary component is collected.
         """
         self._plugins.add(plugin)
+        plugin._owner = self
 
     def destroy(self) -> None:
         """Release the underlying server component handle. Idempotent."""

@@ -34,8 +34,15 @@ class System:
         outlive mavsdk_destroy. Plugins register themselves from their constructor.
         The set is weak so that a plugin the caller drops is collected promptly
         rather than pinned for the lifetime of the system.
+
+        The plugin gets a strong reference back, so that this System outlives it.
+        Without it ``MissionRaw(mavsdk.first_autopilot(10.0))`` would collect the
+        temporary System as soon as the constructor returned, and destroy() would
+        take the still-referenced plugin down with it -- a segfault on the next
+        call. This is not a reference cycle: the set above is weak.
         """
         self._plugins.add(plugin)
+        plugin._owner = self
 
     def destroy(self) -> None:
         """Release the underlying system handle. Idempotent."""
