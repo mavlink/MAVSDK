@@ -47,7 +47,7 @@ private:
     void add_remote_impl(
         const std::string& remote_ip,
         int remote_port,
-        uint8_t remote_sysid,
+        uint32_t remote_sysid,
         RemoteOption remote_option);
 
     std::string _local_ip;

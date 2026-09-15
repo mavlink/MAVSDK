@@ -55,7 +55,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/kotlin/third_party/install
-          key: kotlin-${{ matrix.platform }}-${{ hashFiles('./third_party/**') }}-1
+          key: kotlin-${{ matrix.platform }}-${{ hashFiles('./cpp/third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -140,7 +140,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/android/${{ matrix.name }}/third_party/install
-          key: kotlin-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-1
+          key: kotlin-${{ matrix.name }}-${{ hashFiles('./cpp/third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |

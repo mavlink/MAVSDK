@@ -12,12 +12,12 @@ Possible configurations.
 
 Type | Name | Description
 ---: | --- | ---
-&nbsp; | [Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1a10477130d041107e76efd1f94e65b503) (uint8_t system_id, uint8_t component_id, bool always_send_heartbeats) | Create new [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) via manually configured system and component ID.
+&nbsp; | [Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1a5fc01b2bcc74aa6d4b204c6b7cc9ebca) (uint32_t system_id, uint8_t component_id, bool always_send_heartbeats) | Create new [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) via manually configured system and component ID.
 &nbsp; | [Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1abcc015ee6be8abc2da2c967bbbda9fed) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type) | Create new [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) using a component type. In this mode, the system and component ID will be automatically chosen.
 &nbsp; | [Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1a1a65e2e31f06bec1f6692a933c95b03c) ()=delete |
 &nbsp; | [~Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1a31cad2329ee14898752638d9c3759da9) ()=default |
-uint8_t | [get_system_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1a0497bdda816b674b1418ab07889ca781) () const | Get the system id of this configuration.
-void | [set_system_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1a28f495bce2cf89ca3c52bdfa938b1761) (uint8_t system_id) | Set the system id of this configuration.
+uint32_t | [get_system_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1a618d77025dbff0e4baa0eeac40fe2ab7) () const | Get the system id of this configuration.
+void | [set_system_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1a78ee7871152055f6506652244c886c18) (uint32_t system_id) | Set the system id of this configuration.
 uint8_t | [get_component_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1adfcae3d5b6f047ad24d9c24983375e97) () const | Get the component id of this configuration.
 void | [set_component_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1aa590fbafa8ca104e1a004ca537f5798e) (uint8_t component_id) | Set the component id of this configuration.
 bool | [get_always_send_heartbeats](#classmavsdk_1_1_mavsdk_1_1_configuration_1a0aa9008fe5a7498f374dbd2adad5f137) () const | Get whether to send heartbeats by default.
@@ -37,9 +37,9 @@ void | [set_compatibility_mode](#classmavsdk_1_1_mavsdk_1_1_configuration_1ab261
 ## Constructor & Destructor Documentation
 
 
-### Configuration() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a10477130d041107e76efd1f94e65b503}
+### Configuration() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a5fc01b2bcc74aa6d4b204c6b7cc9ebca}
 ```cpp
-mavsdk::Mavsdk::Configuration::Configuration(uint8_t system_id, uint8_t component_id, bool always_send_heartbeats)
+mavsdk::Mavsdk::Configuration::Configuration(uint32_t system_id, uint8_t component_id, bool always_send_heartbeats)
 ```
 
 
@@ -48,7 +48,7 @@ Create new [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) via manu
 
 **Parameters**
 
-* uint8_t **system_id** - the system id to store in this configuration
+* uint32_t **system_id** - the system id to store in this configuration
 * uint8_t **component_id** - the component id to store in this configuration
 * bool **always_send_heartbeats** - send heartbeats by default even without a system connected
 
@@ -80,9 +80,9 @@ mavsdk::Mavsdk::Configuration::~Configuration()=default
 ## Member Function Documentation
 
 
-### get_system_id() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a0497bdda816b674b1418ab07889ca781}
+### get_system_id() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a618d77025dbff0e4baa0eeac40fe2ab7}
 ```cpp
-uint8_t mavsdk::Mavsdk::Configuration::get_system_id() const
+uint32_t mavsdk::Mavsdk::Configuration::get_system_id() const
 ```
 
 
@@ -91,20 +91,21 @@ Get the system id of this configuration.
 
 **Returns**
 
-&emsp;uint8_t - `uint8_t` the system id stored in this configuration, from 1-255
+&emsp;uint32_t - `uint32_t` the system id stored in this configuration
 
-### set_system_id() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a28f495bce2cf89ca3c52bdfa938b1761}
+### set_system_id() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a78ee7871152055f6506652244c886c18}
 ```cpp
-void mavsdk::Mavsdk::Configuration::set_system_id(uint8_t system_id)
+void mavsdk::Mavsdk::Configuration::set_system_id(uint32_t system_id)
 ```
 
 
 Set the system id of this configuration.
 
+Ids from 1-255 are understood by every MAVLink peer. Larger ids require the peer to support MAVLink's 32 bit system ids, and are sent using an extended header.
 
 **Parameters**
 
-* uint8_t **system_id** - 
+* uint32_t **system_id** - 
 
 ### get_component_id() {#classmavsdk_1_1_mavsdk_1_1_configuration_1adfcae3d5b6f047ad24d9c24983375e97}
 ```cpp

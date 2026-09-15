@@ -172,7 +172,7 @@ private:
     uint8_t _network_id = 0;
     // Written from the message-processing thread and read wherever a message is built, so
     // keep these atomic.
-    std::atomic<uint8_t> _target_system_id{0};
+    std::atomic<uint32_t> _target_system_id{0};
     std::atomic<uint8_t> _target_component_id{0};
     std::string _root_dir{};
 

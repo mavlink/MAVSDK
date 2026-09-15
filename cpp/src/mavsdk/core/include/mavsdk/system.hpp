@@ -48,7 +48,7 @@ public:
      * @param system_id System id.
      * @param component_id Component id.
      */
-    void init(uint8_t system_id, uint8_t component_id) const;
+    void init(uint32_t system_id, uint8_t component_id) const;
 
     /**
      * @brief Checks whether the system has an autopilot.
@@ -94,7 +94,7 @@ public:
      *
      * @return the system ID.
      */
-    uint8_t get_system_id() const;
+    uint32_t get_system_id() const;
 
     /**
      * @brief MAVLink component IDs of connected system.

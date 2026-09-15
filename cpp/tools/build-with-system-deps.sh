@@ -38,12 +38,14 @@ mkdir -p "${DEPS_INSTALL_DIR}"
 
 # Build MAVLink
 # Use the same version as MAVSDK's superbuild (see third_party/CMakeLists.txt)
-MAVLINK_VERSION="d6a7eeaf43319ce6da19a1973ca40180a4210643"
+MAVLINK_VERSION="85a6bf81b6aeda9267bb55d1b44d16bfb9ab3006"
 echo "=== Building MAVLink (${MAVLINK_VERSION}) ==="
 if [ ! -d "${DEPS_DIR}/mavlink" ]; then
     git clone https://github.com/mavlink/mavlink.git "${DEPS_DIR}/mavlink"
-    (cd "${DEPS_DIR}/mavlink" && git checkout "${MAVLINK_VERSION}" && git submodule update --init --recursive)
 fi
+# Checked out on every run, not just on first clone, so that bumping the
+# version above takes effect on an existing deps directory too.
+(cd "${DEPS_DIR}/mavlink" && git fetch origin && git checkout "${MAVLINK_VERSION}" && git submodule update --init --recursive)
 cmake -B "${DEPS_DIR}/mavlink/build" -S "${DEPS_DIR}/mavlink" \
     -DMAVLINK_DIALECT=ardupilotmega
 cmake --build "${DEPS_DIR}/mavlink/build"
@@ -82,10 +84,11 @@ cmake --install "${DEPS_DIR}/PicoSHA2/build" --prefix "${DEPS_INSTALL_DIR}"
 
 # Build libmav
 echo "=== Building libmav ==="
+LIBMAV_VERSION="fbcb13faa08f80fa1830c297fdbc51900d9a0306"
 if [ ! -d "${DEPS_DIR}/libmav" ]; then
     git clone https://github.com/julianoes/libmavlike "${DEPS_DIR}/libmav"
-    (cd "${DEPS_DIR}/libmav" && git reset --hard 80dbd91a0c5d6f0a79f1e8597b820ba075d1cf15)
 fi
+(cd "${DEPS_DIR}/libmav" && git fetch origin && git reset --hard "${LIBMAV_VERSION}")
 cmake -B "${DEPS_DIR}/libmav/build" -S "${DEPS_DIR}/libmav" \
     -DCMAKE_PREFIX_PATH="${DEPS_INSTALL_DIR}" \
     -DCMAKE_POSITION_INDEPENDENT_CODE=ON

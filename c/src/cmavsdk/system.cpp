@@ -42,7 +42,7 @@ bool mavsdk_system_is_connected(mavsdk_system_t system) {
     return (*cpp_system_ptr)->is_connected();
 }
 
-uint8_t mavsdk_system_get_system_id(mavsdk_system_t system) {
+uint32_t mavsdk_system_get_system_id(mavsdk_system_t system) {
     auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     return (*cpp_system_ptr)->get_system_id();
 }

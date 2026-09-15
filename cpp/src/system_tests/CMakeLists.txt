@@ -53,6 +53,7 @@ add_executable(system_tests_runner
     raw_bytes.cpp
     stalled_link.cpp
     tcp_unresolvable_host.cpp
+    sysid32.cpp
     system_tests_runner.cpp
 )
 
