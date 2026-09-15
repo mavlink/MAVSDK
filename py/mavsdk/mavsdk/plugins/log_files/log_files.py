@@ -215,7 +215,7 @@ class LogFiles:
 
         self._lib.mavsdk_log_files_download_log_file_async(
             self._handle,
-            entry,
+            entry.to_c_struct(),
             path.encode("utf-8") if isinstance(path, str) else path,
             cb,
             None,

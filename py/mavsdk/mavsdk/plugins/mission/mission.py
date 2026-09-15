@@ -423,7 +423,7 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_upload_mission_async(
-            self._handle, mission_plan, cb, None
+            self._handle, mission_plan.to_c_struct(), cb, None
         )
 
     def upload_mission(self, mission_plan):
@@ -464,7 +464,7 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_upload_mission_with_progress_async(
-            self._handle, mission_plan, cb, None
+            self._handle, mission_plan.to_c_struct(), cb, None
         )
 
     def cancel_mission_upload(self):

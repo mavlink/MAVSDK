@@ -76,7 +76,7 @@ class MissionAsync:
         def callback(result, data, _user_data=None):
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
-        self._plugin.upload_mission_with_progress_async(callback)
+        self._plugin.upload_mission_with_progress_async(mission_plan, callback)
         while True:
             result, data = await queue.get()
             yield result, data

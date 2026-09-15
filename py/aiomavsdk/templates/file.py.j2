@@ -90,7 +90,7 @@ class {{ plugin_name.upper_camel_case }}Async:
         def callback(result, data, _user_data=None):
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
-        self._plugin.{{ method.name.lower_snake_case }}_async(callback)
+        self._plugin.{{ method.name.lower_snake_case }}_async({% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}callback)
         {% set result_enum = plugin_name.upper_camel_case + "Result" %}
         while True:
             result, data = await queue.get()
