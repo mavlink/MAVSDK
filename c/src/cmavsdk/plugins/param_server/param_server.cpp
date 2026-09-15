@@ -526,19 +526,28 @@ void mavsdk_param_server_unsubscribe_changed_param_int(
     mavsdk_param_server_t param_server,
     mavsdk_param_server_changed_param_int_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
-        auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamIntHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->changed_param_int_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_changed_param_int(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (param_server == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamIntHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->changed_param_int_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_changed_param_int(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -574,19 +583,28 @@ void mavsdk_param_server_unsubscribe_changed_param_float(
     mavsdk_param_server_t param_server,
     mavsdk_param_server_changed_param_float_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
-        auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamFloatHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->changed_param_float_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_changed_param_float(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (param_server == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamFloatHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->changed_param_float_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_changed_param_float(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -622,18 +640,27 @@ void mavsdk_param_server_unsubscribe_changed_param_custom(
     mavsdk_param_server_t param_server,
     mavsdk_param_server_changed_param_custom_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
-        auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamCustomHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->changed_param_custom_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_changed_param_custom(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (param_server == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamCustomHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->changed_param_custom_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_changed_param_custom(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 

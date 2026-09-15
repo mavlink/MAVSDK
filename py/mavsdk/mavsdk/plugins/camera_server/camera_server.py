@@ -783,7 +783,12 @@ class CameraServer:
         )
 
     def unsubscribe_take_photo(self, handle: ctypes.c_void_p):
-        """Unsubscribe from take_photo"""
+        """Unsubscribe from take_photo
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_take_photo(self._handle, handle)
 
     def respond_take_photo(self, take_photo_feedback, capture_info):
@@ -820,7 +825,12 @@ class CameraServer:
         )
 
     def unsubscribe_start_video(self, handle: ctypes.c_void_p):
-        """Unsubscribe from start_video"""
+        """Unsubscribe from start_video
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_start_video(self._handle, handle)
 
     def respond_start_video(self, start_video_feedback):
@@ -856,7 +866,12 @@ class CameraServer:
         )
 
     def unsubscribe_stop_video(self, handle: ctypes.c_void_p):
-        """Unsubscribe from stop_video"""
+        """Unsubscribe from stop_video
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_stop_video(self._handle, handle)
 
     def respond_stop_video(self, stop_video_feedback):
@@ -894,7 +909,12 @@ class CameraServer:
         )
 
     def unsubscribe_start_video_streaming(self, handle: ctypes.c_void_p):
-        """Unsubscribe from start_video_streaming"""
+        """Unsubscribe from start_video_streaming
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_start_video_streaming(
             self._handle, handle
         )
@@ -932,7 +952,12 @@ class CameraServer:
         )
 
     def unsubscribe_stop_video_streaming(self, handle: ctypes.c_void_p):
-        """Unsubscribe from stop_video_streaming"""
+        """Unsubscribe from stop_video_streaming
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_stop_video_streaming(
             self._handle, handle
         )
@@ -968,7 +993,12 @@ class CameraServer:
         return self._lib.mavsdk_camera_server_subscribe_set_mode(self._handle, cb, None)
 
     def unsubscribe_set_mode(self, handle: ctypes.c_void_p):
-        """Unsubscribe from set_mode"""
+        """Unsubscribe from set_mode
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_set_mode(self._handle, handle)
 
     def respond_set_mode(self, set_mode_feedback):
@@ -1004,7 +1034,12 @@ class CameraServer:
         )
 
     def unsubscribe_storage_information(self, handle: ctypes.c_void_p):
-        """Unsubscribe from storage_information"""
+        """Unsubscribe from storage_information
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_storage_information(
             self._handle, handle
         )
@@ -1045,7 +1080,12 @@ class CameraServer:
         )
 
     def unsubscribe_capture_status(self, handle: ctypes.c_void_p):
-        """Unsubscribe from capture_status"""
+        """Unsubscribe from capture_status
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_capture_status(self._handle, handle)
 
     def respond_capture_status(self, capture_status_feedback, capture_status):
@@ -1082,7 +1122,12 @@ class CameraServer:
         )
 
     def unsubscribe_format_storage(self, handle: ctypes.c_void_p):
-        """Unsubscribe from format_storage"""
+        """Unsubscribe from format_storage
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_format_storage(self._handle, handle)
 
     def respond_format_storage(self, format_storage_feedback):
@@ -1118,7 +1163,12 @@ class CameraServer:
         )
 
     def unsubscribe_reset_settings(self, handle: ctypes.c_void_p):
-        """Unsubscribe from reset_settings"""
+        """Unsubscribe from reset_settings
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_reset_settings(self._handle, handle)
 
     def respond_reset_settings(self, reset_settings_feedback):
@@ -1154,7 +1204,12 @@ class CameraServer:
         )
 
     def unsubscribe_zoom_in_start(self, handle: ctypes.c_void_p):
-        """Unsubscribe from zoom_in_start"""
+        """Unsubscribe from zoom_in_start
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_zoom_in_start(self._handle, handle)
 
     def respond_zoom_in_start(self, zoom_in_start_feedback):
@@ -1190,7 +1245,12 @@ class CameraServer:
         )
 
     def unsubscribe_zoom_out_start(self, handle: ctypes.c_void_p):
-        """Unsubscribe from zoom_out_start"""
+        """Unsubscribe from zoom_out_start
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_zoom_out_start(self._handle, handle)
 
     def respond_zoom_out_start(self, zoom_out_start_feedback):
@@ -1226,7 +1286,12 @@ class CameraServer:
         )
 
     def unsubscribe_zoom_stop(self, handle: ctypes.c_void_p):
-        """Unsubscribe from zoom_stop"""
+        """Unsubscribe from zoom_stop
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_zoom_stop(self._handle, handle)
 
     def respond_zoom_stop(self, zoom_stop_feedback):
@@ -1262,7 +1327,12 @@ class CameraServer:
         )
 
     def unsubscribe_zoom_range(self, handle: ctypes.c_void_p):
-        """Unsubscribe from zoom_range"""
+        """Unsubscribe from zoom_range
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_zoom_range(self._handle, handle)
 
     def respond_zoom_range(self, zoom_range_feedback):
@@ -1298,7 +1368,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_in_step(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_in_step"""
+        """Unsubscribe from focus_in_step
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_in_step(self._handle, handle)
 
     def respond_focus_in_step(self, focus_in_step_feedback):
@@ -1334,7 +1409,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_out_step(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_out_step"""
+        """Unsubscribe from focus_out_step
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_out_step(self._handle, handle)
 
     def respond_focus_out_step(self, focus_out_step_feedback):
@@ -1370,7 +1450,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_in_start(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_in_start"""
+        """Unsubscribe from focus_in_start
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_in_start(self._handle, handle)
 
     def respond_focus_in_start(self, focus_in_start_feedback):
@@ -1406,7 +1491,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_out_start(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_out_start"""
+        """Unsubscribe from focus_out_start
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_out_start(self._handle, handle)
 
     def respond_focus_out_start(self, focus_out_start_feedback):
@@ -1442,7 +1532,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_stop(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_stop"""
+        """Unsubscribe from focus_stop
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_stop(self._handle, handle)
 
     def respond_focus_stop(self, focus_stop_feedback):
@@ -1478,7 +1573,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_range(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_range"""
+        """Unsubscribe from focus_range
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_range(self._handle, handle)
 
     def respond_focus_range(self, focus_range_feedback):
@@ -1514,7 +1614,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_meters(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_meters"""
+        """Unsubscribe from focus_meters
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_meters(self._handle, handle)
 
     def respond_focus_meters(self, focus_meters_feedback):
@@ -1550,7 +1655,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_auto(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_auto"""
+        """Unsubscribe from focus_auto
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_auto(self._handle, handle)
 
     def respond_focus_auto(self, focus_auto_feedback):
@@ -1586,7 +1696,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_auto_single(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_auto_single"""
+        """Unsubscribe from focus_auto_single
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_auto_single(
             self._handle, handle
         )
@@ -1626,7 +1741,12 @@ class CameraServer:
         )
 
     def unsubscribe_focus_auto_continuous(self, handle: ctypes.c_void_p):
-        """Unsubscribe from focus_auto_continuous"""
+        """Unsubscribe from focus_auto_continuous
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_focus_auto_continuous(
             self._handle, handle
         )
@@ -1683,7 +1803,12 @@ class CameraServer:
         )
 
     def unsubscribe_tracking_point_command(self, handle: ctypes.c_void_p):
-        """Unsubscribe from tracking_point_command"""
+        """Unsubscribe from tracking_point_command
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_tracking_point_command(
             self._handle, handle
         )
@@ -1714,7 +1839,12 @@ class CameraServer:
         )
 
     def unsubscribe_tracking_rectangle_command(self, handle: ctypes.c_void_p):
-        """Unsubscribe from tracking_rectangle_command"""
+        """Unsubscribe from tracking_rectangle_command
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
             self._handle, handle
         )
@@ -1739,7 +1869,12 @@ class CameraServer:
         )
 
     def unsubscribe_tracking_off_command(self, handle: ctypes.c_void_p):
-        """Unsubscribe from tracking_off_command"""
+        """Unsubscribe from tracking_off_command
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_server_unsubscribe_tracking_off_command(
             self._handle, handle
         )

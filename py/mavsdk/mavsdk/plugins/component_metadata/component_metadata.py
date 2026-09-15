@@ -194,7 +194,12 @@ class ComponentMetadata:
         )
 
     def unsubscribe_metadata_available(self, handle: ctypes.c_void_p):
-        """Unsubscribe from metadata_available"""
+        """Unsubscribe from metadata_available
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_component_metadata_unsubscribe_metadata_available(
             self._handle, handle
         )

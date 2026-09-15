@@ -49,6 +49,15 @@ cd py/test
 pytest -v
 ```
 
+## Teardown tests
+
+`test_teardown.py` is a different shape: it covers the orders in which Python
+can drop handles into C++ objects — a subscription generator closing after the
+`Mavsdk` instance was destroyed, a `__del__` running at interpreter shutdown —
+where a regression shows up as a crash rather than a failed assertion. Each
+scenario therefore runs in its own interpreter and is judged by its exit code,
+so a segfault reports as one failed test instead of taking the run with it.
+
 ## Writing a new test
 
 Keep each test standalone: set the two instances up, run the exchange, and

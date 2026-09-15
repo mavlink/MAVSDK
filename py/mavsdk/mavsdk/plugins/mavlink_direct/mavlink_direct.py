@@ -180,7 +180,12 @@ class MavlinkDirect:
         )
 
     def unsubscribe_message(self, handle: ctypes.c_void_p):
-        """Unsubscribe from message"""
+        """Unsubscribe from message
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_mavlink_direct_unsubscribe_message(self._handle, handle)
 
     def load_custom_xml(self, xml_content):

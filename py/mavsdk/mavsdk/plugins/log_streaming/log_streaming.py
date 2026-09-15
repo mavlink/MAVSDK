@@ -181,7 +181,12 @@ class LogStreaming:
         )
 
     def unsubscribe_log_streaming_raw(self, handle: ctypes.c_void_p):
-        """Unsubscribe from log_streaming_raw"""
+        """Unsubscribe from log_streaming_raw
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_log_streaming_unsubscribe_log_streaming_raw(
             self._handle, handle
         )

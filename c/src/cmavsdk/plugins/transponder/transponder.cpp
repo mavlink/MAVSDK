@@ -344,19 +344,28 @@ void mavsdk_transponder_unsubscribe_transponder(
     mavsdk_transponder_t transponder,
     mavsdk_transponder_transponder_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
-        auto cpp_handle = reinterpret_cast<mavsdk::Transponder::TransponderHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->transponder_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_transponder(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (transponder == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
+    auto cpp_handle = reinterpret_cast<mavsdk::Transponder::TransponderHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->transponder_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_transponder(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Transponder sync

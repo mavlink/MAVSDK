@@ -97,7 +97,12 @@ class Shell:
         return self._lib.mavsdk_shell_subscribe_receive(self._handle, cb, None)
 
     def unsubscribe_receive(self, handle: ctypes.c_void_p):
-        """Unsubscribe from receive"""
+        """Unsubscribe from receive
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_shell_unsubscribe_receive(self._handle, handle)
 
     def destroy(self):

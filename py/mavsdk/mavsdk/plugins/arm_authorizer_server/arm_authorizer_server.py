@@ -88,7 +88,12 @@ class ArmAuthorizerServer:
         )
 
     def unsubscribe_arm_authorization(self, handle: ctypes.c_void_p):
-        """Unsubscribe from arm_authorization"""
+        """Unsubscribe from arm_authorization
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_arm_authorizer_server_unsubscribe_arm_authorization(
             self._handle, handle
         )

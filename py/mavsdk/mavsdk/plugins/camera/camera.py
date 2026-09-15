@@ -1469,7 +1469,12 @@ class Camera:
         return self._lib.mavsdk_camera_subscribe_camera_list(self._handle, cb, None)
 
     def unsubscribe_camera_list(self, handle: ctypes.c_void_p):
-        """Unsubscribe from camera_list"""
+        """Unsubscribe from camera_list
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_unsubscribe_camera_list(self._handle, handle)
 
     def camera_list(self):
@@ -1503,7 +1508,12 @@ class Camera:
         return self._lib.mavsdk_camera_subscribe_mode(self._handle, cb, None)
 
     def unsubscribe_mode(self, handle: ctypes.c_void_p):
-        """Unsubscribe from mode"""
+        """Unsubscribe from mode
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_unsubscribe_mode(self._handle, handle)
 
     def get_mode(self, component_id):
@@ -1544,7 +1554,12 @@ class Camera:
         )
 
     def unsubscribe_video_stream_info(self, handle: ctypes.c_void_p):
-        """Unsubscribe from video_stream_info"""
+        """Unsubscribe from video_stream_info
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_unsubscribe_video_stream_info(self._handle, handle)
 
     def get_video_stream_info(self, component_id):
@@ -1583,7 +1598,12 @@ class Camera:
         return self._lib.mavsdk_camera_subscribe_capture_info(self._handle, cb, None)
 
     def unsubscribe_capture_info(self, handle: ctypes.c_void_p):
-        """Unsubscribe from capture_info"""
+        """Unsubscribe from capture_info
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_unsubscribe_capture_info(self._handle, handle)
 
     def subscribe_storage(self, callback: Callable, user_data: Any = None):
@@ -1606,7 +1626,12 @@ class Camera:
         return self._lib.mavsdk_camera_subscribe_storage(self._handle, cb, None)
 
     def unsubscribe_storage(self, handle: ctypes.c_void_p):
-        """Unsubscribe from storage"""
+        """Unsubscribe from storage
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_unsubscribe_storage(self._handle, handle)
 
     def get_storage(self, component_id):
@@ -1649,7 +1674,12 @@ class Camera:
         )
 
     def unsubscribe_current_settings(self, handle: ctypes.c_void_p):
-        """Unsubscribe from current_settings"""
+        """Unsubscribe from current_settings
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_unsubscribe_current_settings(self._handle, handle)
 
     def get_current_settings(self, component_id):
@@ -1695,7 +1725,12 @@ class Camera:
         )
 
     def unsubscribe_possible_setting_options(self, handle: ctypes.c_void_p):
-        """Unsubscribe from possible_setting_options"""
+        """Unsubscribe from possible_setting_options
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_camera_unsubscribe_possible_setting_options(
             self._handle, handle
         )

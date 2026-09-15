@@ -221,7 +221,12 @@ class Transponder:
         )
 
     def unsubscribe_transponder(self, handle: ctypes.c_void_p):
-        """Unsubscribe from transponder"""
+        """Unsubscribe from transponder
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_transponder_unsubscribe_transponder(self._handle, handle)
 
     def transponder(self):
