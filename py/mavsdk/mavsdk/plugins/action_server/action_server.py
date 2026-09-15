@@ -231,7 +231,12 @@ class ActionServer:
         )
 
     def unsubscribe_arm_disarm(self, handle: ctypes.c_void_p):
-        """Unsubscribe from arm_disarm"""
+        """Unsubscribe from arm_disarm
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_action_server_unsubscribe_arm_disarm(self._handle, handle)
 
     def subscribe_flight_mode_change(self, callback: Callable, user_data: Any = None):
@@ -256,7 +261,12 @@ class ActionServer:
         )
 
     def unsubscribe_flight_mode_change(self, handle: ctypes.c_void_p):
-        """Unsubscribe from flight_mode_change"""
+        """Unsubscribe from flight_mode_change
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_action_server_unsubscribe_flight_mode_change(
             self._handle, handle
         )
@@ -281,7 +291,12 @@ class ActionServer:
         return self._lib.mavsdk_action_server_subscribe_takeoff(self._handle, cb, None)
 
     def unsubscribe_takeoff(self, handle: ctypes.c_void_p):
-        """Unsubscribe from takeoff"""
+        """Unsubscribe from takeoff
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_action_server_unsubscribe_takeoff(self._handle, handle)
 
     def subscribe_land(self, callback: Callable, user_data: Any = None):
@@ -304,7 +319,12 @@ class ActionServer:
         return self._lib.mavsdk_action_server_subscribe_land(self._handle, cb, None)
 
     def unsubscribe_land(self, handle: ctypes.c_void_p):
-        """Unsubscribe from land"""
+        """Unsubscribe from land
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_action_server_unsubscribe_land(self._handle, handle)
 
     def subscribe_reboot(self, callback: Callable, user_data: Any = None):
@@ -327,7 +347,12 @@ class ActionServer:
         return self._lib.mavsdk_action_server_subscribe_reboot(self._handle, cb, None)
 
     def unsubscribe_reboot(self, handle: ctypes.c_void_p):
-        """Unsubscribe from reboot"""
+        """Unsubscribe from reboot
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_action_server_unsubscribe_reboot(self._handle, handle)
 
     def subscribe_shutdown(self, callback: Callable, user_data: Any = None):
@@ -350,7 +375,12 @@ class ActionServer:
         return self._lib.mavsdk_action_server_subscribe_shutdown(self._handle, cb, None)
 
     def unsubscribe_shutdown(self, handle: ctypes.c_void_p):
-        """Unsubscribe from shutdown"""
+        """Unsubscribe from shutdown
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_action_server_unsubscribe_shutdown(self._handle, handle)
 
     def subscribe_terminate(self, callback: Callable, user_data: Any = None):
@@ -375,7 +405,12 @@ class ActionServer:
         )
 
     def unsubscribe_terminate(self, handle: ctypes.c_void_p):
-        """Unsubscribe from terminate"""
+        """Unsubscribe from terminate
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_action_server_unsubscribe_terminate(self._handle, handle)
 
     def set_allow_takeoff(self, allow_takeoff):

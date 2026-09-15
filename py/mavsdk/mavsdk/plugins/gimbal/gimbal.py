@@ -802,7 +802,12 @@ class Gimbal:
         return self._lib.mavsdk_gimbal_subscribe_gimbal_list(self._handle, cb, None)
 
     def unsubscribe_gimbal_list(self, handle: ctypes.c_void_p):
-        """Unsubscribe from gimbal_list"""
+        """Unsubscribe from gimbal_list
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_gimbal_unsubscribe_gimbal_list(self._handle, handle)
 
     def gimbal_list(self):
@@ -840,7 +845,12 @@ class Gimbal:
         return self._lib.mavsdk_gimbal_subscribe_control_status(self._handle, cb, None)
 
     def unsubscribe_control_status(self, handle: ctypes.c_void_p):
-        """Unsubscribe from control_status"""
+        """Unsubscribe from control_status
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_gimbal_unsubscribe_control_status(self._handle, handle)
 
     def get_control_status(self, gimbal_id):
@@ -881,7 +891,12 @@ class Gimbal:
         return self._lib.mavsdk_gimbal_subscribe_attitude(self._handle, cb, None)
 
     def unsubscribe_attitude(self, handle: ctypes.c_void_p):
-        """Unsubscribe from attitude"""
+        """Unsubscribe from attitude
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_gimbal_unsubscribe_attitude(self._handle, handle)
 
     def get_attitude(self, gimbal_id):

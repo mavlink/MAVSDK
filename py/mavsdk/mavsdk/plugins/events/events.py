@@ -421,7 +421,12 @@ class Events:
         return self._lib.mavsdk_events_subscribe_events(self._handle, cb, None)
 
     def unsubscribe_events(self, handle: ctypes.c_void_p):
-        """Unsubscribe from events"""
+        """Unsubscribe from events
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_events_unsubscribe_events(self._handle, handle)
 
     def subscribe_health_and_arming_checks(
@@ -450,7 +455,12 @@ class Events:
         )
 
     def unsubscribe_health_and_arming_checks(self, handle: ctypes.c_void_p):
-        """Unsubscribe from health_and_arming_checks"""
+        """Unsubscribe from health_and_arming_checks
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_events_unsubscribe_health_and_arming_checks(
             self._handle, handle
         )

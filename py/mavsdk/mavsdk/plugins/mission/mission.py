@@ -731,7 +731,12 @@ class Mission:
         )
 
     def unsubscribe_mission_progress(self, handle: ctypes.c_void_p):
-        """Unsubscribe from mission_progress"""
+        """Unsubscribe from mission_progress
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_mission_unsubscribe_mission_progress(self._handle, handle)
 
     def mission_progress(self):

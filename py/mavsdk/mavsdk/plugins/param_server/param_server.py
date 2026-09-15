@@ -416,7 +416,12 @@ class ParamServer:
         )
 
     def unsubscribe_changed_param_int(self, handle: ctypes.c_void_p):
-        """Unsubscribe from changed_param_int"""
+        """Unsubscribe from changed_param_int
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_param_server_unsubscribe_changed_param_int(
             self._handle, handle
         )
@@ -443,7 +448,12 @@ class ParamServer:
         )
 
     def unsubscribe_changed_param_float(self, handle: ctypes.c_void_p):
-        """Unsubscribe from changed_param_float"""
+        """Unsubscribe from changed_param_float
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_param_server_unsubscribe_changed_param_float(
             self._handle, handle
         )
@@ -470,7 +480,12 @@ class ParamServer:
         )
 
     def unsubscribe_changed_param_custom(self, handle: ctypes.c_void_p):
-        """Unsubscribe from changed_param_custom"""
+        """Unsubscribe from changed_param_custom
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_param_server_unsubscribe_changed_param_custom(
             self._handle, handle
         )

@@ -343,7 +343,12 @@ class {{ plugin_name.upper_camel_case }}:
 
     {% if method.is_stream and not method.is_finite %}
     def unsubscribe_{{ method.name.lower_snake_case }}(self, handle: ctypes.c_void_p):
-        """Unsubscribe from {{ method.name.lower_snake_case }}"""
+        """Unsubscribe from {{ method.name.lower_snake_case }}
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}(
             self._handle, handle
         )

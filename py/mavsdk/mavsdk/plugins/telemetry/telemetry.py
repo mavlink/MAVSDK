@@ -2161,7 +2161,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_position(self._handle, cb, None)
 
     def unsubscribe_position(self, handle: ctypes.c_void_p):
-        """Unsubscribe from position"""
+        """Unsubscribe from position
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_position(self._handle, handle)
 
     def position(self):
@@ -2195,7 +2200,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_home(self._handle, cb, None)
 
     def unsubscribe_home(self, handle: ctypes.c_void_p):
-        """Unsubscribe from home"""
+        """Unsubscribe from home
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_home(self._handle, handle)
 
     def home(self):
@@ -2227,7 +2237,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_in_air(self._handle, cb, None)
 
     def unsubscribe_in_air(self, handle: ctypes.c_void_p):
-        """Unsubscribe from in_air"""
+        """Unsubscribe from in_air
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_in_air(self._handle, handle)
 
     def in_air(self):
@@ -2257,7 +2272,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_landed_state(self._handle, cb, None)
 
     def unsubscribe_landed_state(self, handle: ctypes.c_void_p):
-        """Unsubscribe from landed_state"""
+        """Unsubscribe from landed_state
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_landed_state(self._handle, handle)
 
     def landed_state(self):
@@ -2287,7 +2307,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_armed(self._handle, cb, None)
 
     def unsubscribe_armed(self, handle: ctypes.c_void_p):
-        """Unsubscribe from armed"""
+        """Unsubscribe from armed
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_armed(self._handle, handle)
 
     def armed(self):
@@ -2317,7 +2342,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_vtol_state(self._handle, cb, None)
 
     def unsubscribe_vtol_state(self, handle: ctypes.c_void_p):
-        """Unsubscribe from vtol_state"""
+        """Unsubscribe from vtol_state
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_vtol_state(self._handle, handle)
 
     def vtol_state(self):
@@ -2351,7 +2381,12 @@ class Telemetry:
         )
 
     def unsubscribe_attitude_quaternion(self, handle: ctypes.c_void_p):
-        """Unsubscribe from attitude_quaternion"""
+        """Unsubscribe from attitude_quaternion
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion(self._handle, handle)
 
     def attitude_quaternion(self):
@@ -2389,7 +2424,12 @@ class Telemetry:
         )
 
     def unsubscribe_attitude_euler(self, handle: ctypes.c_void_p):
-        """Unsubscribe from attitude_euler"""
+        """Unsubscribe from attitude_euler
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_attitude_euler(self._handle, handle)
 
     def attitude_euler(self):
@@ -2431,7 +2471,12 @@ class Telemetry:
         )
 
     def unsubscribe_attitude_angular_velocity_body(self, handle: ctypes.c_void_p):
-        """Unsubscribe from attitude_angular_velocity_body"""
+        """Unsubscribe from attitude_angular_velocity_body
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
             self._handle, handle
         )
@@ -2471,7 +2516,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_velocity_ned(self._handle, cb, None)
 
     def unsubscribe_velocity_ned(self, handle: ctypes.c_void_p):
-        """Unsubscribe from velocity_ned"""
+        """Unsubscribe from velocity_ned
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_velocity_ned(self._handle, handle)
 
     def velocity_ned(self):
@@ -2505,7 +2555,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_gps_info(self._handle, cb, None)
 
     def unsubscribe_gps_info(self, handle: ctypes.c_void_p):
-        """Unsubscribe from gps_info"""
+        """Unsubscribe from gps_info
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_gps_info(self._handle, handle)
 
     def gps_info(self):
@@ -2539,7 +2594,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_raw_gps(self._handle, cb, None)
 
     def unsubscribe_raw_gps(self, handle: ctypes.c_void_p):
-        """Unsubscribe from raw_gps"""
+        """Unsubscribe from raw_gps
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_raw_gps(self._handle, handle)
 
     def raw_gps(self):
@@ -2573,7 +2633,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_battery(self._handle, cb, None)
 
     def unsubscribe_battery(self, handle: ctypes.c_void_p):
-        """Unsubscribe from battery"""
+        """Unsubscribe from battery
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_battery(self._handle, handle)
 
     def battery(self):
@@ -2605,7 +2670,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_flight_mode(self._handle, cb, None)
 
     def unsubscribe_flight_mode(self, handle: ctypes.c_void_p):
-        """Unsubscribe from flight_mode"""
+        """Unsubscribe from flight_mode
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_flight_mode(self._handle, handle)
 
     def flight_mode(self):
@@ -2637,7 +2707,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_health(self._handle, cb, None)
 
     def unsubscribe_health(self, handle: ctypes.c_void_p):
-        """Unsubscribe from health"""
+        """Unsubscribe from health
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_health(self._handle, handle)
 
     def health(self):
@@ -2671,7 +2746,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_rc_status(self._handle, cb, None)
 
     def unsubscribe_rc_status(self, handle: ctypes.c_void_p):
-        """Unsubscribe from rc_status"""
+        """Unsubscribe from rc_status
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_rc_status(self._handle, handle)
 
     def rc_status(self):
@@ -2705,7 +2785,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_status_text(self._handle, cb, None)
 
     def unsubscribe_status_text(self, handle: ctypes.c_void_p):
-        """Unsubscribe from status_text"""
+        """Unsubscribe from status_text
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_status_text(self._handle, handle)
 
     def status_text(self):
@@ -2745,7 +2830,12 @@ class Telemetry:
         )
 
     def unsubscribe_actuator_control_target(self, handle: ctypes.c_void_p):
-        """Unsubscribe from actuator_control_target"""
+        """Unsubscribe from actuator_control_target
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_actuator_control_target(
             self._handle, handle
         )
@@ -2791,7 +2881,12 @@ class Telemetry:
         )
 
     def unsubscribe_actuator_output_status(self, handle: ctypes.c_void_p):
-        """Unsubscribe from actuator_output_status"""
+        """Unsubscribe from actuator_output_status
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_actuator_output_status(
             self._handle, handle
         )
@@ -2831,7 +2926,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_odometry(self._handle, cb, None)
 
     def unsubscribe_odometry(self, handle: ctypes.c_void_p):
-        """Unsubscribe from odometry"""
+        """Unsubscribe from odometry
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_odometry(self._handle, handle)
 
     def odometry(self):
@@ -2871,7 +2971,12 @@ class Telemetry:
         )
 
     def unsubscribe_position_velocity_ned(self, handle: ctypes.c_void_p):
-        """Unsubscribe from position_velocity_ned"""
+        """Unsubscribe from position_velocity_ned
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_position_velocity_ned(
             self._handle, handle
         )
@@ -2911,7 +3016,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_ground_truth(self._handle, cb, None)
 
     def unsubscribe_ground_truth(self, handle: ctypes.c_void_p):
-        """Unsubscribe from ground_truth"""
+        """Unsubscribe from ground_truth
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_ground_truth(self._handle, handle)
 
     def ground_truth(self):
@@ -2949,7 +3059,12 @@ class Telemetry:
         )
 
     def unsubscribe_fixedwing_metrics(self, handle: ctypes.c_void_p):
-        """Unsubscribe from fixedwing_metrics"""
+        """Unsubscribe from fixedwing_metrics
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics(self._handle, handle)
 
     def fixedwing_metrics(self):
@@ -2985,7 +3100,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_imu(self._handle, cb, None)
 
     def unsubscribe_imu(self, handle: ctypes.c_void_p):
-        """Unsubscribe from imu"""
+        """Unsubscribe from imu
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_imu(self._handle, handle)
 
     def imu(self):
@@ -3019,7 +3139,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_scaled_imu(self._handle, cb, None)
 
     def unsubscribe_scaled_imu(self, handle: ctypes.c_void_p):
-        """Unsubscribe from scaled_imu"""
+        """Unsubscribe from scaled_imu
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_scaled_imu(self._handle, handle)
 
     def scaled_imu(self):
@@ -3053,7 +3178,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_raw_imu(self._handle, cb, None)
 
     def unsubscribe_raw_imu(self, handle: ctypes.c_void_p):
-        """Unsubscribe from raw_imu"""
+        """Unsubscribe from raw_imu
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_raw_imu(self._handle, handle)
 
     def raw_imu(self):
@@ -3087,7 +3217,12 @@ class Telemetry:
         )
 
     def unsubscribe_health_all_ok(self, handle: ctypes.c_void_p):
-        """Unsubscribe from health_all_ok"""
+        """Unsubscribe from health_all_ok
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_health_all_ok(self._handle, handle)
 
     def health_all_ok(self):
@@ -3119,7 +3254,12 @@ class Telemetry:
         )
 
     def unsubscribe_unix_epoch_time(self, handle: ctypes.c_void_p):
-        """Unsubscribe from unix_epoch_time"""
+        """Unsubscribe from unix_epoch_time
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time(self._handle, handle)
 
     def unix_epoch_time(self):
@@ -3155,7 +3295,12 @@ class Telemetry:
         )
 
     def unsubscribe_distance_sensor(self, handle: ctypes.c_void_p):
-        """Unsubscribe from distance_sensor"""
+        """Unsubscribe from distance_sensor
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_distance_sensor(self._handle, handle)
 
     def distance_sensor(self):
@@ -3193,7 +3338,12 @@ class Telemetry:
         )
 
     def unsubscribe_scaled_pressure(self, handle: ctypes.c_void_p):
-        """Unsubscribe from scaled_pressure"""
+        """Unsubscribe from scaled_pressure
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure(self._handle, handle)
 
     def scaled_pressure(self):
@@ -3229,7 +3379,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_heading(self._handle, cb, None)
 
     def unsubscribe_heading(self, handle: ctypes.c_void_p):
-        """Unsubscribe from heading"""
+        """Unsubscribe from heading
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_heading(self._handle, handle)
 
     def heading(self):
@@ -3263,7 +3418,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_altitude(self._handle, cb, None)
 
     def unsubscribe_altitude(self, handle: ctypes.c_void_p):
-        """Unsubscribe from altitude"""
+        """Unsubscribe from altitude
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_altitude(self._handle, handle)
 
     def altitude(self):
@@ -3297,7 +3457,12 @@ class Telemetry:
         return self._lib.mavsdk_telemetry_subscribe_wind(self._handle, cb, None)
 
     def unsubscribe_wind(self, handle: ctypes.c_void_p):
-        """Unsubscribe from wind"""
+        """Unsubscribe from wind
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_telemetry_unsubscribe_wind(self._handle, handle)
 
     def wind(self):

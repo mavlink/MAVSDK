@@ -200,8 +200,7 @@ class Mavsdk:
     def unsubscribe_on_new_system(self, handle: ctypes.c_void_p):
         """Unsubscribe from new system discoveries
 
-        A no-op once this instance is destroyed, so that callers unsubscribing from
-        a ``finally`` block during teardown do not pass a null handle into C.
+        Does nothing once this instance is destroyed, which unsubscribes already.
         """
         if not self._handle:
             return
@@ -256,7 +255,12 @@ class Mavsdk:
         return handle
 
     def unsubscribe_raw_bytes_to_be_sent(self, handle):
-        """Unsubscribe from raw bytes to be sent."""
+        """Unsubscribe from raw bytes to be sent.
+
+        Does nothing once this instance is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_unsubscribe_raw_bytes_to_be_sent(self._handle, handle)
         self._callbacks.pop(handle, None)
 
