@@ -205,7 +205,9 @@ public:
         /**
          * @brief Create new Configuration via manually configured
          * system and component ID.
-         * @param system_id the system id to store in this configuration
+         * @param system_id the system id to store in this configuration. The type is 32 bits wide
+         * for MAVLink's extended system ids, which are not supported yet. Applying a configuration
+         * with an id above 255 logs an error and aborts.
          * @param component_id the component id to store in this configuration
          * @param always_send_heartbeats send heartbeats by default even without a system connected
          */
@@ -231,8 +233,8 @@ public:
          * @brief Set the system id of this configuration.
          *
          * The type is 32 bits wide for MAVLink's extended system ids, which
-         * are not supported yet. When the configuration is applied, ids above
-         * 255 are replaced by the default system id for the component type.
+         * are not supported yet. Applying a configuration with an id above
+         * 255 logs an error and aborts.
          */
         void set_system_id(uint32_t system_id);
 
