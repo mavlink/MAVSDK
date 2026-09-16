@@ -123,7 +123,7 @@ public:
      * @brief Type for MAVLink command_long.
      */
     struct CommandLong {
-        uint8_t target_sysid; /**< @brief System ID to send command to */
+        uint32_t target_sysid; /**< @brief System ID to send command to */
         uint8_t target_compid; /**< @brief Component ID to send command to */
         uint16_t command; /**< @brief command to send. */
         float param1; /**< @brief param1. */
@@ -139,7 +139,7 @@ public:
      * @brief Type for MAVLink command_int.
      */
     struct CommandInt {
-        uint8_t target_sysid; /**< @brief System ID to send command to */
+        uint32_t target_sysid; /**< @brief System ID to send command to */
         uint8_t target_compid; /**< @brief Component ID to send command to */
         uint16_t command; /**< @brief command to send. */
         MAV_FRAME frame; /**< Frame of command. */
@@ -181,7 +181,7 @@ public:
      * @return message to send.
      */
     DEPRECATED mavlink_message_t make_command_ack_message(
-        const uint8_t target_sysid,
+        const uint32_t target_sysid,
         const uint8_t target_compid,
         const uint16_t command,
         MAV_RESULT result);
@@ -233,7 +233,7 @@ public:
      *
      * @return our own system ID.
      */
-    DEPRECATED uint8_t get_our_sysid() const;
+    DEPRECATED uint32_t get_our_sysid() const;
 
     /**
      * @brief Get our own component ID.
@@ -247,7 +247,7 @@ public:
      *
      * @return system ID of target.
      */
-    DEPRECATED uint8_t get_target_sysid() const;
+    DEPRECATED uint32_t get_target_sysid() const;
 
     /**
      * @brief Get target component ID.

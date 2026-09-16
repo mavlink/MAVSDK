@@ -16,7 +16,7 @@ public:
     void wait();
     void stop();
     int getPort();
-    void setMavlinkIds(uint8_t system_id, uint8_t component_id);
+    void setMavlinkIds(uint32_t system_id, uint8_t component_id);
     // Call before run(). Returns false if the timeout is invalid, in which
     // case the previous one is kept. 0 disables the watchdog.
     bool setHeartbeatWatchdogTimeout(double timeout_s);

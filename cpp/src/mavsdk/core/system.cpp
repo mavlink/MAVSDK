@@ -2,7 +2,11 @@
 #include "mavsdk_impl.hpp"
 #include "system_impl.hpp"
 #include "plugin_impl_base.hpp"
+#include "log.hpp"
+#include <cstdio>
+#include <cstdlib>
 #include <functional>
+#include <limits>
 #include <utility>
 #include "px4_custom_mode.hpp"
 
@@ -15,9 +19,16 @@ System::System(MavsdkImpl& parent) : _system_impl(std::make_shared<SystemImpl>(p
 
 System::~System() = default;
 
-void System::init(uint8_t system_id, uint8_t component_id) const
+void System::init(uint32_t system_id, uint8_t component_id) const
 {
-    return _system_impl->init(system_id, component_id);
+    // This is void, so there is no Result to report a bad system ID through.
+    if (system_id > std::numeric_limits<uint8_t>::max()) {
+        LogErr("System ID {} is not supported yet", system_id);
+        fflush(stdout);
+        fflush(stderr);
+        std::abort();
+    }
+    return _system_impl->init(static_cast<uint8_t>(system_id), component_id);
 }
 
 bool System::is_standalone() const
@@ -45,7 +56,7 @@ bool System::is_connected() const
     return _system_impl->is_connected();
 }
 
-uint8_t System::get_system_id() const
+uint32_t System::get_system_id() const
 {
     return _system_impl->get_system_id();
 }

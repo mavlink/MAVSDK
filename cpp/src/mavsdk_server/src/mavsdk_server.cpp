@@ -41,7 +41,7 @@ public:
 
     int getPort() { return _grpc_port; }
 
-    void setMavlinkIds(uint8_t system_id, uint8_t component_id)
+    void setMavlinkIds(uint32_t system_id, uint8_t component_id)
     {
         auto config = mavsdk::Mavsdk::Configuration{system_id, component_id, false};
         // setMavlinkIds() replaces the whole configuration, so carry over a
@@ -99,7 +99,7 @@ int MavsdkServer::getPort()
     return _impl->getPort();
 }
 
-void MavsdkServer::setMavlinkIds(uint8_t system_id, uint8_t component_id)
+void MavsdkServer::setMavlinkIds(uint32_t system_id, uint8_t component_id)
 {
     _impl->setMavlinkIds(system_id, component_id);
 }

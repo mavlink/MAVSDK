@@ -49,7 +49,7 @@ MAVSDK_PUBLIC int mavsdk_server_run_with_mavlink_ids(
     struct MavsdkServer* mavsdk_server,
     const char* system_address,
     const int mavsdk_server_port,
-    const uint8_t system_id,
+    const uint32_t system_id,
     const uint8_t component_id);
 
 /*

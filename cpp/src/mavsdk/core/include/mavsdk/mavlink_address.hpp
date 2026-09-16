@@ -8,8 +8,11 @@
 struct MavlinkAddress {
     /**
      * @brief System ID, also called sysid.
+     *
+     * 32 bits wide to accommodate MAVLink's extended system IDs, which are
+     * not supported yet.
      */
-    uint8_t system_id;
+    uint32_t system_id;
     /**
      * @brief Component ID, also called compid.
      */
