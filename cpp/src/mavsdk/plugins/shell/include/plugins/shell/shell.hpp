@@ -137,13 +137,13 @@ public:
      * @brief Possible results returned for shell requests
      */
     enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request succeeded. */
-        NoSystem, /**< @brief No system is connected. */
-        ConnectionError, /**< @brief Connection error. */
-        NoResponse, /**< @brief Response was not received. */
-        Busy, /**< @brief Shell busy (transfer in progress). */
-        InvalidArgument, /**< @brief Invalid device / argument. */
+        Unknown = 0, /**< @brief Unknown result. */
+        Success = 1, /**< @brief Request succeeded. */
+        NoSystem = 2, /**< @brief No system is connected. */
+        ConnectionError = 3, /**< @brief Connection error. */
+        NoResponse = 4, /**< @brief Response was not received. */
+        Busy = 5, /**< @brief Shell busy (transfer in progress). */
+        InvalidArgument = 6, /**< @brief Invalid device / argument. */
     };
 
     /**
