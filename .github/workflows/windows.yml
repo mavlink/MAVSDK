@@ -56,7 +56,7 @@ jobs:
           fetch-depth: 0
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./cpp/build/third_party/install
@@ -84,6 +84,11 @@ jobs:
           ${{ matrix.toolchain_file && format('-DCMAKE_TOOLCHAIN_FILE="{0}"', matrix.toolchain_file) || '' }}
           -Bbuild
           -S.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./cpp/build/third_party/install
+          key: ${{ github.job }}-${{ matrix.arch }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: build
         run: cmake --build build -j4 --config RelWithDebInfo --target install
       - name: build C wrapper
@@ -170,7 +175,7 @@ jobs:
           fetch-depth: 0
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./cpp/build/third_party/install
@@ -198,6 +203,11 @@ jobs:
           ${{ matrix.toolchain_file && format('-DCMAKE_TOOLCHAIN_FILE="{0}"', matrix.toolchain_file) || '' }}
           -Bbuild
           -S.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./cpp/build/third_party/install
+          key: ${{ github.job }}-${{ matrix.arch }}-${{ matrix.config }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: build
         run: cmake --build build -j4 --config ${{ matrix.config }} --target install
       - name: unit tests
@@ -244,7 +254,7 @@ jobs:
           fetch-depth: 0
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./cpp/build/third_party/install
@@ -267,6 +277,11 @@ jobs:
           -DWERROR=ON
           -Bbuild
           -S.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./cpp/build/third_party/install
+          key: ${{ github.job }}-arm64-${{ matrix.config }}-${{ hashFiles('./cpp/third_party/**') }}-1
       - name: build
         run: cmake --build build -j4 --config ${{ matrix.config }} --target install
       - name: unit tests

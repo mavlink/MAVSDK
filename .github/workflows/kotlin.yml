@@ -51,7 +51,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      - uses: actions/cache@v4
+      - uses: actions/cache/restore@v4
         id: cache
         with:
           path: ./cpp/build/kotlin/third_party/install
@@ -71,6 +71,11 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=$(pwd)/cpp/build/kotlin/install \
             -Scpp -Bcpp/build/kotlin
           cmake --build cpp/build/kotlin -j$(getconf _NPROCESSORS_ONLN) --target install
+      - uses: actions/cache/save@v4
+        if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./cpp/build/kotlin/third_party/install
+          key: kotlin-${{ matrix.platform }}-${{ hashFiles('./cpp/third_party/**') }}-2
       # CMAKE_POSITION_INDEPENDENT_CODE is explicit here: c/CMakeLists.txt does
       # not set it, and a non-PIC static archive cannot be linked into the
       # shared libmavsdk_jni on Linux.
@@ -136,7 +141,7 @@ jobs:
       # to the root and can reach cpp/, c/ and jni/ in one pass.
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }}:20250818-0a27819 > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
-      - uses: actions/cache@v4
+      - uses: actions/cache/restore@v4
         id: cache
         with:
           path: ./cpp/build/android/${{ matrix.name }}/third_party/install
@@ -148,6 +153,11 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/cpp/build/android/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
       - name: configure MAVSDK C++
         run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DBUILD_MAVSDK_SERVER=OFF -DCMAKE_INSTALL_PREFIX=/work/cpp/build/android/${{ matrix.name }}/install -Scpp -Bcpp/build/android/${{ matrix.name }}"
+      - uses: actions/cache/save@v4
+        if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./cpp/build/android/${{ matrix.name }}/third_party/install
+          key: kotlin-${{ matrix.name }}-${{ hashFiles('./cpp/third_party/**') }}-2
       - name: build MAVSDK C++
         run: ./dockcross-${{ matrix.name }} cmake --build cpp/build/android/${{ matrix.name }} -j$(nproc) --target install
       - name: configure cmavsdk
