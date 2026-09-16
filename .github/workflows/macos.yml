@@ -52,7 +52,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/macos/third_party/install
@@ -66,6 +66,11 @@ jobs:
         run: echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/macos -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/macos/third_party/install
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-2
       - name: build
         run: cmake --build build/macos -j$(sysctl -n hw.ncpu) --target install
       - name: unit tests
@@ -127,7 +132,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -147,6 +152,11 @@ jobs:
           python3 -m pip install future
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/ios.toolchain.cmake -DENABLE_BITCODE=Off -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=14.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/${{ matrix.name }}/third_party/install
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './cmake/ios.toolchain.cmake') }}-2
       - name: build
         run: cmake --build build/${{ matrix.name }} -j$(sysctl -n hw.ncpu)
       - uses: actions/upload-artifact@v4

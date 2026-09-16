@@ -85,7 +85,7 @@ jobs:
           echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
           echo 'Core dump pattern set to:'
           cat /proc/sys/kernel/core_pattern
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/third_party/install
@@ -102,6 +102,11 @@ jobs:
             curl
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DWERROR=ON -Bbuild -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: build
         run: cmake --build build -j$(nproc)
       - name: unit tests
@@ -156,7 +161,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/debug/third_party/install
@@ -168,6 +173,11 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/debug/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DWERROR=ON -Bbuild/debug -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/debug/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: build
         run: cmake --build build/debug -j$(nproc)
       - name: unit tests
@@ -193,7 +203,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/asan/third_party/install
@@ -208,6 +218,11 @@ jobs:
           export CC=clang-19
           export CXX=clang++-19
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DWERROR=ON -Bbuild/asan -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/asan/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: build
         run: cmake --build build/asan -j$(nproc)
       - name: unit tests
@@ -233,7 +248,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/tsan/third_party/install
@@ -248,6 +263,11 @@ jobs:
           export CC=clang-19
           export CXX=clang++-19
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DTSAN=ON -DWERROR=ON -Bbuild/tsan -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/tsan/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: build
         run: cmake --build build/tsan -j$(nproc)
       - name: unit tests
@@ -273,7 +293,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/ubsan/third_party/install
@@ -290,6 +310,11 @@ jobs:
           export CC=clang-19
           export CXX=clang++-19
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DUBSAN=ON -DWERROR=ON -Bbuild/ubsan -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/ubsan/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: build
         run: cmake --build build/ubsan -j$(nproc)
       - name: unit tests
@@ -342,7 +367,7 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y \
             libsdl2-dev
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -357,6 +382,11 @@ jobs:
           export CC=${{ matrix.cc }}
           export CXX=${{ matrix.cxx }}
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/release/third_party/install
+          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}-2
       - name: build
         run: cmake --build build/release -j$(nproc)
       - name: install
@@ -404,7 +434,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -417,6 +447,11 @@ jobs:
       - name: configure
         run: |
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_WITHOUT_CURL=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/release/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: build
         run: cmake --build build/release -j$(nproc)
 
@@ -457,7 +492,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/default/third_party/install
@@ -469,6 +504,11 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
       - name: build necessary protoc tooling
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/default/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
@@ -625,7 +665,7 @@ jobs:
         continue-on-error: true
       - name: setup dockcross
         run: docker run --rm ${{ env.ARG_IMAGE }} > ./dockcross-linux-${{ matrix.docker_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/linux-${{ matrix.docker_name }}/third_party/install
@@ -637,6 +677,11 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/linux-${{ matrix.docker_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: ./dockcross-linux-${{ matrix.docker_name }}-custom /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.docker_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=ON -Bbuild/linux-${{ matrix.docker_name }} -H."
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/linux-${{ matrix.docker_name }}/third_party/install
+          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}-2
       - name: build
         run: ./dockcross-linux-${{ matrix.docker_name }}-custom cmake --build build/linux-${{ matrix.docker_name }} -j$(nproc) --target install
       - name: create deb packages
@@ -674,7 +719,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -686,6 +731,11 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/release/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: build
         run: cmake --build build/release --target install -- -j$(nproc)
       - name: unit tests
@@ -724,7 +774,7 @@ jobs:
           fetch-depth: 0
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }}:20250818-0a27819 > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/${{ matrix.arch_name }}/third_party/install
@@ -736,6 +786,11 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=ON -Bbuild/${{ matrix.arch_name }} -H."
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/${{ matrix.arch_name }}/third_party/install
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-2
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j$(nproc) --target install
       - name: Upload as artifact
@@ -779,7 +834,7 @@ jobs:
         continue-on-error: true
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }}:20250818-0a27819 > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
-      - uses: actions/cache@v5
+      - uses: actions/cache/restore@v5
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -791,6 +846,11 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H."
+      - uses: actions/cache/save@v5
+        if: ${{ github.ref == 'refs/heads/v3' && steps.cache.outputs.cache-hit != 'true' }}
+        with:
+          path: ./build/${{ matrix.name }}/third_party/install
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-2
       - name: build
         run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j$(nproc) --target install
       - name: create tar with header and library
