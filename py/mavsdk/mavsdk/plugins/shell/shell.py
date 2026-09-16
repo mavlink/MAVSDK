@@ -29,17 +29,17 @@ class Device(IntEnum):
     TELEM2 = 1
     GPS1 = 2
     GPS2 = 3
-    SHELL = 4
-    SERIAL0 = 5
-    SERIAL1 = 6
-    SERIAL2 = 7
-    SERIAL3 = 8
-    SERIAL4 = 9
-    SERIAL5 = 10
-    SERIAL6 = 11
-    SERIAL7 = 12
-    SERIAL8 = 13
-    SERIAL9 = 14
+    SHELL = 10
+    SERIAL0 = 100
+    SERIAL1 = 101
+    SERIAL2 = 102
+    SERIAL3 = 103
+    SERIAL4 = 104
+    SERIAL5 = 105
+    SERIAL6 = 106
+    SERIAL7 = 107
+    SERIAL8 = 108
+    SERIAL9 = 109
 
 
 # ===== Result Enums =====

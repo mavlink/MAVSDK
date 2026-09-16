@@ -72,21 +72,21 @@ public:
      * @brief MAVLink SERIAL_CONTROL_DEV values used by the shell plugin.
      */
     enum class Device {
-        Telem1, /**< @brief SERIAL_CONTROL_DEV_TELEM1. */
-        Telem2, /**< @brief SERIAL_CONTROL_DEV_TELEM2. */
-        Gps1, /**< @brief SERIAL_CONTROL_DEV_GPS1. */
-        Gps2, /**< @brief SERIAL_CONTROL_DEV_GPS2. */
-        Shell, /**< @brief SERIAL_CONTROL_DEV_SHELL (default). */
-        Serial0, /**< @brief SERIAL_CONTROL_SERIAL0. */
-        Serial1, /**< @brief SERIAL_CONTROL_SERIAL1. */
-        Serial2, /**< @brief SERIAL_CONTROL_SERIAL2. */
-        Serial3, /**< @brief SERIAL_CONTROL_SERIAL3. */
-        Serial4, /**< @brief SERIAL_CONTROL_SERIAL4. */
-        Serial5, /**< @brief SERIAL_CONTROL_SERIAL5. */
-        Serial6, /**< @brief SERIAL_CONTROL_SERIAL6. */
-        Serial7, /**< @brief SERIAL_CONTROL_SERIAL7. */
-        Serial8, /**< @brief SERIAL_CONTROL_SERIAL8. */
-        Serial9, /**< @brief SERIAL_CONTROL_SERIAL9. */
+        Telem1 = 0, /**< @brief SERIAL_CONTROL_DEV_TELEM1. */
+        Telem2 = 1, /**< @brief SERIAL_CONTROL_DEV_TELEM2. */
+        Gps1 = 2, /**< @brief SERIAL_CONTROL_DEV_GPS1. */
+        Gps2 = 3, /**< @brief SERIAL_CONTROL_DEV_GPS2. */
+        Shell = 10, /**< @brief SERIAL_CONTROL_DEV_SHELL (default). */
+        Serial0 = 100, /**< @brief SERIAL_CONTROL_SERIAL0. */
+        Serial1 = 101, /**< @brief SERIAL_CONTROL_SERIAL1. */
+        Serial2 = 102, /**< @brief SERIAL_CONTROL_SERIAL2. */
+        Serial3 = 103, /**< @brief SERIAL_CONTROL_SERIAL3. */
+        Serial4 = 104, /**< @brief SERIAL_CONTROL_SERIAL4. */
+        Serial5 = 105, /**< @brief SERIAL_CONTROL_SERIAL5. */
+        Serial6 = 106, /**< @brief SERIAL_CONTROL_SERIAL6. */
+        Serial7 = 107, /**< @brief SERIAL_CONTROL_SERIAL7. */
+        Serial8 = 108, /**< @brief SERIAL_CONTROL_SERIAL8. */
+        Serial9 = 109, /**< @brief SERIAL_CONTROL_SERIAL9. */
     };
 
     /**

@@ -52,27 +52,27 @@ class Shell internal constructor(private val native: ShellNative) {
         /** SERIAL_CONTROL_DEV_GPS2 */
         GPS2(3),
         /** SERIAL_CONTROL_DEV_SHELL (default) */
-        SHELL(4),
+        SHELL(10),
         /** SERIAL_CONTROL_SERIAL0 */
-        SERIAL0(5),
+        SERIAL0(100),
         /** SERIAL_CONTROL_SERIAL1 */
-        SERIAL1(6),
+        SERIAL1(101),
         /** SERIAL_CONTROL_SERIAL2 */
-        SERIAL2(7),
+        SERIAL2(102),
         /** SERIAL_CONTROL_SERIAL3 */
-        SERIAL3(8),
+        SERIAL3(103),
         /** SERIAL_CONTROL_SERIAL4 */
-        SERIAL4(9),
+        SERIAL4(104),
         /** SERIAL_CONTROL_SERIAL5 */
-        SERIAL5(10),
+        SERIAL5(105),
         /** SERIAL_CONTROL_SERIAL6 */
-        SERIAL6(11),
+        SERIAL6(106),
         /** SERIAL_CONTROL_SERIAL7 */
-        SERIAL7(12),
+        SERIAL7(107),
         /** SERIAL_CONTROL_SERIAL8 */
-        SERIAL8(13),
+        SERIAL8(108),
         /** SERIAL_CONTROL_SERIAL9 */
-        SERIAL9(14);
+        SERIAL9(109);
 
         companion object {
             fun fromValue(value: Int): Device =
