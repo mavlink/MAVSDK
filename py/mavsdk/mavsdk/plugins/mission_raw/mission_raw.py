@@ -429,16 +429,29 @@ class MissionRaw:
         cb = UploadMissionCallback(c_callback)
         self._callbacks.append(cb)
 
+        _mission_items_array_type = MissionItemCStruct * len(mission_items)
+        _mission_items_array = _mission_items_array_type()
+        for _i, _item in enumerate(mission_items):
+            _mission_items_array[_i] = _item.to_c_struct()
+        _mission_items_size = len(mission_items)
+
         self._lib.mavsdk_mission_raw_upload_mission_async(
-            self._handle, mission_items, cb, None
+            self._handle, _mission_items_array, _mission_items_size, cb, None
         )
 
     def upload_mission(self, mission_items):
         """Get upload_mission (blocking)"""
 
+        _mission_items_array_type = MissionItemCStruct * len(mission_items)
+        _mission_items_array = _mission_items_array_type()
+        for _i, _item in enumerate(mission_items):
+            _mission_items_array[_i] = _item.to_c_struct()
+        _mission_items_size = len(mission_items)
+
         result_code = self._lib.mavsdk_mission_raw_upload_mission(
             self._handle,
-            mission_items.to_c_struct(),
+            _mission_items_array,
+            _mission_items_size,
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -468,7 +481,7 @@ class MissionRaw:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_raw_upload_mission_with_progress_async(
-            self._handle, mission_plan, cb, None
+            self._handle, mission_plan.to_c_struct(), cb, None
         )
 
     def upload_geofence_async(
@@ -488,16 +501,29 @@ class MissionRaw:
         cb = UploadGeofenceCallback(c_callback)
         self._callbacks.append(cb)
 
+        _mission_items_array_type = MissionItemCStruct * len(mission_items)
+        _mission_items_array = _mission_items_array_type()
+        for _i, _item in enumerate(mission_items):
+            _mission_items_array[_i] = _item.to_c_struct()
+        _mission_items_size = len(mission_items)
+
         self._lib.mavsdk_mission_raw_upload_geofence_async(
-            self._handle, mission_items, cb, None
+            self._handle, _mission_items_array, _mission_items_size, cb, None
         )
 
     def upload_geofence(self, mission_items):
         """Get upload_geofence (blocking)"""
 
+        _mission_items_array_type = MissionItemCStruct * len(mission_items)
+        _mission_items_array = _mission_items_array_type()
+        for _i, _item in enumerate(mission_items):
+            _mission_items_array[_i] = _item.to_c_struct()
+        _mission_items_size = len(mission_items)
+
         result_code = self._lib.mavsdk_mission_raw_upload_geofence(
             self._handle,
-            mission_items.to_c_struct(),
+            _mission_items_array,
+            _mission_items_size,
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -522,16 +548,29 @@ class MissionRaw:
         cb = UploadRallyPointsCallback(c_callback)
         self._callbacks.append(cb)
 
+        _mission_items_array_type = MissionItemCStruct * len(mission_items)
+        _mission_items_array = _mission_items_array_type()
+        for _i, _item in enumerate(mission_items):
+            _mission_items_array[_i] = _item.to_c_struct()
+        _mission_items_size = len(mission_items)
+
         self._lib.mavsdk_mission_raw_upload_rally_points_async(
-            self._handle, mission_items, cb, None
+            self._handle, _mission_items_array, _mission_items_size, cb, None
         )
 
     def upload_rally_points(self, mission_items):
         """Get upload_rally_points (blocking)"""
 
+        _mission_items_array_type = MissionItemCStruct * len(mission_items)
+        _mission_items_array = _mission_items_array_type()
+        for _i, _item in enumerate(mission_items):
+            _mission_items_array[_i] = _item.to_c_struct()
+        _mission_items_size = len(mission_items)
+
         result_code = self._lib.mavsdk_mission_raw_upload_rally_points(
             self._handle,
-            mission_items.to_c_struct(),
+            _mission_items_array,
+            _mission_items_size,
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:

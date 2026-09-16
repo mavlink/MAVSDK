@@ -143,7 +143,9 @@ class Tune:
         cb = PlayTuneCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_tune_play_tune_async(self._handle, tune_description, cb, None)
+        self._lib.mavsdk_tune_play_tune_async(
+            self._handle, tune_description.to_c_struct(), cb, None
+        )
 
     def play_tune(self, tune_description):
         """Get play_tune (blocking)"""

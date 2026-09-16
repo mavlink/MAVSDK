@@ -300,7 +300,7 @@ class Geofence:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_geofence_upload_geofence_async(
-            self._handle, geofence_data, cb, None
+            self._handle, geofence_data.to_c_struct(), cb, None
         )
 
     def upload_geofence(self, geofence_data):
