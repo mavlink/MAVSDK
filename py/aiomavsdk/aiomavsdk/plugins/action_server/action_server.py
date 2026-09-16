@@ -7,7 +7,7 @@ Provide vehicle actions (as a server) such as arming, taking off, and landing.
 """
 
 import asyncio
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Tuple
 from mavsdk.plugins.action_server import (
     ActionServer,
     ActionServerResult,
@@ -41,20 +41,24 @@ class ActionServerAsync:
         self._subscription_handles: dict = {}
         self._plugin = ActionServer(server_component)
 
-    async def subscribe_arm_disarm(self) -> AsyncGenerator[ArmDisarm, None]:
+    async def subscribe_arm_disarm(
+        self,
+    ) -> AsyncGenerator[Tuple[ActionServerResult, ArmDisarm], None]:
         """
         Subscribe to ARM/DISARM commands
 
         Yields
         ------
+        result : ActionServerResult
+             The result reported alongside the update
         arm_disarm : ArmDisarm
              The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback(result, data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_arm_disarm(callback)
         self._subscription_handles[id(queue)] = handle
@@ -66,20 +70,24 @@ class ActionServerAsync:
                 self._subscription_handles.pop(id(queue))
                 self._plugin.unsubscribe_arm_disarm(handle)
 
-    async def subscribe_flight_mode_change(self) -> AsyncGenerator[FlightMode, None]:
+    async def subscribe_flight_mode_change(
+        self,
+    ) -> AsyncGenerator[Tuple[ActionServerResult, FlightMode], None]:
         """
         Subscribe to DO_SET_MODE
 
         Yields
         ------
+        result : ActionServerResult
+             The result reported alongside the update
         flight_mode : FlightMode
              The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback(result, data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_flight_mode_change(callback)
         self._subscription_handles[id(queue)] = handle
@@ -91,20 +99,24 @@ class ActionServerAsync:
                 self._subscription_handles.pop(id(queue))
                 self._plugin.unsubscribe_flight_mode_change(handle)
 
-    async def subscribe_takeoff(self) -> AsyncGenerator[bool, None]:
+    async def subscribe_takeoff(
+        self,
+    ) -> AsyncGenerator[Tuple[ActionServerResult, bool], None]:
         """
         Subscribe to takeoff command
 
         Yields
         ------
+        result : ActionServerResult
+             The result reported alongside the update
          : bool
              The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback(result, data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_takeoff(callback)
         self._subscription_handles[id(queue)] = handle
@@ -116,20 +128,24 @@ class ActionServerAsync:
                 self._subscription_handles.pop(id(queue))
                 self._plugin.unsubscribe_takeoff(handle)
 
-    async def subscribe_land(self) -> AsyncGenerator[bool, None]:
+    async def subscribe_land(
+        self,
+    ) -> AsyncGenerator[Tuple[ActionServerResult, bool], None]:
         """
         Subscribe to land command
 
         Yields
         ------
+        result : ActionServerResult
+             The result reported alongside the update
          : bool
              The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback(result, data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_land(callback)
         self._subscription_handles[id(queue)] = handle
@@ -141,20 +157,24 @@ class ActionServerAsync:
                 self._subscription_handles.pop(id(queue))
                 self._plugin.unsubscribe_land(handle)
 
-    async def subscribe_reboot(self) -> AsyncGenerator[bool, None]:
+    async def subscribe_reboot(
+        self,
+    ) -> AsyncGenerator[Tuple[ActionServerResult, bool], None]:
         """
         Subscribe to reboot command
 
         Yields
         ------
+        result : ActionServerResult
+             The result reported alongside the update
          : bool
              The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback(result, data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_reboot(callback)
         self._subscription_handles[id(queue)] = handle
@@ -166,20 +186,24 @@ class ActionServerAsync:
                 self._subscription_handles.pop(id(queue))
                 self._plugin.unsubscribe_reboot(handle)
 
-    async def subscribe_shutdown(self) -> AsyncGenerator[bool, None]:
+    async def subscribe_shutdown(
+        self,
+    ) -> AsyncGenerator[Tuple[ActionServerResult, bool], None]:
         """
         Subscribe to shutdown command
 
         Yields
         ------
+        result : ActionServerResult
+             The result reported alongside the update
          : bool
              The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback(result, data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_shutdown(callback)
         self._subscription_handles[id(queue)] = handle
@@ -191,20 +215,24 @@ class ActionServerAsync:
                 self._subscription_handles.pop(id(queue))
                 self._plugin.unsubscribe_shutdown(handle)
 
-    async def subscribe_terminate(self) -> AsyncGenerator[bool, None]:
+    async def subscribe_terminate(
+        self,
+    ) -> AsyncGenerator[Tuple[ActionServerResult, bool], None]:
         """
         Subscribe to terminate command
 
         Yields
         ------
+        result : ActionServerResult
+             The result reported alongside the update
          : bool
              The next update
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
 
-        def callback(data, _user_data):
-            loop.call_soon_threadsafe(queue.put_nowait, data)
+        def callback(result, data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_terminate(callback)
         self._subscription_handles[id(queue)] = handle

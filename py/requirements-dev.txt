@@ -1,3 +1,4 @@
 setuptools-scm
 setuptools>=61
 wheel
+pytest
