@@ -162,20 +162,23 @@ int main(int argc, char** argv)
     // We wait for new systems to be discovered, once we find one that has an
     // autopilot, we decide to use it.
     Mavsdk::NewSystemHandle handle = mavsdk.subscribe_on_new_system([&mavsdk, &prom, &handle]() {
-        auto system = mavsdk.systems().back();
+        // Don't just look at the last system: a SiK radio shows up as its own
+        // system (usually sysid 51) without an autopilot, so we have to scan.
+        for (auto system : mavsdk.systems()) {
+            if (system->has_autopilot()) {
+                std::cout << "Discovered autopilot\n";
 
-        if (system->has_autopilot()) {
-            std::cout << "Discovered autopilot\n";
-
-            // Unsubscribe again as we only want to find one system.
-            mavsdk.unsubscribe_on_new_system(handle);
-            prom.set_value(system);
+                // Unsubscribe again as we only want to find one system.
+                mavsdk.unsubscribe_on_new_system(handle);
+                prom.set_value(system);
+                return;
+            }
         }
     });
 
-    // We usually receive heartbeats at 1Hz, therefore we should find a
-    // system after around 3 seconds max, surely.
-    if (fut.wait_for(std::chrono::seconds(3)) == std::future_status::timeout) {
+    // We usually receive heartbeats at 1Hz, but a slow telemetry link can take
+    // a while to get the first one through.
+    if (fut.wait_for(std::chrono::seconds(10)) == std::future_status::timeout) {
         std::cerr << "No autopilot found, exiting.\n";
         return 1;
     }
