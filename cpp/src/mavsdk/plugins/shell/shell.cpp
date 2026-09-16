@@ -9,6 +9,8 @@
 
 namespace mavsdk {
 
+using Receive = Shell::Receive;
+
 Shell::Shell(System& system) : PluginBase(), _impl{std::make_unique<ShellImpl>(system)} {}
 
 Shell::Shell(std::shared_ptr<System> system) :
@@ -18,9 +20,9 @@ Shell::Shell(std::shared_ptr<System> system) :
 
 Shell::~Shell() {}
 
-Shell::Result Shell::send(std::string command) const
+Shell::Result Shell::send(std::string command, Device device) const
 {
-    return _impl->send(command);
+    return _impl->send(command, device);
 }
 
 Shell::ReceiveHandle Shell::subscribe_receive(const ReceiveCallback& callback)
@@ -31,6 +33,21 @@ Shell::ReceiveHandle Shell::subscribe_receive(const ReceiveCallback& callback)
 void Shell::unsubscribe_receive(ReceiveHandle handle)
 {
     _impl->unsubscribe_receive(handle);
+}
+
+MAVSDK_PUBLIC bool operator==(const Shell::Receive& lhs, const Shell::Receive& rhs)
+{
+    return (rhs.data == lhs.data) && (rhs.device == lhs.device);
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Receive const& receive)
+{
+    str << std::setprecision(15);
+    str << "receive:" << '\n' << "{\n";
+    str << "    data: " << receive.data << '\n';
+    str << "    device: " << receive.device << '\n';
+    str << '}';
+    return str;
 }
 
 MAVSDK_PUBLIC std::string_view to_string(Shell::Result const& result)
@@ -48,6 +65,8 @@ MAVSDK_PUBLIC std::string_view to_string(Shell::Result const& result)
             return "No Response";
         case Shell::Result::Busy:
             return "Busy";
+        case Shell::Result::InvalidArgument:
+            return "Invalid Argument";
         default:
             return "Unknown";
     }
@@ -56,6 +75,49 @@ MAVSDK_PUBLIC std::string_view to_string(Shell::Result const& result)
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
 {
     return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Shell::Device const& device)
+{
+    switch (device) {
+        case Shell::Device::Telem1:
+            return "Telem1";
+        case Shell::Device::Telem2:
+            return "Telem2";
+        case Shell::Device::Gps1:
+            return "Gps1";
+        case Shell::Device::Gps2:
+            return "Gps2";
+        case Shell::Device::Shell:
+            return "Shell";
+        case Shell::Device::Serial0:
+            return "Serial0";
+        case Shell::Device::Serial1:
+            return "Serial1";
+        case Shell::Device::Serial2:
+            return "Serial2";
+        case Shell::Device::Serial3:
+            return "Serial3";
+        case Shell::Device::Serial4:
+            return "Serial4";
+        case Shell::Device::Serial5:
+            return "Serial5";
+        case Shell::Device::Serial6:
+            return "Serial6";
+        case Shell::Device::Serial7:
+            return "Serial7";
+        case Shell::Device::Serial8:
+            return "Serial8";
+        case Shell::Device::Serial9:
+            return "Serial9";
+        default:
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Device const& device)
+{
+    return str << to_string(device);
 }
 
 } // namespace mavsdk

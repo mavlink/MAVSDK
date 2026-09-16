@@ -31,6 +31,11 @@ namespace shell {
 
 //
 // Allow to communicate with the vehicle's system shell.
+//
+// Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+// SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+// Send (and observe the device on Receive) when the same framing is used for
+// non-nsh serial bridges (for example TELEM2).
 class ShellService final {
  public:
   static constexpr char const* service_full_name() {

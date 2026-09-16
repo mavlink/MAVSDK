@@ -6,6 +6,11 @@
 
 """
 Allow to communicate with the vehicle's system shell.
+
+ Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+ SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+ Send (and observe the device on Receive) when the same framing is used for
+ non-nsh serial bridges (for example TELEM2).
 """
 
 import ctypes
@@ -17,6 +22,24 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
+class Device(IntEnum):
+    """MAVLink SERIAL_CONTROL_DEV values used by the shell plugin."""
+
+    TELEM1 = 0
+    TELEM2 = 1
+    GPS1 = 2
+    GPS2 = 3
+    SHELL = 4
+    SERIAL0 = 5
+    SERIAL1 = 6
+    SERIAL2 = 7
+    SERIAL3 = 8
+    SERIAL4 = 9
+    SERIAL5 = 10
+    SERIAL6 = 11
+    SERIAL7 = 12
+    SERIAL8 = 13
+    SERIAL9 = 14
 
 
 # ===== Result Enums =====
@@ -29,16 +52,62 @@ class ShellResult(IntEnum):
     CONNECTION_ERROR = 3
     NO_RESPONSE = 4
     BUSY = 5
+    INVALID_ARGUMENT = 6
 
 
 # ===== Internal C Structures =====
+class ReceiveCStruct(ctypes.Structure):
+    """
+    Internal C structure for Receive.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("data", ctypes.c_char_p),
+        ("device", ctypes.c_int),
+    ]
+
 
 # ===== Structures =====
+class Receive:
+    """
+    Received shell data and source device.
+    """
+
+    def __init__(self, data=None, device=None):
+        self.data = data
+        self.device = device
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        instance.data = c_struct.data.decode("utf-8")
+        instance.device = Device(c_struct.device)
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = ReceiveCStruct()
+        c_struct.data = self.data.encode("utf-8")
+        c_struct.device = int(self.device)
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"data={self.data}")
+        fields.append(f"device={self.device}")
+        return f"Receive({', '.join(fields)})"
 
 
 # ===== Plugin =====
 class Shell:
-    """Allow to communicate with the vehicle's system shell."""
+    """Allow to communicate with the vehicle's system shell.
+
+    Under the hood this uses MAVLink SERIAL_CONTROL. The default device is
+    SERIAL_CONTROL_DEV_SHELL. Callers can pass another SERIAL_CONTROL_DEV on
+    Send (and observe the device on Receive) when the same framing is used for
+    non-nsh serial bridges (for example TELEM2)."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -62,12 +131,13 @@ class Shell:
 
         system._track_plugin(self)
 
-    def send(self, command):
+    def send(self, command, device):
         """Get send (blocking)"""
 
         result_code = self._lib.mavsdk_shell_send(
             self._handle,
             command.encode("utf-8") if isinstance(command, str) else command,
+            device,
         )
         result = ShellResult(result_code)
         if result != ShellResult.SUCCESS:
@@ -82,9 +152,9 @@ class Shell:
 
         def c_callback(c_data, ud):
             try:
-                _string_ptr = ctypes.cast(c_data, ctypes.c_char_p)
-                py_data = _string_ptr.value
-                self._lib.mavsdk_shell_string_destroy(ctypes.byref(_string_ptr))
+                py_data = Receive.from_c_struct(c_data)
+
+                self._lib.mavsdk_shell_receive_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -111,7 +181,7 @@ class Shell:
 
 
 # ===== Callback Types =====
-ReceiveCallback = ctypes.CFUNCTYPE(None, ctypes.POINTER(ctypes.c_char), ctypes.c_void_p)
+ReceiveCallback = ctypes.CFUNCTYPE(None, ReceiveCStruct, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_shell_create.argtypes = [ctypes.c_void_p]
@@ -119,6 +189,15 @@ _cmavsdk_lib.mavsdk_shell_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_shell_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_shell_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_shell_receive_destroy.argtypes = [ctypes.POINTER(ReceiveCStruct)]
+_cmavsdk_lib.mavsdk_shell_receive_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_shell_receive_array_destroy.argtypes = [
+    ctypes.POINTER(ctypes.POINTER(ReceiveCStruct)),
+    ctypes.c_size_t,
+]
+_cmavsdk_lib.mavsdk_shell_receive_array_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_shell_string_destroy.argtypes = [ctypes.POINTER(ctypes.c_char_p)]
@@ -128,6 +207,7 @@ _cmavsdk_lib.mavsdk_shell_string_destroy.restype = None
 _cmavsdk_lib.mavsdk_shell_send.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
+    ctypes.c_int,
 ]
 
 _cmavsdk_lib.mavsdk_shell_send.restype = ctypes.c_int
