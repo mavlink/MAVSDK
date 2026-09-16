@@ -1501,19 +1501,28 @@ void mavsdk_camera_unsubscribe_camera_list(
     mavsdk_camera_t camera,
     mavsdk_camera_camera_list_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
-        auto cpp_handle = reinterpret_cast<mavsdk::Camera::CameraListHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->camera_list_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_camera_list(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (camera == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+    auto cpp_handle = reinterpret_cast<mavsdk::Camera::CameraListHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->camera_list_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_camera_list(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // CameraList sync
@@ -1563,19 +1572,28 @@ void mavsdk_camera_unsubscribe_mode(
     mavsdk_camera_t camera,
     mavsdk_camera_mode_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
-        auto cpp_handle = reinterpret_cast<mavsdk::Camera::ModeHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->mode_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_mode(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (camera == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+    auto cpp_handle = reinterpret_cast<mavsdk::Camera::ModeHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->mode_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_mode(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -1631,19 +1649,28 @@ void mavsdk_camera_unsubscribe_video_stream_info(
     mavsdk_camera_t camera,
     mavsdk_camera_video_stream_info_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
-        auto cpp_handle = reinterpret_cast<mavsdk::Camera::VideoStreamInfoHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->video_stream_info_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_video_stream_info(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (camera == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+    auto cpp_handle = reinterpret_cast<mavsdk::Camera::VideoStreamInfoHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->video_stream_info_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_video_stream_info(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -1699,19 +1726,28 @@ void mavsdk_camera_unsubscribe_capture_info(
     mavsdk_camera_t camera,
     mavsdk_camera_capture_info_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
-        auto cpp_handle = reinterpret_cast<mavsdk::Camera::CaptureInfoHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->capture_info_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_capture_info(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (camera == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+    auto cpp_handle = reinterpret_cast<mavsdk::Camera::CaptureInfoHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->capture_info_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_capture_info(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -1747,19 +1783,28 @@ void mavsdk_camera_unsubscribe_storage(
     mavsdk_camera_t camera,
     mavsdk_camera_storage_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
-        auto cpp_handle = reinterpret_cast<mavsdk::Camera::StorageHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->storage_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_storage(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (camera == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+    auto cpp_handle = reinterpret_cast<mavsdk::Camera::StorageHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->storage_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_storage(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -1815,19 +1860,28 @@ void mavsdk_camera_unsubscribe_current_settings(
     mavsdk_camera_t camera,
     mavsdk_camera_current_settings_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
-        auto cpp_handle = reinterpret_cast<mavsdk::Camera::CurrentSettingsHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->current_settings_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_current_settings(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (camera == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+    auto cpp_handle = reinterpret_cast<mavsdk::Camera::CurrentSettingsHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->current_settings_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_current_settings(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -1894,19 +1948,28 @@ void mavsdk_camera_unsubscribe_possible_setting_options(
     mavsdk_camera_t camera,
     mavsdk_camera_possible_setting_options_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
-        auto cpp_handle = reinterpret_cast<mavsdk::Camera::PossibleSettingOptionsHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->possible_setting_options_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_possible_setting_options(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (camera == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+    auto cpp_handle = reinterpret_cast<mavsdk::Camera::PossibleSettingOptionsHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->possible_setting_options_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_possible_setting_options(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 

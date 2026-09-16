@@ -1970,19 +1970,28 @@ void mavsdk_telemetry_unsubscribe_position(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::PositionHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->position_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_position(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::PositionHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->position_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_position(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Position sync
@@ -2032,19 +2041,28 @@ void mavsdk_telemetry_unsubscribe_home(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_home_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HomeHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->home_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_home(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HomeHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->home_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_home(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Home sync
@@ -2094,19 +2112,28 @@ void mavsdk_telemetry_unsubscribe_in_air(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_in_air_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::InAirHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->in_air_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_in_air(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::InAirHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->in_air_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_in_air(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // InAir sync
@@ -2154,19 +2181,28 @@ void mavsdk_telemetry_unsubscribe_landed_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_landed_state_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::LandedStateHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->landed_state_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_landed_state(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::LandedStateHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->landed_state_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_landed_state(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // LandedState sync
@@ -2216,19 +2252,28 @@ void mavsdk_telemetry_unsubscribe_armed(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_armed_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ArmedHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->armed_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_armed(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ArmedHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->armed_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_armed(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Armed sync
@@ -2276,19 +2321,28 @@ void mavsdk_telemetry_unsubscribe_vtol_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_vtol_state_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::VtolStateHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->vtol_state_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_vtol_state(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::VtolStateHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->vtol_state_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_vtol_state(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // VtolState sync
@@ -2338,19 +2392,28 @@ void mavsdk_telemetry_unsubscribe_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_quaternion_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeQuaternionHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->attitude_quaternion_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_attitude_quaternion(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeQuaternionHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->attitude_quaternion_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_attitude_quaternion(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // AttitudeQuaternion sync
@@ -2400,19 +2463,28 @@ void mavsdk_telemetry_unsubscribe_attitude_euler(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_euler_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeEulerHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->attitude_euler_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_attitude_euler(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeEulerHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->attitude_euler_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_attitude_euler(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // AttitudeEuler sync
@@ -2462,19 +2534,28 @@ void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_angular_velocity_body_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->attitude_angular_velocity_body_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_attitude_angular_velocity_body(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->attitude_angular_velocity_body_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_attitude_angular_velocity_body(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // AttitudeAngularVelocityBody sync
@@ -2524,19 +2605,28 @@ void mavsdk_telemetry_unsubscribe_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_velocity_ned_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::VelocityNedHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->velocity_ned_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_velocity_ned(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::VelocityNedHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->velocity_ned_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_velocity_ned(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // VelocityNed sync
@@ -2586,19 +2676,28 @@ void mavsdk_telemetry_unsubscribe_gps_info(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_gps_info_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::GpsInfoHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->gps_info_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_gps_info(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::GpsInfoHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->gps_info_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_gps_info(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // GpsInfo sync
@@ -2648,19 +2747,28 @@ void mavsdk_telemetry_unsubscribe_raw_gps(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_raw_gps_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RawGpsHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->raw_gps_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_raw_gps(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RawGpsHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->raw_gps_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_raw_gps(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // RawGps sync
@@ -2710,19 +2818,28 @@ void mavsdk_telemetry_unsubscribe_battery(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_battery_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::BatteryHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->battery_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_battery(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::BatteryHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->battery_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_battery(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Battery sync
@@ -2772,19 +2889,28 @@ void mavsdk_telemetry_unsubscribe_flight_mode(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_flight_mode_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::FlightModeHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->flight_mode_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_flight_mode(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::FlightModeHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->flight_mode_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_flight_mode(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // FlightMode sync
@@ -2834,19 +2960,28 @@ void mavsdk_telemetry_unsubscribe_health(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HealthHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->health_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_health(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HealthHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->health_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_health(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Health sync
@@ -2896,19 +3031,28 @@ void mavsdk_telemetry_unsubscribe_rc_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_rc_status_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RcStatusHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->rc_status_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_rc_status(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RcStatusHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->rc_status_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_rc_status(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // RcStatus sync
@@ -2958,19 +3102,28 @@ void mavsdk_telemetry_unsubscribe_status_text(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_status_text_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::StatusTextHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->status_text_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_status_text(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::StatusTextHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->status_text_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_status_text(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // StatusText sync
@@ -3020,19 +3173,28 @@ void mavsdk_telemetry_unsubscribe_actuator_control_target(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_actuator_control_target_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ActuatorControlTargetHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->actuator_control_target_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_actuator_control_target(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ActuatorControlTargetHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->actuator_control_target_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_actuator_control_target(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // ActuatorControlTarget sync
@@ -3082,19 +3244,28 @@ void mavsdk_telemetry_unsubscribe_actuator_output_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_actuator_output_status_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ActuatorOutputStatusHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->actuator_output_status_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_actuator_output_status(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ActuatorOutputStatusHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->actuator_output_status_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_actuator_output_status(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // ActuatorOutputStatus sync
@@ -3144,19 +3315,28 @@ void mavsdk_telemetry_unsubscribe_odometry(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_odometry_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::OdometryHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->odometry_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_odometry(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::OdometryHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->odometry_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_odometry(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Odometry sync
@@ -3206,19 +3386,28 @@ void mavsdk_telemetry_unsubscribe_position_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_velocity_ned_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::PositionVelocityNedHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->position_velocity_ned_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_position_velocity_ned(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::PositionVelocityNedHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->position_velocity_ned_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_position_velocity_ned(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // PositionVelocityNed sync
@@ -3268,19 +3457,28 @@ void mavsdk_telemetry_unsubscribe_ground_truth(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_ground_truth_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::GroundTruthHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->ground_truth_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_ground_truth(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::GroundTruthHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->ground_truth_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_ground_truth(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // GroundTruth sync
@@ -3330,19 +3528,28 @@ void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_fixedwing_metrics_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::FixedwingMetricsHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->fixedwing_metrics_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_fixedwing_metrics(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::FixedwingMetricsHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->fixedwing_metrics_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_fixedwing_metrics(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // FixedwingMetrics sync
@@ -3392,19 +3599,28 @@ void mavsdk_telemetry_unsubscribe_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_imu_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ImuHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->imu_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_imu(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ImuHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->imu_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_imu(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Imu sync
@@ -3454,19 +3670,28 @@ void mavsdk_telemetry_unsubscribe_scaled_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_scaled_imu_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ScaledImuHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->scaled_imu_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_scaled_imu(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ScaledImuHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->scaled_imu_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_scaled_imu(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // ScaledImu sync
@@ -3516,19 +3741,28 @@ void mavsdk_telemetry_unsubscribe_raw_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_raw_imu_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RawImuHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->raw_imu_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_raw_imu(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RawImuHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->raw_imu_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_raw_imu(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // RawImu sync
@@ -3578,19 +3812,28 @@ void mavsdk_telemetry_unsubscribe_health_all_ok(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_all_ok_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HealthAllOkHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->health_all_ok_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_health_all_ok(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HealthAllOkHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->health_all_ok_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_health_all_ok(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // HealthAllOk sync
@@ -3638,19 +3881,28 @@ void mavsdk_telemetry_unsubscribe_unix_epoch_time(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_unix_epoch_time_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::UnixEpochTimeHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->unix_epoch_time_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_unix_epoch_time(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::UnixEpochTimeHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->unix_epoch_time_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_unix_epoch_time(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // UnixEpochTime sync
@@ -3698,19 +3950,28 @@ void mavsdk_telemetry_unsubscribe_distance_sensor(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_distance_sensor_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::DistanceSensorHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->distance_sensor_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_distance_sensor(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::DistanceSensorHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->distance_sensor_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_distance_sensor(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // DistanceSensor sync
@@ -3760,19 +4021,28 @@ void mavsdk_telemetry_unsubscribe_scaled_pressure(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_scaled_pressure_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ScaledPressureHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->scaled_pressure_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_scaled_pressure(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ScaledPressureHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->scaled_pressure_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_scaled_pressure(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // ScaledPressure sync
@@ -3822,19 +4092,28 @@ void mavsdk_telemetry_unsubscribe_heading(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_heading_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HeadingHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->heading_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_heading(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HeadingHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->heading_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_heading(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Heading sync
@@ -3884,19 +4163,28 @@ void mavsdk_telemetry_unsubscribe_altitude(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_altitude_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AltitudeHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->altitude_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_altitude(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AltitudeHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->altitude_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_altitude(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Altitude sync
@@ -3946,19 +4234,28 @@ void mavsdk_telemetry_unsubscribe_wind(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_wind_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::WindHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->wind_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_wind(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (telemetry == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::WindHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->wind_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_wind(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // Wind sync

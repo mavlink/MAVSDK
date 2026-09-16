@@ -528,19 +528,28 @@ void mavsdk_events_unsubscribe_events(
     mavsdk_events_t events,
     mavsdk_events_events_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
-        auto cpp_handle = reinterpret_cast<mavsdk::Events::EventsHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->events_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_events(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (events == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
+    auto cpp_handle = reinterpret_cast<mavsdk::Events::EventsHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->events_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_events(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 
@@ -576,19 +585,28 @@ void mavsdk_events_unsubscribe_health_and_arming_checks(
     mavsdk_events_t events,
     mavsdk_events_health_and_arming_checks_handle_t handle)
 {
-    if (handle) {
-        auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
-        auto cpp_handle = reinterpret_cast<mavsdk::Events::HealthAndArmingChecksHandle*>(handle);
-
-        {
-            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-            auto& vec = wrapper->health_and_arming_checks_handles;
-            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
-        }
-
-        wrapper->cpp_plugin->unsubscribe_health_and_arming_checks(std::move(*cpp_handle));
-        delete cpp_handle;
+    if (events == nullptr || handle == nullptr) {
+        return;
     }
+
+    auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
+    auto cpp_handle = reinterpret_cast<mavsdk::Events::HealthAndArmingChecksHandle*>(handle);
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        auto& vec = wrapper->health_and_arming_checks_handles;
+
+        // Only act on a handle we still own: destroy already unsubscribed all
+        // of them, and unsubscribing twice would be a double free.
+        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
+        if (it == vec.end()) {
+            return;
+        }
+        vec.erase(it);
+    }
+
+    wrapper->cpp_plugin->unsubscribe_health_and_arming_checks(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 

@@ -417,7 +417,12 @@ class Info:
         )
 
     def unsubscribe_flight_information(self, handle: ctypes.c_void_p):
-        """Unsubscribe from flight_information"""
+        """Unsubscribe from flight_information
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_info_unsubscribe_flight_information(self._handle, handle)
 
     def destroy(self):

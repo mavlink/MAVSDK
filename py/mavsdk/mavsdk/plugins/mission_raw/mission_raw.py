@@ -898,7 +898,12 @@ class MissionRaw:
         )
 
     def unsubscribe_mission_progress(self, handle: ctypes.c_void_p):
-        """Unsubscribe from mission_progress"""
+        """Unsubscribe from mission_progress
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_mission_raw_unsubscribe_mission_progress(self._handle, handle)
 
     def mission_progress(self):
@@ -939,7 +944,12 @@ class MissionRaw:
         )
 
     def unsubscribe_mission_changed(self, handle: ctypes.c_void_p):
-        """Unsubscribe from mission_changed"""
+        """Unsubscribe from mission_changed
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_mission_raw_unsubscribe_mission_changed(self._handle, handle)
 
     def import_qgroundcontrol_mission(self, qgc_plan_path):

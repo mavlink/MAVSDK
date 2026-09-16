@@ -302,7 +302,12 @@ class MissionRawServer:
         )
 
     def unsubscribe_incoming_mission(self, handle: ctypes.c_void_p):
-        """Unsubscribe from incoming_mission"""
+        """Unsubscribe from incoming_mission
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission(
             self._handle, handle
         )
@@ -331,7 +336,12 @@ class MissionRawServer:
         )
 
     def unsubscribe_current_item_changed(self, handle: ctypes.c_void_p):
-        """Unsubscribe from current_item_changed"""
+        """Unsubscribe from current_item_changed
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed(
             self._handle, handle
         )
@@ -363,7 +373,12 @@ class MissionRawServer:
         )
 
     def unsubscribe_clear_all(self, handle: ctypes.c_void_p):
-        """Unsubscribe from clear_all"""
+        """Unsubscribe from clear_all
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all(self._handle, handle)
 
     def destroy(self):

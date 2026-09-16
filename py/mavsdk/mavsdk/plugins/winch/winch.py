@@ -301,7 +301,12 @@ class Winch:
         return self._lib.mavsdk_winch_subscribe_status(self._handle, cb, None)
 
     def unsubscribe_status(self, handle: ctypes.c_void_p):
-        """Unsubscribe from status"""
+        """Unsubscribe from status
+
+        Does nothing once the plugin is destroyed, which unsubscribes already.
+        """
+        if not self._handle:
+            return
         self._lib.mavsdk_winch_unsubscribe_status(self._handle, handle)
 
     def status(self):
