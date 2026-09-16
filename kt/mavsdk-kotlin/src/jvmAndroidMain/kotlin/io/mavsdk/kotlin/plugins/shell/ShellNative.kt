@@ -10,6 +10,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
 
+private fun Shell.Receive.toNative(): NativeShell.Receive = NativeShell.Receive(data, device.value)
+
+private fun NativeShell.Receive.toKotlin(): Shell.Receive =
+    Shell.Receive(data, Shell.Device.fromValue(device))
+
 private class ShellNativeImpl(private val handle: Long) : ShellNative {
     // The read lock keeps `handle` alive for the duration of a native call; destroy()
     // takes the write lock, which waits for in-flight calls to finish. Readers do not
@@ -24,13 +29,15 @@ private class ShellNativeImpl(private val handle: Long) : ShellNative {
         action()
     }
 
-    override fun send(command: String): Int = withOpen { NativeShell.send(handle, command) }
+    override fun send(command: String, device: Shell.Device): Int = withOpen {
+        NativeShell.send(handle, command, device.value)
+    }
 
-    override fun subscribeReceive(callback: (String) -> Unit): Long = withOpen {
+    override fun subscribeReceive(callback: (Shell.Receive) -> Unit): Long = withOpen {
         val subscriptionHandle =
             NativeShell.subscribeReceive(
                 handle,
-                NativeShell.ReceiveCallback { value -> callback(value) },
+                NativeShell.ReceiveCallback { value -> callback(value.toKotlin()) },
             )
         if (subscriptionHandle != 0L) {
             activeSubscriptions[subscriptionHandle] = {

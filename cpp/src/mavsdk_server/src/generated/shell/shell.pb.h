@@ -57,6 +57,9 @@ extern const ::google::protobuf::internal::DescriptorTable
 namespace mavsdk {
 namespace rpc {
 namespace shell {
+class Receive;
+struct ReceiveDefaultTypeInternal;
+extern ReceiveDefaultTypeInternal _Receive_default_instance_;
 class ReceiveResponse;
 struct ReceiveResponseDefaultTypeInternal;
 extern ReceiveResponseDefaultTypeInternal _ReceiveResponse_default_instance_;
@@ -90,6 +93,7 @@ enum ShellResult_Result : int {
   ShellResult_Result_RESULT_CONNECTION_ERROR = 3,
   ShellResult_Result_RESULT_NO_RESPONSE = 4,
   ShellResult_Result_RESULT_BUSY = 5,
+  ShellResult_Result_RESULT_INVALID_ARGUMENT = 6,
   ShellResult_Result_ShellResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ShellResult_Result_ShellResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -99,8 +103,8 @@ enum ShellResult_Result : int {
 bool ShellResult_Result_IsValid(int value);
 extern const uint32_t ShellResult_Result_internal_data_[];
 constexpr ShellResult_Result ShellResult_Result_Result_MIN = static_cast<ShellResult_Result>(0);
-constexpr ShellResult_Result ShellResult_Result_Result_MAX = static_cast<ShellResult_Result>(5);
-constexpr int ShellResult_Result_Result_ARRAYSIZE = 5 + 1;
+constexpr ShellResult_Result ShellResult_Result_Result_MAX = static_cast<ShellResult_Result>(6);
+constexpr int ShellResult_Result_Result_ARRAYSIZE = 6 + 1;
 const ::google::protobuf::EnumDescriptor*
 ShellResult_Result_descriptor();
 template <typename T>
@@ -113,12 +117,52 @@ const std::string& ShellResult_Result_Name(T value) {
 template <>
 inline const std::string& ShellResult_Result_Name(ShellResult_Result value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ShellResult_Result_descriptor,
-                                                 0, 5>(
+                                                 0, 6>(
       static_cast<int>(value));
 }
 inline bool ShellResult_Result_Parse(absl::string_view name, ShellResult_Result* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ShellResult_Result>(
       ShellResult_Result_descriptor(), name, value);
+}
+enum Device : int {
+  DEVICE_TELEM1 = 0,
+  DEVICE_TELEM2 = 1,
+  DEVICE_GPS1 = 2,
+  DEVICE_GPS2 = 3,
+  DEVICE_SHELL = 10,
+  DEVICE_SERIAL0 = 100,
+  DEVICE_SERIAL1 = 101,
+  DEVICE_SERIAL2 = 102,
+  DEVICE_SERIAL3 = 103,
+  DEVICE_SERIAL4 = 104,
+  DEVICE_SERIAL5 = 105,
+  DEVICE_SERIAL6 = 106,
+  DEVICE_SERIAL7 = 107,
+  DEVICE_SERIAL8 = 108,
+  DEVICE_SERIAL9 = 109,
+  Device_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  Device_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool Device_IsValid(int value);
+extern const uint32_t Device_internal_data_[];
+constexpr Device Device_MIN = static_cast<Device>(0);
+constexpr Device Device_MAX = static_cast<Device>(109);
+constexpr int Device_ARRAYSIZE = 109 + 1;
+const ::google::protobuf::EnumDescriptor*
+Device_descriptor();
+template <typename T>
+const std::string& Device_Name(T value) {
+  static_assert(std::is_same<T, Device>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to Device_Name().");
+  return ::google::protobuf::internal::NameOfEnum(Device_descriptor(), value);
+}
+inline bool Device_Parse(absl::string_view name, Device* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Device>(
+      Device_descriptor(), name, value);
 }
 
 // ===================================================================
@@ -332,7 +376,7 @@ class ShellResult final
     return reinterpret_cast<const ShellResult*>(
         &_ShellResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(ShellResult& a, ShellResult& b) { a.Swap(&b); }
   inline void Swap(ShellResult* other) {
     if (other == this) return;
@@ -423,6 +467,7 @@ class ShellResult final
   static constexpr Result RESULT_CONNECTION_ERROR = ShellResult_Result_RESULT_CONNECTION_ERROR;
   static constexpr Result RESULT_NO_RESPONSE = ShellResult_Result_RESULT_NO_RESPONSE;
   static constexpr Result RESULT_BUSY = ShellResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_INVALID_ARGUMENT = ShellResult_Result_RESULT_INVALID_ARGUMENT;
   static inline bool Result_IsValid(int value) {
     return ShellResult_Result_IsValid(value);
   }
@@ -652,6 +697,7 @@ class SendRequest final
   // accessors -------------------------------------------------------
   enum : int {
     kCommandFieldNumber = 1,
+    kDeviceFieldNumber = 2,
   };
   // string command = 1;
   void clear_command() ;
@@ -669,12 +715,22 @@ class SendRequest final
   std::string* _internal_mutable_command();
 
   public:
+  // .mavsdk.rpc.shell.Device device = 2;
+  void clear_device() ;
+  ::mavsdk::rpc::shell::Device device() const;
+  void set_device(::mavsdk::rpc::shell::Device value);
+
+  private:
+  ::mavsdk::rpc::shell::Device _internal_device() const;
+  void _internal_set_device(::mavsdk::rpc::shell::Device value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.SendRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       44, 2>
       _table_;
 
@@ -693,6 +749,7 @@ class SendRequest final
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const SendRequest& from_msg);
     ::google::protobuf::internal::ArenaStringPtr command_;
+    int device_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -701,32 +758,32 @@ class SendRequest final
 };
 // -------------------------------------------------------------------
 
-class ReceiveResponse final
+class Receive final
     : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.shell.ReceiveResponse) */ {
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.shell.Receive) */ {
  public:
-  inline ReceiveResponse() : ReceiveResponse(nullptr) {}
-  ~ReceiveResponse() PROTOBUF_FINAL;
+  inline Receive() : Receive(nullptr) {}
+  ~Receive() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(ReceiveResponse* msg, std::destroying_delete_t) {
+  void operator delete(Receive* msg, std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(ReceiveResponse));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Receive));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR ReceiveResponse(
+  explicit PROTOBUF_CONSTEXPR Receive(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline ReceiveResponse(const ReceiveResponse& from) : ReceiveResponse(nullptr, from) {}
-  inline ReceiveResponse(ReceiveResponse&& from) noexcept
-      : ReceiveResponse(nullptr, std::move(from)) {}
-  inline ReceiveResponse& operator=(const ReceiveResponse& from) {
+  inline Receive(const Receive& from) : Receive(nullptr, from) {}
+  inline Receive(Receive&& from) noexcept
+      : Receive(nullptr, std::move(from)) {}
+  inline Receive& operator=(const Receive& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ReceiveResponse& operator=(ReceiveResponse&& from) noexcept {
+  inline Receive& operator=(Receive&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -754,16 +811,16 @@ class ReceiveResponse final
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ReceiveResponse& default_instance() {
+  static const Receive& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ReceiveResponse* internal_default_instance() {
-    return reinterpret_cast<const ReceiveResponse*>(
-        &_ReceiveResponse_default_instance_);
+  static inline const Receive* internal_default_instance() {
+    return reinterpret_cast<const Receive*>(
+        &_Receive_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 3;
-  friend void swap(ReceiveResponse& a, ReceiveResponse& b) { a.Swap(&b); }
-  inline void Swap(ReceiveResponse* other) {
+  friend void swap(Receive& a, Receive& b) { a.Swap(&b); }
+  inline void Swap(Receive* other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -771,7 +828,7 @@ class ReceiveResponse final
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ReceiveResponse* other) {
+  void UnsafeArenaSwap(Receive* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -779,13 +836,13 @@ class ReceiveResponse final
 
   // implements Message ----------------------------------------------
 
-  ReceiveResponse* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<ReceiveResponse>(arena);
+  Receive* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Receive>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const ReceiveResponse& from);
+  void CopyFrom(const Receive& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const ReceiveResponse& from) { ReceiveResponse::MergeImpl(*this, from); }
+  void MergeFrom(const Receive& from) { Receive::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -822,18 +879,18 @@ class ReceiveResponse final
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(ReceiveResponse* other);
+  void InternalSwap(Receive* other);
  private:
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.shell.ReceiveResponse"; }
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.shell.Receive"; }
 
  protected:
-  explicit ReceiveResponse(::google::protobuf::Arena* arena);
-  ReceiveResponse(::google::protobuf::Arena* arena, const ReceiveResponse& from);
-  ReceiveResponse(::google::protobuf::Arena* arena, ReceiveResponse&& from) noexcept
-      : ReceiveResponse(arena) {
+  explicit Receive(::google::protobuf::Arena* arena);
+  Receive(::google::protobuf::Arena* arena, const Receive& from);
+  Receive(::google::protobuf::Arena* arena, Receive&& from) noexcept
+      : Receive(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -849,6 +906,7 @@ class ReceiveResponse final
   // accessors -------------------------------------------------------
   enum : int {
     kDataFieldNumber = 1,
+    kDeviceFieldNumber = 2,
   };
   // string data = 1;
   void clear_data() ;
@@ -866,13 +924,23 @@ class ReceiveResponse final
   std::string* _internal_mutable_data();
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.ReceiveResponse)
+  // .mavsdk.rpc.shell.Device device = 2;
+  void clear_device() ;
+  ::mavsdk::rpc::shell::Device device() const;
+  void set_device(::mavsdk::rpc::shell::Device value);
+
+  private:
+  ::mavsdk::rpc::shell::Device _internal_device() const;
+  void _internal_set_device(::mavsdk::rpc::shell::Device value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.Receive)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
-      45, 2>
+      1, 2, 0,
+      37, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -888,8 +956,9 @@ class ReceiveResponse final
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const ReceiveResponse& from_msg);
+                          const Receive& from_msg);
     ::google::protobuf::internal::ArenaStringPtr data_;
+    int device_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1093,6 +1162,203 @@ class SendResponse final
   union { Impl_ _impl_; };
   friend struct ::TableStruct_shell_2fshell_2eproto;
 };
+// -------------------------------------------------------------------
+
+class ReceiveResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.shell.ReceiveResponse) */ {
+ public:
+  inline ReceiveResponse() : ReceiveResponse(nullptr) {}
+  ~ReceiveResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(ReceiveResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ReceiveResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ReceiveResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ReceiveResponse(const ReceiveResponse& from) : ReceiveResponse(nullptr, from) {}
+  inline ReceiveResponse(ReceiveResponse&& from) noexcept
+      : ReceiveResponse(nullptr, std::move(from)) {}
+  inline ReceiveResponse& operator=(const ReceiveResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ReceiveResponse& operator=(ReceiveResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ReceiveResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ReceiveResponse* internal_default_instance() {
+    return reinterpret_cast<const ReceiveResponse*>(
+        &_ReceiveResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(ReceiveResponse& a, ReceiveResponse& b) { a.Swap(&b); }
+  inline void Swap(ReceiveResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ReceiveResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ReceiveResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ReceiveResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ReceiveResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ReceiveResponse& from) { ReceiveResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ReceiveResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.shell.ReceiveResponse"; }
+
+ protected:
+  explicit ReceiveResponse(::google::protobuf::Arena* arena);
+  ReceiveResponse(::google::protobuf::Arena* arena, const ReceiveResponse& from);
+  ReceiveResponse(::google::protobuf::Arena* arena, ReceiveResponse&& from) noexcept
+      : ReceiveResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kReceiveFieldNumber = 1,
+  };
+  // .mavsdk.rpc.shell.Receive receive = 1;
+  bool has_receive() const;
+  void clear_receive() ;
+  const ::mavsdk::rpc::shell::Receive& receive() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::shell::Receive* release_receive();
+  ::mavsdk::rpc::shell::Receive* mutable_receive();
+  void set_allocated_receive(::mavsdk::rpc::shell::Receive* value);
+  void unsafe_arena_set_allocated_receive(::mavsdk::rpc::shell::Receive* value);
+  ::mavsdk::rpc::shell::Receive* unsafe_arena_release_receive();
+
+  private:
+  const ::mavsdk::rpc::shell::Receive& _internal_receive() const;
+  ::mavsdk::rpc::shell::Receive* _internal_mutable_receive();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.shell.ReceiveResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ReceiveResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::shell::Receive* receive_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_shell_2fshell_2eproto;
+};
 
 // ===================================================================
 
@@ -1156,6 +1422,28 @@ inline void SendRequest::set_allocated_command(std::string* value) {
     _impl_.command_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.SendRequest.command)
+}
+
+// .mavsdk.rpc.shell.Device device = 2;
+inline void SendRequest::clear_device() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.device_ = 0;
+}
+inline ::mavsdk::rpc::shell::Device SendRequest::device() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.SendRequest.device)
+  return _internal_device();
+}
+inline void SendRequest::set_device(::mavsdk::rpc::shell::Device value) {
+  _internal_set_device(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.SendRequest.device)
+}
+inline ::mavsdk::rpc::shell::Device SendRequest::_internal_device() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::shell::Device>(_impl_.device_);
+}
+inline void SendRequest::_internal_set_device(::mavsdk::rpc::shell::Device value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.device_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1264,54 +1552,176 @@ inline void SendResponse::set_allocated_shell_result(::mavsdk::rpc::shell::Shell
 
 // -------------------------------------------------------------------
 
-// ReceiveResponse
+// Receive
 
 // string data = 1;
-inline void ReceiveResponse::clear_data() {
+inline void Receive::clear_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.data_.ClearToEmpty();
 }
-inline const std::string& ReceiveResponse::data() const
+inline const std::string& Receive::data() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.ReceiveResponse.data)
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.Receive.data)
   return _internal_data();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ReceiveResponse::set_data(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void Receive::set_data(Arg_&& arg,
                                                      Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.data_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.ReceiveResponse.data)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.Receive.data)
 }
-inline std::string* ReceiveResponse::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline std::string* Receive::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.ReceiveResponse.data)
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.Receive.data)
   return _s;
 }
-inline const std::string& ReceiveResponse::_internal_data() const {
+inline const std::string& Receive::_internal_data() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.data_.Get();
 }
-inline void ReceiveResponse::_internal_set_data(const std::string& value) {
+inline void Receive::_internal_set_data(const std::string& value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.data_.Set(value, GetArena());
 }
-inline std::string* ReceiveResponse::_internal_mutable_data() {
+inline std::string* Receive::_internal_mutable_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _impl_.data_.Mutable( GetArena());
 }
-inline std::string* ReceiveResponse::release_data() {
+inline std::string* Receive::release_data() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.ReceiveResponse.data)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.Receive.data)
   return _impl_.data_.Release();
 }
-inline void ReceiveResponse::set_allocated_data(std::string* value) {
+inline void Receive::set_allocated_data(std::string* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.data_.SetAllocated(value, GetArena());
   if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.data_.IsDefault()) {
     _impl_.data_.Set("", GetArena());
   }
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.ReceiveResponse.data)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.Receive.data)
+}
+
+// .mavsdk.rpc.shell.Device device = 2;
+inline void Receive::clear_device() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.device_ = 0;
+}
+inline ::mavsdk::rpc::shell::Device Receive::device() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.Receive.device)
+  return _internal_device();
+}
+inline void Receive::set_device(::mavsdk::rpc::shell::Device value) {
+  _internal_set_device(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.shell.Receive.device)
+}
+inline ::mavsdk::rpc::shell::Device Receive::_internal_device() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::shell::Device>(_impl_.device_);
+}
+inline void Receive::_internal_set_device(::mavsdk::rpc::shell::Device value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.device_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ReceiveResponse
+
+// .mavsdk.rpc.shell.Receive receive = 1;
+inline bool ReceiveResponse::has_receive() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.receive_ != nullptr);
+  return value;
+}
+inline void ReceiveResponse::clear_receive() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.receive_ != nullptr) _impl_.receive_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::shell::Receive& ReceiveResponse::_internal_receive() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::shell::Receive* p = _impl_.receive_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::shell::Receive&>(::mavsdk::rpc::shell::_Receive_default_instance_);
+}
+inline const ::mavsdk::rpc::shell::Receive& ReceiveResponse::receive() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.shell.ReceiveResponse.receive)
+  return _internal_receive();
+}
+inline void ReceiveResponse::unsafe_arena_set_allocated_receive(::mavsdk::rpc::shell::Receive* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.receive_);
+  }
+  _impl_.receive_ = reinterpret_cast<::mavsdk::rpc::shell::Receive*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.shell.ReceiveResponse.receive)
+}
+inline ::mavsdk::rpc::shell::Receive* ReceiveResponse::release_receive() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::shell::Receive* released = _impl_.receive_;
+  _impl_.receive_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::shell::Receive* ReceiveResponse::unsafe_arena_release_receive() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.shell.ReceiveResponse.receive)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::shell::Receive* temp = _impl_.receive_;
+  _impl_.receive_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::shell::Receive* ReceiveResponse::_internal_mutable_receive() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.receive_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::shell::Receive>(GetArena());
+    _impl_.receive_ = reinterpret_cast<::mavsdk::rpc::shell::Receive*>(p);
+  }
+  return _impl_.receive_;
+}
+inline ::mavsdk::rpc::shell::Receive* ReceiveResponse::mutable_receive() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::shell::Receive* _msg = _internal_mutable_receive();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.shell.ReceiveResponse.receive)
+  return _msg;
+}
+inline void ReceiveResponse::set_allocated_receive(::mavsdk::rpc::shell::Receive* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.receive_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.receive_ = reinterpret_cast<::mavsdk::rpc::shell::Receive*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.shell.ReceiveResponse.receive)
 }
 
 // -------------------------------------------------------------------
@@ -1406,6 +1816,12 @@ struct is_proto_enum<::mavsdk::rpc::shell::ShellResult_Result> : std::true_type 
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::shell::ShellResult_Result>() {
   return ::mavsdk::rpc::shell::ShellResult_Result_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::shell::Device> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::shell::Device>() {
+  return ::mavsdk::rpc::shell::Device_descriptor();
 }
 
 }  // namespace protobuf
