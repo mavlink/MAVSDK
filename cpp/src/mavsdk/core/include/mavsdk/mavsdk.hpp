@@ -14,8 +14,13 @@
 #include "component_type.hpp"
 #include "server_component.hpp"
 #include "connection_result.hpp"
-#include "mavlink_include.hpp"
+#include "mav_type.hpp"
 #include "mavsdk_export.h"
+
+// The MAVLink C headers are only included on request, for the deprecated APIs that use them.
+#ifdef MAVSDK_ENABLE_MAVLINK_C_API
+#include "mavlink_include.hpp"
+#endif
 
 namespace mavsdk {
 
@@ -314,15 +319,15 @@ public:
         void set_component_type(ComponentType component_type);
 
         /**
-         * @brief Get the mav type (vehicle type) of this configuration
-         * @return `uint8_t` the mav type stored in this configuration
+         * @brief Get the MAV_TYPE (e.g. vehicle type) of this configuration
+         * @return `MavType` the MAV_TYPE stored in this configuration
          */
-        uint8_t get_mav_type() const;
+        MavType get_mav_type() const;
 
         /**
-         * @brief Set the mav type (vehicle type) of this configuration.
+         * @brief Set the MAV_TYPE (e.g. vehicle type) of this configuration.
          */
-        void set_mav_type(uint8_t mav_type);
+        void set_mav_type(MavType mav_type);
 
         /**
          * @brief Get the autopilot type for server identification in heartbeats.
@@ -365,7 +370,7 @@ public:
         bool _always_send_heartbeats;
         double _heartbeat_watchdog_timeout_s{0.0};
         ComponentType _component_type;
-        MAV_TYPE _mav_type;
+        MavType _mav_type;
         Autopilot _autopilot{Autopilot::Unknown};
         CompatibilityMode _compatibility_mode{CompatibilityMode::Auto};
 
@@ -629,10 +634,16 @@ public:
      * @note This functionality is provided primarily for testing in order to
      * simulate packet drops or actors not adhering to the MAVLink protocols.
      *
+     * @note Only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before
+     * including MAVSDK, because it exposes the MAVLink C types. Use
+     * `subscribe_incoming_messages_json` instead.
+     *
      * @param callback Callback to be called for each incoming message.
      *        To drop a message, return 'false' from the callback.
      */
+#ifdef MAVSDK_ENABLE_MAVLINK_C_API
     DEPRECATED void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
+#endif
 
     /**
      * @brief Start recording all incoming MAVLink traffic to a .tlog file.
@@ -671,10 +682,16 @@ public:
      * @note This functionality is provided primarily for testing in order to
      * simulate packet drops or actors not adhering to the MAVLink protocols.
      *
+     * @note Only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before
+     * including MAVSDK, because it exposes the MAVLink C types. Use
+     * `subscribe_outgoing_messages_json` instead.
+     *
      * @param callback Callback to be called for each outgoing message.
      *        To drop a message, return 'false' from the callback.
      */
+#ifdef MAVSDK_ENABLE_MAVLINK_C_API
     DEPRECATED void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
+#endif
 
     /**
      * @brief Callback type for raw bytes subscriptions.
@@ -725,17 +742,19 @@ public:
 
 private:
     static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
-    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
+    // The component IDs are MAV_COMPONENT values, spelled out to keep the MAVLink C headers
+    // out of this header.
+    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = 1; // MAV_COMP_ID_AUTOPILOT1
     static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
-    static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
+    static constexpr int DEFAULT_COMPONENT_ID_GCS = 190; // MAV_COMP_ID_MISSIONPLANNER
     static constexpr int DEFAULT_SYSTEM_ID_CC = 1;
-    static constexpr int DEFAULT_COMPONENT_ID_CC = MAV_COMP_ID_PATHPLANNER;
+    static constexpr int DEFAULT_COMPONENT_ID_CC = 195; // MAV_COMP_ID_PATHPLANNER
     static constexpr int DEFAULT_SYSTEM_ID_CAMERA = 1;
-    static constexpr int DEFAULT_COMPONENT_ID_CAMERA = MAV_COMP_ID_CAMERA;
+    static constexpr int DEFAULT_COMPONENT_ID_CAMERA = 100; // MAV_COMP_ID_CAMERA
     static constexpr int DEFAULT_SYSTEM_ID_GIMBAL = 1;
-    static constexpr int DEFAULT_COMPONENT_ID_GIMBAL = MAV_COMP_ID_GIMBAL;
+    static constexpr int DEFAULT_COMPONENT_ID_GIMBAL = 154; // MAV_COMP_ID_GIMBAL
     static constexpr int DEFAULT_SYSTEM_ID_REMOTEID = 1;
-    static constexpr int DEFAULT_COMPONENT_ID_REMOTEID = MAV_COMP_ID_ODID_TXRX_1;
+    static constexpr int DEFAULT_COMPONENT_ID_REMOTEID = 236; // MAV_COMP_ID_ODID_TXRX_1
 
     /* @private. */
     std::shared_ptr<MavsdkImpl> _impl{};

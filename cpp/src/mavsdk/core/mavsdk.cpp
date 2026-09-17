@@ -112,12 +112,20 @@ Mavsdk::Configuration::Configuration(
     _component_id(component_id),
     _always_send_heartbeats(always_send_heartbeats),
     _component_type(component_type_for_component_id(component_id)),
-    _mav_type(static_cast<MAV_TYPE>(
+    _mav_type(static_cast<MavType>(
         MavsdkImpl::mav_type_for_component_type(component_type_for_component_id(component_id))))
 {}
 
 ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)
 {
+    // The defaults are spelled out in mavsdk.hpp to keep the MAVLink C headers out of it.
+    static_assert(Mavsdk::DEFAULT_COMPONENT_ID_AUTOPILOT == MAV_COMP_ID_AUTOPILOT1);
+    static_assert(Mavsdk::DEFAULT_COMPONENT_ID_GCS == MAV_COMP_ID_MISSIONPLANNER);
+    static_assert(Mavsdk::DEFAULT_COMPONENT_ID_CC == MAV_COMP_ID_PATHPLANNER);
+    static_assert(Mavsdk::DEFAULT_COMPONENT_ID_CAMERA == MAV_COMP_ID_CAMERA);
+    static_assert(Mavsdk::DEFAULT_COMPONENT_ID_GIMBAL == MAV_COMP_ID_GIMBAL);
+    static_assert(Mavsdk::DEFAULT_COMPONENT_ID_REMOTEID == MAV_COMP_ID_ODID_TXRX_1);
+
     switch (component_id) {
         case Mavsdk::DEFAULT_COMPONENT_ID_AUTOPILOT:
             return ComponentType::Autopilot;
@@ -141,7 +149,7 @@ Mavsdk::Configuration::Configuration(ComponentType component_type) :
     _component_id(Mavsdk::DEFAULT_COMPONENT_ID_GCS),
     _always_send_heartbeats(false),
     _component_type(component_type),
-    _mav_type(static_cast<MAV_TYPE>(MavsdkImpl::mav_type_for_component_type(component_type)))
+    _mav_type(static_cast<MavType>(MavsdkImpl::mav_type_for_component_type(component_type)))
 {
     switch (component_type) {
         case ComponentType::GroundStation:
@@ -239,14 +247,14 @@ void Mavsdk::Configuration::set_component_type(ComponentType component_type)
     _component_type = component_type;
 }
 
-uint8_t Mavsdk::Configuration::get_mav_type() const
+MavType Mavsdk::Configuration::get_mav_type() const
 {
     return _mav_type;
 }
 
-void Mavsdk::Configuration::set_mav_type(uint8_t mav_type)
+void Mavsdk::Configuration::set_mav_type(MavType mav_type)
 {
-    _mav_type = static_cast<MAV_TYPE>(mav_type);
+    _mav_type = mav_type;
 }
 
 Autopilot Mavsdk::Configuration::get_autopilot() const

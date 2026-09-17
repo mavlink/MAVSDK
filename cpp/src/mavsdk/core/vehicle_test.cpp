@@ -6,23 +6,23 @@ using namespace mavsdk;
 
 TEST(Vehicle, ToVehicleFromMavTypeCommon)
 {
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_GENERIC), Vehicle::Generic);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_FIXED_WING), Vehicle::FixedWing);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_QUADROTOR), Vehicle::Quadrotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_HELICOPTER), Vehicle::Helicopter);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_GROUND_ROVER), Vehicle::GroundRover);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_SURFACE_BOAT), Vehicle::SurfaceBoat);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_SUBMARINE), Vehicle::Submarine);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_HEXAROTOR), Vehicle::Hexarotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_OCTOROTOR), Vehicle::Octorotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_TRICOPTER), Vehicle::Tricopter);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_VTOL_TILTROTOR), Vehicle::VtolTiltrotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_GENERIC_MULTIROTOR), Vehicle::GenericMultirotor);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Generic), Vehicle::Generic);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::FixedWing), Vehicle::FixedWing);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Quadrotor), Vehicle::Quadrotor);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Helicopter), Vehicle::Helicopter);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::GroundRover), Vehicle::GroundRover);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::SurfaceBoat), Vehicle::SurfaceBoat);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Submarine), Vehicle::Submarine);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Hexarotor), Vehicle::Hexarotor);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Octorotor), Vehicle::Octorotor);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Tricopter), Vehicle::Tricopter);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::VtolTiltrotor), Vehicle::VtolTiltrotor);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::GenericMultirotor), Vehicle::GenericMultirotor);
 }
 
 TEST(Vehicle, ToVehicleFromMavTypeUnknownFallback)
 {
-    auto bogus = static_cast<MAV_TYPE>(250);
+    auto bogus = static_cast<MavType>(250);
     EXPECT_EQ(to_vehicle_from_mav_type(bogus), Vehicle::Unknown);
 }
 
@@ -59,24 +59,23 @@ TEST(Vehicle, VtolAndExoticStream)
 
 TEST(Vehicle, ToVehicleFromMavTypeExotic)
 {
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_COAXIAL), Vehicle::Coaxial);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_AIRSHIP), Vehicle::Airship);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_FREE_BALLOON), Vehicle::FreeBalloon);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_ROCKET), Vehicle::Rocket);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_FLAPPING_WING), Vehicle::FlappingWing);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_KITE), Vehicle::Kite);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Coaxial), Vehicle::Coaxial);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Airship), Vehicle::Airship);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::FreeBalloon), Vehicle::FreeBalloon);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Rocket), Vehicle::Rocket);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::FlappingWing), Vehicle::FlappingWing);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Kite), Vehicle::Kite);
     EXPECT_EQ(
-        to_vehicle_from_mav_type(MAV_TYPE_VTOL_TAILSITTER_DUOROTOR),
-        Vehicle::VtolTailsitterDuorotor);
+        to_vehicle_from_mav_type(MavType::VtolTailsitterDuorotor), Vehicle::VtolTailsitterDuorotor);
     EXPECT_EQ(
-        to_vehicle_from_mav_type(MAV_TYPE_VTOL_TAILSITTER_QUADROTOR),
+        to_vehicle_from_mav_type(MavType::VtolTailsitterQuadrotor),
         Vehicle::VtolTailsitterQuadrotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_VTOL_FIXEDROTOR), Vehicle::VtolFixedrotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_VTOL_TILTWING), Vehicle::VtolTiltwing);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_PARAFOIL), Vehicle::Parafoil);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_DODECAROTOR), Vehicle::Dodecarotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_DECAROTOR), Vehicle::Decarotor);
-    EXPECT_EQ(to_vehicle_from_mav_type(MAV_TYPE_PARACHUTE), Vehicle::Parachute);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::VtolFixedrotor), Vehicle::VtolFixedrotor);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::VtolTiltwing), Vehicle::VtolTiltwing);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Parafoil), Vehicle::Parafoil);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Dodecarotor), Vehicle::Dodecarotor);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Decarotor), Vehicle::Decarotor);
+    EXPECT_EQ(to_vehicle_from_mav_type(MavType::Parachute), Vehicle::Parachute);
 }
 
 TEST(Vehicle, StreamOperatorMoreLabels)

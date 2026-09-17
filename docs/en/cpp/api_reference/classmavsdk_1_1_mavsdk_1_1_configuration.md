@@ -26,8 +26,8 @@ double | [get_heartbeat_watchdog_timeout_s](#classmavsdk_1_1_mavsdk_1_1_configur
 bool | [set_heartbeat_watchdog_timeout_s](#classmavsdk_1_1_mavsdk_1_1_configuration_1a53bdc9285ca6687487c18fed28b30dd2) (double timeout_s) | Set the heartbeat watchdog (deadman timer) timeout.
 [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | [get_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a81d3645816f8a3072044498c3f539d12) () const | Component type of this configuration, used for automatic ID set.
 void | [set_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a06461b86734eaa9544e80a4a907c9754) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type) | Set the component type of this configuration.
-uint8_t | [get_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1aafe9e8fc11dd0b688a836c123357e9ba) () const | Get the mav type (vehicle type) of this configuration.
-void | [set_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a16db98d8802c3427b1be10f0b72b977b) (uint8_t mav_type) | Set the mav type (vehicle type) of this configuration.
+[MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) | [get_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1aad299a07519db34709f91147d9caf222) () const | Get the MAV_TYPE (e.g. vehicle type) of this configuration.
+void | [set_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a1aefe23e2ac605383a9cd255b0639aab) ([MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) mav_type) | Set the MAV_TYPE (e.g. vehicle type) of this configuration.
 [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | [get_autopilot](#classmavsdk_1_1_mavsdk_1_1_configuration_1a107d3f21ade989a58b976475ea7b7672) () const | Get the autopilot type for server identification in heartbeats.
 void | [set_autopilot](#classmavsdk_1_1_mavsdk_1_1_configuration_1a9798ed5eb7fb64c492275e970fadc1e7) ([Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) autopilot) | Set the autopilot type for server identification.
 [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) | [get_compatibility_mode](#classmavsdk_1_1_mavsdk_1_1_configuration_1abfe7d151a85c65dc6454ebeb645732ef) () const | Get the compatibility mode.
@@ -232,31 +232,31 @@ Set the component type of this configuration.
 
 * [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) **component_type** - 
 
-### get_mav_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1aafe9e8fc11dd0b688a836c123357e9ba}
+### get_mav_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1aad299a07519db34709f91147d9caf222}
 ```cpp
-uint8_t mavsdk::Mavsdk::Configuration::get_mav_type() const
+MavType mavsdk::Mavsdk::Configuration::get_mav_type() const
 ```
 
 
-Get the mav type (vehicle type) of this configuration.
+Get the MAV_TYPE (e.g. vehicle type) of this configuration.
 
 
 **Returns**
 
-&emsp;uint8_t - `uint8_t` the mav type stored in this configuration
+&emsp;[MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) - `MavType` the MAV_TYPE stored in this configuration
 
-### set_mav_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a16db98d8802c3427b1be10f0b72b977b}
+### set_mav_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a1aefe23e2ac605383a9cd255b0639aab}
 ```cpp
-void mavsdk::Mavsdk::Configuration::set_mav_type(uint8_t mav_type)
+void mavsdk::Mavsdk::Configuration::set_mav_type(MavType mav_type)
 ```
 
 
-Set the mav type (vehicle type) of this configuration.
+Set the MAV_TYPE (e.g. vehicle type) of this configuration.
 
 
 **Parameters**
 
-* uint8_t **mav_type** - 
+* [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) **mav_type** - 
 
 ### get_autopilot() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a107d3f21ade989a58b976475ea7b7672}
 ```cpp

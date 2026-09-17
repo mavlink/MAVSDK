@@ -1,7 +1,7 @@
 #pragma once
 
 #include <sstream>
-#include "mavlink_include.hpp"
+#include "mav_type.hpp"
 #include "mavsdk_export.h"
 
 namespace mavsdk {
@@ -48,10 +48,10 @@ enum class Vehicle {
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& os, const Vehicle& vehicle);
 
 /**
- * @brief Convert a 'MAV_TYPE' to a `Vehicle`.
+ * @brief Convert a `MavType` to a `Vehicle`.
  *
- * @return The corresponding `Vehicle`.
+ * @return The corresponding `Vehicle`, or `Vehicle::Unknown` if the type is not a vehicle.
  */
-MAVSDK_PUBLIC Vehicle to_vehicle_from_mav_type(MAV_TYPE type);
+MAVSDK_PUBLIC Vehicle to_vehicle_from_mav_type(MavType type);
 
 } // namespace mavsdk

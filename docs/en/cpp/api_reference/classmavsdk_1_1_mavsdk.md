@@ -695,6 +695,11 @@ This is a hook which allows to change or drop MAVLink messages as they are recei
 This functionality is provided primarily for testing in order to simulate packet drops or actors not adhering to the MAVLink protocols.
 :::
 
+
+::: info
+Only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before including MAVSDK, because it exposes the MAVLink C types. Use `subscribe_incoming_messages_json` instead.
+:::
+
 **Parameters**
 
 * std::function< bool(mavlink_message_t &)> **callback** - Callback to be called for each incoming message. To drop a message, return 'false' from the callback.
@@ -750,6 +755,11 @@ This is a hook which allows to change or drop MAVLink messages before they are s
 
 ::: info
 This functionality is provided primarily for testing in order to simulate packet drops or actors not adhering to the MAVLink protocols.
+:::
+
+
+::: info
+Only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before including MAVSDK, because it exposes the MAVLink C types. Use `subscribe_outgoing_messages_json` instead.
 :::
 
 **Parameters**
