@@ -1,8 +1,8 @@
 import asyncio
 import sys
 
-from aiomavsdk import Mavsdk, Configuration, ComponentType
-from aiomavsdk.plugins.param import ParamAsync
+from mavsdk.asyncio import Mavsdk, Configuration, ComponentType
+from mavsdk.asyncio.plugins.param import ParamAsync
 
 
 def print_usage(bin_name):

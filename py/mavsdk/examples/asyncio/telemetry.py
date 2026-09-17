@@ -1,7 +1,7 @@
 import asyncio
-from aiomavsdk import Mavsdk, Configuration, ComponentType
-from aiomavsdk.plugins.action import ActionAsync
-from aiomavsdk.plugins.telemetry import TelemetryAsync, LandedState
+from mavsdk.asyncio import Mavsdk, Configuration, ComponentType
+from mavsdk.asyncio.plugins.action import ActionAsync
+from mavsdk.asyncio.plugins.telemetry import TelemetryAsync, LandedState
 
 
 async def print_positions(telemetry: TelemetryAsync):

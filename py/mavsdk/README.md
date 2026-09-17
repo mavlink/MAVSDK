@@ -7,13 +7,17 @@ It is still new, but the idea is to eventually replace
 that this does *not* depend on gRPC; instead it calls the C wrapper directly and
 the resulting Python package has no dependency.
 
-Another difference with MAVSDK-Python is that it does not expose an asyncio
-API. It's old school threads and callbacks here! We also have a new
-wrapper called [aiomavsdk](../aiomavsdk) that wraps this library with an asyncio API.
+The package exposes two interfaces:
+
+* `mavsdk` — old school threads and callbacks, no asyncio.
+* `mavsdk.asyncio` — an asyncio API, closer to what MAVSDK-Python offers.
+
+Both are generated from the same protos and ship in the same distribution.
 
 ## Examples
 
-Find examples in [`examples/`](examples).
+Find examples for the synchronous API in [`examples/`](examples), and for the
+asyncio one in [`examples/asyncio/`](examples/asyncio).
 
 ## Generate code
 
@@ -22,6 +26,10 @@ In order to generate the plugins from the proto submodule, run:
 ```
 ./tools/generate_from_protos.bash
 ```
+
+This generates both interfaces: the synchronous plugins into `mavsdk/plugins`
+from [`templates/sync`](templates/sync), and the asyncio ones into
+`mavsdk/asyncio/plugins` from [`templates/asyncio`](templates/asyncio).
 
 ## Running it
 

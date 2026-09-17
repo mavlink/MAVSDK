@@ -1,4 +1,4 @@
-"""System test: uploading a raw mission with the ``aiomavsdk`` bindings.
+"""System test: uploading a raw mission with the ``mavsdk.asyncio`` bindings.
 
 The ``mavsdk`` counterpart of this test is in ``test_mission_raw_upload.py``;
 this one drives the same exchange through the asyncio wrapper, which is where
@@ -8,14 +8,14 @@ this one drives the same exchange through the asyncio wrapper, which is where
 import asyncio
 
 import pytest
-from aiomavsdk import ComponentType, Configuration, Mavsdk
-from aiomavsdk.plugins.mission_raw import (
+from mavsdk.asyncio import ComponentType, Configuration, Mavsdk
+from mavsdk.asyncio.plugins.mission_raw import (
     MissionItem,
     MissionPlan,
     MissionRawAsync,
     MissionRawResult,
 )
-from aiomavsdk.plugins.mission_raw_server import MissionRawServerAsync
+from mavsdk.asyncio.plugins.mission_raw_server import MissionRawServerAsync
 
 DISCOVERY_TIMEOUT_S = 10.0
 UPLOAD_TIMEOUT_S = 10.0

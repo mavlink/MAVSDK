@@ -1,4 +1,4 @@
-"""Custom exceptions for aiomavsdk."""
+"""Custom exceptions for the asyncio API."""
 
 from mavsdk.exceptions import MavsdkError, LibraryNotFoundError
 

@@ -352,7 +352,7 @@ jobs:
         run: |
           sudo apt-get install -y python3-venv
           python3 -m venv venv
-          ./venv/bin/pip install -r py/requirements-dev.txt -e py/mavsdk -e py/aiomavsdk
+          ./venv/bin/pip install -r py/requirements-dev.txt -e py/mavsdk
       # MAVSDK is built shared here, so libcmavsdk.so is not self-contained.
       - name: python system tests
         if: matrix.cc == 'gcc-13'
