@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -36,6 +37,29 @@ class GeofenceResult(IntEnum):
     TIMEOUT = 5
     INVALID_ARGUMENT = 6
     NO_SYSTEM = 7
+
+
+class GeofenceError(MavsdkError):
+    """Raised when a Geofence request fails.
+
+    Attributes
+    ----------
+    result : GeofenceResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -312,7 +336,7 @@ class Geofence:
         )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
-            raise Exception(f"upload_geofence failed: {result}")
+            raise GeofenceError(result, "upload_geofence()", geofence_data)
 
         return result
 
@@ -349,7 +373,7 @@ class Geofence:
         )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
-            raise Exception(f"download_geofence failed: {result}")
+            raise GeofenceError(result, "download_geofence()")
 
         py_result = GeofenceData.from_c_struct(result_out)
         self._lib.mavsdk_geofence_geofence_data_destroy(ctypes.byref(result_out))
@@ -380,7 +404,7 @@ class Geofence:
         )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
-            raise Exception(f"clear_geofence failed: {result}")
+            raise GeofenceError(result, "clear_geofence()")
 
         return result
 

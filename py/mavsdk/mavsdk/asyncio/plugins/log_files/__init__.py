@@ -11,6 +11,7 @@ from .log_files import LogFilesAsync
 from mavsdk.plugins.log_files import (
     LogFiles,
     LogFilesResult,
+    LogFilesError,
     ProgressData,
     Entry,
 )
@@ -19,6 +20,7 @@ __all__ = [
     "LogFilesAsync",
     "LogFiles",
     "LogFilesResult",
+    "LogFilesError",
     "ProgressData",
     "Entry",
 ]

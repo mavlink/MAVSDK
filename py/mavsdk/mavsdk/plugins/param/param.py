@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -45,6 +46,29 @@ class ParamResult(IntEnum):
     TYPE_UNSUPPORTED = 14
     TYPE_MISMATCH = 15
     READ_FAIL = 16
+
+
+class ParamError(MavsdkError):
+    """Raised when a Param request fails.
+
+    Attributes
+    ----------
+    result : ParamResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -302,7 +326,7 @@ class Param:
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
-            raise Exception(f"get_param_int failed: {result}")
+            raise ParamError(result, "get_param_int()", name)
 
         return result_out.value
 
@@ -316,7 +340,7 @@ class Param:
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
-            raise Exception(f"set_param_int failed: {result}")
+            raise ParamError(result, "set_param_int()", name, value)
 
         return result
 
@@ -332,7 +356,7 @@ class Param:
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
-            raise Exception(f"get_param_float failed: {result}")
+            raise ParamError(result, "get_param_float()", name)
 
         return result_out.value
 
@@ -346,7 +370,7 @@ class Param:
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
-            raise Exception(f"set_param_float failed: {result}")
+            raise ParamError(result, "set_param_float()", name, value)
 
         return result
 
@@ -362,7 +386,7 @@ class Param:
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
-            raise Exception(f"get_param_custom failed: {result}")
+            raise ParamError(result, "get_param_custom()", name)
 
         py_result = result_out.value
         self._lib.mavsdk_param_string_destroy(ctypes.byref(result_out))
@@ -378,7 +402,7 @@ class Param:
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
-            raise Exception(f"set_param_custom failed: {result}")
+            raise ParamError(result, "set_param_custom()", name, value)
 
         return result
 
@@ -403,7 +427,9 @@ class Param:
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
-            raise Exception(f"select_component failed: {result}")
+            raise ParamError(
+                result, "select_component()", component_id, protocol_version
+            )
 
         return result
 

@@ -13,6 +13,7 @@ from .rtk import Rtk
 
 # Import result enum
 from .rtk import RtkResult
+from .rtk import RtkError
 
 # Import data structures
 from .rtk import RtcmData
@@ -21,5 +22,6 @@ from .rtk import RtcmData
 __all__ = [
     "Rtk",
     "RtkResult",
+    "RtkError",
     "RtcmData",
 ]

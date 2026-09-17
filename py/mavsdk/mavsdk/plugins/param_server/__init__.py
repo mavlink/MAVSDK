@@ -13,6 +13,7 @@ from .param_server import ParamServer
 
 # Import result enum
 from .param_server import ParamServerResult
+from .param_server import ParamServerError
 
 # Import data structures
 from .param_server import IntParam
@@ -24,6 +25,7 @@ from .param_server import AllParams
 __all__ = [
     "ParamServer",
     "ParamServerResult",
+    "ParamServerError",
     "IntParam",
     "FloatParam",
     "CustomParam",

@@ -11,24 +11,13 @@ from typing import AsyncGenerator
 from mavsdk.plugins.mission import (
     Mission,
     MissionResult,
+    MissionError,
     MissionItem,
     MissionPlan,
     MissionProgress,
     ProgressData,
     ProgressDataOrMission,
 )
-
-
-class MissionError(Exception):
-    """Raised when a Mission operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class MissionAsync:
@@ -69,6 +58,17 @@ class MissionAsync:
 
         The mission items are uploaded to a drone. Once uploaded the mission can be started and
         executed even if the connection is lost.
+
+               Yields
+               ------
+               result, data
+                   A ``MissionResult.NEXT`` result with the progress so
+                   far, and finally a ``MissionResult.SUCCESS`` result.
+
+               Raises
+               ------
+               MissionError
+                   If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -79,8 +79,12 @@ class MissionAsync:
         self._plugin.upload_mission_with_progress_async(mission_plan, callback)
         while True:
             result, data = await queue.get()
+            if result not in (MissionResult.NEXT, MissionResult.SUCCESS):
+                raise MissionError(
+                    result, "upload_mission_with_progress()", mission_plan
+                )
             yield result, data
-            if result != MissionResult.NEXT:
+            if result == MissionResult.SUCCESS:
                 break
 
     async def cancel_mission_upload(self):
@@ -121,6 +125,17 @@ class MissionAsync:
 
         Will fail if any of the downloaded mission items are not supported
         by the MAVSDK API.
+
+               Yields
+               ------
+               result, data
+                   A ``MissionResult.NEXT`` result with the progress so
+                   far, and finally a ``MissionResult.SUCCESS`` result.
+
+               Raises
+               ------
+               MissionError
+                   If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -131,8 +146,10 @@ class MissionAsync:
         self._plugin.download_mission_with_progress_async(callback)
         while True:
             result, data = await queue.get()
+            if result not in (MissionResult.NEXT, MissionResult.SUCCESS):
+                raise MissionError(result, "download_mission_with_progress()")
             yield result, data
-            if result != MissionResult.NEXT:
+            if result == MissionResult.SUCCESS:
                 break
 
     async def cancel_mission_download(self):

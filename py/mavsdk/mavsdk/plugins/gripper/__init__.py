@@ -14,6 +14,7 @@ from .gripper import GripperAction
 
 # Import result enum
 from .gripper import GripperResult
+from .gripper import GripperError
 
 # Import data structures
 
@@ -22,4 +23,5 @@ __all__ = [
     "Gripper",
     "GripperAction",
     "GripperResult",
+    "GripperError",
 ]

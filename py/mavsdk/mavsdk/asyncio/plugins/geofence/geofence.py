@@ -11,24 +11,13 @@ from typing import AsyncGenerator
 from mavsdk.plugins.geofence import (
     Geofence,
     GeofenceResult,
+    GeofenceError,
     FenceType,
     Point,
     Polygon,
     Circle,
     GeofenceData,
 )
-
-
-class GeofenceError(Exception):
-    """Raised when a Geofence operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class GeofenceAsync:

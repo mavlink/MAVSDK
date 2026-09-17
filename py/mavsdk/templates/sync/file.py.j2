@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -42,6 +43,29 @@ class {{ result_enum }}(IntEnum):
     {% endfor %}
   {% endif %}
 {% endfor %}
+
+class {{ plugin_name.upper_camel_case }}Error(MavsdkError):
+    """Raised when a {{ plugin_name.upper_camel_case }} request fails.
+
+    Attributes
+    ----------
+    result : {{ result_enum }}
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
+
 
 # ===== Internal C Structures =====
 {% for struct in structs %}
@@ -418,7 +442,7 @@ class {{ plugin_name.upper_camel_case }}:
         )
         result = {{ result_enum }}(result_code)
         if result != {{ result_enum }}.SUCCESS:
-            raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
+            raise {{ plugin_name.upper_camel_case }}Error(result, "{{ method.name.lower_snake_case }}()"{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %})
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
@@ -462,7 +486,7 @@ class {{ plugin_name.upper_camel_case }}:
         return result_out.value
             {% elif method.return_type.is_enum %}
         {# Convert C enum to Python enum #}
-        return {{ method.return_type.inner_name.lower_snake_case }}(result_out.value)
+        return {% if method.return_type.parent_type %}{{ method.return_type.parent_type.upper_camel_case }}.{% endif %}{{ method.return_type.inner_name.upper_camel_case }}(result_out.value)
             {% else %}
         {# Convert to pure Python object #}
         py_result = {{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_out)

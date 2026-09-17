@@ -17,6 +17,7 @@ from .offboard import OffboardAsync
 from mavsdk.plugins.offboard import (
     Offboard,
     OffboardResult,
+    OffboardError,
     Attitude,
     ActuatorControlGroup,
     ActuatorControl,
@@ -32,6 +33,7 @@ __all__ = [
     "OffboardAsync",
     "Offboard",
     "OffboardResult",
+    "OffboardError",
     "Attitude",
     "ActuatorControlGroup",
     "ActuatorControl",

@@ -10,6 +10,7 @@ from .param_server import ParamServerAsync
 from mavsdk.plugins.param_server import (
     ParamServer,
     ParamServerResult,
+    ParamServerError,
     IntParam,
     FloatParam,
     CustomParam,
@@ -20,6 +21,7 @@ __all__ = [
     "ParamServerAsync",
     "ParamServer",
     "ParamServerResult",
+    "ParamServerError",
     "IntParam",
     "FloatParam",
     "CustomParam",

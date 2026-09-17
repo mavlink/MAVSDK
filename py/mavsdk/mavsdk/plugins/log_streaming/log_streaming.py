@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -31,6 +32,29 @@ class LogStreamingResult(IntEnum):
     TIMEOUT = 5
     UNSUPPORTED = 6
     UNKNOWN = 7
+
+
+class LogStreamingError(MavsdkError):
+    """Raised when a LogStreaming request fails.
+
+    Attributes
+    ----------
+    result : LogStreamingResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -124,7 +148,7 @@ class LogStreaming:
         )
         result = LogStreamingResult(result_code)
         if result != LogStreamingResult.SUCCESS:
-            raise Exception(f"start_log_streaming failed: {result}")
+            raise LogStreamingError(result, "start_log_streaming()")
 
         return result
 
@@ -153,7 +177,7 @@ class LogStreaming:
         )
         result = LogStreamingResult(result_code)
         if result != LogStreamingResult.SUCCESS:
-            raise Exception(f"stop_log_streaming failed: {result}")
+            raise LogStreamingError(result, "stop_log_streaming()")
 
         return result
 

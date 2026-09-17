@@ -14,6 +14,7 @@ from .component_metadata import MetadataType
 
 # Import result enum
 from .component_metadata import ComponentMetadataResult
+from .component_metadata import ComponentMetadataError
 
 # Import data structures
 from .component_metadata import MetadataData
@@ -24,6 +25,7 @@ __all__ = [
     "ComponentMetadata",
     "MetadataType",
     "ComponentMetadataResult",
+    "ComponentMetadataError",
     "MetadataData",
     "MetadataUpdate",
 ]

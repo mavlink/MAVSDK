@@ -15,6 +15,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -51,6 +52,29 @@ class GimbalResult(IntEnum):
     UNSUPPORTED = 4
     NO_SYSTEM = 5
     INVALID_ARGUMENT = 6
+
+
+class GimbalError(MavsdkError):
+    """Raised when a Gimbal request fails.
+
+    Attributes
+    ----------
+    result : GimbalResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -580,7 +604,16 @@ class Gimbal:
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
-            raise Exception(f"set_angles failed: {result}")
+            raise GimbalError(
+                result,
+                "set_angles()",
+                gimbal_id,
+                roll_deg,
+                pitch_deg,
+                yaw_deg,
+                gimbal_mode,
+                send_mode,
+            )
 
         return result
 
@@ -649,7 +682,16 @@ class Gimbal:
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
-            raise Exception(f"set_angular_rates failed: {result}")
+            raise GimbalError(
+                result,
+                "set_angular_rates()",
+                gimbal_id,
+                roll_rate_deg_s,
+                pitch_rate_deg_s,
+                yaw_rate_deg_s,
+                gimbal_mode,
+                send_mode,
+            )
 
         return result
 
@@ -698,7 +740,14 @@ class Gimbal:
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
-            raise Exception(f"set_roi_location failed: {result}")
+            raise GimbalError(
+                result,
+                "set_roi_location()",
+                gimbal_id,
+                latitude_deg,
+                longitude_deg,
+                altitude_m,
+            )
 
         return result
 
@@ -741,7 +790,7 @@ class Gimbal:
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
-            raise Exception(f"take_control failed: {result}")
+            raise GimbalError(result, "take_control()", gimbal_id, control_mode)
 
         return result
 
@@ -775,7 +824,7 @@ class Gimbal:
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
-            raise Exception(f"release_control failed: {result}")
+            raise GimbalError(result, "release_control()", gimbal_id)
 
         return result
 
@@ -863,7 +912,7 @@ class Gimbal:
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
-            raise Exception(f"get_control_status failed: {result}")
+            raise GimbalError(result, "get_control_status()", gimbal_id)
 
         py_result = ControlStatus.from_c_struct(result_out)
         self._lib.mavsdk_gimbal_control_status_destroy(ctypes.byref(result_out))
@@ -909,7 +958,7 @@ class Gimbal:
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
-            raise Exception(f"get_attitude failed: {result}")
+            raise GimbalError(result, "get_attitude()", gimbal_id)
 
         py_result = Attitude.from_c_struct(result_out)
         self._lib.mavsdk_gimbal_attitude_destroy(ctypes.byref(result_out))

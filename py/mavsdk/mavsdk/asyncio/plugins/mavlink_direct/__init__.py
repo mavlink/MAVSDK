@@ -10,6 +10,7 @@ from .mavlink_direct import MavlinkDirectAsync
 from mavsdk.plugins.mavlink_direct import (
     MavlinkDirect,
     MavlinkDirectResult,
+    MavlinkDirectError,
     MavlinkMessage,
 )
 
@@ -17,5 +18,6 @@ __all__ = [
     "MavlinkDirectAsync",
     "MavlinkDirect",
     "MavlinkDirectResult",
+    "MavlinkDirectError",
     "MavlinkMessage",
 ]

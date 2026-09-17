@@ -11,6 +11,7 @@ from .mission_raw_server import MissionRawServerAsync
 from mavsdk.plugins.mission_raw_server import (
     MissionRawServer,
     MissionRawServerResult,
+    MissionRawServerError,
     MissionItem,
     MissionPlan,
     MissionProgress,
@@ -20,6 +21,7 @@ __all__ = [
     "MissionRawServerAsync",
     "MissionRawServer",
     "MissionRawServerResult",
+    "MissionRawServerError",
     "MissionItem",
     "MissionPlan",
     "MissionProgress",

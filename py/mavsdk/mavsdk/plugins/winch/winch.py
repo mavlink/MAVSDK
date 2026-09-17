@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -43,6 +44,29 @@ class WinchResult(IntEnum):
     TIMEOUT = 4
     UNSUPPORTED = 5
     FAILED = 6
+
+
+class WinchError(MavsdkError):
+    """Raised when a Winch request fails.
+
+    Attributes
+    ----------
+    result : WinchResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -346,7 +370,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"relax failed: {result}")
+            raise WinchError(result, "relax()", instance)
 
         return result
 
@@ -382,7 +406,9 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"relative_length_control failed: {result}")
+            raise WinchError(
+                result, "relative_length_control()", instance, length_m, rate_m_s
+            )
 
         return result
 
@@ -417,7 +443,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"rate_control failed: {result}")
+            raise WinchError(result, "rate_control()", instance, rate_m_s)
 
         return result
 
@@ -447,7 +473,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"lock failed: {result}")
+            raise WinchError(result, "lock()", instance)
 
         return result
 
@@ -477,7 +503,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"deliver failed: {result}")
+            raise WinchError(result, "deliver()", instance)
 
         return result
 
@@ -507,7 +533,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"hold failed: {result}")
+            raise WinchError(result, "hold()", instance)
 
         return result
 
@@ -537,7 +563,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"retract failed: {result}")
+            raise WinchError(result, "retract()", instance)
 
         return result
 
@@ -569,7 +595,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"load_line failed: {result}")
+            raise WinchError(result, "load_line()", instance)
 
         return result
 
@@ -599,7 +625,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"abandon_line failed: {result}")
+            raise WinchError(result, "abandon_line()", instance)
 
         return result
 
@@ -629,7 +655,7 @@ class Winch:
         )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
-            raise Exception(f"load_payload failed: {result}")
+            raise WinchError(result, "load_payload()", instance)
 
         return result
 

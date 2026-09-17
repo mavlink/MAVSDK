@@ -11,20 +11,9 @@ from typing import AsyncGenerator
 from mavsdk.plugins.calibration import (
     Calibration,
     CalibrationResult,
+    CalibrationError,
     ProgressData,
 )
-
-
-class CalibrationError(Exception):
-    """Raised when a Calibration operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class CalibrationAsync:
@@ -42,6 +31,17 @@ class CalibrationAsync:
     async def calibrate_gyro(self) -> AsyncGenerator:
         """
         Perform gyro calibration.
+
+        Yields
+        ------
+        result, data
+            A ``CalibrationResult.NEXT`` result with the progress so
+            far, and finally a ``CalibrationResult.SUCCESS`` result.
+
+        Raises
+        ------
+        CalibrationError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -52,13 +52,26 @@ class CalibrationAsync:
         self._plugin.calibrate_gyro_async(callback)
         while True:
             result, data = await queue.get()
+            if result not in (CalibrationResult.NEXT, CalibrationResult.SUCCESS):
+                raise CalibrationError(result, "calibrate_gyro()")
             yield result, data
-            if result != CalibrationResult.NEXT:
+            if result == CalibrationResult.SUCCESS:
                 break
 
     async def calibrate_accelerometer(self) -> AsyncGenerator:
         """
         Perform accelerometer calibration.
+
+        Yields
+        ------
+        result, data
+            A ``CalibrationResult.NEXT`` result with the progress so
+            far, and finally a ``CalibrationResult.SUCCESS`` result.
+
+        Raises
+        ------
+        CalibrationError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -69,13 +82,26 @@ class CalibrationAsync:
         self._plugin.calibrate_accelerometer_async(callback)
         while True:
             result, data = await queue.get()
+            if result not in (CalibrationResult.NEXT, CalibrationResult.SUCCESS):
+                raise CalibrationError(result, "calibrate_accelerometer()")
             yield result, data
-            if result != CalibrationResult.NEXT:
+            if result == CalibrationResult.SUCCESS:
                 break
 
     async def calibrate_magnetometer(self) -> AsyncGenerator:
         """
         Perform magnetometer calibration.
+
+        Yields
+        ------
+        result, data
+            A ``CalibrationResult.NEXT`` result with the progress so
+            far, and finally a ``CalibrationResult.SUCCESS`` result.
+
+        Raises
+        ------
+        CalibrationError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -86,13 +112,26 @@ class CalibrationAsync:
         self._plugin.calibrate_magnetometer_async(callback)
         while True:
             result, data = await queue.get()
+            if result not in (CalibrationResult.NEXT, CalibrationResult.SUCCESS):
+                raise CalibrationError(result, "calibrate_magnetometer()")
             yield result, data
-            if result != CalibrationResult.NEXT:
+            if result == CalibrationResult.SUCCESS:
                 break
 
     async def calibrate_level_horizon(self) -> AsyncGenerator:
         """
         Perform board level horizon calibration.
+
+        Yields
+        ------
+        result, data
+            A ``CalibrationResult.NEXT`` result with the progress so
+            far, and finally a ``CalibrationResult.SUCCESS`` result.
+
+        Raises
+        ------
+        CalibrationError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -103,13 +142,26 @@ class CalibrationAsync:
         self._plugin.calibrate_level_horizon_async(callback)
         while True:
             result, data = await queue.get()
+            if result not in (CalibrationResult.NEXT, CalibrationResult.SUCCESS):
+                raise CalibrationError(result, "calibrate_level_horizon()")
             yield result, data
-            if result != CalibrationResult.NEXT:
+            if result == CalibrationResult.SUCCESS:
                 break
 
     async def calibrate_gimbal_accelerometer(self) -> AsyncGenerator:
         """
         Perform gimbal accelerometer calibration.
+
+        Yields
+        ------
+        result, data
+            A ``CalibrationResult.NEXT`` result with the progress so
+            far, and finally a ``CalibrationResult.SUCCESS`` result.
+
+        Raises
+        ------
+        CalibrationError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -120,8 +172,10 @@ class CalibrationAsync:
         self._plugin.calibrate_gimbal_accelerometer_async(callback)
         while True:
             result, data = await queue.get()
+            if result not in (CalibrationResult.NEXT, CalibrationResult.SUCCESS):
+                raise CalibrationError(result, "calibrate_gimbal_accelerometer()")
             yield result, data
-            if result != CalibrationResult.NEXT:
+            if result == CalibrationResult.SUCCESS:
                 break
 
     async def cancel(self):

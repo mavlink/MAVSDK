@@ -15,6 +15,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -75,6 +76,29 @@ class TelemetryServerResult(IntEnum):
     COMMAND_DENIED = 5
     TIMEOUT = 6
     UNSUPPORTED = 7
+
+
+class TelemetryServerError(MavsdkError):
+    """Raised when a TelemetryServer request fails.
+
+    Attributes
+    ----------
+    result : TelemetryServerResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -1643,7 +1667,9 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_position failed: {result}")
+            raise TelemetryServerError(
+                result, "publish_position()", position, velocity_ned, heading
+            )
 
         return result
 
@@ -1656,7 +1682,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_home failed: {result}")
+            raise TelemetryServerError(result, "publish_home()", home)
 
         return result
 
@@ -1682,7 +1708,16 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_sys_status failed: {result}")
+            raise TelemetryServerError(
+                result,
+                "publish_sys_status()",
+                battery,
+                rc_receiver_status,
+                gyro_status,
+                accel_status,
+                mag_status,
+                gps_status,
+            )
 
         return result
 
@@ -1696,7 +1731,9 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_extended_sys_state failed: {result}")
+            raise TelemetryServerError(
+                result, "publish_extended_sys_state()", vtol_state, landed_state
+            )
 
         return result
 
@@ -1710,7 +1747,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_raw_gps failed: {result}")
+            raise TelemetryServerError(result, "publish_raw_gps()", raw_gps, gps_info)
 
         return result
 
@@ -1723,7 +1760,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_battery failed: {result}")
+            raise TelemetryServerError(result, "publish_battery()", battery)
 
         return result
 
@@ -1736,7 +1773,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_status_text failed: {result}")
+            raise TelemetryServerError(result, "publish_status_text()", status_text)
 
         return result
 
@@ -1749,7 +1786,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_odometry failed: {result}")
+            raise TelemetryServerError(result, "publish_odometry()", odometry)
 
         return result
 
@@ -1762,7 +1799,9 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_position_velocity_ned failed: {result}")
+            raise TelemetryServerError(
+                result, "publish_position_velocity_ned()", position_velocity_ned
+            )
 
         return result
 
@@ -1775,7 +1814,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_ground_truth failed: {result}")
+            raise TelemetryServerError(result, "publish_ground_truth()", ground_truth)
 
         return result
 
@@ -1788,7 +1827,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_imu failed: {result}")
+            raise TelemetryServerError(result, "publish_imu()", imu)
 
         return result
 
@@ -1801,7 +1840,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_scaled_imu failed: {result}")
+            raise TelemetryServerError(result, "publish_scaled_imu()", imu)
 
         return result
 
@@ -1814,7 +1853,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_raw_imu failed: {result}")
+            raise TelemetryServerError(result, "publish_raw_imu()", imu)
 
         return result
 
@@ -1827,7 +1866,7 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_unix_epoch_time failed: {result}")
+            raise TelemetryServerError(result, "publish_unix_epoch_time()", time_us)
 
         return result
 
@@ -1840,7 +1879,9 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_distance_sensor failed: {result}")
+            raise TelemetryServerError(
+                result, "publish_distance_sensor()", distance_sensor
+            )
 
         return result
 
@@ -1854,7 +1895,9 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_attitude failed: {result}")
+            raise TelemetryServerError(
+                result, "publish_attitude()", angle, angular_velocity
+            )
 
         return result
 
@@ -1867,7 +1910,9 @@ class TelemetryServer:
         )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
-            raise Exception(f"publish_visual_flight_rules_hud failed: {result}")
+            raise TelemetryServerError(
+                result, "publish_visual_flight_rules_hud()", fixed_wing_metrics
+            )
 
         return result
 

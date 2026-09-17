@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -31,6 +32,29 @@ class ParamServerResult(IntEnum):
     NO_SYSTEM = 5
     PARAM_VALUE_TOO_LONG = 6
     PARAM_PROVIDED_TOO_LATE = 7
+
+
+class ParamServerError(MavsdkError):
+    """Raised when a ParamServer request fails.
+
+    Attributes
+    ----------
+    result : ParamServerResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -285,7 +309,7 @@ class ParamServer:
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
-            raise Exception(f"set_protocol failed: {result}")
+            raise ParamServerError(result, "set_protocol()", extended_protocol)
 
         return result
 
@@ -301,7 +325,7 @@ class ParamServer:
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
-            raise Exception(f"retrieve_param_int failed: {result}")
+            raise ParamServerError(result, "retrieve_param_int()", name)
 
         return result_out.value
 
@@ -315,7 +339,7 @@ class ParamServer:
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
-            raise Exception(f"provide_param_int failed: {result}")
+            raise ParamServerError(result, "provide_param_int()", name, value)
 
         return result
 
@@ -331,7 +355,7 @@ class ParamServer:
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
-            raise Exception(f"retrieve_param_float failed: {result}")
+            raise ParamServerError(result, "retrieve_param_float()", name)
 
         return result_out.value
 
@@ -345,7 +369,7 @@ class ParamServer:
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
-            raise Exception(f"provide_param_float failed: {result}")
+            raise ParamServerError(result, "provide_param_float()", name, value)
 
         return result
 
@@ -361,7 +385,7 @@ class ParamServer:
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
-            raise Exception(f"retrieve_param_custom failed: {result}")
+            raise ParamServerError(result, "retrieve_param_custom()", name)
 
         py_result = result_out.value
         self._lib.mavsdk_param_server_string_destroy(ctypes.byref(result_out))
@@ -377,7 +401,7 @@ class ParamServer:
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
-            raise Exception(f"provide_param_custom failed: {result}")
+            raise ParamServerError(result, "provide_param_custom()", name, value)
 
         return result
 

@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -32,6 +33,29 @@ class ManualControlResult(IntEnum):
     TIMEOUT = 6
     INPUT_OUT_OF_RANGE = 7
     INPUT_NOT_SET = 8
+
+
+class ManualControlError(MavsdkError):
+    """Raised when a ManualControl request fails.
+
+    Attributes
+    ----------
+    result : ManualControlResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -95,7 +119,7 @@ class ManualControl:
         )
         result = ManualControlResult(result_code)
         if result != ManualControlResult.SUCCESS:
-            raise Exception(f"start_position_control failed: {result}")
+            raise ManualControlError(result, "start_position_control()")
 
         return result
 
@@ -129,7 +153,7 @@ class ManualControl:
         )
         result = ManualControlResult(result_code)
         if result != ManualControlResult.SUCCESS:
-            raise Exception(f"start_altitude_control failed: {result}")
+            raise ManualControlError(result, "start_altitude_control()")
 
         return result
 
@@ -145,7 +169,7 @@ class ManualControl:
         )
         result = ManualControlResult(result_code)
         if result != ManualControlResult.SUCCESS:
-            raise Exception(f"set_manual_control_input failed: {result}")
+            raise ManualControlError(result, "set_manual_control_input()", x, y, z, r)
 
         return result
 

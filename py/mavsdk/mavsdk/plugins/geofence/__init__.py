@@ -14,6 +14,7 @@ from .geofence import FenceType
 
 # Import result enum
 from .geofence import GeofenceResult
+from .geofence import GeofenceError
 
 # Import data structures
 from .geofence import Point
@@ -26,6 +27,7 @@ __all__ = [
     "Geofence",
     "FenceType",
     "GeofenceResult",
+    "GeofenceError",
     "Point",
     "Polygon",
     "Circle",
