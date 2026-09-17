@@ -11,6 +11,7 @@ from mavsdk.plugins.component_metadata import (
     ComponentMetadata,
     MetadataType,
     ComponentMetadataResult,
+    ComponentMetadataError,
     MetadataData,
     MetadataUpdate,
 )
@@ -20,6 +21,7 @@ __all__ = [
     "ComponentMetadata",
     "MetadataType",
     "ComponentMetadataResult",
+    "ComponentMetadataError",
     "MetadataData",
     "MetadataUpdate",
 ]

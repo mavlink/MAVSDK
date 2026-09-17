@@ -15,6 +15,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -33,6 +34,29 @@ class FollowMeResult(IntEnum):
     TIMEOUT = 6
     NOT_ACTIVE = 7
     SET_CONFIG_FAILED = 8
+
+
+class FollowMeError(MavsdkError):
+    """Raised when a FollowMe request fails.
+
+    Attributes
+    ----------
+    result : FollowMeResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -233,7 +257,7 @@ class FollowMe:
         )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
-            raise Exception(f"set_config failed: {result}")
+            raise FollowMeError(result, "set_config()", config)
 
         return result
 
@@ -255,7 +279,7 @@ class FollowMe:
         )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
-            raise Exception(f"set_target_location failed: {result}")
+            raise FollowMeError(result, "set_target_location()", location)
 
         return result
 
@@ -280,7 +304,7 @@ class FollowMe:
         )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
-            raise Exception(f"start failed: {result}")
+            raise FollowMeError(result, "start()")
 
         return result
 
@@ -292,7 +316,7 @@ class FollowMe:
         )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
-            raise Exception(f"stop failed: {result}")
+            raise FollowMeError(result, "stop()")
 
         return result
 

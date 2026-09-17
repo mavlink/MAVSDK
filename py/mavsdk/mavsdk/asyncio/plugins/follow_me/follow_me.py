@@ -12,21 +12,10 @@ from typing import AsyncGenerator
 from mavsdk.plugins.follow_me import (
     FollowMe,
     FollowMeResult,
+    FollowMeError,
     Config,
     TargetLocation,
 )
-
-
-class FollowMeError(Exception):
-    """Raised when a FollowMe operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class FollowMeAsync:

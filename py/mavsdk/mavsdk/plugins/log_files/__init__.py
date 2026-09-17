@@ -14,6 +14,7 @@ from .log_files import LogFiles
 
 # Import result enum
 from .log_files import LogFilesResult
+from .log_files import LogFilesError
 
 # Import data structures
 from .log_files import ProgressData
@@ -23,6 +24,7 @@ from .log_files import Entry
 __all__ = [
     "LogFiles",
     "LogFilesResult",
+    "LogFilesError",
     "ProgressData",
     "Entry",
 ]

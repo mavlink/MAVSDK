@@ -10,10 +10,12 @@ from .manual_control import ManualControlAsync
 from mavsdk.plugins.manual_control import (
     ManualControl,
     ManualControlResult,
+    ManualControlError,
 )
 
 __all__ = [
     "ManualControlAsync",
     "ManualControl",
     "ManualControlResult",
+    "ManualControlError",
 ]

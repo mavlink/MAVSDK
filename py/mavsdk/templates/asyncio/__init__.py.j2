@@ -12,6 +12,7 @@ from mavsdk.plugins.{{ plugin_name.lower_snake_case }} import (
     {{ enum.name.upper_camel_case }},
     {% endfor %}
     {{ plugin_name.upper_camel_case }}Result,
+    {{ plugin_name.upper_camel_case }}Error,
     {% for struct in structs %}
       {% if not struct.name.upper_camel_case.endswith('Result') %}
     {{ struct.name.upper_camel_case }},
@@ -26,6 +27,7 @@ __all__ = [
     '{{ enum.name.upper_camel_case }}',
     {% endfor %}
     '{{ plugin_name.upper_camel_case }}Result',
+    '{{ plugin_name.upper_camel_case }}Error',
     {% for struct in structs %}
       {% if not struct.name.upper_camel_case.endswith('Result') %}
     '{{ struct.name.upper_camel_case }}',

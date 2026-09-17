@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -28,6 +29,29 @@ class RtkResult(IntEnum):
     TOO_LONG = 2
     NO_SYSTEM = 5
     CONNECTION_ERROR = 6
+
+
+class RtkError(MavsdkError):
+    """Raised when a Rtk request fails.
+
+    Attributes
+    ----------
+    result : RtkResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -105,7 +129,7 @@ class Rtk:
         )
         result = RtkResult(result_code)
         if result != RtkResult.SUCCESS:
-            raise Exception(f"send_rtcm_data failed: {result}")
+            raise RtkError(result, "send_rtcm_data()", rtcm_data)
 
         return result
 

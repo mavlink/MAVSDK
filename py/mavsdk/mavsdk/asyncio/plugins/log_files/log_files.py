@@ -12,21 +12,10 @@ from typing import AsyncGenerator
 from mavsdk.plugins.log_files import (
     LogFiles,
     LogFilesResult,
+    LogFilesError,
     ProgressData,
     Entry,
 )
-
-
-class LogFilesError(Exception):
-    """Raised when a LogFiles operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class LogFilesAsync:
@@ -60,6 +49,17 @@ class LogFilesAsync:
     async def download_log_file(self, entry, path) -> AsyncGenerator:
         """
         Download log file.
+
+        Yields
+        ------
+        result, data
+            A ``LogFilesResult.NEXT`` result with the progress so
+            far, and finally a ``LogFilesResult.SUCCESS`` result.
+
+        Raises
+        ------
+        LogFilesError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -70,8 +70,10 @@ class LogFilesAsync:
         self._plugin.download_log_file_async(entry, path, callback)
         while True:
             result, data = await queue.get()
+            if result not in (LogFilesResult.NEXT, LogFilesResult.SUCCESS):
+                raise LogFilesError(result, "download_log_file()", entry, path)
             yield result, data
-            if result != LogFilesResult.NEXT:
+            if result == LogFilesResult.SUCCESS:
                 break
 
     async def erase_all_log_files(self):

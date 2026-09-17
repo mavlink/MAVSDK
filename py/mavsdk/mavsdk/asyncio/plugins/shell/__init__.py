@@ -16,6 +16,7 @@ from mavsdk.plugins.shell import (
     Shell,
     Device,
     ShellResult,
+    ShellError,
     Receive,
 )
 
@@ -24,5 +25,6 @@ __all__ = [
     "Shell",
     "Device",
     "ShellResult",
+    "ShellError",
     "Receive",
 ]

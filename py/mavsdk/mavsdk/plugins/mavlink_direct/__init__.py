@@ -13,6 +13,7 @@ from .mavlink_direct import MavlinkDirect
 
 # Import result enum
 from .mavlink_direct import MavlinkDirectResult
+from .mavlink_direct import MavlinkDirectError
 
 # Import data structures
 from .mavlink_direct import MavlinkMessage
@@ -21,5 +22,6 @@ from .mavlink_direct import MavlinkMessage
 __all__ = [
     "MavlinkDirect",
     "MavlinkDirectResult",
+    "MavlinkDirectError",
     "MavlinkMessage",
 ]

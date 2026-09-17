@@ -13,6 +13,7 @@ from .log_streaming import LogStreaming
 
 # Import result enum
 from .log_streaming import LogStreamingResult
+from .log_streaming import LogStreamingError
 
 # Import data structures
 from .log_streaming import LogStreamingRaw
@@ -21,5 +22,6 @@ from .log_streaming import LogStreamingRaw
 __all__ = [
     "LogStreaming",
     "LogStreamingResult",
+    "LogStreamingError",
     "LogStreamingRaw",
 ]

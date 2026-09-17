@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -36,6 +37,29 @@ class FtpResult(IntEnum):
     UNSUPPORTED = 10
     PROTOCOL_ERROR = 11
     NO_SYSTEM = 12
+
+
+class FtpError(MavsdkError):
+    """Raised when a Ftp request fails.
+
+    Attributes
+    ----------
+    result : FtpResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -329,7 +353,7 @@ class Ftp:
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
-            raise Exception(f"list_directory failed: {result}")
+            raise FtpError(result, "list_directory()", remote_dir)
 
         py_result = ListDirectoryData.from_c_struct(result_out)
         self._lib.mavsdk_ftp_list_directory_data_destroy(ctypes.byref(result_out))
@@ -368,7 +392,7 @@ class Ftp:
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
-            raise Exception(f"create_directory failed: {result}")
+            raise FtpError(result, "create_directory()", remote_dir)
 
         return result
 
@@ -405,7 +429,7 @@ class Ftp:
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
-            raise Exception(f"remove_directory failed: {result}")
+            raise FtpError(result, "remove_directory()", remote_dir)
 
         return result
 
@@ -446,7 +470,7 @@ class Ftp:
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
-            raise Exception(f"remove_file failed: {result}")
+            raise FtpError(result, "remove_file()", remote_file_path)
 
         return result
 
@@ -497,7 +521,7 @@ class Ftp:
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
-            raise Exception(f"rename failed: {result}")
+            raise FtpError(result, "rename()", remote_from_path, remote_to_path)
 
         return result
 
@@ -553,7 +577,9 @@ class Ftp:
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
-            raise Exception(f"are_files_identical failed: {result}")
+            raise FtpError(
+                result, "are_files_identical()", local_file_path, remote_file_path
+            )
 
         return result_out.value
 
@@ -566,7 +592,7 @@ class Ftp:
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
-            raise Exception(f"set_target_compid failed: {result}")
+            raise FtpError(result, "set_target_compid()", compid)
 
         return result
 

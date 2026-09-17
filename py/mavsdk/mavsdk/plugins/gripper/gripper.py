@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -38,6 +39,29 @@ class GripperResult(IntEnum):
     TIMEOUT = 4
     UNSUPPORTED = 5
     FAILED = 6
+
+
+class GripperError(MavsdkError):
+    """Raised when a Gripper request fails.
+
+    Attributes
+    ----------
+    result : GripperResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -97,7 +121,7 @@ class Gripper:
         )
         result = GripperResult(result_code)
         if result != GripperResult.SUCCESS:
-            raise Exception(f"grab failed: {result}")
+            raise GripperError(result, "grab()", instance)
 
         return result
 
@@ -127,7 +151,7 @@ class Gripper:
         )
         result = GripperResult(result_code)
         if result != GripperResult.SUCCESS:
-            raise Exception(f"release failed: {result}")
+            raise GripperError(result, "release()", instance)
 
         return result
 

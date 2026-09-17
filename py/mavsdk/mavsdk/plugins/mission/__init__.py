@@ -13,6 +13,7 @@ from .mission import Mission
 
 # Import result enum
 from .mission import MissionResult
+from .mission import MissionError
 
 # Import data structures
 from .mission import MissionItem
@@ -25,6 +26,7 @@ from .mission import ProgressDataOrMission
 __all__ = [
     "Mission",
     "MissionResult",
+    "MissionError",
     "MissionItem",
     "MissionPlan",
     "MissionProgress",

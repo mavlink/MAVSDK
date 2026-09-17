@@ -13,6 +13,7 @@ from .manual_control import ManualControl
 
 # Import result enum
 from .manual_control import ManualControlResult
+from .manual_control import ManualControlError
 
 # Import data structures
 
@@ -20,4 +21,5 @@ from .manual_control import ManualControlResult
 __all__ = [
     "ManualControl",
     "ManualControlResult",
+    "ManualControlError",
 ]

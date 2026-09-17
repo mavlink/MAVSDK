@@ -15,6 +15,7 @@ from .action import RelayCommand
 
 # Import result enum
 from .action import ActionResult
+from .action import ActionError
 
 # Import data structures
 
@@ -24,4 +25,5 @@ __all__ = [
     "OrbitYawBehavior",
     "RelayCommand",
     "ActionResult",
+    "ActionError",
 ]

@@ -12,6 +12,7 @@ from typing import AsyncGenerator
 from mavsdk.plugins.telemetry_server import (
     TelemetryServer,
     TelemetryServerResult,
+    TelemetryServerError,
     FixType,
     VtolState,
     StatusTextType,
@@ -44,18 +45,6 @@ from mavsdk.plugins.telemetry_server import (
     MagneticFieldFrd,
     Imu,
 )
-
-
-class TelemetryServerError(Exception):
-    """Raised when a TelemetryServer operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class TelemetryServerAsync:

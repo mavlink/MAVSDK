@@ -20,6 +20,7 @@ from .offboard import Offboard
 
 # Import result enum
 from .offboard import OffboardResult
+from .offboard import OffboardError
 
 # Import data structures
 from .offboard import Attitude
@@ -36,6 +37,7 @@ from .offboard import AccelerationNed
 __all__ = [
     "Offboard",
     "OffboardResult",
+    "OffboardError",
     "Attitude",
     "ActuatorControlGroup",
     "ActuatorControl",

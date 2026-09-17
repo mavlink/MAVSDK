@@ -10,6 +10,7 @@ from .log_streaming import LogStreamingAsync
 from mavsdk.plugins.log_streaming import (
     LogStreaming,
     LogStreamingResult,
+    LogStreamingError,
     LogStreamingRaw,
 )
 
@@ -17,5 +18,6 @@ __all__ = [
     "LogStreamingAsync",
     "LogStreaming",
     "LogStreamingResult",
+    "LogStreamingError",
     "LogStreamingRaw",
 ]

@@ -11,6 +11,7 @@ from mavsdk.plugins.action_server import (
     ActionServer,
     FlightMode,
     ActionServerResult,
+    ActionServerError,
     AllowableFlightModes,
     ArmDisarm,
 )
@@ -20,6 +21,7 @@ __all__ = [
     "ActionServer",
     "FlightMode",
     "ActionServerResult",
+    "ActionServerError",
     "AllowableFlightModes",
     "ArmDisarm",
 ]

@@ -14,6 +14,7 @@ from .arm_authorizer_server import RejectionReason
 
 # Import result enum
 from .arm_authorizer_server import ArmAuthorizerServerResult
+from .arm_authorizer_server import ArmAuthorizerServerError
 
 # Import data structures
 
@@ -22,4 +23,5 @@ __all__ = [
     "ArmAuthorizerServer",
     "RejectionReason",
     "ArmAuthorizerServerResult",
+    "ArmAuthorizerServerError",
 ]

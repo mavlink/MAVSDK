@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -39,6 +40,29 @@ class MissionResult(IntEnum):
     DENIED = 15
     PROTOCOL_ERROR = 16
     INT_MESSAGES_NOT_SUPPORTED = 17
+
+
+class MissionError(MavsdkError):
+    """Raised when a Mission request fails.
+
+    Attributes
+    ----------
+    result : MissionResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -435,7 +459,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"upload_mission failed: {result}")
+            raise MissionError(result, "upload_mission()", mission_plan)
 
         return result
 
@@ -475,7 +499,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"cancel_mission_upload failed: {result}")
+            raise MissionError(result, "cancel_mission_upload()")
 
         return result
 
@@ -513,7 +537,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"download_mission failed: {result}")
+            raise MissionError(result, "download_mission()")
 
         py_result = MissionPlan.from_c_struct(result_out)
         self._lib.mavsdk_mission_mission_plan_destroy(ctypes.byref(result_out))
@@ -557,7 +581,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"cancel_mission_download failed: {result}")
+            raise MissionError(result, "cancel_mission_download()")
 
         return result
 
@@ -588,7 +612,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"start_mission failed: {result}")
+            raise MissionError(result, "start_mission()")
 
         return result
 
@@ -622,7 +646,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"pause_mission failed: {result}")
+            raise MissionError(result, "pause_mission()")
 
         return result
 
@@ -651,7 +675,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"clear_mission failed: {result}")
+            raise MissionError(result, "clear_mission()")
 
         return result
 
@@ -691,7 +715,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"set_current_mission_item failed: {result}")
+            raise MissionError(result, "set_current_mission_item()", index)
 
         return result
 
@@ -705,7 +729,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"is_mission_finished failed: {result}")
+            raise MissionError(result, "is_mission_finished()")
 
         return result_out.value
 
@@ -762,7 +786,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"get_return_to_launch_after_mission failed: {result}")
+            raise MissionError(result, "get_return_to_launch_after_mission()")
 
         return result_out.value
 
@@ -775,7 +799,7 @@ class Mission:
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
-            raise Exception(f"set_return_to_launch_after_mission failed: {result}")
+            raise MissionError(result, "set_return_to_launch_after_mission()", enable)
 
         return result
 

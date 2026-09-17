@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -45,6 +46,29 @@ class MissionRawResult(IntEnum):
     FAILED_TO_OPEN_MISSION_PLANNER_PLAN = 19
     FAILED_TO_PARSE_MISSION_PLANNER_PLAN = 20
     NEXT = 21
+
+
+class MissionRawError(MavsdkError):
+    """Raised when a MissionRaw request fails.
+
+    Attributes
+    ----------
+    result : MissionRawResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -455,7 +479,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"upload_mission failed: {result}")
+            raise MissionRawError(result, "upload_mission()", mission_items)
 
         return result
 
@@ -527,7 +551,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"upload_geofence failed: {result}")
+            raise MissionRawError(result, "upload_geofence()", mission_items)
 
         return result
 
@@ -574,7 +598,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"upload_rally_points failed: {result}")
+            raise MissionRawError(result, "upload_rally_points()", mission_items)
 
         return result
 
@@ -586,7 +610,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"cancel_mission_upload failed: {result}")
+            raise MissionRawError(result, "cancel_mission_upload()")
 
         return result
 
@@ -627,7 +651,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"download_mission failed: {result}")
+            raise MissionRawError(result, "download_mission()")
 
         py_result = [
             MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)
@@ -674,7 +698,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"download_geofence failed: {result}")
+            raise MissionRawError(result, "download_geofence()")
 
         py_result = [
             MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)
@@ -721,7 +745,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"download_rallypoints failed: {result}")
+            raise MissionRawError(result, "download_rallypoints()")
 
         py_result = [
             MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)
@@ -739,7 +763,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"cancel_mission_download failed: {result}")
+            raise MissionRawError(result, "cancel_mission_download()")
 
         return result
 
@@ -770,7 +794,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"start_mission failed: {result}")
+            raise MissionRawError(result, "start_mission()")
 
         return result
 
@@ -804,7 +828,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"pause_mission failed: {result}")
+            raise MissionRawError(result, "pause_mission()")
 
         return result
 
@@ -833,7 +857,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"clear_mission failed: {result}")
+            raise MissionRawError(result, "clear_mission()")
 
         return result
 
@@ -870,7 +894,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"set_current_mission_item failed: {result}")
+            raise MissionRawError(result, "set_current_mission_item()", index)
 
         return result
 
@@ -966,7 +990,9 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"import_qgroundcontrol_mission failed: {result}")
+            raise MissionRawError(
+                result, "import_qgroundcontrol_mission()", qgc_plan_path
+            )
 
         py_result = MissionImportData.from_c_struct(result_out)
         self._lib.mavsdk_mission_raw_mission_import_data_destroy(
@@ -988,8 +1014,8 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(
-                f"import_qgroundcontrol_mission_from_string failed: {result}"
+            raise MissionRawError(
+                result, "import_qgroundcontrol_mission_from_string()", qgc_plan
             )
 
         py_result = MissionImportData.from_c_struct(result_out)
@@ -1012,7 +1038,9 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"import_mission_planner_mission failed: {result}")
+            raise MissionRawError(
+                result, "import_mission_planner_mission()", mission_planner_path
+            )
 
         py_result = MissionImportData.from_c_struct(result_out)
         self._lib.mavsdk_mission_raw_mission_import_data_destroy(
@@ -1036,8 +1064,10 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(
-                f"import_mission_planner_mission_from_string failed: {result}"
+            raise MissionRawError(
+                result,
+                "import_mission_planner_mission_from_string()",
+                mission_planner_mission,
             )
 
         py_result = MissionImportData.from_c_struct(result_out)
@@ -1056,7 +1086,7 @@ class MissionRaw:
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
-            raise Exception(f"is_mission_finished failed: {result}")
+            raise MissionRawError(result, "is_mission_finished()")
 
         return result_out.value
 

@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -64,6 +65,29 @@ class FailureResult(IntEnum):
     TIMEOUT = 7
 
 
+class FailureError(MavsdkError):
+    """Raised when a Failure request fails.
+
+    Attributes
+    ----------
+    result : FailureResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
+
+
 # ===== Internal C Structures =====
 
 # ===== Structures =====
@@ -106,7 +130,7 @@ class Failure:
         )
         result = FailureResult(result_code)
         if result != FailureResult.SUCCESS:
-            raise Exception(f"inject failed: {result}")
+            raise FailureError(result, "inject()", failure_unit, failure_type, instance)
 
         return result
 

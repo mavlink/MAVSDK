@@ -21,6 +21,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -39,6 +40,29 @@ class OffboardResult(IntEnum):
     TIMEOUT = 6
     NO_SETPOINT_SET = 7
     FAILED = 8
+
+
+class OffboardError(MavsdkError):
+    """Raised when a Offboard request fails.
+
+    Attributes
+    ----------
+    result : OffboardResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -598,7 +622,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"start failed: {result}")
+            raise OffboardError(result, "start()")
 
         return result
 
@@ -629,7 +653,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"stop failed: {result}")
+            raise OffboardError(result, "stop()")
 
         return result
 
@@ -651,7 +675,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_attitude failed: {result}")
+            raise OffboardError(result, "set_attitude()", attitude)
 
         return result
 
@@ -664,7 +688,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_actuator_control failed: {result}")
+            raise OffboardError(result, "set_actuator_control()", actuator_control)
 
         return result
 
@@ -677,7 +701,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_attitude_rate failed: {result}")
+            raise OffboardError(result, "set_attitude_rate()", attitude_rate)
 
         return result
 
@@ -690,7 +714,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_position_ned failed: {result}")
+            raise OffboardError(result, "set_position_ned()", position_ned_yaw)
 
         return result
 
@@ -703,7 +727,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_position_global failed: {result}")
+            raise OffboardError(result, "set_position_global()", position_global_yaw)
 
         return result
 
@@ -716,7 +740,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_velocity_body failed: {result}")
+            raise OffboardError(result, "set_velocity_body()", velocity_body_yawspeed)
 
         return result
 
@@ -729,7 +753,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_velocity_ned failed: {result}")
+            raise OffboardError(result, "set_velocity_ned()", velocity_ned_yaw)
 
         return result
 
@@ -743,7 +767,12 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_position_velocity_ned failed: {result}")
+            raise OffboardError(
+                result,
+                "set_position_velocity_ned()",
+                position_ned_yaw,
+                velocity_ned_yaw,
+            )
 
         return result
 
@@ -760,7 +789,13 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_position_velocity_acceleration_ned failed: {result}")
+            raise OffboardError(
+                result,
+                "set_position_velocity_acceleration_ned()",
+                position_ned_yaw,
+                velocity_ned_yaw,
+                acceleration_ned,
+            )
 
         return result
 
@@ -773,7 +808,7 @@ class Offboard:
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
-            raise Exception(f"set_acceleration_ned failed: {result}")
+            raise OffboardError(result, "set_acceleration_ned()", acceleration_ned)
 
         return result
 
