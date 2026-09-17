@@ -112,7 +112,7 @@ jobs:
           cp c/build/install/bin/cmavsdk.dll py/mavsdk/mavsdk/lib/cmavsdk.dll
           cd py/mavsdk
           python3 setup.py bdist_wheel --plat-name ${{ matrix.python_plat_name }}
-          delvewheel repair -w wheelhouse dist/mavsdk4-*-win*.whl
+          delvewheel repair -w wheelhouse dist/mavsdk-*-win*.whl
       - name: upload mavsdk wheel
         uses: actions/upload-artifact@v7
         with:

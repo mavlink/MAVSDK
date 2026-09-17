@@ -24,16 +24,11 @@ class BinaryDistribution(Distribution):
     def is_pure(self):
         return False
 
-#if not ver.startswith("v4"):
-#    raise RuntimeError(
-#        f"Version '{ver}' does not start with 'v4'. "
-#        "This is a reminder that if you're releasing a new major version,"
-#        "you need to update the package name below from 'mavsdk4' to"
-#        "'mavsdk5' (or whatever the new major is)."
-#    )
-
+# The version comes from the git tag. Only v4 and later may be published under
+# this name, which is enforced in .github/workflows/pypi.yml rather than here,
+# so that untagged builds off main (versioned after the last v3 tag) still work.
 setup(
-    name="mavsdk4",
+    name="mavsdk",
     use_scm_version={
         "root": "../..",
         "relative_to": __file__,
@@ -41,10 +36,15 @@ setup(
     },
     maintainer="Jonas Vautherin, Julian Oes",
     maintainer_email="dev@jonas.vautherin.ch, julian@oes.ch",
-    description="Python wrapper for mavsdk",
+    description="Python binding for MAVSDK",
     long_description=parse_long_description(),
     long_description_content_type="text/markdown",
     url="https://github.com/mavlink/MAVSDK",
+    project_urls={
+        "Documentation": "https://mavsdk.mavlink.io/main/en/python/",
+        "Migration from MAVSDK-Python": "https://mavsdk.mavlink.io/main/en/python/migration.html",
+        "Bug Reports": "https://github.com/mavlink/MAVSDK/issues",
+    },
     packages=find_packages(),
     license="BSD-3-Clause",
     classifiers=[

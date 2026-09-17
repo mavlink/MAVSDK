@@ -10,8 +10,7 @@ from .exceptions import MavsdkError, MavsdkConnectionError
 from .enums import ForwardingOption
 from .system import System
 from .vehicle import Vehicle
-
-__version__ = "0.1.0"
+from .. import __version__
 
 __all__ = [
     "Autopilot",

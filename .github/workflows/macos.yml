@@ -123,7 +123,7 @@ jobs:
           cp c/build/install/lib/libcmavsdk.dylib py/mavsdk/mavsdk/lib/libcmavsdk.dylib
           cd py/mavsdk
           python3 setup.py bdist_wheel --plat-name ${{ matrix.python_plat_name }}
-          delocate-wheel -w wheelhouse dist/mavsdk4-*-macosx_*.whl
+          delocate-wheel -w wheelhouse dist/mavsdk-*-macosx_*.whl
       - name: upload mavsdk wheel
         if: ${{ matrix.build-framework == 'OFF' }}
         uses: actions/upload-artifact@v7
