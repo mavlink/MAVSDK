@@ -40,7 +40,8 @@ def _find_library() -> ctypes.CDLL:
                 attempts.append(f"{lib_path}: {e}")
 
     raise LibraryNotFoundError(
-        f"Could not load cmavsdk library on {platform}. Tried:\n  " + "\n  ".join(attempts)
+        f"Could not load cmavsdk library on {platform}. Tried:\n  "
+        + "\n  ".join(attempts)
     )
 
 

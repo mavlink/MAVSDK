@@ -118,4 +118,3 @@ def install(package):
         return
     # Appended, so that a real module of the same name always wins.
     sys.meta_path.append(_LegacyModuleFinder(package))
-

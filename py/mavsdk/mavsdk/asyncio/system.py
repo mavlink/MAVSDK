@@ -20,7 +20,9 @@ class System:
 
     def __new__(cls, *args, **kwargs):
         # See mavsdk.system.System.__new__.
-        _legacy.check_system_args(len(args) == 1 and isinstance(args[0], _System), kwargs)
+        _legacy.check_system_args(
+            len(args) == 1 and isinstance(args[0], _System), kwargs
+        )
         return super().__new__(cls)
 
     def __init__(self, system: _System):

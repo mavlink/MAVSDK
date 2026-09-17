@@ -26,7 +26,9 @@ class System:
         # written for the gRPC wrapper, where `System()` was the entry point.
         # Checked here rather than in __init__, so that no half-constructed
         # instance reaches __del__.
-        _legacy.check_system_args(len(args) == 2 and isinstance(args[0], ctypes.CDLL), kwargs)
+        _legacy.check_system_args(
+            len(args) == 2 and isinstance(args[0], ctypes.CDLL), kwargs
+        )
         return super().__new__(cls)
 
     def __init__(self, lib: ctypes.CDLL, handle: ctypes.c_void_p):
