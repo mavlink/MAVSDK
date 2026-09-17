@@ -27,7 +27,7 @@ Bumping of the major version is unrelated to the stability of the library. E.g. 
 
 ## v4
 
-Most application code builds against v4 after renaming the includes. The rest of this section lists what else changed, starting with what breaks the build.
+Most application code builds against v4 after renaming the includes and adapting to a few type changes. This section lists what changed, starting with what breaks the build.
 
 ::: info
 Using MAVSDK from Python? From v4, the `mavsdk` package on PyPI is a new native binding. See [Migrating from MAVSDK-Python](../python/migration.md).
@@ -131,11 +131,32 @@ Generated enums now carry the numeric values from the proto definitions. Before,
 
 The new `Shell::Device` enum is not sequential either, so don't derive its values from their position.
 
-### Deprecated: MavlinkPassthrough and message interception
+### MAVLink C headers are opt-in
 
-`MavlinkPassthrough` and `Mavsdk::intercept_incoming_messages_async()` / `intercept_outgoing_messages_async()` are now marked deprecated, so builds with `-Werror` fail on them. They still work.
+The MAVSDK headers no longer include the MAVLink C headers, so `mavlink_message_t`, `MAV_TYPE`, `MAV_COMP_ID_...` and the other MAVLink C types, functions and macros are not available anymore just by including `mavsdk.hpp`.
 
-Use [MavlinkDirect](guide/mavlink_direct.md) instead, and `Mavsdk::subscribe_incoming_messages_json()` / `subscribe_outgoing_messages_json()` for interception. Unlike MavlinkPassthrough, MavlinkDirect does not depend on the MAVLink dialect MAVSDK was built with.
+The APIs that are built on those types, `MavlinkPassthrough` and `Mavsdk::intercept_incoming_messages_async()` / `intercept_outgoing_messages_async()`, are deprecated, and only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before including MAVSDK. Including `mavlink_passthrough.hpp` without it fails with an error.
+
+To keep using them for now, define it for your target:
+
+```cmake
+target_compile_definitions(your_app PRIVATE MAVSDK_ENABLE_MAVLINK_C_API)
+```
+
+This also brings back the MAVLink C headers. If your code only needs those, e.g. for `MAV_...` constants, you can also include your own copy of the MAVLink C headers instead.
+
+To move away from these APIs, use [MavlinkDirect](guide/mavlink_direct.md) instead of MavlinkPassthrough, and `Mavsdk::subscribe_incoming_messages_json()` / `subscribe_outgoing_messages_json()` instead of the interception. Unlike MavlinkPassthrough, MavlinkDirect does not depend on the MAVLink dialect MAVSDK was built with.
+
+### MAV_TYPE is an enum
+
+`Mavsdk::Configuration::get_mav_type()` and `set_mav_type()` use the new `MavType` enum instead of a `uint8_t`, and `to_vehicle_from_mav_type()` takes a `MavType` instead of a `MAV_TYPE`. The values of `MavType` are the same as for `MAV_TYPE`.
+
+```cpp
+// v3
+configuration.set_mav_type(MAV_TYPE_FIXED_WING);
+// v4
+configuration.set_mav_type(MavType::FixedWing);
+```
 
 ### Behaviour changes
 

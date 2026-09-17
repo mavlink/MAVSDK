@@ -133,12 +133,12 @@ void mavsdk_configuration_set_component_type(mavsdk_configuration_t config, mavs
 
 uint8_t mavsdk_configuration_get_mav_type(mavsdk_configuration_t config) {
     auto* cpp_config = reinterpret_cast<Mavsdk::Configuration*>(config);
-    return cpp_config->get_mav_type();
+    return static_cast<uint8_t>(cpp_config->get_mav_type());
 }
 
 void mavsdk_configuration_set_mav_type(mavsdk_configuration_t config, uint8_t mav_type) {
     auto* cpp_config = reinterpret_cast<Mavsdk::Configuration*>(config);
-    cpp_config->set_mav_type(mav_type);
+    cpp_config->set_mav_type(static_cast<mavsdk::MavType>(mav_type));
 }
 
 // --- Core ---

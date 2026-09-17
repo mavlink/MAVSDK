@@ -9,7 +9,7 @@ The functionality is here to stay but the specifics and types might still change
 
 ::: tip
 MavlinkDirect is the recommended replacement for [MavlinkPassthrough](../api_reference/classmavsdk_1_1_mavlink_passthrough.md).
-In MAVSDK v4, MavlinkPassthrough will only be available as a compile-time option.
+Since MAVSDK v4, MavlinkPassthrough is deprecated and only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined, see [API changes](../api_changes.md#mavlink-c-headers-are-opt-in).
 :::
 
 ::: info

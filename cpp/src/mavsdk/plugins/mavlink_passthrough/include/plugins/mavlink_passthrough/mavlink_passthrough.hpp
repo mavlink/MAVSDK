@@ -5,6 +5,12 @@
 #include <functional>
 #include <optional>
 
+// MavlinkPassthrough is deprecated. Its API is built on the MAVLink C types, which MAVSDK only
+// exposes on request. Use MavlinkDirect instead.
+#ifndef MAVSDK_ENABLE_MAVLINK_C_API
+#error "MavlinkPassthrough is deprecated and uses the MAVLink C headers, so it is only available if MAVSDK_ENABLE_MAVLINK_C_API is defined. Use MavlinkDirect instead, see https://mavsdk.mavlink.io/main/en/cpp/guide/mavlink_direct.html"
+#endif
+
 // This plugin provides/includes the mavlink 2.0 header files.
 #include "mavlink_include.hpp"
 #include "plugin_base.hpp"
