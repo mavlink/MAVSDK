@@ -27,9 +27,126 @@ translate_result(mavsdk::Shell::Result cpp_result) {
             return MAVSDK_SHELL_RESULT_NO_RESPONSE;
         case mavsdk::Shell::Result::Busy:
             return MAVSDK_SHELL_RESULT_BUSY;
+        case mavsdk::Shell::Result::InvalidArgument:
+            return MAVSDK_SHELL_RESULT_INVALID_ARGUMENT;
     }
 }
 
+static mavsdk::Shell::Device
+translate_device_from_c(mavsdk_shell_device_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_SHELL_DEVICE_TELEM1:
+            return mavsdk::Shell::Device::Telem1;
+        case MAVSDK_SHELL_DEVICE_TELEM2:
+            return mavsdk::Shell::Device::Telem2;
+        case MAVSDK_SHELL_DEVICE_GPS1:
+            return mavsdk::Shell::Device::Gps1;
+        case MAVSDK_SHELL_DEVICE_GPS2:
+            return mavsdk::Shell::Device::Gps2;
+        case MAVSDK_SHELL_DEVICE_SHELL:
+            return mavsdk::Shell::Device::Shell;
+        case MAVSDK_SHELL_DEVICE_SERIAL0:
+            return mavsdk::Shell::Device::Serial0;
+        case MAVSDK_SHELL_DEVICE_SERIAL1:
+            return mavsdk::Shell::Device::Serial1;
+        case MAVSDK_SHELL_DEVICE_SERIAL2:
+            return mavsdk::Shell::Device::Serial2;
+        case MAVSDK_SHELL_DEVICE_SERIAL3:
+            return mavsdk::Shell::Device::Serial3;
+        case MAVSDK_SHELL_DEVICE_SERIAL4:
+            return mavsdk::Shell::Device::Serial4;
+        case MAVSDK_SHELL_DEVICE_SERIAL5:
+            return mavsdk::Shell::Device::Serial5;
+        case MAVSDK_SHELL_DEVICE_SERIAL6:
+            return mavsdk::Shell::Device::Serial6;
+        case MAVSDK_SHELL_DEVICE_SERIAL7:
+            return mavsdk::Shell::Device::Serial7;
+        case MAVSDK_SHELL_DEVICE_SERIAL8:
+            return mavsdk::Shell::Device::Serial8;
+        case MAVSDK_SHELL_DEVICE_SERIAL9:
+            return mavsdk::Shell::Device::Serial9;
+    }
+    return mavsdk::Shell::Device::Telem1;
+}
+
+static mavsdk_shell_device_t
+translate_device_to_c(mavsdk::Shell::Device cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Shell::Device::Telem1:
+            return MAVSDK_SHELL_DEVICE_TELEM1;
+        case mavsdk::Shell::Device::Telem2:
+            return MAVSDK_SHELL_DEVICE_TELEM2;
+        case mavsdk::Shell::Device::Gps1:
+            return MAVSDK_SHELL_DEVICE_GPS1;
+        case mavsdk::Shell::Device::Gps2:
+            return MAVSDK_SHELL_DEVICE_GPS2;
+        case mavsdk::Shell::Device::Shell:
+            return MAVSDK_SHELL_DEVICE_SHELL;
+        case mavsdk::Shell::Device::Serial0:
+            return MAVSDK_SHELL_DEVICE_SERIAL0;
+        case mavsdk::Shell::Device::Serial1:
+            return MAVSDK_SHELL_DEVICE_SERIAL1;
+        case mavsdk::Shell::Device::Serial2:
+            return MAVSDK_SHELL_DEVICE_SERIAL2;
+        case mavsdk::Shell::Device::Serial3:
+            return MAVSDK_SHELL_DEVICE_SERIAL3;
+        case mavsdk::Shell::Device::Serial4:
+            return MAVSDK_SHELL_DEVICE_SERIAL4;
+        case mavsdk::Shell::Device::Serial5:
+            return MAVSDK_SHELL_DEVICE_SERIAL5;
+        case mavsdk::Shell::Device::Serial6:
+            return MAVSDK_SHELL_DEVICE_SERIAL6;
+        case mavsdk::Shell::Device::Serial7:
+            return MAVSDK_SHELL_DEVICE_SERIAL7;
+        case mavsdk::Shell::Device::Serial8:
+            return MAVSDK_SHELL_DEVICE_SERIAL8;
+        case mavsdk::Shell::Device::Serial9:
+            return MAVSDK_SHELL_DEVICE_SERIAL9;
+    }
+    return MAVSDK_SHELL_DEVICE_TELEM1;
+}
+
+
+
+static mavsdk::Shell::Receive
+translate_receive_from_c(const mavsdk_shell_receive_t& c_struct) {
+    mavsdk::Shell::Receive cpp_struct{};
+    if (c_struct.data) {
+        cpp_struct.data = c_struct.data;
+    }
+    cpp_struct.device = translate_device_from_c(c_struct.device);
+    return cpp_struct;
+}
+
+static mavsdk_shell_receive_t
+translate_receive_to_c(const mavsdk::Shell::Receive& cpp_struct) {
+    mavsdk_shell_receive_t c_struct{};
+    c_struct.data = strdup(cpp_struct.data.c_str());
+    c_struct.device = translate_device_to_c(cpp_struct.device);
+    return c_struct;
+}
+
+void mavsdk_shell_receive_destroy(
+    mavsdk_shell_receive_t* target) {
+    if (!target) return;
+    if (target->data) {
+        free((void*)target->data);
+        target->data = nullptr;
+    }
+}
+
+void mavsdk_shell_receive_array_destroy(
+    mavsdk_shell_receive_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_shell_receive_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 
@@ -138,11 +255,12 @@ void mavsdk_shell_destroy(mavsdk_shell_t shell) {
 mavsdk_shell_result_t
 mavsdk_shell_send(
     mavsdk_shell_t shell,
-    char* command)
+    char* command,
+    mavsdk_shell_device_t device)
 {
     auto wrapper = reinterpret_cast<mavsdk_shell_wrapper*>(shell);
 
-    auto ret_value = wrapper->cpp_plugin->send(        command);
+    auto ret_value = wrapper->cpp_plugin->send(        command,        translate_device_from_c(device));
 
     return translate_result(ret_value);
 }
@@ -157,10 +275,10 @@ mavsdk_shell_receive_handle_t mavsdk_shell_subscribe_receive(
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_receive(
         [callback, user_data](
-            const std::string& value) {
+            mavsdk::Shell::Receive value) {
                 if (callback) {
                     callback(
-                        strdup(value.c_str()),
+                        translate_receive_to_c(value),
                         user_data);
                 }
         });

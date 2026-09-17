@@ -4,9 +4,11 @@
 #include "callback_list.tpp"
 #include "mavsdk_export.h"
 
+#include <optional>
+
 namespace mavsdk {
 
-template class MAVSDK_TEMPL_INST CallbackList<std::string>;
+template class MAVSDK_TEMPL_INST CallbackList<Shell::Receive>;
 
 void ShellImpl::init()
 {
@@ -42,22 +44,103 @@ ShellImpl::~ShellImpl()
     _system_impl->unregister_plugin(this);
 }
 
-Shell::Result ShellImpl::send(std::string command)
+Shell::Result ShellImpl::send(std::string command, Shell::Device device)
 {
     if (!_system_impl->is_connected()) {
         return Shell::Result::NoSystem;
     }
 
+    const auto mav_device = device_to_mavlink(device);
+    if (!mav_device) {
+        return Shell::Result::InvalidArgument;
+    }
+
     // In case a newline at the end of the command is missing, we add it here.
-    if (command.back() != '\n') {
+    if (!command.empty() && command.back() != '\n') {
         command.append(1, '\n');
     }
 
-    if (!send_command_message(command)) {
+    if (!send_command_message(command, *mav_device)) {
         return Shell::Result::ConnectionError;
     }
 
     return Shell::Result::Success;
+}
+
+std::optional<uint8_t> ShellImpl::device_to_mavlink(Shell::Device device)
+{
+    switch (device) {
+        case Shell::Device::Telem1:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_TELEM1);
+        case Shell::Device::Telem2:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_TELEM2);
+        case Shell::Device::Gps1:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_GPS1);
+        case Shell::Device::Gps2:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_GPS2);
+        case Shell::Device::Shell:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL);
+        case Shell::Device::Serial0:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL0);
+        case Shell::Device::Serial1:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL1);
+        case Shell::Device::Serial2:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL2);
+        case Shell::Device::Serial3:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL3);
+        case Shell::Device::Serial4:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL4);
+        case Shell::Device::Serial5:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL5);
+        case Shell::Device::Serial6:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL6);
+        case Shell::Device::Serial7:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL7);
+        case Shell::Device::Serial8:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL8);
+        case Shell::Device::Serial9:
+            return static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL9);
+        default:
+            return std::nullopt;
+    }
+}
+
+Shell::Device ShellImpl::device_from_mavlink(uint8_t device)
+{
+    switch (device) {
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_TELEM1):
+            return Shell::Device::Telem1;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_TELEM2):
+            return Shell::Device::Telem2;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_GPS1):
+            return Shell::Device::Gps1;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_GPS2):
+            return Shell::Device::Gps2;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL):
+            return Shell::Device::Shell;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL0):
+            return Shell::Device::Serial0;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL1):
+            return Shell::Device::Serial1;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL2):
+            return Shell::Device::Serial2;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL3):
+            return Shell::Device::Serial3;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL4):
+            return Shell::Device::Serial4;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL5):
+            return Shell::Device::Serial5;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL6):
+            return Shell::Device::Serial6;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL7):
+            return Shell::Device::Serial7;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL8):
+            return Shell::Device::Serial8;
+        case static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_SERIAL9):
+            return Shell::Device::Serial9;
+        default:
+            return Shell::Device::Shell;
+    }
 }
 
 Shell::ReceiveHandle ShellImpl::subscribe_receive(const Shell::ReceiveCallback& callback)
@@ -70,7 +153,7 @@ void ShellImpl::unsubscribe_receive(Shell::ReceiveHandle handle)
     _receive.callbacks.unsubscribe(handle);
 }
 
-bool ShellImpl::send_command_message(std::string command)
+bool ShellImpl::send_command_message(std::string command, uint8_t device)
 {
     mavlink_message_t message;
 
@@ -81,7 +164,7 @@ bool ShellImpl::send_command_message(std::string command)
                     mavlink_address.component_id,
                     channel,
                     &message,
-                    static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
+                    device,
                     0,
                     timeout_ms,
                     0,
@@ -113,7 +196,7 @@ bool ShellImpl::send_command_message(std::string command)
             mavlink_address.component_id,
             channel,
             &message,
-            static_cast<uint8_t>(SERIAL_CONTROL_DEV::SERIAL_CONTROL_DEV_SHELL),
+            device,
             flags,
             timeout_ms,
             0,
@@ -147,8 +230,12 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
         response.erase(index, 4);
     }
 
+    Shell::Receive receive{};
+    receive.data = std::move(response);
+    receive.device = device_from_mavlink(serial_control.device);
+
     _receive.callbacks.queue(
-        response, [this](const auto& func) { _system_impl->call_user_callback(func); });
+        receive, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 } // namespace mavsdk
