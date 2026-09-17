@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <sstream>
 #include <cstring>
+#include <cstdlib>
 #include <ctime>
 
 using namespace mavsdk;
@@ -153,7 +154,7 @@ download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& 
     ftp.download_async(
         remote_file_path,
         local_path,
-        false,
+        true, // use_burst: without this every chunk costs a full round trip
         [&prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
                 int percentage = progress.total_bytes > 0 ?
@@ -214,6 +215,16 @@ int main(int argc, char** argv)
     }
 
     Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
+
+    // The default 500 ms is tight for a slow, high latency telemetry link.
+    if (const char* env_p = std::getenv("MAVSDK_TIMEOUT_S")) {
+        const double timeout_s = std::atof(env_p);
+        if (timeout_s > 0.0) {
+            std::cerr << "Using timeout of " << timeout_s << " s\n";
+            mavsdk.set_timeout_s(timeout_s);
+        }
+    }
+
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {

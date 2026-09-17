@@ -195,7 +195,14 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     // incrementing seq_number, and packets may arrive out of order or with
     // gaps that are filled by a subsequent re-request.  For burst we fall back
     // to the original duplicate-rejection approach.
-    const bool is_burst = std::holds_alternative<DownloadBurstItem>(work->item);
+    //
+    // This has to key off the opcode of the response, not the type of the work
+    // item: a burst download also issues plain CMD_READ_FILE reads to fill
+    // gaps, and those are strict request/response.  Exempting them from the
+    // seq check lets a late reply from a timed-out request through, where it
+    // no longer matches missing_data.front() and kills the whole transfer with
+    // an offset mismatch.  On a high latency link that happens routinely.
+    const bool is_burst = (payload->req_opcode == CMD_BURST_READ_FILE);
     if (!is_burst) {
         const auto expected_seq = static_cast<uint16_t>(work->payload.seq_number + 1);
         if (payload->seq_number != expected_seq) {
