@@ -11,6 +11,7 @@ from mavsdk.plugins.server_utility import (
     ServerUtility,
     StatusTextType,
     ServerUtilityResult,
+    ServerUtilityError,
 )
 
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     "ServerUtility",
     "StatusTextType",
     "ServerUtilityResult",
+    "ServerUtilityError",
 ]

@@ -14,6 +14,7 @@ from .winch import WinchAction
 
 # Import result enum
 from .winch import WinchResult
+from .winch import WinchError
 
 # Import data structures
 from .winch import StatusFlags
@@ -24,6 +25,7 @@ __all__ = [
     "Winch",
     "WinchAction",
     "WinchResult",
+    "WinchError",
     "StatusFlags",
     "Status",
 ]

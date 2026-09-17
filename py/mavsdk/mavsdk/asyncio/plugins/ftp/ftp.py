@@ -11,22 +11,11 @@ from typing import AsyncGenerator
 from mavsdk.plugins.ftp import (
     Ftp,
     FtpResult,
+    FtpError,
     FilesystemEntry,
     ListDirectoryData,
     ProgressData,
 )
-
-
-class FtpError(Exception):
-    """Raised when a Ftp operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class FtpAsync:
@@ -44,6 +33,17 @@ class FtpAsync:
     async def download(self, remote_file_path, local_dir, use_burst) -> AsyncGenerator:
         """
         Downloads a file to local directory.
+
+        Yields
+        ------
+        result, data
+            A ``FtpResult.NEXT`` result with the progress so
+            far, and finally a ``FtpResult.SUCCESS`` result.
+
+        Raises
+        ------
+        FtpError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -54,13 +54,28 @@ class FtpAsync:
         self._plugin.download_async(remote_file_path, local_dir, use_burst, callback)
         while True:
             result, data = await queue.get()
+            if result not in (FtpResult.NEXT, FtpResult.SUCCESS):
+                raise FtpError(
+                    result, "download()", remote_file_path, local_dir, use_burst
+                )
             yield result, data
-            if result != FtpResult.NEXT:
+            if result == FtpResult.SUCCESS:
                 break
 
     async def upload(self, local_file_path, remote_dir) -> AsyncGenerator:
         """
         Uploads local file to remote directory.
+
+        Yields
+        ------
+        result, data
+            A ``FtpResult.NEXT`` result with the progress so
+            far, and finally a ``FtpResult.SUCCESS`` result.
+
+        Raises
+        ------
+        FtpError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -71,8 +86,10 @@ class FtpAsync:
         self._plugin.upload_async(local_file_path, remote_dir, callback)
         while True:
             result, data = await queue.get()
+            if result not in (FtpResult.NEXT, FtpResult.SUCCESS):
+                raise FtpError(result, "upload()", local_file_path, remote_dir)
             yield result, data
-            if result != FtpResult.NEXT:
+            if result == FtpResult.SUCCESS:
                 break
 
     async def list_directory(self, remote_dir):

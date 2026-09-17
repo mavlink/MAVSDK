@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -53,6 +54,29 @@ class TuneResult(IntEnum):
     TUNE_TOO_LONG = 3
     ERROR = 4
     NO_SYSTEM = 5
+
+
+class TuneError(MavsdkError):
+    """Raised when a Tune request fails.
+
+    Attributes
+    ----------
+    result : TuneResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -156,7 +180,7 @@ class Tune:
         )
         result = TuneResult(result_code)
         if result != TuneResult.SUCCESS:
-            raise Exception(f"play_tune failed: {result}")
+            raise TuneError(result, "play_tune()", tune_description)
 
         return result
 

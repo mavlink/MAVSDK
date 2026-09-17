@@ -10,6 +10,7 @@ from .info import InfoAsync
 from mavsdk.plugins.info import (
     Info,
     InfoResult,
+    InfoError,
     FlightInfo,
     Identification,
     Product,
@@ -20,6 +21,7 @@ __all__ = [
     "InfoAsync",
     "Info",
     "InfoResult",
+    "InfoError",
     "FlightInfo",
     "Identification",
     "Product",

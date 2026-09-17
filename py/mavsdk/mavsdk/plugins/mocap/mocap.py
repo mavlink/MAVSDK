@@ -16,6 +16,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -31,6 +32,29 @@ class MocapResult(IntEnum):
     CONNECTION_ERROR = 3
     INVALID_REQUEST_DATA = 4
     UNSUPPORTED = 5
+
+
+class MocapError(MavsdkError):
+    """Raised when a Mocap request fails.
+
+    Attributes
+    ----------
+    result : MocapResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -721,7 +745,9 @@ class Mocap:
         )
         result = MocapResult(result_code)
         if result != MocapResult.SUCCESS:
-            raise Exception(f"set_vision_position_estimate failed: {result}")
+            raise MocapError(
+                result, "set_vision_position_estimate()", vision_position_estimate
+            )
 
         return result
 
@@ -734,7 +760,9 @@ class Mocap:
         )
         result = MocapResult(result_code)
         if result != MocapResult.SUCCESS:
-            raise Exception(f"set_vision_speed_estimate failed: {result}")
+            raise MocapError(
+                result, "set_vision_speed_estimate()", vision_speed_estimate
+            )
 
         return result
 
@@ -747,7 +775,9 @@ class Mocap:
         )
         result = MocapResult(result_code)
         if result != MocapResult.SUCCESS:
-            raise Exception(f"set_attitude_position_mocap failed: {result}")
+            raise MocapError(
+                result, "set_attitude_position_mocap()", attitude_position_mocap
+            )
 
         return result
 
@@ -760,7 +790,7 @@ class Mocap:
         )
         result = MocapResult(result_code)
         if result != MocapResult.SUCCESS:
-            raise Exception(f"set_odometry failed: {result}")
+            raise MocapError(result, "set_odometry()", odometry)
 
         return result
 

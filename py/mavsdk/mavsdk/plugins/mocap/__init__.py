@@ -15,6 +15,7 @@ from .mocap import Mocap
 
 # Import result enum
 from .mocap import MocapResult
+from .mocap import MocapError
 
 # Import data structures
 from .mocap import PositionBody
@@ -33,6 +34,7 @@ from .mocap import Odometry
 __all__ = [
     "Mocap",
     "MocapResult",
+    "MocapError",
     "PositionBody",
     "AngleBody",
     "SpeedBody",

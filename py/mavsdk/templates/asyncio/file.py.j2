@@ -10,6 +10,7 @@ from typing import AsyncGenerator{{ ", Tuple" if methods | selectattr("is_async"
 from mavsdk.plugins.{{ plugin_name.lower_snake_case }} import (
     {{ plugin_name.upper_camel_case }},
     {{ plugin_name.upper_camel_case }}Result,
+    {{ plugin_name.upper_camel_case }}Error,
     {% for enum in enums %}
     {{ enum.name.upper_camel_case }},
     {% endfor %}
@@ -19,18 +20,6 @@ from mavsdk.plugins.{{ plugin_name.lower_snake_case }} import (
     {% endif %}
     {% endfor %}
 )
-
-
-class {{ plugin_name.upper_camel_case }}Error(Exception):
-    """Raised when a {{ plugin_name.upper_camel_case }} operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class {{ plugin_name.upper_camel_case }}Async:
@@ -88,6 +77,17 @@ class {{ plugin_name.upper_camel_case }}Async:
     async def {{ method.name.lower_snake_case }}(self{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %}) -> AsyncGenerator:
         """
         {{ method.method_description }}
+
+        Yields
+        ------
+        result, data
+            A ``{{ plugin_name.upper_camel_case }}Result.NEXT`` result with the progress so
+            far, and finally a ``{{ plugin_name.upper_camel_case }}Result.SUCCESS`` result.
+
+        Raises
+        ------
+        {{ plugin_name.upper_camel_case }}Error
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -99,8 +99,10 @@ class {{ plugin_name.upper_camel_case }}Async:
         {% set result_enum = plugin_name.upper_camel_case + "Result" %}
         while True:
             result, data = await queue.get()
+            if result not in ({{ result_enum }}.NEXT, {{ result_enum }}.SUCCESS):
+                raise {{ plugin_name.upper_camel_case }}Error(result, "{{ method.name.lower_snake_case }}()"{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %})
             yield result, data
-            if result != {{ result_enum }}.NEXT:
+            if result == {{ result_enum }}.SUCCESS:
                 break
 
     {% endif %}

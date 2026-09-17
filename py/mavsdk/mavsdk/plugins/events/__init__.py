@@ -14,6 +14,7 @@ from .events import LogLevel
 
 # Import result enum
 from .events import EventsResult
+from .events import EventsError
 
 # Import data structures
 from .events import Event
@@ -27,6 +28,7 @@ __all__ = [
     "Events",
     "LogLevel",
     "EventsResult",
+    "EventsError",
     "Event",
     "HealthAndArmingCheckProblem",
     "HealthAndArmingCheckMode",

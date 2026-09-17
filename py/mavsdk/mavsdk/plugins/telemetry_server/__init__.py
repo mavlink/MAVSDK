@@ -18,6 +18,7 @@ from .telemetry_server import LandedState
 
 # Import result enum
 from .telemetry_server import TelemetryServerResult
+from .telemetry_server import TelemetryServerError
 
 # Import data structures
 from .telemetry_server import Position
@@ -56,6 +57,7 @@ __all__ = [
     "StatusTextType",
     "LandedState",
     "TelemetryServerResult",
+    "TelemetryServerError",
     "Position",
     "Heading",
     "Quaternion",

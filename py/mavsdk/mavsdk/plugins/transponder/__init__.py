@@ -16,6 +16,7 @@ from .transponder import AdsbAltitudeType
 
 # Import result enum
 from .transponder import TransponderResult
+from .transponder import TransponderError
 
 # Import data structures
 from .transponder import AdsbVehicle
@@ -26,5 +27,6 @@ __all__ = [
     "AdsbEmitterType",
     "AdsbAltitudeType",
     "TransponderResult",
+    "TransponderError",
     "AdsbVehicle",
 ]

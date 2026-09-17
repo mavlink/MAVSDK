@@ -15,6 +15,7 @@ from .failure import FailureType
 
 # Import result enum
 from .failure import FailureResult
+from .failure import FailureError
 
 # Import data structures
 
@@ -24,4 +25,5 @@ __all__ = [
     "FailureUnit",
     "FailureType",
     "FailureResult",
+    "FailureError",
 ]

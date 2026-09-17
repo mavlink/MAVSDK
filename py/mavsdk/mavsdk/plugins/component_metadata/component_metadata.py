@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -39,6 +40,29 @@ class ComponentMetadataResult(IntEnum):
     TIMEOUT = 6
     NO_SYSTEM = 7
     NOT_REQUESTED = 8
+
+
+class ComponentMetadataError(MavsdkError):
+    """Raised when a ComponentMetadata request fails.
+
+    Attributes
+    ----------
+    result : ComponentMetadataResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -214,7 +238,9 @@ class ComponentMetadata:
         )
         result = ComponentMetadataResult(result_code)
         if result != ComponentMetadataResult.SUCCESS:
-            raise Exception(f"get_metadata failed: {result}")
+            raise ComponentMetadataError(
+                result, "get_metadata()", compid, metadata_type
+            )
 
         py_result = MetadataData.from_c_struct(result_out)
         self._lib.mavsdk_component_metadata_metadata_data_destroy(

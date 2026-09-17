@@ -14,6 +14,7 @@ from .tune import SongElement
 
 # Import result enum
 from .tune import TuneResult
+from .tune import TuneError
 
 # Import data structures
 from .tune import TuneDescription
@@ -23,5 +24,6 @@ __all__ = [
     "Tune",
     "SongElement",
     "TuneResult",
+    "TuneError",
     "TuneDescription",
 ]

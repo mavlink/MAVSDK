@@ -13,6 +13,7 @@ from typing import AsyncGenerator
 from mavsdk.plugins.telemetry import (
     Telemetry,
     TelemetryResult,
+    TelemetryError,
     FixType,
     BatteryFunction,
     FlightMode,
@@ -52,18 +53,6 @@ from mavsdk.plugins.telemetry import (
     Altitude,
     Wind,
 )
-
-
-class TelemetryError(Exception):
-    """Raised when a Telemetry operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class TelemetryAsync:

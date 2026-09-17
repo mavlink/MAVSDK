@@ -11,6 +11,7 @@ from mavsdk.plugins.tune import (
     Tune,
     SongElement,
     TuneResult,
+    TuneError,
     TuneDescription,
 )
 
@@ -19,5 +20,6 @@ __all__ = [
     "Tune",
     "SongElement",
     "TuneResult",
+    "TuneError",
     "TuneDescription",
 ]

@@ -13,6 +13,7 @@ from .info import Info
 
 # Import result enum
 from .info import InfoResult
+from .info import InfoError
 
 # Import data structures
 from .info import FlightInfo
@@ -24,6 +25,7 @@ from .info import Version
 __all__ = [
     "Info",
     "InfoResult",
+    "InfoError",
     "FlightInfo",
     "Identification",
     "Product",

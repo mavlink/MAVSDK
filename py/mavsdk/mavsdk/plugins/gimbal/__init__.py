@@ -17,6 +17,7 @@ from .gimbal import SendMode
 
 # Import result enum
 from .gimbal import GimbalResult
+from .gimbal import GimbalError
 
 # Import data structures
 from .gimbal import Quaternion
@@ -34,6 +35,7 @@ __all__ = [
     "ControlMode",
     "SendMode",
     "GimbalResult",
+    "GimbalError",
     "Quaternion",
     "EulerAngle",
     "AngularVelocityBody",

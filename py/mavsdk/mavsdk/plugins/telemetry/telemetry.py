@@ -16,6 +16,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -109,6 +110,29 @@ class TelemetryResult(IntEnum):
     COMMAND_DENIED = 5
     TIMEOUT = 6
     UNSUPPORTED = 7
+
+
+class TelemetryError(MavsdkError):
+    """Raised when a Telemetry request fails.
+
+    Attributes
+    ----------
+    result : TelemetryResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -2287,7 +2311,7 @@ class Telemetry:
 
         self._lib.mavsdk_telemetry_landed_state(self._handle, ctypes.byref(result_out))
 
-        return landed_state(result_out.value)
+        return LandedState(result_out.value)
 
     def subscribe_armed(self, callback: Callable, user_data: Any = None):
         """Subscribe to armed updates."""
@@ -2357,7 +2381,7 @@ class Telemetry:
 
         self._lib.mavsdk_telemetry_vtol_state(self._handle, ctypes.byref(result_out))
 
-        return vtol_state(result_out.value)
+        return VtolState(result_out.value)
 
     def subscribe_attitude_quaternion(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'attitude' updates (quaternion)."""
@@ -2685,7 +2709,7 @@ class Telemetry:
 
         self._lib.mavsdk_telemetry_flight_mode(self._handle, ctypes.byref(result_out))
 
-        return flight_mode(result_out.value)
+        return FlightMode(result_out.value)
 
     def subscribe_health(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'health' updates."""
@@ -3506,7 +3530,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_position failed: {result}")
+            raise TelemetryError(result, "set_rate_position()", rate_hz)
 
         return result
 
@@ -3536,7 +3560,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_home failed: {result}")
+            raise TelemetryError(result, "set_rate_home()", rate_hz)
 
         return result
 
@@ -3568,7 +3592,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_in_air failed: {result}")
+            raise TelemetryError(result, "set_rate_in_air()", rate_hz)
 
         return result
 
@@ -3602,7 +3626,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_landed_state failed: {result}")
+            raise TelemetryError(result, "set_rate_landed_state()", rate_hz)
 
         return result
 
@@ -3636,7 +3660,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_vtol_state failed: {result}")
+            raise TelemetryError(result, "set_rate_vtol_state()", rate_hz)
 
         return result
 
@@ -3670,7 +3694,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_attitude_quaternion failed: {result}")
+            raise TelemetryError(result, "set_rate_attitude_quaternion()", rate_hz)
 
         return result
 
@@ -3704,7 +3728,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_attitude_euler failed: {result}")
+            raise TelemetryError(result, "set_rate_attitude_euler()", rate_hz)
 
         return result
 
@@ -3739,7 +3763,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_velocity_ned failed: {result}")
+            raise TelemetryError(result, "set_rate_velocity_ned()", rate_hz)
 
         return result
 
@@ -3773,7 +3797,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_gps_info failed: {result}")
+            raise TelemetryError(result, "set_rate_gps_info()", rate_hz)
 
         return result
 
@@ -3807,7 +3831,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_raw_gps failed: {result}")
+            raise TelemetryError(result, "set_rate_raw_gps()", rate_hz)
 
         return result
 
@@ -3841,7 +3865,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_battery failed: {result}")
+            raise TelemetryError(result, "set_rate_battery()", rate_hz)
 
         return result
 
@@ -3875,7 +3899,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_rc_status failed: {result}")
+            raise TelemetryError(result, "set_rate_rc_status()", rate_hz)
 
         return result
 
@@ -3909,7 +3933,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_actuator_control_target failed: {result}")
+            raise TelemetryError(result, "set_rate_actuator_control_target()", rate_hz)
 
         return result
 
@@ -3943,7 +3967,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_actuator_output_status failed: {result}")
+            raise TelemetryError(result, "set_rate_actuator_output_status()", rate_hz)
 
         return result
 
@@ -3977,7 +4001,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_odometry failed: {result}")
+            raise TelemetryError(result, "set_rate_odometry()", rate_hz)
 
         return result
 
@@ -4011,7 +4035,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_position_velocity_ned failed: {result}")
+            raise TelemetryError(result, "set_rate_position_velocity_ned()", rate_hz)
 
         return result
 
@@ -4045,7 +4069,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_ground_truth failed: {result}")
+            raise TelemetryError(result, "set_rate_ground_truth()", rate_hz)
 
         return result
 
@@ -4079,7 +4103,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_fixedwing_metrics failed: {result}")
+            raise TelemetryError(result, "set_rate_fixedwing_metrics()", rate_hz)
 
         return result
 
@@ -4109,7 +4133,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_imu failed: {result}")
+            raise TelemetryError(result, "set_rate_imu()", rate_hz)
 
         return result
 
@@ -4143,7 +4167,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_scaled_imu failed: {result}")
+            raise TelemetryError(result, "set_rate_scaled_imu()", rate_hz)
 
         return result
 
@@ -4177,7 +4201,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_raw_imu failed: {result}")
+            raise TelemetryError(result, "set_rate_raw_imu()", rate_hz)
 
         return result
 
@@ -4211,7 +4235,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_unix_epoch_time failed: {result}")
+            raise TelemetryError(result, "set_rate_unix_epoch_time()", rate_hz)
 
         return result
 
@@ -4245,7 +4269,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_distance_sensor failed: {result}")
+            raise TelemetryError(result, "set_rate_distance_sensor()", rate_hz)
 
         return result
 
@@ -4279,7 +4303,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_altitude failed: {result}")
+            raise TelemetryError(result, "set_rate_altitude()", rate_hz)
 
         return result
 
@@ -4311,7 +4335,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"set_rate_health failed: {result}")
+            raise TelemetryError(result, "set_rate_health()", rate_hz)
 
         return result
 
@@ -4348,7 +4372,7 @@ class Telemetry:
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
-            raise Exception(f"get_gps_global_origin failed: {result}")
+            raise TelemetryError(result, "get_gps_global_origin()")
 
         py_result = GpsGlobalOrigin.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_gps_global_origin_destroy(ctypes.byref(result_out))

@@ -21,6 +21,7 @@ from .camera import PhotosRange
 
 # Import result enum
 from .camera import CameraResult
+from .camera import CameraError
 
 # Import data structures
 from .camera import Option
@@ -47,6 +48,7 @@ __all__ = [
     "Mode",
     "PhotosRange",
     "CameraResult",
+    "CameraError",
     "Option",
     "Setting",
     "SettingOptions",

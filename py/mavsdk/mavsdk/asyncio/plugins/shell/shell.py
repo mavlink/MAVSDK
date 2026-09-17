@@ -16,21 +16,10 @@ from typing import AsyncGenerator
 from mavsdk.plugins.shell import (
     Shell,
     ShellResult,
+    ShellError,
     Device,
     Receive,
 )
-
-
-class ShellError(Exception):
-    """Raised when a Shell operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class ShellAsync:

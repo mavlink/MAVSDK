@@ -12,6 +12,7 @@ from mavsdk.plugins.failure import (
     FailureUnit,
     FailureType,
     FailureResult,
+    FailureError,
 )
 
 __all__ = [
@@ -20,4 +21,5 @@ __all__ = [
     "FailureUnit",
     "FailureType",
     "FailureResult",
+    "FailureError",
 ]

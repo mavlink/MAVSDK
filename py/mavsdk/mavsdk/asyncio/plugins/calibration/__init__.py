@@ -10,6 +10,7 @@ from .calibration import CalibrationAsync
 from mavsdk.plugins.calibration import (
     Calibration,
     CalibrationResult,
+    CalibrationError,
     ProgressData,
 )
 
@@ -17,5 +18,6 @@ __all__ = [
     "CalibrationAsync",
     "Calibration",
     "CalibrationResult",
+    "CalibrationError",
     "ProgressData",
 ]

@@ -13,6 +13,7 @@ from .calibration import Calibration
 
 # Import result enum
 from .calibration import CalibrationResult
+from .calibration import CalibrationError
 
 # Import data structures
 from .calibration import ProgressData
@@ -21,5 +22,6 @@ from .calibration import ProgressData
 __all__ = [
     "Calibration",
     "CalibrationResult",
+    "CalibrationError",
     "ProgressData",
 ]

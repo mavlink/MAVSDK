@@ -11,6 +11,7 @@ from mavsdk.plugins.arm_authorizer_server import (
     ArmAuthorizerServer,
     RejectionReason,
     ArmAuthorizerServerResult,
+    ArmAuthorizerServerError,
 )
 
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     "ArmAuthorizerServer",
     "RejectionReason",
     "ArmAuthorizerServerResult",
+    "ArmAuthorizerServerError",
 ]

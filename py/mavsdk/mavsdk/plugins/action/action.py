@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -53,6 +54,29 @@ class ActionResult(IntEnum):
     UNSUPPORTED = 12
     FAILED = 13
     INVALID_ARGUMENT = 14
+
+
+class ActionError(MavsdkError):
+    """Raised when a Action request fails.
+
+    Attributes
+    ----------
+    result : ActionResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -114,7 +138,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"arm failed: {result}")
+            raise ActionError(result, "arm()")
 
         return result
 
@@ -148,7 +172,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"arm_force failed: {result}")
+            raise ActionError(result, "arm_force()")
 
         return result
 
@@ -180,7 +204,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"disarm failed: {result}")
+            raise ActionError(result, "disarm()")
 
         return result
 
@@ -214,7 +238,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"takeoff failed: {result}")
+            raise ActionError(result, "takeoff()")
 
         return result
 
@@ -245,7 +269,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"land failed: {result}")
+            raise ActionError(result, "land()")
 
         return result
 
@@ -276,7 +300,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"reboot failed: {result}")
+            raise ActionError(result, "reboot()")
 
         return result
 
@@ -309,7 +333,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"shutdown failed: {result}")
+            raise ActionError(result, "shutdown()")
 
         return result
 
@@ -340,7 +364,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"terminate failed: {result}")
+            raise ActionError(result, "terminate()")
 
         return result
 
@@ -372,7 +396,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"kill failed: {result}")
+            raise ActionError(result, "kill()")
 
         return result
 
@@ -405,7 +429,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"return_to_launch failed: {result}")
+            raise ActionError(result, "return_to_launch()")
 
         return result
 
@@ -459,7 +483,14 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"goto_location failed: {result}")
+            raise ActionError(
+                result,
+                "goto_location()",
+                latitude_deg,
+                longitude_deg,
+                absolute_altitude_m,
+                yaw_deg,
+            )
 
         return result
 
@@ -519,7 +550,14 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"goto_location_fixedwing failed: {result}")
+            raise ActionError(
+                result,
+                "goto_location_fixedwing()",
+                latitude_deg,
+                longitude_deg,
+                absolute_altitude_m,
+                loiter_radius_m,
+            )
 
         return result
 
@@ -584,7 +622,16 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"do_orbit failed: {result}")
+            raise ActionError(
+                result,
+                "do_orbit()",
+                radius_m,
+                velocity_ms,
+                yaw_behavior,
+                latitude_deg,
+                longitude_deg,
+                absolute_altitude_m,
+            )
 
         return result
 
@@ -619,7 +666,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"hold failed: {result}")
+            raise ActionError(result, "hold()")
 
         return result
 
@@ -654,7 +701,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"set_actuator failed: {result}")
+            raise ActionError(result, "set_actuator()", index, value)
 
         return result
 
@@ -690,7 +737,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"set_relay failed: {result}")
+            raise ActionError(result, "set_relay()", index, setting)
 
         return result
 
@@ -723,7 +770,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"transition_to_fixedwing failed: {result}")
+            raise ActionError(result, "transition_to_fixedwing()")
 
         return result
 
@@ -758,7 +805,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"transition_to_multicopter failed: {result}")
+            raise ActionError(result, "transition_to_multicopter()")
 
         return result
 
@@ -791,7 +838,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"get_takeoff_altitude failed: {result}")
+            raise ActionError(result, "get_takeoff_altitude()")
 
         return result_out.value
 
@@ -825,7 +872,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"set_takeoff_altitude failed: {result}")
+            raise ActionError(result, "set_takeoff_altitude()", altitude)
 
         return result
 
@@ -862,7 +909,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"get_return_to_launch_altitude failed: {result}")
+            raise ActionError(result, "get_return_to_launch_altitude()")
 
         return result_out.value
 
@@ -896,7 +943,9 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"set_return_to_launch_altitude failed: {result}")
+            raise ActionError(
+                result, "set_return_to_launch_altitude()", relative_altitude_m
+            )
 
         return result
 
@@ -933,7 +982,7 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"set_current_speed failed: {result}")
+            raise ActionError(result, "set_current_speed()", speed_m_s)
 
         return result
 
@@ -948,7 +997,13 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"set_gps_global_origin failed: {result}")
+            raise ActionError(
+                result,
+                "set_gps_global_origin()",
+                latitude_deg,
+                longitude_deg,
+                absolute_altitude_m,
+            )
 
         return result
 
@@ -966,7 +1021,14 @@ class Action:
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
-            raise Exception(f"set_home failed: {result}")
+            raise ActionError(
+                result,
+                "set_home()",
+                use_current_location,
+                latitude_deg,
+                longitude_deg,
+                absolute_altitude_m,
+            )
 
         return result
 

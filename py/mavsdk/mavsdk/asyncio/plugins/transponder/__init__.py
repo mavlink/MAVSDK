@@ -13,6 +13,7 @@ from mavsdk.plugins.transponder import (
     AdsbEmitterType,
     AdsbAltitudeType,
     TransponderResult,
+    TransponderError,
     AdsbVehicle,
 )
 
@@ -22,5 +23,6 @@ __all__ = [
     "AdsbEmitterType",
     "AdsbAltitudeType",
     "TransponderResult",
+    "TransponderError",
     "AdsbVehicle",
 ]

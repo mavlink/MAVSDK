@@ -14,6 +14,7 @@ from .action_server import FlightMode
 
 # Import result enum
 from .action_server import ActionServerResult
+from .action_server import ActionServerError
 
 # Import data structures
 from .action_server import AllowableFlightModes
@@ -24,6 +25,7 @@ __all__ = [
     "ActionServer",
     "FlightMode",
     "ActionServerResult",
+    "ActionServerError",
     "AllowableFlightModes",
     "ArmDisarm",
 ]
