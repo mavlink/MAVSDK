@@ -27,21 +27,22 @@ def _find_library() -> ctypes.CDLL:
         Path.cwd() / "lib",  # fallback
     ]
 
-    print(f"Searching for library on {platform}...")
-
+    attempts = []
     for path in search_paths:
         for name in names:
             lib_path = path / name
-            if lib_path.exists():
-                try:
-                    lib = ctypes.CDLL(str(lib_path))
-                    print(f"✓ Loaded library: {lib_path}")
-                    return lib
-                except OSError as e:
-                    print(f"✗ Failed to load {lib_path}: {e}")
-                    continue
+            if not lib_path.exists():
+                attempts.append(f"{lib_path}: not found")
+                continue
+            try:
+                return ctypes.CDLL(str(lib_path))
+            except OSError as e:
+                attempts.append(f"{lib_path}: {e}")
 
-    raise LibraryNotFoundError(f"Could not find cmavsdk library. Tried: {names}")
+    raise LibraryNotFoundError(
+        f"Could not load cmavsdk library on {platform}. Tried:\n  "
+        + "\n  ".join(attempts)
+    )
 
 
 _cmavsdk_lib = _find_library()

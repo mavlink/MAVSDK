@@ -69,8 +69,8 @@ def test_async_subscription_outlives_mavsdk():
     run_scenario("""
         import asyncio
 
-        from aiomavsdk import ComponentType, Configuration, Mavsdk
-        from aiomavsdk.plugins.mission_raw_server import MissionRawServerAsync
+        from mavsdk.asyncio import ComponentType, Configuration, Mavsdk
+        from mavsdk.asyncio.plugins.mission_raw_server import MissionRawServerAsync
 
         async def main():
             mavsdk = Mavsdk(

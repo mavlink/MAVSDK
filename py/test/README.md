@@ -7,8 +7,8 @@ between them. Nothing is mocked: the assertions are made on what the server
 side actually received.
 
 They are the Python counterpart of `cpp/src/system_tests`, and they cover both
-wrappers: `test_mission_raw_upload.py` for `mavsdk`, and
-`test_mission_raw_upload_async.py` for `aiomavsdk`.
+APIs: `test_mission_raw_upload.py` for `mavsdk`, and
+`test_mission_raw_upload_async.py` for `mavsdk.asyncio`.
 
 ## Requirements
 
@@ -36,10 +36,10 @@ Building the C++ library with `-DBUILD_SHARED_LIBS=OFF` is what makes
 `libcmavsdk.so` self-contained. If you build it shared instead, you also need
 `LD_LIBRARY_PATH` to point at the C++ library when running the tests.
 
-Then install the test dependencies and both bindings from this working tree:
+Then install the test dependencies and the bindings from this working tree:
 
 ```bash
-pip install -r py/requirements-dev.txt -e py/mavsdk -e py/aiomavsdk
+pip install -r py/requirements-dev.txt -e py/mavsdk
 ```
 
 ## Running

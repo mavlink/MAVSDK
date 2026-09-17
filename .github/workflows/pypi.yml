@@ -1,0 +1,97 @@
+name: PyPI
+
+# Publishes the "mavsdk" Python wheels of a release to PyPI.
+#
+# The wheels are built by linux.yml, macos.yml and windows.yml, which attach them
+# to the GitHub release when a tag is pushed. Once all of them have finished, run
+# this workflow manually with that tag.
+#
+# Authentication uses PyPI trusted publishing: the "mavsdk" project on PyPI trusts
+# this workflow file in the "pypi" environment, so no token is stored here.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to publish, e.g. v4.0.0'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish ${{ inputs.tag }}
+    runs-on: ubuntu-24.04
+    environment:
+      name: pypi
+      url: https://pypi.org/project/mavsdk/
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download wheels from release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern '*.whl' --dir dist
+
+      - name: Check wheels
+        env:
+          TAG: ${{ inputs.tag }}
+        shell: python
+        run: |
+          import os
+          import re
+          import sys
+
+          tag = os.environ["TAG"]
+          wheels = sorted(os.listdir("dist"))
+          print("\n".join(wheels))
+
+          # The name "mavsdk" belonged to the gRPC-based MAVSDK-Python up to 3.x.
+          # Nothing older than v4 may be published under it from this repository.
+          match = re.fullmatch(r"v(\d+)\.\d+\.\d+(-.+)?", tag)
+          if not match or int(match.group(1)) < 4:
+              sys.exit(f"Tag '{tag}' is not v4 or later")
+
+          versions = set()
+          for wheel in wheels:
+              match = re.fullmatch(r"mavsdk-([^-]+)-.+\.whl", wheel)
+              if not match:
+                  sys.exit(f"Unexpected file: {wheel}")
+              versions.add(match.group(1))
+          if len(versions) != 1:
+              sys.exit(f"Wheels have differing versions: {sorted(versions)}")
+          version = versions.pop()
+          if int(version.split(".")[0]) < 4:
+              sys.exit(f"Version {version} is older than 4")
+          if re.search(r"(dev|post|\+)", version):
+              sys.exit(f"Version {version} is not a release version, is the tag on the right commit?")
+
+          expected = {
+              "Linux x86_64": r"manylinux.*_x86_64\.whl",
+              "Linux aarch64": r"manylinux.*_aarch64\.whl",
+              "macOS x86_64": r"macosx_.*_x86_64\.whl",
+              "macOS arm64": r"macosx_.*_arm64\.whl",
+              "Windows x86": r"win32\.whl",
+              "Windows x64": r"win_amd64\.whl",
+              "Windows arm64": r"win_arm64\.whl",
+          }
+          missing = [
+              platform
+              for platform, pattern in expected.items()
+              if not any(re.search(pattern, wheel) for wheel in wheels)
+          ]
+          if missing:
+              sys.exit(f"Missing wheels for: {', '.join(missing)}. Did all release builds finish?")
+          if len(wheels) != len(expected):
+              sys.exit(f"Expected {len(expected)} wheels, got {len(wheels)}")
+
+          print(f"Publishing mavsdk {version}")
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true

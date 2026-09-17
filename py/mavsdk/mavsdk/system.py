@@ -3,6 +3,7 @@ import weakref
 
 from typing import Any, Callable, List
 
+from . import _legacy
 from .autopilot import Autopilot
 from .cmavsdk_loader import _cmavsdk_lib
 from .vehicle import Vehicle
@@ -19,6 +20,16 @@ class System:
     destroys itself, because Python's garbage collector gives no ordering guarantee
     between the two.
     """
+
+    def __new__(cls, *args, **kwargs):
+        # Systems are handed out by Mavsdk. Anything else is most likely code
+        # written for the gRPC wrapper, where `System()` was the entry point.
+        # Checked here rather than in __init__, so that no half-constructed
+        # instance reaches __del__.
+        _legacy.check_system_args(
+            len(args) == 2 and isinstance(args[0], ctypes.CDLL), kwargs
+        )
+        return super().__new__(cls)
 
     def __init__(self, lib: ctypes.CDLL, handle: ctypes.c_void_p):
         self._lib = lib
