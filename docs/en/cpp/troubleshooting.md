@@ -10,15 +10,10 @@ If a callback takes more than one second, the user sees the warning:
 See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks (system_impl.cpp:327)
 ```
 
-At 10 queued callbacks, the user sees the warning:
+Once 100 callbacks are queued, MAVSDK starts dropping the oldest queued updates of subscriptions, such as telemetry, so that a slow subscriber gets recent data with gaps. Results of requests, e.g. of a command or a mission upload, are never dropped. While updates are being dropped, the user sees this error at most every 5 seconds:
 ```
-[02:56:26|Warn ] User callback queue too slow.
-See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks (system_impl.cpp:1213)
-```
-At 100 queued callbacks, the user sees the error message:
-```
-[02:56:35|Error] User callback queue overflown
-See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks (system_impl.cpp:1218)
+[02:56:35|Error] Dropping subscription callbacks (42 so far): a subscriber is not keeping up.
+See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks (mavsdk_impl.cpp:1702)
 ```
 
 ### How to debug this?
