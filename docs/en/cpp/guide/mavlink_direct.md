@@ -248,15 +248,11 @@ auto handle = mavlink_direct.subscribe_message(
     "GLOBAL_POSITION_INT",
     [](MavlinkDirect::MavlinkMessage message) {
         std::cout << "Received position: " << message.fields_json << std::endl;
-
-        // And this could now be parsed by nlohmann/json:
-        // auto json = nlohmann::json::parse(message.fields_json);
-        // auto lat = json["lat"].get<int>() / 1e7;  // Convert from degrees * 1e7
-        // auto lon = json["lon"].get<int>() / 1e7;
-        // std::cout << "Position: " << lat << ", " << lon << std::endl;
     }
 );
 ```
+
+See [Getting at the fields](#getting-at-the-fields) for how to parse `fields_json`.
 
 Or all messages using the empty string `""`:
 
