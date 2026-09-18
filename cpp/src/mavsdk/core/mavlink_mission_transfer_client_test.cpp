@@ -1,7 +1,9 @@
 #include <algorithm>
 #include <chrono>
 #include <future>
+#include <thread>
 #include <gtest/gtest.h>
+#include <asio/executor_work_guard.hpp>
 #include <asio/io_context.hpp>
 
 #include "mavlink_mission_transfer_client.hpp"
@@ -1617,6 +1619,43 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionCanBeCancelled)
 
     do_work();
     EXPECT_TRUE(is_idle());
+}
+
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionCancelledFromAnotherThreadIsRetiredSafely)
+{
+    // A caller that cancels holds a reference to the work item, so it can end up being the
+    // one that destroys it, on its own thread, once the queue has retired it. The message
+    // handler is confined to the io thread, so the item has to be unregistered by then.
+
+    // Keep the io_context from going idle, as it would be in a running Mavsdk instance: the
+    // message handler only tolerates access from another thread once it is stopped.
+    auto work_guard = asio::make_work_guard(io_context);
+
+    ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
+
+    std::promise<void> prom;
+    auto fut = prom.get_future();
+    auto transfer = mmt.download_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        target_address.system_id,
+        [&prom](Result result, const std::vector<ItemInt>& items) {
+            UNUSED(items);
+            EXPECT_EQ(result, Result::Cancelled);
+            prom.set_value();
+        });
+    do_work();
+
+    auto ptr = transfer.lock();
+    ASSERT_TRUE(ptr);
+    ptr->cancel();
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    do_work();
+    EXPECT_TRUE(is_idle());
+
+    // Ours is now the last reference, so this destroys the work item.
+    std::thread([item = std::move(ptr)]() {}).join();
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionWithProgress)
