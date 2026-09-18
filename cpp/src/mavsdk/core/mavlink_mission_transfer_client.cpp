@@ -179,6 +179,10 @@ void MavlinkMissionTransferClient::do_work()
         work->start();
     }
     if (work->is_done()) {
+        // Unregister here, while we are on the io thread. Retiring the item can leave the
+        // last reference with whoever cancelled it, which is usually a user thread, and the
+        // destructor must then not touch the message handler anymore.
+        work->unregister_messages();
         _work_queue.pop_front();
         if (!_work_queue.empty()) {
             asio::post(_io_context, [this] { do_work(); });
@@ -243,6 +247,18 @@ bool MavlinkMissionTransferClient::WorkItem::is_done()
     return _done;
 }
 
+void MavlinkMissionTransferClient::WorkItem::unregister_messages()
+{
+    // No lock: this either runs on the io thread while the item is still in the queue, or
+    // from the destructor, by which point no other reference to the item is left.
+    if (_unregistered) {
+        return;
+    }
+    _unregistered = true;
+
+    _message_handler.unregister_all_on_io_thread(this);
+}
+
 MavlinkMissionTransferClient::UploadWorkItem::UploadWorkItem(
     Sender& sender,
     MavlinkMessageHandler& message_handler,
@@ -280,7 +296,7 @@ MavlinkMissionTransferClient::UploadWorkItem::UploadWorkItem(
 
 MavlinkMissionTransferClient::UploadWorkItem::~UploadWorkItem()
 {
-    _message_handler.unregister_all_on_io_thread(this);
+    unregister_messages();
     _timeout_handler.remove(_cookie);
 }
 
@@ -668,7 +684,7 @@ MavlinkMissionTransferClient::DownloadWorkItem::DownloadWorkItem(
 
 MavlinkMissionTransferClient::DownloadWorkItem::~DownloadWorkItem()
 {
-    _message_handler.unregister_all_on_io_thread(this);
+    unregister_messages();
     _timeout_handler.remove(_cookie);
 }
 
@@ -909,7 +925,7 @@ MavlinkMissionTransferClient::ClearWorkItem::ClearWorkItem(
 
 MavlinkMissionTransferClient::ClearWorkItem::~ClearWorkItem()
 {
-    _message_handler.unregister_all_on_io_thread(this);
+    unregister_messages();
     _timeout_handler.remove(_cookie);
 }
 
@@ -1058,7 +1074,7 @@ MavlinkMissionTransferClient::SetCurrentWorkItem::SetCurrentWorkItem(
 
 MavlinkMissionTransferClient::SetCurrentWorkItem::~SetCurrentWorkItem()
 {
-    _message_handler.unregister_all_on_io_thread(this);
+    unregister_messages();
     _timeout_handler.remove(_cookie);
 }
 

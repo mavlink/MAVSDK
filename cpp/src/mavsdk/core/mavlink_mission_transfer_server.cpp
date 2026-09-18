@@ -108,6 +108,10 @@ void MavlinkMissionTransferServer::do_work()
         work->start();
     }
     if (work->is_done()) {
+        // Unregister here, while we are on the io thread. Retiring the item can leave the
+        // last reference with whoever cancelled it, which is usually a user thread, and the
+        // destructor must then not touch the message handler anymore.
+        work->unregister_messages();
         _work_queue.pop_front();
         if (!_work_queue.empty()) {
             asio::post(_io_context, [this] { do_work(); });
@@ -172,6 +176,18 @@ bool MavlinkMissionTransferServer::WorkItem::is_done()
     return _done;
 }
 
+void MavlinkMissionTransferServer::WorkItem::unregister_messages()
+{
+    // No lock: this either runs on the io thread while the item is still in the queue, or
+    // from the destructor, by which point no other reference to the item is left.
+    if (_unregistered) {
+        return;
+    }
+    _unregistered = true;
+
+    _message_handler.unregister_all_on_io_thread(this);
+}
+
 MavlinkMissionTransferServer::ReceiveIncomingMission::ReceiveIncomingMission(
     Sender& sender,
     MavlinkMessageHandler& message_handler,
@@ -192,7 +208,7 @@ MavlinkMissionTransferServer::ReceiveIncomingMission::ReceiveIncomingMission(
 
 MavlinkMissionTransferServer::ReceiveIncomingMission::~ReceiveIncomingMission()
 {
-    _message_handler.unregister_all_on_io_thread(this);
+    unregister_messages();
     _timeout_handler.remove(_cookie);
 }
 
@@ -406,7 +422,7 @@ MavlinkMissionTransferServer::SendOutgoingMission::SendOutgoingMission(
 
 MavlinkMissionTransferServer::SendOutgoingMission::~SendOutgoingMission()
 {
-    _message_handler.unregister_all_on_io_thread(this);
+    unregister_messages();
     _timeout_handler.remove(_cookie);
 }
 
