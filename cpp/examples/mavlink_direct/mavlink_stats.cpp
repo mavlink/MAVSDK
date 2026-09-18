@@ -44,19 +44,14 @@ int main(int argc, char** argv)
 
     // Wait for the system to connect
     std::cout << "Waiting for system to connect..." << std::endl;
-    while (mavsdk.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-
-    // Get the connected system
-    auto system = mavsdk.systems().at(0);
-    if (!system->is_connected()) {
-        std::cerr << "System not connected" << std::endl;
+    auto system = mavsdk.first_autopilot(3.0);
+    if (!system) {
+        std::cerr << "Timed out waiting for system" << std::endl;
         return 1;
     }
 
     // Instantiate the plugin
-    auto mavlink_direct = mavsdk::MavlinkDirect{system};
+    auto mavlink_direct = mavsdk::MavlinkDirect{system.value()};
 
     // Message statistics tracking
     std::map<std::string, unsigned> message_counts;
