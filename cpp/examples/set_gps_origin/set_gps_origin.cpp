@@ -76,6 +76,15 @@ int main(int argc, char** argv)
               << ", lon=" << initial_position.longitude_deg
               << ", alt=" << initial_position.absolute_altitude_m << "m AMSL\n";
 
+    // A previous flight can leave the vehicle in Land mode, in which PX4
+    // refuses to arm. Switch to Hold first.
+    std::cout << "Switching to Hold...\n";
+    const Action::Result initial_hold_result = action.hold();
+    if (initial_hold_result != Action::Result::Success) {
+        std::cerr << "Switching to Hold failed: " << initial_hold_result << '\n';
+        return 1;
+    }
+
     // Arm
     std::cout << "Arming...\n";
     const auto arm_result = action.arm();

@@ -90,6 +90,15 @@ int main(int argc, char** argv)
         manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
     }
 
+    // A previous flight can leave the vehicle in Land mode, in which PX4
+    // refuses to arm. Switch to Hold first.
+    std::cout << "Switching to Hold...\n";
+    const Action::Result initial_hold_result = action.hold();
+    if (initial_hold_result != Action::Result::Success) {
+        std::cerr << "Switching to Hold failed: " << initial_hold_result << '\n';
+        return 1;
+    }
+
     auto action_result = action.arm();
     if (action_result != Action::Result::Success) {
         std::cerr << "Arming failed: " << action_result << '\n';
