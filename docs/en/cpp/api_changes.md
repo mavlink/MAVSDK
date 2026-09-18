@@ -35,7 +35,7 @@ Using MAVSDK from Python? From v4, the `mavsdk` package on PyPI is a new native 
 
 ### Headers are now .hpp
 
-All public C++ headers were renamed from `.h` to `.hpp`, both in core and in the plugins:
+Since v4 added a C API, we needed to make sure the C++ headers were clearly distinct. Therefore, all public C++ headers were renamed from `.h` to `.hpp`, both in core and in the plugins:
 
 ```cpp
 // v3
@@ -54,10 +54,14 @@ The install directories are unchanged.
 ### Building and linking
 
 - **C++ standard:** the library itself is now built as C++20. Applications need C++17 or later to use the headers, as with v3.
-- **CMake:** the package and target are unchanged: `find_package(MAVSDK REQUIRED)` and `MAVSDK::mavsdk`. The package only accepts requests for the same major version, so `find_package(MAVSDK 3 ...)` has to become `find_package(MAVSDK 4 ...)`.
-- **Relink:** the shared library's major version is part of its soname (`libmavsdk.so.4`), so applications have to be rebuilt against v4.
-- **Static builds:** with `BUILD_SHARED_LIBS=OFF`, the CMake config now looks for `fmt`, `nlohmann_json` (instead of `jsoncpp`) and `libevents`, so `CMAKE_PREFIX_PATH` has to include where these are installed (for a superbuild, `build/third_party/install`). None of them appear in the public headers.
-- **Building from source:** the C++ project moved into the `cpp/` directory. Configure with `cmake -S cpp -B build`, use `add_subdirectory(MAVSDK/cpp)` instead of `add_subdirectory(MAVSDK)`, and set `SOURCE_SUBDIR cpp` with `FetchContent`. Scripts moved from `tools/` to `cpp/tools/`. Without the superbuild, the system dependencies are now `nlohmann-json3-dev`, `libfmt-dev` and `libasio-dev` instead of `libjsoncpp-dev`.
+- **Building from source:** the C++ project moved into the `cpp/` directory. Configure with `cmake -S cpp -B build`, use `add_subdirectory(MAVSDK/cpp)` instead of `add_subdirectory(MAVSDK)`, and set `SOURCE_SUBDIR cpp` with `FetchContent`. Scripts moved from `tools/` to `cpp/tools/`.
+
+### Dependencies
+
+- Without the superbuild, the system dependencies are now `nlohmann-json3-dev`, `libfmt-dev` and `libasio-dev` instead of `libjsoncpp-dev`.
+
+### Packages
+
 - **Prebuilt packages:** `.deb` packages are no longer provided for Ubuntu 20.04 and Debian 11.
 
 ### System IDs are 32 bit
@@ -78,7 +82,6 @@ Component IDs stay `uint8_t`.
 
 MAVSDK does not support system IDs above 255 yet. Configuring one, or passing one to `System::init()`, logs an error and aborts. `MavlinkDirect::send_message()` returns `Result::InvalidField` for target IDs above 255, where v3 silently truncated them.
 
-Watch out for narrowing: assigning `get_system_id()` to a `uint8_t` still compiles, but may warn.
 
 ### Plugin API changes
 
@@ -143,9 +146,26 @@ To keep using them for now, define it for your target:
 target_compile_definitions(your_app PRIVATE MAVSDK_ENABLE_MAVLINK_C_API)
 ```
 
-This also brings back the MAVLink C headers. If your code only needs those, e.g. for `MAV_...` constants, you can also include your own copy of the MAVLink C headers instead.
+This includes the MAVLink C headers like before.
+
+Alternatively, add the define before the include:
+
+```cpp
+
+#define MAVSDK_ENABLE_MAVLINK_C_API
+#include <mavsdk/mavsdk.hpp>
+```
 
 To move away from these APIs, use [MavlinkDirect](guide/mavlink_direct.md) instead of MavlinkPassthrough, and `Mavsdk::subscribe_incoming_messages_json()` / `subscribe_outgoing_messages_json()` instead of the interception. Unlike MavlinkPassthrough, MavlinkDirect does not depend on the MAVLink dialect MAVSDK was built with.
+
+For how it is used in practice, see the examples:
+
+| Example | Shows |
+|---|---|
+| [mavlink_direct](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct) | Subscribing to a message (GPS_RAW_INT), and stats about all arriving messages |
+| [mavlink_direct_sender](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender) | Sending a message (OBSTACLE_DISTANCE) |
+| [mavlink_direct_sender_custom](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom) | Sending a message that MAVSDK does not know yet, by loading its XML definition |
+| [sniffer](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/sniffer) | Intercepting all traffic with `subscribe_incoming_messages_json()` |
 
 ### MAV_TYPE is an enum
 
