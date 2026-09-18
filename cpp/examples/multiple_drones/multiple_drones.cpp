@@ -110,6 +110,15 @@ void takeoff_and_land(std::shared_ptr<System> system)
         sleep_for(seconds(1));
     }
 
+    // A previous flight can leave the vehicle in Land mode, in which PX4
+    // refuses to arm. Switch to Hold first.
+    std::cout << "Switching to Hold...\n";
+    const Action::Result initial_hold_result = action.hold();
+    if (initial_hold_result != Action::Result::Success) {
+        std::cerr << "Switching to Hold failed: " << initial_hold_result << '\n';
+        return;
+    }
+
     // Arm vehicle
     std::cout << "Arming...\n";
     const Action::Result arm_result = action.arm();
