@@ -743,7 +743,7 @@ MAV_TYPE SystemImpl::get_vehicle_type() const
 
 Vehicle SystemImpl::vehicle() const
 {
-    return to_vehicle_from_mav_type(_vehicle_type);
+    return to_vehicle_from_mav_type(static_cast<MavType>(_vehicle_type));
 }
 
 uint8_t SystemImpl::get_own_mav_type() const

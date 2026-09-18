@@ -65,6 +65,7 @@ enum [Autopilot](#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | Autopilo
 enum [CompatibilityMode](#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) | Compatibility mode for MAVLink protocol behavior.
 enum [ComponentType](#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | ComponentType of configurations, used for automatic ID setting.
 enum [ConnectionResult](#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) | Result type returned when adding a connection.
+enum [MavType](#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) | MAVLink type of a component (MAV_TYPE).
 enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | ForwardingOption for Connection, used to set message forwarding option.
 enum [Vehicle](#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | Vehicle type.
 
@@ -86,9 +87,11 @@ MAVSDK_PUBLIC [Quaternion](structmavsdk_1_1_quaternion.md) | [operator*](#namesp
 constexpr T | [to_rad_from_deg](#namespacemavsdk_1adca90fd4bd3af244bfde5561bc8d72d8) (T deg) | Convert degrees to radians.
 constexpr T | [to_deg_from_rad](#namespacemavsdk_1a43239ca183cfc12177d974821150f857) (T rad) | Convert radians to degrees.
 constexpr T | [constrain](#namespacemavsdk_1a37295e1b92021003968aa7f9b4f86d6e) (T input, T min, T max) | Clamp a value to a closed interval [min, max].
+MAVSDK_PUBLIC std::string_view | [to_string](#namespacemavsdk_1af551264e68fce3e9882bb1900a205ac9) ([MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) mav_type) | Convert a `MavType` to a string.
+MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1adcff459d54b6defa0f634419b50f8394) (std::ostream & os, const [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) & mav_type) | Stream operator to print information about a `MavType`.
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
 MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1a8cfa1330cee2ef5c82f295a04d98ec4a) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
-MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a1dc5c6283534037a928da210be121a3e) (MAV_TYPE type) | Convert a 'MAV_TYPE' to a `Vehicle`.
+MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a25bd70a1706ba2db578aeb042a47a44b) ([MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) type) | Convert a `MavType` to a `Vehicle`.
 
 ## Enumeration Type Documentation
 
@@ -177,6 +180,70 @@ Value | Description
 <span id="namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992a63e76f04ccb26b3da08fc20176c8577c"></span> `ConnectionsExhausted` | Connections exhausted. 
 <span id="namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992a4ffb87ccb1fd17d4d54d882a06885f49"></span> `ConnectionUrlInvalid` | URL invalid. 
 <span id="namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992a94a6b3fbdd01834703b52a5493535b1d"></span> `BaudrateUnknown` | Baudrate unknown. 
+
+### enum MavType {#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3}
+
+```
+#include: mav_type.hpp
+```
+
+
+MAVLink type of a component (MAV_TYPE).
+
+The values match the MAVLink MAV_TYPE enum, so they can be used where MAVLink expects a MAV_TYPE.
+
+Value | Description
+--- | ---
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a8045a0a6c688b0635e3caccc408a1446"></span> `Generic` | Generic micro air vehicle. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3afd01c0a8cba34e17735a9878e76d485d"></span> `FixedWing` | Fixed wing aircraft. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a623a7997ee9493420463eb52b88de935"></span> `Quadrotor` | Quadrotor. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3adc6f3fe82dfec3326452006d58dd4aad"></span> `Coaxial` | Coaxial helicopter. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a2ab8b43468e8b92b0fc5c81e70e35a2d"></span> `Helicopter` | Normal helicopter with tail rotor. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ab3c92c3ea5d6c25582fce6183294c91f"></span> `AntennaTracker` | Ground installation. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a1011a5c7993bc7f419e9ecdb6f708bb2"></span> `Gcs` | Operator control unit / ground control station. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ade750545706d10adc6a3b6ca1b0f7c3f"></span> `Airship` | Airship, controlled. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a3dd340796c8755fa272c9b776f7b1058"></span> `FreeBalloon` | Free balloon, uncontrolled. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a15e8bfff2c10ca22da244d85b2bf7d94"></span> `Rocket` | Rocket. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a6c985fc3261cb4ccf6d72c725780807e"></span> `GroundRover` | Ground rover. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a5e17c124ec97ee9ed25907042ef61f35"></span> `SurfaceBoat` | Surface vessel, boat, ship. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a0d234e5bcf75c768eb0db6bf96e3c22d"></span> `Submarine` | Submarine. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3aceee3c48890aa63467460b92940d24fe"></span> `Hexarotor` | Hexarotor. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a782cacf1683e035f039e607f34e4e945"></span> `Octorotor` | Octorotor. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a7f5a1551acfeb83770c0665760132e17"></span> `Tricopter` | Tricopter. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ab80c55e3e8ba28a29ace551cf3390763"></span> `FlappingWing` | Flapping wing. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a65c449ad44e2c0b6c1fffc5c5cea7413"></span> `Kite` | Kite. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a461d92846fe9148befaed50d3688eccf"></span> `OnboardController` | Onboard companion controller. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a06b101d8e4475605ca9d1e2217c7296a"></span> `VtolTailsitterDuorotor` | Two-rotor Tailsitter VTOL that additionally uses control surfaces in vertical operation. Note, value previously named MAV_TYPE_VTOL_DUOROTOR. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a8b5a7606cd877542d59f2edc0618d06a"></span> `VtolTailsitterQuadrotor` | Quad-rotor Tailsitter VTOL using a V-shaped quad config in vertical operation. Note: value previously named MAV_TYPE_VTOL_QUADROTOR. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3aac9f48fd3bb7a7e42f5ae811fec2781e"></span> `VtolTiltrotor` | Tiltrotor VTOL. Fuselage and wings stay (nominally) horizontal in all flight phases. It able to tilt (some) rotors to provide thrust in cruise flight. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ad755986e4ea01f23bdf03c2653676d75"></span> `VtolFixedrotor` | VTOL with separate fixed rotors for hover and cruise flight. Fuselage and wings stay (nominally) horizontal in all flight phases. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3abf28f759e1d46a1198943c8882d652b2"></span> `VtolTailsitter` | Tailsitter VTOL. Fuselage and wings orientation changes depending on flight phase: vertical for hover, horizontal for cruise. Use more specific VTOL MAV_TYPE_VTOL_TAILSITTER_DUOROTOR or MAV_TYPE_VTOL_TAILSITTER_QUADROTOR if appropriate. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a278136ab9f897733648f230a9a6f6384"></span> `VtolTiltwing` | Tiltwing VTOL. Fuselage stays horizontal in all flight phases. The whole wing, along with any attached engine, can tilt between vertical and horizontal mode. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a2ae529be784b3acfdc33f6f265cb2e26"></span> `VtolReserved5` | VTOL reserved 5. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3acda0f2848103fd4a833697ac64b9ad8d"></span> `Gimbal` | [Gimbal](classmavsdk_1_1_gimbal.md). 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a8f67b5163180261f35b6e85e7e569b98"></span> `Adsb` | ADSB system. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a88cbbac22ccc3e79b5adc1af44d7b8ec"></span> `Parafoil` | Steerable, nonrigid airfoil. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a4786f3d8d1faa285ddecf2a74f16c922"></span> `Dodecarotor` | Dodecarotor. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a967d35e40f3f95b1f538bd248640bf3b"></span> `Camera` | [Camera](classmavsdk_1_1_camera.md). 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a5f55fd420ef12c37198950d504b67a77"></span> `ChargingStation` | Charging station. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a34e5127b308fd47e1e6a498d4f6fe6ce"></span> `Flarm` | FLARM collision avoidance system. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a365687df33f7052679dca2d38edcfaf7"></span> `Servo` | Servo. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ad8029623f6a564835098bf80d32e69ae"></span> `Odid` | Open Drone ID. See [https://mavlink.io/en/services/opendroneid.html](https://mavlink.io/en/services/opendroneid.html). 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a27005abdd874048c19c30c061eb1d9ba"></span> `Decarotor` | Decarotor. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ad67c92867cc3d7fdf47f32cf70ab1b24"></span> `Battery` | Battery. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a889d6c668249b544803bafc6c18dbf34"></span> `Parachute` | Parachute. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ace0be71e33226e4c1db2bcea5959f16b"></span> `Log` | Log. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a5e7fb14724c459a787d6078028469eb5"></span> `Osd` | OSD. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ae30c70d37a1c6991965a321393b30692"></span> `Imu` | IMU. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a06960407a35b206422d40932f13c8d91"></span> `Gps` | GPS. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3af818e8fbbd7e05da7b26083f7ddc27b9"></span> `Winch` | [Winch](classmavsdk_1_1_winch.md). 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a35a7a97619a60e154205a06207e18b60"></span> `GenericMultirotor` | Generic multirotor that does not fit into a specific type or whose type is unknown. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a823aa4a7cfc7f82e372cb412d61493ca"></span> `Illuminator` | Illuminator. An illuminator is a light source that is used for lighting up dark areas external to the system: e.g. a torch or searchlight (as opposed to a light source for illuminating the system itself, e.g. an indicator light). 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3abfadc3467cac0b20eaaed897812866b1"></span> `SpacecraftOrbiter` | Orbiter spacecraft. Includes satellites orbiting terrestrial and extra-terrestrial bodies. Follows NASA Spacecraft Classification. 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3abd31446d55a732e5b98ef3417af35df1"></span> `GroundQuadruped` | A generic four-legged ground vehicle (e.g., a robot dog). 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3ab7403bbdf414d127808bbf619b191433"></span> `VtolGyrodyne` | VTOL hybrid of helicopter and autogyro. It has a main rotor for lift and separate propellers for forward flight. The rotor must be powered for hover but can autorotate in cruise flight. See: [https://en.wikipedia.org/wiki/Gyrodyne](https://en.wikipedia.org/wiki/Gyrodyne). 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3af008f6be1a2c4bea0d82e8839650c590"></span> `Gripper` | [Gripper](classmavsdk_1_1_gripper.md). 
+<span id="namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3a1f32d2c1b49b9b0c9d99bd10da107e41"></span> `Radio` | Radio. 
 
 ### enum ForwardingOption {#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9}
 
@@ -568,6 +635,49 @@ Clamp a value to a closed interval [min, max].
 
 &emsp;constexpr T - input clamped to [min, max].
 
+### to_string() {#namespacemavsdk_1af551264e68fce3e9882bb1900a205ac9}
+
+```
+#include: mav_type.hpp
+```
+```cpp
+MAVSDK_PUBLIC std::string_view mavsdk::to_string(MavType mav_type)
+```
+
+
+Convert a `MavType` to a string.
+
+
+**Parameters**
+
+* [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) **mav_type** - 
+
+**Returns**
+
+&emsp;MAVSDK_PUBLIC std::string_view - A string representation of the `MavType`.
+
+### operator<<() {#namespacemavsdk_1adcff459d54b6defa0f634419b50f8394}
+
+```
+#include: mav_type.hpp
+```
+```cpp
+MAVSDK_PUBLIC std::ostream & mavsdk::operator<<(std::ostream &os, const MavType &mav_type)
+```
+
+
+Stream operator to print information about a `MavType`.
+
+
+**Parameters**
+
+* std::ostream& **os** - 
+* const [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3)& **mav_type** - 
+
+**Returns**
+
+&emsp;MAVSDK_PUBLIC std::ostream & - A reference to the stream.
+
 ### overloaded() {#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552}
 
 ```
@@ -607,23 +717,23 @@ Stream operator to print information about a `Vehicle`.
 
 &emsp;MAVSDK_PUBLIC std::ostream & - A reference to the stream.
 
-### to_vehicle_from_mav_type() {#namespacemavsdk_1a1dc5c6283534037a928da210be121a3e}
+### to_vehicle_from_mav_type() {#namespacemavsdk_1a25bd70a1706ba2db578aeb042a47a44b}
 
 ```
 #include: vehicle.hpp
 ```
 ```cpp
-MAVSDK_PUBLIC Vehicle mavsdk::to_vehicle_from_mav_type(MAV_TYPE type)
+MAVSDK_PUBLIC Vehicle mavsdk::to_vehicle_from_mav_type(MavType type)
 ```
 
 
-Convert a 'MAV_TYPE' to a `Vehicle`.
+Convert a `MavType` to a `Vehicle`.
 
 
 **Parameters**
 
-* MAV_TYPE **type** - 
+* [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) **type** - 
 
 **Returns**
 
-&emsp;MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) - The corresponding `Vehicle`.
+&emsp;MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) - The corresponding `Vehicle`, or `Vehicle::Unknown` if the type is not a vehicle.
