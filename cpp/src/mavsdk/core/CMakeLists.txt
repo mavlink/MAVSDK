@@ -98,6 +98,7 @@ target_sources(mavsdk
     timeout_handler.cpp
     udp_connection.cpp
     vehicle.cpp
+    mav_type.cpp
     log.cpp
     cli_arg.cpp
     geometry.cpp
@@ -138,6 +139,8 @@ else()
 endif()
 
 target_compile_definitions(mavsdk PRIVATE MAVSDK_BUILD)
+# The library implements the APIs that expose the MAVLink C types, so it needs to see them.
+target_compile_definitions(mavsdk PRIVATE MAVSDK_ENABLE_MAVLINK_C_API)
 
 if (BUILD_SHARED_LIBS)
     target_compile_definitions(mavsdk PUBLIC MAVSDK_SHARED)
@@ -255,6 +258,7 @@ install(FILES
     include/mavsdk/server_component.hpp
     include/mavsdk/mavlink_address.hpp
     include/mavsdk/vehicle.hpp
+    include/mavsdk/mav_type.hpp
     include/mavsdk/overloaded.hpp
     ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.hpp
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
@@ -293,6 +297,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/connection_result_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_helper_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/vehicle_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mav_type_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/autopilot_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/overloaded_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/handle_factory_test.cpp

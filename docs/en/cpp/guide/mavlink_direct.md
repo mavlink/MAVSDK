@@ -9,7 +9,7 @@ The functionality is here to stay but the specifics and types might still change
 
 ::: tip
 MavlinkDirect is the recommended replacement for [MavlinkPassthrough](../api_reference/classmavsdk_1_1_mavlink_passthrough.md).
-In MAVSDK v4, MavlinkPassthrough will only be available as a compile-time option.
+Since MAVSDK v4, MavlinkPassthrough is deprecated and only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined, see [API changes](../api_changes.md#mavlink-c-headers-are-opt-in).
 :::
 
 ::: info
@@ -22,6 +22,106 @@ MavlinkDirect allows you to:
 
 - Send and receive any MAVLink message
 - Load custom MAVLink message definitions from XML
+
+## Quickstart
+
+A complete program that connects to a vehicle and prints every GLOBAL_POSITION_INT it receives:
+
+```cpp
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
+#include <chrono>
+#include <iostream>
+#include <thread>
+
+using namespace mavsdk;
+
+int main()
+{
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
+
+    if (mavsdk.add_any_connection("udpin://0.0.0.0:14540") != ConnectionResult::Success) {
+        std::cerr << "Connection failed\n";
+        return 1;
+    }
+
+    auto system = mavsdk.first_autopilot(3.0);
+    if (!system) {
+        std::cerr << "No autopilot found\n";
+        return 1;
+    }
+
+    auto mavlink_direct = MavlinkDirect{system.value()};
+
+    auto handle = mavlink_direct.subscribe_message(
+        "GLOBAL_POSITION_INT", [](MavlinkDirect::MavlinkMessage message) {
+            std::cout << "Got " << message.message_name << ": " << message.fields_json << '\n';
+        });
+
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    mavlink_direct.unsubscribe_message(handle);
+    return 0;
+}
+```
+
+Against a vehicle or simulator on `udpin://0.0.0.0:14540`, this prints lines like:
+
+```
+Got GLOBAL_POSITION_INT: {"message_id":33,"message_name":"GLOBAL_POSITION_INT","alt":500000,"hdg":9000,"lat":473977420,"lon":85455940,"relative_alt":100000,"time_boot_ms":1234,"vx":0,"vy":0,"vz":0}
+```
+
+See [Building C++ Apps](toolchain.md) for how to build it, and the [C++ QuickStart](../quickstart.md) for setting up a simulator.
+
+### Getting at the fields
+
+`fields_json` is just a JSON string, so you can pick it apart with the JSON library of your choice. Using [nlohmann/json](https://github.com/nlohmann/json), the subscription above becomes:
+
+```cpp
+#include <nlohmann/json.hpp>
+
+// ...
+
+    auto handle = mavlink_direct.subscribe_message(
+        "GLOBAL_POSITION_INT", [](MavlinkDirect::MavlinkMessage message) {
+            const auto fields = nlohmann::json::parse(message.fields_json);
+
+            // The units are the ones from the MAVLink message definition:
+            // degrees * 1e7, and millimeters above the home position.
+            const double latitude_deg = fields["lat"].get<int32_t>() / 1e7;
+            const double longitude_deg = fields["lon"].get<int32_t>() / 1e7;
+            const double altitude_m = fields["relative_alt"].get<int32_t>() / 1e3;
+
+            std::cout << "Position: " << latitude_deg << ", " << longitude_deg << " at "
+                      << altitude_m << " m\n";
+        });
+```
+
+which prints:
+
+```
+Position: 47.3977, 8.54559 at 100 m
+```
+
+MAVSDK does not expose a JSON library in its headers, so add the one you want to your own build, e.g.:
+
+```cmake
+find_package(nlohmann_json REQUIRED)
+
+target_link_libraries(your_executable_name
+    PRIVATE
+    MAVSDK::mavsdk
+    nlohmann_json::nlohmann_json
+)
+```
+
+The sections below go through this in more detail. The complete examples are in the repository:
+
+| Example | Shows |
+|---|---|
+| [mavlink_direct](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct) | Subscribing to a message (GPS_RAW_INT), and stats about all arriving messages |
+| [mavlink_direct_sender](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender) | Sending a message (OBSTACLE_DISTANCE) |
+| [mavlink_direct_sender_custom](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom) | Sending a message that MAVSDK does not know yet, by loading its XML definition |
 
 ## Runtime vs compile-time considerations
 
@@ -148,15 +248,11 @@ auto handle = mavlink_direct.subscribe_message(
     "GLOBAL_POSITION_INT",
     [](MavlinkDirect::MavlinkMessage message) {
         std::cout << "Received position: " << message.fields_json << std::endl;
-
-        // And this could now be parsed by nlohmann/json:
-        // auto json = nlohmann::json::parse(message.fields_json);
-        // auto lat = json["lat"].get<int>() / 1e7;  // Convert from degrees * 1e7
-        // auto lon = json["lon"].get<int>() / 1e7;
-        // std::cout << "Position: " << lat << ", " << lon << std::endl;
     }
 );
 ```
+
+See [Getting at the fields](#getting-at-the-fields) for how to parse `fields_json`.
 
 Or all messages using the empty string `""`:
 

@@ -33,6 +33,9 @@ target_link_libraries(mavlink_fuzzer
     fmt::fmt
 )
 
+# The fuzzer uses MavlinkPassthrough, which needs the MAVLink C API.
+target_compile_definitions(mavlink_fuzzer PRIVATE MAVSDK_ENABLE_MAVLINK_C_API)
+
 # Include MAVSDK headers
 target_include_directories(mavlink_fuzzer PRIVATE
     ${PROJECT_SOURCE_DIR}/mavsdk/core/include

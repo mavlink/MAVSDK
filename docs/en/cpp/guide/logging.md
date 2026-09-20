@@ -1,13 +1,13 @@
 # Logging
 MAVSDK core and plugins output some useful log messages during their work.
-By default, the messages are printed to `stdout`. You may want to override this
+By default, the messages are printed to `stderr`. You may want to override this
 behavior, e.g. redirect messages to an external logging system, or disable
 printing messages unless they are important enough.
 
 ## Usage
 It is possible to customize logging with a user-defined callback function:
 ```c++
-#include <mavsdk/log_callback.h>
+#include <mavsdk/log_callback.hpp>
 
 // ...
 
@@ -18,13 +18,13 @@ mavsdk::log::subscribe([](mavsdk::log::Level level,   // message severity level
   // process the log message in a way you like
   my_nice_log(level, message);
   
-  // returning true from the callback disables printing the message to stdout
+  // returning true from the callback disables printing the message to stderr
   return level < mavsdk::log::Level::Warn;
 });
 ```
 
 In this example all log messages will be passed to `my_nice_log`, and all messages
-having level `Warn` or `Err` will be printed to stdout as well.
+having level `Warn` or `Err` will be printed to stderr as well.
 Possible levels are:
 ```c++
 enum class Level : int { Debug = 0, Info = 1, Warn = 2, Err = 3 };

@@ -77,6 +77,9 @@ target_link_libraries(system_tests_runner
     fmt::fmt
 )
 
+# Some tests use the deprecated APIs that expose the MAVLink C types.
+target_compile_definitions(system_tests_runner PRIVATE MAVSDK_ENABLE_MAVLINK_C_API)
+
 set_target_properties(system_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )

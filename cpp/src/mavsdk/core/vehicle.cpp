@@ -64,62 +64,62 @@ std::ostream& operator<<(std::ostream& str, const Vehicle& vehicle)
     }
 }
 
-Vehicle to_vehicle_from_mav_type(MAV_TYPE type)
+Vehicle to_vehicle_from_mav_type(MavType type)
 {
     switch (type) {
-        case MAV_TYPE::MAV_TYPE_GENERIC:
+        case MavType::Generic:
             return Vehicle::Generic;
-        case MAV_TYPE::MAV_TYPE_FIXED_WING:
+        case MavType::FixedWing:
             return Vehicle::FixedWing;
-        case MAV_TYPE::MAV_TYPE_QUADROTOR:
+        case MavType::Quadrotor:
             return Vehicle::Quadrotor;
-        case MAV_TYPE::MAV_TYPE_COAXIAL:
+        case MavType::Coaxial:
             return Vehicle::Coaxial;
-        case MAV_TYPE::MAV_TYPE_HELICOPTER:
+        case MavType::Helicopter:
             return Vehicle::Helicopter;
-        case MAV_TYPE::MAV_TYPE_AIRSHIP:
+        case MavType::Airship:
             return Vehicle::Airship;
-        case MAV_TYPE::MAV_TYPE_FREE_BALLOON:
+        case MavType::FreeBalloon:
             return Vehicle::FreeBalloon;
-        case MAV_TYPE::MAV_TYPE_ROCKET:
+        case MavType::Rocket:
             return Vehicle::Rocket;
-        case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
+        case MavType::GroundRover:
             return Vehicle::GroundRover;
-        case MAV_TYPE::MAV_TYPE_SURFACE_BOAT:
+        case MavType::SurfaceBoat:
             return Vehicle::SurfaceBoat;
-        case MAV_TYPE::MAV_TYPE_SUBMARINE:
+        case MavType::Submarine:
             return Vehicle::Submarine;
-        case MAV_TYPE::MAV_TYPE_HEXAROTOR:
+        case MavType::Hexarotor:
             return Vehicle::Hexarotor;
-        case MAV_TYPE::MAV_TYPE_OCTOROTOR:
+        case MavType::Octorotor:
             return Vehicle::Octorotor;
-        case MAV_TYPE::MAV_TYPE_TRICOPTER:
+        case MavType::Tricopter:
             return Vehicle::Tricopter;
-        case MAV_TYPE::MAV_TYPE_FLAPPING_WING:
+        case MavType::FlappingWing:
             return Vehicle::FlappingWing;
-        case MAV_TYPE::MAV_TYPE_KITE:
+        case MavType::Kite:
             return Vehicle::Kite;
-        case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER_DUOROTOR:
+        case MavType::VtolTailsitterDuorotor:
             return Vehicle::VtolTailsitterDuorotor;
-        case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER_QUADROTOR:
+        case MavType::VtolTailsitterQuadrotor:
             return Vehicle::VtolTailsitterQuadrotor;
-        case MAV_TYPE::MAV_TYPE_VTOL_TILTROTOR:
+        case MavType::VtolTiltrotor:
             return Vehicle::VtolTiltrotor;
-        case MAV_TYPE::MAV_TYPE_VTOL_FIXEDROTOR:
+        case MavType::VtolFixedrotor:
             return Vehicle::VtolFixedrotor;
-        case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER:
+        case MavType::VtolTailsitter:
             return Vehicle::VtolTailsitter;
-        case MAV_TYPE::MAV_TYPE_VTOL_TILTWING:
+        case MavType::VtolTiltwing:
             return Vehicle::VtolTiltwing;
-        case MAV_TYPE::MAV_TYPE_PARAFOIL:
+        case MavType::Parafoil:
             return Vehicle::Parafoil;
-        case MAV_TYPE::MAV_TYPE_DODECAROTOR:
+        case MavType::Dodecarotor:
             return Vehicle::Dodecarotor;
-        case MAV_TYPE::MAV_TYPE_DECAROTOR:
+        case MavType::Decarotor:
             return Vehicle::Decarotor;
-        case MAV_TYPE::MAV_TYPE_PARACHUTE:
+        case MavType::Parachute:
             return Vehicle::Parachute;
-        case MAV_TYPE::MAV_TYPE_GENERIC_MULTIROTOR:
+        case MavType::GenericMultirotor:
             return Vehicle::GenericMultirotor;
         default:
             return Vehicle::Unknown;

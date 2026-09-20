@@ -51,6 +51,7 @@
 #include <mavsdk/plugins/telemetry/telemetry.hpp>
 
 #include <cstdint>
+#include <cstring>
 #include <iostream>
 #include <thread>
 #include <chrono>

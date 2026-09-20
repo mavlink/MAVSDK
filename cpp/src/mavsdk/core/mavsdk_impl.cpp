@@ -1330,7 +1330,8 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
         // that the previous default component will be deleted if it is not
         // used/referenced anywhere.
         _default_server_component = server_component_by_id_with_lock(
-            new_configuration.get_component_id(), new_configuration.get_mav_type());
+            new_configuration.get_component_id(),
+            static_cast<uint8_t>(new_configuration.get_mav_type()));
     }
 
     {
@@ -1340,7 +1341,7 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
     // We cache these values as atomic to avoid having to lock any mutex for them.
     _our_system_id = static_cast<uint8_t>(new_configuration.get_system_id());
     _our_component_id = new_configuration.get_component_id();
-    _our_mav_type = new_configuration.get_mav_type();
+    _our_mav_type = static_cast<uint8_t>(new_configuration.get_mav_type());
     _our_autopilot = new_configuration.get_autopilot();
     _our_compatibility_mode = new_configuration.get_compatibility_mode();
 

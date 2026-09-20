@@ -1,4 +1,5 @@
 #include "mavsdk.hpp"
+#include "mavlink_include.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -13,9 +14,9 @@ TEST(Mavsdk, Configuration)
 {
     Mavsdk::Configuration configuration{ComponentType::Autopilot};
 
-    ASSERT_EQ(configuration.get_mav_type(), MAV_TYPE::MAV_TYPE_GENERIC); // Default
-    configuration.set_mav_type(MAV_TYPE::MAV_TYPE_FIXED_WING);
-    ASSERT_EQ(configuration.get_mav_type(), MAV_TYPE::MAV_TYPE_FIXED_WING);
+    ASSERT_EQ(configuration.get_mav_type(), MavType::Generic); // Default
+    configuration.set_mav_type(MavType::FixedWing);
+    ASSERT_EQ(configuration.get_mav_type(), MavType::FixedWing);
 }
 
 TEST(Mavsdk, ConfigurationComponentTypeDefaults)
@@ -26,7 +27,7 @@ TEST(Mavsdk, ConfigurationComponentTypeDefaults)
         EXPECT_EQ(cfg.get_system_id(), 245);
         EXPECT_EQ(cfg.get_component_id(), MAV_COMP_ID_MISSIONPLANNER);
         EXPECT_FALSE(cfg.get_always_send_heartbeats());
-        EXPECT_EQ(cfg.get_mav_type(), MAV_TYPE::MAV_TYPE_GCS);
+        EXPECT_EQ(cfg.get_mav_type(), MavType::Gcs);
     }
     {
         Mavsdk::Configuration cfg{ComponentType::CompanionComputer};
@@ -34,24 +35,24 @@ TEST(Mavsdk, ConfigurationComponentTypeDefaults)
         EXPECT_EQ(cfg.get_system_id(), 1);
         EXPECT_EQ(cfg.get_component_id(), MAV_COMP_ID_PATHPLANNER);
         EXPECT_TRUE(cfg.get_always_send_heartbeats());
-        EXPECT_EQ(cfg.get_mav_type(), MAV_TYPE::MAV_TYPE_ONBOARD_CONTROLLER);
+        EXPECT_EQ(cfg.get_mav_type(), MavType::OnboardController);
     }
     {
         Mavsdk::Configuration cfg{ComponentType::Camera};
         EXPECT_EQ(cfg.get_system_id(), 1);
         EXPECT_EQ(cfg.get_component_id(), MAV_COMP_ID_CAMERA);
         EXPECT_TRUE(cfg.get_always_send_heartbeats());
-        EXPECT_EQ(cfg.get_mav_type(), MAV_TYPE::MAV_TYPE_CAMERA);
+        EXPECT_EQ(cfg.get_mav_type(), MavType::Camera);
     }
     {
         Mavsdk::Configuration cfg{ComponentType::Gimbal};
         EXPECT_EQ(cfg.get_component_id(), MAV_COMP_ID_GIMBAL);
-        EXPECT_EQ(cfg.get_mav_type(), MAV_TYPE::MAV_TYPE_GIMBAL);
+        EXPECT_EQ(cfg.get_mav_type(), MavType::Gimbal);
     }
     {
         Mavsdk::Configuration cfg{ComponentType::RemoteId};
         EXPECT_EQ(cfg.get_component_id(), MAV_COMP_ID_ODID_TXRX_1);
-        EXPECT_EQ(cfg.get_mav_type(), MAV_TYPE::MAV_TYPE_ODID);
+        EXPECT_EQ(cfg.get_mav_type(), MavType::Odid);
     }
     {
         Mavsdk::Configuration cfg{ComponentType::Custom};

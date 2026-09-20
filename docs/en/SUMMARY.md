@@ -178,6 +178,7 @@
         * [class ServerComponent](cpp/api_reference/classmavsdk_1_1_server_component.md)
         * [class ServerUtility](cpp/api_reference/classmavsdk_1_1_server_utility.md)
         * [class Shell](cpp/api_reference/classmavsdk_1_1_shell.md)
+            * [struct Receive](cpp/api_reference/structmavsdk_1_1_shell_1_1_receive.md)
         * [class System](cpp/api_reference/classmavsdk_1_1_system.md)
         * [class Telemetry](cpp/api_reference/classmavsdk_1_1_telemetry.md)
             * [struct AccelerationFrd](cpp/api_reference/structmavsdk_1_1_telemetry_1_1_acceleration_frd.md)
