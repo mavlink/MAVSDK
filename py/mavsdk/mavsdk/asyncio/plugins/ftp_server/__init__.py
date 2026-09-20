@@ -10,10 +10,12 @@ from .ftp_server import FtpServerAsync
 from mavsdk.plugins.ftp_server import (
     FtpServer,
     FtpServerResult,
+    FtpServerError,
 )
 
 __all__ = [
     "FtpServerAsync",
     "FtpServer",
     "FtpServerResult",
+    "FtpServerError",
 ]

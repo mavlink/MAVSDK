@@ -15,6 +15,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -32,6 +33,29 @@ class LogFilesResult(IntEnum):
     INVALID_ARGUMENT = 5
     FILE_OPEN_FAILED = 6
     NO_SYSTEM = 7
+
+
+class LogFilesError(MavsdkError):
+    """Raised when a LogFiles request fails.
+
+    Attributes
+    ----------
+    result : LogFilesResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -186,7 +210,7 @@ class LogFiles:
         )
         result = LogFilesResult(result_code)
         if result != LogFilesResult.SUCCESS:
-            raise Exception(f"get_entries failed: {result}")
+            raise LogFilesError(result, "get_entries()")
 
         py_result = [Entry.from_c_struct(result_ptr[i]) for i in range(size.value)]
         self._lib.mavsdk_log_files_entry_array_destroy(ctypes.byref(result_ptr), size)
@@ -229,7 +253,7 @@ class LogFiles:
         )
         result = LogFilesResult(result_code)
         if result != LogFilesResult.SUCCESS:
-            raise Exception(f"erase_all_log_files failed: {result}")
+            raise LogFilesError(result, "erase_all_log_files()")
 
         return result
 

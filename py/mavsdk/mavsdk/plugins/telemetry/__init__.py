@@ -21,6 +21,7 @@ from .telemetry import VtolState
 
 # Import result enum
 from .telemetry import TelemetryResult
+from .telemetry import TelemetryError
 
 # Import data structures
 from .telemetry import Position
@@ -66,6 +67,7 @@ __all__ = [
     "LandedState",
     "VtolState",
     "TelemetryResult",
+    "TelemetryError",
     "Position",
     "Heading",
     "Quaternion",

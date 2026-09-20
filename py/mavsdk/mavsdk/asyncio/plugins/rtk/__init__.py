@@ -10,6 +10,7 @@ from .rtk import RtkAsync
 from mavsdk.plugins.rtk import (
     Rtk,
     RtkResult,
+    RtkError,
     RtcmData,
 )
 
@@ -17,5 +18,6 @@ __all__ = [
     "RtkAsync",
     "Rtk",
     "RtkResult",
+    "RtkError",
     "RtcmData",
 ]

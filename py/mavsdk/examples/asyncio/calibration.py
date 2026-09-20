@@ -1,54 +1,25 @@
 import asyncio
 from mavsdk.asyncio import Mavsdk, Configuration, ComponentType
-from mavsdk.asyncio.plugins.calibration import CalibrationAsync, CalibrationResult
+from mavsdk.asyncio.plugins.calibration import (
+    CalibrationAsync,
+    CalibrationError,
+    CalibrationResult,
+)
 
 
-async def calibrate_accelerometer(calibration: CalibrationAsync):
-    print("Calibrating accelerometer...")
-    async for result, progress_data in calibration.calibrate_accelerometer():
-        if result == CalibrationResult.NEXT:
+async def run_calibration(name, progress):
+    print(f"Calibrating {name}...")
+    try:
+        async for result, progress_data in progress:
+            if result == CalibrationResult.SUCCESS:
+                print("--- Calibration succeeded!")
+                continue
             if progress_data.has_progress:
                 print(f"    Progress: {int(progress_data.progress * 100)}%")
             if progress_data.has_status_text:
                 print(f"    Instruction: {progress_data.status_text}")
-        elif result == CalibrationResult.SUCCESS:
-            print("--- Calibration succeeded!")
-            return
-        else:
-            print(f"--- Calibration failed: {result}")
-            return
-
-
-async def calibrate_gyro(calibration: CalibrationAsync):
-    print("Calibrating gyro...")
-    async for result, progress_data in calibration.calibrate_gyro():
-        if result == CalibrationResult.NEXT:
-            if progress_data.has_progress:
-                print(f"    Progress: {int(progress_data.progress * 100)}%")
-            if progress_data.has_status_text:
-                print(f"    Instruction: {progress_data.status_text}")
-        elif result == CalibrationResult.SUCCESS:
-            print("--- Calibration succeeded!")
-            return
-        else:
-            print(f"--- Calibration failed: {result}")
-            return
-
-
-async def calibrate_magnetometer(calibration: CalibrationAsync):
-    print("Calibrating magnetometer...")
-    async for result, progress_data in calibration.calibrate_magnetometer():
-        if result == CalibrationResult.NEXT:
-            if progress_data.has_progress:
-                print(f"    Progress: {int(progress_data.progress * 100)}%")
-            if progress_data.has_status_text:
-                print(f"    Instruction: {progress_data.status_text}")
-        elif result == CalibrationResult.SUCCESS:
-            print("--- Calibration succeeded!")
-            return
-        else:
-            print(f"--- Calibration failed: {result}")
-            return
+    except CalibrationError as e:
+        print(f"--- Calibration failed: {e.result.name}")
 
 
 async def main():
@@ -75,9 +46,9 @@ async def main():
 
     calibration = CalibrationAsync(drone)
 
-    await calibrate_accelerometer(calibration)
-    await calibrate_gyro(calibration)
-    await calibrate_magnetometer(calibration)
+    await run_calibration("accelerometer", calibration.calibrate_accelerometer())
+    await run_calibration("gyro", calibration.calibrate_gyro())
+    await run_calibration("magnetometer", calibration.calibrate_magnetometer())
 
     print("All calibrations completed!")
 

@@ -11,23 +11,12 @@ from typing import AsyncGenerator
 from mavsdk.plugins.param_server import (
     ParamServer,
     ParamServerResult,
+    ParamServerError,
     IntParam,
     FloatParam,
     CustomParam,
     AllParams,
 )
-
-
-class ParamServerError(Exception):
-    """Raised when a ParamServer operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class ParamServerAsync:

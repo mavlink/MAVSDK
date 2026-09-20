@@ -19,6 +19,7 @@ from .shell import Device
 
 # Import result enum
 from .shell import ShellResult
+from .shell import ShellError
 
 # Import data structures
 from .shell import Receive
@@ -28,5 +29,6 @@ __all__ = [
     "Shell",
     "Device",
     "ShellResult",
+    "ShellError",
     "Receive",
 ]

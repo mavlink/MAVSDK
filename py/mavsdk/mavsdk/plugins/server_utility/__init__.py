@@ -14,6 +14,7 @@ from .server_utility import StatusTextType
 
 # Import result enum
 from .server_utility import ServerUtilityResult
+from .server_utility import ServerUtilityError
 
 # Import data structures
 
@@ -22,4 +23,5 @@ __all__ = [
     "ServerUtility",
     "StatusTextType",
     "ServerUtilityResult",
+    "ServerUtilityError",
 ]

@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -56,6 +57,29 @@ class ActionServerResult(IntEnum):
     NO_VTOL_TRANSITION_SUPPORT = 10
     PARAMETER_ERROR = 11
     NEXT = 12
+
+
+class ActionServerError(MavsdkError):
+    """Raised when a ActionServer request fails.
+
+    Attributes
+    ----------
+    result : ActionServerResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -422,7 +446,7 @@ class ActionServer:
         )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
-            raise Exception(f"set_allow_takeoff failed: {result}")
+            raise ActionServerError(result, "set_allow_takeoff()", allow_takeoff)
 
         return result
 
@@ -436,7 +460,7 @@ class ActionServer:
         )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
-            raise Exception(f"set_armable failed: {result}")
+            raise ActionServerError(result, "set_armable()", armable, force_armable)
 
         return result
 
@@ -450,7 +474,9 @@ class ActionServer:
         )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
-            raise Exception(f"set_disarmable failed: {result}")
+            raise ActionServerError(
+                result, "set_disarmable()", disarmable, force_disarmable
+            )
 
         return result
 
@@ -463,7 +489,9 @@ class ActionServer:
         )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
-            raise Exception(f"set_allowable_flight_modes failed: {result}")
+            raise ActionServerError(
+                result, "set_allowable_flight_modes()", flight_modes
+            )
 
         return result
 
@@ -491,7 +519,7 @@ class ActionServer:
         )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
-            raise Exception(f"set_armed_state failed: {result}")
+            raise ActionServerError(result, "set_armed_state()", is_armed)
 
         return result
 
@@ -504,7 +532,7 @@ class ActionServer:
         )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
-            raise Exception(f"set_flight_mode failed: {result}")
+            raise ActionServerError(result, "set_flight_mode()", flight_mode)
 
         return result
 
@@ -517,7 +545,7 @@ class ActionServer:
         )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
-            raise Exception(f"set_flight_mode_internal failed: {result}")
+            raise ActionServerError(result, "set_flight_mode_internal()", flight_mode)
 
         return result
 

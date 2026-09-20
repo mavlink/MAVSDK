@@ -14,6 +14,7 @@ from .param import ProtocolVersion
 
 # Import result enum
 from .param import ParamResult
+from .param import ParamError
 
 # Import data structures
 from .param import IntParam
@@ -26,6 +27,7 @@ __all__ = [
     "Param",
     "ProtocolVersion",
     "ParamResult",
+    "ParamError",
     "IntParam",
     "FloatParam",
     "CustomParam",

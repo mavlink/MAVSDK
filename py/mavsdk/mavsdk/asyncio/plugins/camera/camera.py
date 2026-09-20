@@ -17,6 +17,7 @@ from typing import AsyncGenerator
 from mavsdk.plugins.camera import (
     Camera,
     CameraResult,
+    CameraError,
     Mode,
     PhotosRange,
     Option,
@@ -37,18 +38,6 @@ from mavsdk.plugins.camera import (
     Information,
     CameraList,
 )
-
-
-class CameraError(Exception):
-    """Raised when a Camera operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class CameraAsync:

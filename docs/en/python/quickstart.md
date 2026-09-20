@@ -108,9 +108,23 @@ Here is what it looks like in jMAVSim:
 Make sure to send the `takeoff()` command within (at most) a few seconds of `arm()`; the drone will automatically disarm after a few seconds if it does not receive a command to takeoff.
 :::
 
-If a command is rejected, for instance because you try to arm before the drone has a GPS fix, the call raises an exception instead of returning.
-This is not a bug: the vehicle refused the command, and the exception says which command failed and why.
-Most MAVSDK functions can raise exceptions, which your code should handle with `try ... except`.
+If a command is rejected, for instance because you try to arm before the drone has a GPS fix, the call raises an exception instead of returning:
+
+```python
+mavsdk.plugins.action.action.ActionError: COMMAND_DENIED; origin: arm(); params: ()
+```
+
+This is not a bug: the vehicle refused the command.
+Each plugin raises its own error type, such as `ActionError` or `MissionError`, with the reason in its `result` attribute. They all derive from `mavsdk.MavsdkError`, so your code can handle them with `try ... except`:
+
+```python
+from mavsdk.asyncio.plugins.action import ActionError
+
+try:
+    await action.arm()
+except ActionError as error:
+    print(f"Arming failed: {error.result.name}")
+```
 
 Now that the drone is flying, we can land:
 

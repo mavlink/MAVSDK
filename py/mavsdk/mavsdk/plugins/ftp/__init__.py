@@ -13,6 +13,7 @@ from .ftp import Ftp
 
 # Import result enum
 from .ftp import FtpResult
+from .ftp import FtpError
 
 # Import data structures
 from .ftp import FilesystemEntry
@@ -23,6 +24,7 @@ from .ftp import ProgressData
 __all__ = [
     "Ftp",
     "FtpResult",
+    "FtpError",
     "FilesystemEntry",
     "ListDirectoryData",
     "ProgressData",

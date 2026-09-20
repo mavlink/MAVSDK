@@ -20,6 +20,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -55,6 +56,29 @@ class CameraResult(IntEnum):
     UNAVAILABLE = 10
     CAMERA_ID_INVALID = 11
     ACTION_UNSUPPORTED = 12
+
+
+class CameraError(MavsdkError):
+    """Raised when a Camera request fails.
+
+    Attributes
+    ----------
+    result : CameraResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -1189,7 +1213,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"take_photo failed: {result}")
+            raise CameraError(result, "take_photo()", component_id)
 
         return result
 
@@ -1224,7 +1248,9 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"start_photo_interval failed: {result}")
+            raise CameraError(
+                result, "start_photo_interval()", component_id, interval_s
+            )
 
         return result
 
@@ -1258,7 +1284,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"stop_photo_interval failed: {result}")
+            raise CameraError(result, "stop_photo_interval()", component_id)
 
         return result
 
@@ -1290,7 +1316,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"start_video failed: {result}")
+            raise CameraError(result, "start_video()", component_id)
 
         return result
 
@@ -1320,7 +1346,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"stop_video failed: {result}")
+            raise CameraError(result, "stop_video()", component_id)
 
         return result
 
@@ -1334,7 +1360,9 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"start_video_streaming failed: {result}")
+            raise CameraError(
+                result, "start_video_streaming()", component_id, stream_id
+            )
 
         return result
 
@@ -1348,7 +1376,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"stop_video_streaming failed: {result}")
+            raise CameraError(result, "stop_video_streaming()", component_id, stream_id)
 
         return result
 
@@ -1383,7 +1411,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"set_mode failed: {result}")
+            raise CameraError(result, "set_mode()", component_id, mode)
 
         return result
 
@@ -1436,7 +1464,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"list_photos failed: {result}")
+            raise CameraError(result, "list_photos()", component_id, photos_range)
 
         py_result = [
             CaptureInfo.from_c_struct(result_ptr[i]) for i in range(size.value)
@@ -1526,9 +1554,9 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"get_mode failed: {result}")
+            raise CameraError(result, "get_mode()", component_id)
 
-        return mode(result_out.value)
+        return Mode(result_out.value)
 
     def subscribe_video_stream_info(self, callback: Callable, user_data: Any = None):
         """Subscribe to video stream info updates."""
@@ -1572,7 +1600,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"get_video_stream_info failed: {result}")
+            raise CameraError(result, "get_video_stream_info()", component_id)
 
         py_result = VideoStreamInfo.from_c_struct(result_out)
         self._lib.mavsdk_camera_video_stream_info_destroy(ctypes.byref(result_out))
@@ -1644,7 +1672,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"get_storage failed: {result}")
+            raise CameraError(result, "get_storage()", component_id)
 
         py_result = Storage.from_c_struct(result_out)
         self._lib.mavsdk_camera_storage_destroy(ctypes.byref(result_out))
@@ -1693,7 +1721,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"get_current_settings failed: {result}")
+            raise CameraError(result, "get_current_settings()", component_id)
 
         py_result = [Setting.from_c_struct(result_ptr[i]) for i in range(size.value)]
         self._lib.mavsdk_camera_setting_array_destroy(ctypes.byref(result_ptr), size)
@@ -1746,7 +1774,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"get_possible_setting_options failed: {result}")
+            raise CameraError(result, "get_possible_setting_options()", component_id)
 
         py_result = [
             SettingOptions.from_c_struct(result_ptr[i]) for i in range(size.value)
@@ -1789,7 +1817,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"set_setting failed: {result}")
+            raise CameraError(result, "set_setting()", component_id, setting)
 
         return result
 
@@ -1830,7 +1858,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"get_setting failed: {result}")
+            raise CameraError(result, "get_setting()", component_id, setting)
 
         py_result = Setting.from_c_struct(result_out)
         self._lib.mavsdk_camera_setting_destroy(ctypes.byref(result_out))
@@ -1869,7 +1897,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"format_storage failed: {result}")
+            raise CameraError(result, "format_storage()", component_id, storage_id)
 
         return result
 
@@ -1905,7 +1933,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"reset_settings failed: {result}")
+            raise CameraError(result, "reset_settings()", component_id)
 
         return result
 
@@ -1939,7 +1967,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"zoom_in_start failed: {result}")
+            raise CameraError(result, "zoom_in_start()", component_id)
 
         return result
 
@@ -1973,7 +2001,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"zoom_out_start failed: {result}")
+            raise CameraError(result, "zoom_out_start()", component_id)
 
         return result
 
@@ -2003,7 +2031,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"zoom_stop failed: {result}")
+            raise CameraError(result, "zoom_stop()", component_id)
 
         return result
 
@@ -2038,7 +2066,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"zoom_range failed: {result}")
+            raise CameraError(result, "zoom_range()", component_id, range)
 
         return result
 
@@ -2081,7 +2109,9 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"track_point failed: {result}")
+            raise CameraError(
+                result, "track_point()", component_id, point_x, point_y, radius
+            )
 
         return result
 
@@ -2135,7 +2165,15 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"track_rectangle failed: {result}")
+            raise CameraError(
+                result,
+                "track_rectangle()",
+                component_id,
+                top_left_x,
+                top_left_y,
+                bottom_right_x,
+                bottom_right_y,
+            )
 
         return result
 
@@ -2165,7 +2203,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"track_stop failed: {result}")
+            raise CameraError(result, "track_stop()", component_id)
 
         return result
 
@@ -2199,7 +2237,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_in_step failed: {result}")
+            raise CameraError(result, "focus_in_step()", component_id)
 
         return result
 
@@ -2233,7 +2271,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_out_step failed: {result}")
+            raise CameraError(result, "focus_out_step()", component_id)
 
         return result
 
@@ -2267,7 +2305,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_in_start failed: {result}")
+            raise CameraError(result, "focus_in_start()", component_id)
 
         return result
 
@@ -2301,7 +2339,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_out_start failed: {result}")
+            raise CameraError(result, "focus_out_start()", component_id)
 
         return result
 
@@ -2331,7 +2369,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_stop failed: {result}")
+            raise CameraError(result, "focus_stop()", component_id)
 
         return result
 
@@ -2366,7 +2404,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_range failed: {result}")
+            raise CameraError(result, "focus_range()", component_id, range)
 
         return result
 
@@ -2404,7 +2442,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_meters failed: {result}")
+            raise CameraError(result, "focus_meters()", component_id, distance_m)
 
         return result
 
@@ -2434,7 +2472,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_auto failed: {result}")
+            raise CameraError(result, "focus_auto()", component_id)
 
         return result
 
@@ -2468,7 +2506,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_auto_single failed: {result}")
+            raise CameraError(result, "focus_auto_single()", component_id)
 
         return result
 
@@ -2502,7 +2540,7 @@ class Camera:
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
-            raise Exception(f"focus_auto_continuous failed: {result}")
+            raise CameraError(result, "focus_auto_continuous()", component_id)
 
         return result
 

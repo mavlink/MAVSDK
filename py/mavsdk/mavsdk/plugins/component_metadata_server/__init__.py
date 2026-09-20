@@ -14,6 +14,7 @@ from .component_metadata_server import MetadataType
 
 # Import result enum
 from .component_metadata_server import ComponentMetadataServerResult
+from .component_metadata_server import ComponentMetadataServerError
 
 # Import data structures
 from .component_metadata_server import Metadata
@@ -23,5 +24,6 @@ __all__ = [
     "ComponentMetadataServer",
     "MetadataType",
     "ComponentMetadataServerResult",
+    "ComponentMetadataServerError",
     "Metadata",
 ]

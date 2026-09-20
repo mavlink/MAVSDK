@@ -11,24 +11,13 @@ from typing import AsyncGenerator
 from mavsdk.plugins.mission_raw import (
     MissionRaw,
     MissionRawResult,
+    MissionRawError,
     MissionItem,
     MissionPlan,
     MissionProgress,
     MissionImportData,
     ProgressData,
 )
-
-
-class MissionRawError(Exception):
-    """Raised when a MissionRaw operation fails."""
-
-    def __init__(self, result, origin, *params):
-        self._result = result
-        self._origin = origin
-        self._params = params
-
-    def __str__(self):
-        return f"{self._result}: '{self._result.name}'; origin: {self._origin}; params: {self._params}"
 
 
 class MissionRawAsync:
@@ -66,6 +55,17 @@ class MissionRawAsync:
     async def upload_mission_with_progress(self, mission_plan) -> AsyncGenerator:
         """
         Upload a list of raw mission items and report upload progress.
+
+        Yields
+        ------
+        result, data
+            A ``MissionRawResult.NEXT`` result with the progress so
+            far, and finally a ``MissionRawResult.SUCCESS`` result.
+
+        Raises
+        ------
+        MissionRawError
+            If the request fails.
         """
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
@@ -76,8 +76,12 @@ class MissionRawAsync:
         self._plugin.upload_mission_with_progress_async(mission_plan, callback)
         while True:
             result, data = await queue.get()
+            if result not in (MissionRawResult.NEXT, MissionRawResult.SUCCESS):
+                raise MissionRawError(
+                    result, "upload_mission_with_progress()", mission_plan
+                )
             yield result, data
-            if result != MissionRawResult.NEXT:
+            if result == MissionRawResult.SUCCESS:
                 break
 
     async def upload_geofence(self, mission_items):

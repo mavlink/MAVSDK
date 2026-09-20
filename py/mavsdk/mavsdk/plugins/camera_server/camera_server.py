@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -47,6 +48,29 @@ class CameraServerResult(IntEnum):
     TIMEOUT = 6
     WRONG_ARGUMENT = 7
     NO_SYSTEM = 8
+
+
+class CameraServerError(MavsdkError):
+    """Raised when a CameraServer request fails.
+
+    Attributes
+    ----------
+    result : CameraServerResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -733,7 +757,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"set_information failed: {result}")
+            raise CameraServerError(result, "set_information()", information)
 
         return result
 
@@ -746,7 +770,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"set_video_streaming failed: {result}")
+            raise CameraServerError(result, "set_video_streaming()", video_streaming)
 
         return result
 
@@ -759,7 +783,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"set_in_progress failed: {result}")
+            raise CameraServerError(result, "set_in_progress()", in_progress)
 
         return result
 
@@ -801,7 +825,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_take_photo failed: {result}")
+            raise CameraServerError(
+                result, "respond_take_photo()", take_photo_feedback, capture_info
+            )
 
         return result
 
@@ -842,7 +868,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_start_video failed: {result}")
+            raise CameraServerError(
+                result, "respond_start_video()", start_video_feedback
+            )
 
         return result
 
@@ -883,7 +911,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_stop_video failed: {result}")
+            raise CameraServerError(result, "respond_stop_video()", stop_video_feedback)
 
         return result
 
@@ -928,7 +956,11 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_start_video_streaming failed: {result}")
+            raise CameraServerError(
+                result,
+                "respond_start_video_streaming()",
+                start_video_streaming_feedback,
+            )
 
         return result
 
@@ -971,7 +1003,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_stop_video_streaming failed: {result}")
+            raise CameraServerError(
+                result, "respond_stop_video_streaming()", stop_video_streaming_feedback
+            )
 
         return result
 
@@ -1010,7 +1044,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_set_mode failed: {result}")
+            raise CameraServerError(result, "respond_set_mode()", set_mode_feedback)
 
         return result
 
@@ -1056,7 +1090,12 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_storage_information failed: {result}")
+            raise CameraServerError(
+                result,
+                "respond_storage_information()",
+                storage_information_feedback,
+                storage_information,
+            )
 
         return result
 
@@ -1098,7 +1137,12 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_capture_status failed: {result}")
+            raise CameraServerError(
+                result,
+                "respond_capture_status()",
+                capture_status_feedback,
+                capture_status,
+            )
 
         return result
 
@@ -1139,7 +1183,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_format_storage failed: {result}")
+            raise CameraServerError(
+                result, "respond_format_storage()", format_storage_feedback
+            )
 
         return result
 
@@ -1180,7 +1226,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_reset_settings failed: {result}")
+            raise CameraServerError(
+                result, "respond_reset_settings()", reset_settings_feedback
+            )
 
         return result
 
@@ -1221,7 +1269,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_zoom_in_start failed: {result}")
+            raise CameraServerError(
+                result, "respond_zoom_in_start()", zoom_in_start_feedback
+            )
 
         return result
 
@@ -1262,7 +1312,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_zoom_out_start failed: {result}")
+            raise CameraServerError(
+                result, "respond_zoom_out_start()", zoom_out_start_feedback
+            )
 
         return result
 
@@ -1303,7 +1355,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_zoom_stop failed: {result}")
+            raise CameraServerError(result, "respond_zoom_stop()", zoom_stop_feedback)
 
         return result
 
@@ -1344,7 +1396,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_zoom_range failed: {result}")
+            raise CameraServerError(result, "respond_zoom_range()", zoom_range_feedback)
 
         return result
 
@@ -1385,7 +1437,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_in_step failed: {result}")
+            raise CameraServerError(
+                result, "respond_focus_in_step()", focus_in_step_feedback
+            )
 
         return result
 
@@ -1426,7 +1480,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_out_step failed: {result}")
+            raise CameraServerError(
+                result, "respond_focus_out_step()", focus_out_step_feedback
+            )
 
         return result
 
@@ -1467,7 +1523,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_in_start failed: {result}")
+            raise CameraServerError(
+                result, "respond_focus_in_start()", focus_in_start_feedback
+            )
 
         return result
 
@@ -1508,7 +1566,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_out_start failed: {result}")
+            raise CameraServerError(
+                result, "respond_focus_out_start()", focus_out_start_feedback
+            )
 
         return result
 
@@ -1549,7 +1609,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_stop failed: {result}")
+            raise CameraServerError(result, "respond_focus_stop()", focus_stop_feedback)
 
         return result
 
@@ -1590,7 +1650,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_range failed: {result}")
+            raise CameraServerError(
+                result, "respond_focus_range()", focus_range_feedback
+            )
 
         return result
 
@@ -1631,7 +1693,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_meters failed: {result}")
+            raise CameraServerError(
+                result, "respond_focus_meters()", focus_meters_feedback
+            )
 
         return result
 
@@ -1672,7 +1736,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_auto failed: {result}")
+            raise CameraServerError(result, "respond_focus_auto()", focus_auto_feedback)
 
         return result
 
@@ -1715,7 +1779,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_auto_single failed: {result}")
+            raise CameraServerError(
+                result, "respond_focus_auto_single()", focus_auto_single_feedback
+            )
 
         return result
 
@@ -1760,7 +1826,11 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_focus_auto_continuous failed: {result}")
+            raise CameraServerError(
+                result,
+                "respond_focus_auto_continuous()",
+                focus_auto_continuous_feedback,
+            )
 
         return result
 
@@ -1888,7 +1958,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_tracking_point_command failed: {result}")
+            raise CameraServerError(
+                result, "respond_tracking_point_command()", stop_video_feedback
+            )
 
         return result
 
@@ -1901,7 +1973,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_tracking_rectangle_command failed: {result}")
+            raise CameraServerError(
+                result, "respond_tracking_rectangle_command()", stop_video_feedback
+            )
 
         return result
 
@@ -1914,7 +1988,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"respond_tracking_off_command failed: {result}")
+            raise CameraServerError(
+                result, "respond_tracking_off_command()", stop_video_feedback
+            )
 
         return result
 
@@ -1927,7 +2003,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"set_position failed: {result}")
+            raise CameraServerError(result, "set_position()", position)
 
         return result
 
@@ -1940,7 +2016,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"set_attitude_quaternion failed: {result}")
+            raise CameraServerError(
+                result, "set_attitude_quaternion()", attitude_quaternion
+            )
 
         return result
 
@@ -1953,7 +2031,7 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"set_zoom_factor failed: {result}")
+            raise CameraServerError(result, "set_zoom_factor()", zoom_factor)
 
         return result
 
@@ -1967,7 +2045,9 @@ class CameraServer:
         )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
-            raise Exception(f"set_field_of_view failed: {result}")
+            raise CameraServerError(
+                result, "set_field_of_view()", horizontal_fov_deg, vertical_fov_deg
+            )
 
         return result
 

@@ -17,6 +17,7 @@ from .{{ plugin_name.lower_snake_case }} import {{ enum.name.upper_camel_case }}
 # Import result enum
 {% set result_enum = plugin_name.upper_camel_case + "Result" %}
 from .{{ plugin_name.lower_snake_case }} import {{ result_enum }}
+from .{{ plugin_name.lower_snake_case }} import {{ plugin_name.upper_camel_case }}Error
 
 # Import data structures
 {% for struct in structs %}
@@ -32,6 +33,7 @@ __all__ = [
     '{{ enum.name.upper_camel_case }}',
     {% endfor %}
     '{{ result_enum }}',
+    '{{ plugin_name.upper_camel_case }}Error',
     {% for struct in structs %}
       {% if not struct.name.upper_camel_case.endswith('Result') %}
     '{{ struct.name.upper_camel_case }}',

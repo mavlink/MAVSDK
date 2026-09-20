@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -27,6 +28,29 @@ class InfoResult(IntEnum):
     SUCCESS = 1
     INFORMATION_NOT_RECEIVED_YET = 2
     NO_SYSTEM = 3
+
+
+class InfoError(MavsdkError):
+    """Raised when a Info request fails.
+
+    Attributes
+    ----------
+    result : InfoResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -343,7 +367,7 @@ class Info:
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
-            raise Exception(f"get_identification failed: {result}")
+            raise InfoError(result, "get_identification()")
 
         py_result = Identification.from_c_struct(result_out)
         self._lib.mavsdk_info_identification_destroy(ctypes.byref(result_out))
@@ -359,7 +383,7 @@ class Info:
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
-            raise Exception(f"get_product failed: {result}")
+            raise InfoError(result, "get_product()")
 
         py_result = Product.from_c_struct(result_out)
         self._lib.mavsdk_info_product_destroy(ctypes.byref(result_out))
@@ -375,7 +399,7 @@ class Info:
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
-            raise Exception(f"get_version failed: {result}")
+            raise InfoError(result, "get_version()")
 
         py_result = Version.from_c_struct(result_out)
         self._lib.mavsdk_info_version_destroy(ctypes.byref(result_out))
@@ -391,7 +415,7 @@ class Info:
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
-            raise Exception(f"get_speed_factor failed: {result}")
+            raise InfoError(result, "get_speed_factor()")
 
         return result_out.value
 

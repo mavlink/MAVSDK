@@ -14,6 +14,7 @@ from .follow_me import FollowMe
 
 # Import result enum
 from .follow_me import FollowMeResult
+from .follow_me import FollowMeError
 
 # Import data structures
 from .follow_me import Config
@@ -23,6 +24,7 @@ from .follow_me import TargetLocation
 __all__ = [
     "FollowMe",
     "FollowMeResult",
+    "FollowMeError",
     "Config",
     "TargetLocation",
 ]

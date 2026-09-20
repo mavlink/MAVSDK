@@ -13,6 +13,7 @@ from .ftp_server import FtpServer
 
 # Import result enum
 from .ftp_server import FtpServerResult
+from .ftp_server import FtpServerError
 
 # Import data structures
 
@@ -20,4 +21,5 @@ from .ftp_server import FtpServerResult
 __all__ = [
     "FtpServer",
     "FtpServerResult",
+    "FtpServerError",
 ]

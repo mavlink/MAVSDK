@@ -14,6 +14,7 @@ from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
+from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
@@ -31,6 +32,29 @@ class MavlinkDirectResult(IntEnum):
     CONNECTION_ERROR = 5
     NO_SYSTEM = 6
     TIMEOUT = 7
+
+
+class MavlinkDirectError(MavsdkError):
+    """Raised when a MavlinkDirect request fails.
+
+    Attributes
+    ----------
+    result : MavlinkDirectResult
+        The result the request failed with.
+    origin : str
+        The method that failed.
+    params : tuple
+        The arguments the method was called with.
+    """
+
+    def __init__(self, result, origin, *params):
+        super().__init__(result, origin, *params)
+        self.result = result
+        self.origin = origin
+        self.params = params
+
+    def __str__(self):
+        return f"{self.result.name}; origin: {self.origin}; params: {self.params}"
 
 
 # ===== Internal C Structures =====
@@ -141,7 +165,7 @@ class MavlinkDirect:
         )
         result = MavlinkDirectResult(result_code)
         if result != MavlinkDirectResult.SUCCESS:
-            raise Exception(f"send_message failed: {result}")
+            raise MavlinkDirectError(result, "send_message()", message)
 
         return result
 
@@ -199,7 +223,7 @@ class MavlinkDirect:
         )
         result = MavlinkDirectResult(result_code)
         if result != MavlinkDirectResult.SUCCESS:
-            raise Exception(f"load_custom_xml failed: {result}")
+            raise MavlinkDirectError(result, "load_custom_xml()", xml_content)
 
         return result
 

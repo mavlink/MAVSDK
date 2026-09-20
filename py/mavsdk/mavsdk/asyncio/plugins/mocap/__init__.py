@@ -12,6 +12,7 @@ from .mocap import MocapAsync
 from mavsdk.plugins.mocap import (
     Mocap,
     MocapResult,
+    MocapError,
     PositionBody,
     AngleBody,
     SpeedBody,
@@ -29,6 +30,7 @@ __all__ = [
     "MocapAsync",
     "Mocap",
     "MocapResult",
+    "MocapError",
     "PositionBody",
     "AngleBody",
     "SpeedBody",

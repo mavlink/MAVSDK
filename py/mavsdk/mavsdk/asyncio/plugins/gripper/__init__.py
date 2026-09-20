@@ -11,6 +11,7 @@ from mavsdk.plugins.gripper import (
     Gripper,
     GripperAction,
     GripperResult,
+    GripperError,
 )
 
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     "Gripper",
     "GripperAction",
     "GripperResult",
+    "GripperError",
 ]

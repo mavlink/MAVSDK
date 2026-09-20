@@ -11,6 +11,7 @@ from .follow_me import FollowMeAsync
 from mavsdk.plugins.follow_me import (
     FollowMe,
     FollowMeResult,
+    FollowMeError,
     Config,
     TargetLocation,
 )
@@ -19,6 +20,7 @@ __all__ = [
     "FollowMeAsync",
     "FollowMe",
     "FollowMeResult",
+    "FollowMeError",
     "Config",
     "TargetLocation",
 ]

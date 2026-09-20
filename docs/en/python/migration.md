@@ -64,6 +64,7 @@ Beyond the API itself:
 | `drone.action` | `ActionAsync(system)` |
 | `drone.telemetry` | `TelemetryAsync(system)` |
 | `drone.telemetry.position()` | `telemetry.subscribe_position()` |
+| `except ActionError as e:` `e._result.result` | `except ActionError as e:` `e.result` |
 
 ## Side by side
 

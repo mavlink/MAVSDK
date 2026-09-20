@@ -11,6 +11,7 @@ from mavsdk.plugins.winch import (
     Winch,
     WinchAction,
     WinchResult,
+    WinchError,
     StatusFlags,
     Status,
 )
@@ -20,6 +21,7 @@ __all__ = [
     "Winch",
     "WinchAction",
     "WinchResult",
+    "WinchError",
     "StatusFlags",
     "Status",
 ]

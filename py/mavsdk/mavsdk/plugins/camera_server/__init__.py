@@ -15,6 +15,7 @@ from .camera_server import Mode
 
 # Import result enum
 from .camera_server import CameraServerResult
+from .camera_server import CameraServerError
 
 # Import data structures
 from .camera_server import Information
@@ -33,6 +34,7 @@ __all__ = [
     "CameraFeedback",
     "Mode",
     "CameraServerResult",
+    "CameraServerError",
     "Information",
     "VideoStreaming",
     "Position",

@@ -14,6 +14,7 @@ from .mission_raw_server import MissionRawServer
 
 # Import result enum
 from .mission_raw_server import MissionRawServerResult
+from .mission_raw_server import MissionRawServerError
 
 # Import data structures
 from .mission_raw_server import MissionItem
@@ -24,6 +25,7 @@ from .mission_raw_server import MissionProgress
 __all__ = [
     "MissionRawServer",
     "MissionRawServerResult",
+    "MissionRawServerError",
     "MissionItem",
     "MissionPlan",
     "MissionProgress",

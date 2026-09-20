@@ -12,6 +12,7 @@ from mavsdk.plugins.action import (
     OrbitYawBehavior,
     RelayCommand,
     ActionResult,
+    ActionError,
 )
 
 __all__ = [
@@ -20,4 +21,5 @@ __all__ = [
     "OrbitYawBehavior",
     "RelayCommand",
     "ActionResult",
+    "ActionError",
 ]
