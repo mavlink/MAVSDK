@@ -235,7 +235,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip
+          file: cpp/mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip
           asset_name: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip
           tag: ${{ github.ref }}
           overwrite: true
@@ -368,14 +368,15 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: mavsdk-windows-${{ matrix.arch }}
-          path: mavsdk-windows-${{ matrix.arch }}.zip
+          path: cpp/mavsdk-windows-${{ matrix.arch }}.zip
+          if-no-files-found: error
           retention-days: 2
       - name: Publish combined library to release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: mavsdk-windows-${{ matrix.arch }}.zip
+          file: cpp/mavsdk-windows-${{ matrix.arch }}.zip
           asset_name: mavsdk-windows-${{ matrix.arch }}.zip
           tag: ${{ github.ref }}
           overwrite: true
