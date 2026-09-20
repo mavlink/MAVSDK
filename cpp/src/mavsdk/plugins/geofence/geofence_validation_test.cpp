@@ -1,4 +1,4 @@
-#include "geofence_impl.hpp"
+#include "geofence_validation.hpp"
 
 #include <gtest/gtest.h>
 

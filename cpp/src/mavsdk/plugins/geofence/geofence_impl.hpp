@@ -8,10 +8,9 @@
 #include "plugins/geofence/geofence.hpp"
 #include "plugin_impl_base.hpp"
 #include "system.hpp"
+#include "geofence_validation.hpp"
 
 namespace mavsdk {
-
-MAVSDK_TEST_EXPORT bool is_valid_geofence(const Geofence::GeofenceData& data);
 
 class GeofenceImpl : public PluginImplBase {
 public:
