@@ -17,6 +17,13 @@
 using namespace mavsdk;
 using json = nlohmann::json;
 
+// Values copied from the MAVLink definitions, as MavlinkDirect works with the
+// message and field names at runtime instead of the MAVLink C headers.
+constexpr int MAV_BATTERY_FUNCTION_ALL = 1;
+constexpr int MAV_BATTERY_TYPE_LION = 3;
+constexpr int MAV_BATTERY_CHARGE_STATE_OK = 1;
+constexpr int MAV_BATTERY_MODE_UNKNOWN = 0;
+
 static void subscribe_armed(Telemetry& telemetry);
 static void send_battery_status(MavlinkDirect& mavlink_direct);
 

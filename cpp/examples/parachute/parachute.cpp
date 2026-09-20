@@ -20,6 +20,14 @@
 using namespace mavsdk;
 using json = nlohmann::json;
 
+// Values copied from the MAVLink definitions, as MavlinkDirect works with the
+// message and field names at runtime instead of the MAVLink C headers.
+constexpr int MAV_COMP_ID_PARACHUTE = 161;
+constexpr int MAV_CMD_DO_PARACHUTE = 208;
+constexpr int PARACHUTE_DISABLE = 0;
+constexpr int PARACHUTE_ENABLE = 1;
+constexpr int PARACHUTE_RELEASE = 2;
+
 static void usage(const std::string& bin_name)
 {
     std::cerr << "Usage : " << bin_name << " <connection_url>\n"

@@ -5,6 +5,7 @@
 #include <mavsdk/mavsdk.hpp>
 #include <mavsdk/plugins/events/events.hpp>
 #include <mavsdk/plugins/telemetry/telemetry.hpp>
+#include <cstring>
 #include <iostream>
 #include <thread>
 #include <future>

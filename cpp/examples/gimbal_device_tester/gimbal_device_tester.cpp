@@ -20,6 +20,31 @@
 using namespace mavsdk;
 using json = nlohmann::json;
 
+// Values copied from the MAVLink definitions, as MavlinkDirect works with the
+// message and field names at runtime instead of the MAVLink C headers.
+constexpr int MAV_TYPE_GIMBAL = 26;
+constexpr int MAV_COMP_ID_GIMBAL = 154;
+constexpr int MAV_COMP_ID_GIMBAL2 = 171;
+constexpr int MAV_COMP_ID_GIMBAL3 = 172;
+constexpr int MAV_COMP_ID_GIMBAL4 = 173;
+constexpr int MAV_COMP_ID_GIMBAL5 = 174;
+constexpr int MAV_COMP_ID_GIMBAL6 = 175;
+constexpr int MAV_CMD_REQUEST_MESSAGE = 512;
+constexpr int MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION = 283;
+constexpr int MAV_LANDED_STATE_IN_AIR = 2;
+constexpr int ESTIMATOR_ATTITUDE = 1;
+constexpr int ESTIMATOR_VELOCITY_HORIZ = 2;
+constexpr int ESTIMATOR_VELOCITY_VERT = 4;
+constexpr int ESTIMATOR_POS_HORIZ_REL = 8;
+constexpr int ESTIMATOR_POS_HORIZ_ABS = 16;
+constexpr int ESTIMATOR_POS_VERT_ABS = 32;
+constexpr int ESTIMATOR_POS_VERT_AGL = 64;
+constexpr int ESTIMATOR_PRED_POS_HORIZ_REL = 256;
+constexpr int ESTIMATOR_PRED_POS_HORIZ_ABS = 512;
+constexpr int GIMBAL_DEVICE_FLAGS_ROLL_LOCK = 4;
+constexpr int GIMBAL_DEVICE_FLAGS_PITCH_LOCK = 8;
+constexpr int GIMBAL_DEVICE_FLAGS_YAW_LOCK = 16;
+
 static constexpr auto test_prefix = "[TEST] ";
 static constexpr uint8_t own_sysid = 33;
 

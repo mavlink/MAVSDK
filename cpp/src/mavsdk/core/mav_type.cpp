@@ -24,8 +24,10 @@ static_assert(static_cast<int>(MavType::Tricopter) == MAV_TYPE_TRICOPTER);
 static_assert(static_cast<int>(MavType::FlappingWing) == MAV_TYPE_FLAPPING_WING);
 static_assert(static_cast<int>(MavType::Kite) == MAV_TYPE_KITE);
 static_assert(static_cast<int>(MavType::OnboardController) == MAV_TYPE_ONBOARD_CONTROLLER);
-static_assert(static_cast<int>(MavType::VtolTailsitterDuorotor) == MAV_TYPE_VTOL_TAILSITTER_DUOROTOR);
-static_assert(static_cast<int>(MavType::VtolTailsitterQuadrotor) == MAV_TYPE_VTOL_TAILSITTER_QUADROTOR);
+static_assert(
+    static_cast<int>(MavType::VtolTailsitterDuorotor) == MAV_TYPE_VTOL_TAILSITTER_DUOROTOR);
+static_assert(
+    static_cast<int>(MavType::VtolTailsitterQuadrotor) == MAV_TYPE_VTOL_TAILSITTER_QUADROTOR);
 static_assert(static_cast<int>(MavType::VtolTiltrotor) == MAV_TYPE_VTOL_TILTROTOR);
 static_assert(static_cast<int>(MavType::VtolFixedrotor) == MAV_TYPE_VTOL_FIXEDROTOR);
 static_assert(static_cast<int>(MavType::VtolTailsitter) == MAV_TYPE_VTOL_TAILSITTER);
