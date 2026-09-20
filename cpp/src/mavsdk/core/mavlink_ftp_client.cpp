@@ -179,7 +179,11 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     auto work = _work_queue.front();
 
     if (work->last_opcode != payload->req_opcode) {
-        // Ignore
+        // Ignore, but the other side is clearly still talking to us, so don't
+        // keep backing off the retries: a burst that we have stopped following
+        // still arrives while we ask for the parts we missed, and those
+        // requests need to go out at the normal rate to get us back in step.
+        note_link_alive();
         LogWarn("Ignore: last: {}, req: {}", (int)work->last_opcode, (int)payload->req_opcode);
         return;
     }
@@ -206,6 +210,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     if (!is_burst) {
         const auto expected_seq = static_cast<uint16_t>(work->payload.seq_number + 1);
         if (payload->seq_number != expected_seq) {
+            note_link_alive();
             LogWarn(
                 "Unexpected seq: got {}, expected {}", (int)payload->seq_number, (int)expected_seq);
             return;
@@ -213,6 +218,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     } else {
         if (work->last_received_seq_number != 0 &&
             work->last_received_seq_number == payload->seq_number) {
+            note_link_alive();
             LogWarn("Already seen seq: {}", (int)payload->seq_number);
             return;
         }
@@ -224,9 +230,9 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 if (payload->opcode == RSP_ACK) {
                     if (payload->req_opcode == CMD_OPEN_FILE_RO ||
                         payload->req_opcode == CMD_READ_FILE) {
-                        // Whenever we do get an ack,
-                        // reset the retry counter.
-                        work->retries = RETRIES;
+                        // Whenever we do get an ack, the transfer is alive.
+                        work->note_progress();
+                        _retry_timeout_s.reset();
 
                         if (!download_continue(*work, item, payload)) {
                             stop_timer();
@@ -263,9 +269,9 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     if (payload->req_opcode == CMD_OPEN_FILE_RO ||
                         payload->req_opcode == CMD_BURST_READ_FILE ||
                         payload->req_opcode == CMD_READ_FILE) {
-                        // Whenever we do get an ack,
-                        // reset the retry counter.
-                        work->retries = RETRIES;
+                        // Whenever we do get an ack, the transfer is alive.
+                        work->note_progress();
+                        _retry_timeout_s.reset();
 
                         if (!download_burst_continue(*work, item, payload)) {
                             stop_timer();
@@ -312,9 +318,9 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     if (payload->req_opcode == CMD_CREATE_FILE ||
                         payload->req_opcode == CMD_OPEN_FILE_WO ||
                         payload->req_opcode == CMD_WRITE_FILE) {
-                        // Whenever we do get an ack,
-                        // reset the retry counter.
-                        work->retries = RETRIES;
+                        // Whenever we do get an ack, the transfer is alive.
+                        work->note_progress();
+                        _retry_timeout_s.reset();
 
                         if (!upload_continue(*work, item)) {
                             stop_timer();
@@ -471,8 +477,9 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 if (payload->opcode == RSP_ACK) {
                     if (payload->req_opcode == CMD_LIST_DIRECTORY ||
                         payload->req_opcode == CMD_LIST_DIRECTORY_WITH_TIME) {
-                        // Whenever we do get an ack, reset the retry counter.
-                        work->retries = RETRIES;
+                        // Whenever we do get an ack, the transfer is alive.
+                        work->note_progress();
+                        _retry_timeout_s.reset();
 
                         if (!list_dir_continue(*work, item, payload)) {
                             stop_timer();
@@ -1457,7 +1464,34 @@ void MavlinkFtpClient::start_timer(std::optional<double> duration_s)
 {
     _system_impl.unregister_timeout_handler(_timeout_cookie);
     _timeout_cookie = _system_impl.register_timeout_handler(
-        [this]() { timeout(); }, duration_s.value_or(_system_impl.timeout_s()));
+        [this]() { timeout(); },
+        duration_s.value_or(_retry_timeout_s.value_or(_system_impl.timeout_s())));
+}
+
+double MavlinkFtpClient::retry_timeout_s(const Work& work) const
+{
+    // Back off while retries keep failing: on a half duplex radio link, retrying
+    // every 500ms during a fade just spends airtime that the answer needs.
+    const double base_timeout_s = _system_impl.timeout_s();
+    const double max_timeout_s = MAX_RETRY_TIMEOUTS * base_timeout_s;
+    double timeout_s = base_timeout_s;
+    for (unsigned i = 1; i < work.consecutive_timeouts && timeout_s < max_timeout_s; ++i) {
+        timeout_s *= 2.0;
+    }
+    return std::min(timeout_s, max_timeout_s);
+}
+
+double MavlinkFtpClient::no_progress_timeout_s() const
+{
+    return NO_PROGRESS_TIMEOUTS * _system_impl.timeout_s();
+}
+
+void MavlinkFtpClient::note_link_alive()
+{
+    // Something came back, so the link is not the problem: retry at the normal
+    // rate again. The transfer has not moved on, so the give-up budget keeps
+    // running.
+    _retry_timeout_s.reset();
 }
 
 void MavlinkFtpClient::stop_timer()
@@ -1476,11 +1510,30 @@ void MavlinkFtpClient::timeout()
     }
     auto work = _work_queue.front();
 
+    ++work->consecutive_timeouts;
+    _retry_timeout_s = retry_timeout_s(*work);
+
+    if (_debugging) {
+        LogDebug(
+            "Timeout number {}, {}s since progress",
+            work->consecutive_timeouts,
+            std::chrono::duration<double>(std::chrono::steady_clock::now() - work->last_progress)
+                .count());
+    }
+
     std::visit(
         overloaded{
             [&](DownloadItem& item) {
-                if (--work->retries == 0) {
-                    item.callback(ClientResult::Timeout, {});
+                if (work->gave_up(no_progress_timeout_s())) {
+                    LogWarn(
+                        "Download timed out after {} of {} bytes",
+                        item.bytes_transferred,
+                        item.file_size);
+                    item.callback(
+                        ClientResult::Timeout,
+                        ProgressData{
+                            static_cast<uint32_t>(item.bytes_transferred),
+                            static_cast<uint32_t>(item.file_size)});
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
                         asio::post(_io_context, [this] { do_work(); });
@@ -1488,7 +1541,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1496,8 +1549,21 @@ void MavlinkFtpClient::timeout()
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](DownloadBurstItem& item) {
-                if (--work->retries == 0) {
-                    item.callback(ClientResult::Timeout, {});
+                if (work->gave_up(no_progress_timeout_s())) {
+                    // current_offset is how far the burst got, so take off what we
+                    // know is still missing from it.
+                    const auto missing = std::accumulate(
+                        item.missing_data.begin(),
+                        item.missing_data.end(),
+                        std::size_t{0},
+                        [](std::size_t sum, const DownloadBurstItem::MissingData& data) {
+                            return sum + data.size;
+                        });
+                    const auto received = static_cast<uint32_t>(
+                        item.current_offset - std::min(item.current_offset, missing));
+                    LogWarn(
+                        "Burst download timed out after {} of {} bytes", received, item.file_size);
+                    item.callback(ClientResult::Timeout, ProgressData{received, item.file_size});
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
                         asio::post(_io_context, [this] { do_work(); });
@@ -1505,7 +1571,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 {
@@ -1548,8 +1614,16 @@ void MavlinkFtpClient::timeout()
                 }
             },
             [&](UploadItem& item) {
-                if (--work->retries == 0) {
-                    item.callback(ClientResult::Timeout, {});
+                if (work->gave_up(no_progress_timeout_s())) {
+                    LogWarn(
+                        "Upload timed out after {} of {} bytes",
+                        item.bytes_transferred,
+                        item.file_size);
+                    item.callback(
+                        ClientResult::Timeout,
+                        ProgressData{
+                            static_cast<uint32_t>(item.bytes_transferred),
+                            static_cast<uint32_t>(item.file_size)});
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
                         asio::post(_io_context, [this] { do_work(); });
@@ -1557,7 +1631,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1565,7 +1639,7 @@ void MavlinkFtpClient::timeout()
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RemoveItem& item) {
-                if (--work->retries == 0) {
+                if (work->gave_up(no_progress_timeout_s())) {
                     item.callback(ClientResult::Timeout);
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
@@ -1574,7 +1648,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1582,7 +1656,7 @@ void MavlinkFtpClient::timeout()
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RenameItem& item) {
-                if (--work->retries == 0) {
+                if (work->gave_up(no_progress_timeout_s())) {
                     item.callback(ClientResult::Timeout);
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
@@ -1591,7 +1665,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1599,7 +1673,7 @@ void MavlinkFtpClient::timeout()
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](CreateDirItem& item) {
-                if (--work->retries == 0) {
+                if (work->gave_up(no_progress_timeout_s())) {
                     item.callback(ClientResult::Timeout);
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
@@ -1608,7 +1682,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1616,7 +1690,7 @@ void MavlinkFtpClient::timeout()
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RemoveDirItem& item) {
-                if (--work->retries == 0) {
+                if (work->gave_up(no_progress_timeout_s())) {
                     item.callback(ClientResult::Timeout);
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
@@ -1625,7 +1699,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1633,7 +1707,7 @@ void MavlinkFtpClient::timeout()
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](CompareFilesItem& item) {
-                if (--work->retries == 0) {
+                if (work->gave_up(no_progress_timeout_s())) {
                     item.callback(ClientResult::Timeout, false);
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
@@ -1642,7 +1716,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;
@@ -1650,7 +1724,7 @@ void MavlinkFtpClient::timeout()
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](ListDirItem& item) {
-                if (--work->retries == 0) {
+                if (work->gave_up(no_progress_timeout_s())) {
                     item.callback(ClientResult::Timeout, {});
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
@@ -1659,7 +1733,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
                 if (_debugging) {
-                    LogDebug("Retries left: {}", work->retries);
+                    LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
                 work->payload.seq_number = _last_sent_seq_number++;

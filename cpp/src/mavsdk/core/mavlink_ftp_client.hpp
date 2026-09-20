@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cinttypes>
 #include <functional>
 #include <fstream>
@@ -111,7 +112,14 @@ public:
     void cancel_all_operations();
 
 private:
-    static constexpr unsigned RETRIES = 10;
+    /// @brief Give up when nothing has been received for this many times the
+    /// configured timeout, however many retries that takes: a fade on a radio
+    /// link can swallow several seconds without the transfer being lost. With
+    /// the default timeout of 0.5s this is 30 seconds of silence.
+    static constexpr double NO_PROGRESS_TIMEOUTS = 60.0;
+
+    /// @brief Upper bound for the backoff between retries, in configured timeouts.
+    static constexpr double MAX_RETRY_TIMEOUTS = 8.0;
 
     /// @brief Maximum data size in RequestHeader::data
     static constexpr uint8_t max_data_length = 239;
@@ -244,7 +252,8 @@ private:
     struct Work {
         Item item;
         PayloadHeader payload{}; // The last payload saved for retries
-        unsigned retries{RETRIES};
+        unsigned consecutive_timeouts{0};
+        std::chrono::steady_clock::time_point last_progress{std::chrono::steady_clock::now()};
         bool started{false};
         Opcode last_opcode{};
         uint16_t last_received_seq_number{0}; // used for burst duplicate detection
@@ -253,6 +262,20 @@ private:
             item(std::move(new_item)),
             target_compid(target_compid_)
         {}
+
+        /// @brief Called whenever the other side answered, so the transfer is alive.
+        void note_progress()
+        {
+            consecutive_timeouts = 0;
+            last_progress = std::chrono::steady_clock::now();
+        }
+
+        /// @brief True once nothing has been received for budget_s.
+        bool gave_up(double budget_s) const
+        {
+            return std::chrono::steady_clock::now() - last_progress >
+                   std::chrono::duration<double>(budget_s);
+        }
     };
 
     /// @brief Possible server results returned for requests.
@@ -325,6 +348,15 @@ private:
 
     void timeout();
     void start_timer(std::optional<double> duration_s = {});
+    /// @brief Timeout to use for the next attempt, backing off while retries fail.
+    double retry_timeout_s(const Work& work) const;
+    /// @brief How long a transfer may go without an answer before we give up.
+    double no_progress_timeout_s() const;
+    /// @brief Called for answers that we discard, which still show the link works.
+    void note_link_alive();
+
+    /// @brief Set while retrying, so that nested calls to start_timer() back off too.
+    std::optional<double> _retry_timeout_s{};
     void stop_timer();
 
     ClientResult calc_local_file_crc32(const std::string& path, uint32_t& csum);
