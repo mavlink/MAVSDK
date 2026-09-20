@@ -13,3 +13,8 @@ install(FILES
     include/plugins/geofence/geofence.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/geofence
 )
+
+list(APPEND UNIT_TEST_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/geofence_validation_test.cpp
+)
+set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

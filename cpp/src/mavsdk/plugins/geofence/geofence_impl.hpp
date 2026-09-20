@@ -11,6 +11,8 @@
 
 namespace mavsdk {
 
+MAVSDK_TEST_EXPORT bool is_valid_geofence(const Geofence::GeofenceData& data);
+
 class GeofenceImpl : public PluginImplBase {
 public:
     explicit GeofenceImpl(System& system);

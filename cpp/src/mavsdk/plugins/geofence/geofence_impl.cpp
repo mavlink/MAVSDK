@@ -13,6 +13,8 @@ bool is_valid_point(const Geofence::Point& point)
            point.longitude_deg >= -180.0 && point.longitude_deg <= 180.0;
 }
 
+} // namespace
+
 bool is_valid_geofence(const Geofence::GeofenceData& data)
 {
     size_t item_count = data.circles.size();
@@ -37,8 +39,6 @@ bool is_valid_geofence(const Geofence::GeofenceData& data)
     }
     return true;
 }
-
-} // namespace
 
 GeofenceImpl::GeofenceImpl(System& system) : PluginImplBase(system)
 {

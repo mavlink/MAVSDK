@@ -23,7 +23,6 @@ add_executable(system_tests_runner
     telemetry_rc_status.cpp
     telemetry_odometry.cpp
     geofence_download.cpp
-    geofence_validation.cpp
     heartbeat_watchdog.cpp
     plugin_lifetime_churn.cpp
     mavsdk_outlived.cpp
