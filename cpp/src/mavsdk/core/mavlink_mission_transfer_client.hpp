@@ -92,6 +92,13 @@ public:
         // the owner when the item is enqueued.
         void set_done_callback(std::function<void()> callback);
 
+        // Drop this item's message callbacks. Called by do_work() on the io thread when the
+        // item is retired, so that the last reference to it can afterwards be dropped from
+        // any thread: a caller that cancels holds one, and the message handler table is
+        // confined to the io thread. Idempotent, the destructor calls it again for items
+        // that never made it through the queue.
+        void unregister_messages();
+
         WorkItem(const WorkItem&) = delete;
         WorkItem(WorkItem&&) = delete;
         WorkItem& operator=(const WorkItem&) = delete;
@@ -109,6 +116,7 @@ public:
 
         bool _started{false};
         bool _done{false};
+        bool _unregistered{false};
         std::function<void()> _done_callback{};
         std::mutex _mutex{};
         bool _debugging;
