@@ -1,4 +1,5 @@
 #include "geofence_impl.hpp"
+#include "geofence_validation.hpp"
 #include "log.hpp"
 #include <cmath>
 #include <limits>

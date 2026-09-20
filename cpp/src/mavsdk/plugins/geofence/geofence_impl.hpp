@@ -8,7 +8,6 @@
 #include "plugins/geofence/geofence.hpp"
 #include "plugin_impl_base.hpp"
 #include "system.hpp"
-#include "geofence_validation.hpp"
 
 namespace mavsdk {
 
