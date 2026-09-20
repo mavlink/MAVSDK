@@ -27,7 +27,7 @@ class Mavsdk:
       event loop stays responsive.
     - ``on_new_system`` is an async generator instead of a callback-based
       subscription.
-    - Returned :class:`System` objects are the aiomavsdk async wrapper, not
+    - Returned :class:`System` objects are the asyncio wrapper, not
       the raw mavsdk ones.
     - Use as an async context manager (``async with``) or call
       :meth:`destroy` explicitly.

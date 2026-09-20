@@ -60,7 +60,7 @@ Beyond the API itself:
 |---|---|
 | `System()` | `Mavsdk(Configuration.create_with_component_type(...))` |
 | `await drone.connect(system_address=url)` | `await mavsdk.add_any_connection(url)` |
-| implicit in `connect()` | `async for _ in mavsdk.on_new_system(): ...` |
+| implicit in `connect()` | `drone = await mavsdk.first_autopilot(timeout_s)` |
 | `drone.action` | `ActionAsync(system)` |
 | `drone.telemetry` | `TelemetryAsync(system)` |
 | `drone.telemetry.position()` | `telemetry.subscribe_position()` |
@@ -106,14 +106,9 @@ async def run():
     mavsdk = Mavsdk(configuration)
     await mavsdk.add_any_connection("udpin://0.0.0.0:14540")
 
-    drone = None
-    async for _ in mavsdk.on_new_system():
-        for system in await mavsdk.get_systems():
-            if await system.has_autopilot() and await system.is_connected():
-                drone = system
-                break
-        if drone is not None:
-            break
+    drone = await mavsdk.first_autopilot(10.0)
+    if drone is None:
+        raise SystemExit("No autopilot found")
 
     action = ActionAsync(drone)
     await action.arm()
@@ -136,21 +131,9 @@ configuration = Configuration.create_with_component_type(ComponentType.GROUND_ST
 mavsdk = Mavsdk(configuration)
 mavsdk.add_any_connection("udpin://0.0.0.0:14540")
 
-drone = None
-
-
-def on_new_system(user_data=None):
-    global drone
-    for system in mavsdk.get_systems():
-        if system.has_autopilot() and system.is_connected():
-            drone = system
-            break
-
-
-handle = mavsdk.subscribe_on_new_system(on_new_system)
-while drone is None:
-    time.sleep(1)
-mavsdk.unsubscribe_on_new_system(handle)
+drone = mavsdk.first_autopilot(10.0)
+if drone is None:
+    raise SystemExit("No autopilot found")
 
 action = Action(drone)
 action.arm()

@@ -123,7 +123,7 @@ jobs:
           cp c/build/install/lib/libcmavsdk.dylib py/mavsdk/mavsdk/lib/libcmavsdk.dylib
           cd py/mavsdk
           python3 setup.py bdist_wheel --plat-name ${{ matrix.python_plat_name }}
-          delocate-wheel -w wheelhouse dist/mavsdk4-*-macosx_*.whl
+          delocate-wheel -w wheelhouse dist/mavsdk-*-macosx_*.whl
       - name: upload mavsdk wheel
         if: ${{ matrix.build-framework == 'OFF' }}
         uses: actions/upload-artifact@v7
@@ -131,6 +131,15 @@ jobs:
           name: mavsdk_wheel_macos_${{ matrix.architecture }}
           path: py/mavsdk/wheelhouse/*.whl
           retention-days: 2
+      - name: Publish mavsdk wheel to release
+        if: ${{ startsWith(github.ref, 'refs/tags/v') && matrix.build-framework == 'OFF' }}
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
+          file: py/mavsdk/wheelhouse/*.whl
+          tag: ${{ github.ref }}
+          overwrite: true
 
   iOS:
     name: ${{ matrix.name }}

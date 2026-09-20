@@ -4,6 +4,7 @@ import asyncio
 
 from typing import AsyncGenerator, List
 
+from mavsdk import _legacy
 from mavsdk.autopilot import Autopilot
 from mavsdk.system import System as _System
 from mavsdk.vehicle import Vehicle
@@ -16,6 +17,13 @@ class System:
     Simple accessors are exposed as ``async def`` for a uniform ``await``
     style. The connection-state subscription is exposed as an async generator.
     """
+
+    def __new__(cls, *args, **kwargs):
+        # See mavsdk.system.System.__new__.
+        _legacy.check_system_args(
+            len(args) == 1 and isinstance(args[0], _System), kwargs
+        )
+        return super().__new__(cls)
 
     def __init__(self, system: _System):
         self._system = system

@@ -1,9 +1,9 @@
 import asyncio
 import sys
-from aiomavsdk import Mavsdk, Configuration, ComponentType
-from aiomavsdk.plugins.action import ActionAsync
-from aiomavsdk.plugins.mission import MissionAsync, MissionItem, MissionPlan
-from aiomavsdk.plugins.telemetry import TelemetryAsync
+from mavsdk.asyncio import Mavsdk, Configuration, ComponentType
+from mavsdk.asyncio.plugins.action import ActionAsync
+from mavsdk.asyncio.plugins.mission import MissionAsync, MissionItem, MissionPlan
+from mavsdk.asyncio.plugins.telemetry import TelemetryAsync
 
 
 def usage(bin_name):

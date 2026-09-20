@@ -112,13 +112,22 @@ jobs:
           cp c/build/install/bin/cmavsdk.dll py/mavsdk/mavsdk/lib/cmavsdk.dll
           cd py/mavsdk
           python3 setup.py bdist_wheel --plat-name ${{ matrix.python_plat_name }}
-          delvewheel repair -w wheelhouse dist/mavsdk4-*-win*.whl
+          delvewheel repair -w wheelhouse dist/mavsdk-*-win*.whl
       - name: upload mavsdk wheel
         uses: actions/upload-artifact@v7
         with:
           name: mavsdk_wheel_windows_${{ matrix.arch }}
           path: py/mavsdk/wheelhouse/*.whl
           retention-days: 2
+      - name: Publish mavsdk wheel to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
+          file: py/mavsdk/wheelhouse/*.whl
+          tag: ${{ github.ref }}
+          overwrite: true
       - name: Upload mavsdk_server binary as artifact
         uses: actions/upload-artifact@v7
         with:

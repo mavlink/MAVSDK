@@ -1,6 +1,6 @@
 import asyncio
-from aiomavsdk import Mavsdk, Configuration, ComponentType
-from aiomavsdk.plugins.action import ActionAsync
+from mavsdk.asyncio import Mavsdk, Configuration, ComponentType
+from mavsdk.asyncio.plugins.action import ActionAsync
 from mavsdk.logging import log_subscribe
 
 async def main():
