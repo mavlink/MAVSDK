@@ -76,7 +76,7 @@ void MavlinkRequestMessage::request(
     }
 
     // Otherwise, schedule it.
-    _work_items.emplace_back(WorkItem{message_id, target_component, callback, param2});
+    _work_items.emplace_back(WorkItem{_next_id++, message_id, target_component, callback, param2});
 
     // Register a handler for this message id if we don't have one yet. We keep
     // it registered for our lifetime; handle_any_message is a no-op when no work
@@ -128,9 +128,9 @@ void MavlinkRequestMessage::send_request_using_new_command(WorkItem& item)
     command_request_message.params.maybe_param1 = {static_cast<float>(item.message_id)};
     _command_sender.queue_command_async(
         command_request_message,
-        [this, message_id = item.message_id](MavlinkCommandSender::Result result, float) {
+        [this, id = item.id, attempt = item.retries](MavlinkCommandSender::Result result, float) {
             if (result != MavlinkCommandSender::Result::InProgress) {
-                handle_command_result(message_id, result);
+                handle_command_result(id, attempt, result);
             }
         },
         1);
@@ -220,9 +220,9 @@ bool MavlinkRequestMessage::try_sending_request_using_old_command(WorkItem& item
 
     _command_sender.queue_command_async(
         command_request_message,
-        [this, message_id = item.message_id](MavlinkCommandSender::Result result, float) {
+        [this, id = item.id, attempt = item.retries](MavlinkCommandSender::Result result, float) {
             if (result != MavlinkCommandSender::Result::InProgress) {
-                handle_command_result(message_id, result);
+                handle_command_result(id, attempt, result);
             }
         },
         1);
@@ -261,25 +261,31 @@ void MavlinkRequestMessage::handle_any_message(const mavlink_message_t& message)
 }
 
 void MavlinkRequestMessage::handle_command_result(
-    uint32_t message_id, MavlinkCommandSender::Result result)
+    uint64_t id, unsigned attempt, MavlinkCommandSender::Result result)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
     for (auto it = _work_items.begin(); it != _work_items.end(); ++it) {
-        // Check if we're waiting for this result
-        if (it->message_id != message_id) {
+        // Check if we're waiting for this result. Only the request that sent this
+        // command cares about it; if it has completed already (the message usually
+        // beats the COMMAND_ACK), there is nothing to match and we ignore it.
+        if (it->id != id) {
             continue;
+        }
+
+        // And it has to be the result of the attempt that is currently in flight,
+        // not of one we have already given up on and retried.
+        if (it->retries != attempt) {
+            return;
         }
 
         switch (result) {
             case MavlinkCommandSender::Result::Success:
                 // This is promising, let's hope the message will actually arrive.
                 // We'll set a timeout in case we need to retry.
-                it->timeout_cookie = _timeout_handler.add(
-                    [this, message_id, target_component = it->target_component]() {
-                        handle_timeout(message_id, target_component);
-                    },
-                    1.0);
+                _timeout_handler.remove(it->timeout_cookie);
+                it->timeout_cookie =
+                    _timeout_handler.add([this, id]() { handle_timeout(id); }, 1.0);
                 return;
 
             case MavlinkCommandSender::Result::Busy:
@@ -332,13 +338,13 @@ void MavlinkRequestMessage::handle_command_result(
     }
 }
 
-void MavlinkRequestMessage::handle_timeout(uint32_t message_id, uint8_t target_component)
+void MavlinkRequestMessage::handle_timeout(uint64_t id)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
     for (auto it = _work_items.begin(); it != _work_items.end(); ++it) {
         // Check if we're waiting for this result
-        if (it->message_id != message_id || it->target_component != target_component) {
+        if (it->id != id) {
             continue;
         }
 
@@ -354,6 +360,7 @@ void MavlinkRequestMessage::handle_timeout(uint32_t message_id, uint8_t target_c
         }
 
         send_request(*it);
+        return;
     }
 }
 

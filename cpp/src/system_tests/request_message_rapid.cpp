@@ -16,23 +16,21 @@ using namespace mavsdk;
 // Reproduces a race when the same message is requested in rapid succession via
 // MAV_CMD_REQUEST_MESSAGE.
 //
-// MavlinkRequestMessage registers a message handler for each request and defers
-// the corresponding unregister to the next request() call (the unregister can't
-// happen from inside the message handler callback). The deferred unregister
-// removes *all* handler entries for that message id and, in the message handler,
-// deferred registrations are applied before deferred unregistrations. So if a
-// request for a message comes in while a previous unregister for the same id is
-// still deferred -- and the receive thread is holding the message handler mutex
-// (deferring both the unregister and the new register) -- the deferred
-// unregister deletes the handler that the new request just registered. That
-// request then never receives its message and times out.
+// A request completes as soon as the requested message arrives, which -- with the
+// autopilot streaming it at a high rate -- is usually before the COMMAND_ACK for
+// the command that asked for it. The work item is then gone, and the next request
+// for the same message id is already in flight by the time that ack shows up. If
+// results and timeouts are matched back to a request by message id alone, they
+// land on that innocent successor instead: its retry counter gets bumped by acks
+// it never asked for, and its pending timeout is silently replaced, leaking a
+// timer that can no longer be cancelled and later fires on some later request.
+// Enough of those and a request that had nothing wrong with it exhausts its
+// retries and reports a Timeout.
 //
-// A single sequential requester never hits this: the cleanup runs when no one
-// holds the message handler mutex. To reproduce we hammer the same request from
+// A single sequential requester never hits this: nothing else is in flight for an
+// old ack to be confused with. To reproduce we hammer the same request from
 // several threads at once while the autopilot streams the response message at a
-// high rate (keeping the ground station receive thread inside process_message,
-// holding the mutex). Note that even a request that ends up returning Busy first
-// runs the cleanup loop, so it too can unregister the in-flight winner's handler.
+// high rate.
 //
 // Expected results are only Success (the winning request) or Busy (losing,
 // overlapping requests). The bug shows up as a Timeout.
@@ -146,6 +144,6 @@ TEST(SystemTest, RequestMessageRapid)
     keep_streaming = false;
     streamer.join();
 
-    EXPECT_FALSE(bad_result) << "A request lost its handler and did not complete.";
+    EXPECT_FALSE(bad_result) << "A request timed out even though its message kept arriving.";
     EXPECT_GT(success_count, 0) << "No request ever succeeded; test did not exercise the path.";
 }
