@@ -1,8 +1,45 @@
 #include "geofence_impl.hpp"
+#include "geofence_validation.hpp"
 #include "log.hpp"
 #include <cmath>
+#include <limits>
 
 namespace mavsdk {
+namespace {
+
+bool is_valid_point(const Geofence::Point& point)
+{
+    return std::isfinite(point.latitude_deg) && std::isfinite(point.longitude_deg) &&
+           point.latitude_deg >= -90.0 && point.latitude_deg <= 90.0 &&
+           point.longitude_deg >= -180.0 && point.longitude_deg <= 180.0;
+}
+
+} // namespace
+
+bool is_valid_geofence(const Geofence::GeofenceData& data)
+{
+    size_t item_count = data.circles.size();
+    for (const auto& polygon : data.polygons) {
+        if (polygon.points.size() < 3) {
+            return false;
+        }
+        item_count += polygon.points.size();
+        for (const auto& point : polygon.points) {
+            if (!is_valid_point(point)) {
+                return false;
+            }
+        }
+    }
+    if (item_count > std::numeric_limits<uint16_t>::max()) {
+        return false;
+    }
+    for (const auto& circle : data.circles) {
+        if (!is_valid_point(circle.point) || !std::isfinite(circle.radius) || circle.radius <= 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 GeofenceImpl::GeofenceImpl(System& system) : PluginImplBase(system)
 {
@@ -40,6 +77,15 @@ Geofence::Result GeofenceImpl::upload_geofence(const Geofence::GeofenceData& geo
 void GeofenceImpl::upload_geofence_async(
     const Geofence::GeofenceData& geofence_data, const Geofence::ResultCallback& callback)
 {
+    if (!is_valid_geofence(geofence_data)) {
+        _system_impl->call_user_callback([callback] {
+            if (callback) {
+                callback(Geofence::Result::InvalidArgument);
+            }
+        });
+        return;
+    }
+
     // We can just create these items on the stack because they get copied
     // later in the MavlinkMissionTransferClient constructor.
     const auto items = assemble_items(geofence_data);
