@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <cinttypes>
 #include <functional>
 #include <fstream>
@@ -111,7 +112,21 @@ public:
     void cancel_all_operations();
 
 private:
-    static constexpr unsigned RETRIES = 10;
+    /// @brief Give up when nothing has been received for this many times the
+    /// configured timeout, however many retries that takes: a fade on a radio
+    /// link can swallow several seconds without the transfer being lost. With
+    /// the default timeout of 0.5s this is 30 seconds of silence.
+    static constexpr double NO_PROGRESS_TIMEOUTS = 60.0;
+
+    /// @brief Upper bound for the backoff between retries, in configured timeouts.
+    static constexpr double MAX_RETRY_TIMEOUTS = 8.0;
+
+    /// @brief How many holes we keep track of in a burst download.
+    /// Holes only accumulate within one burst part, and a part is around 35 KB with
+    /// either server, so this is generous. If a part still manages to exceed it, we end
+    /// the part early and ask for a new burst from the lowest offset we are missing,
+    /// rather than letting the list grow with the file.
+    static constexpr size_t MAX_MISSING_RANGES = 64;
 
     /// @brief Maximum data size in RequestHeader::data
     static constexpr uint8_t max_data_length = 239;
@@ -244,7 +259,8 @@ private:
     struct Work {
         Item item;
         PayloadHeader payload{}; // The last payload saved for retries
-        unsigned retries{RETRIES};
+        unsigned consecutive_timeouts{0};
+        std::chrono::steady_clock::time_point last_progress{std::chrono::steady_clock::now()};
         bool started{false};
         Opcode last_opcode{};
         uint16_t last_received_seq_number{0}; // used for burst duplicate detection
@@ -253,6 +269,20 @@ private:
             item(std::move(new_item)),
             target_compid(target_compid_)
         {}
+
+        /// @brief Called whenever the other side answered, so the transfer is alive.
+        void note_progress()
+        {
+            consecutive_timeouts = 0;
+            last_progress = std::chrono::steady_clock::now();
+        }
+
+        /// @brief True once nothing has been received for budget_s.
+        bool gave_up(double budget_s) const
+        {
+            return std::chrono::steady_clock::now() - last_progress >
+                   std::chrono::duration<double>(budget_s);
+        }
     };
 
     /// @brief Possible server results returned for requests.
@@ -298,7 +328,18 @@ private:
     bool download_burst_start(Work& work, DownloadBurstItem& item);
     bool download_burst_continue(Work& work, DownloadBurstItem& item, PayloadHeader* payload);
     void download_burst_end(Work& work);
-    void request_burst(Work& work, DownloadBurstItem& item);
+    /// @brief Write data that arrived for a burst download at its own offset, wherever in
+    /// the file that is, and keep the list of holes up to date.
+    bool burst_absorb(DownloadBurstItem& item, size_t offset, const uint8_t* data, size_t size);
+    /// @brief Take a range out of the list of holes, splitting a hole if it was filled in
+    /// the middle.
+    static void burst_mark_received(DownloadBurstItem& item, size_t offset, size_t size);
+    /// @brief The lowest offset we still need, which is where a new burst should start.
+    static size_t burst_next_needed_offset(const DownloadBurstItem& item);
+    /// @brief Ask for whatever is needed next: the holes of the part that just ended, or
+    /// the next part.
+    void request_burst_next(Work& work, DownloadBurstItem& item);
+    void request_burst(Work& work, DownloadBurstItem& item, size_t offset);
     void request_next_rest(Work& work, DownloadBurstItem& item);
     size_t burst_bytes_transferred(DownloadBurstItem& item);
 
@@ -325,6 +366,15 @@ private:
 
     void timeout();
     void start_timer(std::optional<double> duration_s = {});
+    /// @brief Timeout to use for the next attempt, backing off while retries fail.
+    double retry_timeout_s(const Work& work) const;
+    /// @brief How long a transfer may go without an answer before we give up.
+    double no_progress_timeout_s() const;
+    /// @brief Called for answers that we discard, which still show the link works.
+    void note_link_alive();
+
+    /// @brief Set while retrying, so that nested calls to start_timer() back off too.
+    std::optional<double> _retry_timeout_s{};
     void stop_timer();
 
     ClientResult calc_local_file_crc32(const std::string& path, uint32_t& csum);

@@ -773,6 +773,7 @@ void MavlinkFtpServer::_work_read(const PayloadHeader& payload)
         return;
     }
 
+    _session_info.ifstream.clear();
     _session_info.ifstream.seekg(payload.offset);
     if (_session_info.ifstream.fail()) {
         response.opcode = Opcode::RSP_NAK;
@@ -833,6 +834,7 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     if (_debugging) {
         LogDebug("Seek to {}", payload.offset);
     }
+    _session_info.ifstream.clear();
     _session_info.ifstream.seekg(payload.offset);
     if (_session_info.ifstream.fail()) {
         response.seq_number = payload.seq_number + 1;
@@ -845,6 +847,11 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     }
 
     _session_info.burst_offset = payload.offset;
+    _session_info.burst_part_end =
+        (payload.offset >
+         _session_info.file_size - std::min(kBurstPartSize, _session_info.file_size)) ?
+            _session_info.file_size :
+            std::min(payload.offset + kBurstPartSize, _session_info.file_size);
     _session_info.burst_chunk_size = payload.size;
     _burst_seq = payload.seq_number + 1;
 
@@ -907,6 +914,13 @@ bool MavlinkFtpServer::_send_burst_packet()
         return true;
     }
 
+    if (burst_packet.opcode == Opcode::RSP_NAK) {
+        // The read failed, and it will keep failing: stop the burst rather than
+        // sending the same NAK every couple of milliseconds until the client
+        // resets the session.
+        return true;
+    }
+
     return false;
 }
 
@@ -917,8 +931,23 @@ void MavlinkFtpServer::_make_burst_packet(PayloadHeader& packet)
         _session_info.file_size - _session_info.burst_offset);
 
     if (_debugging) {
-        LogDebug("Burst read of {} bytes", bytes_to_read);
+        LogDebug("Burst read of {} bytes at {}", bytes_to_read, _session_info.burst_offset);
     }
+
+    // A burst and the plain reads that fill its gaps share one stream, so we cannot carry
+    // the position from packet to packet: a read in between leaves it somewhere else and
+    // the burst would happily send those bytes under its own offset. Seek every time, and
+    // clear first so that an earlier failure does not stick to the session.
+    _session_info.ifstream.clear();
+    _session_info.ifstream.seekg(_session_info.burst_offset);
+    if (_session_info.ifstream.fail()) {
+        packet.opcode = Opcode::RSP_NAK;
+        packet.size = 1;
+        packet.data[0] = ServerResult::ERR_FAIL;
+        LogWarn("Burst seek failed");
+        return;
+    }
+
     _session_info.ifstream.read(reinterpret_cast<char*>(packet.data), bytes_to_read);
 
     if (_session_info.ifstream.fail()) {
@@ -936,11 +965,13 @@ void MavlinkFtpServer::_make_burst_packet(PayloadHeader& packet)
     packet.offset = _session_info.burst_offset;
     _session_info.burst_offset += bytes_read;
 
-    if (_session_info.burst_offset == _session_info.file_size) {
-        // Last read, we are done for this burst.
+    if (_session_info.burst_offset >= _session_info.burst_part_end ||
+        _session_info.burst_offset == _session_info.file_size) {
+        // Either the file or this part of it is done, so this burst ends here. If there
+        // is more file left, the client asks for the next part.
         packet.burst_complete = 1;
         if (_debugging) {
-            LogDebug("Burst complete");
+            LogDebug("Burst part complete at {}", _session_info.burst_offset);
         }
     }
 }
