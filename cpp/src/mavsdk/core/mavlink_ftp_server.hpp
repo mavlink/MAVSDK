@@ -152,10 +152,19 @@ private:
     // a 10 ms one - so clients are expected to cope with a truncated burst regardless.
     static constexpr std::chrono::milliseconds kBurstPacketInterval{2};
 
+    // How much data one CMD_BURST_READ_FILE streams before the burst ends with
+    // burst_complete set and the client asks for the next part. Parts give the client a
+    // regular point at which it can ask for what it missed while the server is idle,
+    // instead of having to interrupt a burst that runs to the end of the file. The value
+    // matches what the PX4 server uses.
+    static constexpr uint32_t kBurstPartSize = 35 * 1024;
+
     std::mutex _mutex{};
     struct SessionInfo {
         uint32_t file_size{0};
         uint32_t burst_offset{0};
+        // Offset at which the current burst part ends, see kBurstPartSize.
+        uint32_t burst_part_end{0};
         uint8_t burst_chunk_size{0};
         std::ifstream ifstream;
         std::ofstream ofstream;

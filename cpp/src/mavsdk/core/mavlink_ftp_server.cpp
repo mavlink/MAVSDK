@@ -847,6 +847,8 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     }
 
     _session_info.burst_offset = payload.offset;
+    _session_info.burst_part_end =
+        std::min(payload.offset + kBurstPartSize, _session_info.file_size);
     _session_info.burst_chunk_size = payload.size;
     _burst_seq = payload.seq_number + 1;
 
@@ -953,11 +955,13 @@ void MavlinkFtpServer::_make_burst_packet(PayloadHeader& packet)
     packet.offset = _session_info.burst_offset;
     _session_info.burst_offset += bytes_read;
 
-    if (_session_info.burst_offset == _session_info.file_size) {
-        // Last read, we are done for this burst.
+    if (_session_info.burst_offset >= _session_info.burst_part_end ||
+        _session_info.burst_offset == _session_info.file_size) {
+        // Either the file or this part of it is done, so this burst ends here. If there
+        // is more file left, the client asks for the next part.
         packet.burst_complete = 1;
         if (_debugging) {
-            LogDebug("Burst complete");
+            LogDebug("Burst part complete at {}", _session_info.burst_offset);
         }
     }
 }
