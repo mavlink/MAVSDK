@@ -6,10 +6,6 @@ It used to be [MAVSDK-Python](https://github.com/mavlink/MAVSDK-Python): an asyn
 
 The two have different APIs. This page explains what to do about it.
 
-::: warning
-The native binding has not been released to PyPI yet — it will ship as `mavsdk` 4.0.0. Until then, `pip install mavsdk` still gives you the gRPC wrapper. Nothing breaks today; this page is here so the change doesn't surprise you later.
-:::
-
 ## The short version
 
 | | Before | From v4 |

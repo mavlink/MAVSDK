@@ -1,9 +1,5 @@
 # Python QuickStart
 
-::: warning
-This page describes the native Python binding, which will be released to PyPI as `mavsdk` 4.0.0. Until then, `pip install mavsdk` still installs the gRPC-based MAVSDK-Python, whose quickstart is in the [MAVSDK-Python repository](https://github.com/mavlink/MAVSDK-Python). See [Migrating from MAVSDK-Python](migration.md) for what changes.
-:::
-
 ## Prerequisites
 
 * __Python 3.8+:__ run `python3 --version` in a terminal to check the installed version.

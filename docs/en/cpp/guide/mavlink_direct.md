@@ -3,8 +3,8 @@
 The [MavlinkDirect](../api_reference/classmavsdk_1_1_mavlink_direct.md) plugin enables direct MAVLink communication with runtime message parsing and JSON field representation.
 
 ::: warning
-The MavlinkDirect API is quite new and is not necessarily stabilized yet.
-The functionality is here to stay but the specifics and types might still change before MAVSDK v4.
+The MavlinkDirect API is still quite new.
+The functionality is here to stay, but the specifics and types may still change in a future major release.
 :::
 
 ::: tip
