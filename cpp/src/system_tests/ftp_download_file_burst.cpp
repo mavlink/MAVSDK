@@ -819,7 +819,14 @@ TEST(Ftp, DownloadBurstStallResumesAsBurst)
     constexpr auto blackout_duration = std::chrono::milliseconds(400);
     // Only holes should ever be read back, and there are very few of those here. The old
     // behaviour turned the whole rest of the file into reads, which would be hundreds.
-    constexpr unsigned max_reads = 30;
+    // A stalled burst used to fall back to fetching the rest of the file with single
+    // reads, which takes one of them per 239 bytes, so about 420 for this file. Holes
+    // that the blackout leaves inside a part that finished are filled with reads by
+    // design, and how many of those there are depends on how the loss falls: this test
+    // sees none of them on a fast machine and 131 under ThreadSanitizer. So the bound
+    // is deliberately loose. It is here to catch the transfer degrading into reads
+    // altogether, not to measure how well the resume performs.
+    constexpr unsigned max_reads = file_size / ftp_max_data_length * 3 / 4;
 
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, file_size));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
