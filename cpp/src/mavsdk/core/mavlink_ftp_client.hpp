@@ -121,6 +121,13 @@ private:
     /// @brief Upper bound for the backoff between retries, in configured timeouts.
     static constexpr double MAX_RETRY_TIMEOUTS = 8.0;
 
+    /// @brief How many holes we keep track of in a burst download.
+    /// Holes only accumulate within one burst part, and a part is around 35 KB with
+    /// either server, so this is generous. If a part still manages to exceed it, we end
+    /// the part early and ask for a new burst from the lowest offset we are missing,
+    /// rather than letting the list grow with the file.
+    static constexpr size_t MAX_MISSING_RANGES = 64;
+
     /// @brief Maximum data size in RequestHeader::data
     static constexpr uint8_t max_data_length = 239;
 
@@ -321,7 +328,18 @@ private:
     bool download_burst_start(Work& work, DownloadBurstItem& item);
     bool download_burst_continue(Work& work, DownloadBurstItem& item, PayloadHeader* payload);
     void download_burst_end(Work& work);
-    void request_burst(Work& work, DownloadBurstItem& item);
+    /// @brief Write data that arrived for a burst download at its own offset, wherever in
+    /// the file that is, and keep the list of holes up to date.
+    bool burst_absorb(DownloadBurstItem& item, size_t offset, const uint8_t* data, size_t size);
+    /// @brief Take a range out of the list of holes, splitting a hole if it was filled in
+    /// the middle.
+    static void burst_mark_received(DownloadBurstItem& item, size_t offset, size_t size);
+    /// @brief The lowest offset we still need, which is where a new burst should start.
+    static size_t burst_next_needed_offset(const DownloadBurstItem& item);
+    /// @brief Ask for whatever is needed next: the holes of the part that just ended, or
+    /// the next part.
+    void request_burst_next(Work& work, DownloadBurstItem& item);
+    void request_burst(Work& work, DownloadBurstItem& item, size_t offset);
     void request_next_rest(Work& work, DownloadBurstItem& item);
     size_t burst_bytes_transferred(DownloadBurstItem& item);
 
