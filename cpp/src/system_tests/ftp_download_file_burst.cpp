@@ -108,6 +108,58 @@ TEST(Ftp, DownloadBurstFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
+// An empty file leaves the server nothing to stream, so it answers the burst request with
+// NAK(EOF). That is how the PX4 server ends a burst's data as well, so it has to be taken
+// as "this part has no more data" rather than as a failure.
+TEST(Ftp, DownloadBurstEmptyFile)
+{
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 0));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
+    ftp_server.set_root_dir(temp_dir_provided.string());
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto ftp = Ftp{system};
+
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
+    auto fut = prom->get_future();
+    ftp.download_async(
+        temp_file.string(),
+        temp_dir_downloaded.string(),
+        true,
+        [prom](Ftp::Result result, Ftp::ProgressData) {
+            if (result != Ftp::Result::Next) {
+                prom->set_value(result);
+            }
+        });
+
+    auto future_status = fut.wait_for(std::chrono::seconds(5));
+    ASSERT_EQ(future_status, std::future_status::ready);
+    EXPECT_EQ(fut.get(), Ftp::Result::Success);
+
+    EXPECT_TRUE(
+        are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
 TEST(Ftp, DownloadBurstBigFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50000));

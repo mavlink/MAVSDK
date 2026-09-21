@@ -309,6 +309,25 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                         payload->seq_number = 0; // Ignore this response
                         start_timer(3.0);
                         LogDebug("No session available, retrying...");
+                    } else if (sr == ERR_EOF && payload->req_opcode == CMD_BURST_READ_FILE) {
+                        // The PX4 server ends the data of a burst with NAK(EOF) rather than
+                        // with a packet that has burst_complete set, and answers a burst
+                        // request at the end of the file the same way. Neither is a failure:
+                        // it means this part has no more data.
+                        if (_debugging) {
+                            LogDebug("Burst ended with EOF at {}", item.current_offset);
+                        }
+                        if (!item.missing_data.empty() || item.current_offset == item.file_size) {
+                            work->note_progress();
+                            _retry_timeout_s.reset();
+                            request_burst_next(*work, item);
+                        } else {
+                            // The server has no more data although we are not at the end of
+                            // the file, which is what a burst whose last packets were lost
+                            // looks like. Leave the retry to the timeout: it backs off and
+                            // eventually gives up, where asking again from here would spin.
+                            start_timer();
+                        }
                     } else {
                         LogWarn("FTP: NAK received");
                         stop_timer();
@@ -1594,9 +1613,9 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                if (item.file_size == 0) {
-                    // We don't know the size yet, so the file isn't even open. Ask again
-                    // for whatever we asked for last.
+                if (work->last_opcode == CMD_OPEN_FILE_RO) {
+                    // The file isn't even open yet, so there is nothing to be missing:
+                    // ask again.
                     work->payload.seq_number = _last_sent_seq_number++;
                     start_timer();
                     send_mavlink_ftp_message(work->payload, work->target_compid);
