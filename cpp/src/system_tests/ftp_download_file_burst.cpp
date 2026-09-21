@@ -16,9 +16,10 @@
 #include <vector>
 #include "plugins/ftp/ftp.hpp"
 #include "plugins/ftp_server/ftp_server.hpp"
-#include "plugins/mavlink_passthrough/mavlink_passthrough.hpp"
+#include "plugins/mavlink_direct/mavlink_direct.hpp"
 #include "fs_helpers.hpp"
 #include "unused.hpp"
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -459,7 +460,12 @@ constexpr uint8_t ftp_cmd_burst_read_file = 15;
 constexpr uint8_t ftp_rsp_ack = 128;
 constexpr uint8_t ftp_rsp_nak = 129;
 
+// The FTP server under test runs on the autopilot component of the autopilot side.
+constexpr uint8_t ftp_server_component_id = 1;
+
 constexpr size_t ftp_max_data_length = 239;
+// The FILE_TRANSFER_PROTOCOL payload field, which is the FTP header plus the data.
+constexpr size_t ftp_payload_length = 12 + ftp_max_data_length;
 
 // The payload of FILE_TRANSFER_PROTOCOL, assembled by hand so that this test can talk
 // to the server without going through the FTP client.
@@ -488,9 +494,30 @@ RawFtpPayload parse_ftp_payload(const uint8_t* raw)
     return payload;
 }
 
+// Pick the FTP payload out of the JSON fields of a FILE_TRANSFER_PROTOCOL message.
+std::optional<RawFtpPayload> parse_ftp_payload_json(const std::string& fields_json)
+{
+    const auto json = nlohmann::json::parse(fields_json, nullptr, false);
+    if (json.is_discarded() || !json.is_object() || !json.contains("payload")) {
+        return std::nullopt;
+    }
+
+    const auto& raw_json = json.at("payload");
+    if (!raw_json.is_array() || raw_json.size() < ftp_payload_length) {
+        return std::nullopt;
+    }
+
+    std::array<uint8_t, ftp_payload_length> raw{};
+    for (size_t i = 0; i < raw.size(); ++i) {
+        raw[i] = raw_json[i].get<uint8_t>();
+    }
+
+    return parse_ftp_payload(raw.data());
+}
+
 void serialize_ftp_payload(const RawFtpPayload& payload, uint8_t* raw)
 {
-    std::memset(raw, 0, 12 + ftp_max_data_length);
+    std::memset(raw, 0, ftp_payload_length);
     std::memcpy(raw + 0, &payload.seq_number, sizeof(payload.seq_number));
     raw[2] = payload.session;
     raw[3] = payload.opcode;
@@ -501,27 +528,24 @@ void serialize_ftp_payload(const RawFtpPayload& payload, uint8_t* raw)
     std::memcpy(raw + 12, payload.data.data(), payload.data.size());
 }
 
-void send_raw_ftp(MavlinkPassthrough& passthrough, const RawFtpPayload& payload)
+void send_raw_ftp(
+    MavlinkDirect& mavlink_direct, uint8_t target_system_id, const RawFtpPayload& payload)
 {
-    const auto target_sysid = static_cast<uint8_t>(passthrough.get_target_sysid());
-    const auto target_compid = passthrough.get_target_compid();
+    std::array<uint8_t, ftp_payload_length> raw{};
+    serialize_ftp_payload(payload, raw.data());
 
-    passthrough.queue_message([&](MavlinkAddress address, uint8_t channel) {
-        uint8_t raw[MAVLINK_MSG_FILE_TRANSFER_PROTOCOL_FIELD_PAYLOAD_LEN]{};
-        serialize_ftp_payload(payload, raw);
+    nlohmann::json fields;
+    fields["target_network"] = 0;
+    fields["payload"] = raw;
 
-        mavlink_message_t message;
-        mavlink_msg_file_transfer_protocol_pack_chan(
-            address.system_id,
-            address.component_id,
-            channel,
-            &message,
-            0,
-            target_sysid,
-            target_compid,
-            raw);
-        return message;
-    });
+    MavlinkDirect::MavlinkMessage message{};
+    message.message_name = "FILE_TRANSFER_PROTOCOL";
+    message.target_system_id = target_system_id;
+    // The FTP server of the autopilot side runs on its autopilot component.
+    message.target_component_id = ftp_server_component_id;
+    message.fields_json = fields.dump();
+
+    EXPECT_EQ(mavlink_direct.send_message(message), MavlinkDirect::Result::Success);
 }
 
 } // namespace
@@ -557,11 +581,15 @@ TEST(Ftp, BurstInterleavedRead)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto passthrough = MavlinkPassthrough{system};
+    auto mavlink_direct = MavlinkDirect{system};
+    const auto target_system_id = system->get_system_id();
 
     std::mutex mutex;
     std::vector<std::pair<uint32_t, std::vector<uint8_t>>> burst_chunks;
     std::optional<std::pair<uint32_t, std::vector<uint8_t>>> read_chunk;
+    // How far the burst had got when the reply to the interleaved read came back, so that
+    // the test can tell whether the read really did land in a running burst.
+    size_t burst_chunks_at_read_reply = 0;
     bool burst_nak = false;
     bool read_sent = false;
 
@@ -573,11 +601,13 @@ TEST(Ftp, BurstInterleavedRead)
     auto done_fut = done_prom->get_future();
     auto done_flag = std::make_shared<std::once_flag>();
 
-    auto handle = passthrough.subscribe_message(
-        MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, [&](const mavlink_message_t& message) {
-            mavlink_file_transfer_protocol_t ftp;
-            mavlink_msg_file_transfer_protocol_decode(&message, &ftp);
-            const auto payload = parse_ftp_payload(ftp.payload);
+    auto handle = mavlink_direct.subscribe_message(
+        "FILE_TRANSFER_PROTOCOL", [&](MavlinkDirect::MavlinkMessage message) {
+            const auto maybe_payload = parse_ftp_payload_json(message.fields_json);
+            if (!maybe_payload) {
+                return;
+            }
+            const auto payload = maybe_payload.value();
 
             if (payload.req_opcode == ftp_cmd_open_file_ro && payload.opcode == ftp_rsp_ack) {
                 uint32_t size{0};
@@ -606,7 +636,7 @@ TEST(Ftp, BurstInterleavedRead)
                     read.opcode = ftp_cmd_read_file;
                     read.offset = interleaved_read_offset;
                     read.size = ftp_max_data_length;
-                    send_raw_ftp(passthrough, read);
+                    send_raw_ftp(mavlink_direct, target_system_id, read);
                 }
 
                 if (payload.burst_complete) {
@@ -621,6 +651,7 @@ TEST(Ftp, BurstInterleavedRead)
                     payload.offset,
                     std::vector<uint8_t>(
                         payload.data.begin(), payload.data.begin() + payload.size));
+                burst_chunks_at_read_reply = burst_chunks.size();
             }
         });
 
@@ -631,7 +662,7 @@ TEST(Ftp, BurstInterleavedRead)
         const auto remote_path = temp_file.string();
         std::memcpy(open.data.data(), remote_path.c_str(), remote_path.size());
         open.size = static_cast<uint8_t>(remote_path.size() + 1);
-        send_raw_ftp(passthrough, open);
+        send_raw_ftp(mavlink_direct, target_system_id, open);
     }
 
     ASSERT_EQ(open_fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
@@ -643,7 +674,7 @@ TEST(Ftp, BurstInterleavedRead)
         burst.opcode = ftp_cmd_burst_read_file;
         burst.offset = 0;
         burst.size = ftp_max_data_length;
-        send_raw_ftp(passthrough, burst);
+        send_raw_ftp(mavlink_direct, target_system_id, burst);
     }
 
     EXPECT_EQ(done_fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
@@ -652,11 +683,11 @@ TEST(Ftp, BurstInterleavedRead)
         RawFtpPayload terminate{};
         terminate.seq_number = 2000;
         terminate.opcode = ftp_cmd_terminate_session;
-        send_raw_ftp(passthrough, terminate);
+        send_raw_ftp(mavlink_direct, target_system_id, terminate);
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
-    passthrough.unsubscribe_message(MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, handle);
+    mavlink_direct.unsubscribe_message(handle);
 
     std::lock_guard<std::mutex> lock(mutex);
 
@@ -677,6 +708,10 @@ TEST(Ftp, BurstInterleavedRead)
     EXPECT_EQ(corrupt_chunks, 0u);
 
     ASSERT_TRUE(read_chunk.has_value());
+    // The read has to have been served while the burst was still running, otherwise this
+    // test is not testing anything.
+    EXPECT_GT(burst_chunks_at_read_reply, 0u);
+    EXPECT_LT(burst_chunks_at_read_reply, burst_chunks.size());
     EXPECT_EQ(read_chunk->first, interleaved_read_offset);
     unsigned corrupt_read_bytes = 0;
     for (size_t i = 0; i < read_chunk->second.size(); ++i) {
@@ -719,16 +754,17 @@ TEST(Ftp, DownloadBurstFileInParts)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto passthrough = MavlinkPassthrough{system};
+    auto mavlink_direct = MavlinkDirect{system};
 
     auto parts = std::make_shared<std::atomic<unsigned>>(0);
-    auto handle = passthrough.subscribe_message(
-        MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, [parts](const mavlink_message_t& message) {
-            mavlink_file_transfer_protocol_t ftp;
-            mavlink_msg_file_transfer_protocol_decode(&message, &ftp);
-            const auto payload = parse_ftp_payload(ftp.payload);
-            if (payload.req_opcode == ftp_cmd_burst_read_file && payload.opcode == ftp_rsp_ack &&
-                payload.burst_complete != 0) {
+    auto handle = mavlink_direct.subscribe_message(
+        "FILE_TRANSFER_PROTOCOL", [parts](MavlinkDirect::MavlinkMessage message) {
+            const auto payload = parse_ftp_payload_json(message.fields_json);
+            if (!payload) {
+                return;
+            }
+            if (payload->req_opcode == ftp_cmd_burst_read_file && payload->opcode == ftp_rsp_ack &&
+                payload->burst_complete != 0) {
                 ++(*parts);
             }
         });
@@ -757,7 +793,7 @@ TEST(Ftp, DownloadBurstFileInParts)
     // More than one burst was needed for this file.
     EXPECT_GE(parts->load(), 2u);
 
-    passthrough.unsubscribe_message(MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, handle);
+    mavlink_direct.unsubscribe_message(handle);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
@@ -831,15 +867,16 @@ TEST(Ftp, DownloadBurstStallResumesAsBurst)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto passthrough = MavlinkPassthrough{system};
+    auto mavlink_direct = MavlinkDirect{system};
 
     auto reads = std::make_shared<std::atomic<unsigned>>(0);
-    auto handle = passthrough.subscribe_message(
-        MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, [reads](const mavlink_message_t& message) {
-            mavlink_file_transfer_protocol_t ftp;
-            mavlink_msg_file_transfer_protocol_decode(&message, &ftp);
-            const auto payload = parse_ftp_payload(ftp.payload);
-            if (payload.req_opcode == ftp_cmd_read_file && payload.opcode == ftp_rsp_ack) {
+    auto handle = mavlink_direct.subscribe_message(
+        "FILE_TRANSFER_PROTOCOL", [reads](MavlinkDirect::MavlinkMessage message) {
+            const auto payload = parse_ftp_payload_json(message.fields_json);
+            if (!payload) {
+                return;
+            }
+            if (payload->req_opcode == ftp_cmd_read_file && payload->opcode == ftp_rsp_ack) {
                 ++(*reads);
             }
         });
@@ -868,7 +905,7 @@ TEST(Ftp, DownloadBurstStallResumesAsBurst)
     EXPECT_GE(received->load(), blackout_after_messages);
     EXPECT_LE(reads->load(), max_reads);
 
-    passthrough.unsubscribe_message(MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, handle);
+    mavlink_direct.unsubscribe_message(handle);
     mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_in_handle);
     mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_out_handle);
 
