@@ -329,7 +329,10 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                             start_timer();
                         }
                     } else {
-                        LogWarn("FTP: NAK received");
+                        LogWarn(
+                            "FTP: NAK received: server result {} for opcode {}",
+                            static_cast<int>(sr),
+                            static_cast<int>(payload->req_opcode));
                         stop_timer();
                         item.callback(result_from_nak(payload), {});
                         terminate_session(*work);
@@ -727,17 +730,27 @@ bool MavlinkFtpClient::download_burst_continue(
         (payload->req_opcode == CMD_BURST_READ_FILE ||
          payload->seq_number == static_cast<uint16_t>(work.payload.seq_number + 1));
 
+    if (work.last_opcode == CMD_OPEN_FILE_RO || item.file_size == 0) {
+        // We have asked for the file but don't know its size yet, so this is data for
+        // something else: a burst from a session that ended, for instance, which a
+        // server keeps streaming for a while after a client goes away and comes back.
+        LogWarn("Ignoring FTP data that arrived before the file is open");
+        note_link_alive();
+        return true;
+    }
+
     if (payload->offset > item.file_size || payload->size > item.file_size - payload->offset) {
-        // The server should never point us past the end of the file. Reject rather
-        // than allocating/zero-filling a gap of up to ~4 GB from a bad offset.
+        // The server should never point us past the end of the file. Drop the packet
+        // rather than zero-filling a gap of up to ~4 GB from a bad offset -- and rather
+        // than failing the transfer, because a stale packet from an earlier session is
+        // not this transfer's fault.
         LogWarn(
-            "Got payload offset {} with size {} past file size {}",
+            "Ignoring FTP data at offset {} with size {}, past the file size {}",
             (uint32_t)payload->offset,
             (int)payload->size,
             item.file_size);
-        item.callback(ClientResult::ProtocolError, {});
-        download_burst_end(work);
-        return false;
+        note_link_alive();
+        return true;
     }
 
     if (_debugging) {
