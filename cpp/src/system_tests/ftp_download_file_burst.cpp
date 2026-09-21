@@ -515,6 +515,17 @@ std::optional<RawFtpPayload> parse_ftp_payload_json(const std::string& fields_js
     return parse_ftp_payload(raw.data());
 }
 
+// Same, for the messages that the intercept hooks hand out: everything goes through
+// there, so the ones that are not FTP are skipped.
+std::optional<RawFtpPayload> parse_ftp_payload_json(const Mavsdk::MavlinkMessage& message)
+{
+    if (message.message_name != "FILE_TRANSFER_PROTOCOL") {
+        return std::nullopt;
+    }
+
+    return parse_ftp_payload_json(message.fields_json);
+}
+
 void serialize_ftp_payload(const RawFtpPayload& payload, uint8_t* raw)
 {
     std::memset(raw, 0, ftp_payload_length);
@@ -754,19 +765,15 @@ TEST(Ftp, DownloadBurstFileInParts)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto mavlink_direct = MavlinkDirect{system};
-
     auto parts = std::make_shared<std::atomic<unsigned>>(0);
-    auto handle = mavlink_direct.subscribe_message(
-        "FILE_TRANSFER_PROTOCOL", [parts](MavlinkDirect::MavlinkMessage message) {
-            const auto payload = parse_ftp_payload_json(message.fields_json);
-            if (!payload) {
-                return;
-            }
-            if (payload->req_opcode == ftp_cmd_burst_read_file && payload->opcode == ftp_rsp_ack &&
-                payload->burst_complete != 0) {
+    auto handle = mavsdk_groundstation.subscribe_incoming_messages_json(
+        [parts](Mavsdk::MavlinkMessage message) -> bool {
+            const auto payload = parse_ftp_payload_json(message);
+            if (payload && payload->req_opcode == ftp_cmd_burst_read_file &&
+                payload->opcode == ftp_rsp_ack && payload->burst_complete != 0) {
                 ++(*parts);
             }
+            return true;
         });
 
     auto ftp = Ftp{system};
@@ -793,7 +800,7 @@ TEST(Ftp, DownloadBurstFileInParts)
     // More than one burst was needed for this file.
     EXPECT_GE(parts->load(), 2u);
 
-    mavlink_direct.unsubscribe_message(handle);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(handle);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
@@ -867,18 +874,15 @@ TEST(Ftp, DownloadBurstStallResumesAsBurst)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto mavlink_direct = MavlinkDirect{system};
-
     auto reads = std::make_shared<std::atomic<unsigned>>(0);
-    auto handle = mavlink_direct.subscribe_message(
-        "FILE_TRANSFER_PROTOCOL", [reads](MavlinkDirect::MavlinkMessage message) {
-            const auto payload = parse_ftp_payload_json(message.fields_json);
-            if (!payload) {
-                return;
-            }
-            if (payload->req_opcode == ftp_cmd_read_file && payload->opcode == ftp_rsp_ack) {
+    auto handle = mavsdk_groundstation.subscribe_incoming_messages_json(
+        [reads](Mavsdk::MavlinkMessage message) -> bool {
+            const auto payload = parse_ftp_payload_json(message);
+            if (payload && payload->req_opcode == ftp_cmd_read_file &&
+                payload->opcode == ftp_rsp_ack) {
                 ++(*reads);
             }
+            return true;
         });
 
     auto ftp = Ftp{system};
@@ -905,7 +909,7 @@ TEST(Ftp, DownloadBurstStallResumesAsBurst)
     EXPECT_GE(received->load(), blackout_after_messages);
     EXPECT_LE(reads->load(), max_reads);
 
-    mavlink_direct.unsubscribe_message(handle);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(handle);
     mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_in_handle);
     mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_out_handle);
 
