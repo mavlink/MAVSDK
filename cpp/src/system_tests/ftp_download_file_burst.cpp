@@ -688,3 +688,189 @@ TEST(Ftp, BurstInterleavedRead)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+// The server streams a burst in parts, so a file of several times that size has to come
+// down in several bursts, with the client asking for the next part each time.
+TEST(Ftp, DownloadBurstFileInParts)
+{
+    // The server sends parts of 35 KB, so this is a handful of them.
+    constexpr size_t file_size = 100000;
+
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, file_size));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
+    ftp_server.set_root_dir(temp_dir_provided.string());
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto passthrough = MavlinkPassthrough{system};
+
+    auto parts = std::make_shared<std::atomic<unsigned>>(0);
+    auto handle = passthrough.subscribe_message(
+        MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, [parts](const mavlink_message_t& message) {
+            mavlink_file_transfer_protocol_t ftp;
+            mavlink_msg_file_transfer_protocol_decode(&message, &ftp);
+            const auto payload = parse_ftp_payload(ftp.payload);
+            if (payload.req_opcode == ftp_cmd_burst_read_file && payload.opcode == ftp_rsp_ack &&
+                payload.burst_complete != 0) {
+                ++(*parts);
+            }
+        });
+
+    auto ftp = Ftp{system};
+
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
+    auto fut = prom->get_future();
+    ftp.download_async(
+        temp_file.string(),
+        temp_dir_downloaded.string(),
+        true,
+        [prom](Ftp::Result result, Ftp::ProgressData) {
+            if (result != Ftp::Result::Next) {
+                prom->set_value(result);
+            }
+        });
+
+    auto future_status = fut.wait_for(std::chrono::seconds(20));
+    ASSERT_EQ(future_status, std::future_status::ready);
+    EXPECT_EQ(fut.get(), Ftp::Result::Success);
+
+    EXPECT_TRUE(
+        are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
+
+    // More than one burst was needed for this file.
+    EXPECT_GE(parts->load(), 2u);
+
+    passthrough.unsubscribe_message(MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, handle);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+// A burst that stalls has to be picked up as a burst again. Asking for the rest of the
+// file in 239 byte reads instead means a round trip per packet, which is what this checks
+// by counting how many reads it takes.
+TEST(Ftp, DownloadBurstStallResumesAsBurst)
+{
+    constexpr size_t file_size = 100000;
+    // Stop all FTP traffic for a while once this many messages have arrived, which is
+    // early enough that most of the file is still to come.
+    constexpr unsigned blackout_after_messages = 20;
+    constexpr auto blackout_duration = std::chrono::milliseconds(400);
+    // Only holes should ever be read back, and there are very few of those here. The old
+    // behaviour turned the whole rest of the file into reads, which would be hundreds.
+    constexpr unsigned max_reads = 30;
+
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, file_size));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    auto received = std::make_shared<std::atomic<unsigned>>(0);
+    auto blackout_end = std::make_shared<std::mutex>();
+    auto blackout_until = std::make_shared<std::optional<std::chrono::steady_clock::time_point>>();
+
+    auto in_blackout = [blackout_end, blackout_until]() {
+        std::lock_guard<std::mutex> lock(*blackout_end);
+        return blackout_until->has_value() &&
+               std::chrono::steady_clock::now() < blackout_until->value();
+    };
+
+    auto drop_incoming = [received, blackout_end, blackout_until, in_blackout, blackout_duration](
+                             Mavsdk::MavlinkMessage message) -> bool {
+        if (message.message_name != "FILE_TRANSFER_PROTOCOL") {
+            return true;
+        }
+        if (++(*received) == blackout_after_messages) {
+            std::lock_guard<std::mutex> lock(*blackout_end);
+            *blackout_until = std::chrono::steady_clock::now() + blackout_duration;
+        }
+        return !in_blackout();
+    };
+
+    auto drop_outgoing = [in_blackout](Mavsdk::MavlinkMessage message) -> bool {
+        if (message.message_name != "FILE_TRANSFER_PROTOCOL") {
+            return true;
+        }
+        return !in_blackout();
+    };
+
+    auto drop_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_incoming);
+    auto drop_out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(drop_outgoing);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
+    ftp_server.set_root_dir(temp_dir_provided.string());
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto passthrough = MavlinkPassthrough{system};
+
+    auto reads = std::make_shared<std::atomic<unsigned>>(0);
+    auto handle = passthrough.subscribe_message(
+        MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, [reads](const mavlink_message_t& message) {
+            mavlink_file_transfer_protocol_t ftp;
+            mavlink_msg_file_transfer_protocol_decode(&message, &ftp);
+            const auto payload = parse_ftp_payload(ftp.payload);
+            if (payload.req_opcode == ftp_cmd_read_file && payload.opcode == ftp_rsp_ack) {
+                ++(*reads);
+            }
+        });
+
+    auto ftp = Ftp{system};
+
+    auto prom = std::make_shared<std::promise<Ftp::Result>>();
+    auto fut = prom->get_future();
+    ftp.download_async(
+        temp_file.string(),
+        temp_dir_downloaded.string(),
+        true,
+        [prom](Ftp::Result result, Ftp::ProgressData) {
+            if (result != Ftp::Result::Next) {
+                prom->set_value(result);
+            }
+        });
+
+    auto future_status = fut.wait_for(std::chrono::seconds(30));
+    ASSERT_EQ(future_status, std::future_status::ready);
+    EXPECT_EQ(fut.get(), Ftp::Result::Success);
+
+    EXPECT_TRUE(
+        are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
+
+    EXPECT_GE(received->load(), blackout_after_messages);
+    EXPECT_LE(reads->load(), max_reads);
+
+    passthrough.unsubscribe_message(MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL, handle);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_in_handle);
+    mavsdk_groundstation.unsubscribe_outgoing_messages_json(drop_out_handle);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
