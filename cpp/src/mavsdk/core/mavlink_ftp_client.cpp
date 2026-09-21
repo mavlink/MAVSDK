@@ -6,7 +6,6 @@
 #include <charconv>
 #include <fstream>
 #include <filesystem>
-#include <algorithm>
 #include <future>
 #include <numeric>
 
@@ -53,6 +52,9 @@ void MavlinkFtpClient::do_work()
         return;
     }
     work->started = true;
+
+    // Whatever the previous transfer backed off to is none of this one's business.
+    _retry_timeout_s.reset();
 
     // We're mainly starting the process here. After that, it continues
     // based on returned acks or timeouts.
@@ -288,9 +290,10 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     if (payload->req_opcode == CMD_OPEN_FILE_RO ||
                         payload->req_opcode == CMD_BURST_READ_FILE ||
                         payload->req_opcode == CMD_READ_FILE) {
-                        // Whenever we do get an ack, the transfer is alive.
-                        work->note_progress();
-                        _retry_timeout_s.reset();
+                        // An answer means the link works, but only bytes we keep count
+                        // as progress: see burst_absorb(). A peer that keeps sending
+                        // data we have to drop must not hold the give-up budget open.
+                        note_link_alive();
 
                         if (!download_burst_continue(*work, item, payload)) {
                             stop_timer();
@@ -715,7 +718,15 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
 bool MavlinkFtpClient::download_burst_continue(
     Work& work, DownloadBurstItem& item, PayloadHeader* payload)
 {
+    if (work.last_opcode == CMD_TERMINATE_SESSION) {
+        // We are done and only waiting for the session to close. Packets of the burst
+        // that are still on their way would otherwise each look like the transfer
+        // finishing again, and send another terminate.
+        return true;
+    }
+
     if (payload->req_opcode == CMD_OPEN_FILE_RO) {
+        work.note_progress();
         std::memcpy(&(item.file_size), payload->data, sizeof(uint32_t));
 
         if (_debugging) {
@@ -776,6 +787,9 @@ bool MavlinkFtpClient::download_burst_continue(
         download_burst_end(work);
         return false;
     }
+
+    // Bytes we keep are the only thing that counts as progress.
+    work.note_progress();
 
     if (item.missing_data.empty() && item.current_offset == item.file_size) {
         if (_debugging) {

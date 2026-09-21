@@ -848,7 +848,10 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
 
     _session_info.burst_offset = payload.offset;
     _session_info.burst_part_end =
-        std::min(payload.offset + kBurstPartSize, _session_info.file_size);
+        (payload.offset >
+         _session_info.file_size - std::min(kBurstPartSize, _session_info.file_size)) ?
+            _session_info.file_size :
+            std::min(payload.offset + kBurstPartSize, _session_info.file_size);
     _session_info.burst_chunk_size = payload.size;
     _burst_seq = payload.seq_number + 1;
 
@@ -908,6 +911,13 @@ bool MavlinkFtpServer::_send_burst_packet()
     _send_mavlink_ftp_message(burst_packet);
 
     if (burst_packet.burst_complete == 1) {
+        return true;
+    }
+
+    if (burst_packet.opcode == Opcode::RSP_NAK) {
+        // The read failed, and it will keep failing: stop the burst rather than
+        // sending the same NAK every couple of milliseconds until the client
+        // resets the session.
         return true;
     }
 
