@@ -393,6 +393,8 @@ TEST(Ftp, DownloadBurstStopAndTryAgain)
         auto future_status = fut.wait_for(std::chrono::seconds(10));
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::Success);
+        EXPECT_TRUE(
+            are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
