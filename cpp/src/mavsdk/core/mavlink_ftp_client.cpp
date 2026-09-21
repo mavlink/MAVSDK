@@ -232,6 +232,17 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
         }
     }
 
+    if (payload->opcode == RSP_NAK && payload->req_opcode == CMD_TERMINATE_SESSION &&
+        static_cast<ServerResult>(payload->data[0]) == ERR_INVALID_SESSION) {
+        // The session we are closing is gone already, which is what we were asking
+        // for. A server drops a session after a while without requests, so a transfer
+        // that rode out a long outage arrives here with all of its data and would
+        // otherwise be reported as a protocol error at the very last step.
+        LogDebug("Session was closed by the server already");
+        payload->opcode = RSP_ACK;
+        payload->size = 0;
+    }
+
     std::visit(
         overloaded{
             [&](DownloadItem& item) {
