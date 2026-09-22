@@ -30,6 +30,7 @@
 #include <nlohmann/json.hpp>
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <cstdint>
@@ -225,13 +226,28 @@ private:
         return true;
     }
 
-    bool in_control(uint8_t sysid, uint8_t compid)
+    // Control inputs are only accepted from whoever has acquired primary control
+    // using MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE, anything else is refused.
+    // Needs to be called with _mutex held.
+    bool in_control(uint8_t sysid, uint8_t compid, const char* what)
     {
-        // Be lenient while no one has taken control, to keep ad-hoc testing easy.
-        if (_primary_sysid == 0 && _primary_compid == 0) {
+        if ((_primary_sysid != 0 || _primary_compid != 0) && sysid == _primary_sysid &&
+            compid == _primary_compid) {
             return true;
         }
-        return sysid == _primary_sysid && compid == _primary_compid;
+
+        // Setpoints can be streamed at a high rate, so don't warn for each one.
+        const auto now = std::chrono::steady_clock::now();
+        if (sysid != _refused_sysid || compid != _refused_compid ||
+            now - _refused_time > std::chrono::seconds(2)) {
+            _refused_sysid = sysid;
+            _refused_compid = compid;
+            _refused_time = now;
+            std::cout << "Warning: refusing " << what << " from " << int(sysid) << '/'
+                      << int(compid) << ", not in control (primary control: " << int(_primary_sysid)
+                      << '/' << int(_primary_compid) << ")\n";
+        }
+        return false;
     }
 
     void handle_command(const MavlinkDirectServer::MavlinkMessage& message, bool is_int)
@@ -313,7 +329,8 @@ private:
 
         std::lock_guard<std::mutex> lock(_mutex);
 
-        if (!for_us(fields, gimbal_device_id) || !in_control(sender_sysid, sender_compid)) {
+        if (!for_us(fields, gimbal_device_id) ||
+            !in_control(sender_sysid, sender_compid, "DO_GIMBAL_MANAGER_PITCHYAW")) {
             send_ack(
                 sender_sysid, sender_compid, mav_cmd_do_gimbal_manager_pitchyaw, mav_result_denied);
             return;
@@ -365,6 +382,10 @@ private:
         apply_configure_id(fields, "param3", sender_sysid, _secondary_sysid);
         apply_configure_id(fields, "param4", sender_compid, _secondary_compid);
 
+        // Warn again right away if someone without control keeps sending.
+        _refused_sysid = 0;
+        _refused_compid = 0;
+
         std::cout << "Control configured by " << int(sender_sysid) << '/' << int(sender_compid)
                   << ": primary " << int(_primary_sysid) << '/' << int(_primary_compid)
                   << ", secondary " << int(_secondary_sysid) << '/' << int(_secondary_compid)
@@ -382,7 +403,8 @@ private:
 
         std::lock_guard<std::mutex> lock(_mutex);
 
-        if (!for_us(fields, gimbal_device_id) || !in_control(sender_sysid, sender_compid)) {
+        if (!for_us(fields, gimbal_device_id) ||
+            !in_control(sender_sysid, sender_compid, "DO_SET_ROI_LOCATION")) {
             send_ack(sender_sysid, sender_compid, mav_cmd_do_set_roi_location, mav_result_denied);
             return;
         }
@@ -451,7 +473,8 @@ private:
 
         std::lock_guard<std::mutex> lock(_mutex);
 
-        if (!for_us(fields, gimbal_device_id) || !in_control(sender_sysid, sender_compid)) {
+        if (!for_us(fields, gimbal_device_id) ||
+            !in_control(sender_sysid, sender_compid, "DO_SET_ROI_NONE")) {
             send_ack(sender_sysid, sender_compid, mav_cmd_do_set_roi_none, mav_result_denied);
             return;
         }
@@ -543,9 +566,8 @@ private:
         if (!for_us(fields, fields.value("gimbal_device_id", 0u)) ||
             !in_control(
                 static_cast<uint8_t>(message.system_id),
-                static_cast<uint8_t>(message.component_id))) {
-            std::cout << "GIMBAL_MANAGER_SET_ATTITUDE ignored (not for us or not in control) from "
-                      << message.system_id << "/" << message.component_id << '\n';
+                static_cast<uint8_t>(message.component_id),
+                "GIMBAL_MANAGER_SET_ATTITUDE")) {
             return;
         }
 
@@ -598,15 +620,10 @@ private:
         if (!for_us(fields, fields.value("gimbal_device_id", 0u)) ||
             !in_control(
                 static_cast<uint8_t>(message.system_id),
-                static_cast<uint8_t>(message.component_id))) {
-            std::cout << "GIMBAL_MANAGER_SET_PITCHYAW ignored (not for us or not in control) from "
-                      << message.system_id << "/" << message.component_id << '\n';
+                static_cast<uint8_t>(message.component_id),
+                "GIMBAL_MANAGER_SET_PITCHYAW")) {
             return;
         }
-
-        std::cout << "GIMBAL_MANAGER_SET_PITCHYAW from " << message.system_id << "/"
-                  << message.component_id << ": pitch=" << fields.value("pitch", 0.0f)
-                  << " yaw=" << fields.value("yaw", 0.0f) << '\n';
 
         const uint32_t flags = fields.value("flags", 0u);
         apply_flags(flags);
@@ -630,10 +647,29 @@ private:
         _yaw_rate_setpoint_deg_s =
             yaw_rate_rad_s ? std::optional<float>(to_deg_from_rad(*yaw_rate_rad_s)) : std::nullopt;
 
-        std::cout << "  -> setpoint now pitch="
+        // This can be streamed at a high rate, so only print changes.
+        // Note: pitch/yaw can be NaN (JSON null) for rate-only setpoints, which
+        // is why the raw fields must not be printed using fields.value().
+        const bool changed = pitch_rad != _last_printed_pitchyaw[0] ||
+                             yaw_rad != _last_printed_pitchyaw[1] ||
+                             pitch_rate_rad_s != _last_printed_pitchyaw[2] ||
+                             yaw_rate_rad_s != _last_printed_pitchyaw[3];
+        if (!changed) {
+            return;
+        }
+        _last_printed_pitchyaw = {pitch_rad, yaw_rad, pitch_rate_rad_s, yaw_rate_rad_s};
+
+        std::cout << "GIMBAL_MANAGER_SET_PITCHYAW from " << message.system_id << "/"
+                  << message.component_id << ": pitch="
                   << (_pitch_setpoint_deg ? std::to_string(*_pitch_setpoint_deg) : "none")
                   << " deg, yaw="
-                  << (_yaw_setpoint_deg ? std::to_string(*_yaw_setpoint_deg) : "none") << " deg\n";
+                  << (_yaw_setpoint_deg ? std::to_string(*_yaw_setpoint_deg) : "none")
+                  << " deg, pitch rate="
+                  << (_pitch_rate_setpoint_deg_s ? std::to_string(*_pitch_rate_setpoint_deg_s) :
+                                                   "none")
+                  << " deg/s, yaw rate="
+                  << (_yaw_rate_setpoint_deg_s ? std::to_string(*_yaw_rate_setpoint_deg_s) : "none")
+                  << " deg/s\n";
     }
 
     // Needs to be called with _mutex held.
@@ -865,6 +901,10 @@ private:
     uint8_t _primary_compid{0};
     uint8_t _secondary_sysid{0};
     uint8_t _secondary_compid{0};
+    uint8_t _refused_sysid{0};
+    uint8_t _refused_compid{0};
+    std::chrono::steady_clock::time_point _refused_time{};
+    std::array<std::optional<float>, 4> _last_printed_pitchyaw{};
 };
 
 int main(int argc, char** argv)
