@@ -7,12 +7,12 @@ on:
     tags:
     - 'v*'
     paths-ignore:
-    - 'cpp/docs/**'
+    - 'docs/**'
   pull_request:
     branches:
     - '*'
     paths-ignore:
-    - 'cpp/docs/**'
+    - 'docs/**'
     - '.github/workflows/docs_deploy.yml'
   workflow_dispatch:
 
