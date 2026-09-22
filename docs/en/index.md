@@ -3,7 +3,7 @@
 # MAVSDK (v3)
 
 ::: tip
-These are the docs for MAVSDK v3. MAVSDK v4 is out: see [what changed](https://mavsdk.mavlink.io/v4/en/cpp/api_changes.html) for C++, and the [Python migration guide](https://mavsdk.mavlink.io/main/en/python/migration.html) for the `mavsdk` package on PyPI.
+These are the docs for MAVSDK v3. MAVSDK v4 is out: see [what changed](https://mavsdk.mavlink.io/main/en/cpp/api_changes.html) for C++, and the [Python migration guide](https://mavsdk.mavlink.io/main/en/python/migration.html) for the `mavsdk` package on PyPI.
 :::
 
 *MAVSDK* is a collection of libraries for various programming languages to interface with [MAVLink](https://mavlink.io/en/) systems such as drones, cameras or ground systems.
