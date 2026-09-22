@@ -20,8 +20,8 @@ sudo apt remove mavsdk
 The prebuilt C++ library can be downloaded as a **.deb** from [releases](https://github.com/mavlink/MAVSDK/releases), e.g.:
 
 ```
-wget https://github.com/mavlink/MAVSDK/releases/download/v3.0.0/libmavsdk-dev_3.0.0_ubuntu24.04_amd64.deb
-sudo dpkg -i libmavsdk-dev_3.0.0_ubuntu24.04_amd64.deb
+wget https://github.com/mavlink/MAVSDK/releases/download/v4.0.0/libmavsdk-dev_4.0.0_ubuntu24.04_amd64.deb
+sudo dpkg -i libmavsdk-dev_4.0.0_ubuntu24.04_amd64.deb
 ```
 
 ### macOS
