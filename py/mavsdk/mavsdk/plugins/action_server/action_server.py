@@ -9,6 +9,7 @@ Provide vehicle actions (as a server) such as arming, taking off, and landing.
 """
 
 import ctypes
+import threading
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -213,6 +214,11 @@ class ActionServer:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
+        # destroy() can be reached from any thread: explicitly, from the owner
+        # tearing down, or from __del__ whenever the garbage collector happens to
+        # run. Without this lock two of them can both find a live handle and
+        # destroy the same plugin twice, which corrupts the heap.
+        self._destroy_lock = threading.Lock()
 
         if server_component is None:
             raise ValueError("server_component cannot be None")
@@ -550,10 +556,12 @@ class ActionServer:
         return result
 
     def destroy(self):
-        """Destroy the plugin instance"""
-        if self._handle:
-            self._lib.mavsdk_action_server_destroy(self._handle)
-            self._handle = None
+        """Destroy the plugin instance. Idempotent and safe from any thread."""
+        with self._destroy_lock:
+            handle, self._handle = self._handle, None
+
+        if handle:
+            self._lib.mavsdk_action_server_destroy(handle)
 
     def __del__(self):
         self.destroy()

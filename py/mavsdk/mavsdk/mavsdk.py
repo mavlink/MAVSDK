@@ -2,6 +2,7 @@
 
 import atexit
 import ctypes
+import threading
 import weakref
 
 from typing import Optional, List, Callable, Any
@@ -26,6 +27,11 @@ class Configuration:
     def __init__(self, handle: ctypes.c_void_p):
         self._lib = _cmavsdk_lib
         self._handle = handle
+        # destroy() can be reached from any thread: explicitly, from atexit, or
+        # from __del__ whenever the garbage collector happens to run. Without this
+        # lock two of them can both find a live handle and release it twice, which
+        # corrupts the heap.
+        self._destroy_lock = threading.Lock()
 
     @classmethod
     def create_with_component_type(cls, component_type: ComponentType):
@@ -46,10 +52,12 @@ class Configuration:
         return cls(handle)
 
     def destroy(self):
-        """Destroy configuration"""
-        if self._handle:
-            self._lib.mavsdk_configuration_destroy(self._handle)
-            self._handle = None
+        """Destroy configuration. Idempotent, safe from any thread."""
+        with self._destroy_lock:
+            handle, self._handle = self._handle, None
+
+        if handle:
+            self._lib.mavsdk_configuration_destroy(handle)
 
     @property
     def system_id(self) -> int:
@@ -92,7 +100,11 @@ class Mavsdk:
         self._children = weakref.WeakSet()
 
         self._handle = self._lib.mavsdk_create(configuration._handle)
-        self._destroyed = False
+        # destroy() can be reached from any thread: explicitly, from atexit, or
+        # from __del__ whenever the garbage collector happens to run. Without this
+        # lock two of them can both find a live handle and release it twice, which
+        # corrupts the heap.
+        self._destroy_lock = threading.Lock()
         configuration._handle = None
 
         atexit.register(self.destroy)
@@ -265,8 +277,11 @@ class Mavsdk:
         self._callbacks.pop(handle, None)
 
     def destroy(self):
-        """Destroy the Mavsdk instance"""
-        if not self._destroyed and self._handle:
+        """Destroy the Mavsdk instance. Idempotent, safe from any thread."""
+        with self._destroy_lock:
+            handle, self._handle = self._handle, None
+
+        if handle:
             # Release systems and server components first. Their handles are
             # shared_ptrs into objects owned by this instance, so they must not
             # outlive mavsdk_destroy. Snapshot the weak set before iterating, since
@@ -275,14 +290,12 @@ class Mavsdk:
                 child.destroy()
             self._children.clear()
 
-            self._lib.mavsdk_destroy(self._handle)
+            self._lib.mavsdk_destroy(handle)
 
             # Only now drop the ctypes trampolines. mavsdk_destroy stops the
             # callback thread, so releasing them earlier would leave a window in
             # which a callback could jump into collected memory.
             self._callbacks.clear()
-            self._handle = None
-            self._destroyed = True
 
     def __enter__(self):
         return self

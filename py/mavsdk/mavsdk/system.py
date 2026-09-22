@@ -1,4 +1,5 @@
 import ctypes
+import threading
 import weakref
 
 from typing import Any, Callable, List
@@ -34,6 +35,11 @@ class System:
     def __init__(self, lib: ctypes.CDLL, handle: ctypes.c_void_p):
         self._lib = lib
         self._handle = handle
+        # destroy() can be reached from any thread: explicitly, from the owner
+        # tearing down, or from __del__ whenever the garbage collector happens to
+        # run. Without this lock two of them can both find a live handle and
+        # release it twice, which corrupts the heap.
+        self._destroy_lock = threading.Lock()
         # Keep references to prevent GC: { subscription handle: callback }
         self._callbacks = {}
         self._plugins = weakref.WeakSet()
@@ -56,8 +62,11 @@ class System:
         plugin._owner = self
 
     def destroy(self) -> None:
-        """Release the underlying system handle. Idempotent."""
-        if self._handle:
+        """Release the underlying system handle. Idempotent, safe from any thread."""
+        with self._destroy_lock:
+            handle, self._handle = self._handle, None
+
+        if handle:
             # Plugins first -- they are the ones holding references into MavsdkImpl.
             for plugin in list(self._plugins):
                 plugin.destroy()
@@ -69,12 +78,11 @@ class System:
             # be garbage collected.
             for subscription_handle in list(self._callbacks):
                 self._lib.mavsdk_system_unsubscribe_is_connected(
-                    self._handle, subscription_handle
+                    handle, subscription_handle
                 )
             self._callbacks.clear()
 
-            self._lib.mavsdk_system_destroy(self._handle)
-            self._handle = None
+            self._lib.mavsdk_system_destroy(handle)
 
     def __del__(self):
         self.destroy()
