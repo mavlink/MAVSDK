@@ -1,4 +1,5 @@
 import ctypes
+import threading
 import weakref
 
 from .cmavsdk_loader import _cmavsdk_lib
@@ -17,6 +18,11 @@ class ServerComponent:
         self._lib = lib
         self._handle = handle
         self._plugins = weakref.WeakSet()
+        # destroy() can be reached from any thread: explicitly, from the owner
+        # tearing down, or from __del__ whenever the garbage collector happens to
+        # run. Without this lock two of them can both find a live handle and
+        # release it twice, which corrupts the heap.
+        self._destroy_lock = threading.Lock()
 
     def _track_plugin(self, plugin) -> None:
         """Register a server plugin so it is destroyed before this component goes.
@@ -31,14 +37,16 @@ class ServerComponent:
         plugin._owner = self
 
     def destroy(self) -> None:
-        """Release the underlying server component handle. Idempotent."""
-        if self._handle:
+        """Release the handle. Idempotent, safe from any thread."""
+        with self._destroy_lock:
+            handle, self._handle = self._handle, None
+
+        if handle:
             for plugin in list(self._plugins):
                 plugin.destroy()
             self._plugins.clear()
 
-            self._lib.mavsdk_server_component_destroy(self._handle)
-            self._handle = None
+            self._lib.mavsdk_server_component_destroy(handle)
 
     def __del__(self):
         self.destroy()

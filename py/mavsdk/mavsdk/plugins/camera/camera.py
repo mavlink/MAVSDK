@@ -15,6 +15,7 @@ Can be used to manage cameras that implement the MAVLink
 """
 
 import ctypes
+import threading
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -1169,6 +1170,11 @@ class Camera:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
+        # destroy() can be reached from any thread: explicitly, from the owner
+        # tearing down, or from __del__ whenever the garbage collector happens to
+        # run. Without this lock two of them can both find a live handle and
+        # destroy the same plugin twice, which corrupts the heap.
+        self._destroy_lock = threading.Lock()
 
         if system is None:
             raise ValueError("system cannot be None")
@@ -2545,10 +2551,12 @@ class Camera:
         return result
 
     def destroy(self):
-        """Destroy the plugin instance"""
-        if self._handle:
-            self._lib.mavsdk_camera_destroy(self._handle)
-            self._handle = None
+        """Destroy the plugin instance. Idempotent and safe from any thread."""
+        with self._destroy_lock:
+            handle, self._handle = self._handle, None
+
+        if handle:
+            self._lib.mavsdk_camera_destroy(handle)
 
     def __del__(self):
         self.destroy()
