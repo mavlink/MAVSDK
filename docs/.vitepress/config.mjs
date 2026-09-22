@@ -144,12 +144,8 @@ export default defineConfig({
         text: "Version",
         items: [
           {
-            text: "main",
+            text: "main / v4",
             link: "https://mavsdk.mavlink.io/main/en/cpp/api_changes.html",
-          },
-          {
-            text: "v4",
-            link: "https://mavsdk.mavlink.io/v4/en/cpp/api_changes.html",
           },
           {
             text: "v3",
