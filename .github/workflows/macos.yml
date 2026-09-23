@@ -89,7 +89,7 @@ jobs:
       - name: build C wrapper
         working-directory: ./c
         run: |
-          cmake -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_PREFIX_PATH="$(pwd)/../cpp/build/macos/install;$(pwd)/../cpp/build/macos/third_party/install" -DBUILD_SHARED_LIBS=ON -Bbuild -S.
+          cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_PREFIX_PATH="$(pwd)/../cpp/build/macos/install;$(pwd)/../cpp/build/macos/third_party/install" -DBUILD_SHARED_LIBS=ON -Bbuild -S.
           cmake --build build --target install
       - name: Upload framework as artefact
         if: ${{ matrix.build-framework == 'ON' }}
