@@ -1,4 +1,9 @@
 cmake_minimum_required(VERSION 3.22.1)
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "CMAKE_BUILD_TYPE is not set, so this build is unoptimized. "
+                   "Pass -DCMAKE_BUILD_TYPE=RelWithDebInfo for a release build.")
+endif()
 project(cmavsdk
     VERSION 3.10.2
     DESCRIPTION "C API wrapper for MAVSDK"

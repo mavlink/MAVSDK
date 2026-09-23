@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.22.1)
 
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "CMAKE_BUILD_TYPE is not set, so this build is unoptimized. "
+                   "Pass -DCMAKE_BUILD_TYPE=RelWithDebInfo for a release build.")
+endif()
+
 option(SUPERBUILD "Build dependencies" ON)
 option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
 option(BUILD_WITH_PROTO_REFLECTION "Build mavsdk_server with proto reflection" OFF)
