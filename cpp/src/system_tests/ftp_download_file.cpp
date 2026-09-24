@@ -39,14 +39,14 @@ TEST(Ftp, RetryOpenKeepsRequestSequence)
     autopilot.set_timeout_s(reduced_timeout_s);
 
     // FTP payload bytes: sequence at 0..1, opcode at 3, request opcode at 5.
-    auto payload = [](const Mavsdk::MavlinkMessage& message)
-        -> std::optional<std::array<uint8_t, 6>> {
+    auto payload =
+        [](const Mavsdk::MavlinkMessage& message) -> std::optional<std::array<uint8_t, 6>> {
         if (message.message_name != "FILE_TRANSFER_PROTOCOL") {
             return std::nullopt;
         }
         const auto fields = nlohmann::json::parse(message.fields_json, nullptr, false);
-        if (fields.is_discarded() || !fields.contains("payload") ||
-            !fields["payload"].is_array() || fields["payload"].size() < 6) {
+        if (fields.is_discarded() || !fields.contains("payload") || !fields["payload"].is_array() ||
+            fields["payload"].size() < 6) {
             return std::nullopt;
         }
         std::array<uint8_t, 6> result{};
@@ -58,8 +58,8 @@ TEST(Ftp, RetryOpenKeepsRequestSequence)
 
     std::mutex sequences_mutex;
     std::vector<uint16_t> open_sequences;
-    auto outgoing = groundstation.subscribe_outgoing_messages_json(
-        [&](const Mavsdk::MavlinkMessage& message) {
+    auto outgoing =
+        groundstation.subscribe_outgoing_messages_json([&](const Mavsdk::MavlinkMessage& message) {
             const auto bytes = payload(message);
             if (bytes && (*bytes)[3] == 4) { // CMD_OPEN_FILE_RO
                 std::lock_guard<std::mutex> lock(sequences_mutex);
@@ -69,8 +69,8 @@ TEST(Ftp, RetryOpenKeepsRequestSequence)
         });
 
     std::atomic<bool> dropped_first_open_ack{false};
-    auto incoming = groundstation.subscribe_incoming_messages_json(
-        [&](const Mavsdk::MavlinkMessage& message) {
+    auto incoming =
+        groundstation.subscribe_incoming_messages_json([&](const Mavsdk::MavlinkMessage& message) {
             const auto bytes = payload(message);
             if (bytes && (*bytes)[3] == 128 && (*bytes)[5] == 4 &&
                 !dropped_first_open_ack.exchange(true)) { // RSP_ACK to CMD_OPEN_FILE_RO
@@ -91,7 +91,9 @@ TEST(Ftp, RetryOpenKeepsRequestSequence)
     auto promise = std::make_shared<std::promise<Ftp::Result>>();
     auto result = promise->get_future();
     ftp.download_async(
-        temp_file.string(), temp_dir_downloaded.string(), false,
+        temp_file.string(),
+        temp_dir_downloaded.string(),
+        false,
         [promise](Ftp::Result value, Ftp::ProgressData) {
             if (value != Ftp::Result::Next) {
                 promise->set_value(value);
@@ -100,7 +102,8 @@ TEST(Ftp, RetryOpenKeepsRequestSequence)
     ASSERT_EQ(result.wait_for(std::chrono::seconds(5)), std::future_status::ready);
     EXPECT_EQ(result.get(), Ftp::Result::Success);
     EXPECT_TRUE(dropped_first_open_ack.load());
-    EXPECT_TRUE(are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
+    EXPECT_TRUE(
+        are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
 
     groundstation.unsubscribe_incoming_messages_json(incoming);
     groundstation.unsubscribe_outgoing_messages_json(outgoing);
