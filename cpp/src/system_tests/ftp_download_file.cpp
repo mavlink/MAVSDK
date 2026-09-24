@@ -1,17 +1,23 @@
 #include "log.hpp"
 #include "mavsdk.hpp"
+#include <array>
 #include <atomic>
+#include <cstdint>
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <chrono>
 #include <future>
 #include <memory>
+#include <mutex>
+#include <optional>
+#include <vector>
 #include <fstream>
 #include <thread>
 #include "plugins/ftp/ftp.hpp"
 #include "plugins/ftp_server/ftp_server.hpp"
 #include "fs_helpers.hpp"
 #include "unused.hpp"
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -21,6 +27,90 @@ static const fs::path temp_dir_provided = test_data_dir() / "provided";
 static const fs::path temp_dir_downloaded = test_data_dir() / "downloaded";
 
 static const fs::path temp_file = "data.bin";
+
+TEST(Ftp, RetryOpenKeepsRequestSequence)
+{
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
+    Mavsdk groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    groundstation.set_timeout_s(reduced_timeout_s);
+    Mavsdk autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    autopilot.set_timeout_s(reduced_timeout_s);
+
+    // FTP payload bytes: sequence at 0..1, opcode at 3, request opcode at 5.
+    auto payload =
+        [](const Mavsdk::MavlinkMessage& message) -> std::optional<std::array<uint8_t, 6>> {
+        if (message.message_name != "FILE_TRANSFER_PROTOCOL") {
+            return std::nullopt;
+        }
+        const auto fields = nlohmann::json::parse(message.fields_json, nullptr, false);
+        if (fields.is_discarded() || !fields.contains("payload") || !fields["payload"].is_array() ||
+            fields["payload"].size() < 6) {
+            return std::nullopt;
+        }
+        std::array<uint8_t, 6> result{};
+        for (size_t i = 0; i < result.size(); ++i) {
+            result[i] = fields["payload"][i].get<uint8_t>();
+        }
+        return result;
+    };
+
+    std::mutex sequences_mutex;
+    std::vector<uint16_t> open_sequences;
+    auto outgoing =
+        groundstation.subscribe_outgoing_messages_json([&](const Mavsdk::MavlinkMessage& message) {
+            const auto bytes = payload(message);
+            if (bytes && (*bytes)[3] == 4) { // CMD_OPEN_FILE_RO
+                std::lock_guard<std::mutex> lock(sequences_mutex);
+                open_sequences.push_back(static_cast<uint16_t>((*bytes)[0] | ((*bytes)[1] << 8)));
+            }
+            return true;
+        });
+
+    std::atomic<bool> dropped_first_open_ack{false};
+    auto incoming =
+        groundstation.subscribe_incoming_messages_json([&](const Mavsdk::MavlinkMessage& message) {
+            const auto bytes = payload(message);
+            if (bytes && (*bytes)[3] == 128 && (*bytes)[5] == 4 &&
+                !dropped_first_open_ack.exchange(true)) { // RSP_ACK to CMD_OPEN_FILE_RO
+                return false;
+            }
+            return true;
+        });
+
+    ASSERT_EQ(groundstation.add_any_connection("udpin://0.0.0.0:17000"), ConnectionResult::Success);
+    ASSERT_EQ(autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto server = FtpServer{autopilot.server_component()};
+    server.set_root_dir(temp_dir_provided.string());
+    auto system = groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(system);
+    auto ftp = Ftp{system.value()};
+
+    auto promise = std::make_shared<std::promise<Ftp::Result>>();
+    auto result = promise->get_future();
+    ftp.download_async(
+        temp_file.string(),
+        temp_dir_downloaded.string(),
+        false,
+        [promise](Ftp::Result value, Ftp::ProgressData) {
+            if (value != Ftp::Result::Next) {
+                promise->set_value(value);
+            }
+        });
+    ASSERT_EQ(result.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+    EXPECT_EQ(result.get(), Ftp::Result::Success);
+    EXPECT_TRUE(dropped_first_open_ack.load());
+    EXPECT_TRUE(
+        are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
+
+    groundstation.unsubscribe_incoming_messages_json(incoming);
+    groundstation.unsubscribe_outgoing_messages_json(outgoing);
+    std::lock_guard<std::mutex> lock(sequences_mutex);
+    ASSERT_GE(open_sequences.size(), 2);
+    EXPECT_EQ(open_sequences[0], open_sequences[1]);
+}
 
 TEST(Ftp, DownloadFile)
 {

@@ -1598,6 +1598,8 @@ void MavlinkFtpClient::timeout()
                 .count());
     }
 
+    // A timeout retransmits the same request. Keep its sequence number so a server
+    // can replay a cached response for the original request.
     std::visit(
         overloaded{
             [&](DownloadItem& item) {
@@ -1621,7 +1623,6 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1654,7 +1655,6 @@ void MavlinkFtpClient::timeout()
                 if (work->last_opcode == CMD_OPEN_FILE_RO) {
                     // The file isn't even open yet, so there is nothing to be missing:
                     // ask again.
-                    work->payload.seq_number = _last_sent_seq_number++;
                     start_timer();
                     send_mavlink_ftp_message(work->payload, work->target_compid);
                     return;
@@ -1700,7 +1700,6 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1717,7 +1716,6 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1734,7 +1732,6 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1751,7 +1748,6 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1768,7 +1764,6 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1785,7 +1780,6 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1802,7 +1796,6 @@ void MavlinkFtpClient::timeout()
                     LogDebug("No answer, retrying in {}s", _retry_timeout_s.value_or(0.0));
                 }
 
-                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             }},
