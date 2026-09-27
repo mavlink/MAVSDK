@@ -1,6 +1,8 @@
 #include "mavsdk_server_api.h"
 
 #include <cctype>
+#include <cerrno>
+#include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <limits>
@@ -19,7 +21,7 @@ int main(int argc, char** argv)
 {
     std::string connection_url = default_connection;
     int mavsdk_server_port = default_mavsdk_server_port;
-    int mavsdk_sysid = default_sysid;
+    uint32_t mavsdk_sysid = default_sysid;
     int mavsdk_compid = default_compid;
     double heartbeat_watchdog_timeout_s = default_heartbeat_watchdog_timeout_s;
 
@@ -58,12 +60,18 @@ int main(int argc, char** argv)
                 return 1;
             }
 
-            mavsdk_sysid = std::stoi(sysid);
+            // System IDs are 32 bits wide, so std::stoi would not cover them, and would throw
+            // rather than report a value out of range.
+            errno = 0;
+            const unsigned long long parsed_sysid = std::strtoull(sysid.c_str(), nullptr, 10);
 
-            if (mavsdk_sysid > std::numeric_limits<uint8_t>::max() || mavsdk_sysid < 1) {
+            if (sysid.empty() || errno == ERANGE || parsed_sysid < 1 ||
+                parsed_sysid > std::numeric_limits<uint32_t>::max()) {
                 usage(argv[0]);
                 return 1;
             }
+
+            mavsdk_sysid = static_cast<uint32_t>(parsed_sysid);
         } else if (current_arg == "--compid") {
             if (argc <= i + 1) {
                 usage(argv[0]);
@@ -121,7 +129,7 @@ int main(int argc, char** argv)
         mavsdk_server,
         connection_url.c_str(),
         mavsdk_server_port,
-        static_cast<uint32_t>(mavsdk_sysid),
+        mavsdk_sysid,
         static_cast<uint8_t>(mavsdk_compid));
 
     if (ret != 0) {
@@ -155,7 +163,9 @@ void usage(const char* bin_name)
               << "                set to 0 to choose a free port automatically\n"
               << "                (default is " << default_mavsdk_server_port << ")\n"
               << "  --sysid     : set the MAVLink system ID of the MAVSDK server itself,\n"
-              << "                (default is " << default_sysid << ", range 1..255)\n"
+              << "                (default is " << default_sysid << ", range 1.."
+              << std::numeric_limits<uint32_t>::max() << ",\n"
+              << "                IDs above 255 need peers that support 32 bit system IDs)\n"
               << "  --compid    : set the MAVLink component ID of the MAVSDK server itself,\n"
               << "                (default is " << default_compid << ", range 1..255)\n"
               << "  --heartbeat-watchdog-timeout :\n"
