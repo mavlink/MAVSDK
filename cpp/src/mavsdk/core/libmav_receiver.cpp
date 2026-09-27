@@ -142,9 +142,7 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
         _last_message.raw_bytes.clear();
     }
 
-    // A target that doesn't fit in 8 bits is carried in the extended header,
-    // and the payload's target_system then only holds a sentinel, so the
-    // header wins.
+    // Targets above 255 are in the header, the payload only has a sentinel.
     uint8_t target_system_id = 0;
     uint8_t target_component_id = 0;
     if (header.hasWideTarget()) {

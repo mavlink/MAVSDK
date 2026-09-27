@@ -130,8 +130,7 @@ public:
 
     Time& get_time();
 
-    // A command ack together with the full system ID it goes to. The target_system field of
-    // mavlink_command_ack_t is only 8 bits wide, so it can't hold a command's origin above 255.
+    // mavlink_command_ack_t with the full target system ID.
     struct CommandAck : mavlink_command_ack_t {
         uint32_t target_system_id{0};
     };

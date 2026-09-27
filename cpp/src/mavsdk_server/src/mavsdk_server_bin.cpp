@@ -60,8 +60,7 @@ int main(int argc, char** argv)
                 return 1;
             }
 
-            // System IDs are 32 bits wide, so std::stoi would not cover them, and would throw
-            // rather than report a value out of range.
+            // std::stoi can't cover 32 bits and would throw on overflow.
             errno = 0;
             const unsigned long long parsed_sysid = std::strtoull(sysid.c_str(), nullptr, 10);
 

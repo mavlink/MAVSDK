@@ -24,19 +24,9 @@
 
 using namespace mavsdk;
 
-// 32 bit system IDs, as merged in ArduPilot/pymavlink#1229. A system ID above
-// 255 no longer fits the MAVLink 2 header's single sysid byte, so the sender
-// sets MAVLINK_IFLAG_SYSID32 and the header grows by 3 bytes. A target above
-// 255 likewise moves into a 4 byte extended header behind
-// MAVLINK_IFLAG_TARGET32, and the payload's 8 bit target_system then holds
-// the sentinel 255, which does not read as a broadcast.
-//
-// Most handlers used to check the decoded payload target against their own
-// system ID, which only holds the sentinel for a wide target, so the tests
-// below go through each kind of targeted exchange.
+// 32 bit system IDs (MAVLINK_IFLAG_SYSID32 and MAVLINK_IFLAG_TARGET32).
 
-// 0x0A000001 is 10.0.0.1, which is the point of the feature: an IPv4 address
-// used directly as a system ID.
+// 10.0.0.1 and 10.0.0.2
 static constexpr uint32_t autopilot_sysid = 0x0A000001;
 static constexpr uint32_t groundstation_sysid = 0x0A000002;
 
@@ -57,8 +47,6 @@ TEST(Sysid32, Discovery)
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
 
-    // The full 32 bit value has to survive discovery. Truncating would report
-    // system 1 here, which is a different (and very common) system.
     EXPECT_EQ(maybe_system.value()->get_system_id(), autopilot_sysid);
 }
 
@@ -82,16 +70,11 @@ TEST(Sysid32, CommandRoundtrip)
     ASSERT_TRUE(maybe_system);
     auto action = Action{maybe_system.value()};
 
-    // A command is targeted, so this only works if the target system ID makes
-    // it into the extended header and the ack finds its way back. Both sides
-    // route on the 32 bit value.
     EXPECT_EQ(action.arm(), Action::Result::Success);
     EXPECT_EQ(action.disarm(), Action::Result::Success);
 }
 
-// An 8 bit ground station, e.g. QGroundControl, talking to an autopilot with a
-// wide system ID: commands go out with a small target and come back with an
-// extended one.
+// 8 bit ground station, 32 bit autopilot
 TEST(Sysid32, CommandRoundtripEightBitGroundStation)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
@@ -116,8 +99,7 @@ TEST(Sysid32, CommandRoundtripEightBitGroundStation)
     EXPECT_EQ(action.disarm(), Action::Result::Success);
 }
 
-// The other way round: a ground station with a wide system ID and an 8 bit
-// autopilot, so the commands carry an extended target and the acks don't.
+// 32 bit ground station, 8 bit autopilot
 TEST(Sysid32, CommandRoundtripEightBitAutopilot)
 {
     Mavsdk mavsdk_groundstation{
@@ -162,7 +144,6 @@ TEST(Sysid32, Params)
     ASSERT_TRUE(maybe_system);
     auto param = Param{maybe_system.value()};
 
-    // The param server only answers requests addressed to its own system ID.
     auto int_result = param.get_param_int("TEST_INT");
     EXPECT_EQ(int_result.first, Param::Result::Success);
     EXPECT_EQ(int_result.second, 42);
@@ -183,8 +164,7 @@ TEST(Sysid32, MissionUploadDownload)
         Mavsdk::Configuration{groundstation_sysid, MAV_COMP_ID_MISSIONPLANNER, false}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{autopilot_sysid, MAV_COMP_ID_AUTOPILOT1, true}};
 
-    // Registered before connecting, so that MISSION_INT is in the capabilities
-    // of the first AUTOPILOT_VERSION.
+    // Before connecting, so MISSION_INT is in the first AUTOPILOT_VERSION.
     auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
     ASSERT_EQ(
@@ -208,7 +188,6 @@ TEST(Sysid32, MissionUploadDownload)
         mission_plan.mission_items.push_back(item);
     }
 
-    // Every message of the mission protocol is targeted, in both directions.
     ASSERT_EQ(mission.upload_mission(mission_plan), Mission::Result::Success);
 
     auto result = mission.download_mission();
@@ -238,8 +217,6 @@ TEST(Sysid32, Ftp)
     ASSERT_TRUE(maybe_system);
     auto ftp = Ftp{maybe_system.value()};
 
-    // Both the FTP client and server drop messages that are not addressed to
-    // their own system ID.
     ASSERT_EQ(ftp.create_directory("folder"), Ftp::Result::Success);
     EXPECT_TRUE(file_exists(root_dir / "folder"));
 
@@ -275,8 +252,7 @@ TEST(Sysid32, CameraTakePhoto)
     information.definition_file_uri = "";
     camera_server->set_information(information);
 
-    // The camera server acks its commands separately from the command
-    // handler, which is the path that has to carry the full origin.
+    // Acked outside of the command handler.
     camera_server->subscribe_take_photo([camera_server_weak](int32_t index) {
         auto server = camera_server_weak.lock();
         if (!server) {
@@ -307,7 +283,6 @@ TEST(Sysid32, CameraTakePhoto)
 
     auto camera = Camera{system};
 
-    // The camera information is requested and has to come back first.
     auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
     while (camera.camera_list().cameras.empty()) {
         ASSERT_LT(std::chrono::steady_clock::now(), deadline);
@@ -397,7 +372,7 @@ TEST(Sysid32, TargetAboveEightBits)
             return true;
         });
 
-    // An unknown command, so the command receiver leaves it alone.
+    // Unknown command, so the command receiver ignores it.
     auto handle = receiver.subscribe_message(
         "COMMAND_LONG", [prom, flag](MavlinkDirectServer::MavlinkMessage message) {
             std::call_once(*flag, [&]() { prom->set_value(message); });
@@ -405,9 +380,6 @@ TEST(Sysid32, TargetAboveEightBits)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    // The payload's target_system field is only 8 bits wide, so this target
-    // has to travel in the extended header instead. Were it truncated it would
-    // arrive as 1, and were it zeroed it would look like a broadcast.
     MavlinkDirect::MavlinkMessage message;
     message.message_name = "COMMAND_LONG";
     message.target_system_id = autopilot_sysid;
@@ -425,15 +397,11 @@ TEST(Sysid32, TargetAboveEightBits)
     EXPECT_EQ(received.target_system_id, autopilot_sysid);
     EXPECT_EQ(received.target_component_id, MAV_COMP_ID_AUTOPILOT1);
 
-    // On the wire, the payload field holds the sentinel rather than a
-    // truncated ID or a broadcast.
     const auto fields = nlohmann::json::parse(received.fields_json);
     EXPECT_EQ(fields["target_system"], target_system_sentinel);
     EXPECT_EQ(fields["target_component"], MAV_COMP_ID_AUTOPILOT1);
 
-    // The header: SYSID32 | TARGET32, the 4 byte source system ID at offset 5,
-    // and the 4 byte target system ID right after the 3 byte message ID. The
-    // target component is not part of the header.
+    // SYSID32 | TARGET32, 4 byte sysid at 5, 4 byte target after the msgid.
     ASSERT_EQ(raw_fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
     const auto raw_bytes = raw_fut.get();
     ASSERT_GE(raw_bytes.size(), 17u);
@@ -453,8 +421,7 @@ TEST(Sysid32, TargetAboveEightBits)
     receiver.unsubscribe_message(handle);
 }
 
-// A MAVSDK instance in the middle that has an 8 bit system ID itself has to
-// route a wide target by the extended header, not by the sentinel.
+// An 8 bit instance in the middle has to route on the header target.
 TEST(Sysid32, Forwarding)
 {
     Mavsdk mavsdk_groundstation{
@@ -491,8 +458,7 @@ TEST(Sysid32, Forwarding)
 
 TEST(Sysid32, EightBitPeerStillWorks)
 {
-    // A system ID that fits in 8 bits must not set any of the new incompat
-    // flags, otherwise every peer that predates this feature drops our frames.
+    // 8 bit system IDs must not set any of the new incompat flags.
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{42, MAV_COMP_ID_AUTOPILOT1, true}};
 
@@ -521,8 +487,6 @@ TEST(Sysid32, EightBitPeerStillWorks)
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
     const auto raw_bytes = fut.get();
 
-    // A plain MAVLink 2 frame: no incompat flags, and the sysid in its single
-    // byte.
     ASSERT_GE(raw_bytes.size(), 10u);
     EXPECT_EQ(raw_bytes[0], 0xFD);
     EXPECT_EQ(raw_bytes[2], 0);

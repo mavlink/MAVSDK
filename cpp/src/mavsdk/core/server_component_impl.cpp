@@ -198,8 +198,7 @@ bool ServerComponentImpl::send_command_ack(const CommandAck& command_ack)
 bool ServerComponentImpl::send_command_ack(
     const mavlink_command_ack_t& command_ack, uint32_t target_system_id)
 {
-    // Packed rather than encoded, so that a target above 255 ends up in the extended header
-    // instead of being truncated into the 8 bit target_system field.
+    // Packed, so that a target above 255 goes in the extended header.
     return queue_message([&, this](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
         mavlink_msg_command_ack_pack_chan(
@@ -271,8 +270,7 @@ ServerComponentImpl::CommandAck ServerComponentImpl::make_command_ack_message(
     command_ack.result = result;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.result_param2 = 0;
-    // The payload field is only 8 bits, so an origin above 255 is replaced by the same
-    // non-broadcast sentinel the wire uses. send_command_ack() uses the full value.
+    // The full origin is in target_system_id.
     command_ack.target_system = mavlink_msg_target_field(command.origin_system_id);
     command_ack.target_component = command.origin_component_id;
     command_ack.target_system_id = command.origin_system_id;
@@ -288,8 +286,7 @@ ServerComponentImpl::CommandAck ServerComponentImpl::make_command_ack_message(
     command_ack.result = result;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.result_param2 = 0;
-    // The payload field is only 8 bits, so an origin above 255 is replaced by the same
-    // non-broadcast sentinel the wire uses. send_command_ack() uses the full value.
+    // The full origin is in target_system_id.
     command_ack.target_system = mavlink_msg_target_field(command.origin_system_id);
     command_ack.target_component = command.origin_component_id;
     command_ack.target_system_id = command.origin_system_id;
