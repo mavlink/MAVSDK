@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <future>
 #include <numeric>
+#include <random>
 
 #include "crc32.hpp"
 #include "fs_utils.hpp"
@@ -26,6 +27,13 @@ MavlinkFtpClient::MavlinkFtpClient(SystemImpl& system_impl) :
             _debugging = true;
         }
     }
+
+    // PX4 and ArduPilot keep their last reply and send it again for a request with the
+    // sequence number that they have just answered. Counting from 0 in every process
+    // means that the first request after a restart can look like a repeat of the last
+    // request before it, and as a retry keeps its sequence number, it would get that
+    // old reply every time.
+    _last_sent_seq_number = static_cast<uint16_t>(std::random_device{}());
 
     _system_impl.register_mavlink_message_handler(
         MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL,
