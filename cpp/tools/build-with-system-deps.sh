@@ -84,7 +84,7 @@ cmake --install "${DEPS_DIR}/PicoSHA2/build" --prefix "${DEPS_INSTALL_DIR}"
 
 # Build libmav
 echo "=== Building libmav ==="
-LIBMAV_VERSION="1aafc0cdd5344ee0bbcf0d7abe2f8d21e0a004cb"
+LIBMAV_VERSION="909f3d8e62ff712648e739eadfcdd1bb9ee0b869"
 if [ ! -d "${DEPS_DIR}/libmav" ]; then
     git clone https://github.com/julianoes/libmavlike "${DEPS_DIR}/libmav"
 fi
