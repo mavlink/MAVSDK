@@ -160,7 +160,8 @@ TEST(MavlinkDirectServer, LoadCustomXml)
     <version>3</version>
     <dialect>0</dialect>
     <messages>
-        <message id="420" name="CUSTOM_TEST_MESSAGE">
+        <!-- At the top of the 24 bit ID range, which no dialect uses. -->
+        <message id="16777200" name="CUSTOM_TEST_MESSAGE">
             <description>A test custom message for LoadCustomXml</description>
             <field type="uint32_t" name="test_value">Test value field</field>
             <field type="uint16_t" name="counter">Counter field</field>

@@ -224,14 +224,14 @@ public:
     std::weak_ptr<WorkItem> receive_incoming_items_async(
         uint8_t type,
         uint32_t mission_count,
-        uint8_t target_system,
+        uint32_t target_system,
         uint8_t target_component,
         ResultAndItemsCallback callback);
 
     std::weak_ptr<WorkItem> send_outgoing_items_async(
         uint8_t type,
         const std::vector<ItemInt>& items,
-        uint8_t target_system,
+        uint32_t target_system,
         uint8_t target_component,
         ResultCallback callback);
 

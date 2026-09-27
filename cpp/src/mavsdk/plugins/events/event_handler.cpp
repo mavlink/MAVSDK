@@ -37,31 +37,25 @@ EventHandler::EventHandler(
         }
     };
 
-    const auto send_request_cb = [this](
-                                     const mavlink_request_event_t& msg,
-                                     uint32_t target_system_id) {
-        _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
-            mavlink_message_t message;
-#ifdef MAVLINK_IFLAG_TARGETTED
-            // The struct only has 8 bits for the target, so encoding it would truncate a wider one.
-            // Packing the fields hands the full target over, which then ends up in the extended
-            // header.
-            const uint32_t target_system = target_system_id;
-#else
-            const uint8_t target_system = static_cast<uint8_t>(target_system_id);
-#endif
-            mavlink_msg_request_event_pack_chan(
-                mavlink_address.system_id,
-                mavlink_address.component_id,
-                channel,
-                &message,
-                target_system,
-                msg.target_component,
-                msg.first_sequence,
-                msg.last_sequence);
-            return message;
-        });
-    };
+    const auto send_request_cb =
+        [this](const mavlink_request_event_t& msg, uint32_t target_system_id) {
+            _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+                mavlink_message_t message;
+                // The struct only has 8 bits for the target, so encoding it would truncate a wider
+                // one. Packing the fields hands the full target over, which then ends up in the
+                // extended header.
+                mavlink_msg_request_event_pack_chan(
+                    mavlink_address.system_id,
+                    mavlink_address.component_id,
+                    channel,
+                    &message,
+                    target_system_id,
+                    msg.target_component,
+                    msg.first_sequence,
+                    msg.last_sequence);
+                return message;
+            });
+        };
 
     _parser.setProfile(profile);
 

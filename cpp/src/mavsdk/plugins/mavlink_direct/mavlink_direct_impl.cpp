@@ -115,17 +115,14 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
         LogErr("target_component_id {} out of range (max 255)", message.target_component_id);
         return MavlinkDirect::Result::InvalidField;
     }
-    if (message.target_system_id != 0) {
-        if (message.target_system_id > 255) {
-            // Doesn't fit the payload's 8 bit target_system field, so it goes
-            // in the extended header instead. Truncating would address a
-            // different system, and zeroing would broadcast.
-            libmav_message.setExtendedTarget(
-                message.target_system_id, static_cast<uint8_t>(message.target_component_id));
-        } else {
-            // For messages that have target_system field, set it
-            libmav_message.set("target_system", static_cast<uint8_t>(message.target_system_id));
-        }
+    // A target above 255 goes in the extended header, and the payload's 8 bit target_system then
+    // gets a sentinel which does not read as a broadcast. Only messages with a target_system
+    // field can carry a target.
+    uint32_t target_system_id = 0;
+    if (message.target_system_id != 0 &&
+        libmav_message.set("target_system", mavlink_msg_target_field(message.target_system_id)) ==
+            mav::MessageResult::Success) {
+        target_system_id = message.target_system_id;
     }
     if (message.target_component_id != 0) {
         // For messages that have target_component field, set it
@@ -148,10 +145,8 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
         mavlink_message.len = payload_length;
         memcpy(mavlink_message.payload64, payload_view.first, payload_length);
 
-#ifdef MAVLINK_IFLAG_TARGETTED
-        // A target above 255 has to be handed to the C implementation
-        // separately so it ends up in the extended header rather than being
-        // truncated into the payload.
+        // The full target is handed over separately, so that one above 255 ends up in the
+        // extended header rather than truncated in the payload.
         mavlink_finalize_message_chan_target(
             &mavlink_message,
             mavlink_address.system_id,
@@ -160,18 +155,7 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
             payload_length,
             libmav_message.type().maxPayloadSize(),
             libmav_message.type().crcExtra(),
-            message.target_system_id > 255 ? message.target_system_id : 0,
-            static_cast<uint8_t>(message.target_component_id));
-#else
-        mavlink_finalize_message_chan(
-            &mavlink_message,
-            static_cast<uint8_t>(mavlink_address.system_id),
-            mavlink_address.component_id,
-            channel,
-            payload_length,
-            libmav_message.type().maxPayloadSize(),
-            libmav_message.type().crcExtra());
-#endif
+            target_system_id);
 
         return mavlink_message;
     });

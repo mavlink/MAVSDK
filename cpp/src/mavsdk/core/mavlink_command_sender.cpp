@@ -1,5 +1,6 @@
 #include "mavlink_command_sender.hpp"
 #include "mavlink_address.hpp"
+#include "mavlink_target.hpp"
 #include "system_impl.hpp"
 #include "unused.hpp"
 #include <cmath>
@@ -162,9 +163,9 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 {
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
+    const uint32_t ack_target_system_id = target_system_id(message);
 
-    if ((command_ack.target_system &&
-         command_ack.target_system != _system_impl.get_own_system_id()) ||
+    if ((ack_target_system_id && ack_target_system_id != _system_impl.get_own_system_id()) ||
         (command_ack.target_component &&
          command_ack.target_component != _system_impl.get_own_component_id())) {
         if (_command_debugging) {
@@ -174,7 +175,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
                 static_cast<int>(message.sysid),
                 '/',
                 static_cast<int>(message.compid),
-                static_cast<int>(command_ack.target_system),
+                ack_target_system_id,
                 '/',
                 static_cast<int>(command_ack.target_component));
         }

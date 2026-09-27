@@ -26,6 +26,7 @@
 #include "mavlink_address.hpp"
 #include "mavlink_channels.hpp"
 #include "mavlink_command_receiver.hpp"
+#include "mavlink_target.hpp"
 #include "callback_list.tpp"
 #include "hostname_to_ip.hpp"
 #include "libmav_receiver.hpp"
@@ -709,9 +710,14 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                 }
             }
 
+            // A target that doesn't fit in 8 bits is carried in the extended
+            // header, where the payload's target_system only holds a sentinel.
             uint8_t target_sys = 0;
             uint8_t target_comp = 0;
-            if (libmav_msg_opt.value().get("target_system", target_sys) ==
+            if (libmav_msg_opt.value().header().hasWideTarget()) {
+                json_msg.target_system_id = libmav_msg_opt.value().extendedTargetSystemId();
+            } else if (
+                libmav_msg_opt.value().get("target_system", target_sys) ==
                 mav::MessageResult::Success) {
                 json_msg.target_system_id = target_sys;
             }
@@ -947,26 +953,23 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         json_message.component_id = message.compid;
 
         // A target that doesn't fit in 8 bits is carried in the extended
-        // header, where the payload's target_system reads as 0.
-        if (libmav_msg_opt.value().header().isTargetted()) {
+        // header, where the payload's target_system only holds a sentinel.
+        uint8_t target_system_id = 0;
+        uint8_t target_component_id = 0;
+        if (libmav_msg_opt.value().header().hasWideTarget()) {
             json_message.target_system_id = libmav_msg_opt.value().extendedTargetSystemId();
-            json_message.target_component_id = libmav_msg_opt.value().extendedTargetComponentId();
+        } else if (
+            libmav_msg_opt.value().get("target_system", target_system_id) ==
+            mav::MessageResult::Success) {
+            json_message.target_system_id = target_system_id;
         } else {
-            // Extract target_system and target_component if present
-            uint8_t target_system_id = 0;
-            uint8_t target_component_id = 0;
-            if (libmav_msg_opt.value().get("target_system", target_system_id) ==
-                mav::MessageResult::Success) {
-                json_message.target_system_id = target_system_id;
-            } else {
-                json_message.target_system_id = 0;
-            }
-            if (libmav_msg_opt.value().get("target_component", target_component_id) ==
-                mav::MessageResult::Success) {
-                json_message.target_component_id = target_component_id;
-            } else {
-                json_message.target_component_id = 0;
-            }
+            json_message.target_system_id = 0;
+        }
+        if (libmav_msg_opt.value().get("target_component", target_component_id) ==
+            mav::MessageResult::Success) {
+            json_message.target_component_id = target_component_id;
+        } else {
+            json_message.target_component_id = 0;
         }
 
         // Generate JSON using LibmavReceiver's public method.
@@ -1336,7 +1339,7 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
         _configuration = new_configuration;
     }
     // We cache these values as atomic to avoid having to lock any mutex for them.
-    _our_system_id = static_cast<uint8_t>(new_configuration.get_system_id());
+    _our_system_id = new_configuration.get_system_id();
     _our_component_id = new_configuration.get_component_id();
     _our_mav_type = static_cast<uint8_t>(new_configuration.get_mav_type());
     _our_autopilot = new_configuration.get_autopilot();
@@ -2006,57 +2009,12 @@ void MavsdkImpl::report_connection_error(
 
 uint32_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
 {
-#ifdef MAVLINK_IFLAG_TARGETTED
-    // A target that doesn't fit in 8 bits travels in the extended header, and
-    // the payload field then reads as 0. Checking the payload first would
-    // report a broadcast and route the message to everyone.
-    if (message.incompat_flags & MAVLINK_IFLAG_TARGETTED) {
-        return message.target_sysid;
-    }
-#endif
-
-    // Checks whether connection knows target system ID by extracting target system if set.
-    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
-
-    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM)) {
-        return 0;
-    }
-
-    // Don't look at the target system offset if it is outside the payload length.
-    // This can happen if the fields are trimmed.
-    if (meta->target_system_ofs >= message.len) {
-        return 0;
-    }
-
-    // _MAV_PAYLOAD hands back a char*, which is signed on most platforms, so
-    // a target above 127 would sign extend into the wider return type.
-    return static_cast<uint8_t>((_MAV_PAYLOAD(&message))[meta->target_system_ofs]);
+    return target_system_id(message);
 }
 
 uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
 {
-#ifdef MAVLINK_IFLAG_TARGETTED
-    // See get_target_system_id(): with an extended header the target component
-    // is carried alongside the target system rather than in the payload.
-    if (message.incompat_flags & MAVLINK_IFLAG_TARGETTED) {
-        return message.target_compid;
-    }
-#endif
-
-    // Checks whether connection knows target system ID by extracting target system if set.
-    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
-
-    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT)) {
-        return 0;
-    }
-
-    // Don't look at the target component offset if it is outside the payload length.
-    // This can happen if the fields are trimmed.
-    if (meta->target_component_ofs >= message.len) {
-        return 0;
-    }
-
-    return static_cast<uint8_t>((_MAV_PAYLOAD(&message))[meta->target_component_ofs]);
+    return mavlink_msg_get_target_compid(&message, mavlink_get_msg_entry(message.msgid));
 }
 
 Sender& MavsdkImpl::sender()
