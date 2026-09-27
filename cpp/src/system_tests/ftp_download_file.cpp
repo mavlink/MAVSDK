@@ -56,24 +56,31 @@ TEST(Ftp, RetryOpenKeepsRequestSequence)
         return result;
     };
 
-    std::mutex sequences_mutex;
-    std::vector<uint16_t> open_sequences;
-    auto outgoing =
-        groundstation.subscribe_outgoing_messages_json([&](const Mavsdk::MavlinkMessage& message) {
+    // The callbacks are called for as long as the Mavsdk instances exist, which is longer
+    // than the locals of this test if an ASSERT returns early, so they share the state.
+    struct State {
+        std::mutex sequences_mutex;
+        std::vector<uint16_t> open_sequences;
+        std::atomic<bool> dropped_first_open_ack{false};
+    };
+    auto state = std::make_shared<State>();
+
+    auto outgoing = groundstation.subscribe_outgoing_messages_json(
+        [state, payload](const Mavsdk::MavlinkMessage& message) {
             const auto bytes = payload(message);
             if (bytes && (*bytes)[3] == 4) { // CMD_OPEN_FILE_RO
-                std::lock_guard<std::mutex> lock(sequences_mutex);
-                open_sequences.push_back(static_cast<uint16_t>((*bytes)[0] | ((*bytes)[1] << 8)));
+                std::lock_guard<std::mutex> lock(state->sequences_mutex);
+                state->open_sequences.push_back(
+                    static_cast<uint16_t>((*bytes)[0] | ((*bytes)[1] << 8)));
             }
             return true;
         });
 
-    std::atomic<bool> dropped_first_open_ack{false};
-    auto incoming =
-        groundstation.subscribe_incoming_messages_json([&](const Mavsdk::MavlinkMessage& message) {
+    auto incoming = groundstation.subscribe_incoming_messages_json(
+        [state, payload](const Mavsdk::MavlinkMessage& message) {
             const auto bytes = payload(message);
             if (bytes && (*bytes)[3] == 128 && (*bytes)[5] == 4 &&
-                !dropped_first_open_ack.exchange(true)) { // RSP_ACK to CMD_OPEN_FILE_RO
+                !state->dropped_first_open_ack.exchange(true)) { // RSP_ACK to CMD_OPEN_FILE_RO
                 return false;
             }
             return true;
@@ -101,15 +108,15 @@ TEST(Ftp, RetryOpenKeepsRequestSequence)
         });
     ASSERT_EQ(result.wait_for(std::chrono::seconds(5)), std::future_status::ready);
     EXPECT_EQ(result.get(), Ftp::Result::Success);
-    EXPECT_TRUE(dropped_first_open_ack.load());
+    EXPECT_TRUE(state->dropped_first_open_ack.load());
     EXPECT_TRUE(
         are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
 
     groundstation.unsubscribe_incoming_messages_json(incoming);
     groundstation.unsubscribe_outgoing_messages_json(outgoing);
-    std::lock_guard<std::mutex> lock(sequences_mutex);
-    ASSERT_GE(open_sequences.size(), 2);
-    EXPECT_EQ(open_sequences[0], open_sequences[1]);
+    std::lock_guard<std::mutex> lock(state->sequences_mutex);
+    ASSERT_GE(state->open_sequences.size(), 2);
+    EXPECT_EQ(state->open_sequences[0], state->open_sequences[1]);
 }
 
 TEST(Ftp, DownloadFile)
