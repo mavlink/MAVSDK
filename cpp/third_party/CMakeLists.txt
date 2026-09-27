@@ -20,7 +20,7 @@ if(SUPERBUILD)
     set(MAVLINK_URL "https://github.com/mavlink/mavlink"
         CACHE STRING "URL for the MAVLink Repository")
 
-    set(LIBMAVLIKE_HASH "909f3d8e62ff712648e739eadfcdd1bb9ee0b869"
+    set(LIBMAVLIKE_HASH "1fa194035bf309ddeba3e12890d1c161c790a0b1"
         CACHE STRING "Hash for the libmavlike Repository")
     set(LIBMAVLIKE_URL "https://github.com/julianoes/libmavlike"
         CACHE STRING "URL for the libmavlike Repository")
