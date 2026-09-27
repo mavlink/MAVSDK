@@ -60,7 +60,7 @@ cp "${DEPS_DIR}/mavlink/message_definitions/v1.0/minimal.xml" \
 
 # Build libevents
 # Use the same version as MAVSDK's superbuild (see third_party/libevents/CMakeLists.txt)
-LIBEVENTS_VERSION="840a88ea226d4eb0fd4c391ce860317422756435"
+LIBEVENTS_VERSION="0ef305faa4cffdb09f01ca862ebfc108b7ff0cd5"
 echo "=== Building libevents (${LIBEVENTS_VERSION}) ==="
 if [ ! -d "${DEPS_DIR}/libevents" ]; then
     git clone https://github.com/mavlink/libevents.git "${DEPS_DIR}/libevents"
@@ -84,7 +84,7 @@ cmake --install "${DEPS_DIR}/PicoSHA2/build" --prefix "${DEPS_INSTALL_DIR}"
 
 # Build libmav
 echo "=== Building libmav ==="
-LIBMAV_VERSION="909f3d8e62ff712648e739eadfcdd1bb9ee0b869"
+LIBMAV_VERSION="1fa194035bf309ddeba3e12890d1c161c790a0b1"
 if [ ! -d "${DEPS_DIR}/libmav" ]; then
     git clone https://github.com/julianoes/libmavlike "${DEPS_DIR}/libmav"
 fi
