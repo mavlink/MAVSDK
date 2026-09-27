@@ -41,9 +41,7 @@ EventHandler::EventHandler(
         [this](const mavlink_request_event_t& msg, uint32_t target_system_id) {
             _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
                 mavlink_message_t message;
-                // The struct only has 8 bits for the target, so encoding it would truncate a wider
-                // one. Packing the fields hands the full target over, which then ends up in the
-                // extended header.
+                // Packed, so that a target above 255 goes in the extended header.
                 mavlink_msg_request_event_pack_chan(
                     mavlink_address.system_id,
                     mavlink_address.component_id,

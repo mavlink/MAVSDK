@@ -710,8 +710,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                 }
             }
 
-            // A target that doesn't fit in 8 bits is carried in the extended
-            // header, where the payload's target_system only holds a sentinel.
+            // Targets above 255 are in the header, the payload only has a sentinel.
             uint8_t target_sys = 0;
             uint8_t target_comp = 0;
             if (libmav_msg_opt.value().header().hasWideTarget()) {
@@ -952,8 +951,7 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         json_message.system_id = message.sysid;
         json_message.component_id = message.compid;
 
-        // A target that doesn't fit in 8 bits is carried in the extended
-        // header, where the payload's target_system only holds a sentinel.
+        // Targets above 255 are in the header, the payload only has a sentinel.
         uint8_t target_system_id = 0;
         uint8_t target_component_id = 0;
         if (libmav_msg_opt.value().header().hasWideTarget()) {

@@ -109,15 +109,12 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     }
 
     // Set target system/component if specified.
-    // Component IDs are still 1 byte on the wire, so reject anything that wouldn't round-trip
-    // instead of silently truncating it.
+    // Component IDs are 8 bit on the wire.
     if (message.target_component_id > 255) {
         LogErr("target_component_id {} out of range (max 255)", message.target_component_id);
         return MavlinkDirect::Result::InvalidField;
     }
-    // A target above 255 goes in the extended header, and the payload's 8 bit target_system then
-    // gets a sentinel which does not read as a broadcast. Only messages with a target_system
-    // field can carry a target.
+    // Targets above 255 go in the extended header, the payload gets a sentinel.
     uint32_t target_system_id = 0;
     if (message.target_system_id != 0 &&
         libmav_message.set("target_system", mavlink_msg_target_field(message.target_system_id)) ==
@@ -145,8 +142,6 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
         mavlink_message.len = payload_length;
         memcpy(mavlink_message.payload64, payload_view.first, payload_length);
 
-        // The full target is handed over separately, so that one above 255 ends up in the
-        // extended header rather than truncated in the payload.
         mavlink_finalize_message_chan_target(
             &mavlink_message,
             mavlink_address.system_id,

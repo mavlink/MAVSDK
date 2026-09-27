@@ -64,8 +64,7 @@ void WinchImpl::process_status(const mavlink_message_t& message)
         mavlink_winch_status.status & MAV_WINCH_STATUS_FLAG::MAV_WINCH_STATUS_FULLY_RETRACTED;
     status_flags.moving =
         mavlink_winch_status.status & MAV_WINCH_STATUS_FLAG::MAV_WINCH_STATUS_MOVING;
-    // MAVLink renamed this bit from CLUTCH_ENGAGED without changing its meaning: the motor is
-    // moving freely. clutch_engaged keeps the old name.
+    // Renamed from CLUTCH_ENGAGED in MAVLink, same meaning.
     status_flags.clutch_engaged =
         mavlink_winch_status.status & MAV_WINCH_STATUS_FLAG::MAV_WINCH_STATUS_CLUTCH_DISENGAGED;
     status_flags.locked =

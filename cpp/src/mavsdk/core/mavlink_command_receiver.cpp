@@ -70,9 +70,7 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
                     [ack = maybe_command_ack.value(), origin_system_id = cmd.origin_system_id](
                         MavlinkAddress mavlink_address, uint8_t channel) {
                         mavlink_message_t response_message;
-                        // Packed rather than encoded because mavlink_command_ack_t's
-                        // target_system is only 8 bits wide, which would truncate the
-                        // origin of a command from a system above 255.
+                        // Packed, as the 8 bit target_system can't hold an origin above 255.
                         mavlink_msg_command_ack_pack_chan(
                             mavlink_address.system_id,
                             mavlink_address.component_id,
@@ -132,9 +130,7 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
                     [ack = maybe_command_ack.value(), origin_system_id = cmd.origin_system_id](
                         MavlinkAddress mavlink_address, uint8_t channel) {
                         mavlink_message_t response_message;
-                        // Packed rather than encoded because mavlink_command_ack_t's
-                        // target_system is only 8 bits wide, which would truncate the
-                        // origin of a command from a system above 255.
+                        // Packed, as the 8 bit target_system can't hold an origin above 255.
                         mavlink_msg_command_ack_pack_chan(
                             mavlink_address.system_id,
                             mavlink_address.component_id,
