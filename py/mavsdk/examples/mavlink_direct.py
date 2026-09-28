@@ -42,8 +42,7 @@ def on_position(message, user_data=None):
 def main():
     # Set up as companion computer
     configuration = Configuration.create_with_component_type(ComponentType.COMPANION_COMPUTER)
-    # Our own IDs, which we need to send messages. They have to be read before
-    # creating Mavsdk, as it takes ownership of the configuration.
+    # Our own IDs, which we need to send messages
     system_id = configuration.system_id
     component_id = configuration.component_id
     mavsdk = Mavsdk(configuration)

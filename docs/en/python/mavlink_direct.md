@@ -19,8 +19,7 @@ from mavsdk.asyncio.plugins.mavlink_direct import MavlinkDirectAsync
 
 async def main():
     configuration = Configuration.create_with_component_type(ComponentType.COMPANION_COMPUTER)
-    # Our own IDs, needed to send messages. Read them before creating Mavsdk,
-    # as it takes ownership of the configuration.
+    # Our own IDs, which we need to send messages
     system_id = configuration.system_id
     component_id = configuration.component_id
     mavsdk = Mavsdk(configuration)

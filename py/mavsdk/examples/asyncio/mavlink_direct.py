@@ -78,8 +78,7 @@ async def send_gas_sensor(mavlink_direct: MavlinkDirectAsync, system_id: int, co
 async def main():
     # Set up as companion computer
     configuration = Configuration.create_with_component_type(ComponentType.COMPANION_COMPUTER)
-    # Our own IDs, which we need to send messages. They have to be read before
-    # creating Mavsdk, as it takes ownership of the configuration.
+    # Our own IDs, which we need to send messages
     system_id = configuration.system_id
     component_id = configuration.component_id
     mavsdk = Mavsdk(configuration)
