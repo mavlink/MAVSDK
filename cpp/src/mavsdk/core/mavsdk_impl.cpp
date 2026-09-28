@@ -9,7 +9,6 @@
 #include <array>
 #include <chrono>
 #include <fstream>
-#include <limits>
 #include <mutex>
 #include <thread>
 #include "connection.hpp"
@@ -27,6 +26,7 @@
 #include "mavlink_address.hpp"
 #include "mavlink_channels.hpp"
 #include "mavlink_command_receiver.hpp"
+#include "mavlink_target.hpp"
 #include "callback_list.tpp"
 #include "hostname_to_ip.hpp"
 #include "libmav_receiver.hpp"
@@ -462,7 +462,7 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
     // See https://mavlink.io/en/guide/routing.html
 
     bool forward_heartbeats_enabled = true;
-    const uint8_t target_system_id = get_target_system_id(message);
+    const uint32_t target_system_id = get_target_system_id(message);
     const uint8_t target_component_id = get_target_component_id(message);
 
     // If it's a message only for us, we keep it, otherwise, we forward it.
@@ -710,9 +710,13 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                 }
             }
 
+            // Targets above 255 are in the header, the payload only has a sentinel.
             uint8_t target_sys = 0;
             uint8_t target_comp = 0;
-            if (libmav_msg_opt.value().get("target_system", target_sys) ==
+            if (libmav_msg_opt.value().header().hasWideTarget()) {
+                json_msg.target_system_id = libmav_msg_opt.value().extendedTargetSystemId();
+            } else if (
+                libmav_msg_opt.value().get("target_system", target_sys) ==
                 mav::MessageResult::Success) {
                 json_msg.target_system_id = target_sys;
             }
@@ -947,10 +951,13 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         json_message.system_id = message.sysid;
         json_message.component_id = message.compid;
 
-        // Extract target_system and target_component if present
+        // Targets above 255 are in the header, the payload only has a sentinel.
         uint8_t target_system_id = 0;
         uint8_t target_component_id = 0;
-        if (libmav_msg_opt.value().get("target_system", target_system_id) ==
+        if (libmav_msg_opt.value().header().hasWideTarget()) {
+            json_message.target_system_id = libmav_msg_opt.value().extendedTargetSystemId();
+        } else if (
+            libmav_msg_opt.value().get("target_system", target_system_id) ==
             mav::MessageResult::Success) {
             json_message.target_system_id = target_system_id;
         } else {
@@ -1000,7 +1007,7 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
 
     uint8_t successful_emissions = 0;
     for (auto& _connection : _connections) {
-        const uint8_t target_system_id = get_target_system_id(message);
+        const uint32_t target_system_id = get_target_system_id(message);
 
         if (target_system_id != 0 && !(*_connection.connection).has_system_id(target_system_id)) {
             continue;
@@ -1313,15 +1320,6 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 
 void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuration)
 {
-    // The API takes 32 bit system IDs, but they are not implemented yet. This is void, so
-    // there is no Result to report a bad system ID through.
-    if (new_configuration.get_system_id() > std::numeric_limits<uint8_t>::max()) {
-        LogErr("System ID {} is not supported yet", new_configuration.get_system_id());
-        fflush(stdout);
-        fflush(stderr);
-        std::abort();
-    }
-
     // Requires _configuration_update_mutex. Take _server_components_mutex only
     // for the default-component update below; do not hold it across later work.
     {
@@ -1339,7 +1337,7 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
         _configuration = new_configuration;
     }
     // We cache these values as atomic to avoid having to lock any mutex for them.
-    _our_system_id = static_cast<uint8_t>(new_configuration.get_system_id());
+    _our_system_id = new_configuration.get_system_id();
     _our_component_id = new_configuration.get_component_id();
     _our_mav_type = static_cast<uint8_t>(new_configuration.get_mav_type());
     _our_autopilot = new_configuration.get_autopilot();
@@ -1358,7 +1356,7 @@ void MavsdkImpl::set_configuration_locked(Mavsdk::Configuration new_configuratio
     }
 }
 
-uint8_t MavsdkImpl::get_own_system_id() const
+uint32_t MavsdkImpl::get_own_system_id() const
 {
     return _our_system_id;
 }
@@ -1434,7 +1432,7 @@ uint8_t MavsdkImpl::mav_type_for_component_type(ComponentType component_type)
     }
 }
 
-void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
+void MavsdkImpl::make_system_with_component(uint32_t system_id, uint8_t comp_id)
 {
     // Needs _systems_lock
 
@@ -2007,40 +2005,14 @@ void MavsdkImpl::report_connection_error(
         [this](const auto& func) { call_user_callback(func); });
 }
 
-uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
+uint32_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
 {
-    // Checks whether connection knows target system ID by extracting target system if set.
-    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
-
-    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM)) {
-        return 0;
-    }
-
-    // Don't look at the target system offset if it is outside the payload length.
-    // This can happen if the fields are trimmed.
-    if (meta->target_system_ofs >= message.len) {
-        return 0;
-    }
-
-    return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+    return target_system_id(message);
 }
 
 uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
 {
-    // Checks whether connection knows target system ID by extracting target system if set.
-    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
-
-    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT)) {
-        return 0;
-    }
-
-    // Don't look at the target component offset if it is outside the payload length.
-    // This can happen if the fields are trimmed.
-    if (meta->target_component_ofs >= message.len) {
-        return 0;
-    }
-
-    return (_MAV_PAYLOAD(&message))[meta->target_component_ofs];
+    return mavlink_msg_get_target_compid(&message, mavlink_get_msg_entry(message.msgid));
 }
 
 Sender& MavsdkImpl::sender()

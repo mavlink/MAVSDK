@@ -312,9 +312,9 @@ void ActionServerImpl::init()
                 command_ack.result = MAV_RESULT::MAV_RESULT_UNSUPPORTED;
                 command_ack.progress = std::numeric_limits<uint8_t>::max();
                 command_ack.result_param2 = 0;
-                command_ack.target_system = message.sysid;
+                command_ack.target_system = mavlink_msg_target_field(message.sysid);
                 command_ack.target_component = message.compid;
-                _server_component_impl->send_command_ack(command_ack);
+                _server_component_impl->send_command_ack(command_ack, message.sysid);
             }
 
             bool allow_mode = false;
@@ -364,9 +364,9 @@ void ActionServerImpl::init()
                 allow_mode ? MAV_RESULT::MAV_RESULT_ACCEPTED : MAV_RESULT_TEMPORARILY_REJECTED;
             command_ack.progress = std::numeric_limits<uint8_t>::max();
             command_ack.result_param2 = 0;
-            command_ack.target_system = message.sysid;
+            command_ack.target_system = mavlink_msg_target_field(message.sysid);
             command_ack.target_component = message.compid;
-            _server_component_impl->send_command_ack(command_ack);
+            _server_component_impl->send_command_ack(command_ack, message.sysid);
         },
         this);
 }

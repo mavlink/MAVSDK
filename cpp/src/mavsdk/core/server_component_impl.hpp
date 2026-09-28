@@ -54,7 +54,7 @@ public:
         bool queue_message(
             std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
             override;
-        [[nodiscard]] uint8_t get_own_system_id() const override;
+        [[nodiscard]] uint32_t get_own_system_id() const override;
         [[nodiscard]] uint8_t get_own_component_id() const override;
         [[nodiscard]] CompatibilityMode compatibility_mode() const override;
         [[nodiscard]] asio::io_context& io_context() override;
@@ -123,15 +123,21 @@ public:
     // that the callback itself takes.
     void unregister_timeout_handler_blocking(TimeoutHandler::Cookie cookie);
 
-    [[nodiscard]] uint8_t get_own_system_id() const;
+    [[nodiscard]] uint32_t get_own_system_id() const;
 
     void set_own_component_id(uint8_t own_component_id);
     [[nodiscard]] uint8_t get_own_component_id() const;
 
     Time& get_time();
 
+    // mavlink_command_ack_t with the full target system ID.
+    struct CommandAck : mavlink_command_ack_t {
+        uint32_t target_system_id{0};
+    };
+
     bool send_message(mavlink_message_t& message);
-    bool send_command_ack(mavlink_command_ack_t& command_ack);
+    bool send_command_ack(const CommandAck& command_ack);
+    bool send_command_ack(const mavlink_command_ack_t& command_ack, uint32_t target_system_id);
 
     bool queue_message(
         std::function<mavlink_message_t(MavlinkAddress mavlink_addres, uint8_t channel)> fun);
@@ -152,9 +158,9 @@ public:
     // callback itself takes.
     void remove_call_every_blocking(CallEveryHandler::Cookie cookie);
 
-    mavlink_command_ack_t
+    CommandAck
     make_command_ack_message(const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result);
-    mavlink_command_ack_t
+    CommandAck
     make_command_ack_message(const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result);
 
     void send_heartbeat();

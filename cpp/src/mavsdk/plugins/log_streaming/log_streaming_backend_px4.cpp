@@ -1,4 +1,5 @@
 #include "log_streaming_backend_px4.hpp"
+#include "mavlink_target.hpp"
 
 #include <limits>
 
@@ -118,11 +119,12 @@ void LogStreamingBackendPx4::process_logging_data(const mavlink_message_t& messa
     mavlink_logging_data_t logging_data;
     mavlink_msg_logging_data_decode(&message, &logging_data);
 
-    if (logging_data.target_system != _system_impl->get_own_system_id() ||
+    const uint32_t logging_data_target_system_id = target_system_id(message);
+    if (logging_data_target_system_id != _system_impl->get_own_system_id() ||
         logging_data.target_component != _system_impl->get_own_component_id()) {
         LogWarn(
             "Logging data with wrong target {}{}{} instead of {}{}{}",
-            logging_data.target_system,
+            logging_data_target_system_id,
             '/',
             logging_data.target_component,
             _system_impl->get_own_system_id(),
@@ -213,11 +215,12 @@ void LogStreamingBackendPx4::process_logging_data_acked(const mavlink_message_t&
     mavlink_logging_data_acked_t logging_data_acked;
     mavlink_msg_logging_data_acked_decode(&message, &logging_data_acked);
 
-    if (logging_data_acked.target_system != _system_impl->get_own_system_id() ||
+    const uint32_t logging_data_acked_target_system_id = target_system_id(message);
+    if (logging_data_acked_target_system_id != _system_impl->get_own_system_id() ||
         logging_data_acked.target_component != _system_impl->get_own_component_id()) {
         LogWarn(
             "Logging data acked with wrong target {}{}{} instead of {}{}{}",
-            logging_data_acked.target_system,
+            logging_data_acked_target_system_id,
             '/',
             logging_data_acked.target_component,
             _system_impl->get_own_system_id(),

@@ -109,19 +109,17 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     }
 
     // Set target system/component if specified.
-    // MAVLink system/component IDs are still 1 byte on the wire (sysid32 not yet supported),
-    // so reject anything that wouldn't round-trip instead of silently truncating it.
-    if (message.target_system_id > 255) {
-        LogErr("target_system_id {} out of range (max 255)", message.target_system_id);
-        return MavlinkDirect::Result::InvalidField;
-    }
+    // Component IDs are 8 bit on the wire.
     if (message.target_component_id > 255) {
         LogErr("target_component_id {} out of range (max 255)", message.target_component_id);
         return MavlinkDirect::Result::InvalidField;
     }
-    if (message.target_system_id != 0) {
-        // For messages that have target_system field, set it
-        libmav_message.set("target_system", static_cast<uint8_t>(message.target_system_id));
+    // Targets above 255 go in the extended header, the payload gets a sentinel.
+    uint32_t target_system_id = 0;
+    if (message.target_system_id != 0 &&
+        libmav_message.set("target_system", mavlink_msg_target_field(message.target_system_id)) ==
+            mav::MessageResult::Success) {
+        target_system_id = message.target_system_id;
     }
     if (message.target_component_id != 0) {
         // For messages that have target_component field, set it
@@ -144,14 +142,15 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
         mavlink_message.len = payload_length;
         memcpy(mavlink_message.payload64, payload_view.first, payload_length);
 
-        mavlink_finalize_message_chan(
+        mavlink_finalize_message_chan_target(
             &mavlink_message,
             mavlink_address.system_id,
             mavlink_address.component_id,
             channel,
             payload_length,
             libmav_message.type().maxPayloadSize(),
-            libmav_message.type().crcExtra());
+            libmav_message.type().crcExtra(),
+            target_system_id);
 
         return mavlink_message;
     });

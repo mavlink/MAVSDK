@@ -517,7 +517,8 @@ TEST(MavlinkDirect, LoadCustomXml)
     <version>3</version>
     <dialect>0</dialect>
     <messages>
-        <message id="420" name="CUSTOM_TEST_MESSAGE">
+        <!-- At the top of the 24 bit ID range, which no dialect uses. -->
+        <message id="16777200" name="CUSTOM_TEST_MESSAGE">
             <description>A test custom message for LoadCustomXml</description>
             <field type="uint32_t" name="test_value">Test value field</field>
             <field type="uint16_t" name="counter">Counter field</field>
@@ -667,7 +668,8 @@ TEST(MavlinkDirect, NanInfinityJsonHandling)
     <version>3</version>
     <dialect>0</dialect>
     <messages>
-        <message id="421" name="FLOAT_TEST_MESSAGE">
+        <!-- At the top of the 24 bit ID range, which no dialect uses. -->
+        <message id="16777201" name="FLOAT_TEST_MESSAGE">
             <description>A test message for NaN/infinity handling in JSON</description>
             <field type="float" name="normal_float">Normal float field</field>
             <field type="float" name="nan_float">NaN float field</field>
@@ -1326,11 +1328,11 @@ TEST(MavlinkDirect, ParamExtValueBinaryRoundtrip)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-// MAVLink system/component IDs are still 1 byte on the wire (sysid32 isn't supported yet),
-// but MavlinkMessage.target_system_id/target_component_id are uint32 in the API. Values that
-// don't fit in a byte used to be silently truncated (e.g. 256 -> 0); they must be rejected
-// with Result::InvalidField instead, on both the client and server send paths.
-TEST(MavlinkDirect, TargetIdsOutOfRangeRejected)
+// MAVLink component IDs are 1 byte on the wire, but MavlinkMessage.target_component_id is
+// uint32 in the API. Values that don't fit in a byte used to be silently truncated
+// (e.g. 256 -> 0); they must be rejected with Result::InvalidField instead, on both the
+// client and server send paths.
+TEST(MavlinkDirect, TargetComponentIdOutOfRangeRejected)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -1354,10 +1356,6 @@ TEST(MavlinkDirect, TargetIdsOutOfRangeRejected)
     server_message.message_name = "HEARTBEAT";
     server_message.fields_json = "{}";
 
-    server_message.target_system_id = 256;
-    EXPECT_EQ(server.send_message(server_message), MavlinkDirectServer::Result::InvalidField);
-    server_message.target_system_id = 0;
-
     server_message.target_component_id = 256;
     EXPECT_EQ(server.send_message(server_message), MavlinkDirectServer::Result::InvalidField);
     server_message.target_component_id = 0;
@@ -1369,10 +1367,6 @@ TEST(MavlinkDirect, TargetIdsOutOfRangeRejected)
     MavlinkDirect::MavlinkMessage client_message;
     client_message.message_name = "HEARTBEAT";
     client_message.fields_json = "{}";
-
-    client_message.target_system_id = 4294967295; // uint32 max
-    EXPECT_EQ(client.send_message(client_message), MavlinkDirect::Result::InvalidField);
-    client_message.target_system_id = 0;
 
     client_message.target_component_id = 300;
     EXPECT_EQ(client.send_message(client_message), MavlinkDirect::Result::InvalidField);

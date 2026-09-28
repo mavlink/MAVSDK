@@ -150,7 +150,8 @@ TEST(MavlinkDirect, ForwardingUnknownMessage)
     <version>3</version>
     <dialect>0</dialect>
     <messages>
-        <message id="421" name="CUSTOM_FORWARD_TEST">
+        <!-- At the top of the 24 bit ID range, which no dialect uses. -->
+        <message id="16777202" name="CUSTOM_FORWARD_TEST">
             <description>Test message for forwarding unknown messages</description>
             <field type="uint32_t" name="test_id">Unique test identifier</field>
             <field type="uint16_t" name="sequence">Sequence number</field>

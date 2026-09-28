@@ -28,7 +28,7 @@ std::weak_ptr<MavlinkMissionTransferServer::WorkItem>
 MavlinkMissionTransferServer::receive_incoming_items_async(
     uint8_t type,
     uint32_t mission_count,
-    uint8_t target_system,
+    uint32_t target_system,
     uint8_t target_component,
     ResultAndItemsCallback callback)
 {
@@ -64,7 +64,7 @@ std::weak_ptr<MavlinkMissionTransferServer::WorkItem>
 MavlinkMissionTransferServer::send_outgoing_items_async(
     uint8_t type,
     const std::vector<ItemInt>& items,
-    uint8_t target_system,
+    uint32_t target_system,
     uint8_t target_component,
     ResultCallback callback)
 {
@@ -196,7 +196,7 @@ MavlinkMissionTransferServer::ReceiveIncomingMission::ReceiveIncomingMission(
     double timeout_s,
     ResultAndItemsCallback callback,
     uint32_t mission_count,
-    uint8_t target_system_id,
+    uint32_t target_system_id,
     uint8_t target_component_id,
     bool debugging) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
@@ -395,7 +395,7 @@ MavlinkMissionTransferServer::SendOutgoingMission::SendOutgoingMission(
     const std::vector<ItemInt>& items,
     double timeout_s,
     ResultCallback callback,
-    uint8_t target_system_id,
+    uint32_t target_system_id,
     uint8_t target_component_id,
     bool debugging) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),

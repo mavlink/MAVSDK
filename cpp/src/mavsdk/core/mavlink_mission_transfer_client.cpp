@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "mavlink_mission_transfer_client.hpp"
+#include "mavlink_target.hpp"
 #include "log.hpp"
 #include "unused.hpp"
 
@@ -29,7 +30,7 @@ MavlinkMissionTransferClient::MavlinkMissionTransferClient(
 std::weak_ptr<MavlinkMissionTransferClient::WorkItem>
 MavlinkMissionTransferClient::upload_items_async(
     uint8_t type,
-    uint8_t target_system_id,
+    uint32_t target_system_id,
     const std::vector<ItemInt>& items,
     const ResultCallback& callback,
     const ProgressCallback& progress_callback)
@@ -74,7 +75,7 @@ MavlinkMissionTransferClient::upload_items_async(
 std::weak_ptr<MavlinkMissionTransferClient::WorkItem>
 MavlinkMissionTransferClient::download_items_async(
     uint8_t type,
-    uint8_t target_system_id,
+    uint32_t target_system_id,
     ResultAndItemsCallback callback,
     ProgressCallback progress_callback)
 {
@@ -114,7 +115,7 @@ MavlinkMissionTransferClient::download_items_async(
 }
 
 void MavlinkMissionTransferClient::clear_items_async(
-    uint8_t type, uint8_t target_system_id, ResultCallback callback)
+    uint8_t type, uint32_t target_system_id, ResultCallback callback)
 {
     auto ptr = std::make_shared<ClearWorkItem>(
         _sender,
@@ -141,7 +142,7 @@ void MavlinkMissionTransferClient::clear_items_async(
 }
 
 void MavlinkMissionTransferClient::set_current_item_async(
-    int current, uint8_t target_system_id, ResultCallback callback)
+    int current, uint32_t target_system_id, ResultCallback callback)
 {
     auto ptr = std::make_shared<SetCurrentWorkItem>(
         _sender,
@@ -269,7 +270,7 @@ MavlinkMissionTransferClient::UploadWorkItem::UploadWorkItem(
     ResultCallback callback,
     ProgressCallback progress_callback,
     bool debugging,
-    uint8_t target_system_id,
+    uint32_t target_system_id,
     Autopilot autopilot) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _items(items),
@@ -423,7 +424,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request(
             request_message.sysid,
             request_message.compid,
             &request_int_message,
-            request.target_system,
+            target_system_id(request_message),
             request.target_component,
             request.seq,
             request.mission_type);
@@ -665,7 +666,7 @@ MavlinkMissionTransferClient::DownloadWorkItem::DownloadWorkItem(
     ResultAndItemsCallback callback,
     ProgressCallback progress_callback,
     bool debugging,
-    uint8_t target_system_id) :
+    uint32_t target_system_id) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _callback(callback),
     _progress_callback(progress_callback),
@@ -912,7 +913,7 @@ MavlinkMissionTransferClient::ClearWorkItem::ClearWorkItem(
     double timeout_s,
     ResultCallback callback,
     bool debugging,
-    uint8_t target_system_id) :
+    uint32_t target_system_id) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _callback(callback),
     _target_system_id(target_system_id)
@@ -1059,7 +1060,7 @@ MavlinkMissionTransferClient::SetCurrentWorkItem::SetCurrentWorkItem(
     double timeout_s,
     ResultCallback callback,
     bool debugging,
-    uint8_t target_system_id) :
+    uint32_t target_system_id) :
     WorkItem(
         sender, message_handler, timeout_handler, MAV_MISSION_TYPE_MISSION, timeout_s, debugging),
     _current(current),
