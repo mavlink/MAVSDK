@@ -116,7 +116,9 @@ The sections below go through this in more detail. The complete examples are in 
 |---|---|
 | [mavlink_direct](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct) | Subscribing to a message (GPS_RAW_INT), and stats about all arriving messages |
 | [mavlink_direct_sender](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender) | Sending a message (OBSTACLE_DISTANCE) |
-| [mavlink_direct_sender_custom](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom) | Sending a message that MAVSDK does not know yet, by loading its XML definition |
+| [mavlink_direct_sender_custom](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom) | Sending a custom message (GAS_SENSOR), by loading its XML definition |
+
+For Python, see [MavlinkDirect in Python](../../python/mavlink_direct.md).
 
 ## Runtime vs compile-time considerations
 
@@ -140,19 +142,19 @@ By default all messages from the [common.xml](https://mavlink.io/en/messages/com
 
 MavlinkDirect allows to load your own/custom MAVLink messages or other dialects.
 
-In the example below we load in the AIRSPEED message as it is drafted in development.xml but not yet moved to common.xml, and hence not available by default in MAVSDK yet:
+In the example below we define and load our own message for a gas sensor. The message ID 44000 is not used by any of the public MAVLink dialects:
 
 ```cpp
     std::string custom_xml = R"(
 <mavlink>
     <messages>
-        <message id="295" name="AIRSPEED">
-            <description>Airspeed sensor data</description>
-            <field type="uint8_t" name="id">Sensor ID</field>
-            <field type="float" name="airspeed">Calibrated airspeed in m/s</field>
-            <field type="int16_t" name="temperature">Temperature in centidegrees</field>
-            <field type="float" name="raw_press">Raw differential pressure</field>
-            <field type="uint8_t" name="flags">Airspeed sensor flags</field>
+        <message id="44000" name="GAS_SENSOR">
+            <description>Gas concentration measured by a sensor.</description>
+            <field type="uint64_t" name="time_usec" units="us">Timestamp (time since system boot).</field>
+            <field type="uint8_t" name="id" instance="true">Sensor ID.</field>
+            <field type="float" name="co2" units="ppm">CO2 concentration.</field>
+            <field type="float" name="ch4" units="ppm">Methane concentration.</field>
+            <field type="int16_t" name="temperature" units="cdegC">Sensor temperature.</field>
         </message>
     </messages>
 </mavlink>)";
@@ -164,6 +166,26 @@ In the example below we load in the AIRSPEED message as it is drafted in develop
         return 1;
     }
 ```
+
+Once loaded, the message can be sent and received by name like any other, e.g.:
+
+```cpp
+    MavlinkDirect::MavlinkMessage gas_sensor_message{};
+    gas_sensor_message.message_name = "GAS_SENSOR";
+    gas_sensor_message.system_id = config.get_system_id();
+    gas_sensor_message.component_id = config.get_component_id();
+    gas_sensor_message.target_system_id = 0; // Does not apply for this message
+    gas_sensor_message.target_component_id = 0; // Does not apply for this message
+    gas_sensor_message.fields_json =
+        R"({"time_usec": 1000000, "id": 0, "co2": 420.0, "ch4": 1.9, "temperature": 2150})";
+
+    auto result = mavlink_direct.send_message(gas_sensor_message);
+```
+
+::: info
+The receiving side needs to know about the message as well. If it uses MAVSDK, it has to load the same XML.
+Forwarding MAVSDK instances in between do not need to know about it.
+:::
 
 Check out the [full example on GitHub](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom)
 

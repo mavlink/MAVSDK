@@ -1,6 +1,6 @@
 //
-// Example to use MavlinkDirect to send AIRSPEED message which needs to be
-// loaded as custom because it is only in development.xml
+// Example to use MavlinkDirect to send a custom message (GAS_SENSOR) which
+// is not part of MAVLink, by loading its XML definition at runtime
 //
 
 #include <mavsdk/mavsdk.hpp>
@@ -53,21 +53,19 @@ int main(int argc, char** argv)
     // Create MavlinkDirect plugin instance
     auto mavlink_direct = MavlinkDirect{system.value()};
 
-    // Define custom XML with AIRSPEED message (ID 295)
-    // NOTE: We load this as custom XML because the AIRSPEED message is currently
-    // only available in development.xml but not yet in common.xml, so not available
-    // in MAVSDK by default yet.
-
+    // Define our own message for a gas sensor. It is not part of any MAVLink dialect, so
+    // MAVSDK does not know about it until we load its definition.
+    // Note that the receiving side needs to know the definition as well to make sense of it.
     std::string custom_xml = R"(
 <mavlink>
     <messages>
-        <message id="295" name="AIRSPEED">
-            <description>Airspeed sensor data</description>
-            <field type="uint8_t" name="id">Sensor ID</field>
-            <field type="float" name="airspeed">Calibrated airspeed in m/s</field>
-            <field type="int16_t" name="temperature">Temperature in centidegrees</field>
-            <field type="float" name="raw_press">Raw differential pressure</field>
-            <field type="uint8_t" name="flags">Airspeed sensor flags</field>
+        <message id="44000" name="GAS_SENSOR">
+            <description>Gas concentration measured by a sensor.</description>
+            <field type="uint64_t" name="time_usec" units="us">Timestamp (time since system boot).</field>
+            <field type="uint8_t" name="id" instance="true">Sensor ID.</field>
+            <field type="float" name="co2" units="ppm">CO2 concentration.</field>
+            <field type="float" name="ch4" units="ppm">Methane concentration.</field>
+            <field type="int16_t" name="temperature" units="cdegC">Sensor temperature.</field>
         </message>
     </messages>
 </mavlink>)";
@@ -81,47 +79,44 @@ int main(int argc, char** argv)
 
     std::cout << "Custom XML loaded successfully" << std::endl;
 
-    // Create AIRSPEED message
-    MavlinkDirect::MavlinkMessage airspeed_message{};
-    airspeed_message.message_name = "AIRSPEED";
-    airspeed_message.system_id = config.get_system_id(); // Your component's system ID
-    airspeed_message.component_id = config.get_component_id(); // Your component's component ID
-    airspeed_message.target_system_id = 0; // Does not apply for this message
-    airspeed_message.target_component_id = 0; // Does not apply for this message
+    // Create GAS_SENSOR message
+    MavlinkDirect::MavlinkMessage gas_sensor_message{};
+    gas_sensor_message.message_name = "GAS_SENSOR";
+    gas_sensor_message.system_id = config.get_system_id(); // Your component's system ID
+    gas_sensor_message.component_id = config.get_component_id(); // Your component's component ID
+    gas_sensor_message.target_system_id = 0; // Does not apply for this message
+    gas_sensor_message.target_component_id = 0; // Does not apply for this message
 
-    int counter = 0;
-    while (counter < 20) {
-        // Hard-coded values with variation
-        float airspeed = 25.0f + (counter * 0.5f); // Airspeed from 25.0 to 34.5 m/s
-        int16_t temperature = 2000 + (counter * 10); // Temperature from 20.00°C to 21.90°C
-        float raw_press = 100.0f + (counter * 2.0f); // Raw pressure from 100.0 to 138.0
+    const auto start_time = std::chrono::steady_clock::now();
 
-        airspeed_message.fields_json = R"({
-            "id": 1,
-            "airspeed": )" + std::to_string(airspeed) +
-                                       R"(,
-            "temperature": )" + std::to_string(temperature) +
-                                       R"(,
-            "raw_press": )" + std::to_string(raw_press) +
-                                       R"(,
-            "flags": 3
-        })";
+    for (int counter = 0; counter < 20; ++counter) {
+        // Made-up values that change a bit over time
+        const auto time_usec = std::chrono::duration_cast<std::chrono::microseconds>(
+                                   std::chrono::steady_clock::now() - start_time)
+                                   .count();
+        const float co2 = 420.0f + counter * 5.0f;
+        const float ch4 = 1.9f + counter * 0.1f;
+        const int16_t temperature = 2150 + counter * 10; // 21.5 degC and rising
 
-        // Send the message
-        auto result = mavlink_direct.send_message(airspeed_message);
+        // In a real application you would probably use a JSON library such as
+        // nlohmann/json to assemble this.
+        gas_sensor_message.fields_json = "{\"time_usec\": " + std::to_string(time_usec) +
+                                         ", \"id\": 0" + ", \"co2\": " + std::to_string(co2) +
+                                         ", \"ch4\": " + std::to_string(ch4) +
+                                         ", \"temperature\": " + std::to_string(temperature) + "}";
+
+        auto result = mavlink_direct.send_message(gas_sensor_message);
         if (result == MavlinkDirect::Result::Success) {
-            std::cout << "AIRSPEED message " << (counter + 1) << "/20 sent successfully - "
-                      << "airspeed: " << airspeed << " m/s, "
-                      << "temp: " << (temperature / 100.0f) << "°C" << std::endl;
+            std::cout << "GAS_SENSOR message " << (counter + 1) << "/20 sent: " << co2
+                      << " ppm CO2, " << ch4 << " ppm CH4" << std::endl;
         } else {
-            std::cerr << "AIRSPEED message could not be sent: " << result << std::endl;
+            std::cerr << "GAS_SENSOR message could not be sent: " << result << std::endl;
         }
 
-        counter++;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    std::cout << "Sent all 20 AIRSPEED messages. Exiting." << std::endl;
+    std::cout << "Sent all 20 GAS_SENSOR messages. Exiting." << std::endl;
 
     return 0;
 }

@@ -164,7 +164,7 @@ For how it is used in practice, see the examples:
 |---|---|
 | [mavlink_direct](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct) | Subscribing to a message (GPS_RAW_INT), and stats about all arriving messages |
 | [mavlink_direct_sender](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender) | Sending a message (OBSTACLE_DISTANCE) |
-| [mavlink_direct_sender_custom](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom) | Sending a message that MAVSDK does not know yet, by loading its XML definition |
+| [mavlink_direct_sender_custom](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom) | Sending a custom message (GAS_SENSOR), by loading its XML definition |
 | [sniffer](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/sniffer) | Intercepting all traffic with `subscribe_incoming_messages_json()` |
 
 ### MAV_TYPE is an enum
