@@ -77,6 +77,11 @@ install(TARGETS cmavsdk
     ARCHIVE DESTINATION lib
 )
 
+# The DLL itself carries no debug info, so ship the PDB next to it.
+if(MSVC AND BUILD_SHARED_LIBS)
+    install(FILES $<TARGET_PDB_FILE:cmavsdk> DESTINATION bin OPTIONAL)
+endif()
+
 install(
     DIRECTORY cmavsdk/
     DESTINATION include/cmavsdk

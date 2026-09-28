@@ -903,16 +903,36 @@ jobs:
           name: libcmavsdk_${{ matrix.arch_name }}
           path: 'build/manylinux/c/install/lib/libcmavsdk.so'
           retention-days: 2
-      - name: install stripped libcmavsdk for the wheel
+      - name: split the debug info out of libcmavsdk
         working-directory: .
-        run: ./dockcross-${{ matrix.arch_name }} cmake --install build/manylinux/c --prefix build/manylinux/c/install-stripped --strip
+        run: |
+          ./dockcross-${{ matrix.arch_name }} bash -c '
+          set -e
+          # These containers cross-compile, so the host binutils cannot always
+          # read what was built. CMake already found the matching ones.
+          objcopy=$(grep ^CMAKE_OBJCOPY: build/manylinux/c/CMakeCache.txt | cut -d= -f2)
+          readelf=$(grep ^CMAKE_READELF: build/manylinux/c/CMakeCache.txt | cut -d= -f2)
+          lib=build/manylinux/c/install/lib/libcmavsdk.so
+          mkdir -p build/manylinux/wheel-lib
+          $objcopy --only-keep-debug $lib build/manylinux/libcmavsdk.so.debug
+          # --strip-debug and not --strip-all: keeping .symtab costs 3 MB in the
+          # wheel and is what puts function names in a backtrace.
+          $objcopy --strip-debug $lib build/manylinux/wheel-lib/libcmavsdk.so
+          # Lay the debug file out the way gdb looks it up by build ID, so that
+          # unpacking the archive somewhere and pointing debug-file-directory at
+          # it is all a user has to do.
+          build_id=$($readelf -n $lib | sed -n "s/.*Build ID: //p")
+          mkdir -p build/manylinux/debug/.build-id/${build_id:0:2}
+          mv build/manylinux/libcmavsdk.so.debug build/manylinux/debug/.build-id/${build_id:0:2}/${build_id:2}.debug
+          tar -czf mavsdk-debug-symbols-${{ matrix.auditwheel_plat }}.tar.gz -C build/manylinux/debug .build-id
+          '
       - name: build mavsdk wheel
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} bash -c "
           sudo ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt auditwheel &&
           sudo ${{ matrix.python_exec_auditwheel }} -m pip install auditwheel &&
           mkdir -p /work/py/mavsdk/mavsdk/lib &&
-          cp /work/build/manylinux/c/install-stripped/lib/libcmavsdk.so /work/py/mavsdk/mavsdk/lib/libcmavsdk.so &&
+          cp /work/build/manylinux/wheel-lib/libcmavsdk.so /work/py/mavsdk/mavsdk/lib/libcmavsdk.so &&
           cd /work/py/mavsdk &&
           ${{ matrix.python_exec }} setup.py bdist_wheel ${{ matrix.python_plat_name_arg }} &&
           sudo ${{ matrix.python_exec_auditwheel }} -m auditwheel repair --plat ${{ matrix.auditwheel_plat }} dist/mavsdk-*-linux_*.whl"
@@ -929,6 +949,21 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
           file: py/mavsdk/wheelhouse/*.whl
+          tag: ${{ github.ref }}
+          overwrite: true
+      - name: upload debug symbols artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: mavsdk_debug_symbols_${{ matrix.arch_name }}
+          path: mavsdk-debug-symbols-${{ matrix.auditwheel_plat }}.tar.gz
+          retention-days: 2
+      - name: Publish debug symbols to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: mavsdk-debug-symbols-${{ matrix.auditwheel_plat }}.tar.gz
+          asset_name: mavsdk-debug-symbols-${{ matrix.auditwheel_plat }}.tar.gz
           tag: ${{ github.ref }}
           overwrite: true
 
