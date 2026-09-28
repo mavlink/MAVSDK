@@ -204,9 +204,11 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
         _remotes.end());
 
     if (_remotes.empty()) {
-        result.first = false;
-        result.second = "no remotes";
-        return result;
+        // Nobody to send to yet (udpin before first contact) is not a failure.
+        if (!_had_remote) {
+            return {true, ""};
+        }
+        return {false, "no remotes"};
     }
 
     // Send the raw bytes to all the remotes synchronously.
@@ -285,6 +287,7 @@ void UdpConnection::add_remote_impl(
                 static_cast<int>(remote_sysid));
         }
         _remotes.push_back(new_remote);
+        _had_remote = true;
     } else {
         existing_remote->last_activity = std::chrono::steady_clock::now();
     }
