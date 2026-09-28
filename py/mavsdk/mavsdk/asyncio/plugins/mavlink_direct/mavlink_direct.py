@@ -47,7 +47,9 @@ class MavlinkDirectAsync:
             None, lambda: self._plugin.send_message(message)
         )
 
-    async def subscribe_message(self) -> AsyncGenerator[MavlinkMessage, None]:
+    async def subscribe_message(
+        self, message_name
+    ) -> AsyncGenerator[MavlinkMessage, None]:
         """
                Subscribe to incoming MAVLink messages.
 
@@ -66,7 +68,7 @@ class MavlinkDirectAsync:
         def callback(data, _user_data):
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
-        handle = self._plugin.subscribe_message(callback)
+        handle = self._plugin.subscribe_message(message_name, callback)
         self._subscription_handles[id(queue)] = handle
         try:
             while True:

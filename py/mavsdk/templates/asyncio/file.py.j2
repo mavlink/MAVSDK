@@ -37,7 +37,7 @@ class {{ plugin_name.upper_camel_case }}Async:
     {% for method in methods %}
     {% if method.is_async and method.is_stream and not method.is_finite %}
     {% set yield_type %}{% if not method.return_type %}bool{% elif method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}{{ method.return_type.inner_name.upper_camel_case }}{% endif %}{% endset %}
-    async def subscribe_{{ method.name.lower_snake_case }}(self) -> AsyncGenerator[{% if method.has_result %}Tuple[{{ plugin_name.upper_camel_case }}Result, {{ yield_type }}]{% else %}{{ yield_type }}{% endif %}, None]:
+    async def subscribe_{{ method.name.lower_snake_case }}(self{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %}) -> AsyncGenerator[{% if method.has_result %}Tuple[{{ plugin_name.upper_camel_case }}Result, {{ yield_type }}]{% else %}{{ yield_type }}{% endif %}, None]:
         """
         {{ method.method_description }}
 
@@ -62,7 +62,7 @@ class {{ plugin_name.upper_camel_case }}Async:
         def callback({% if method.has_result %}result, {% endif %}data, _user_data):
             loop.call_soon_threadsafe(queue.put_nowait, {% if method.has_result %}(result, data){% else %}data{% endif %})
 
-        handle = self._plugin.subscribe_{{ method.name.lower_snake_case }}(callback)
+        handle = self._plugin.subscribe_{{ method.name.lower_snake_case }}({% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}callback)
         self._subscription_handles[id(queue)] = handle
         try:
             while True:

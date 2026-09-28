@@ -159,7 +159,7 @@ action.land()
 
 ## Examples
 
-There are [examples for the asyncio API](https://github.com/mavlink/MAVSDK/tree/main/py/mavsdk/examples/asyncio) and [for the synchronous API](https://github.com/mavlink/MAVSDK/tree/main/py/mavsdk/examples) in the repository, covering telemetry, missions, parameters, calibration, and cameras.
+There are [examples for the asyncio API](https://github.com/mavlink/MAVSDK/tree/main/py/mavsdk/examples/asyncio) and [for the synchronous API](https://github.com/mavlink/MAVSDK/tree/main/py/mavsdk/examples) in the repository, covering telemetry, missions, parameters, calibration, cameras, and sending and receiving any MAVLink message using [MavlinkDirect](mavlink_direct.md).
 
 ## Next Steps
 
