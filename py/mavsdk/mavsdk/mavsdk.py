@@ -105,7 +105,6 @@ class Mavsdk:
         # lock two of them can both find a live handle and release it twice, which
         # corrupts the heap.
         self._destroy_lock = threading.Lock()
-        configuration._handle = None
 
         atexit.register(self.destroy)
 
