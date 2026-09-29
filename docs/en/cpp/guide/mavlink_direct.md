@@ -203,7 +203,7 @@ auto config = Mavsdk::Configuration{ComponentType::CompanionComputer};
 // Create MavlinkDirect plugin instance
 auto mavlink_direct = MavlinkDirect{system.value()};
 
-// Create a HEARTBEAT message
+// Create an OBSTACLE_DISTANCE message
 MavlinkDirect::MavlinkMessage obstacle_distance{};
 obstacle_distance.message_name = "OBSTACLE_DISTANCE";
 obstacle_distance.system_id = config.get_system_id(); // Your component's system ID
@@ -223,17 +223,17 @@ obstacle_distance.fields_json = R"({
     "sensor_type": 3,
     "distances": [
         2000,   2000,  2000,  1000,   800,   700,  2000,  2000,
-        65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536,
-        65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536,
-        65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536,
-        65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536,
-        65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536,
-        65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536,
-        65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536,
-        65536, 65536, 65536, 65536, 65536, 65536, 65536, 65536
+        65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535,
+        65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535,
+        65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535,
+        65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535,
+        65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535,
+        65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535,
+        65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535,
+        65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535
     ],
     "increment": 0,
-    "min_distance": 000,
+    "min_distance": 20,
     "max_distance": 2000,
     "increment_f": 10.0,
     "angle_offset": -40.0,
