@@ -3,9 +3,14 @@
 #include <algorithm>
 #include <atomic>
 #include <cassert>
+#include <condition_variable>
 #include <cstddef>
 #include <functional>
 #include <future>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <thread>
 #include <utility>
 #include <vector>
 #include <asio/io_context.hpp>
@@ -31,6 +36,22 @@ namespace mavsdk {
 //   blocking round-trip onto the io thread would deadlock if the io thread needed that same
 //   lock). The mutation lands on the next io turn.
 //
+// Unsubscribing cannot rely on the list alone. queue() hands a *copy* of the callback to a
+// queue that another thread drains, so removing the list entry says nothing about copies
+// already handed over. Each subscription carries a small shared state instead, which those
+// copies hold on to:
+//
+// - unsubscribe() marks it dead synchronously, before returning. Every dispatch checks it
+//   under the state's own lock, so once unsubscribe() returns the callback will not be
+//   invoked again -- whether or not the list entry has been erased yet, and whether the
+//   invocation was going to come from exec() or from a queue.
+// - unsubscribe_blocking() additionally waits for an invocation that is already running.
+//   Together that is "neither running nor going to run", which is what a caller about to
+//   release whatever the callback captured needs.
+//
+// The state outlives the list, being shared with the queued copies, so destroying the list
+// gives the same guarantee as unsubscribing everything in it.
+//
 // The list is owned by a plugin, which the user may destroy while the io thread is still
 // running. The posted mutations capture `this`, so the destructor waits (once) for the
 // io_context to flush any that are still queued before the list is torn down.
@@ -38,7 +59,13 @@ template<typename... Args> class CallbackListImpl {
 public:
     explicit CallbackListImpl(asio::io_context& io_context) : _io_context(io_context) {}
 
-    ~CallbackListImpl() { drain(); }
+    ~CallbackListImpl()
+    {
+        // Before draining, so that a copy still sitting in someone's queue does nothing when it
+        // is eventually run.
+        mark_all_dead();
+        drain();
+    }
 
     Handle<Args...> subscribe(const std::function<void(Args...)>& callback)
     {
@@ -47,8 +74,16 @@ public:
         auto handle = _handle_factory.create();
 
         if (callback != nullptr) {
-            post_mutation([this, handle, callback]() {
-                _list.emplace_back(handle, callback);
+            // Tracked here as well as in _list, because unsubscribe() has to reach it from
+            // whatever thread it is called on, possibly before the insertion below has run.
+            auto subscription = std::make_shared<Subscription>();
+            {
+                std::lock_guard<std::mutex> lock(_subscriptions_mutex);
+                _subscriptions.insert({handle, subscription});
+            }
+
+            post_mutation([this, handle, callback, subscription]() {
+                _list.push_back(Entry{handle, callback, subscription});
                 update_size();
             });
         } else {
@@ -72,6 +107,8 @@ public:
         }
     }
 
+    // Once this returns the callback will not be invoked again. One that is running right now
+    // keeps running; use unsubscribe_blocking() when that matters.
     void unsubscribe(Handle<Args...> handle)
     {
         // Ignore null handle.
@@ -80,21 +117,18 @@ public:
             return;
         }
 
-        post_mutation([this, handle]() {
-            _list.erase(
-                std::remove_if(
-                    _list.begin(), _list.end(), [&](auto& pair) { return pair.first == handle; }),
-                _list.end());
-            update_size();
-        });
+        if (take_subscription(handle) == nullptr) {
+            // Not ours, or already unsubscribed.
+            return;
+        }
+
+        post_mutation(make_erase(handle));
     }
 
-    // Blocking variant of unsubscribe(): does not return until the io thread has actually
-    // removed the callback. Because the io thread runs handlers in order, once this returns
-    // any dispatch that was already invoking the callback has finished and no future dispatch
-    // can invoke it -- so it is safe to destroy the object that owns the callback right after.
-    // Only call this off the io thread and while holding no lock the io thread needs (the
-    // plugin deinit path satisfies both); the guards below otherwise avoid a self-deadlock.
+    // Blocking variant of unsubscribe(): also waits for an invocation that is already running,
+    // so once it returns the callback is neither running nor going to run and whatever it
+    // captured can be destroyed. Do not call it while holding a lock the callback itself takes.
+    // Calling it from inside the callback is fine, it then skips the wait.
     void unsubscribe_blocking(Handle<Args...> handle)
     {
         // Ignore null handle.
@@ -103,13 +137,15 @@ public:
             return;
         }
 
-        auto erase = [this, handle]() {
-            _list.erase(
-                std::remove_if(
-                    _list.begin(), _list.end(), [&](auto& pair) { return pair.first == handle; }),
-                _list.end());
-            update_size();
-        };
+        auto subscription = take_subscription(handle);
+        if (subscription == nullptr) {
+            // Not ours, or already unsubscribed.
+            return;
+        }
+
+        wait_until_idle(*subscription);
+
+        auto erase = make_erase(handle);
 
         // The io thread is gone, so nothing can be iterating the list.
         if (_io_context.stopped()) {
@@ -117,9 +153,9 @@ public:
             return;
         }
 
-        // Already on the io thread means we are inside a callback, so exec() is iterating
-        // _list right now. Erasing would leave it calling a moved-from std::function, and
-        // waiting would be waiting for ourselves, so defer like unsubscribe() does.
+        // Already on the io thread means we are inside a callback, so exec() is iterating _list
+        // right now. Erasing would leave it calling a moved-from std::function, and waiting
+        // would be waiting for ourselves, so defer like unsubscribe() does.
         if (on_io_thread()) {
             post_mutation(erase);
             return;
@@ -136,8 +172,11 @@ public:
     void exec(Args... args)
     {
         read_on_io([&]() {
-            for (const auto& pair : _list) {
-                pair.second(args...);
+            for (const auto& entry : _list) {
+                Invocation invocation{*entry.subscription};
+                if (invocation.entered()) {
+                    entry.callback(args...);
+                }
             }
 
             for (auto it = _cond_cb_list.begin(); it != _cond_cb_list.end();) {
@@ -160,22 +199,18 @@ public:
         // than blocking on the io thread) means it is safe to call while holding a lock that the
         // io thread also needs -- a blocking round-trip there would deadlock.
         if (_io_context.stopped() || on_io_thread()) {
-            for (const auto& pair : _list) {
-                queue_func([callback = pair.second, args...]() { callback(args...); });
-            }
+            hand_to(queue_func, args...);
             return;
         }
-        asio::post(_io_context, [this, args..., queue_func]() {
-            for (const auto& pair : _list) {
-                queue_func([callback = pair.second, args...]() { callback(args...); });
-            }
-        });
+        asio::post(_io_context, [this, args..., queue_func]() { hand_to(queue_func, args...); });
     }
 
     bool empty() { return _size.load(std::memory_order_acquire) == 0; }
 
     void clear()
     {
+        mark_all_dead();
+
         post_mutation([this]() {
             _list.clear();
             _cond_cb_list.clear();
@@ -184,6 +219,144 @@ public:
     }
 
 private:
+    // Shared between the list entry and every copy of the callback handed to a queue, so that
+    // unsubscribing reaches all of them and keeps working after the list itself is gone.
+    struct Subscription {
+        std::mutex mutex;
+        std::condition_variable idle;
+        bool alive{true};
+        unsigned in_flight{0};
+    };
+
+    struct Entry {
+        Handle<Args...> handle;
+        std::function<void(Args...)> callback;
+        std::shared_ptr<Subscription> subscription;
+    };
+
+    // Subscriptions whose callback this thread is currently inside. Lets unsubscribe_blocking()
+    // called from within a callback skip the wait instead of waiting for itself.
+    static std::vector<const Subscription*>& active_on_this_thread()
+    {
+        static thread_local std::vector<const Subscription*> active;
+        return active;
+    }
+
+    // Claims the right to invoke a callback, or reports that the subscription is gone. The check
+    // and the count happen under one lock, so a subscription cannot be marked dead in between
+    // and have the invocation go ahead anyway.
+    class Invocation {
+    public:
+        explicit Invocation(Subscription& subscription) : _subscription(subscription)
+        {
+            {
+                std::lock_guard<std::mutex> lock(_subscription.mutex);
+                if (!_subscription.alive) {
+                    return;
+                }
+                ++_subscription.in_flight;
+                _entered = true;
+            }
+            active_on_this_thread().push_back(&_subscription);
+        }
+
+        ~Invocation()
+        {
+            if (!_entered) {
+                return;
+            }
+            active_on_this_thread().pop_back();
+            {
+                std::lock_guard<std::mutex> lock(_subscription.mutex);
+                --_subscription.in_flight;
+            }
+            _subscription.idle.notify_all();
+        }
+
+        bool entered() const { return _entered; }
+
+        Invocation(const Invocation&) = delete;
+        Invocation& operator=(const Invocation&) = delete;
+
+    private:
+        Subscription& _subscription;
+        bool _entered{false};
+    };
+
+    // Marks the subscription dead and stops tracking it. Returns nullptr for a handle that was
+    // never ours or has already been unsubscribed, which makes a second unsubscribe a no-op.
+    std::shared_ptr<Subscription> take_subscription(Handle<Args...> handle)
+    {
+        std::shared_ptr<Subscription> subscription;
+        {
+            std::lock_guard<std::mutex> lock(_subscriptions_mutex);
+            auto it = _subscriptions.find(handle);
+            if (it == _subscriptions.end()) {
+                return nullptr;
+            }
+            subscription = it->second;
+            _subscriptions.erase(it);
+        }
+
+        std::lock_guard<std::mutex> lock(subscription->mutex);
+        subscription->alive = false;
+        return subscription;
+    }
+
+    void mark_all_dead()
+    {
+        std::map<Handle<Args...>, std::shared_ptr<Subscription>> subscriptions;
+        {
+            std::lock_guard<std::mutex> lock(_subscriptions_mutex);
+            subscriptions.swap(_subscriptions);
+        }
+
+        for (auto& entry : subscriptions) {
+            std::lock_guard<std::mutex> lock(entry.second->mutex);
+            entry.second->alive = false;
+        }
+    }
+
+    void wait_until_idle(Subscription& subscription)
+    {
+        const auto& active = active_on_this_thread();
+        if (std::find(active.begin(), active.end(), &subscription) != active.end()) {
+            // We are inside this very callback, so the only invocation to wait for is us.
+            return;
+        }
+
+        std::unique_lock<std::mutex> lock(subscription.mutex);
+        subscription.idle.wait(lock, [&subscription]() { return subscription.in_flight == 0; });
+    }
+
+    // The returned mutation runs on the io thread, where the list is mutated.
+    std::function<void()> make_erase(Handle<Args...> handle)
+    {
+        return [this, handle]() {
+            _list.erase(
+                std::remove_if(
+                    _list.begin(),
+                    _list.end(),
+                    [&](const Entry& entry) { return entry.handle == handle; }),
+                _list.end());
+            update_size();
+        };
+    }
+
+    // Always called on the io thread, where the list is read.
+    void hand_to(const std::function<void(const std::function<void()>&)>& queue_func, Args... args)
+    {
+        for (const auto& entry : _list) {
+            queue_func(
+                [callback = entry.callback, subscription = entry.subscription, args...]() {
+                    Invocation invocation{*subscription};
+                    if (invocation.entered()) {
+                        callback(args...);
+                    }
+                });
+        }
+    }
+
     // Always called on the io thread, where the list is mutated.
     void update_size()
     {
@@ -269,9 +442,13 @@ private:
 
     asio::io_context& _io_context;
     HandleFactory<Args...> _handle_factory;
-    std::vector<std::pair<Handle<Args...>, std::function<void(Args...)>>> _list{};
+    std::vector<Entry> _list{};
     std::vector<std::function<bool(Args...)>> _cond_cb_list{};
     std::atomic<std::size_t> _size{0};
+
+    // Reachable from any thread, unlike _list.
+    std::mutex _subscriptions_mutex{};
+    std::map<Handle<Args...>, std::shared_ptr<Subscription>> _subscriptions{};
 };
 
 } // namespace mavsdk

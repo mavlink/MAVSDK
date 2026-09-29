@@ -6,6 +6,7 @@
 #endif
 
 #include <atomic>
+#include <chrono>
 #include <future>
 #include <mutex>
 #include <thread>
@@ -185,6 +186,136 @@ TEST_F(CallbackListTest, UnsubscribeBlockingFromCallback)
     EXPECT_EQ(called_self, 1);
     EXPECT_EQ(called_before, 2);
     EXPECT_EQ(called_after, 2);
+}
+
+TEST_F(CallbackListTest, UnsubscribeStopsAlreadyQueuedInvocation)
+{
+    unsigned called = 0;
+    std::vector<std::function<void()>> pending;
+
+    CallbackList<> cl{_io_context};
+    auto handle = cl.subscribe([&]() { ++called; });
+
+    // Hand the invocation over the way MavsdkImpl's user callback queue does, but hold on to it
+    // rather than running it.
+    cl.queue([&pending](const std::function<void()>& func) { pending.push_back(func); });
+    flush();
+    ASSERT_EQ(pending.size(), 1u);
+
+    cl.unsubscribe(handle);
+
+    // Draining the queue afterwards must not reach the callback.
+    for (auto& func : pending) {
+        func();
+    }
+    EXPECT_EQ(called, 0);
+}
+
+TEST_F(CallbackListTest, DestroyingListStopsAlreadyQueuedInvocation)
+{
+    unsigned called = 0;
+    std::vector<std::function<void()>> pending;
+
+    {
+        CallbackList<> cl{_io_context};
+        cl.subscribe([&]() { ++called; });
+        cl.queue([&pending](const std::function<void()>& func) { pending.push_back(func); });
+        flush();
+        ASSERT_EQ(pending.size(), 1u);
+    }
+
+    for (auto& func : pending) {
+        func();
+    }
+    EXPECT_EQ(called, 0);
+}
+
+TEST_F(CallbackListTest, UnsubscribeBlockingWaitsForRunningCallback)
+{
+    std::promise<void> entered;
+    std::promise<void> may_return;
+    std::atomic<bool> callback_done{false};
+    std::atomic<bool> unsubscribed{false};
+
+    CallbackList<> cl{_io_context};
+    auto handle = cl.subscribe([&]() {
+        entered.set_value();
+        may_return.get_future().wait();
+        callback_done = true;
+    });
+
+    // Runs the callback on the io thread, where it sits until we let it go.
+    std::thread dispatcher([&cl]() { cl(); });
+    entered.get_future().wait();
+
+    std::thread unsubscriber([&]() {
+        cl.unsubscribe_blocking(handle);
+        unsubscribed = true;
+    });
+
+    // The callback is still running, so unsubscribe_blocking() must not have returned.
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    EXPECT_FALSE(unsubscribed.load());
+
+    may_return.set_value();
+    unsubscriber.join();
+    dispatcher.join();
+
+    EXPECT_TRUE(callback_done.load());
+    EXPECT_TRUE(unsubscribed.load());
+}
+
+TEST_F(CallbackListTest, UnsubscribeBlockingWaitsForRunningQueuedInvocation)
+{
+    // The exec() case above is covered incidentally by the io thread being busy. A queued
+    // invocation runs on someone else's thread, so it needs tracking of its own.
+    std::promise<void> entered;
+    std::promise<void> may_return;
+    std::atomic<bool> unsubscribed{false};
+    std::vector<std::function<void()>> pending;
+
+    CallbackList<> cl{_io_context};
+    auto handle = cl.subscribe([&]() {
+        entered.set_value();
+        may_return.get_future().wait();
+    });
+
+    cl.queue([&pending](const std::function<void()>& func) { pending.push_back(func); });
+    flush();
+    ASSERT_EQ(pending.size(), 1u);
+
+    // Stands in for MavsdkImpl's user callback thread.
+    std::thread consumer([&pending]() { pending.front()(); });
+    entered.get_future().wait();
+
+    std::thread unsubscriber([&]() {
+        cl.unsubscribe_blocking(handle);
+        unsubscribed = true;
+    });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    EXPECT_FALSE(unsubscribed.load());
+
+    may_return.set_value();
+    unsubscriber.join();
+    consumer.join();
+
+    EXPECT_TRUE(unsubscribed.load());
+}
+
+TEST_F(CallbackListTest, UnsubscribeTwiceIsIgnored)
+{
+    unsigned called = 0;
+
+    CallbackList<> cl{_io_context};
+    auto handle = cl.subscribe([&]() { ++called; });
+
+    cl.unsubscribe(handle);
+    cl.unsubscribe(handle);
+    cl.unsubscribe_blocking(handle);
+
+    cl();
+    EXPECT_EQ(called, 0);
 }
 
 TEST_F(CallbackListTest, UnsubscribeAllWithNullptr)
