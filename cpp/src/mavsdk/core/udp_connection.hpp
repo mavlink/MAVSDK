@@ -66,6 +66,7 @@ private:
         }
     };
     std::vector<Remote> _remotes{};
+    bool _had_remote{false};
 
     // Asio socket — owned by this connection, driven by MavsdkImpl::_io_context
     asio::ip::udp::socket _socket;

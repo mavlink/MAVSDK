@@ -1,6 +1,10 @@
 #include "mavsdk.hpp"
 #include "mavlink_include.hpp"
 
+#include <atomic>
+#include <chrono>
+#include <memory>
+#include <thread>
 #include <vector>
 #include <gtest/gtest.h>
 
@@ -48,4 +52,23 @@ TEST(FirstHeartbeat, SingleHeartbeatConnectsSystem)
     auto maybe_system = mavsdk.first_autopilot(2.0);
     ASSERT_TRUE(maybe_system) << "a single heartbeat did not connect the system";
     EXPECT_TRUE(maybe_system.value()->is_connected());
+}
+
+TEST(FirstHeartbeat, NoErrorBeforeUdpRemoteIsKnown)
+{
+    // A companion computer sends heartbeats right away, before the udpin connection has
+    // heard from anyone and therefore has nowhere to send them to.
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::CompanionComputer}};
+
+    auto error_count = std::make_shared<std::atomic<int>>(0);
+    auto handle = mavsdk.subscribe_connection_errors(
+        [error_count](const Mavsdk::ConnectionError&) { ++(*error_count); });
+
+    ASSERT_EQ(mavsdk.add_any_connection("udpin://127.0.0.1:17030"), ConnectionResult::Success);
+
+    // Long enough for the immediate heartbeat and the next one.
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+
+    mavsdk.unsubscribe_connection_errors(handle);
+    EXPECT_EQ(error_count->load(), 0);
 }
