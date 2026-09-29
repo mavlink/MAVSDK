@@ -313,7 +313,7 @@ CameraServerImpl::subscribe_take_photo(const CameraServer::TakePhotoCallback& ca
 
 void CameraServerImpl::unsubscribe_take_photo(CameraServer::TakePhotoHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _take_photo_callbacks.unsubscribe(handle);
 }
 
@@ -434,7 +434,7 @@ CameraServerImpl::subscribe_start_video(const CameraServer::StartVideoCallback& 
 
 void CameraServerImpl::unsubscribe_start_video(CameraServer::StartVideoHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _start_video_callbacks.unsubscribe(handle);
 }
 
@@ -491,8 +491,8 @@ CameraServerImpl::subscribe_stop_video(const CameraServer::StopVideoCallback& ca
 
 void CameraServerImpl::unsubscribe_stop_video(CameraServer::StopVideoHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
-    return _stop_video_callbacks.unsubscribe(handle);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
+    _stop_video_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
@@ -548,8 +548,8 @@ CameraServer::StartVideoStreamingHandle CameraServerImpl::subscribe_start_video_
 void CameraServerImpl::unsubscribe_start_video_streaming(
     CameraServer::StartVideoStreamingHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
-    return _start_video_streaming_callbacks.unsubscribe(handle);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
+    _start_video_streaming_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result CameraServerImpl::respond_start_video_streaming(
@@ -593,8 +593,8 @@ CameraServer::StopVideoStreamingHandle CameraServerImpl::subscribe_stop_video_st
 void CameraServerImpl::unsubscribe_stop_video_streaming(
     CameraServer::StopVideoStreamingHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
-    return _stop_video_streaming_callbacks.unsubscribe(handle);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
+    _stop_video_streaming_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result CameraServerImpl::respond_stop_video_streaming(
@@ -637,7 +637,7 @@ CameraServerImpl::subscribe_set_mode(const CameraServer::SetModeCallback& callba
 
 void CameraServerImpl::unsubscribe_set_mode(CameraServer::SetModeHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _set_mode_callbacks.unsubscribe(handle);
 }
 
@@ -682,7 +682,7 @@ CameraServer::StorageInformationHandle CameraServerImpl::subscribe_storage_infor
 void CameraServerImpl::unsubscribe_storage_information(
     CameraServer::StorageInformationHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _storage_information_callbacks.unsubscribe(handle);
 }
 
@@ -814,11 +814,13 @@ CameraServerImpl::subscribe_capture_status(const CameraServer::CaptureStatusCall
 
 void CameraServerImpl::unsubscribe_capture_status(CameraServer::CaptureStatusHandle handle)
 {
+    // Outside the lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
+    _capture_status_callbacks.unsubscribe(handle);
+
     bool should_stop_timer = false;
 
     {
         std::lock_guard<std::mutex> lg{_mutex};
-        _capture_status_callbacks.unsubscribe(handle);
         should_stop_timer = _capture_status_callbacks.empty();
     }
 
@@ -876,7 +878,7 @@ CameraServerImpl::subscribe_format_storage(const CameraServer::FormatStorageCall
 }
 void CameraServerImpl::unsubscribe_format_storage(CameraServer::FormatStorageHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _format_storage_callbacks.unsubscribe(handle);
 }
 
@@ -920,7 +922,7 @@ CameraServerImpl::subscribe_reset_settings(const CameraServer::ResetSettingsCall
 
 void CameraServerImpl::unsubscribe_reset_settings(CameraServer::ResetSettingsHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _reset_settings_callbacks.unsubscribe(handle);
 }
 
@@ -965,7 +967,7 @@ CameraServer::TrackingPointCommandHandle CameraServerImpl::subscribe_tracking_po
 void CameraServerImpl::unsubscribe_tracking_point_command(
     CameraServer::TrackingPointCommandHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _tracking_point_callbacks.unsubscribe(handle);
 }
 
@@ -1011,7 +1013,7 @@ CameraServer::TrackingRectangleCommandHandle CameraServerImpl::subscribe_trackin
 void CameraServerImpl::unsubscribe_tracking_rectangle_command(
     CameraServer::TrackingRectangleCommandHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _tracking_rectangle_callbacks.unsubscribe(handle);
 }
 
@@ -1057,7 +1059,7 @@ CameraServer::TrackingOffCommandHandle CameraServerImpl::subscribe_tracking_off_
 void CameraServerImpl::unsubscribe_tracking_off_command(
     CameraServer::TrackingOffCommandHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _tracking_off_callbacks.unsubscribe(handle);
 }
 
@@ -2191,7 +2193,7 @@ CameraServerImpl::subscribe_zoom_in_start(const CameraServer::ZoomInStartCallbac
 
 void CameraServerImpl::unsubscribe_zoom_in_start(CameraServer::ZoomInStartHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _zoom_in_start_callbacks.unsubscribe(handle);
 }
 
@@ -2235,7 +2237,7 @@ CameraServerImpl::subscribe_zoom_out_start(const CameraServer::ZoomOutStartCallb
 
 void CameraServerImpl::unsubscribe_zoom_out_start(CameraServer::ZoomOutStartHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _zoom_out_start_callbacks.unsubscribe(handle);
 }
 
@@ -2279,7 +2281,7 @@ CameraServerImpl::subscribe_zoom_stop(const CameraServer::ZoomStopCallback& call
 
 void CameraServerImpl::unsubscribe_zoom_stop(CameraServer::ZoomStopHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _zoom_stop_callbacks.unsubscribe(handle);
 }
 
@@ -2323,7 +2325,7 @@ CameraServerImpl::subscribe_zoom_range(const CameraServer::ZoomRangeCallback& ca
 
 void CameraServerImpl::unsubscribe_zoom_range(CameraServer::ZoomRangeHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _zoom_range_callbacks.unsubscribe(handle);
 }
 
@@ -2367,7 +2369,7 @@ CameraServerImpl::subscribe_focus_in_step(const CameraServer::FocusInStepCallbac
 
 void CameraServerImpl::unsubscribe_focus_in_step(CameraServer::FocusInStepHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_in_step_callbacks.unsubscribe(handle);
 }
 
@@ -2410,7 +2412,7 @@ CameraServerImpl::subscribe_focus_out_step(const CameraServer::FocusOutStepCallb
 
 void CameraServerImpl::unsubscribe_focus_out_step(CameraServer::FocusOutStepHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_out_step_callbacks.unsubscribe(handle);
 }
 
@@ -2453,7 +2455,7 @@ CameraServerImpl::subscribe_focus_in_start(const CameraServer::FocusInStartCallb
 
 void CameraServerImpl::unsubscribe_focus_in_start(CameraServer::FocusInStartHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_in_start_callbacks.unsubscribe(handle);
 }
 
@@ -2496,7 +2498,7 @@ CameraServerImpl::subscribe_focus_out_start(const CameraServer::FocusOutStartCal
 
 void CameraServerImpl::unsubscribe_focus_out_start(CameraServer::FocusOutStartHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_out_start_callbacks.unsubscribe(handle);
 }
 
@@ -2539,7 +2541,7 @@ CameraServerImpl::subscribe_focus_stop(const CameraServer::FocusStopCallback& ca
 
 void CameraServerImpl::unsubscribe_focus_stop(CameraServer::FocusStopHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_stop_callbacks.unsubscribe(handle);
 }
 
@@ -2582,7 +2584,7 @@ CameraServerImpl::subscribe_focus_range(const CameraServer::FocusRangeCallback& 
 
 void CameraServerImpl::unsubscribe_focus_range(CameraServer::FocusRangeHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_range_callbacks.unsubscribe(handle);
 }
 
@@ -2625,7 +2627,7 @@ CameraServerImpl::subscribe_focus_meters(const CameraServer::FocusMetersCallback
 
 void CameraServerImpl::unsubscribe_focus_meters(CameraServer::FocusMetersHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_meters_callbacks.unsubscribe(handle);
 }
 
@@ -2668,7 +2670,7 @@ CameraServerImpl::subscribe_focus_auto(const CameraServer::FocusAutoCallback& ca
 
 void CameraServerImpl::unsubscribe_focus_auto(CameraServer::FocusAutoHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_auto_callbacks.unsubscribe(handle);
 }
 
@@ -2711,7 +2713,7 @@ CameraServerImpl::subscribe_focus_auto_single(const CameraServer::FocusAutoSingl
 
 void CameraServerImpl::unsubscribe_focus_auto_single(CameraServer::FocusAutoSingleHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_auto_single_callbacks.unsubscribe(handle);
 }
 
@@ -2755,7 +2757,7 @@ CameraServer::FocusAutoContinuousHandle CameraServerImpl::subscribe_focus_auto_c
 void CameraServerImpl::unsubscribe_focus_auto_continuous(
     CameraServer::FocusAutoContinuousHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _focus_auto_continuous_callbacks.unsubscribe(handle);
 }
 

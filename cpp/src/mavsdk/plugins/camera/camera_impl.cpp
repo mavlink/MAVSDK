@@ -883,7 +883,7 @@ CameraImpl::subscribe_camera_list(const Camera::CameraListCallback& callback)
 
 void CameraImpl::unsubscribe_camera_list(Camera::CameraListHandle handle)
 {
-    std::lock_guard lock(_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _camera_list_subscription_callbacks.unsubscribe(handle);
 }
 
@@ -975,7 +975,7 @@ CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& c
 
 void CameraImpl::unsubscribe_video_stream_info(Camera::VideoStreamInfoHandle handle)
 {
-    std::lock_guard lock(_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _video_stream_info_subscription_callbacks.unsubscribe(handle);
 }
 
@@ -1142,7 +1142,7 @@ Camera::ModeHandle CameraImpl::subscribe_mode(const Camera::ModeCallback& callba
 
 void CameraImpl::unsubscribe_mode(Camera::ModeHandle handle)
 {
-    std::lock_guard lock(_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _mode_subscription_callbacks.unsubscribe(handle);
 }
 
@@ -1158,7 +1158,7 @@ Camera::StorageHandle CameraImpl::subscribe_storage(const Camera::StorageCallbac
 
 void CameraImpl::unsubscribe_storage(Camera::StorageHandle handle)
 {
-    std::lock_guard lock(_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _storage_subscription_callbacks.unsubscribe(handle);
 }
 
@@ -1171,7 +1171,7 @@ CameraImpl::subscribe_capture_info(const Camera::CaptureInfoCallback& callback)
 
 void CameraImpl::unsubscribe_capture_info(Camera::CaptureInfoHandle handle)
 {
-    std::lock_guard lock(_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _capture_info_callbacks.unsubscribe(handle);
 }
 
@@ -2191,7 +2191,7 @@ CameraImpl::subscribe_current_settings(const Camera::CurrentSettingsCallback& ca
 
 void CameraImpl::unsubscribe_current_settings(Camera::CurrentSettingsHandle handle)
 {
-    std::lock_guard lock(_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _subscribe_current_settings_callbacks.unsubscribe(handle);
 }
 
