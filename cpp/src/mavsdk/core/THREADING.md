@@ -65,6 +65,11 @@ Two variants exist everywhere, and the difference matters:
 **A destructor, `deinit()` or `disable()` must use the blocking variant.** The non-blocking one
 leaves a window in which the io thread dispatches into a half-destroyed object.
 
+`unsubscribe_blocking()` is also safe to call from inside a callback: on the io thread it defers
+the removal rather than waiting, because `exec()` is iterating the list at that point and there
+is nothing to wait for anyway. So for subscriptions the remaining reason to reach for the
+non-blocking variant is holding a lock the callback also takes.
+
 The blocking variants wait, so they must not be called while holding a lock the callback
 itself takes. Where a teardown path needs the lock anyway, read what you need under the lock,
 release it, and do the blocking removal afterwards — `LogFilesImpl::deinit()`,

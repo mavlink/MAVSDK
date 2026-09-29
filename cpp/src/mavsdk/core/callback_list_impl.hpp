@@ -111,10 +111,17 @@ public:
             update_size();
         };
 
-        // Same guards as read_on_io()/drain(): if the io thread is gone (stopped) or we are
-        // already on it, apply inline -- posting and waiting would hang or self-deadlock.
-        if (_io_context.stopped() || on_io_thread()) {
+        // The io thread is gone, so nothing can be iterating the list.
+        if (_io_context.stopped()) {
             erase();
+            return;
+        }
+
+        // Already on the io thread means we are inside a callback, so exec() is iterating
+        // _list right now. Erasing would leave it calling a moved-from std::function, and
+        // waiting would be waiting for ourselves, so defer like unsubscribe() does.
+        if (on_io_thread()) {
+            post_mutation(erase);
             return;
         }
 

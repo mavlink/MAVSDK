@@ -161,6 +161,32 @@ TEST_F(CallbackListTest, UnsubscribeFromCallback)
     EXPECT_EQ(called, 1);
 }
 
+TEST_F(CallbackListTest, UnsubscribeBlockingFromCallback)
+{
+    // On the io thread unsubscribe_blocking() has to defer like unsubscribe() does: exec() is
+    // iterating _list at that point, so erasing would leave it calling a moved-from
+    // std::function, and there is nothing to wait for anyway.
+    unsigned called_before = 0;
+    unsigned called_self = 0;
+    unsigned called_after = 0;
+
+    CallbackList<> cl{_io_context};
+    cl.subscribe([&]() { ++called_before; });
+    Handle<> handle = cl.subscribe([&]() {
+        cl.unsubscribe_blocking(handle);
+        ++called_self;
+    });
+    cl.subscribe([&]() { ++called_after; });
+
+    cl();
+    cl();
+    flush();
+
+    EXPECT_EQ(called_self, 1);
+    EXPECT_EQ(called_before, 2);
+    EXPECT_EQ(called_after, 2);
+}
+
 TEST_F(CallbackListTest, UnsubscribeAllWithNullptr)
 {
     // This is to deal with the previous API where nullptr would
