@@ -3,43 +3,63 @@ name: PyPI
 # Publishes the "mavsdk" Python wheels of a release to PyPI.
 #
 # The wheels are built by linux.yml, macos.yml and windows.yml, which attach them
-# to the GitHub release when a tag is pushed. Once all of them have finished, run
-# this workflow manually with that tag.
+# to the GitHub release when a tag is pushed. This workflow runs after each of
+# them and publishes once the last one has attached its wheels, so releasing needs
+# no manual step. Runs that find the set still incomplete stop without publishing.
+#
+# It can also be started by hand with a tag, which is how to retry a publish. Run
+# that way it fails, rather than stopping quietly, if the wheels are not all there.
 #
 # Authentication uses PyPI trusted publishing: the "mavsdk" project on PyPI trusts
 # this workflow file in the "pypi" environment, so no token is stored here.
 
 on:
+  workflow_run:
+    workflows:
+      - Linux Build and Test
+      - macOS Build and Test
+      - Windows Build and Test
+    types: [completed]
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Release tag to publish, e.g. v4.0.0'
+        description: 'Release tag to publish, e.g. v4.0.2'
         required: true
         type: string
 
 permissions:
   contents: read
 
+concurrency:
+  group: pypi-${{ inputs.tag || github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
 jobs:
-  publish:
-    name: Publish ${{ inputs.tag }}
+  check:
+    name: Check wheels
+    # A workflow_run fires for every branch and tag, so ignore everything that is
+    # not a successful tag build. Which tags qualify is decided in the step below.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       startsWith(github.event.workflow_run.head_branch, 'v'))
     runs-on: ubuntu-24.04
-    environment:
-      name: pypi
-      url: https://pypi.org/project/mavsdk/
-    permissions:
-      contents: read
-      id-token: write
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+      version: ${{ steps.check.outputs.version }}
     steps:
       - name: Download wheels from release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ inputs.tag }}
-        run: gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern '*.whl' --dir dist
+          TAG: ${{ inputs.tag || github.event.workflow_run.head_branch }}
+        run: gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern 'mavsdk-*.whl' --dir dist || true
 
       - name: Check wheels
+        id: check
         env:
-          TAG: ${{ inputs.tag }}
+          TAG: ${{ inputs.tag || github.event.workflow_run.head_branch }}
+          MANUAL: ${{ github.event_name == 'workflow_dispatch' }}
         shell: python
         run: |
           import os
@@ -47,28 +67,27 @@ jobs:
           import sys
 
           tag = os.environ["TAG"]
-          wheels = sorted(os.listdir("dist"))
-          print("\n".join(wheels))
+          manual = os.environ["MANUAL"] == "true"
+          output = open(os.environ["GITHUB_OUTPUT"], "a")
+
+          def stop(reason):
+              # Started by hand, the wheels are expected to be there, so say so
+              # loudly. Triggered by a build, this is just one of the other
+              # platforms still running.
+              if manual:
+                  sys.exit(reason)
+              print(f"Not publishing: {reason}")
+              output.write("ready=false\n")
+              sys.exit(0)
+
+          wheels = sorted(os.listdir("dist")) if os.path.isdir("dist") else []
+          print("\n".join(wheels) if wheels else "No wheels attached to the release yet")
 
           # The name "mavsdk" belonged to the gRPC-based MAVSDK-Python up to 3.x.
           # Nothing older than v4 may be published under it from this repository.
           match = re.fullmatch(r"v(\d+)\.\d+\.\d+(-.+)?", tag)
           if not match or int(match.group(1)) < 4:
-              sys.exit(f"Tag '{tag}' is not v4 or later")
-
-          versions = set()
-          for wheel in wheels:
-              match = re.fullmatch(r"mavsdk-([^-]+)-.+\.whl", wheel)
-              if not match:
-                  sys.exit(f"Unexpected file: {wheel}")
-              versions.add(match.group(1))
-          if len(versions) != 1:
-              sys.exit(f"Wheels have differing versions: {sorted(versions)}")
-          version = versions.pop()
-          if int(version.split(".")[0]) < 4:
-              sys.exit(f"Version {version} is older than 4")
-          if re.search(r"(dev|post|\+)", version):
-              sys.exit(f"Version {version} is not a release version, is the tag on the right commit?")
+              stop(f"tag '{tag}' is not v4 or later")
 
           expected = {
               "Linux x86_64": r"manylinux.*_x86_64\.whl",
@@ -85,11 +104,55 @@ jobs:
               if not any(re.search(pattern, wheel) for wheel in wheels)
           ]
           if missing:
-              sys.exit(f"Missing wheels for: {', '.join(missing)}. Did all release builds finish?")
+              stop(f"no wheel yet for {', '.join(missing)}")
+
+          # Past this point the builds have all finished, so anything unexpected
+          # is a real problem and fails whichever way the workflow was started.
+          versions = set()
+          for wheel in wheels:
+              match = re.fullmatch(r"mavsdk-([^-]+)-.+\.whl", wheel)
+              if not match:
+                  sys.exit(f"Unexpected file: {wheel}")
+              versions.add(match.group(1))
+          if len(versions) != 1:
+              sys.exit(f"Wheels have differing versions: {sorted(versions)}")
+          version = versions.pop()
+          if int(version.split(".")[0]) < 4:
+              sys.exit(f"Version {version} is older than 4")
+          if re.search(r"(dev|post|\+)", version):
+              sys.exit(f"Version {version} is not a release version, is the tag on the right commit?")
           if len(wheels) != len(expected):
               sys.exit(f"Expected {len(expected)} wheels, got {len(wheels)}")
 
           print(f"Publishing mavsdk {version}")
+          output.write("ready=true\n")
+          output.write(f"version={version}\n")
+
+      - name: Keep the wheels for the publish job
+        if: steps.check.outputs.ready == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: pypi-dist
+          path: dist/*.whl
+          retention-days: 2
+
+  publish:
+    name: Publish ${{ needs.check.outputs.version }}
+    needs: check
+    if: needs.check.outputs.ready == 'true'
+    runs-on: ubuntu-24.04
+    environment:
+      name: pypi
+      url: https://pypi.org/project/mavsdk/
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download the checked wheels
+        uses: actions/download-artifact@v7
+        with:
+          name: pypi-dist
+          path: dist
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
