@@ -6,13 +6,6 @@
 #include <vector>
 #include <cstring>
 
-namespace {
-    struct CallbackContext {
-        void* callback;
-        void* user_data;
-    };
-}
-
 using namespace mavsdk;
 
 // ===== Helper conversions =====
@@ -262,15 +255,8 @@ mavsdk_connection_error_handle_t mavsdk_subscribe_connection_errors(
 ) {
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
 
-    struct CallbackContext {
-        mavsdk_connection_error_callback_t callback;
-        void* user_data;
-    };
-
-    auto* ctx = new CallbackContext{callback, user_data};
-
     auto handle = cpp_mavsdk->subscribe_connection_errors(
-        [ctx](Mavsdk::ConnectionError error) {
+        [callback, user_data](Mavsdk::ConnectionError error) {
             mavsdk_connection_error_t c_error;
             c_error.error_description = new char[error.error_description.length() + 1];
             std::strcpy(c_error.error_description, error.error_description.c_str());
@@ -278,17 +264,14 @@ mavsdk_connection_error_handle_t mavsdk_subscribe_connection_errors(
                 new Mavsdk::ConnectionHandle(error.connection_handle)
             );
 
-            ctx->callback(c_error, ctx->user_data);
+            callback(c_error, user_data);
 
             delete[] c_error.error_description;
             delete reinterpret_cast<Mavsdk::ConnectionHandle*>(c_error.connection_handle);
         }
     );
 
-    auto* result = new std::pair<Mavsdk::ConnectionErrorHandle, CallbackContext*>(
-        std::move(handle), ctx
-    );
-    return reinterpret_cast<mavsdk_connection_error_handle_t>(result);
+    return reinterpret_cast<mavsdk_connection_error_handle_t>(new Mavsdk::ConnectionErrorHandle(std::move(handle)));
 }
 
 void mavsdk_unsubscribe_connection_errors(
@@ -300,11 +283,10 @@ void mavsdk_unsubscribe_connection_errors(
     }
 
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
-    auto* pair = reinterpret_cast<std::pair<Mavsdk::ConnectionErrorHandle, CallbackContext*>*>(handle);
+    auto* cpp_handle = reinterpret_cast<Mavsdk::ConnectionErrorHandle*>(handle);
 
-    cpp_mavsdk->unsubscribe_connection_errors(pair->first);
-    delete pair->second;
-    delete pair;
+    cpp_mavsdk->unsubscribe_connection_errors(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // --- System Event Subscriptions ---
@@ -315,23 +297,13 @@ mavsdk_new_system_handle_t mavsdk_subscribe_on_new_system(
 ) {
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
 
-    struct CallbackContext {
-        mavsdk_new_system_callback_t callback;
-        void* user_data;
-    };
-
-    auto* ctx = new CallbackContext{callback, user_data};
-
     auto handle = cpp_mavsdk->subscribe_on_new_system(
-        [ctx]() {
-            ctx->callback(ctx->user_data);
+        [callback, user_data]() {
+            callback(user_data);
         }
     );
 
-    auto* result = new std::pair<Mavsdk::NewSystemHandle, CallbackContext*>(
-        std::move(handle), ctx
-    );
-    return reinterpret_cast<mavsdk_new_system_handle_t>(result);
+    return reinterpret_cast<mavsdk_new_system_handle_t>(new Mavsdk::NewSystemHandle(std::move(handle)));
 }
 
 void mavsdk_unsubscribe_on_new_system(
@@ -343,11 +315,10 @@ void mavsdk_unsubscribe_on_new_system(
     }
 
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
-    auto* pair = reinterpret_cast<std::pair<Mavsdk::NewSystemHandle, CallbackContext*>*>(handle);
+    auto* cpp_handle = reinterpret_cast<Mavsdk::NewSystemHandle*>(handle);
 
-    cpp_mavsdk->unsubscribe_on_new_system(pair->first);
-    delete pair->second;
-    delete pair;
+    cpp_mavsdk->unsubscribe_on_new_system(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // --- Configuration ---
@@ -419,15 +390,8 @@ mavsdk_intercept_json_handle_t mavsdk_subscribe_incoming_messages_json(
 ) {
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
 
-    struct CallbackContext {
-        mavsdk_intercept_json_callback_t callback;
-        void* user_data;
-    };
-
-    auto* ctx = new CallbackContext{callback, user_data};
-
     auto handle = cpp_mavsdk->subscribe_incoming_messages_json(
-        [ctx](Mavsdk::MavlinkMessage msg) -> bool {
+        [callback, user_data](Mavsdk::MavlinkMessage msg) -> bool {
             mavsdk_message_t c_msg;
             c_msg.message_name = new char[msg.message_name.length() + 1];
             std::strcpy(c_msg.message_name, msg.message_name.c_str());
@@ -438,7 +402,7 @@ mavsdk_intercept_json_handle_t mavsdk_subscribe_incoming_messages_json(
             c_msg.fields_json = new char[msg.fields_json.length() + 1];
             std::strcpy(c_msg.fields_json, msg.fields_json.c_str());
 
-            int result = ctx->callback(c_msg, ctx->user_data);
+            int result = callback(c_msg, user_data);
 
             delete[] c_msg.message_name;
             delete[] c_msg.fields_json;
@@ -447,10 +411,7 @@ mavsdk_intercept_json_handle_t mavsdk_subscribe_incoming_messages_json(
         }
     );
 
-    auto* result = new std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>(
-        std::move(handle), ctx
-    );
-    return reinterpret_cast<mavsdk_intercept_json_handle_t>(result);
+    return reinterpret_cast<mavsdk_intercept_json_handle_t>(new Mavsdk::InterceptJsonHandle(std::move(handle)));
 }
 
 void mavsdk_unsubscribe_incoming_messages_json(
@@ -462,11 +423,10 @@ void mavsdk_unsubscribe_incoming_messages_json(
     }
 
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
-    auto* pair = reinterpret_cast<std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>*>(handle);
+    auto* cpp_handle = reinterpret_cast<Mavsdk::InterceptJsonHandle*>(handle);
 
-    cpp_mavsdk->unsubscribe_incoming_messages_json(pair->first);
-    delete pair->second;
-    delete pair;
+    cpp_mavsdk->unsubscribe_incoming_messages_json(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 mavsdk_intercept_json_handle_t mavsdk_subscribe_outgoing_messages_json(
@@ -476,15 +436,8 @@ mavsdk_intercept_json_handle_t mavsdk_subscribe_outgoing_messages_json(
 ) {
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
 
-    struct CallbackContext {
-        mavsdk_intercept_json_callback_t callback;
-        void* user_data;
-    };
-
-    auto* ctx = new CallbackContext{callback, user_data};
-
     auto handle = cpp_mavsdk->subscribe_outgoing_messages_json(
-        [ctx](Mavsdk::MavlinkMessage msg) -> bool {
+        [callback, user_data](Mavsdk::MavlinkMessage msg) -> bool {
             mavsdk_message_t c_msg;
             c_msg.message_name = new char[msg.message_name.length() + 1];
             std::strcpy(c_msg.message_name, msg.message_name.c_str());
@@ -495,7 +448,7 @@ mavsdk_intercept_json_handle_t mavsdk_subscribe_outgoing_messages_json(
             c_msg.fields_json = new char[msg.fields_json.length() + 1];
             std::strcpy(c_msg.fields_json, msg.fields_json.c_str());
 
-            int result = ctx->callback(c_msg, ctx->user_data);
+            int result = callback(c_msg, user_data);
 
             delete[] c_msg.message_name;
             delete[] c_msg.fields_json;
@@ -504,10 +457,7 @@ mavsdk_intercept_json_handle_t mavsdk_subscribe_outgoing_messages_json(
         }
     );
 
-    auto* result = new std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>(
-        std::move(handle), ctx
-    );
-    return reinterpret_cast<mavsdk_intercept_json_handle_t>(result);
+    return reinterpret_cast<mavsdk_intercept_json_handle_t>(new Mavsdk::InterceptJsonHandle(std::move(handle)));
 }
 
 void mavsdk_unsubscribe_outgoing_messages_json(
@@ -519,11 +469,10 @@ void mavsdk_unsubscribe_outgoing_messages_json(
     }
 
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
-    auto* pair = reinterpret_cast<std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>*>(handle);
+    auto* cpp_handle = reinterpret_cast<Mavsdk::InterceptJsonHandle*>(handle);
 
-    cpp_mavsdk->unsubscribe_outgoing_messages_json(pair->first);
-    delete pair->second;
-    delete pair;
+    cpp_mavsdk->unsubscribe_outgoing_messages_json(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // --- Raw Bytes ---
@@ -539,23 +488,13 @@ mavsdk_raw_bytes_handle_t mavsdk_subscribe_raw_bytes_to_be_sent(
 ) {
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
 
-    struct CallbackContext {
-        mavsdk_raw_bytes_callback_t callback;
-        void* user_data;
-    };
-
-    auto* ctx = new CallbackContext{callback, user_data};
-
     auto handle = cpp_mavsdk->subscribe_raw_bytes_to_be_sent(
-        [ctx](const char* bytes, size_t length) {
-            ctx->callback(reinterpret_cast<const uint8_t*>(bytes), length, ctx->user_data);
+        [callback, user_data](const char* bytes, size_t length) {
+            callback(reinterpret_cast<const uint8_t*>(bytes), length, user_data);
         }
     );
 
-    auto* result = new std::pair<Mavsdk::RawBytesHandle, CallbackContext*>(
-        std::move(handle), ctx
-    );
-    return reinterpret_cast<mavsdk_raw_bytes_handle_t>(result);
+    return reinterpret_cast<mavsdk_raw_bytes_handle_t>(new Mavsdk::RawBytesHandle(std::move(handle)));
 }
 
 void mavsdk_unsubscribe_raw_bytes_to_be_sent(
@@ -567,11 +506,10 @@ void mavsdk_unsubscribe_raw_bytes_to_be_sent(
     }
 
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
-    auto* pair = reinterpret_cast<std::pair<Mavsdk::RawBytesHandle, CallbackContext*>*>(handle);
+    auto* cpp_handle = reinterpret_cast<Mavsdk::RawBytesHandle*>(handle);
 
-    cpp_mavsdk->unsubscribe_raw_bytes_to_be_sent(pair->first);
-    delete pair->second;
-    delete pair;
+    cpp_mavsdk->unsubscribe_raw_bytes_to_be_sent(std::move(*cpp_handle));
+    delete cpp_handle;
 }
 
 // --- Timeout ---
