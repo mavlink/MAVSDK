@@ -14,7 +14,12 @@ RawConnection::RawConnection(
     Connection(receiver_callback, libmav_receiver_callback, mavsdk_impl, forwarding_option)
 {}
 
-RawConnection::~RawConnection() = default;
+RawConnection::~RawConnection()
+{
+    // Like every other connection type. It matters more here: stop()'s drain is what waits
+    // for the parse that receive() posted, which holds a raw this.
+    stop();
+}
 
 ConnectionResult RawConnection::start()
 {

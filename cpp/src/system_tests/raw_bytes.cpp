@@ -112,3 +112,24 @@ TEST(RawBytes, SendReceive)
     ASSERT_EQ(systems[0]->get_system_id(), 1) << "System ID mismatch";
     LogInfo("Successfully created system from raw bytes with ID {}", systems[0]->get_system_id());
 }
+
+TEST(RawBytes, RemoveConnectionWithBytesInFlight)
+{
+    // remove_connection() used to free the RawConnection while the parse that
+    // pass_received_raw_bytes() posted was still running on the io thread.
+    for (unsigned i = 0; i < 50; ++i) {
+        Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
+
+        auto [result, connection_handle] = mavsdk.add_any_connection_with_handle("raw://");
+        ASSERT_EQ(result, ConnectionResult::Success);
+
+        auto handle = mavsdk.subscribe_raw_bytes_to_be_sent([](const char*, size_t) {});
+
+        // Enough bytes that the parse is still running when remove_connection() lands.
+        const std::vector<char> bytes(64 * 1024, 0x00);
+        mavsdk.pass_received_raw_bytes(bytes.data(), bytes.size());
+
+        mavsdk.unsubscribe_raw_bytes_to_be_sent(handle);
+        mavsdk.remove_connection(connection_handle);
+    }
+}
