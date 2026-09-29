@@ -1489,7 +1489,7 @@ MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback)
 
 void MavsdkImpl::unsubscribe_on_new_system(Mavsdk::NewSystemHandle handle)
 {
-    _new_system_callbacks.unsubscribe(handle);
+    _new_system_callbacks.unsubscribe_blocking(handle);
 }
 
 bool MavsdkImpl::is_any_system_connected() const
@@ -1969,7 +1969,7 @@ MavsdkImpl::subscribe_raw_bytes_to_be_sent(const Mavsdk::RawBytesCallback& callb
 
 void MavsdkImpl::unsubscribe_raw_bytes_to_be_sent(Mavsdk::RawBytesHandle handle)
 {
-    _raw_bytes_subscriptions.unsubscribe(handle);
+    _raw_bytes_subscriptions.unsubscribe_blocking(handle);
 }
 
 bool MavsdkImpl::notify_raw_bytes_sent(const char* bytes, size_t length)
@@ -1995,8 +1995,10 @@ MavsdkImpl::subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback
 
 void MavsdkImpl::unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle)
 {
-    std::lock_guard lock(_mutex);
-    _connections_errors_subscriptions.unsubscribe(handle);
+    // Deliberately without _mutex. The blocking removal waits for the io thread, which takes
+    // _mutex itself when it sends, so holding it here would deadlock the pair. CallbackList
+    // synchronizes itself, so the lock was not buying anything.
+    _connections_errors_subscriptions.unsubscribe_blocking(handle);
 }
 
 void MavsdkImpl::report_connection_error(
