@@ -283,6 +283,9 @@ class MissionRawServer:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
+        # Stream subscriptions, by handle: the trampoline to keep alive and the
+        # unsubscribe to call for it. destroy() releases whatever is left.
+        self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
         # run. Without this lock two of them can both find a live handle and
@@ -325,18 +328,27 @@ class MissionRawServer:
                 print(f"Error in incoming_mission callback: {e}")
 
         cb = IncomingMissionCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_mission_raw_server_subscribe_incoming_mission(
+        _subscription = self._lib.mavsdk_mission_raw_server_subscribe_incoming_mission(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission,
+        )
+
+        return _subscription
 
     def unsubscribe_incoming_mission(self, handle: ctypes.c_void_p):
         """Unsubscribe from incoming_mission
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission(
             self._handle, handle
@@ -359,18 +371,29 @@ class MissionRawServer:
                 print(f"Error in current_item_changed callback: {e}")
 
         cb = CurrentItemChangedCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_mission_raw_server_subscribe_current_item_changed(
-            self._handle, cb, None
+        _subscription = (
+            self._lib.mavsdk_mission_raw_server_subscribe_current_item_changed(
+                self._handle, cb, None
+            )
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed,
+        )
+
+        return _subscription
 
     def unsubscribe_current_item_changed(self, handle: ctypes.c_void_p):
         """Unsubscribe from current_item_changed
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed(
             self._handle, handle
@@ -396,18 +419,27 @@ class MissionRawServer:
                 print(f"Error in clear_all callback: {e}")
 
         cb = ClearAllCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_mission_raw_server_subscribe_clear_all(
+        _subscription = self._lib.mavsdk_mission_raw_server_subscribe_clear_all(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all,
+        )
+
+        return _subscription
 
     def unsubscribe_clear_all(self, handle: ctypes.c_void_p):
         """Unsubscribe from clear_all
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all(self._handle, handle)
 
@@ -417,7 +449,14 @@ class MissionRawServer:
             handle, self._handle = self._handle, None
 
         if handle:
+            # The C wrapper does not track these, so release them here. unsubscribe()
+            # waits for a running callback, so the trampolines can go right after.
+            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+                _unsubscribe(handle, _subscription)
+            self._subscriptions.clear()
+
             self._lib.mavsdk_mission_raw_server_destroy(handle)
+            self._callbacks.clear()
 
     def __del__(self):
         self.destroy()

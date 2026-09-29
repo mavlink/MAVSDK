@@ -1170,6 +1170,9 @@ class Camera:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
+        # Stream subscriptions, by handle: the trampoline to keep alive and the
+        # unsubscribe to call for it. destroy() releases whatever is left.
+        self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
         # run. Without this lock two of them can both find a live handle and
@@ -1498,16 +1501,27 @@ class Camera:
                 print(f"Error in camera_list callback: {e}")
 
         cb = CameraListCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_camera_list(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_camera_subscribe_camera_list(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_camera_unsubscribe_camera_list,
+        )
+
+        return _subscription
 
     def unsubscribe_camera_list(self, handle: ctypes.c_void_p):
         """Unsubscribe from camera_list
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_camera_unsubscribe_camera_list(self._handle, handle)
 
@@ -1537,16 +1551,25 @@ class Camera:
                 print(f"Error in mode callback: {e}")
 
         cb = ModeCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_mode(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_camera_subscribe_mode(self._handle, cb, None)
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_camera_unsubscribe_mode,
+        )
+
+        return _subscription
 
     def unsubscribe_mode(self, handle: ctypes.c_void_p):
         """Unsubscribe from mode
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_camera_unsubscribe_mode(self._handle, handle)
 
@@ -1581,18 +1604,27 @@ class Camera:
                 print(f"Error in video_stream_info callback: {e}")
 
         cb = VideoStreamInfoCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_video_stream_info(
+        _subscription = self._lib.mavsdk_camera_subscribe_video_stream_info(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_camera_unsubscribe_video_stream_info,
+        )
+
+        return _subscription
 
     def unsubscribe_video_stream_info(self, handle: ctypes.c_void_p):
         """Unsubscribe from video_stream_info
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_camera_unsubscribe_video_stream_info(self._handle, handle)
 
@@ -1627,16 +1659,27 @@ class Camera:
                 print(f"Error in capture_info callback: {e}")
 
         cb = CaptureInfoCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_capture_info(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_camera_subscribe_capture_info(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_camera_unsubscribe_capture_info,
+        )
+
+        return _subscription
 
     def unsubscribe_capture_info(self, handle: ctypes.c_void_p):
         """Unsubscribe from capture_info
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_camera_unsubscribe_capture_info(self._handle, handle)
 
@@ -1655,16 +1698,27 @@ class Camera:
                 print(f"Error in storage callback: {e}")
 
         cb = StorageCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_storage(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_camera_subscribe_storage(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_camera_unsubscribe_storage,
+        )
+
+        return _subscription
 
     def unsubscribe_storage(self, handle: ctypes.c_void_p):
         """Unsubscribe from storage
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_camera_unsubscribe_storage(self._handle, handle)
 
@@ -1701,18 +1755,27 @@ class Camera:
                 print(f"Error in current_settings callback: {e}")
 
         cb = CurrentSettingsCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_current_settings(
+        _subscription = self._lib.mavsdk_camera_subscribe_current_settings(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_camera_unsubscribe_current_settings,
+        )
+
+        return _subscription
 
     def unsubscribe_current_settings(self, handle: ctypes.c_void_p):
         """Unsubscribe from current_settings
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_camera_unsubscribe_current_settings(self._handle, handle)
 
@@ -1752,18 +1815,27 @@ class Camera:
                 print(f"Error in possible_setting_options callback: {e}")
 
         cb = PossibleSettingOptionsCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_possible_setting_options(
+        _subscription = self._lib.mavsdk_camera_subscribe_possible_setting_options(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_camera_unsubscribe_possible_setting_options,
+        )
+
+        return _subscription
 
     def unsubscribe_possible_setting_options(self, handle: ctypes.c_void_p):
         """Unsubscribe from possible_setting_options
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_camera_unsubscribe_possible_setting_options(
             self._handle, handle
@@ -2556,7 +2628,14 @@ class Camera:
             handle, self._handle = self._handle, None
 
         if handle:
+            # The C wrapper does not track these, so release them here. unsubscribe()
+            # waits for a running callback, so the trampolines can go right after.
+            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+                _unsubscribe(handle, _subscription)
+            self._subscriptions.clear()
+
             self._lib.mavsdk_camera_destroy(handle)
+            self._callbacks.clear()
 
     def __del__(self):
         self.destroy()
