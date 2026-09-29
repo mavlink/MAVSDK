@@ -5,9 +5,7 @@
 #include "action_server.h"
 
 #include <mavsdk/plugins/action_server/action_server.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -257,14 +255,6 @@ void mavsdk_action_server_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_action_server_wrapper {
     std::shared_ptr<mavsdk::ActionServer> cpp_plugin;
-    std::mutex handles_mutex;
-    std::vector<mavsdk::ActionServer::ArmDisarmHandle*> arm_disarm_handles;
-    std::vector<mavsdk::ActionServer::FlightModeChangeHandle*> flight_mode_change_handles;
-    std::vector<mavsdk::ActionServer::TakeoffHandle*> takeoff_handles;
-    std::vector<mavsdk::ActionServer::LandHandle*> land_handles;
-    std::vector<mavsdk::ActionServer::RebootHandle*> reboot_handles;
-    std::vector<mavsdk::ActionServer::ShutdownHandle*> shutdown_handles;
-    std::vector<mavsdk::ActionServer::TerminateHandle*> terminate_handles;
 };
 
 mavsdk_action_server_t
@@ -285,50 +275,9 @@ void mavsdk_action_server_destroy(mavsdk_action_server_t action_server) {
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        for (auto* h : wrapper->arm_disarm_handles) {
-            wrapper->cpp_plugin->unsubscribe_arm_disarm(std::move(*h));
-            delete h;
-        }
-        wrapper->arm_disarm_handles.clear();
-        for (auto* h : wrapper->flight_mode_change_handles) {
-            wrapper->cpp_plugin->unsubscribe_flight_mode_change(std::move(*h));
-            delete h;
-        }
-        wrapper->flight_mode_change_handles.clear();
-        for (auto* h : wrapper->takeoff_handles) {
-            wrapper->cpp_plugin->unsubscribe_takeoff(std::move(*h));
-            delete h;
-        }
-        wrapper->takeoff_handles.clear();
-        for (auto* h : wrapper->land_handles) {
-            wrapper->cpp_plugin->unsubscribe_land(std::move(*h));
-            delete h;
-        }
-        wrapper->land_handles.clear();
-        for (auto* h : wrapper->reboot_handles) {
-            wrapper->cpp_plugin->unsubscribe_reboot(std::move(*h));
-            delete h;
-        }
-        wrapper->reboot_handles.clear();
-        for (auto* h : wrapper->shutdown_handles) {
-            wrapper->cpp_plugin->unsubscribe_shutdown(std::move(*h));
-            delete h;
-        }
-        wrapper->shutdown_handles.clear();
-        for (auto* h : wrapper->terminate_handles) {
-            wrapper->cpp_plugin->unsubscribe_terminate(std::move(*h));
-            delete h;
-        }
-        wrapper->terminate_handles.clear();
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 }
 
 // ===== Method Implementations =====
@@ -355,11 +304,6 @@ mavsdk_action_server_arm_disarm_handle_t mavsdk_action_server_subscribe_arm_disa
 
     auto cpp_handle_ptr = new mavsdk::ActionServer::ArmDisarmHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->arm_disarm_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_action_server_arm_disarm_handle_t>(cpp_handle_ptr);
 }
 
@@ -373,19 +317,6 @@ void mavsdk_action_server_unsubscribe_arm_disarm(
 
     auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
     auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::ArmDisarmHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->arm_disarm_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_arm_disarm(std::move(*cpp_handle));
     delete cpp_handle;
@@ -414,11 +345,6 @@ mavsdk_action_server_flight_mode_change_handle_t mavsdk_action_server_subscribe_
 
     auto cpp_handle_ptr = new mavsdk::ActionServer::FlightModeChangeHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->flight_mode_change_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_action_server_flight_mode_change_handle_t>(cpp_handle_ptr);
 }
 
@@ -432,19 +358,6 @@ void mavsdk_action_server_unsubscribe_flight_mode_change(
 
     auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
     auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::FlightModeChangeHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->flight_mode_change_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_flight_mode_change(std::move(*cpp_handle));
     delete cpp_handle;
@@ -473,11 +386,6 @@ mavsdk_action_server_takeoff_handle_t mavsdk_action_server_subscribe_takeoff(
 
     auto cpp_handle_ptr = new mavsdk::ActionServer::TakeoffHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->takeoff_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_action_server_takeoff_handle_t>(cpp_handle_ptr);
 }
 
@@ -491,19 +399,6 @@ void mavsdk_action_server_unsubscribe_takeoff(
 
     auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
     auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::TakeoffHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->takeoff_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_takeoff(std::move(*cpp_handle));
     delete cpp_handle;
@@ -532,11 +427,6 @@ mavsdk_action_server_land_handle_t mavsdk_action_server_subscribe_land(
 
     auto cpp_handle_ptr = new mavsdk::ActionServer::LandHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->land_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_action_server_land_handle_t>(cpp_handle_ptr);
 }
 
@@ -550,19 +440,6 @@ void mavsdk_action_server_unsubscribe_land(
 
     auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
     auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::LandHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->land_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_land(std::move(*cpp_handle));
     delete cpp_handle;
@@ -591,11 +468,6 @@ mavsdk_action_server_reboot_handle_t mavsdk_action_server_subscribe_reboot(
 
     auto cpp_handle_ptr = new mavsdk::ActionServer::RebootHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->reboot_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_action_server_reboot_handle_t>(cpp_handle_ptr);
 }
 
@@ -609,19 +481,6 @@ void mavsdk_action_server_unsubscribe_reboot(
 
     auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
     auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::RebootHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->reboot_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_reboot(std::move(*cpp_handle));
     delete cpp_handle;
@@ -650,11 +509,6 @@ mavsdk_action_server_shutdown_handle_t mavsdk_action_server_subscribe_shutdown(
 
     auto cpp_handle_ptr = new mavsdk::ActionServer::ShutdownHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->shutdown_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_action_server_shutdown_handle_t>(cpp_handle_ptr);
 }
 
@@ -668,19 +522,6 @@ void mavsdk_action_server_unsubscribe_shutdown(
 
     auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
     auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::ShutdownHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->shutdown_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_shutdown(std::move(*cpp_handle));
     delete cpp_handle;
@@ -709,11 +550,6 @@ mavsdk_action_server_terminate_handle_t mavsdk_action_server_subscribe_terminate
 
     auto cpp_handle_ptr = new mavsdk::ActionServer::TerminateHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->terminate_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_action_server_terminate_handle_t>(cpp_handle_ptr);
 }
 
@@ -727,19 +563,6 @@ void mavsdk_action_server_unsubscribe_terminate(
 
     auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
     auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::TerminateHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->terminate_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_terminate(std::move(*cpp_handle));
     delete cpp_handle;

@@ -5,9 +5,7 @@
 #include "arm_authorizer_server.h"
 
 #include <mavsdk/plugins/arm_authorizer_server/arm_authorizer_server.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -125,8 +123,6 @@ void mavsdk_arm_authorizer_server_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_arm_authorizer_server_wrapper {
     std::shared_ptr<mavsdk::ArmAuthorizerServer> cpp_plugin;
-    std::mutex handles_mutex;
-    std::vector<mavsdk::ArmAuthorizerServer::ArmAuthorizationHandle*> arm_authorization_handles;
 };
 
 mavsdk_arm_authorizer_server_t
@@ -147,20 +143,9 @@ void mavsdk_arm_authorizer_server_destroy(mavsdk_arm_authorizer_server_t arm_aut
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        for (auto* h : wrapper->arm_authorization_handles) {
-            wrapper->cpp_plugin->unsubscribe_arm_authorization(std::move(*h));
-            delete h;
-        }
-        wrapper->arm_authorization_handles.clear();
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
 }
 
 // ===== Method Implementations =====
@@ -185,11 +170,6 @@ mavsdk_arm_authorizer_server_arm_authorization_handle_t mavsdk_arm_authorizer_se
 
     auto cpp_handle_ptr = new mavsdk::ArmAuthorizerServer::ArmAuthorizationHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->arm_authorization_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_arm_authorizer_server_arm_authorization_handle_t>(cpp_handle_ptr);
 }
 
@@ -203,19 +183,6 @@ void mavsdk_arm_authorizer_server_unsubscribe_arm_authorization(
 
     auto wrapper = reinterpret_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
     auto cpp_handle = reinterpret_cast<mavsdk::ArmAuthorizerServer::ArmAuthorizationHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->arm_authorization_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_arm_authorization(std::move(*cpp_handle));
     delete cpp_handle;

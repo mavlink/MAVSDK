@@ -5,9 +5,7 @@
 #include "component_metadata.h"
 
 #include <mavsdk/plugins/component_metadata/component_metadata.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -211,8 +209,6 @@ void mavsdk_component_metadata_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_component_metadata_wrapper {
     std::shared_ptr<mavsdk::ComponentMetadata> cpp_plugin;
-    std::mutex handles_mutex;
-    std::vector<mavsdk::ComponentMetadata::MetadataAvailableHandle*> metadata_available_handles;
 };
 
 mavsdk_component_metadata_t
@@ -233,20 +229,9 @@ void mavsdk_component_metadata_destroy(mavsdk_component_metadata_t component_met
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        for (auto* h : wrapper->metadata_available_handles) {
-            wrapper->cpp_plugin->unsubscribe_metadata_available(std::move(*h));
-            delete h;
-        }
-        wrapper->metadata_available_handles.clear();
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
 }
 
 // ===== Method Implementations =====
@@ -296,11 +281,6 @@ mavsdk_component_metadata_metadata_available_handle_t mavsdk_component_metadata_
 
     auto cpp_handle_ptr = new mavsdk::ComponentMetadata::MetadataAvailableHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->metadata_available_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_component_metadata_metadata_available_handle_t>(cpp_handle_ptr);
 }
 
@@ -314,19 +294,6 @@ void mavsdk_component_metadata_unsubscribe_metadata_available(
 
     auto wrapper = reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
     auto cpp_handle = reinterpret_cast<mavsdk::ComponentMetadata::MetadataAvailableHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->metadata_available_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_metadata_available(std::move(*cpp_handle));
     delete cpp_handle;

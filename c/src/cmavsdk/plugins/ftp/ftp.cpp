@@ -5,9 +5,7 @@
 #include "ftp.h"
 
 #include <mavsdk/plugins/ftp/ftp.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -264,7 +262,6 @@ void mavsdk_ftp_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_ftp_wrapper {
     std::shared_ptr<mavsdk::Ftp> cpp_plugin;
-    std::mutex handles_mutex;
 };
 
 mavsdk_ftp_t
@@ -285,15 +282,9 @@ void mavsdk_ftp_destroy(mavsdk_ftp_t ftp) {
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 }
 
 // ===== Method Implementations =====

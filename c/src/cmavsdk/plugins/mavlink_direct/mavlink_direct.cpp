@@ -5,9 +5,7 @@
 #include "mavlink_direct.h"
 
 #include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -152,8 +150,6 @@ void mavsdk_mavlink_direct_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_mavlink_direct_wrapper {
     std::shared_ptr<mavsdk::MavlinkDirect> cpp_plugin;
-    std::mutex handles_mutex;
-    std::vector<mavsdk::MavlinkDirect::MessageHandle*> message_handles;
 };
 
 mavsdk_mavlink_direct_t
@@ -174,20 +170,9 @@ void mavsdk_mavlink_direct_destroy(mavsdk_mavlink_direct_t mavlink_direct) {
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        for (auto* h : wrapper->message_handles) {
-            wrapper->cpp_plugin->unsubscribe_message(std::move(*h));
-            delete h;
-        }
-        wrapper->message_handles.clear();
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
 }
 
 // ===== Method Implementations =====
@@ -228,11 +213,6 @@ mavsdk_mavlink_direct_message_handle_t mavsdk_mavlink_direct_subscribe_message(
 
     auto cpp_handle_ptr = new mavsdk::MavlinkDirect::MessageHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->message_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_mavlink_direct_message_handle_t>(cpp_handle_ptr);
 }
 
@@ -246,19 +226,6 @@ void mavsdk_mavlink_direct_unsubscribe_message(
 
     auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
     auto cpp_handle = reinterpret_cast<mavsdk::MavlinkDirect::MessageHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->message_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_message(std::move(*cpp_handle));
     delete cpp_handle;

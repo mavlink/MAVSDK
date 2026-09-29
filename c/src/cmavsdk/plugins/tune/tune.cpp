@@ -5,9 +5,7 @@
 #include "tune.h"
 
 #include <mavsdk/plugins/tune/tune.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -239,7 +237,6 @@ void mavsdk_tune_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_tune_wrapper {
     std::shared_ptr<mavsdk::Tune> cpp_plugin;
-    std::mutex handles_mutex;
 };
 
 mavsdk_tune_t
@@ -260,15 +257,9 @@ void mavsdk_tune_destroy(mavsdk_tune_t tune) {
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_tune_wrapper*>(tune);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_tune_wrapper*>(tune);
 }
 
 // ===== Method Implementations =====
