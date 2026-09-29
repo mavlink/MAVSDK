@@ -324,6 +324,9 @@ private:
 
     bool download_start(Work& work, DownloadItem& item);
     bool download_continue(Work& work, DownloadItem& item, PayloadHeader* payload);
+    void request_read(Work& work, size_t offset, size_t size);
+    /// @brief True if the server refused a read that asked for less than fits in a packet.
+    static bool is_refused_short_read(const Work& work, ServerResult result);
 
     bool download_burst_start(Work& work, DownloadBurstItem& item);
     bool download_burst_continue(Work& work, DownloadBurstItem& item, PayloadHeader* payload);
