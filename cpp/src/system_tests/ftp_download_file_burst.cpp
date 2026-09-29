@@ -400,6 +400,86 @@ TEST(Ftp, DownloadBurstStopAndTryAgain)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
+// When a download fails, whatever arrived is already in the local file by the time the
+// caller hears about it, so that the caller can look at what arrived.
+TEST(Ftp, DownloadBurstFailureLeavesReceivedBytesOnDisk)
+{
+    constexpr int file_size = 1000;
+    constexpr int msg_count = file_size / 255 + 6; // 6 messages for transfer initialization
+
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, file_size));
+    ASSERT_TRUE(reset_directories(temp_dir_downloaded));
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    // Once we received half, drop everything that comes in.
+    auto received = std::make_shared<std::atomic<int>>(0);
+    auto drop_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
+        [received, msg_count](Mavsdk::MavlinkMessage message) -> bool {
+            if (message.message_name == "FILE_TRANSFER_PROTOCOL") {
+                (*received)++;
+            }
+            return *received < msg_count / 2;
+        });
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
+    ftp_server.set_root_dir(temp_dir_provided.string());
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto ftp = Ftp{system};
+
+    struct Outcome {
+        Ftp::Result result;
+        uint32_t bytes_transferred;
+        uintmax_t bytes_on_disk;
+    };
+    auto prom = std::make_shared<std::promise<Outcome>>();
+    auto fut = prom->get_future();
+    ftp.download_async(
+        temp_file.string(),
+        temp_dir_downloaded.string(),
+        true,
+        [prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+            if (result != Ftp::Result::Next) {
+                // Check the file from inside the result callback, as a caller would.
+                std::error_code ec;
+                const auto on_disk = fs::file_size(temp_dir_downloaded / temp_file, ec);
+                prom->set_value(Outcome{result, progress_data.bytes_transferred, ec ? 0 : on_disk});
+            }
+        });
+
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
+    const auto outcome = fut.get();
+    LogInfo(
+        "Result {}, {} bytes reported, {} bytes on disk",
+        to_string(outcome.result),
+        outcome.bytes_transferred,
+        outcome.bytes_on_disk);
+    EXPECT_EQ(outcome.result, Ftp::Result::Timeout);
+    EXPECT_GT(outcome.bytes_transferred, 0u);
+    // Holes that are still missing are zero-filled placeholders, so the file can be
+    // longer than what was received, never shorter.
+    EXPECT_GE(outcome.bytes_on_disk, outcome.bytes_transferred);
+
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_in_handle);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
 TEST(Ftp, DownloadBurstFileOutsideOfRoot)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
