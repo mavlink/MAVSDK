@@ -140,6 +140,30 @@ jobs:
           file: py/mavsdk/wheelhouse/*.whl
           tag: ${{ github.ref }}
           overwrite: true
+      - name: collect debug symbols
+        if: ${{ matrix.build-framework == 'OFF' }}
+        working-directory: .
+        run: |
+          # The DWARF stays in the object files until dsymutil gathers it up, so
+          # the dylib that goes into the wheel keeps its symbol table as is.
+          dsymutil c/build/install/lib/libcmavsdk.dylib -o libcmavsdk.dylib.dSYM
+          tar -czf mavsdk-debug-symbols-${{ matrix.python_plat_name }}.tar.gz libcmavsdk.dylib.dSYM
+      - name: upload debug symbols artifact
+        if: ${{ matrix.build-framework == 'OFF' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: mavsdk_debug_symbols_macos_${{ matrix.architecture }}
+          path: mavsdk-debug-symbols-${{ matrix.python_plat_name }}.tar.gz
+          retention-days: 2
+      - name: Publish debug symbols to release
+        if: ${{ startsWith(github.ref, 'refs/tags/v') && matrix.build-framework == 'OFF' }}
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: mavsdk-debug-symbols-${{ matrix.python_plat_name }}.tar.gz
+          asset_name: mavsdk-debug-symbols-${{ matrix.python_plat_name }}.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
 
   iOS:
     name: ${{ matrix.name }}
