@@ -41,13 +41,13 @@ namespace mavsdk {
 // already handed over. Each subscription carries a small shared state instead, which those
 // copies hold on to:
 //
-// - unsubscribe() marks it dead synchronously, before returning. Every dispatch checks it
-//   under the state's own lock, so once unsubscribe() returns the callback will not be
-//   invoked again -- whether or not the list entry has been erased yet, and whether the
-//   invocation was going to come from exec() or from a queue.
-// - unsubscribe_blocking() additionally waits for an invocation that is already running.
-//   Together that is "neither running nor going to run", which is what a caller about to
-//   release whatever the callback captured needs.
+// unsubscribe() marks it dead synchronously, before returning, and every dispatch checks it
+// under the state's own lock. So the callback will not be invoked again -- whether or not the
+// list entry has been erased yet, and whether the invocation was going to come from exec() or
+// from a queue. It then waits for an invocation that is already running, which together is
+// "neither running nor going to run": what a caller about to release whatever the callback
+// captured needs. Being the only variant, it has to stay safe from inside the callback too,
+// where it skips the wait and defers the erase.
 //
 // The state outlives the list, being shared with the queued copies, so destroying the list
 // gives the same guarantee as unsubscribing everything in it.
@@ -107,29 +107,10 @@ public:
         }
     }
 
-    // Once this returns the callback will not be invoked again. One that is running right now
-    // keeps running; use unsubscribe_blocking() when that matters.
+    // Once this returns the callback is neither running nor going to run, so whatever it
+    // captured can be destroyed. It waits, so do not call it while holding a lock the callback
+    // itself takes. Calling it from inside the callback is fine, it then skips the wait.
     void unsubscribe(Handle<Args...> handle)
-    {
-        // Ignore null handle.
-        if (!handle.valid()) {
-            LogErr("Invalid null handle");
-            return;
-        }
-
-        if (take_subscription(handle) == nullptr) {
-            // Not ours, or already unsubscribed.
-            return;
-        }
-
-        post_mutation(make_erase(handle));
-    }
-
-    // Blocking variant of unsubscribe(): also waits for an invocation that is already running,
-    // so once it returns the callback is neither running nor going to run and whatever it
-    // captured can be destroyed. Do not call it while holding a lock the callback itself takes.
-    // Calling it from inside the callback is fine, it then skips the wait.
-    void unsubscribe_blocking(Handle<Args...> handle)
     {
         // Ignore null handle.
         if (!handle.valid()) {
@@ -145,28 +126,10 @@ public:
 
         wait_until_idle(*subscription);
 
-        auto erase = make_erase(handle);
-
-        // The io thread is gone, so nothing can be iterating the list.
-        if (_io_context.stopped()) {
-            erase();
-            return;
-        }
-
-        // Already on the io thread means we are inside a callback, so exec() is iterating _list
-        // right now. Erasing would leave it calling a moved-from std::function, and waiting
-        // would be waiting for ourselves, so defer like unsubscribe() does.
-        if (on_io_thread()) {
-            post_mutation(erase);
-            return;
-        }
-
-        std::promise<void> done;
-        asio::post(_io_context, [&]() {
-            erase();
-            done.set_value();
-        });
-        done.get_future().wait();
+        // Only bookkeeping now: the subscription is already dead, so nothing will invoke it
+        // whether or not the entry has gone yet. Posting rather than waiting keeps this off the
+        // io thread's back, and means holding a lock the io thread needs is not a deadlock.
+        post_mutation(make_erase(handle));
     }
 
     void exec(Args... args)
@@ -234,8 +197,8 @@ private:
         std::shared_ptr<Subscription> subscription;
     };
 
-    // Subscriptions whose callback this thread is currently inside. Lets unsubscribe_blocking()
-    // called from within a callback skip the wait instead of waiting for itself.
+    // Subscriptions whose callback this thread is currently inside. Lets unsubscribe() called
+    // from within a callback skip the wait instead of waiting for itself.
     static std::vector<const Subscription*>& active_on_this_thread()
     {
         static thread_local std::vector<const Subscription*> active;
@@ -322,6 +285,13 @@ private:
         const auto& active = active_on_this_thread();
         if (std::find(active.begin(), active.end(), &subscription) != active.end()) {
             // We are inside this very callback, so the only invocation to wait for is us.
+            return;
+        }
+
+        // Never block the io thread, for the same reason read_on_io() and drain() don't: a
+        // callback running elsewhere may be waiting on the io thread to get anything done. The
+        // subscription is already marked dead, so this still cannot be invoked again.
+        if (on_io_thread()) {
             return;
         }
 

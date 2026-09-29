@@ -162,11 +162,10 @@ TEST_F(CallbackListTest, UnsubscribeFromCallback)
     EXPECT_EQ(called, 1);
 }
 
-TEST_F(CallbackListTest, UnsubscribeBlockingFromCallback)
+TEST_F(CallbackListTest, UnsubscribeFromCallbackWithOtherSubscribers)
 {
-    // On the io thread unsubscribe_blocking() has to defer like unsubscribe() does: exec() is
-    // iterating _list at that point, so erasing would leave it calling a moved-from
-    // std::function, and there is nothing to wait for anyway.
+    // On the io thread unsubscribe() has to defer the erase: exec() is iterating _list at that
+    // point, so erasing would leave it calling a moved-from std::function.
     unsigned called_before = 0;
     unsigned called_self = 0;
     unsigned called_after = 0;
@@ -174,7 +173,7 @@ TEST_F(CallbackListTest, UnsubscribeBlockingFromCallback)
     CallbackList<> cl{_io_context};
     cl.subscribe([&]() { ++called_before; });
     Handle<> handle = cl.subscribe([&]() {
-        cl.unsubscribe_blocking(handle);
+        cl.unsubscribe(handle);
         ++called_self;
     });
     cl.subscribe([&]() { ++called_after; });
@@ -230,7 +229,7 @@ TEST_F(CallbackListTest, DestroyingListStopsAlreadyQueuedInvocation)
     EXPECT_EQ(called, 0);
 }
 
-TEST_F(CallbackListTest, UnsubscribeBlockingWaitsForRunningCallback)
+TEST_F(CallbackListTest, UnsubscribeWaitsForRunningCallback)
 {
     std::promise<void> entered;
     std::promise<void> may_return;
@@ -249,11 +248,11 @@ TEST_F(CallbackListTest, UnsubscribeBlockingWaitsForRunningCallback)
     entered.get_future().wait();
 
     std::thread unsubscriber([&]() {
-        cl.unsubscribe_blocking(handle);
+        cl.unsubscribe(handle);
         unsubscribed = true;
     });
 
-    // The callback is still running, so unsubscribe_blocking() must not have returned.
+    // The callback is still running, so unsubscribe() must not have returned.
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     EXPECT_FALSE(unsubscribed.load());
 
@@ -265,7 +264,7 @@ TEST_F(CallbackListTest, UnsubscribeBlockingWaitsForRunningCallback)
     EXPECT_TRUE(unsubscribed.load());
 }
 
-TEST_F(CallbackListTest, UnsubscribeBlockingWaitsForRunningQueuedInvocation)
+TEST_F(CallbackListTest, UnsubscribeWaitsForRunningQueuedInvocation)
 {
     // The exec() case above is covered incidentally by the io thread being busy. A queued
     // invocation runs on someone else's thread, so it needs tracking of its own.
@@ -289,7 +288,7 @@ TEST_F(CallbackListTest, UnsubscribeBlockingWaitsForRunningQueuedInvocation)
     entered.get_future().wait();
 
     std::thread unsubscriber([&]() {
-        cl.unsubscribe_blocking(handle);
+        cl.unsubscribe(handle);
         unsubscribed = true;
     });
 
@@ -312,7 +311,7 @@ TEST_F(CallbackListTest, UnsubscribeTwiceIsIgnored)
 
     cl.unsubscribe(handle);
     cl.unsubscribe(handle);
-    cl.unsubscribe_blocking(handle);
+    cl.unsubscribe(handle);
 
     cl();
     EXPECT_EQ(called, 0);

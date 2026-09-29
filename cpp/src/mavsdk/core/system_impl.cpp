@@ -238,7 +238,7 @@ void SystemImpl::unregister_libmav_message_handler(Handle<Mavsdk::MavlinkMessage
     // Blocking: once this returns the io thread can no longer invoke the callback. Plugin
     // deinit() relies on that to destroy the object that owns the callback (which captures
     // its 'this') without a use-after-free on the io thread.
-    _libmav_message_callbacks.unsubscribe_blocking(handle);
+    _libmav_message_callbacks.unsubscribe(handle);
 
     if (_message_debugging) {
         LogDebug("Unregistered libmav handler");

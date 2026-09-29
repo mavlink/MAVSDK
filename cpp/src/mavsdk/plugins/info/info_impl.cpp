@@ -335,8 +335,9 @@ void InfoImpl::unsubscribe_flight_information(Info::FlightInformationHandle hand
     // Reset message to default
     _system_impl->set_msg_rate_async(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 0.0, nullptr);
 
-    std::lock_guard<std::mutex> lock(_mutex);
-
+    // Deliberately without _mutex: unsubscribe() waits for a running callback, and a user
+    // callback that calls back in here would need the lock. CallbackList synchronizes itself,
+    // so the lock was not buying anything.
     _flight_info_subscriptions.unsubscribe(handle);
 }
 
