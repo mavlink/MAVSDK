@@ -234,7 +234,7 @@ Events::EventsHandle EventsImpl::subscribe_events(const Events::EventsCallback& 
 }
 void EventsImpl::unsubscribe_events(Events::EventsHandle handle)
 {
-    const std::lock_guard lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _events_callbacks.unsubscribe(handle);
 }
 Events::HealthAndArmingChecksHandle EventsImpl::subscribe_health_and_arming_checks(
@@ -252,7 +252,7 @@ Events::HealthAndArmingChecksHandle EventsImpl::subscribe_health_and_arming_chec
 }
 void EventsImpl::unsubscribe_health_and_arming_checks(Events::HealthAndArmingChecksHandle handle)
 {
-    const std::lock_guard lg{_mutex};
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _health_and_arming_checks_callbacks.unsubscribe(handle);
 }
 std::pair<Events::Result, Events::HealthAndArmingCheckReport>

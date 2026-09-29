@@ -651,7 +651,7 @@ MissionRawImpl::subscribe_mission_progress(const MissionRaw::MissionProgressCall
 
 void MissionRawImpl::unsubscribe_mission_progress(MissionRaw::MissionProgressHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _mission_progress.callbacks.unsubscribe(handle);
 }
 
@@ -670,7 +670,7 @@ MissionRawImpl::subscribe_mission_changed(const MissionRaw::MissionChangedCallba
 
 void MissionRawImpl::unsubscribe_mission_changed(MissionRaw::MissionChangedHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_mission_changed.mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _mission_changed.callbacks.unsubscribe(handle);
 }
 

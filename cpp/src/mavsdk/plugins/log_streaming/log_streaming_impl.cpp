@@ -226,7 +226,7 @@ LogStreamingImpl::subscribe_log_streaming_raw(const LogStreaming::LogStreamingRa
 
 void LogStreamingImpl::unsubscribe_log_streaming_raw(LogStreaming::LogStreamingRawHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _subscription_callbacks.unsubscribe(handle);
 }
 

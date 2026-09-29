@@ -991,7 +991,10 @@ GimbalImpl::subscribe_gimbal_list(const Gimbal::GimbalListCallback& callback)
 
 void GimbalImpl::unsubscribe_gimbal_list(Gimbal::GimbalListHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    // Deliberately without _mutex: unsubscribe() waits for a running callback, and a user
+    // callback that calls back in here would need the lock. CallbackList synchronizes
+    // itself, so the lock was not buying anything. subscribe() above keeps it, it cannot
+    // wait.
     _gimbal_list_subscriptions.unsubscribe(handle);
 }
 
@@ -1030,7 +1033,10 @@ GimbalImpl::subscribe_control_status(const Gimbal::ControlStatusCallback& callba
 
 void GimbalImpl::unsubscribe_control_status(Gimbal::ControlStatusHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    // Deliberately without _mutex: unsubscribe() waits for a running callback, and a user
+    // callback that calls back in here would need the lock. CallbackList synchronizes
+    // itself, so the lock was not buying anything. subscribe() above keeps it, it cannot
+    // wait.
     _control_status_subscriptions.unsubscribe(handle);
 }
 
@@ -1042,7 +1048,10 @@ Gimbal::AttitudeHandle GimbalImpl::subscribe_attitude(const Gimbal::AttitudeCall
 
 void GimbalImpl::unsubscribe_attitude(Gimbal::AttitudeHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    // Deliberately without _mutex: unsubscribe() waits for a running callback, and a user
+    // callback that calls back in here would need the lock. CallbackList synchronizes
+    // itself, so the lock was not buying anything. subscribe() above keeps it, it cannot
+    // wait.
     _attitude_subscriptions.unsubscribe(handle);
 }
 

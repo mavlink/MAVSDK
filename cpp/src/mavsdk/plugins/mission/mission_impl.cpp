@@ -1123,7 +1123,7 @@ MissionImpl::subscribe_mission_progress(const Mission::MissionProgressCallback& 
 
 void MissionImpl::unsubscribe_mission_progress(Mission::MissionProgressHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_mission_data.mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _mission_data.mission_progress_callbacks.unsubscribe(handle);
 }
 

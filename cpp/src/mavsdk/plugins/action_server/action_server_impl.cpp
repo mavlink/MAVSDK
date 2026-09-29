@@ -387,7 +387,7 @@ ActionServerImpl::subscribe_arm_disarm(const ActionServer::ArmDisarmCallback& ca
 
 void ActionServerImpl::unsubscribe_arm_disarm(ActionServer::ArmDisarmHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_callback_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _arm_disarm_callbacks.unsubscribe(handle);
 }
 
@@ -400,7 +400,7 @@ ActionServer::FlightModeChangeHandle ActionServerImpl::subscribe_flight_mode_cha
 
 void ActionServerImpl::unsubscribe_flight_mode_change(ActionServer::FlightModeChangeHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_callback_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _flight_mode_change_callbacks.unsubscribe(handle);
 }
 
@@ -413,7 +413,7 @@ ActionServerImpl::subscribe_takeoff(const ActionServer::TakeoffCallback& callbac
 
 void ActionServerImpl::unsubscribe_takeoff(ActionServer::TakeoffHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_callback_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _takeoff_callbacks.unsubscribe(handle);
 }
 
@@ -427,7 +427,7 @@ ActionServerImpl::subscribe_land(const ActionServer::LandCallback& callback)
 
 void ActionServerImpl::unsubscribe_land(ActionServer::LandHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_callback_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _land_callbacks.unsubscribe(handle);
 }
 
@@ -441,7 +441,7 @@ ActionServerImpl::subscribe_reboot(const ActionServer::RebootCallback& callback)
 
 void ActionServerImpl::unsubscribe_reboot(ActionServer::RebootHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_callback_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _reboot_callbacks.unsubscribe(handle);
 }
 
@@ -455,7 +455,7 @@ ActionServerImpl::subscribe_shutdown(const ActionServer::ShutdownCallback& callb
 
 void ActionServerImpl::unsubscribe_shutdown(ActionServer::ShutdownHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_callback_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _shutdown_callbacks.unsubscribe(handle);
 }
 
@@ -469,7 +469,7 @@ ActionServerImpl::subscribe_terminate(const ActionServer::TerminateCallback& cal
 
 void ActionServerImpl::unsubscribe_terminate(ActionServer::TerminateHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_callback_mutex);
+    // No lock: unsubscribe() waits, and the callback may want it. See THREADING.md.
     _terminate_callbacks.unsubscribe(handle);
 }
 

@@ -60,24 +60,20 @@ Two variants exist everywhere, and the difference matters:
 | Variant | Guarantee | Use it when |
 |---|---|---|
 | `unregister_all()`, `TimeoutHandler::remove()`, `CallEveryHandler::remove()` | The callback will not be *started* again. One that is running right now keeps running. | You are inside a callback, or you hold a lock the callback also takes. |
-| `unregister_all_blocking()`, `remove_blocking()`, `unsubscribe_blocking()` | Once it returns, the callback is neither running nor going to run. | The owner is about to be destroyed. |
+| `unregister_all_blocking()`, `remove_blocking()` | Once it returns, the callback is neither running nor going to run. | The owner is about to be destroyed. |
 
 **A destructor, `deinit()` or `disable()` must use the blocking variant.** The non-blocking one
 leaves a window in which the io thread dispatches into a half-destroyed object.
 
-For subscriptions specifically, both variants are stronger than the table suggests, and the
-difference between them is narrower:
+Subscriptions are the exception: there is only `unsubscribe()`, and it gives the strong
+guarantee. It marks the subscription dead synchronously, before it returns, and every dispatch
+checks that, so the callback will not be invoked again even if an invocation had already been
+copied onto the user callback queue — removing the list entry alone would not cover that. It then
+waits for an invocation that is already running, on whichever thread it is running.
 
-- `unsubscribe()` marks the subscription dead synchronously, before it returns. Every dispatch
-  checks that, so the callback will not be invoked again even if an invocation had already been
-  copied onto the user callback queue. Removing the list entry alone would not cover that.
-- `unsubscribe_blocking()` additionally waits for an invocation that is already running, on
-  whichever thread it is running.
-
-Both are safe to call from inside the callback: the erase is deferred rather than applied while
-`exec()` iterates the list, and the wait is skipped when the caller is the invocation it would
-otherwise be waiting for. So prefer `unsubscribe_blocking()` unless you hold a lock the callback
-also takes.
+So `unsubscribe()` waits, and must not be called while holding a lock the callback also takes.
+Calling it from inside the callback is fine: it skips the wait rather than waiting for itself,
+and defers the erase rather than mutating the list while `exec()` iterates it.
 
 Destroying a `CallbackList` marks all of its subscriptions dead the same way, so dropping a
 plugin gives the same guarantee as unsubscribing everything in it.

@@ -24,11 +24,6 @@ template<typename... Args> void CallbackList<Args...>::unsubscribe(Handle<Args..
     _impl->unsubscribe(handle);
 }
 
-template<typename... Args> void CallbackList<Args...>::unsubscribe_blocking(Handle<Args...> handle)
-{
-    _impl->unsubscribe_blocking(handle);
-}
-
 template<typename... Args>
 void CallbackList<Args...>::subscribe_conditional(const std::function<bool(Args...)>& callback)
 {
