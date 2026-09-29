@@ -7,7 +7,6 @@
 #include <cstddef>
 #include <functional>
 #include <future>
-#include <map>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -76,14 +75,14 @@ public:
         if (callback != nullptr) {
             // Tracked here as well as in _list, because unsubscribe() has to reach it from
             // whatever thread it is called on, possibly before the insertion below has run.
-            auto subscription = std::make_shared<Subscription>();
+            auto subscription = std::make_shared<Subscription>(handle);
             {
                 std::lock_guard<std::mutex> lock(_subscriptions_mutex);
-                _subscriptions.insert({handle, subscription});
+                _subscriptions.push_back(subscription);
             }
 
-            post_mutation([this, handle, callback, subscription]() {
-                _list.push_back(Entry{handle, callback, subscription});
+            post_mutation([this, callback, subscription]() {
+                _list.push_back(Entry{callback, subscription});
                 update_size();
             });
         } else {
@@ -185,6 +184,10 @@ private:
     // Shared between the list entry and every copy of the callback handed to a queue, so that
     // unsubscribing reaches all of them and keeps working after the list itself is gone.
     struct Subscription {
+        explicit Subscription(Handle<Args...> handle_) : handle(handle_) {}
+
+        // Set at construction and never changed, so it is readable without the mutex.
+        const Handle<Args...> handle;
         std::mutex mutex;
         std::condition_variable idle;
         bool alive{true};
@@ -192,7 +195,6 @@ private:
     };
 
     struct Entry {
-        Handle<Args...> handle;
         std::function<void(Args...)> callback;
         std::shared_ptr<Subscription> subscription;
     };
@@ -253,11 +255,14 @@ private:
         std::shared_ptr<Subscription> subscription;
         {
             std::lock_guard<std::mutex> lock(_subscriptions_mutex);
-            auto it = _subscriptions.find(handle);
+            auto it = std::find_if(
+                _subscriptions.begin(), _subscriptions.end(), [&](const auto& candidate) {
+                    return candidate->handle == handle;
+                });
             if (it == _subscriptions.end()) {
                 return nullptr;
             }
-            subscription = it->second;
+            subscription = *it;
             _subscriptions.erase(it);
         }
 
@@ -268,15 +273,15 @@ private:
 
     void mark_all_dead()
     {
-        std::map<Handle<Args...>, std::shared_ptr<Subscription>> subscriptions;
+        std::vector<std::shared_ptr<Subscription>> subscriptions;
         {
             std::lock_guard<std::mutex> lock(_subscriptions_mutex);
             subscriptions.swap(_subscriptions);
         }
 
-        for (auto& entry : subscriptions) {
-            std::lock_guard<std::mutex> lock(entry.second->mutex);
-            entry.second->alive = false;
+        for (auto& subscription : subscriptions) {
+            std::lock_guard<std::mutex> lock(subscription->mutex);
+            subscription->alive = false;
         }
     }
 
@@ -307,7 +312,7 @@ private:
                 std::remove_if(
                     _list.begin(),
                     _list.end(),
-                    [&](const Entry& entry) { return entry.handle == handle; }),
+                    [&](const Entry& entry) { return entry.subscription->handle == handle; }),
                 _list.end());
             update_size();
         };
@@ -416,9 +421,10 @@ private:
     std::vector<std::function<bool(Args...)>> _cond_cb_list{};
     std::atomic<std::size_t> _size{0};
 
-    // Reachable from any thread, unlike _list.
+    // Reachable from any thread, unlike _list. A handful of entries at most, one per
+    // subscriber to this one stream, and never looked at while dispatching.
     std::mutex _subscriptions_mutex{};
-    std::map<Handle<Args...>, std::shared_ptr<Subscription>> _subscriptions{};
+    std::vector<std::shared_ptr<Subscription>> _subscriptions{};
 };
 
 } // namespace mavsdk
