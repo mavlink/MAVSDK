@@ -285,6 +285,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
+                    item.ofstream.close();
                     item.callback(result_from_nak(payload), {});
                     terminate_session(*work);
                     _work_queue.pop_front();
@@ -356,6 +357,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                             static_cast<int>(sr),
                             static_cast<int>(payload->req_opcode));
                         stop_timer();
+                        item.ofstream.close();
                         item.callback(result_from_nak(payload), {});
                         terminate_session(*work);
                         _work_queue.pop_front();
@@ -641,6 +643,7 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
         if (item.bytes_transferred < item.file_size) {
             item.ofstream.write(reinterpret_cast<const char*>(payload->data), payload->size);
             if (!item.ofstream) {
+                item.ofstream.close();
                 item.callback(ClientResult::FileIoError, {});
                 return false;
             }
@@ -791,6 +794,7 @@ bool MavlinkFtpClient::download_burst_continue(
     }
 
     if (!burst_absorb(item, payload->offset, payload->data, payload->size)) {
+        item.ofstream.close();
         item.callback(ClientResult::FileIoError, {});
         download_burst_end(work);
         return false;
@@ -1616,6 +1620,7 @@ void MavlinkFtpClient::timeout()
                         "Download timed out after {} of {} bytes",
                         item.bytes_transferred,
                         item.file_size);
+                    item.ofstream.close();
                     item.callback(
                         ClientResult::Timeout,
                         ProgressData{
@@ -1649,6 +1654,7 @@ void MavlinkFtpClient::timeout()
                         item.current_offset - std::min(item.current_offset, missing));
                     LogWarn(
                         "Burst download timed out after {} of {} bytes", received, item.file_size);
+                    item.ofstream.close();
                     item.callback(ClientResult::Timeout, ProgressData{received, item.file_size});
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
