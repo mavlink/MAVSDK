@@ -528,6 +528,9 @@ class Gimbal:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
+        # Stream subscriptions, by handle: the trampoline to keep alive and the
+        # unsubscribe to call for it. destroy() releases whatever is left.
+        self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
         # run. Without this lock two of them can both find a live handle and
@@ -852,16 +855,27 @@ class Gimbal:
                 print(f"Error in gimbal_list callback: {e}")
 
         cb = GimbalListCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_gimbal_subscribe_gimbal_list(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_gimbal_subscribe_gimbal_list(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_gimbal_unsubscribe_gimbal_list,
+        )
+
+        return _subscription
 
     def unsubscribe_gimbal_list(self, handle: ctypes.c_void_p):
         """Unsubscribe from gimbal_list
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_gimbal_unsubscribe_gimbal_list(self._handle, handle)
 
@@ -895,16 +909,27 @@ class Gimbal:
                 print(f"Error in control_status callback: {e}")
 
         cb = ControlStatusCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_gimbal_subscribe_control_status(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_gimbal_subscribe_control_status(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_gimbal_unsubscribe_control_status,
+        )
+
+        return _subscription
 
     def unsubscribe_control_status(self, handle: ctypes.c_void_p):
         """Unsubscribe from control_status
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_gimbal_unsubscribe_control_status(self._handle, handle)
 
@@ -941,16 +966,27 @@ class Gimbal:
                 print(f"Error in attitude callback: {e}")
 
         cb = AttitudeCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_gimbal_subscribe_attitude(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_gimbal_subscribe_attitude(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_gimbal_unsubscribe_attitude,
+        )
+
+        return _subscription
 
     def unsubscribe_attitude(self, handle: ctypes.c_void_p):
         """Unsubscribe from attitude
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_gimbal_unsubscribe_attitude(self._handle, handle)
 
@@ -976,7 +1012,14 @@ class Gimbal:
             handle, self._handle = self._handle, None
 
         if handle:
+            # The C wrapper does not track these, so release them here. unsubscribe()
+            # waits for a running callback, so the trampolines can go right after.
+            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+                _unsubscribe(handle, _subscription)
+            self._subscriptions.clear()
+
             self._lib.mavsdk_gimbal_destroy(handle)
+            self._callbacks.clear()
 
     def __del__(self):
         self.destroy()

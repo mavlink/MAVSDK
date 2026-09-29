@@ -5,9 +5,7 @@
 #include "follow_me.h"
 
 #include <mavsdk/plugins/follow_me/follow_me.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -213,7 +211,6 @@ void mavsdk_follow_me_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_follow_me_wrapper {
     std::shared_ptr<mavsdk::FollowMe> cpp_plugin;
-    std::mutex handles_mutex;
 };
 
 mavsdk_follow_me_t
@@ -234,15 +231,9 @@ void mavsdk_follow_me_destroy(mavsdk_follow_me_t follow_me) {
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
 }
 
 // ===== Method Implementations =====

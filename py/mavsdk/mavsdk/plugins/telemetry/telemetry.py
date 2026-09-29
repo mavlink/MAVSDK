@@ -2148,6 +2148,9 @@ class Telemetry:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
+        # Stream subscriptions, by handle: the trampoline to keep alive and the
+        # unsubscribe to call for it. destroy() releases whatever is left.
+        self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
         # run. Without this lock two of them can both find a live handle and
@@ -2186,16 +2189,27 @@ class Telemetry:
                 print(f"Error in position callback: {e}")
 
         cb = PositionCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_position(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_position(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_position,
+        )
+
+        return _subscription
 
     def unsubscribe_position(self, handle: ctypes.c_void_p):
         """Unsubscribe from position
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_position(self._handle, handle)
 
@@ -2225,16 +2239,27 @@ class Telemetry:
                 print(f"Error in home callback: {e}")
 
         cb = HomeCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_home(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_home(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_home,
+        )
+
+        return _subscription
 
     def unsubscribe_home(self, handle: ctypes.c_void_p):
         """Unsubscribe from home
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_home(self._handle, handle)
 
@@ -2262,16 +2287,27 @@ class Telemetry:
                 print(f"Error in in_air callback: {e}")
 
         cb = InAirCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_in_air(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_in_air(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_in_air,
+        )
+
+        return _subscription
 
     def unsubscribe_in_air(self, handle: ctypes.c_void_p):
         """Unsubscribe from in_air
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_in_air(self._handle, handle)
 
@@ -2297,16 +2333,27 @@ class Telemetry:
                 print(f"Error in landed_state callback: {e}")
 
         cb = LandedStateCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_landed_state(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_landed_state(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_landed_state,
+        )
+
+        return _subscription
 
     def unsubscribe_landed_state(self, handle: ctypes.c_void_p):
         """Unsubscribe from landed_state
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_landed_state(self._handle, handle)
 
@@ -2332,16 +2379,27 @@ class Telemetry:
                 print(f"Error in armed callback: {e}")
 
         cb = ArmedCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_armed(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_armed(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_armed,
+        )
+
+        return _subscription
 
     def unsubscribe_armed(self, handle: ctypes.c_void_p):
         """Unsubscribe from armed
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_armed(self._handle, handle)
 
@@ -2367,16 +2425,27 @@ class Telemetry:
                 print(f"Error in vtol_state callback: {e}")
 
         cb = VtolStateCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_vtol_state(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_vtol_state(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_vtol_state,
+        )
+
+        return _subscription
 
     def unsubscribe_vtol_state(self, handle: ctypes.c_void_p):
         """Unsubscribe from vtol_state
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_vtol_state(self._handle, handle)
 
@@ -2404,18 +2473,27 @@ class Telemetry:
                 print(f"Error in attitude_quaternion callback: {e}")
 
         cb = AttitudeQuaternionCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_attitude_quaternion(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_attitude_quaternion(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion,
+        )
+
+        return _subscription
 
     def unsubscribe_attitude_quaternion(self, handle: ctypes.c_void_p):
         """Unsubscribe from attitude_quaternion
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion(self._handle, handle)
 
@@ -2447,18 +2525,27 @@ class Telemetry:
                 print(f"Error in attitude_euler callback: {e}")
 
         cb = AttitudeEulerCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_attitude_euler(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_attitude_euler(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_attitude_euler,
+        )
+
+        return _subscription
 
     def unsubscribe_attitude_euler(self, handle: ctypes.c_void_p):
         """Unsubscribe from attitude_euler
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_attitude_euler(self._handle, handle)
 
@@ -2494,18 +2581,29 @@ class Telemetry:
                 print(f"Error in attitude_angular_velocity_body callback: {e}")
 
         cb = AttitudeAngularVelocityBodyCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body(
-            self._handle, cb, None
+        _subscription = (
+            self._lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body(
+                self._handle, cb, None
+            )
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body,
+        )
+
+        return _subscription
 
     def unsubscribe_attitude_angular_velocity_body(self, handle: ctypes.c_void_p):
         """Unsubscribe from attitude_angular_velocity_body
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
             self._handle, handle
@@ -2541,16 +2639,27 @@ class Telemetry:
                 print(f"Error in velocity_ned callback: {e}")
 
         cb = VelocityNedCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_velocity_ned(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_velocity_ned(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_velocity_ned,
+        )
+
+        return _subscription
 
     def unsubscribe_velocity_ned(self, handle: ctypes.c_void_p):
         """Unsubscribe from velocity_ned
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_velocity_ned(self._handle, handle)
 
@@ -2580,16 +2689,27 @@ class Telemetry:
                 print(f"Error in gps_info callback: {e}")
 
         cb = GpsInfoCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_gps_info(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_gps_info(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_gps_info,
+        )
+
+        return _subscription
 
     def unsubscribe_gps_info(self, handle: ctypes.c_void_p):
         """Unsubscribe from gps_info
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_gps_info(self._handle, handle)
 
@@ -2619,16 +2739,27 @@ class Telemetry:
                 print(f"Error in raw_gps callback: {e}")
 
         cb = RawGpsCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_raw_gps(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_raw_gps(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_raw_gps,
+        )
+
+        return _subscription
 
     def unsubscribe_raw_gps(self, handle: ctypes.c_void_p):
         """Unsubscribe from raw_gps
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_raw_gps(self._handle, handle)
 
@@ -2658,16 +2789,27 @@ class Telemetry:
                 print(f"Error in battery callback: {e}")
 
         cb = BatteryCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_battery(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_battery(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_battery,
+        )
+
+        return _subscription
 
     def unsubscribe_battery(self, handle: ctypes.c_void_p):
         """Unsubscribe from battery
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_battery(self._handle, handle)
 
@@ -2695,16 +2837,27 @@ class Telemetry:
                 print(f"Error in flight_mode callback: {e}")
 
         cb = FlightModeCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_flight_mode(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_flight_mode(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_flight_mode,
+        )
+
+        return _subscription
 
     def unsubscribe_flight_mode(self, handle: ctypes.c_void_p):
         """Unsubscribe from flight_mode
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_flight_mode(self._handle, handle)
 
@@ -2732,16 +2885,27 @@ class Telemetry:
                 print(f"Error in health callback: {e}")
 
         cb = HealthCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_health(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_health(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_health,
+        )
+
+        return _subscription
 
     def unsubscribe_health(self, handle: ctypes.c_void_p):
         """Unsubscribe from health
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_health(self._handle, handle)
 
@@ -2771,16 +2935,27 @@ class Telemetry:
                 print(f"Error in rc_status callback: {e}")
 
         cb = RcStatusCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_rc_status(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_rc_status(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_rc_status,
+        )
+
+        return _subscription
 
     def unsubscribe_rc_status(self, handle: ctypes.c_void_p):
         """Unsubscribe from rc_status
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_rc_status(self._handle, handle)
 
@@ -2810,16 +2985,27 @@ class Telemetry:
                 print(f"Error in status_text callback: {e}")
 
         cb = StatusTextCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_status_text(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_status_text(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_status_text,
+        )
+
+        return _subscription
 
     def unsubscribe_status_text(self, handle: ctypes.c_void_p):
         """Unsubscribe from status_text
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_status_text(self._handle, handle)
 
@@ -2853,18 +3039,27 @@ class Telemetry:
                 print(f"Error in actuator_control_target callback: {e}")
 
         cb = ActuatorControlTargetCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_actuator_control_target(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_actuator_control_target(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_actuator_control_target,
+        )
+
+        return _subscription
 
     def unsubscribe_actuator_control_target(self, handle: ctypes.c_void_p):
         """Unsubscribe from actuator_control_target
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_actuator_control_target(
             self._handle, handle
@@ -2904,18 +3099,27 @@ class Telemetry:
                 print(f"Error in actuator_output_status callback: {e}")
 
         cb = ActuatorOutputStatusCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_actuator_output_status(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_actuator_output_status(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_actuator_output_status,
+        )
+
+        return _subscription
 
     def unsubscribe_actuator_output_status(self, handle: ctypes.c_void_p):
         """Unsubscribe from actuator_output_status
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_actuator_output_status(
             self._handle, handle
@@ -2951,16 +3155,27 @@ class Telemetry:
                 print(f"Error in odometry callback: {e}")
 
         cb = OdometryCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_odometry(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_odometry(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_odometry,
+        )
+
+        return _subscription
 
     def unsubscribe_odometry(self, handle: ctypes.c_void_p):
         """Unsubscribe from odometry
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_odometry(self._handle, handle)
 
@@ -2994,18 +3209,27 @@ class Telemetry:
                 print(f"Error in position_velocity_ned callback: {e}")
 
         cb = PositionVelocityNedCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_position_velocity_ned(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_position_velocity_ned(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_position_velocity_ned,
+        )
+
+        return _subscription
 
     def unsubscribe_position_velocity_ned(self, handle: ctypes.c_void_p):
         """Unsubscribe from position_velocity_ned
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_position_velocity_ned(
             self._handle, handle
@@ -3041,16 +3265,27 @@ class Telemetry:
                 print(f"Error in ground_truth callback: {e}")
 
         cb = GroundTruthCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_ground_truth(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_ground_truth(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_ground_truth,
+        )
+
+        return _subscription
 
     def unsubscribe_ground_truth(self, handle: ctypes.c_void_p):
         """Unsubscribe from ground_truth
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_ground_truth(self._handle, handle)
 
@@ -3082,18 +3317,27 @@ class Telemetry:
                 print(f"Error in fixedwing_metrics callback: {e}")
 
         cb = FixedwingMetricsCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_fixedwing_metrics(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_fixedwing_metrics(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics,
+        )
+
+        return _subscription
 
     def unsubscribe_fixedwing_metrics(self, handle: ctypes.c_void_p):
         """Unsubscribe from fixedwing_metrics
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics(self._handle, handle)
 
@@ -3125,16 +3369,25 @@ class Telemetry:
                 print(f"Error in imu callback: {e}")
 
         cb = ImuCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_imu(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_imu(self._handle, cb, None)
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_imu,
+        )
+
+        return _subscription
 
     def unsubscribe_imu(self, handle: ctypes.c_void_p):
         """Unsubscribe from imu
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_imu(self._handle, handle)
 
@@ -3164,16 +3417,27 @@ class Telemetry:
                 print(f"Error in scaled_imu callback: {e}")
 
         cb = ScaledImuCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_scaled_imu(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_scaled_imu(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_scaled_imu,
+        )
+
+        return _subscription
 
     def unsubscribe_scaled_imu(self, handle: ctypes.c_void_p):
         """Unsubscribe from scaled_imu
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_scaled_imu(self._handle, handle)
 
@@ -3203,16 +3467,27 @@ class Telemetry:
                 print(f"Error in raw_imu callback: {e}")
 
         cb = RawImuCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_raw_imu(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_raw_imu(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_raw_imu,
+        )
+
+        return _subscription
 
     def unsubscribe_raw_imu(self, handle: ctypes.c_void_p):
         """Unsubscribe from raw_imu
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_raw_imu(self._handle, handle)
 
@@ -3240,18 +3515,27 @@ class Telemetry:
                 print(f"Error in health_all_ok callback: {e}")
 
         cb = HealthAllOkCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_health_all_ok(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_health_all_ok(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_health_all_ok,
+        )
+
+        return _subscription
 
     def unsubscribe_health_all_ok(self, handle: ctypes.c_void_p):
         """Unsubscribe from health_all_ok
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_health_all_ok(self._handle, handle)
 
@@ -3277,18 +3561,27 @@ class Telemetry:
                 print(f"Error in unix_epoch_time callback: {e}")
 
         cb = UnixEpochTimeCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_unix_epoch_time(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_unix_epoch_time(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time,
+        )
+
+        return _subscription
 
     def unsubscribe_unix_epoch_time(self, handle: ctypes.c_void_p):
         """Unsubscribe from unix_epoch_time
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time(self._handle, handle)
 
@@ -3318,18 +3611,27 @@ class Telemetry:
                 print(f"Error in distance_sensor callback: {e}")
 
         cb = DistanceSensorCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_distance_sensor(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_distance_sensor(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_distance_sensor,
+        )
+
+        return _subscription
 
     def unsubscribe_distance_sensor(self, handle: ctypes.c_void_p):
         """Unsubscribe from distance_sensor
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_distance_sensor(self._handle, handle)
 
@@ -3361,18 +3663,27 @@ class Telemetry:
                 print(f"Error in scaled_pressure callback: {e}")
 
         cb = ScaledPressureCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_scaled_pressure(
+        _subscription = self._lib.mavsdk_telemetry_subscribe_scaled_pressure(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure,
+        )
+
+        return _subscription
 
     def unsubscribe_scaled_pressure(self, handle: ctypes.c_void_p):
         """Unsubscribe from scaled_pressure
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure(self._handle, handle)
 
@@ -3404,16 +3715,27 @@ class Telemetry:
                 print(f"Error in heading callback: {e}")
 
         cb = HeadingCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_heading(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_heading(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_heading,
+        )
+
+        return _subscription
 
     def unsubscribe_heading(self, handle: ctypes.c_void_p):
         """Unsubscribe from heading
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_heading(self._handle, handle)
 
@@ -3443,16 +3765,27 @@ class Telemetry:
                 print(f"Error in altitude callback: {e}")
 
         cb = AltitudeCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_altitude(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_altitude(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_altitude,
+        )
+
+        return _subscription
 
     def unsubscribe_altitude(self, handle: ctypes.c_void_p):
         """Unsubscribe from altitude
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_altitude(self._handle, handle)
 
@@ -3482,16 +3815,27 @@ class Telemetry:
                 print(f"Error in wind callback: {e}")
 
         cb = WindCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_wind(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_wind(
+            self._handle, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_telemetry_unsubscribe_wind,
+        )
+
+        return _subscription
 
     def unsubscribe_wind(self, handle: ctypes.c_void_p):
         """Unsubscribe from wind
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_telemetry_unsubscribe_wind(self._handle, handle)
 
@@ -4390,7 +4734,14 @@ class Telemetry:
             handle, self._handle = self._handle, None
 
         if handle:
+            # The C wrapper does not track these, so release them here. unsubscribe()
+            # waits for a running callback, so the trampolines can go right after.
+            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+                _unsubscribe(handle, _subscription)
+            self._subscriptions.clear()
+
             self._lib.mavsdk_telemetry_destroy(handle)
+            self._callbacks.clear()
 
     def __del__(self):
         self.destroy()

@@ -226,6 +226,9 @@ class {{ plugin_name.upper_camel_case }}:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
+        # Stream subscriptions, by handle: the trampoline to keep alive and the
+        # unsubscribe to call for it. destroy() releases whatever is left.
+        self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
         # run. Without this lock two of them can both find a live handle and
@@ -331,7 +334,9 @@ class {{ plugin_name.upper_camel_case }}:
                 print(f"Error in {{ method.name.lower_snake_case }} callback: {e}")
 
         cb = {{ method.name.upper_camel_case }}Callback(c_callback)
+        {% if not (method.is_stream and not method.is_finite) %}
         self._callbacks.append(cb)
+        {% endif %}
 
         {# Convert repeated params to C arrays ahead of the call #}
         {% for param in method.params %}
@@ -350,7 +355,7 @@ class {{ plugin_name.upper_camel_case }}:
         {% endfor %}
 
         {% if method.is_stream and not method.is_finite %}
-        return self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_subscribe_{{ method.name.lower_snake_case }}(
+        _subscription = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_subscribe_{{ method.name.lower_snake_case }}(
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_async(
         {% endif %}
@@ -370,14 +375,26 @@ class {{ plugin_name.upper_camel_case }}:
             cb,
             None
         )
+        {% if method.is_stream and not method.is_finite %}
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }},
+        )
+
+        return _subscription
+        {% endif %}
 
     {% if method.is_stream and not method.is_finite %}
     def unsubscribe_{{ method.name.lower_snake_case }}(self, handle: ctypes.c_void_p):
         """Unsubscribe from {{ method.name.lower_snake_case }}
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}(
             self._handle, handle
@@ -513,7 +530,14 @@ class {{ plugin_name.upper_camel_case }}:
             handle, self._handle = self._handle, None
 
         if handle:
+            # The C wrapper does not track these, so release them here. unsubscribe()
+            # waits for a running callback, so the trampolines can go right after.
+            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+                _unsubscribe(handle, _subscription)
+            self._subscriptions.clear()
+
             self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_destroy(handle)
+            self._callbacks.clear()
 
     def __del__(self):
         self.destroy()

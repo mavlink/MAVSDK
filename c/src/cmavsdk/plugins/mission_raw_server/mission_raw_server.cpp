@@ -5,9 +5,7 @@
 #include "mission_raw_server.h"
 
 #include <mavsdk/plugins/mission_raw_server/mission_raw_server.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -248,10 +246,6 @@ void mavsdk_mission_raw_server_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_mission_raw_server_wrapper {
     std::shared_ptr<mavsdk::MissionRawServer> cpp_plugin;
-    std::mutex handles_mutex;
-    std::vector<mavsdk::MissionRawServer::IncomingMissionHandle*> incoming_mission_handles;
-    std::vector<mavsdk::MissionRawServer::CurrentItemChangedHandle*> current_item_changed_handles;
-    std::vector<mavsdk::MissionRawServer::ClearAllHandle*> clear_all_handles;
 };
 
 mavsdk_mission_raw_server_t
@@ -272,30 +266,9 @@ void mavsdk_mission_raw_server_destroy(mavsdk_mission_raw_server_t mission_raw_s
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        for (auto* h : wrapper->incoming_mission_handles) {
-            wrapper->cpp_plugin->unsubscribe_incoming_mission(std::move(*h));
-            delete h;
-        }
-        wrapper->incoming_mission_handles.clear();
-        for (auto* h : wrapper->current_item_changed_handles) {
-            wrapper->cpp_plugin->unsubscribe_current_item_changed(std::move(*h));
-            delete h;
-        }
-        wrapper->current_item_changed_handles.clear();
-        for (auto* h : wrapper->clear_all_handles) {
-            wrapper->cpp_plugin->unsubscribe_clear_all(std::move(*h));
-            delete h;
-        }
-        wrapper->clear_all_handles.clear();
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
 }
 
 // ===== Method Implementations =====
@@ -322,11 +295,6 @@ mavsdk_mission_raw_server_incoming_mission_handle_t mavsdk_mission_raw_server_su
 
     auto cpp_handle_ptr = new mavsdk::MissionRawServer::IncomingMissionHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->incoming_mission_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_mission_raw_server_incoming_mission_handle_t>(cpp_handle_ptr);
 }
 
@@ -340,19 +308,6 @@ void mavsdk_mission_raw_server_unsubscribe_incoming_mission(
 
     auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
     auto cpp_handle = reinterpret_cast<mavsdk::MissionRawServer::IncomingMissionHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->incoming_mission_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_incoming_mission(std::move(*cpp_handle));
     delete cpp_handle;
@@ -379,11 +334,6 @@ mavsdk_mission_raw_server_current_item_changed_handle_t mavsdk_mission_raw_serve
 
     auto cpp_handle_ptr = new mavsdk::MissionRawServer::CurrentItemChangedHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->current_item_changed_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_mission_raw_server_current_item_changed_handle_t>(cpp_handle_ptr);
 }
 
@@ -397,19 +347,6 @@ void mavsdk_mission_raw_server_unsubscribe_current_item_changed(
 
     auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
     auto cpp_handle = reinterpret_cast<mavsdk::MissionRawServer::CurrentItemChangedHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->current_item_changed_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_current_item_changed(std::move(*cpp_handle));
     delete cpp_handle;
@@ -448,11 +385,6 @@ mavsdk_mission_raw_server_clear_all_handle_t mavsdk_mission_raw_server_subscribe
 
     auto cpp_handle_ptr = new mavsdk::MissionRawServer::ClearAllHandle(std::move(cpp_handle));
 
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        wrapper->clear_all_handles.push_back(cpp_handle_ptr);
-    }
-
     return reinterpret_cast<mavsdk_mission_raw_server_clear_all_handle_t>(cpp_handle_ptr);
 }
 
@@ -466,19 +398,6 @@ void mavsdk_mission_raw_server_unsubscribe_clear_all(
 
     auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
     auto cpp_handle = reinterpret_cast<mavsdk::MissionRawServer::ClearAllHandle*>(handle);
-
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-        auto& vec = wrapper->clear_all_handles;
-
-        // Only act on a handle we still own: destroy already unsubscribed all
-        // of them, and unsubscribing twice would be a double free.
-        auto it = std::find(vec.begin(), vec.end(), cpp_handle);
-        if (it == vec.end()) {
-            return;
-        }
-        vec.erase(it);
-    }
 
     wrapper->cpp_plugin->unsubscribe_clear_all(std::move(*cpp_handle));
     delete cpp_handle;

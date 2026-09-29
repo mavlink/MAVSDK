@@ -5,9 +5,7 @@
 #include "log_files.h"
 
 #include <mavsdk/plugins/log_files/log_files.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -173,7 +171,6 @@ void mavsdk_log_files_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_log_files_wrapper {
     std::shared_ptr<mavsdk::LogFiles> cpp_plugin;
-    std::mutex handles_mutex;
 };
 
 mavsdk_log_files_t
@@ -194,15 +191,9 @@ void mavsdk_log_files_destroy(mavsdk_log_files_t log_files) {
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_log_files_wrapper*>(log_files);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_log_files_wrapper*>(log_files);
 }
 
 // ===== Method Implementations =====

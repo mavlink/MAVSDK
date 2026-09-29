@@ -106,6 +106,9 @@ class LogStreaming:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
+        # Stream subscriptions, by handle: the trampoline to keep alive and the
+        # unsubscribe to call for it. destroy() releases whatever is left.
+        self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
         # run. Without this lock two of them can both find a live handle and
@@ -204,18 +207,27 @@ class LogStreaming:
                 print(f"Error in log_streaming_raw callback: {e}")
 
         cb = LogStreamingRawCallback(c_callback)
-        self._callbacks.append(cb)
 
-        return self._lib.mavsdk_log_streaming_subscribe_log_streaming_raw(
+        _subscription = self._lib.mavsdk_log_streaming_subscribe_log_streaming_raw(
             self._handle, cb, None
         )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_log_streaming_unsubscribe_log_streaming_raw,
+        )
+
+        return _subscription
 
     def unsubscribe_log_streaming_raw(self, handle: ctypes.c_void_p):
         """Unsubscribe from log_streaming_raw
 
-        Does nothing once the plugin is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
         """
         if not self._handle:
+            return
+        if self._subscriptions.pop(handle, None) is None:
             return
         self._lib.mavsdk_log_streaming_unsubscribe_log_streaming_raw(
             self._handle, handle
@@ -227,7 +239,14 @@ class LogStreaming:
             handle, self._handle = self._handle, None
 
         if handle:
+            # The C wrapper does not track these, so release them here. unsubscribe()
+            # waits for a running callback, so the trampolines can go right after.
+            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+                _unsubscribe(handle, _subscription)
+            self._subscriptions.clear()
+
             self._lib.mavsdk_log_streaming_destroy(handle)
+            self._callbacks.clear()
 
     def __del__(self):
         self.destroy()

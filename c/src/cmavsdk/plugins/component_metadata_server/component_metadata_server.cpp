@@ -5,9 +5,7 @@
 #include "component_metadata_server.h"
 
 #include <mavsdk/plugins/component_metadata_server/component_metadata_server.hpp>
-#include <algorithm>
 #include <cstring>
-#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -142,7 +140,6 @@ void mavsdk_component_metadata_server_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_component_metadata_server_wrapper {
     std::shared_ptr<mavsdk::ComponentMetadataServer> cpp_plugin;
-    std::mutex handles_mutex;
 };
 
 mavsdk_component_metadata_server_t
@@ -163,15 +160,9 @@ void mavsdk_component_metadata_server_destroy(mavsdk_component_metadata_server_t
         return;
     }
 
-    auto wrapper = reinterpret_cast<mavsdk_component_metadata_server_wrapper*>(component_metadata_server);
-
-    // Unsubscribe all active streams before destroying to prevent
-    // callbacks firing into a destroyed object
-    {
-        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
-    }
-
-    delete wrapper;
+    // Releasing the handles is the caller's job. Dropping the plugin marks every
+    // subscription of it dead anyway, so nothing can fire into it after this.
+    delete reinterpret_cast<mavsdk_component_metadata_server_wrapper*>(component_metadata_server);
 }
 
 // ===== Method Implementations =====

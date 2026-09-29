@@ -92,6 +92,9 @@ class Mavsdk:
         self._lib = _cmavsdk_lib
 
         self._callbacks = {}  # Keep references to prevent GC: { handle: callback }
+        # The unsubscribe that belongs to each handle, so destroy() can release
+        # whatever the caller left subscribed.
+        self._unsubscribers = {}
 
         # Systems and server components own a handle each and must be released before
         # mavsdk_destroy runs, since Python's GC gives no ordering guarantee between
@@ -205,18 +208,21 @@ class Mavsdk:
         )
 
         self._callbacks[handle] = c_callback
+        self._unsubscribers[handle] = self._lib.mavsdk_unsubscribe_on_new_system
 
         return handle
 
     def unsubscribe_on_new_system(self, handle: ctypes.c_void_p):
         """Unsubscribe from new system discoveries
 
-        Does nothing once this instance is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once this instance is destroyed, which
+        unsubscribes already.
         """
         if not self._handle:
             return
+        if self._callbacks.pop(handle, None) is None:
+            return
         self._lib.mavsdk_unsubscribe_on_new_system(self._handle, handle)
-        self._callbacks.pop(handle, None)
 
     def server_component(self, instance: int = 0):
         """Get server component by instance"""
@@ -263,17 +269,20 @@ class Mavsdk:
             self._handle, c_callback, None
         )
         self._callbacks[handle] = c_callback
+        self._unsubscribers[handle] = self._lib.mavsdk_unsubscribe_raw_bytes_to_be_sent
         return handle
 
     def unsubscribe_raw_bytes_to_be_sent(self, handle):
         """Unsubscribe from raw bytes to be sent.
 
-        Does nothing once this instance is destroyed, which unsubscribes already.
+        Idempotent. Does nothing once this instance is destroyed, which
+        unsubscribes already.
         """
         if not self._handle:
             return
+        if self._callbacks.pop(handle, None) is None:
+            return
         self._lib.mavsdk_unsubscribe_raw_bytes_to_be_sent(self._handle, handle)
-        self._callbacks.pop(handle, None)
 
     def destroy(self):
         """Destroy the Mavsdk instance. Idempotent, safe from any thread."""
@@ -288,6 +297,12 @@ class Mavsdk:
             for child in list(self._children):
                 child.destroy()
             self._children.clear()
+
+            # The C wrapper does not track these, so release them here. unsubscribe()
+            # waits for a running callback, so this cannot race one.
+            for sub_handle, unsubscribe in list(self._unsubscribers.items()):
+                unsubscribe(handle, sub_handle)
+            self._unsubscribers.clear()
 
             self._lib.mavsdk_destroy(handle)
 
