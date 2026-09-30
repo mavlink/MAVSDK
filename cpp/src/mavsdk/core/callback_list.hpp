@@ -24,7 +24,10 @@ public:
     explicit CallbackList(asio::io_context& io_context);
     ~CallbackList();
 
-    Handle<Args...> subscribe(const std::function<void(Args...)>& callback);
+    // A callback with a filter is only invoked, or queued, when the filter returns true.
+    Handle<Args...> subscribe(
+        const std::function<void(Args...)>& callback,
+        const std::function<bool(Args...)>& filter = nullptr);
     void unsubscribe(Handle<Args...> handle);
     void subscribe_conditional(const std::function<bool(Args...)>& callback);
     void operator()(Args... args);

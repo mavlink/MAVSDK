@@ -52,7 +52,9 @@ void MavlinkDirectImpl::init()
             mavlink_direct_message.target_component_id = message.target_component_id;
             mavlink_direct_message.fields_json = message.fields_json;
 
-            _callbacks(mavlink_direct_message);
+            _callbacks.queue(mavlink_direct_message, [this](const auto& func) {
+                _system_impl->call_user_callback(func);
+            });
         });
 }
 
@@ -166,21 +168,14 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
 MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
     std::string message_name, const MavlinkDirect::MessageCallback& callback)
 {
-    // filtering_callback is called synchronously on the I/O thread (via _callbacks()/exec()
-    // in init()).  It captures 'this' only to reach call_user_callback, and is never
-    // enqueued anywhere — so there is no lifetime issue.  deinit() calls _callbacks.clear()
-    // before unregistering the system handler, which blocks until any in-flight exec()
-    // completes; after that, filtering_callback will never be called again.
-    auto filtering_callback =
-        [this, message_name, callback](const MavlinkDirect::MavlinkMessage& message) {
-            if (!message_name.empty() && message_name != message.message_name) {
-                return;
-            }
-            _system_impl->call_user_callback([callback, message]() { callback(message); });
-        };
+    if (message_name.empty()) {
+        return _callbacks.subscribe(callback);
+    }
 
-    // Subscribe to internal CallbackList and return handle directly
-    return _callbacks.subscribe(filtering_callback);
+    return _callbacks.subscribe(
+        callback, [message_name](const MavlinkDirect::MavlinkMessage& message) {
+            return message.message_name == message_name;
+        });
 }
 
 void MavlinkDirectImpl::unsubscribe_message(MavlinkDirect::MessageHandle handle)

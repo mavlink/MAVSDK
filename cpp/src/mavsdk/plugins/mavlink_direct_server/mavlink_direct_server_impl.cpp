@@ -45,7 +45,9 @@ void MavlinkDirectServerImpl::init()
             mavlink_direct_message.target_component_id = message.target_component_id;
             mavlink_direct_message.fields_json = message.fields_json;
 
-            _callbacks(mavlink_direct_message);
+            _callbacks.queue(mavlink_direct_message, [this](const auto& func) {
+                _server_component_impl->call_user_callback(func);
+            });
         });
 }
 
@@ -146,15 +148,14 @@ MavlinkDirectServerImpl::send_message(MavlinkDirectServer::MavlinkMessage messag
 MavlinkDirectServer::MessageHandle MavlinkDirectServerImpl::subscribe_message(
     std::string message_name, const MavlinkDirectServer::MessageCallback& callback)
 {
-    auto filtering_callback = [this, message_name, callback](
-                                  const MavlinkDirectServer::MavlinkMessage& message) {
-        if (!message_name.empty() && message_name != message.message_name) {
-            return;
-        }
-        _server_component_impl->call_user_callback([callback, message]() { callback(message); });
-    };
+    if (message_name.empty()) {
+        return _callbacks.subscribe(callback);
+    }
 
-    return _callbacks.subscribe(filtering_callback);
+    return _callbacks.subscribe(
+        callback, [message_name](const MavlinkDirectServer::MavlinkMessage& message) {
+            return message.message_name == message_name;
+        });
 }
 
 void MavlinkDirectServerImpl::unsubscribe_message(MavlinkDirectServer::MessageHandle handle)

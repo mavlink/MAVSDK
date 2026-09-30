@@ -14,9 +14,10 @@ CallbackList<Args...>::CallbackList(asio::io_context& io_context) :
 template<typename... Args> CallbackList<Args...>::~CallbackList() = default;
 
 template<typename... Args>
-Handle<Args...> CallbackList<Args...>::subscribe(const std::function<void(Args...)>& callback)
+Handle<Args...> CallbackList<Args...>::subscribe(
+    const std::function<void(Args...)>& callback, const std::function<bool(Args...)>& filter)
 {
-    return _impl->subscribe(callback);
+    return _impl->subscribe(callback, filter);
 }
 
 template<typename... Args> void CallbackList<Args...>::unsubscribe(Handle<Args...> handle)
