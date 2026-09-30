@@ -66,7 +66,9 @@ public:
         drain();
     }
 
-    Handle<Args...> subscribe(const std::function<void(Args...)>& callback)
+    Handle<Args...> subscribe(
+        const std::function<void(Args...)>& callback,
+        const std::function<bool(Args...)>& filter = nullptr)
     {
         // The handle factory is thread-safe, so hand out the handle synchronously and
         // apply the actual insertion on the io thread.
@@ -81,8 +83,8 @@ public:
                 _subscriptions.push_back(subscription);
             }
 
-            post_mutation([this, callback, subscription]() {
-                _list.push_back(Entry{callback, subscription});
+            post_mutation([this, callback, filter, subscription]() {
+                _list.push_back(Entry{callback, filter, subscription});
                 update_size();
             });
         } else {
@@ -135,6 +137,9 @@ public:
     {
         read_on_io([&]() {
             for (const auto& entry : _list) {
+                if (!entry.accepts(args...)) {
+                    continue;
+                }
                 Invocation invocation{*entry.subscription};
                 if (invocation.entered()) {
                     entry.callback(args...);
@@ -196,7 +201,10 @@ private:
 
     struct Entry {
         std::function<void(Args...)> callback;
+        std::function<bool(Args...)> filter;
         std::shared_ptr<Subscription> subscription;
+
+        bool accepts(const Args&... args) const { return filter == nullptr || filter(args...); }
     };
 
     // Subscriptions whose callback this thread is currently inside. Lets unsubscribe() called
@@ -322,13 +330,16 @@ private:
     void hand_to(const std::function<void(const std::function<void()>&)>& queue_func, Args... args)
     {
         for (const auto& entry : _list) {
-            queue_func(
-                [callback = entry.callback, subscription = entry.subscription, args...]() {
-                    Invocation invocation{*subscription};
-                    if (invocation.entered()) {
-                        callback(args...);
-                    }
-                });
+            // Filtered here on the io thread, so a callback does not get queued for nothing.
+            if (!entry.accepts(args...)) {
+                continue;
+            }
+            queue_func([callback = entry.callback, subscription = entry.subscription, args...]() {
+                Invocation invocation{*subscription};
+                if (invocation.entered()) {
+                    callback(args...);
+                }
+            });
         }
     }
 
