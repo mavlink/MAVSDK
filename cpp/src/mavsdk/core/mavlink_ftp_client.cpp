@@ -242,6 +242,12 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
         }
     }
 
+    if (payload->req_opcode == CMD_BURST_READ_FILE &&
+        static_cast<int16_t>(payload->seq_number - _last_sent_seq_number) >= 0) {
+        // Skip past the burst's replies, or the server replays its last one to our next request.
+        _last_sent_seq_number = payload->seq_number + 1;
+    }
+
     if (payload->opcode == RSP_NAK && payload->req_opcode == CMD_TERMINATE_SESSION &&
         static_cast<ServerResult>(payload->data[0]) == ERR_INVALID_SESSION) {
         // The session we are closing is gone already, which is what we were asking
@@ -284,13 +290,27 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
-                    stop_timer();
-                    item.ofstream.close();
-                    item.callback(result_from_nak(payload), {});
-                    terminate_session(*work);
-                    _work_queue.pop_front();
-                    if (!_work_queue.empty()) {
-                        asio::post(_io_context, [this] { do_work(); });
+                    const ServerResult sr = static_cast<ServerResult>(payload->data[0]);
+                    if (payload->req_opcode == CMD_READ_FILE && sr == ERR_EOF) {
+                        // The reported size can be an estimate, EOF is the actual end.
+                        work->note_progress();
+                        _retry_timeout_s.reset();
+                        start_timer();
+                        terminate_session(*work);
+                    } else if (
+                        payload->req_opcode == CMD_READ_FILE && is_refused_short_read(*work, sr)) {
+                        work->note_progress();
+                        _retry_timeout_s.reset();
+                        request_read(*work, work->payload.offset, max_data_length);
+                    } else {
+                        stop_timer();
+                        item.ofstream.close();
+                        item.callback(result_from_nak(payload), {});
+                        terminate_session(*work);
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                     }
                 }
             },
@@ -333,24 +353,33 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                         start_timer(3.0);
                         LogDebug("No session available, retrying...");
                     } else if (sr == ERR_EOF && payload->req_opcode == CMD_BURST_READ_FILE) {
-                        // The PX4 server ends the data of a burst with NAK(EOF) rather than
-                        // with a packet that has burst_complete set, and answers a burst
-                        // request at the end of the file the same way. Neither is a failure:
-                        // it means this part has no more data.
+                        // PX4 and ArduPilot end a burst with NAK(EOF). Its tail may have
+                        // been lost, so the end is confirmed with a plain read.
                         if (_debugging) {
                             LogDebug("Burst ended with EOF at {}", item.current_offset);
                         }
-                        if (!item.missing_data.empty() || item.current_offset == item.file_size) {
-                            work->note_progress();
-                            _retry_timeout_s.reset();
+                        work->note_progress();
+                        _retry_timeout_s.reset();
+                        if (!item.missing_data.empty()) {
                             request_burst_next(*work, item);
                         } else {
-                            // The server has no more data although we are not at the end of
-                            // the file, which is what a burst whose last packets were lost
-                            // looks like. Leave the retry to the timeout: it backs off and
-                            // eventually gives up, where asking again from here would spin.
-                            start_timer();
+                            request_read(*work, item.current_offset, max_data_length);
                         }
+                    } else if (
+                        sr == ERR_EOF && payload->req_opcode == CMD_READ_FILE &&
+                        item.missing_data.empty() && work->payload.offset >= item.current_offset) {
+                        // The reported size can be an estimate, EOF is the actual end.
+                        if (_debugging) {
+                            LogDebug("Burst download complete at {}", item.current_offset);
+                        }
+                        work->note_progress();
+                        _retry_timeout_s.reset();
+                        download_burst_end(*work);
+                    } else if (
+                        payload->req_opcode == CMD_READ_FILE && is_refused_short_read(*work, sr)) {
+                        work->note_progress();
+                        _retry_timeout_s.reset();
+                        request_read(*work, work->payload.offset, max_data_length);
                     } else {
                         LogWarn(
                             "FTP: NAK received: server result {} for opcode {}",
@@ -640,59 +669,59 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
             LogWarn("Download continue, write: {}", payload->size);
         }
 
-        if (item.bytes_transferred < item.file_size) {
-            item.ofstream.write(reinterpret_cast<const char*>(payload->data), payload->size);
-            if (!item.ofstream) {
-                item.ofstream.close();
-                item.callback(ClientResult::FileIoError, {});
-                return false;
-            }
-            item.bytes_transferred += payload->size;
-
-            if (_debugging) {
-                LogDebug("Written {} of {} bytes", item.bytes_transferred, item.file_size);
-            }
+        item.ofstream.write(reinterpret_cast<const char*>(payload->data), payload->size);
+        if (!item.ofstream) {
+            item.ofstream.close();
+            item.callback(ClientResult::FileIoError, {});
+            return false;
         }
+        item.bytes_transferred += payload->size;
+
+        if (_debugging) {
+            LogDebug("Written {} of {} bytes", item.bytes_transferred, item.file_size);
+        }
+
         item.callback(
             ClientResult::Next,
             ProgressData{
                 static_cast<uint32_t>(item.bytes_transferred),
-                static_cast<uint32_t>(item.file_size)});
+                static_cast<uint32_t>(std::max(item.file_size, item.bytes_transferred))});
     }
 
-    if (item.bytes_transferred < item.file_size) {
-        work.last_opcode = CMD_READ_FILE;
-        work.payload = {};
-        work.payload.seq_number = _last_sent_seq_number++;
-        work.payload.session = _session;
-        work.payload.opcode = work.last_opcode;
-        work.payload.offset = item.bytes_transferred;
-
-        work.payload.size =
-            std::min(static_cast<size_t>(max_data_length), item.file_size - item.bytes_transferred);
-
-        if (_debugging) {
-            LogWarn(
-                "Request size: {} of left {}",
-                work.payload.size,
-                int(item.file_size - item.bytes_transferred));
-        }
-
-        start_timer();
-        send_mavlink_ftp_message(work.payload, work.target_compid);
-
-        return true;
-    } else {
-        if (_debugging) {
-            LogDebug("All bytes written, terminating sessio");
-        }
-
-        start_timer();
-        terminate_session(work);
-        return true;
-    }
+    // Read until EOF, the reported size can be an estimate (e.g. ArduPilot's @PARAM/param.pck).
+    const size_t size =
+        item.bytes_transferred < item.file_size ?
+            std::min(
+                static_cast<size_t>(max_data_length), item.file_size - item.bytes_transferred) :
+            max_data_length;
+    request_read(work, item.bytes_transferred, size);
 
     return true;
+}
+
+void MavlinkFtpClient::request_read(Work& work, size_t offset, size_t size)
+{
+    if (_debugging) {
+        LogDebug("Requesting read from {} with size {}", offset, size);
+    }
+
+    work.last_opcode = CMD_READ_FILE;
+    work.payload = {};
+    work.payload.seq_number = _last_sent_seq_number++;
+    work.payload.session = _session;
+    work.payload.opcode = work.last_opcode;
+    work.payload.offset = static_cast<uint32_t>(offset);
+    work.payload.size = static_cast<uint8_t>(size);
+
+    start_timer();
+    send_mavlink_ftp_message(work.payload, work.target_compid);
+}
+
+bool MavlinkFtpClient::is_refused_short_read(const Work& work, ServerResult result)
+{
+    // ArduPilot's param.pck only accepts reads of the same size as the first one.
+    return work.last_opcode == CMD_READ_FILE && work.payload.size < max_data_length &&
+           (result == ERR_FAIL || result == ERR_FAIL_ERRNO);
 }
 
 bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
@@ -772,11 +801,11 @@ bool MavlinkFtpClient::download_burst_continue(
         return true;
     }
 
-    if (payload->offset > item.file_size || payload->size > item.file_size - payload->offset) {
-        // The server should never point us past the end of the file. Drop the packet
-        // rather than zero-filling a gap of up to ~4 GB from a bad offset -- and rather
-        // than failing the transfer, because a stale packet from an earlier session is
-        // not this transfer's fault.
+    if (payload->offset > std::max(static_cast<size_t>(item.file_size), item.current_offset)) {
+        // Data past the reported size has to follow on from what we have. Drop the
+        // packet rather than zero-filling a gap of up to ~4 GB from a bad offset -- and
+        // rather than failing the transfer, because a stale packet from an earlier session
+        // is not this transfer's fault.
         LogWarn(
             "Ignoring FTP data at offset {} with size {}, past the file size {}",
             (uint32_t)payload->offset,
@@ -803,17 +832,12 @@ bool MavlinkFtpClient::download_burst_continue(
     // Bytes we keep are the only thing that counts as progress.
     work.note_progress();
 
-    if (item.missing_data.empty() && item.current_offset == item.file_size) {
-        if (_debugging) {
-            LogDebug("Burst download complete");
-        }
-        download_burst_end(work);
-        return true;
-    }
-
     item.callback(
         ClientResult::Next,
-        ProgressData{static_cast<uint32_t>(burst_bytes_transferred(item)), item.file_size});
+        ProgressData{
+            static_cast<uint32_t>(burst_bytes_transferred(item)),
+            static_cast<uint32_t>(
+                std::max(static_cast<size_t>(item.file_size), item.current_offset))});
 
     if (!drives_next) {
         // Whatever we are waiting for is still outstanding, but the link is alive.
@@ -930,7 +954,8 @@ void MavlinkFtpClient::request_burst_next(Work& work, DownloadBurstItem& item)
         return;
     }
 
-    download_burst_end(work);
+    // Confirm the end with a read, as the reported size can be an estimate.
+    request_read(work, item.current_offset, max_data_length);
 }
 
 void MavlinkFtpClient::download_burst_end(Work& work)
@@ -974,23 +999,7 @@ void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item, size_t
 void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
 {
     const auto& missing = item.missing_data.front();
-    size_t size = std::min(missing.size, size_t(max_data_length));
-
-    if (_debugging) {
-        LogDebug("Re-requesting from {} with size {}", missing.offset, size);
-    }
-
-    work.last_opcode = CMD_READ_FILE;
-    work.payload = {};
-    work.payload.seq_number = _last_sent_seq_number++;
-    work.payload.session = _session;
-    work.payload.opcode = work.last_opcode;
-    work.payload.offset = static_cast<uint32_t>(missing.offset);
-
-    work.payload.size = static_cast<uint8_t>(size);
-
-    start_timer();
-    send_mavlink_ftp_message(work.payload, work.target_compid);
+    request_read(work, missing.offset, std::min(missing.size, size_t(max_data_length)));
 }
 
 size_t MavlinkFtpClient::burst_bytes_transferred(DownloadBurstItem& item)
@@ -1674,7 +1683,7 @@ void MavlinkFtpClient::timeout()
                     return;
                 }
 
-                if (item.missing_data.empty() && item.current_offset == item.file_size) {
+                if (work->last_opcode == CMD_TERMINATE_SESSION) {
                     // Everything arrived, only the session teardown is outstanding and we
                     // don't need an answer for that.
                     item.ofstream.close();
@@ -1683,6 +1692,17 @@ void MavlinkFtpClient::timeout()
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
                         asio::post(_io_context, [this] { do_work(); });
+                    }
+                    return;
+                }
+
+                if (item.missing_data.empty() && item.current_offset >= item.file_size) {
+                    // Only the confirmation of the end is outstanding.
+                    if (work->last_opcode == CMD_READ_FILE) {
+                        start_timer();
+                        send_mavlink_ftp_message(work->payload, work->target_compid);
+                    } else {
+                        request_read(*work, item.current_offset, max_data_length);
                     }
                     return;
                 }

@@ -33,6 +33,7 @@ add_executable(system_tests_runner
     fs_helpers.cpp
     ftp_download_file.cpp
     ftp_download_file_burst.cpp
+    ftp_download_file_size_estimate.cpp
     ftp_remove_file.cpp
     ftp_upload_file.cpp
     ftp_rename_file.cpp
