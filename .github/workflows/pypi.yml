@@ -20,6 +20,9 @@ on:
       - macOS Build and Test
       - Windows Build and Test
     types: [completed]
+    # Release tag builds only; for those, head_branch is the tag name.
+    branches:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
   workflow_dispatch:
     inputs:
       tag:
@@ -37,8 +40,7 @@ concurrency:
 jobs:
   check:
     name: Check wheels
-    # A workflow_run fires for every branch and tag, so ignore everything that is
-    # not a successful tag build. Which tags qualify is decided in the step below.
+    # Second guard next to the branches filter; the step below decides which tags qualify.
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
