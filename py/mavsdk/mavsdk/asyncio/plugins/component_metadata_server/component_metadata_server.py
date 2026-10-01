@@ -26,7 +26,6 @@ class ComponentMetadataServerAsync:
     """
 
     def __init__(self, server_component):
-        self._subscription_handles: dict = {}
         self._plugin = ComponentMetadataServer(server_component)
 
     async def set_metadata(self, metadata):
@@ -47,7 +46,6 @@ class ComponentMetadataServerAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

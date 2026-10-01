@@ -36,7 +36,6 @@ class GimbalAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Gimbal(system._system)
 
     async def set_angles(
@@ -211,14 +210,11 @@ class GimbalAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_gimbal_list(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_gimbal_list(handle)
+            self._plugin.unsubscribe_gimbal_list(handle)
 
     async def gimbal_list(self):
         """
@@ -258,14 +254,11 @@ class GimbalAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_control_status(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_control_status(handle)
+            self._plugin.unsubscribe_control_status(handle)
 
     async def get_control_status(self, gimbal_id):
         """
@@ -305,14 +298,11 @@ class GimbalAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_attitude(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_attitude(handle)
+            self._plugin.unsubscribe_attitude(handle)
 
     async def get_attitude(self, gimbal_id):
         """
@@ -335,7 +325,6 @@ class GimbalAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

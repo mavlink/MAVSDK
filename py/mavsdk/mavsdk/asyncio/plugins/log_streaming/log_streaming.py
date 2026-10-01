@@ -25,7 +25,6 @@ class LogStreamingAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = LogStreaming(system._system)
 
     async def start_log_streaming(self):
@@ -74,17 +73,13 @@ class LogStreamingAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_log_streaming_raw(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_log_streaming_raw(handle)
+            self._plugin.unsubscribe_log_streaming_raw(handle)
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

@@ -27,7 +27,6 @@ class WinchAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Winch(system._system)
 
     async def subscribe_status(self) -> AsyncGenerator[Status, None]:
@@ -46,14 +45,11 @@ class WinchAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_status(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_status(handle)
+            self._plugin.unsubscribe_status(handle)
 
     async def status(self):
         """
@@ -237,7 +233,6 @@ class WinchAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

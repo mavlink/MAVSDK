@@ -26,7 +26,6 @@ class TuneAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Tune(system._system)
 
     async def play_tune(self, tune_description):
@@ -47,7 +46,6 @@ class TuneAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

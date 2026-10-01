@@ -28,7 +28,6 @@ class LogFilesAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = LogFiles(system._system)
 
     async def get_entries(self):
@@ -91,7 +90,6 @@ class LogFilesAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

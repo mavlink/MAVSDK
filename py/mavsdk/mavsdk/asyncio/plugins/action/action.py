@@ -26,7 +26,6 @@ class ActionAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Action(system._system)
 
     async def arm(self):
@@ -524,7 +523,6 @@ class ActionAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

@@ -28,7 +28,6 @@ class ParamServerAsync:
     """
 
     def __init__(self, server_component):
-        self._subscription_handles: dict = {}
         self._plugin = ParamServer(server_component)
 
     async def set_protocol(self, extended_protocol):
@@ -226,14 +225,11 @@ class ParamServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_changed_param_int(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_changed_param_int(handle)
+            self._plugin.unsubscribe_changed_param_int(handle)
 
     async def subscribe_changed_param_float(self) -> AsyncGenerator[FloatParam, None]:
         """
@@ -251,14 +247,11 @@ class ParamServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_changed_param_float(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_changed_param_float(handle)
+            self._plugin.unsubscribe_changed_param_float(handle)
 
     async def subscribe_changed_param_custom(self) -> AsyncGenerator[CustomParam, None]:
         """
@@ -276,17 +269,13 @@ class ParamServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_changed_param_custom(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_changed_param_custom(handle)
+            self._plugin.unsubscribe_changed_param_custom(handle)
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

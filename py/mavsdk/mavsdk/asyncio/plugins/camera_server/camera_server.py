@@ -35,7 +35,6 @@ class CameraServerAsync:
     """
 
     def __init__(self, server_component):
-        self._subscription_handles: dict = {}
         self._plugin = CameraServer(server_component)
 
     async def set_information(self, information):
@@ -105,14 +104,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_take_photo(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_take_photo(handle)
+            self._plugin.unsubscribe_take_photo(handle)
 
     async def respond_take_photo(self, take_photo_feedback, capture_info):
         """
@@ -149,14 +145,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_start_video(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_start_video(handle)
+            self._plugin.unsubscribe_start_video(handle)
 
     async def respond_start_video(self, start_video_feedback):
         """
@@ -191,14 +184,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_stop_video(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_stop_video(handle)
+            self._plugin.unsubscribe_stop_video(handle)
 
     async def respond_stop_video(self, stop_video_feedback):
         """
@@ -233,14 +223,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_start_video_streaming(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_start_video_streaming(handle)
+            self._plugin.unsubscribe_start_video_streaming(handle)
 
     async def respond_start_video_streaming(self, start_video_streaming_feedback):
         """
@@ -278,14 +265,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_stop_video_streaming(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_stop_video_streaming(handle)
+            self._plugin.unsubscribe_stop_video_streaming(handle)
 
     async def respond_stop_video_streaming(self, stop_video_streaming_feedback):
         """
@@ -323,14 +307,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_set_mode(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_set_mode(handle)
+            self._plugin.unsubscribe_set_mode(handle)
 
     async def respond_set_mode(self, set_mode_feedback):
         """
@@ -365,14 +346,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_storage_information(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_storage_information(handle)
+            self._plugin.unsubscribe_storage_information(handle)
 
     async def respond_storage_information(
         self, storage_information_feedback, storage_information
@@ -413,14 +391,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_capture_status(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_capture_status(handle)
+            self._plugin.unsubscribe_capture_status(handle)
 
     async def respond_capture_status(self, capture_status_feedback, capture_status):
         """
@@ -459,14 +434,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_format_storage(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_format_storage(handle)
+            self._plugin.unsubscribe_format_storage(handle)
 
     async def respond_format_storage(self, format_storage_feedback):
         """
@@ -501,14 +473,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_reset_settings(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_reset_settings(handle)
+            self._plugin.unsubscribe_reset_settings(handle)
 
     async def respond_reset_settings(self, reset_settings_feedback):
         """
@@ -543,14 +512,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_zoom_in_start(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_zoom_in_start(handle)
+            self._plugin.unsubscribe_zoom_in_start(handle)
 
     async def respond_zoom_in_start(self, zoom_in_start_feedback):
         """
@@ -585,14 +551,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_zoom_out_start(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_zoom_out_start(handle)
+            self._plugin.unsubscribe_zoom_out_start(handle)
 
     async def respond_zoom_out_start(self, zoom_out_start_feedback):
         """
@@ -627,14 +590,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_zoom_stop(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_zoom_stop(handle)
+            self._plugin.unsubscribe_zoom_stop(handle)
 
     async def respond_zoom_stop(self, zoom_stop_feedback):
         """
@@ -669,14 +629,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_zoom_range(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_zoom_range(handle)
+            self._plugin.unsubscribe_zoom_range(handle)
 
     async def respond_zoom_range(self, zoom_range_feedback):
         """
@@ -711,14 +668,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_in_step(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_in_step(handle)
+            self._plugin.unsubscribe_focus_in_step(handle)
 
     async def respond_focus_in_step(self, focus_in_step_feedback):
         """
@@ -753,14 +707,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_out_step(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_out_step(handle)
+            self._plugin.unsubscribe_focus_out_step(handle)
 
     async def respond_focus_out_step(self, focus_out_step_feedback):
         """
@@ -795,14 +746,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_in_start(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_in_start(handle)
+            self._plugin.unsubscribe_focus_in_start(handle)
 
     async def respond_focus_in_start(self, focus_in_start_feedback):
         """
@@ -837,14 +785,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_out_start(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_out_start(handle)
+            self._plugin.unsubscribe_focus_out_start(handle)
 
     async def respond_focus_out_start(self, focus_out_start_feedback):
         """
@@ -879,14 +824,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_stop(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_stop(handle)
+            self._plugin.unsubscribe_focus_stop(handle)
 
     async def respond_focus_stop(self, focus_stop_feedback):
         """
@@ -921,14 +863,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_range(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_range(handle)
+            self._plugin.unsubscribe_focus_range(handle)
 
     async def respond_focus_range(self, focus_range_feedback):
         """
@@ -963,14 +902,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_meters(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_meters(handle)
+            self._plugin.unsubscribe_focus_meters(handle)
 
     async def respond_focus_meters(self, focus_meters_feedback):
         """
@@ -1005,14 +941,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_auto(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_auto(handle)
+            self._plugin.unsubscribe_focus_auto(handle)
 
     async def respond_focus_auto(self, focus_auto_feedback):
         """
@@ -1047,14 +980,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_auto_single(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_auto_single(handle)
+            self._plugin.unsubscribe_focus_auto_single(handle)
 
     async def respond_focus_auto_single(self, focus_auto_single_feedback):
         """
@@ -1090,14 +1020,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_focus_auto_continuous(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_focus_auto_continuous(handle)
+            self._plugin.unsubscribe_focus_auto_continuous(handle)
 
     async def respond_focus_auto_continuous(self, focus_auto_continuous_feedback):
         """
@@ -1168,14 +1095,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_tracking_point_command(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_tracking_point_command(handle)
+            self._plugin.unsubscribe_tracking_point_command(handle)
 
     async def subscribe_tracking_rectangle_command(
         self,
@@ -1195,14 +1119,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_tracking_rectangle_command(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_tracking_rectangle_command(handle)
+            self._plugin.unsubscribe_tracking_rectangle_command(handle)
 
     async def subscribe_tracking_off_command(self) -> AsyncGenerator[int, None]:
         """
@@ -1220,14 +1141,11 @@ class CameraServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_tracking_off_command(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_tracking_off_command(handle)
+            self._plugin.unsubscribe_tracking_off_command(handle)
 
     async def respond_tracking_point_command(self, stop_video_feedback):
         """
@@ -1357,7 +1275,6 @@ class CameraServerAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

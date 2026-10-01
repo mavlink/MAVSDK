@@ -24,7 +24,6 @@ class FtpServerAsync:
     """
 
     def __init__(self, server_component):
-        self._subscription_handles: dict = {}
         self._plugin = FtpServer(server_component)
 
     async def set_root_dir(self, path):
@@ -52,7 +51,6 @@ class FtpServerAsync:
         return await loop.run_in_executor(None, lambda: self._plugin.set_root_dir(path))
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

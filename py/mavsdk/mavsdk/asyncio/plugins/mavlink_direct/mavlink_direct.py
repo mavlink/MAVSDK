@@ -25,7 +25,6 @@ class MavlinkDirectAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = MavlinkDirect(system._system)
 
     async def send_message(self, message):
@@ -69,14 +68,11 @@ class MavlinkDirectAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_message(message_name, callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_message(handle)
+            self._plugin.unsubscribe_message(handle)
 
     async def load_custom_xml(self, xml_content):
         """
@@ -99,7 +95,6 @@ class MavlinkDirectAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

@@ -25,7 +25,6 @@ class GripperAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Gripper(system._system)
 
     async def grab(self, instance):
@@ -59,7 +58,6 @@ class GripperAsync:
         return await loop.run_in_executor(None, lambda: self._plugin.release(instance))
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

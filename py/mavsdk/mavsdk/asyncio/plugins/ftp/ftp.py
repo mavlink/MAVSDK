@@ -27,7 +27,6 @@ class FtpAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Ftp(system._system)
 
     async def download(self, remote_file_path, local_dir, use_burst) -> AsyncGenerator:
@@ -221,7 +220,6 @@ class FtpAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

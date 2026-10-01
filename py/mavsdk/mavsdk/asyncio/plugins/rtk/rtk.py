@@ -25,7 +25,6 @@ class RtkAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Rtk(system._system)
 
     async def send_rtcm_data(self, rtcm_data):
@@ -46,7 +45,6 @@ class RtkAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

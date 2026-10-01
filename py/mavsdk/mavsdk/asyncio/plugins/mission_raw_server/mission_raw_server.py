@@ -29,7 +29,6 @@ class MissionRawServerAsync:
     """
 
     def __init__(self, server_component):
-        self._subscription_handles: dict = {}
         self._plugin = MissionRawServer(server_component)
 
     async def subscribe_incoming_mission(
@@ -52,14 +51,11 @@ class MissionRawServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_incoming_mission(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_incoming_mission(handle)
+            self._plugin.unsubscribe_incoming_mission(handle)
 
     async def subscribe_current_item_changed(self) -> AsyncGenerator[MissionItem, None]:
         """
@@ -77,14 +73,11 @@ class MissionRawServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_current_item_changed(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_current_item_changed(handle)
+            self._plugin.unsubscribe_current_item_changed(handle)
 
     async def set_current_item_complete(self):
         """
@@ -116,17 +109,13 @@ class MissionRawServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_clear_all(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_clear_all(handle)
+            self._plugin.unsubscribe_clear_all(handle)
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

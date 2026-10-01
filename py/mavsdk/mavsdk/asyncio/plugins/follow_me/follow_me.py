@@ -28,7 +28,6 @@ class FollowMeAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = FollowMe(system._system)
 
     async def get_config(self):
@@ -135,7 +134,6 @@ class FollowMeAsync:
         return await loop.run_in_executor(None, lambda: self._plugin.stop())
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

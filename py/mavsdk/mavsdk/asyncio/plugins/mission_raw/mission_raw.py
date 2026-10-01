@@ -29,7 +29,6 @@ class MissionRawAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = MissionRaw(system._system)
 
     async def upload_mission(self, mission_items):
@@ -274,14 +273,11 @@ class MissionRawAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_mission_progress(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_mission_progress(handle)
+            self._plugin.unsubscribe_mission_progress(handle)
 
     async def mission_progress(self):
         """
@@ -319,14 +315,11 @@ class MissionRawAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_mission_changed(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_mission_changed(handle)
+            self._plugin.unsubscribe_mission_changed(handle)
 
     async def import_qgroundcontrol_mission(self, qgc_plan_path):
         """
@@ -453,7 +446,6 @@ class MissionRawAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

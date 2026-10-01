@@ -44,7 +44,6 @@ class Mavsdk:
 
     def __init__(self, configuration: Configuration):
         self._mavsdk = _Mavsdk(configuration)
-        self._subscription_handles: dict = {}
 
     # ------------------------------------------------------------------
     # Non-blocking accessors
@@ -175,14 +174,11 @@ class Mavsdk:
             loop.call_soon_threadsafe(queue.put_nowait, None)
 
         handle = self._mavsdk.subscribe_on_new_system(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._mavsdk.unsubscribe_on_new_system(handle)
+            self._mavsdk.unsubscribe_on_new_system(handle)
 
     # ------------------------------------------------------------------
     # Lifecycle
@@ -191,7 +187,6 @@ class Mavsdk:
     def destroy(self) -> None:
         """Destroy the underlying Mavsdk instance and release resources."""
         self._mavsdk.destroy()
-        self._subscription_handles.clear()
 
     async def __aenter__(self):
         return self

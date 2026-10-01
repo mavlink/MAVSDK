@@ -25,7 +25,6 @@ class ArmAuthorizerServerAsync:
     """
 
     def __init__(self, server_component):
-        self._subscription_handles: dict = {}
         self._plugin = ArmAuthorizerServer(server_component)
 
     async def subscribe_arm_authorization(self) -> AsyncGenerator[int, None]:
@@ -44,14 +43,11 @@ class ArmAuthorizerServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_arm_authorization(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_arm_authorization(handle)
+            self._plugin.unsubscribe_arm_authorization(handle)
 
     async def accept_arm_authorization(self, valid_time_s):
         """
@@ -93,7 +89,6 @@ class ArmAuthorizerServerAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

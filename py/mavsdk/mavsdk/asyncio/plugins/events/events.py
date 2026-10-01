@@ -30,7 +30,6 @@ class EventsAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Events(system._system)
 
     async def subscribe_events(self) -> AsyncGenerator[Event, None]:
@@ -49,14 +48,11 @@ class EventsAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_events(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_events(handle)
+            self._plugin.unsubscribe_events(handle)
 
     async def subscribe_health_and_arming_checks(
         self,
@@ -76,14 +72,11 @@ class EventsAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_health_and_arming_checks(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_health_and_arming_checks(handle)
+            self._plugin.unsubscribe_health_and_arming_checks(handle)
 
     async def get_health_and_arming_checks_report(self):
         """
@@ -103,7 +96,6 @@ class EventsAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

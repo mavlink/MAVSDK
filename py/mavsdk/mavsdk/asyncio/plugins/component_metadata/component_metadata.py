@@ -27,7 +27,6 @@ class ComponentMetadataAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = ComponentMetadata(system._system)
 
     async def request_component(self, compid):
@@ -81,14 +80,11 @@ class ComponentMetadataAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_metadata_available(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_metadata_available(handle)
+            self._plugin.unsubscribe_metadata_available(handle)
 
     async def get_metadata(self, compid, metadata_type):
         """
@@ -113,7 +109,6 @@ class ComponentMetadataAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

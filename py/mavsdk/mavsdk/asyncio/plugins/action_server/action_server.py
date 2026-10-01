@@ -27,7 +27,6 @@ class ActionServerAsync:
     """
 
     def __init__(self, server_component):
-        self._subscription_handles: dict = {}
         self._plugin = ActionServer(server_component)
 
     async def subscribe_arm_disarm(
@@ -50,14 +49,11 @@ class ActionServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_arm_disarm(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_arm_disarm(handle)
+            self._plugin.unsubscribe_arm_disarm(handle)
 
     async def subscribe_flight_mode_change(
         self,
@@ -79,14 +75,11 @@ class ActionServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_flight_mode_change(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_flight_mode_change(handle)
+            self._plugin.unsubscribe_flight_mode_change(handle)
 
     async def subscribe_takeoff(
         self,
@@ -108,14 +101,11 @@ class ActionServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_takeoff(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_takeoff(handle)
+            self._plugin.unsubscribe_takeoff(handle)
 
     async def subscribe_land(
         self,
@@ -137,14 +127,11 @@ class ActionServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_land(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_land(handle)
+            self._plugin.unsubscribe_land(handle)
 
     async def subscribe_reboot(
         self,
@@ -166,14 +153,11 @@ class ActionServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_reboot(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_reboot(handle)
+            self._plugin.unsubscribe_reboot(handle)
 
     async def subscribe_shutdown(
         self,
@@ -195,14 +179,11 @@ class ActionServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_shutdown(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_shutdown(handle)
+            self._plugin.unsubscribe_shutdown(handle)
 
     async def subscribe_terminate(
         self,
@@ -224,14 +205,11 @@ class ActionServerAsync:
             loop.call_soon_threadsafe(queue.put_nowait, (result, data))
 
         handle = self._plugin.subscribe_terminate(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_terminate(handle)
+            self._plugin.unsubscribe_terminate(handle)
 
     async def set_allow_takeoff(self, allow_takeoff):
         """
@@ -372,7 +350,6 @@ class ActionServerAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

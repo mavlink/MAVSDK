@@ -55,7 +55,6 @@ class CameraAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Camera(system._system)
 
     async def take_photo(self, component_id):
@@ -242,14 +241,11 @@ class CameraAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_camera_list(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_camera_list(handle)
+            self._plugin.unsubscribe_camera_list(handle)
 
     async def camera_list(self):
         """
@@ -285,14 +281,11 @@ class CameraAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_mode(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_mode(handle)
+            self._plugin.unsubscribe_mode(handle)
 
     async def get_mode(self, component_id):
         """
@@ -332,14 +325,11 @@ class CameraAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_video_stream_info(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_video_stream_info(handle)
+            self._plugin.unsubscribe_video_stream_info(handle)
 
     async def get_video_stream_info(self, component_id):
         """
@@ -377,14 +367,11 @@ class CameraAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_capture_info(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_capture_info(handle)
+            self._plugin.unsubscribe_capture_info(handle)
 
     async def subscribe_storage(self) -> AsyncGenerator[StorageUpdate, None]:
         """
@@ -402,14 +389,11 @@ class CameraAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_storage(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_storage(handle)
+            self._plugin.unsubscribe_storage(handle)
 
     async def get_storage(self, component_id):
         """
@@ -449,14 +433,11 @@ class CameraAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_current_settings(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_current_settings(handle)
+            self._plugin.unsubscribe_current_settings(handle)
 
     async def get_current_settings(self, component_id):
         """
@@ -496,14 +477,11 @@ class CameraAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_possible_setting_options(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_possible_setting_options(handle)
+            self._plugin.unsubscribe_possible_setting_options(handle)
 
     async def get_possible_setting_options(self, component_id):
         """
@@ -916,7 +894,6 @@ class CameraAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):
