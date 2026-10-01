@@ -218,6 +218,12 @@ jobs:
         run: |
           cd kt/mavsdk-kotlin
           ./gradlew jvmJar
+      # Needs the natives laid out above: the tests bring two instances up and talk
+      # MAVLink between them through the JNI boundary.
+      - name: test
+        run: |
+          cd kt/mavsdk-kotlin
+          ./gradlew jvmTest --console=plain
       # Telemetry uses firstAutopilot(timeoutSeconds = 10.0), so it terminates
       # on its own without a vehicle. This proves the native library loads and
       # the JNI boundary works end to end.

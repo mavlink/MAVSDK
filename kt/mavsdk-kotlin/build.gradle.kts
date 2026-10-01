@@ -67,10 +67,28 @@ kotlin {
             dependencies { implementation(neutralJniClasses) }
         }
         val androidMain by getting { kotlin.srcDir(sharedJvmAndroidSources) }
+
+        // The tests are end-to-end: they need the native library, which only the jvm
+        // target carries (from src/jvmMain/resources/native), so they live here rather
+        // than in commonTest.
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+            }
+        }
     }
 }
 
 tasks.named<Jar>("jvmJar") { from(compileNeutralJniJava.flatMap { it.destinationDirectory }) }
+
+// The tests bring two MAVSDK instances up and talk MAVLink between them, so they are
+// slower than unit tests and they need the native library staged into
+// src/jvmMain/resources/native/<os>-<arch>/ first (see .github/workflows/kotlin.yml).
+tasks.named<Test>("jvmTest") {
+    useJUnitPlatform()
+    testLogging { events("passed", "skipped", "failed") }
+}
 
 // Publishes the KMP artifact set: io.mavsdk:mavsdk-kotlin (root module with
 // Gradle Module Metadata), plus -jvm and -android variants.

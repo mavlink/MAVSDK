@@ -99,10 +99,14 @@ actual class System internal constructor(private val handle: Long, private val s
                 .also { synchronized(cacheLock) { subscriptions.add(it) } }
         }
         awaitClose {
-            val unsubscribe = synchronized(cacheLock) { subscriptions.remove(subscriptionHandle) }
-            // Under the read lock, so close() cannot destroy the handle underneath us.
-            if (unsubscribe)
-                withOpenOrIgnore { NativeSystem.unsubscribeIsConnected(handle, subscriptionHandle) }
+            // Claimed under the read lock, so close() is either not started yet or has
+            // already unsubscribed this one and the claim fails -- see the same block in
+            // Mavsdk.subscribeOnNewSystem.
+            withOpenOrIgnore {
+                if (synchronized(cacheLock) { subscriptions.remove(subscriptionHandle) }) {
+                    NativeSystem.unsubscribeIsConnected(handle, subscriptionHandle)
+                }
+            }
         }
     }
 

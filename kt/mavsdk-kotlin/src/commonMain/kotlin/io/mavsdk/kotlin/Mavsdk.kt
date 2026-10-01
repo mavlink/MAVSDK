@@ -45,6 +45,9 @@ expect class Mavsdk(configuration: Configuration) : AutoCloseable {
     /**
      * Remove a connection
      *
+     * Does nothing for a handle that was already removed, so that the connection handle is released
+     * exactly once.
+     *
      * @param handle Connection handle from addAnyConnectionWithHandle
      */
     fun removeConnection(handle: Long)
