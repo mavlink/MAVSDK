@@ -2,6 +2,10 @@ package io.mavsdk.kotlin
 
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /**
  * Tests for the orders in which Kotlin can let go of the handles the bindings hold.
@@ -40,5 +44,39 @@ class TeardownTest {
             // Left in place on purpose: close() releases what the caller kept.
             mavsdk.addAnyConnectionWithHandle("udpin://0.0.0.0:17052").getOrThrow()
         }
+    }
+
+    @Test
+    fun `a subscription cancelled after close is released once`() = runBlocking {
+        Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
+            mavsdk.addAnyConnectionWithHandle("udpin://0.0.0.0:17053").getOrThrow()
+
+            val collector = launch { mavsdk.subscribeOnNewSystem().collect {} }
+            delay(SUBSCRIPTION_SETTLE_MS) // let the subscription get established
+
+            // close() unsubscribes whatever is still subscribed, and the collector's
+            // awaitClose then runs against an instance that is already gone.
+            mavsdk.close()
+            collector.cancelAndJoin()
+        }
+    }
+
+    @Test
+    fun `a subscription cancelled before close is released once`() = runBlocking {
+        Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
+            mavsdk.addAnyConnectionWithHandle("udpin://0.0.0.0:17054").getOrThrow()
+
+            val collector = launch { mavsdk.subscribeOnNewSystem().collect {} }
+            delay(SUBSCRIPTION_SETTLE_MS)
+
+            // The other way round: awaitClose unsubscribes, and close() must not then
+            // find the same subscription again.
+            collector.cancelAndJoin()
+            mavsdk.close()
+        }
+    }
+
+    private companion object {
+        const val SUBSCRIPTION_SETTLE_MS = 200L
     }
 }
