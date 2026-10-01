@@ -21,6 +21,18 @@ from .types import (
 )
 
 
+# Instances that have not been destroyed yet, so that a process exiting without a
+# destroy() still releases them. Weak, so that an instance the caller drops is
+# collected (and released by __del__) rather than pinned until exit.
+_live_instances: "weakref.WeakSet[Mavsdk]" = weakref.WeakSet()
+
+
+@atexit.register
+def _destroy_live_instances() -> None:
+    for instance in list(_live_instances):
+        instance.destroy()
+
+
 class Configuration:
     """Wrapper for mavsdk_configuration_t"""
 
@@ -110,7 +122,10 @@ class Mavsdk:
         # corrupts the heap.
         self._destroy_lock = threading.Lock()
 
-        atexit.register(self.destroy)
+        # Not atexit.register(self.destroy): that bound method would keep this
+        # instance alive for the rest of the process, so dropping one would leave
+        # its connections and io thread running until exit.
+        _live_instances.add(self)
 
     def _track(self, child):
         """Register a handle-owning child so destroy() can release it."""
@@ -301,6 +316,8 @@ class Mavsdk:
 
     def destroy(self):
         """Destroy the Mavsdk instance. Idempotent, safe from any thread."""
+        _live_instances.discard(self)
+
         with self._destroy_lock:
             handle, self._handle = self._handle, None
             # Taken under the same lock as the handle, so an unsubscribe racing

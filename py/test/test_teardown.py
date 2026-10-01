@@ -196,3 +196,31 @@ def test_plugin_call_after_destroy_raises():
                 continue
             raise AssertionError("expected RuntimeError from a destroyed plugin")
     """)
+
+
+def test_dropped_instance_is_released():
+    run_scenario("""
+        import gc
+        import warnings
+        import weakref
+
+        from mavsdk import ComponentType, Configuration, Mavsdk
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        mavsdk.add_any_connection("udpin://0.0.0.0:17021")
+        ref = weakref.ref(mavsdk)
+
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            del mavsdk
+            gc.collect()
+
+        # Nothing may outlive the last reference: an instance kept alive would
+        # hold its connections and io thread open for the rest of the process.
+        assert ref() is None, "dropped instance was not collected"
+        assert any(w.category is ResourceWarning for w in caught), (
+            "dropping an undestroyed instance should warn"
+        )
+    """)
