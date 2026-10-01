@@ -150,13 +150,15 @@ class LogStreaming:
         cb = StartLogStreamingCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_log_streaming_start_log_streaming_async(self._handle, cb, None)
+        self._lib.mavsdk_log_streaming_start_log_streaming_async(
+            self._require_handle(), cb, None
+        )
 
     def start_log_streaming(self):
         """Get start_log_streaming (blocking)"""
 
         result_code = self._lib.mavsdk_log_streaming_start_log_streaming(
-            self._handle,
+            self._require_handle(),
         )
         result = LogStreamingResult(result_code)
         if result != LogStreamingResult.SUCCESS:
@@ -179,13 +181,15 @@ class LogStreaming:
         cb = StopLogStreamingCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_log_streaming_stop_log_streaming_async(self._handle, cb, None)
+        self._lib.mavsdk_log_streaming_stop_log_streaming_async(
+            self._require_handle(), cb, None
+        )
 
     def stop_log_streaming(self):
         """Get stop_log_streaming (blocking)"""
 
         result_code = self._lib.mavsdk_log_streaming_stop_log_streaming(
-            self._handle,
+            self._require_handle(),
         )
         result = LogStreamingResult(result_code)
         if result != LogStreamingResult.SUCCESS:
@@ -212,7 +216,7 @@ class LogStreaming:
         cb = LogStreamingRawCallback(c_callback)
 
         _subscription = self._lib.mavsdk_log_streaming_subscribe_log_streaming_raw(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -238,6 +242,21 @@ class LogStreaming:
         self._lib.mavsdk_log_streaming_unsubscribe_log_streaming_raw(
             _plugin_handle, handle
         )
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "LogStreaming has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

@@ -135,7 +135,7 @@ class Failure:
         """Get inject (blocking)"""
 
         result_code = self._lib.mavsdk_failure_inject(
-            self._handle,
+            self._require_handle(),
             failure_unit,
             failure_type,
             instance,
@@ -145,6 +145,21 @@ class Failure:
             raise FailureError(result, "inject()", failure_unit, failure_type, instance)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Failure has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

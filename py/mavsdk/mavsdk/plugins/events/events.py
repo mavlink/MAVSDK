@@ -453,7 +453,9 @@ class Events:
 
         cb = EventsCallback(c_callback)
 
-        _subscription = self._lib.mavsdk_events_subscribe_events(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_events_subscribe_events(
+            self._require_handle(), cb, None
+        )
 
         self._subscriptions[_subscription] = (
             cb,
@@ -498,7 +500,7 @@ class Events:
         cb = HealthAndArmingChecksCallback(c_callback)
 
         _subscription = self._lib.mavsdk_events_subscribe_health_and_arming_checks(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -531,7 +533,7 @@ class Events:
         result_out = HealthAndArmingCheckReportCStruct()
 
         result_code = self._lib.mavsdk_events_get_health_and_arming_checks_report(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = EventsResult(result_code)
         if result != EventsResult.SUCCESS:
@@ -542,6 +544,21 @@ class Events:
             ctypes.byref(result_out)
         )
         return py_result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Events has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

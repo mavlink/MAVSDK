@@ -262,7 +262,7 @@ class ActionServer:
         cb = ArmDisarmCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_arm_disarm(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -304,7 +304,7 @@ class ActionServer:
         cb = FlightModeChangeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_flight_mode_change(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -348,7 +348,7 @@ class ActionServer:
         cb = TakeoffCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_takeoff(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -390,7 +390,7 @@ class ActionServer:
         cb = LandCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_land(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -432,7 +432,7 @@ class ActionServer:
         cb = RebootCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_reboot(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -474,7 +474,7 @@ class ActionServer:
         cb = ShutdownCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_shutdown(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -516,7 +516,7 @@ class ActionServer:
         cb = TerminateCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_terminate(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -545,7 +545,7 @@ class ActionServer:
         """Get set_allow_takeoff (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_allow_takeoff(
-            self._handle,
+            self._require_handle(),
             allow_takeoff,
         )
         result = ActionServerResult(result_code)
@@ -558,7 +558,7 @@ class ActionServer:
         """Get set_armable (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_armable(
-            self._handle,
+            self._require_handle(),
             armable,
             force_armable,
         )
@@ -572,7 +572,7 @@ class ActionServer:
         """Get set_disarmable (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_disarmable(
-            self._handle,
+            self._require_handle(),
             disarmable,
             force_disarmable,
         )
@@ -588,7 +588,7 @@ class ActionServer:
         """Get set_allowable_flight_modes (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_allowable_flight_modes(
-            self._handle,
+            self._require_handle(),
             flight_modes.to_c_struct(),
         )
         result = ActionServerResult(result_code)
@@ -605,7 +605,7 @@ class ActionServer:
         result_out = AllowableFlightModesCStruct()
 
         self._lib.mavsdk_action_server_get_allowable_flight_modes(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = AllowableFlightModes.from_c_struct(result_out)
@@ -618,7 +618,7 @@ class ActionServer:
         """Get set_armed_state (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_armed_state(
-            self._handle,
+            self._require_handle(),
             is_armed,
         )
         result = ActionServerResult(result_code)
@@ -631,7 +631,7 @@ class ActionServer:
         """Get set_flight_mode (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_flight_mode(
-            self._handle,
+            self._require_handle(),
             flight_mode,
         )
         result = ActionServerResult(result_code)
@@ -644,7 +644,7 @@ class ActionServer:
         """Get set_flight_mode_internal (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_flight_mode_internal(
-            self._handle,
+            self._require_handle(),
             flight_mode,
         )
         result = ActionServerResult(result_code)
@@ -652,6 +652,21 @@ class ActionServer:
             raise ActionServerError(result, "set_flight_mode_internal()", flight_mode)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "ActionServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

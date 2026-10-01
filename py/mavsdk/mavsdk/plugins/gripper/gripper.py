@@ -122,13 +122,13 @@ class Gripper:
         cb = GrabCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_gripper_grab_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_gripper_grab_async(self._require_handle(), instance, cb, None)
 
     def grab(self, instance):
         """Get grab (blocking)"""
 
         result_code = self._lib.mavsdk_gripper_grab(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = GripperResult(result_code)
@@ -152,13 +152,15 @@ class Gripper:
         cb = ReleaseCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_gripper_release_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_gripper_release_async(
+            self._require_handle(), instance, cb, None
+        )
 
     def release(self, instance):
         """Get release (blocking)"""
 
         result_code = self._lib.mavsdk_gripper_release(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = GripperResult(result_code)
@@ -166,6 +168,21 @@ class Gripper:
             raise GripperError(result, "release()", instance)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Gripper has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

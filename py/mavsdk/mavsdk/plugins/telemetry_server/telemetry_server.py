@@ -1672,7 +1672,7 @@ class TelemetryServer:
         """Get publish_position (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_position(
-            self._handle,
+            self._require_handle(),
             position.to_c_struct(),
             velocity_ned.to_c_struct(),
             heading.to_c_struct(),
@@ -1689,7 +1689,7 @@ class TelemetryServer:
         """Get publish_home (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_home(
-            self._handle,
+            self._require_handle(),
             home.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1710,7 +1710,7 @@ class TelemetryServer:
         """Get publish_sys_status (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_sys_status(
-            self._handle,
+            self._require_handle(),
             battery.to_c_struct(),
             rc_receiver_status,
             gyro_status,
@@ -1737,7 +1737,7 @@ class TelemetryServer:
         """Get publish_extended_sys_state (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_extended_sys_state(
-            self._handle,
+            self._require_handle(),
             vtol_state,
             landed_state,
         )
@@ -1753,7 +1753,7 @@ class TelemetryServer:
         """Get publish_raw_gps (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_raw_gps(
-            self._handle,
+            self._require_handle(),
             raw_gps.to_c_struct(),
             gps_info.to_c_struct(),
         )
@@ -1767,7 +1767,7 @@ class TelemetryServer:
         """Get publish_battery (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_battery(
-            self._handle,
+            self._require_handle(),
             battery.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1780,7 +1780,7 @@ class TelemetryServer:
         """Get publish_status_text (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_status_text(
-            self._handle,
+            self._require_handle(),
             status_text.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1793,7 +1793,7 @@ class TelemetryServer:
         """Get publish_odometry (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_odometry(
-            self._handle,
+            self._require_handle(),
             odometry.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1806,7 +1806,7 @@ class TelemetryServer:
         """Get publish_position_velocity_ned (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_position_velocity_ned(
-            self._handle,
+            self._require_handle(),
             position_velocity_ned.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1821,7 +1821,7 @@ class TelemetryServer:
         """Get publish_ground_truth (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_ground_truth(
-            self._handle,
+            self._require_handle(),
             ground_truth.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1834,7 +1834,7 @@ class TelemetryServer:
         """Get publish_imu (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_imu(
-            self._handle,
+            self._require_handle(),
             imu.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1847,7 +1847,7 @@ class TelemetryServer:
         """Get publish_scaled_imu (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_scaled_imu(
-            self._handle,
+            self._require_handle(),
             imu.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1860,7 +1860,7 @@ class TelemetryServer:
         """Get publish_raw_imu (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_raw_imu(
-            self._handle,
+            self._require_handle(),
             imu.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1873,7 +1873,7 @@ class TelemetryServer:
         """Get publish_unix_epoch_time (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_unix_epoch_time(
-            self._handle,
+            self._require_handle(),
             time_us,
         )
         result = TelemetryServerResult(result_code)
@@ -1886,7 +1886,7 @@ class TelemetryServer:
         """Get publish_distance_sensor (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_distance_sensor(
-            self._handle,
+            self._require_handle(),
             distance_sensor.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1901,7 +1901,7 @@ class TelemetryServer:
         """Get publish_attitude (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_attitude(
-            self._handle,
+            self._require_handle(),
             angle.to_c_struct(),
             angular_velocity.to_c_struct(),
         )
@@ -1917,7 +1917,7 @@ class TelemetryServer:
         """Get publish_visual_flight_rules_hud (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_server_publish_visual_flight_rules_hud(
-            self._handle,
+            self._require_handle(),
             fixed_wing_metrics.to_c_struct(),
         )
         result = TelemetryServerResult(result_code)
@@ -1927,6 +1927,21 @@ class TelemetryServer:
             )
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "TelemetryServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

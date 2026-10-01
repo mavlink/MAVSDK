@@ -120,14 +120,14 @@ class ManualControl:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_manual_control_start_position_control_async(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
     def start_position_control(self):
         """Get start_position_control (blocking)"""
 
         result_code = self._lib.mavsdk_manual_control_start_position_control(
-            self._handle,
+            self._require_handle(),
         )
         result = ManualControlResult(result_code)
         if result != ManualControlResult.SUCCESS:
@@ -154,14 +154,14 @@ class ManualControl:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_manual_control_start_altitude_control_async(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
     def start_altitude_control(self):
         """Get start_altitude_control (blocking)"""
 
         result_code = self._lib.mavsdk_manual_control_start_altitude_control(
-            self._handle,
+            self._require_handle(),
         )
         result = ManualControlResult(result_code)
         if result != ManualControlResult.SUCCESS:
@@ -173,7 +173,7 @@ class ManualControl:
         """Get set_manual_control_input (blocking)"""
 
         result_code = self._lib.mavsdk_manual_control_set_manual_control_input(
-            self._handle,
+            self._require_handle(),
             x,
             y,
             z,
@@ -184,6 +184,21 @@ class ManualControl:
             raise ManualControlError(result, "set_manual_control_input()", x, y, z, r)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "ManualControl has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

@@ -362,7 +362,7 @@ class {{ plugin_name.upper_camel_case }}:
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_async(
         {% endif %}
-            self._handle,
+            self._require_handle(),
             {% for param in method.params %}
             {% if param.type_info.is_string %}
             {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
@@ -447,7 +447,7 @@ class {{ plugin_name.upper_camel_case }}:
         {# Make the function call #}
         {% if method.has_result %}
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
-            self._handle,
+            self._require_handle(),
           {% for param in method.params %}
             {% if param.type_info.is_string %}
             {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
@@ -474,7 +474,7 @@ class {{ plugin_name.upper_camel_case }}:
             raise {{ plugin_name.upper_camel_case }}Error(result, "{{ method.name.lower_snake_case }}()"{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %})
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
-            self._handle,
+            self._require_handle(),
           {% for param in method.params %}
             {% if param.type_info.is_string %}
             {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
@@ -529,6 +529,21 @@ class {{ plugin_name.upper_camel_case }}:
     {% endif %}
 
     {% endfor %}
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "{{ plugin_name.upper_camel_case }} has been destroyed (its "
+                "{% if is_server %}server component{% else %}system{% endif %} or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

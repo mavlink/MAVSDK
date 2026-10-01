@@ -100,7 +100,7 @@ class FtpServer:
         """Get set_root_dir (blocking)"""
 
         result_code = self._lib.mavsdk_ftp_server_set_root_dir(
-            self._handle,
+            self._require_handle(),
             path.encode("utf-8") if isinstance(path, str) else path,
         )
         result = FtpServerResult(result_code)
@@ -108,6 +108,21 @@ class FtpServer:
             raise FtpServerError(result, "set_root_dir()", path)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "FtpServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

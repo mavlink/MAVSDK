@@ -624,13 +624,13 @@ class Offboard:
         cb = StartCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_offboard_start_async(self._handle, cb, None)
+        self._lib.mavsdk_offboard_start_async(self._require_handle(), cb, None)
 
     def start(self):
         """Get start (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_start(
-            self._handle,
+            self._require_handle(),
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
@@ -655,13 +655,13 @@ class Offboard:
         cb = StopCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_offboard_stop_async(self._handle, cb, None)
+        self._lib.mavsdk_offboard_stop_async(self._require_handle(), cb, None)
 
     def stop(self):
         """Get stop (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_stop(
-            self._handle,
+            self._require_handle(),
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
@@ -674,7 +674,9 @@ class Offboard:
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_offboard_is_active(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_offboard_is_active(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         return result_out.value
 
@@ -682,7 +684,7 @@ class Offboard:
         """Get set_attitude (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_attitude(
-            self._handle,
+            self._require_handle(),
             attitude.to_c_struct(),
         )
         result = OffboardResult(result_code)
@@ -695,7 +697,7 @@ class Offboard:
         """Get set_actuator_control (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_actuator_control(
-            self._handle,
+            self._require_handle(),
             actuator_control.to_c_struct(),
         )
         result = OffboardResult(result_code)
@@ -708,7 +710,7 @@ class Offboard:
         """Get set_attitude_rate (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_attitude_rate(
-            self._handle,
+            self._require_handle(),
             attitude_rate.to_c_struct(),
         )
         result = OffboardResult(result_code)
@@ -721,7 +723,7 @@ class Offboard:
         """Get set_position_ned (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_position_ned(
-            self._handle,
+            self._require_handle(),
             position_ned_yaw.to_c_struct(),
         )
         result = OffboardResult(result_code)
@@ -734,7 +736,7 @@ class Offboard:
         """Get set_position_global (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_position_global(
-            self._handle,
+            self._require_handle(),
             position_global_yaw.to_c_struct(),
         )
         result = OffboardResult(result_code)
@@ -747,7 +749,7 @@ class Offboard:
         """Get set_velocity_body (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_velocity_body(
-            self._handle,
+            self._require_handle(),
             velocity_body_yawspeed.to_c_struct(),
         )
         result = OffboardResult(result_code)
@@ -760,7 +762,7 @@ class Offboard:
         """Get set_velocity_ned (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_velocity_ned(
-            self._handle,
+            self._require_handle(),
             velocity_ned_yaw.to_c_struct(),
         )
         result = OffboardResult(result_code)
@@ -773,7 +775,7 @@ class Offboard:
         """Get set_position_velocity_ned (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_position_velocity_ned(
-            self._handle,
+            self._require_handle(),
             position_ned_yaw.to_c_struct(),
             velocity_ned_yaw.to_c_struct(),
         )
@@ -794,7 +796,7 @@ class Offboard:
         """Get set_position_velocity_acceleration_ned (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_position_velocity_acceleration_ned(
-            self._handle,
+            self._require_handle(),
             position_ned_yaw.to_c_struct(),
             velocity_ned_yaw.to_c_struct(),
             acceleration_ned.to_c_struct(),
@@ -815,7 +817,7 @@ class Offboard:
         """Get set_acceleration_ned (blocking)"""
 
         result_code = self._lib.mavsdk_offboard_set_acceleration_ned(
-            self._handle,
+            self._require_handle(),
             acceleration_ned.to_c_struct(),
         )
         result = OffboardResult(result_code)
@@ -823,6 +825,21 @@ class Offboard:
             raise OffboardError(result, "set_acceleration_ned()", acceleration_ned)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Offboard has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

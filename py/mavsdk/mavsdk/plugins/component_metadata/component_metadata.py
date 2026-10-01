@@ -195,7 +195,7 @@ class ComponentMetadata:
         """Get request_component (blocking)"""
 
         self._lib.mavsdk_component_metadata_request_component(
-            self._handle,
+            self._require_handle(),
             compid,
         )
 
@@ -203,7 +203,7 @@ class ComponentMetadata:
         """Get request_autopilot_component (blocking)"""
 
         self._lib.mavsdk_component_metadata_request_autopilot_component(
-            self._handle,
+            self._require_handle(),
         )
 
     def subscribe_metadata_available(self, callback: Callable, user_data: Any = None):
@@ -226,7 +226,7 @@ class ComponentMetadata:
 
         _subscription = (
             self._lib.mavsdk_component_metadata_subscribe_metadata_available(
-                self._handle, cb, None
+                self._require_handle(), cb, None
             )
         )
 
@@ -260,7 +260,7 @@ class ComponentMetadata:
         result_out = MetadataDataCStruct()
 
         result_code = self._lib.mavsdk_component_metadata_get_metadata(
-            self._handle, compid, metadata_type, ctypes.byref(result_out)
+            self._require_handle(), compid, metadata_type, ctypes.byref(result_out)
         )
         result = ComponentMetadataResult(result_code)
         if result != ComponentMetadataResult.SUCCESS:
@@ -273,6 +273,21 @@ class ComponentMetadata:
             ctypes.byref(result_out)
         )
         return py_result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "ComponentMetadata has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

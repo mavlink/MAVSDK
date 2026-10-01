@@ -209,7 +209,7 @@ class LogFiles:
         cb = GetEntriesCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_log_files_get_entries_async(self._handle, cb, None)
+        self._lib.mavsdk_log_files_get_entries_async(self._require_handle(), cb, None)
 
     def get_entries(self):
         """Get get_entries (blocking)"""
@@ -218,7 +218,7 @@ class LogFiles:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_log_files_get_entries(
-            self._handle, ctypes.byref(result_ptr), ctypes.byref(size)
+            self._require_handle(), ctypes.byref(result_ptr), ctypes.byref(size)
         )
         result = LogFilesResult(result_code)
         if result != LogFilesResult.SUCCESS:
@@ -250,7 +250,7 @@ class LogFiles:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_log_files_download_log_file_async(
-            self._handle,
+            self._require_handle(),
             entry.to_c_struct(),
             path.encode("utf-8") if isinstance(path, str) else path,
             cb,
@@ -261,13 +261,28 @@ class LogFiles:
         """Get erase_all_log_files (blocking)"""
 
         result_code = self._lib.mavsdk_log_files_erase_all_log_files(
-            self._handle,
+            self._require_handle(),
         )
         result = LogFilesResult(result_code)
         if result != LogFilesResult.SUCCESS:
             raise LogFilesError(result, "erase_all_log_files()")
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "LogFiles has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

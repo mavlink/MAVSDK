@@ -180,14 +180,14 @@ class Tune:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_tune_play_tune_async(
-            self._handle, tune_description.to_c_struct(), cb, None
+            self._require_handle(), tune_description.to_c_struct(), cb, None
         )
 
     def play_tune(self, tune_description):
         """Get play_tune (blocking)"""
 
         result_code = self._lib.mavsdk_tune_play_tune(
-            self._handle,
+            self._require_handle(),
             tune_description.to_c_struct(),
         )
         result = TuneResult(result_code)
@@ -195,6 +195,21 @@ class Tune:
             raise TuneError(result, "play_tune()", tune_description)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Tune has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

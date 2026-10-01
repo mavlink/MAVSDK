@@ -333,7 +333,7 @@ class MissionRawServer:
         cb = IncomingMissionCallback(c_callback)
 
         _subscription = self._lib.mavsdk_mission_raw_server_subscribe_incoming_mission(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -380,7 +380,7 @@ class MissionRawServer:
 
         _subscription = (
             self._lib.mavsdk_mission_raw_server_subscribe_current_item_changed(
-                self._handle, cb, None
+                self._require_handle(), cb, None
             )
         )
 
@@ -412,7 +412,7 @@ class MissionRawServer:
         """Get set_current_item_complete (blocking)"""
 
         self._lib.mavsdk_mission_raw_server_set_current_item_complete(
-            self._handle,
+            self._require_handle(),
         )
 
     def subscribe_clear_all(self, callback: Callable, user_data: Any = None):
@@ -430,7 +430,7 @@ class MissionRawServer:
         cb = ClearAllCallback(c_callback)
 
         _subscription = self._lib.mavsdk_mission_raw_server_subscribe_clear_all(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -456,6 +456,21 @@ class MissionRawServer:
         self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all(
             _plugin_handle, handle
         )
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "MissionRawServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

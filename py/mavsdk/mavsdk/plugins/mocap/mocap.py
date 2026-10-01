@@ -752,7 +752,7 @@ class Mocap:
         """Get set_vision_position_estimate (blocking)"""
 
         result_code = self._lib.mavsdk_mocap_set_vision_position_estimate(
-            self._handle,
+            self._require_handle(),
             vision_position_estimate.to_c_struct(),
         )
         result = MocapResult(result_code)
@@ -767,7 +767,7 @@ class Mocap:
         """Get set_vision_speed_estimate (blocking)"""
 
         result_code = self._lib.mavsdk_mocap_set_vision_speed_estimate(
-            self._handle,
+            self._require_handle(),
             vision_speed_estimate.to_c_struct(),
         )
         result = MocapResult(result_code)
@@ -782,7 +782,7 @@ class Mocap:
         """Get set_attitude_position_mocap (blocking)"""
 
         result_code = self._lib.mavsdk_mocap_set_attitude_position_mocap(
-            self._handle,
+            self._require_handle(),
             attitude_position_mocap.to_c_struct(),
         )
         result = MocapResult(result_code)
@@ -797,7 +797,7 @@ class Mocap:
         """Get set_odometry (blocking)"""
 
         result_code = self._lib.mavsdk_mocap_set_odometry(
-            self._handle,
+            self._require_handle(),
             odometry.to_c_struct(),
         )
         result = MocapResult(result_code)
@@ -805,6 +805,21 @@ class Mocap:
             raise MocapError(result, "set_odometry()", odometry)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Mocap has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

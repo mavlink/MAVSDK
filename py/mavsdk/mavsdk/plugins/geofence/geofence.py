@@ -336,14 +336,14 @@ class Geofence:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_geofence_upload_geofence_async(
-            self._handle, geofence_data.to_c_struct(), cb, None
+            self._require_handle(), geofence_data.to_c_struct(), cb, None
         )
 
     def upload_geofence(self, geofence_data):
         """Get upload_geofence (blocking)"""
 
         result_code = self._lib.mavsdk_geofence_upload_geofence(
-            self._handle,
+            self._require_handle(),
             geofence_data.to_c_struct(),
         )
         result = GeofenceResult(result_code)
@@ -373,7 +373,9 @@ class Geofence:
         cb = DownloadGeofenceCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_geofence_download_geofence_async(self._handle, cb, None)
+        self._lib.mavsdk_geofence_download_geofence_async(
+            self._require_handle(), cb, None
+        )
 
     def download_geofence(self):
         """Get download_geofence (blocking)"""
@@ -381,7 +383,7 @@ class Geofence:
         result_out = GeofenceDataCStruct()
 
         result_code = self._lib.mavsdk_geofence_download_geofence(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
@@ -406,19 +408,34 @@ class Geofence:
         cb = ClearGeofenceCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_geofence_clear_geofence_async(self._handle, cb, None)
+        self._lib.mavsdk_geofence_clear_geofence_async(self._require_handle(), cb, None)
 
     def clear_geofence(self):
         """Get clear_geofence (blocking)"""
 
         result_code = self._lib.mavsdk_geofence_clear_geofence(
-            self._handle,
+            self._require_handle(),
         )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
             raise GeofenceError(result, "clear_geofence()")
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Geofence has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

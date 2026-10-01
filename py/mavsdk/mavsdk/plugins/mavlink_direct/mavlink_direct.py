@@ -172,7 +172,7 @@ class MavlinkDirect:
         """Get send_message (blocking)"""
 
         result_code = self._lib.mavsdk_mavlink_direct_send_message(
-            self._handle,
+            self._require_handle(),
             message.to_c_struct(),
         )
         result = MavlinkDirectResult(result_code)
@@ -206,7 +206,7 @@ class MavlinkDirect:
         cb = MessageCallback(c_callback)
 
         _subscription = self._lib.mavsdk_mavlink_direct_subscribe_message(
-            self._handle,
+            self._require_handle(),
             message_name.encode("utf-8")
             if isinstance(message_name, str)
             else message_name,
@@ -240,7 +240,7 @@ class MavlinkDirect:
         """Get load_custom_xml (blocking)"""
 
         result_code = self._lib.mavsdk_mavlink_direct_load_custom_xml(
-            self._handle,
+            self._require_handle(),
             xml_content.encode("utf-8")
             if isinstance(xml_content, str)
             else xml_content,
@@ -250,6 +250,21 @@ class MavlinkDirect:
             raise MavlinkDirectError(result, "load_custom_xml()", xml_content)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "MavlinkDirect has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

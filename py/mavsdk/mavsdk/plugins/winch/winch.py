@@ -333,7 +333,9 @@ class Winch:
 
         cb = StatusCallback(c_callback)
 
-        _subscription = self._lib.mavsdk_winch_subscribe_status(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_winch_subscribe_status(
+            self._require_handle(), cb, None
+        )
 
         self._subscriptions[_subscription] = (
             cb,
@@ -362,7 +364,7 @@ class Winch:
 
         result_out = StatusCStruct()
 
-        self._lib.mavsdk_winch_status(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_winch_status(self._require_handle(), ctypes.byref(result_out))
 
         py_result = Status.from_c_struct(result_out)
         self._lib.mavsdk_winch_status_destroy(ctypes.byref(result_out))
@@ -383,13 +385,13 @@ class Winch:
         cb = RelaxCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_winch_relax_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_winch_relax_async(self._require_handle(), instance, cb, None)
 
     def relax(self, instance):
         """Get relax (blocking)"""
 
         result_code = self._lib.mavsdk_winch_relax(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = WinchResult(result_code)
@@ -416,14 +418,14 @@ class Winch:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_winch_relative_length_control_async(
-            self._handle, instance, length_m, rate_m_s, cb, None
+            self._require_handle(), instance, length_m, rate_m_s, cb, None
         )
 
     def relative_length_control(self, instance, length_m, rate_m_s):
         """Get relative_length_control (blocking)"""
 
         result_code = self._lib.mavsdk_winch_relative_length_control(
-            self._handle,
+            self._require_handle(),
             instance,
             length_m,
             rate_m_s,
@@ -454,14 +456,14 @@ class Winch:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_winch_rate_control_async(
-            self._handle, instance, rate_m_s, cb, None
+            self._require_handle(), instance, rate_m_s, cb, None
         )
 
     def rate_control(self, instance, rate_m_s):
         """Get rate_control (blocking)"""
 
         result_code = self._lib.mavsdk_winch_rate_control(
-            self._handle,
+            self._require_handle(),
             instance,
             rate_m_s,
         )
@@ -486,13 +488,13 @@ class Winch:
         cb = LockCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_winch_lock_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_winch_lock_async(self._require_handle(), instance, cb, None)
 
     def lock(self, instance):
         """Get lock (blocking)"""
 
         result_code = self._lib.mavsdk_winch_lock(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = WinchResult(result_code)
@@ -516,13 +518,13 @@ class Winch:
         cb = DeliverCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_winch_deliver_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_winch_deliver_async(self._require_handle(), instance, cb, None)
 
     def deliver(self, instance):
         """Get deliver (blocking)"""
 
         result_code = self._lib.mavsdk_winch_deliver(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = WinchResult(result_code)
@@ -546,13 +548,13 @@ class Winch:
         cb = HoldCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_winch_hold_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_winch_hold_async(self._require_handle(), instance, cb, None)
 
     def hold(self, instance):
         """Get hold (blocking)"""
 
         result_code = self._lib.mavsdk_winch_hold(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = WinchResult(result_code)
@@ -576,13 +578,13 @@ class Winch:
         cb = RetractCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_winch_retract_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_winch_retract_async(self._require_handle(), instance, cb, None)
 
     def retract(self, instance):
         """Get retract (blocking)"""
 
         result_code = self._lib.mavsdk_winch_retract(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = WinchResult(result_code)
@@ -608,13 +610,15 @@ class Winch:
         cb = LoadLineCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_winch_load_line_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_winch_load_line_async(
+            self._require_handle(), instance, cb, None
+        )
 
     def load_line(self, instance):
         """Get load_line (blocking)"""
 
         result_code = self._lib.mavsdk_winch_load_line(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = WinchResult(result_code)
@@ -638,13 +642,15 @@ class Winch:
         cb = AbandonLineCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_winch_abandon_line_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_winch_abandon_line_async(
+            self._require_handle(), instance, cb, None
+        )
 
     def abandon_line(self, instance):
         """Get abandon_line (blocking)"""
 
         result_code = self._lib.mavsdk_winch_abandon_line(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = WinchResult(result_code)
@@ -668,13 +674,15 @@ class Winch:
         cb = LoadPayloadCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_winch_load_payload_async(self._handle, instance, cb, None)
+        self._lib.mavsdk_winch_load_payload_async(
+            self._require_handle(), instance, cb, None
+        )
 
     def load_payload(self, instance):
         """Get load_payload (blocking)"""
 
         result_code = self._lib.mavsdk_winch_load_payload(
-            self._handle,
+            self._require_handle(),
             instance,
         )
         result = WinchResult(result_code)
@@ -682,6 +690,21 @@ class Winch:
             raise WinchError(result, "load_payload()", instance)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Winch has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

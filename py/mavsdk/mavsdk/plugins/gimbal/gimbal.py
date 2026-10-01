@@ -589,7 +589,7 @@ class Gimbal:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_gimbal_set_angles_async(
-            self._handle,
+            self._require_handle(),
             gimbal_id,
             roll_deg,
             pitch_deg,
@@ -606,7 +606,7 @@ class Gimbal:
         """Get set_angles (blocking)"""
 
         result_code = self._lib.mavsdk_gimbal_set_angles(
-            self._handle,
+            self._require_handle(),
             gimbal_id,
             roll_deg,
             pitch_deg,
@@ -661,7 +661,7 @@ class Gimbal:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_gimbal_set_angular_rates_async(
-            self._handle,
+            self._require_handle(),
             gimbal_id,
             roll_rate_deg_s,
             pitch_rate_deg_s,
@@ -684,7 +684,7 @@ class Gimbal:
         """Get set_angular_rates (blocking)"""
 
         result_code = self._lib.mavsdk_gimbal_set_angular_rates(
-            self._handle,
+            self._require_handle(),
             gimbal_id,
             roll_rate_deg_s,
             pitch_rate_deg_s,
@@ -737,14 +737,20 @@ class Gimbal:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_gimbal_set_roi_location_async(
-            self._handle, gimbal_id, latitude_deg, longitude_deg, altitude_m, cb, None
+            self._require_handle(),
+            gimbal_id,
+            latitude_deg,
+            longitude_deg,
+            altitude_m,
+            cb,
+            None,
         )
 
     def set_roi_location(self, gimbal_id, latitude_deg, longitude_deg, altitude_m):
         """Get set_roi_location (blocking)"""
 
         result_code = self._lib.mavsdk_gimbal_set_roi_location(
-            self._handle,
+            self._require_handle(),
             gimbal_id,
             latitude_deg,
             longitude_deg,
@@ -789,14 +795,14 @@ class Gimbal:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_gimbal_take_control_async(
-            self._handle, gimbal_id, control_mode, cb, None
+            self._require_handle(), gimbal_id, control_mode, cb, None
         )
 
     def take_control(self, gimbal_id, control_mode):
         """Get take_control (blocking)"""
 
         result_code = self._lib.mavsdk_gimbal_take_control(
-            self._handle,
+            self._require_handle(),
             gimbal_id,
             control_mode,
         )
@@ -825,13 +831,15 @@ class Gimbal:
         cb = ReleaseControlCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_gimbal_release_control_async(self._handle, gimbal_id, cb, None)
+        self._lib.mavsdk_gimbal_release_control_async(
+            self._require_handle(), gimbal_id, cb, None
+        )
 
     def release_control(self, gimbal_id):
         """Get release_control (blocking)"""
 
         result_code = self._lib.mavsdk_gimbal_release_control(
-            self._handle,
+            self._require_handle(),
             gimbal_id,
         )
         result = GimbalResult(result_code)
@@ -860,7 +868,7 @@ class Gimbal:
         cb = GimbalListCallback(c_callback)
 
         _subscription = self._lib.mavsdk_gimbal_subscribe_gimbal_list(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -890,7 +898,9 @@ class Gimbal:
 
         result_out = GimbalListCStruct()
 
-        self._lib.mavsdk_gimbal_gimbal_list(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_gimbal_gimbal_list(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = GimbalList.from_c_struct(result_out)
         self._lib.mavsdk_gimbal_gimbal_list_destroy(ctypes.byref(result_out))
@@ -917,7 +927,7 @@ class Gimbal:
         cb = ControlStatusCallback(c_callback)
 
         _subscription = self._lib.mavsdk_gimbal_subscribe_control_status(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -948,7 +958,7 @@ class Gimbal:
         result_out = ControlStatusCStruct()
 
         result_code = self._lib.mavsdk_gimbal_get_control_status(
-            self._handle, gimbal_id, ctypes.byref(result_out)
+            self._require_handle(), gimbal_id, ctypes.byref(result_out)
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
@@ -977,7 +987,7 @@ class Gimbal:
         cb = AttitudeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_gimbal_subscribe_attitude(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1008,7 +1018,7 @@ class Gimbal:
         result_out = AttitudeCStruct()
 
         result_code = self._lib.mavsdk_gimbal_get_attitude(
-            self._handle, gimbal_id, ctypes.byref(result_out)
+            self._require_handle(), gimbal_id, ctypes.byref(result_out)
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
@@ -1017,6 +1027,21 @@ class Gimbal:
         py_result = Attitude.from_c_struct(result_out)
         self._lib.mavsdk_gimbal_attitude_destroy(ctypes.byref(result_out))
         return py_result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Gimbal has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

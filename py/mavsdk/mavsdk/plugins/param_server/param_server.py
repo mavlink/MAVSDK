@@ -316,7 +316,7 @@ class ParamServer:
         """Get set_protocol (blocking)"""
 
         result_code = self._lib.mavsdk_param_server_set_protocol(
-            self._handle,
+            self._require_handle(),
             extended_protocol,
         )
         result = ParamServerResult(result_code)
@@ -331,7 +331,7 @@ class ParamServer:
         result_out = ctypes.c_int32()
 
         result_code = self._lib.mavsdk_param_server_retrieve_param_int(
-            self._handle,
+            self._require_handle(),
             name.encode("utf-8") if isinstance(name, str) else name,
             ctypes.byref(result_out),
         )
@@ -345,7 +345,7 @@ class ParamServer:
         """Get provide_param_int (blocking)"""
 
         result_code = self._lib.mavsdk_param_server_provide_param_int(
-            self._handle,
+            self._require_handle(),
             name.encode("utf-8") if isinstance(name, str) else name,
             value,
         )
@@ -361,7 +361,7 @@ class ParamServer:
         result_out = ctypes.c_float()
 
         result_code = self._lib.mavsdk_param_server_retrieve_param_float(
-            self._handle,
+            self._require_handle(),
             name.encode("utf-8") if isinstance(name, str) else name,
             ctypes.byref(result_out),
         )
@@ -375,7 +375,7 @@ class ParamServer:
         """Get provide_param_float (blocking)"""
 
         result_code = self._lib.mavsdk_param_server_provide_param_float(
-            self._handle,
+            self._require_handle(),
             name.encode("utf-8") if isinstance(name, str) else name,
             value,
         )
@@ -391,7 +391,7 @@ class ParamServer:
         result_out = ctypes.c_char_p()
 
         result_code = self._lib.mavsdk_param_server_retrieve_param_custom(
-            self._handle,
+            self._require_handle(),
             name.encode("utf-8") if isinstance(name, str) else name,
             ctypes.byref(result_out),
         )
@@ -407,7 +407,7 @@ class ParamServer:
         """Get provide_param_custom (blocking)"""
 
         result_code = self._lib.mavsdk_param_server_provide_param_custom(
-            self._handle,
+            self._require_handle(),
             name.encode("utf-8") if isinstance(name, str) else name,
             value.encode("utf-8") if isinstance(value, str) else value,
         )
@@ -423,7 +423,7 @@ class ParamServer:
         result_out = AllParamsCStruct()
 
         self._lib.mavsdk_param_server_retrieve_all_params(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = AllParams.from_c_struct(result_out)
@@ -447,7 +447,7 @@ class ParamServer:
         cb = ChangedParamIntCallback(c_callback)
 
         _subscription = self._lib.mavsdk_param_server_subscribe_changed_param_int(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -491,7 +491,7 @@ class ParamServer:
         cb = ChangedParamFloatCallback(c_callback)
 
         _subscription = self._lib.mavsdk_param_server_subscribe_changed_param_float(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -535,7 +535,7 @@ class ParamServer:
         cb = ChangedParamCustomCallback(c_callback)
 
         _subscription = self._lib.mavsdk_param_server_subscribe_changed_param_custom(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -561,6 +561,21 @@ class ParamServer:
         self._lib.mavsdk_param_server_unsubscribe_changed_param_custom(
             _plugin_handle, handle
         )
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "ParamServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

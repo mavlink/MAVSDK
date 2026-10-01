@@ -2194,7 +2194,7 @@ class Telemetry:
         cb = PositionCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_position(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2224,7 +2224,9 @@ class Telemetry:
 
         result_out = PositionCStruct()
 
-        self._lib.mavsdk_telemetry_position(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_position(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Position.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(result_out))
@@ -2247,7 +2249,7 @@ class Telemetry:
         cb = HomeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_home(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2277,7 +2279,9 @@ class Telemetry:
 
         result_out = HomePositionCStruct()
 
-        self._lib.mavsdk_telemetry_home(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_home(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = HomePosition.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_home_position_destroy(ctypes.byref(result_out))
@@ -2298,7 +2302,7 @@ class Telemetry:
         cb = InAirCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_in_air(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2328,7 +2332,9 @@ class Telemetry:
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_telemetry_in_air(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_in_air(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         return result_out.value
 
@@ -2347,7 +2353,7 @@ class Telemetry:
         cb = LandedStateCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_landed_state(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2377,7 +2383,9 @@ class Telemetry:
 
         result_out = ctypes.c_int()
 
-        self._lib.mavsdk_telemetry_landed_state(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_landed_state(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         return LandedState(result_out.value)
 
@@ -2396,7 +2404,7 @@ class Telemetry:
         cb = ArmedCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_armed(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2426,7 +2434,9 @@ class Telemetry:
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_telemetry_armed(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_armed(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         return result_out.value
 
@@ -2445,7 +2455,7 @@ class Telemetry:
         cb = VtolStateCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_vtol_state(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2475,7 +2485,9 @@ class Telemetry:
 
         result_out = ctypes.c_int()
 
-        self._lib.mavsdk_telemetry_vtol_state(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_vtol_state(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         return VtolState(result_out.value)
 
@@ -2496,7 +2508,7 @@ class Telemetry:
         cb = AttitudeQuaternionCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_attitude_quaternion(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2529,7 +2541,7 @@ class Telemetry:
         result_out = QuaternionCStruct()
 
         self._lib.mavsdk_telemetry_attitude_quaternion(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = Quaternion.from_c_struct(result_out)
@@ -2553,7 +2565,7 @@ class Telemetry:
         cb = AttitudeEulerCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_attitude_euler(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2584,7 +2596,7 @@ class Telemetry:
         result_out = EulerAngleCStruct()
 
         self._lib.mavsdk_telemetry_attitude_euler(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = EulerAngle.from_c_struct(result_out)
@@ -2613,7 +2625,7 @@ class Telemetry:
 
         _subscription = (
             self._lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body(
-                self._handle, cb, None
+                self._require_handle(), cb, None
             )
         )
 
@@ -2647,7 +2659,7 @@ class Telemetry:
         result_out = AngularVelocityBodyCStruct()
 
         self._lib.mavsdk_telemetry_attitude_angular_velocity_body(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = AngularVelocityBody.from_c_struct(result_out)
@@ -2673,7 +2685,7 @@ class Telemetry:
         cb = VelocityNedCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_velocity_ned(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2703,7 +2715,9 @@ class Telemetry:
 
         result_out = VelocityNedCStruct()
 
-        self._lib.mavsdk_telemetry_velocity_ned(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_velocity_ned(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = VelocityNed.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_velocity_ned_destroy(ctypes.byref(result_out))
@@ -2726,7 +2740,7 @@ class Telemetry:
         cb = GpsInfoCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_gps_info(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2756,7 +2770,9 @@ class Telemetry:
 
         result_out = GpsInfoCStruct()
 
-        self._lib.mavsdk_telemetry_gps_info(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_gps_info(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = GpsInfo.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_gps_info_destroy(ctypes.byref(result_out))
@@ -2779,7 +2795,7 @@ class Telemetry:
         cb = RawGpsCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_raw_gps(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2809,7 +2825,9 @@ class Telemetry:
 
         result_out = RawGpsCStruct()
 
-        self._lib.mavsdk_telemetry_raw_gps(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_raw_gps(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = RawGps.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_raw_gps_destroy(ctypes.byref(result_out))
@@ -2832,7 +2850,7 @@ class Telemetry:
         cb = BatteryCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_battery(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2862,7 +2880,9 @@ class Telemetry:
 
         result_out = BatteryCStruct()
 
-        self._lib.mavsdk_telemetry_battery(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_battery(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Battery.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_battery_destroy(ctypes.byref(result_out))
@@ -2883,7 +2903,7 @@ class Telemetry:
         cb = FlightModeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_flight_mode(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2913,7 +2933,9 @@ class Telemetry:
 
         result_out = ctypes.c_int()
 
-        self._lib.mavsdk_telemetry_flight_mode(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_flight_mode(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         return FlightMode(result_out.value)
 
@@ -2934,7 +2956,7 @@ class Telemetry:
         cb = HealthCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_health(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2964,7 +2986,9 @@ class Telemetry:
 
         result_out = HealthCStruct()
 
-        self._lib.mavsdk_telemetry_health(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_health(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Health.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_health_destroy(ctypes.byref(result_out))
@@ -2987,7 +3011,7 @@ class Telemetry:
         cb = RcStatusCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_rc_status(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3017,7 +3041,9 @@ class Telemetry:
 
         result_out = RcStatusCStruct()
 
-        self._lib.mavsdk_telemetry_rc_status(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_rc_status(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = RcStatus.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_rc_status_destroy(ctypes.byref(result_out))
@@ -3040,7 +3066,7 @@ class Telemetry:
         cb = StatusTextCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_status_text(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3070,7 +3096,9 @@ class Telemetry:
 
         result_out = StatusTextCStruct()
 
-        self._lib.mavsdk_telemetry_status_text(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_status_text(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = StatusText.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_status_text_destroy(ctypes.byref(result_out))
@@ -3097,7 +3125,7 @@ class Telemetry:
         cb = ActuatorControlTargetCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_actuator_control_target(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3130,7 +3158,7 @@ class Telemetry:
         result_out = ActuatorControlTargetCStruct()
 
         self._lib.mavsdk_telemetry_actuator_control_target(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = ActuatorControlTarget.from_c_struct(result_out)
@@ -3160,7 +3188,7 @@ class Telemetry:
         cb = ActuatorOutputStatusCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_actuator_output_status(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3193,7 +3221,7 @@ class Telemetry:
         result_out = ActuatorOutputStatusCStruct()
 
         self._lib.mavsdk_telemetry_actuator_output_status(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = ActuatorOutputStatus.from_c_struct(result_out)
@@ -3219,7 +3247,7 @@ class Telemetry:
         cb = OdometryCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_odometry(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3249,7 +3277,9 @@ class Telemetry:
 
         result_out = OdometryCStruct()
 
-        self._lib.mavsdk_telemetry_odometry(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_odometry(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Odometry.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_odometry_destroy(ctypes.byref(result_out))
@@ -3276,7 +3306,7 @@ class Telemetry:
         cb = PositionVelocityNedCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_position_velocity_ned(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3309,7 +3339,7 @@ class Telemetry:
         result_out = PositionVelocityNedCStruct()
 
         self._lib.mavsdk_telemetry_position_velocity_ned(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = PositionVelocityNed.from_c_struct(result_out)
@@ -3335,7 +3365,7 @@ class Telemetry:
         cb = GroundTruthCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_ground_truth(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3365,7 +3395,9 @@ class Telemetry:
 
         result_out = GroundTruthCStruct()
 
-        self._lib.mavsdk_telemetry_ground_truth(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_ground_truth(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = GroundTruth.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_ground_truth_destroy(ctypes.byref(result_out))
@@ -3390,7 +3422,7 @@ class Telemetry:
         cb = FixedwingMetricsCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_fixedwing_metrics(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3421,7 +3453,7 @@ class Telemetry:
         result_out = FixedwingMetricsCStruct()
 
         self._lib.mavsdk_telemetry_fixedwing_metrics(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = FixedwingMetrics.from_c_struct(result_out)
@@ -3444,7 +3476,9 @@ class Telemetry:
 
         cb = ImuCallback(c_callback)
 
-        _subscription = self._lib.mavsdk_telemetry_subscribe_imu(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_telemetry_subscribe_imu(
+            self._require_handle(), cb, None
+        )
 
         self._subscriptions[_subscription] = (
             cb,
@@ -3473,7 +3507,7 @@ class Telemetry:
 
         result_out = ImuCStruct()
 
-        self._lib.mavsdk_telemetry_imu(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_imu(self._require_handle(), ctypes.byref(result_out))
 
         py_result = Imu.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
@@ -3496,7 +3530,7 @@ class Telemetry:
         cb = ScaledImuCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_scaled_imu(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3526,7 +3560,9 @@ class Telemetry:
 
         result_out = ImuCStruct()
 
-        self._lib.mavsdk_telemetry_scaled_imu(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_scaled_imu(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Imu.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
@@ -3549,7 +3585,7 @@ class Telemetry:
         cb = RawImuCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_raw_imu(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3579,7 +3615,9 @@ class Telemetry:
 
         result_out = ImuCStruct()
 
-        self._lib.mavsdk_telemetry_raw_imu(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_raw_imu(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Imu.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
@@ -3600,7 +3638,7 @@ class Telemetry:
         cb = HealthAllOkCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_health_all_ok(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3630,7 +3668,9 @@ class Telemetry:
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_telemetry_health_all_ok(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_health_all_ok(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         return result_out.value
 
@@ -3649,7 +3689,7 @@ class Telemetry:
         cb = UnixEpochTimeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_unix_epoch_time(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3680,7 +3720,7 @@ class Telemetry:
         result_out = ctypes.c_uint64()
 
         self._lib.mavsdk_telemetry_unix_epoch_time(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         return result_out.value
@@ -3702,7 +3742,7 @@ class Telemetry:
         cb = DistanceSensorCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_distance_sensor(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3733,7 +3773,7 @@ class Telemetry:
         result_out = DistanceSensorCStruct()
 
         self._lib.mavsdk_telemetry_distance_sensor(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = DistanceSensor.from_c_struct(result_out)
@@ -3757,7 +3797,7 @@ class Telemetry:
         cb = ScaledPressureCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_scaled_pressure(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3788,7 +3828,7 @@ class Telemetry:
         result_out = ScaledPressureCStruct()
 
         self._lib.mavsdk_telemetry_scaled_pressure(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = ScaledPressure.from_c_struct(result_out)
@@ -3812,7 +3852,7 @@ class Telemetry:
         cb = HeadingCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_heading(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3842,7 +3882,9 @@ class Telemetry:
 
         result_out = HeadingCStruct()
 
-        self._lib.mavsdk_telemetry_heading(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_heading(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Heading.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_heading_destroy(ctypes.byref(result_out))
@@ -3865,7 +3907,7 @@ class Telemetry:
         cb = AltitudeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_altitude(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3895,7 +3937,9 @@ class Telemetry:
 
         result_out = AltitudeCStruct()
 
-        self._lib.mavsdk_telemetry_altitude(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_altitude(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Altitude.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_altitude_destroy(ctypes.byref(result_out))
@@ -3918,7 +3962,7 @@ class Telemetry:
         cb = WindCallback(c_callback)
 
         _subscription = self._lib.mavsdk_telemetry_subscribe_wind(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -3948,7 +3992,9 @@ class Telemetry:
 
         result_out = WindCStruct()
 
-        self._lib.mavsdk_telemetry_wind(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_wind(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Wind.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_wind_destroy(ctypes.byref(result_out))
@@ -3972,14 +4018,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_position_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_position(self, rate_hz):
         """Get set_rate_position (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_position(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4003,13 +4049,15 @@ class Telemetry:
         cb = SetRateHomeCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_telemetry_set_rate_home_async(self._handle, rate_hz, cb, None)
+        self._lib.mavsdk_telemetry_set_rate_home_async(
+            self._require_handle(), rate_hz, cb, None
+        )
 
     def set_rate_home(self, rate_hz):
         """Get set_rate_home (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_home(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4034,14 +4082,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_in_air_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_in_air(self, rate_hz):
         """Get set_rate_in_air (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_in_air(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4068,14 +4116,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_landed_state_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_landed_state(self, rate_hz):
         """Get set_rate_landed_state (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_landed_state(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4102,14 +4150,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_vtol_state_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_vtol_state(self, rate_hz):
         """Get set_rate_vtol_state (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_vtol_state(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4136,14 +4184,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_attitude_quaternion_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_attitude_quaternion(self, rate_hz):
         """Get set_rate_attitude_quaternion (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_attitude_quaternion(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4170,14 +4218,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_attitude_euler_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_attitude_euler(self, rate_hz):
         """Get set_rate_attitude_euler (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_attitude_euler(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4205,14 +4253,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_velocity_ned_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_velocity_ned(self, rate_hz):
         """Get set_rate_velocity_ned (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_velocity_ned(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4239,14 +4287,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_gps_info_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_gps_info(self, rate_hz):
         """Get set_rate_gps_info (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_gps_info(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4273,14 +4321,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_raw_gps_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_raw_gps(self, rate_hz):
         """Get set_rate_raw_gps (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_raw_gps(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4307,14 +4355,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_battery_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_battery(self, rate_hz):
         """Get set_rate_battery (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_battery(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4341,14 +4389,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_rc_status_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_rc_status(self, rate_hz):
         """Get set_rate_rc_status (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_rc_status(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4375,14 +4423,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_actuator_control_target_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_actuator_control_target(self, rate_hz):
         """Get set_rate_actuator_control_target (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_actuator_control_target(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4409,14 +4457,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_actuator_output_status_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_actuator_output_status(self, rate_hz):
         """Get set_rate_actuator_output_status (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_actuator_output_status(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4443,14 +4491,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_odometry_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_odometry(self, rate_hz):
         """Get set_rate_odometry (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_odometry(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4477,14 +4525,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_position_velocity_ned_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_position_velocity_ned(self, rate_hz):
         """Get set_rate_position_velocity_ned (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_position_velocity_ned(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4511,14 +4559,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_ground_truth_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_ground_truth(self, rate_hz):
         """Get set_rate_ground_truth (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_ground_truth(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4545,14 +4593,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_fixedwing_metrics(self, rate_hz):
         """Get set_rate_fixedwing_metrics (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4576,13 +4624,15 @@ class Telemetry:
         cb = SetRateImuCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_telemetry_set_rate_imu_async(self._handle, rate_hz, cb, None)
+        self._lib.mavsdk_telemetry_set_rate_imu_async(
+            self._require_handle(), rate_hz, cb, None
+        )
 
     def set_rate_imu(self, rate_hz):
         """Get set_rate_imu (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_imu(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4609,14 +4659,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_scaled_imu_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_scaled_imu(self, rate_hz):
         """Get set_rate_scaled_imu (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_scaled_imu(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4643,14 +4693,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_raw_imu_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_raw_imu(self, rate_hz):
         """Get set_rate_raw_imu (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_raw_imu(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4677,14 +4727,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_unix_epoch_time_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_unix_epoch_time(self, rate_hz):
         """Get set_rate_unix_epoch_time (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_unix_epoch_time(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4711,14 +4761,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_distance_sensor_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_distance_sensor(self, rate_hz):
         """Get set_rate_distance_sensor (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_distance_sensor(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4745,14 +4795,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_altitude_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_altitude(self, rate_hz):
         """Get set_rate_altitude (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_altitude(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4777,14 +4827,14 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_health_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_health(self, rate_hz):
         """Get set_rate_health (blocking)"""
 
         result_code = self._lib.mavsdk_telemetry_set_rate_health(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TelemetryResult(result_code)
@@ -4814,7 +4864,9 @@ class Telemetry:
         cb = GetGpsGlobalOriginCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_telemetry_get_gps_global_origin_async(self._handle, cb, None)
+        self._lib.mavsdk_telemetry_get_gps_global_origin_async(
+            self._require_handle(), cb, None
+        )
 
     def get_gps_global_origin(self):
         """Get get_gps_global_origin (blocking)"""
@@ -4822,7 +4874,7 @@ class Telemetry:
         result_out = GpsGlobalOriginCStruct()
 
         result_code = self._lib.mavsdk_telemetry_get_gps_global_origin(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
@@ -4831,6 +4883,21 @@ class Telemetry:
         py_result = GpsGlobalOrigin.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_gps_global_origin_destroy(ctypes.byref(result_out))
         return py_result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Telemetry has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

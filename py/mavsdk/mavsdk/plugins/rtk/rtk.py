@@ -136,7 +136,7 @@ class Rtk:
         """Get send_rtcm_data (blocking)"""
 
         result_code = self._lib.mavsdk_rtk_send_rtcm_data(
-            self._handle,
+            self._require_handle(),
             rtcm_data.to_c_struct(),
         )
         result = RtkResult(result_code)
@@ -144,6 +144,21 @@ class Rtk:
             raise RtkError(result, "send_rtcm_data()", rtcm_data)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Rtk has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

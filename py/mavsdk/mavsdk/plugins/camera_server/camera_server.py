@@ -764,7 +764,7 @@ class CameraServer:
         """Get set_information (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_set_information(
-            self._handle,
+            self._require_handle(),
             information.to_c_struct(),
         )
         result = CameraServerResult(result_code)
@@ -777,7 +777,7 @@ class CameraServer:
         """Get set_video_streaming (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_set_video_streaming(
-            self._handle,
+            self._require_handle(),
             video_streaming.to_c_struct(),
         )
         result = CameraServerResult(result_code)
@@ -790,7 +790,7 @@ class CameraServer:
         """Get set_in_progress (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_set_in_progress(
-            self._handle,
+            self._require_handle(),
             in_progress,
         )
         result = CameraServerResult(result_code)
@@ -814,7 +814,7 @@ class CameraServer:
         cb = TakePhotoCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_take_photo(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -843,7 +843,7 @@ class CameraServer:
         """Get respond_take_photo (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_take_photo(
-            self._handle,
+            self._require_handle(),
             take_photo_feedback,
             capture_info.to_c_struct(),
         )
@@ -870,7 +870,7 @@ class CameraServer:
         cb = StartVideoCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_start_video(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -899,7 +899,7 @@ class CameraServer:
         """Get respond_start_video (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_start_video(
-            self._handle,
+            self._require_handle(),
             start_video_feedback,
         )
         result = CameraServerResult(result_code)
@@ -925,7 +925,7 @@ class CameraServer:
         cb = StopVideoCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_stop_video(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -954,7 +954,7 @@ class CameraServer:
         """Get respond_stop_video (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_stop_video(
-            self._handle,
+            self._require_handle(),
             stop_video_feedback,
         )
         result = CameraServerResult(result_code)
@@ -980,7 +980,7 @@ class CameraServer:
         cb = StartVideoStreamingCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_start_video_streaming(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1011,7 +1011,7 @@ class CameraServer:
         """Get respond_start_video_streaming (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_start_video_streaming(
-            self._handle,
+            self._require_handle(),
             start_video_streaming_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1039,7 +1039,7 @@ class CameraServer:
         cb = StopVideoStreamingCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_stop_video_streaming(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1070,7 +1070,7 @@ class CameraServer:
         """Get respond_stop_video_streaming (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_stop_video_streaming(
-            self._handle,
+            self._require_handle(),
             stop_video_streaming_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1096,7 +1096,7 @@ class CameraServer:
         cb = SetModeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_set_mode(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1125,7 +1125,7 @@ class CameraServer:
         """Get respond_set_mode (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_set_mode(
-            self._handle,
+            self._require_handle(),
             set_mode_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1149,7 +1149,7 @@ class CameraServer:
         cb = StorageInformationCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_storage_information(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1182,7 +1182,7 @@ class CameraServer:
         """Get respond_storage_information (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_storage_information(
-            self._handle,
+            self._require_handle(),
             storage_information_feedback,
             storage_information.to_c_struct(),
         )
@@ -1212,7 +1212,7 @@ class CameraServer:
         cb = CaptureStatusCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_capture_status(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1243,7 +1243,7 @@ class CameraServer:
         """Get respond_capture_status (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_capture_status(
-            self._handle,
+            self._require_handle(),
             capture_status_feedback,
             capture_status.to_c_struct(),
         )
@@ -1273,7 +1273,7 @@ class CameraServer:
         cb = FormatStorageCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_format_storage(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1304,7 +1304,7 @@ class CameraServer:
         """Get respond_format_storage (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_format_storage(
-            self._handle,
+            self._require_handle(),
             format_storage_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1330,7 +1330,7 @@ class CameraServer:
         cb = ResetSettingsCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_reset_settings(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1361,7 +1361,7 @@ class CameraServer:
         """Get respond_reset_settings (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_reset_settings(
-            self._handle,
+            self._require_handle(),
             reset_settings_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1387,7 +1387,7 @@ class CameraServer:
         cb = ZoomInStartCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_zoom_in_start(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1416,7 +1416,7 @@ class CameraServer:
         """Get respond_zoom_in_start (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_zoom_in_start(
-            self._handle,
+            self._require_handle(),
             zoom_in_start_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1442,7 +1442,7 @@ class CameraServer:
         cb = ZoomOutStartCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_zoom_out_start(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1473,7 +1473,7 @@ class CameraServer:
         """Get respond_zoom_out_start (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_zoom_out_start(
-            self._handle,
+            self._require_handle(),
             zoom_out_start_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1499,7 +1499,7 @@ class CameraServer:
         cb = ZoomStopCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_zoom_stop(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1528,7 +1528,7 @@ class CameraServer:
         """Get respond_zoom_stop (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_zoom_stop(
-            self._handle,
+            self._require_handle(),
             zoom_stop_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1552,7 +1552,7 @@ class CameraServer:
         cb = ZoomRangeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_zoom_range(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1581,7 +1581,7 @@ class CameraServer:
         """Get respond_zoom_range (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_zoom_range(
-            self._handle,
+            self._require_handle(),
             zoom_range_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1605,7 +1605,7 @@ class CameraServer:
         cb = FocusInStepCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_in_step(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1634,7 +1634,7 @@ class CameraServer:
         """Get respond_focus_in_step (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_in_step(
-            self._handle,
+            self._require_handle(),
             focus_in_step_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1660,7 +1660,7 @@ class CameraServer:
         cb = FocusOutStepCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_out_step(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1691,7 +1691,7 @@ class CameraServer:
         """Get respond_focus_out_step (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_out_step(
-            self._handle,
+            self._require_handle(),
             focus_out_step_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1717,7 +1717,7 @@ class CameraServer:
         cb = FocusInStartCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_in_start(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1748,7 +1748,7 @@ class CameraServer:
         """Get respond_focus_in_start (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_in_start(
-            self._handle,
+            self._require_handle(),
             focus_in_start_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1774,7 +1774,7 @@ class CameraServer:
         cb = FocusOutStartCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_out_start(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1805,7 +1805,7 @@ class CameraServer:
         """Get respond_focus_out_start (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_out_start(
-            self._handle,
+            self._require_handle(),
             focus_out_start_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1831,7 +1831,7 @@ class CameraServer:
         cb = FocusStopCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_stop(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1860,7 +1860,7 @@ class CameraServer:
         """Get respond_focus_stop (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_stop(
-            self._handle,
+            self._require_handle(),
             focus_stop_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1884,7 +1884,7 @@ class CameraServer:
         cb = FocusRangeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_range(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1913,7 +1913,7 @@ class CameraServer:
         """Get respond_focus_range (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_range(
-            self._handle,
+            self._require_handle(),
             focus_range_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1939,7 +1939,7 @@ class CameraServer:
         cb = FocusMetersCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_meters(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1968,7 +1968,7 @@ class CameraServer:
         """Get respond_focus_meters (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_meters(
-            self._handle,
+            self._require_handle(),
             focus_meters_feedback,
         )
         result = CameraServerResult(result_code)
@@ -1994,7 +1994,7 @@ class CameraServer:
         cb = FocusAutoCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_auto(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2023,7 +2023,7 @@ class CameraServer:
         """Get respond_focus_auto (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_auto(
-            self._handle,
+            self._require_handle(),
             focus_auto_feedback,
         )
         result = CameraServerResult(result_code)
@@ -2047,7 +2047,7 @@ class CameraServer:
         cb = FocusAutoSingleCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_auto_single(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2078,7 +2078,7 @@ class CameraServer:
         """Get respond_focus_auto_single (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_auto_single(
-            self._handle,
+            self._require_handle(),
             focus_auto_single_feedback,
         )
         result = CameraServerResult(result_code)
@@ -2106,7 +2106,7 @@ class CameraServer:
         cb = FocusAutoContinuousCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_focus_auto_continuous(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2137,7 +2137,7 @@ class CameraServer:
         """Get respond_focus_auto_continuous (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_focus_auto_continuous(
-            self._handle,
+            self._require_handle(),
             focus_auto_continuous_feedback,
         )
         result = CameraServerResult(result_code)
@@ -2154,7 +2154,7 @@ class CameraServer:
         """Get set_tracking_rectangle_status (blocking)"""
 
         self._lib.mavsdk_camera_server_set_tracking_rectangle_status(
-            self._handle,
+            self._require_handle(),
             tracked_rectangle.to_c_struct(),
         )
 
@@ -2162,7 +2162,7 @@ class CameraServer:
         """Get set_tracking_off_status (blocking)"""
 
         self._lib.mavsdk_camera_server_set_tracking_off_status(
-            self._handle,
+            self._require_handle(),
         )
 
     def subscribe_tracking_point_command(
@@ -2184,7 +2184,7 @@ class CameraServer:
         cb = TrackingPointCommandCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_tracking_point_command(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2233,7 +2233,7 @@ class CameraServer:
 
         _subscription = (
             self._lib.mavsdk_camera_server_subscribe_tracking_rectangle_command(
-                self._handle, cb, None
+                self._require_handle(), cb, None
             )
         )
 
@@ -2276,7 +2276,7 @@ class CameraServer:
         cb = TrackingOffCommandCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_server_subscribe_tracking_off_command(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -2307,7 +2307,7 @@ class CameraServer:
         """Get respond_tracking_point_command (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_tracking_point_command(
-            self._handle,
+            self._require_handle(),
             stop_video_feedback,
         )
         result = CameraServerResult(result_code)
@@ -2322,7 +2322,7 @@ class CameraServer:
         """Get respond_tracking_rectangle_command (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_tracking_rectangle_command(
-            self._handle,
+            self._require_handle(),
             stop_video_feedback,
         )
         result = CameraServerResult(result_code)
@@ -2337,7 +2337,7 @@ class CameraServer:
         """Get respond_tracking_off_command (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_respond_tracking_off_command(
-            self._handle,
+            self._require_handle(),
             stop_video_feedback,
         )
         result = CameraServerResult(result_code)
@@ -2352,7 +2352,7 @@ class CameraServer:
         """Get set_position (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_set_position(
-            self._handle,
+            self._require_handle(),
             position.to_c_struct(),
         )
         result = CameraServerResult(result_code)
@@ -2365,7 +2365,7 @@ class CameraServer:
         """Get set_attitude_quaternion (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_set_attitude_quaternion(
-            self._handle,
+            self._require_handle(),
             attitude_quaternion.to_c_struct(),
         )
         result = CameraServerResult(result_code)
@@ -2380,7 +2380,7 @@ class CameraServer:
         """Get set_zoom_factor (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_set_zoom_factor(
-            self._handle,
+            self._require_handle(),
             zoom_factor,
         )
         result = CameraServerResult(result_code)
@@ -2393,7 +2393,7 @@ class CameraServer:
         """Get set_field_of_view (blocking)"""
 
         result_code = self._lib.mavsdk_camera_server_set_field_of_view(
-            self._handle,
+            self._require_handle(),
             horizontal_fov_deg,
             vertical_fov_deg,
         )
@@ -2404,6 +2404,21 @@ class CameraServer:
             )
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "CameraServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

@@ -120,7 +120,7 @@ class ArmAuthorizerServer:
 
         _subscription = (
             self._lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization(
-                self._handle, cb, None
+                self._require_handle(), cb, None
             )
         )
 
@@ -152,7 +152,7 @@ class ArmAuthorizerServer:
         """Get accept_arm_authorization (blocking)"""
 
         result_code = self._lib.mavsdk_arm_authorizer_server_accept_arm_authorization(
-            self._handle,
+            self._require_handle(),
             valid_time_s,
         )
         result = ArmAuthorizerServerResult(result_code)
@@ -167,7 +167,7 @@ class ArmAuthorizerServer:
         """Get reject_arm_authorization (blocking)"""
 
         result_code = self._lib.mavsdk_arm_authorizer_server_reject_arm_authorization(
-            self._handle,
+            self._require_handle(),
             temporarily,
             reason,
             extra_info,
@@ -179,6 +179,21 @@ class ArmAuthorizerServer:
             )
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "ArmAuthorizerServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

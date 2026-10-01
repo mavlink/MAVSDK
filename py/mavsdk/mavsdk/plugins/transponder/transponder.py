@@ -252,7 +252,7 @@ class Transponder:
         cb = TransponderCallback(c_callback)
 
         _subscription = self._lib.mavsdk_transponder_subscribe_transponder(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -282,7 +282,9 @@ class Transponder:
 
         result_out = AdsbVehicleCStruct()
 
-        self._lib.mavsdk_transponder_transponder(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_transponder_transponder(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = AdsbVehicle.from_c_struct(result_out)
         self._lib.mavsdk_transponder_adsb_vehicle_destroy(ctypes.byref(result_out))
@@ -306,14 +308,14 @@ class Transponder:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_transponder_set_rate_transponder_async(
-            self._handle, rate_hz, cb, None
+            self._require_handle(), rate_hz, cb, None
         )
 
     def set_rate_transponder(self, rate_hz):
         """Get set_rate_transponder (blocking)"""
 
         result_code = self._lib.mavsdk_transponder_set_rate_transponder(
-            self._handle,
+            self._require_handle(),
             rate_hz,
         )
         result = TransponderResult(result_code)
@@ -321,6 +323,21 @@ class Transponder:
             raise TransponderError(result, "set_rate_transponder()", rate_hz)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Transponder has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

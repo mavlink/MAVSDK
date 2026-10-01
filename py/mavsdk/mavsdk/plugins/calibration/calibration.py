@@ -177,7 +177,9 @@ class Calibration:
         cb = CalibrateGyroCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_calibration_calibrate_gyro_async(self._handle, cb, None)
+        self._lib.mavsdk_calibration_calibrate_gyro_async(
+            self._require_handle(), cb, None
+        )
 
     def calibrate_accelerometer_async(self, callback: Callable, user_data: Any = None):
         """Perform accelerometer calibration."""
@@ -199,7 +201,7 @@ class Calibration:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_calibration_calibrate_accelerometer_async(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
     def calibrate_magnetometer_async(self, callback: Callable, user_data: Any = None):
@@ -222,7 +224,7 @@ class Calibration:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_calibration_calibrate_magnetometer_async(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
     def calibrate_level_horizon_async(self, callback: Callable, user_data: Any = None):
@@ -245,7 +247,7 @@ class Calibration:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_calibration_calibrate_level_horizon_async(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
     def calibrate_gimbal_accelerometer_async(
@@ -270,20 +272,35 @@ class Calibration:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_calibration_calibrate_gimbal_accelerometer_async(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
     def cancel(self):
         """Get cancel (blocking)"""
 
         result_code = self._lib.mavsdk_calibration_cancel(
-            self._handle,
+            self._require_handle(),
         )
         result = CalibrationResult(result_code)
         if result != CalibrationResult.SUCCESS:
             raise CalibrationError(result, "cancel()")
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Calibration has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

@@ -171,3 +171,28 @@ def test_system_unsubscribe_twice():
         groundstation.destroy()
         autopilot.destroy()
     """)
+
+
+def test_plugin_call_after_destroy_raises():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+        from mavsdk.plugins.mission_raw_server import MissionRawServer
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.AUTOPILOT)
+        )
+        server = MissionRawServer(mavsdk.server_component())
+
+        mavsdk.destroy()
+        # The plugin went down with it. Using it anyway has to say so, rather
+        # than hand a null handle to the C wrapper and segfault there.
+        for call in (
+            server.set_current_item_complete,
+            lambda: server.subscribe_incoming_mission(lambda *_: None),
+        ):
+            try:
+                call()
+            except RuntimeError:
+                continue
+            raise AssertionError("expected RuntimeError from a destroyed plugin")
+    """)

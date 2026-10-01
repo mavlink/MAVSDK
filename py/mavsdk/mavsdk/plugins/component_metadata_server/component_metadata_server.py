@@ -147,10 +147,25 @@ class ComponentMetadataServer:
         _metadata_size = len(metadata)
 
         self._lib.mavsdk_component_metadata_server_set_metadata(
-            self._handle,
+            self._require_handle(),
             _metadata_array,
             _metadata_size,
         )
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "ComponentMetadataServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

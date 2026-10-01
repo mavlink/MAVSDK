@@ -375,7 +375,7 @@ class Info:
         result_out = IdentificationCStruct()
 
         result_code = self._lib.mavsdk_info_get_identification(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -391,7 +391,7 @@ class Info:
         result_out = ProductCStruct()
 
         result_code = self._lib.mavsdk_info_get_product(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -407,7 +407,7 @@ class Info:
         result_out = VersionCStruct()
 
         result_code = self._lib.mavsdk_info_get_version(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -423,7 +423,7 @@ class Info:
         result_out = ctypes.c_double()
 
         result_code = self._lib.mavsdk_info_get_speed_factor(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -448,7 +448,7 @@ class Info:
         cb = FlightInformationCallback(c_callback)
 
         _subscription = self._lib.mavsdk_info_subscribe_flight_information(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -472,6 +472,21 @@ class Info:
             _plugin_handle = self._handle
 
         self._lib.mavsdk_info_unsubscribe_flight_information(_plugin_handle, handle)
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Info has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""

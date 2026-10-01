@@ -1214,13 +1214,15 @@ class Camera:
         cb = TakePhotoCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_take_photo_async(self._handle, component_id, cb, None)
+        self._lib.mavsdk_camera_take_photo_async(
+            self._require_handle(), component_id, cb, None
+        )
 
     def take_photo(self, component_id):
         """Get take_photo (blocking)"""
 
         result_code = self._lib.mavsdk_camera_take_photo(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -1247,14 +1249,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_start_photo_interval_async(
-            self._handle, component_id, interval_s, cb, None
+            self._require_handle(), component_id, interval_s, cb, None
         )
 
     def start_photo_interval(self, component_id, interval_s):
         """Get start_photo_interval (blocking)"""
 
         result_code = self._lib.mavsdk_camera_start_photo_interval(
-            self._handle,
+            self._require_handle(),
             component_id,
             interval_s,
         )
@@ -1284,14 +1286,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_stop_photo_interval_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def stop_photo_interval(self, component_id):
         """Get stop_photo_interval (blocking)"""
 
         result_code = self._lib.mavsdk_camera_stop_photo_interval(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -1317,13 +1319,15 @@ class Camera:
         cb = StartVideoCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_start_video_async(self._handle, component_id, cb, None)
+        self._lib.mavsdk_camera_start_video_async(
+            self._require_handle(), component_id, cb, None
+        )
 
     def start_video(self, component_id):
         """Get start_video (blocking)"""
 
         result_code = self._lib.mavsdk_camera_start_video(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -1347,13 +1351,15 @@ class Camera:
         cb = StopVideoCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_stop_video_async(self._handle, component_id, cb, None)
+        self._lib.mavsdk_camera_stop_video_async(
+            self._require_handle(), component_id, cb, None
+        )
 
     def stop_video(self, component_id):
         """Get stop_video (blocking)"""
 
         result_code = self._lib.mavsdk_camera_stop_video(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -1366,7 +1372,7 @@ class Camera:
         """Get start_video_streaming (blocking)"""
 
         result_code = self._lib.mavsdk_camera_start_video_streaming(
-            self._handle,
+            self._require_handle(),
             component_id,
             stream_id,
         )
@@ -1382,7 +1388,7 @@ class Camera:
         """Get stop_video_streaming (blocking)"""
 
         result_code = self._lib.mavsdk_camera_stop_video_streaming(
-            self._handle,
+            self._require_handle(),
             component_id,
             stream_id,
         )
@@ -1410,14 +1416,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_set_mode_async(
-            self._handle, component_id, mode, cb, None
+            self._require_handle(), component_id, mode, cb, None
         )
 
     def set_mode(self, component_id, mode):
         """Get set_mode (blocking)"""
 
         result_code = self._lib.mavsdk_camera_set_mode(
-            self._handle,
+            self._require_handle(),
             component_id,
             mode,
         )
@@ -1458,7 +1464,7 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_list_photos_async(
-            self._handle, component_id, photos_range, cb, None
+            self._require_handle(), component_id, photos_range, cb, None
         )
 
     def list_photos(self, component_id, photos_range):
@@ -1468,7 +1474,7 @@ class Camera:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_camera_list_photos(
-            self._handle,
+            self._require_handle(),
             component_id,
             photos_range,
             ctypes.byref(result_ptr),
@@ -1506,7 +1512,7 @@ class Camera:
         cb = CameraListCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_subscribe_camera_list(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1536,7 +1542,9 @@ class Camera:
 
         result_out = CameraListCStruct()
 
-        self._lib.mavsdk_camera_camera_list(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_camera_camera_list(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = CameraList.from_c_struct(result_out)
         self._lib.mavsdk_camera_camera_list_destroy(ctypes.byref(result_out))
@@ -1558,7 +1566,9 @@ class Camera:
 
         cb = ModeCallback(c_callback)
 
-        _subscription = self._lib.mavsdk_camera_subscribe_mode(self._handle, cb, None)
+        _subscription = self._lib.mavsdk_camera_subscribe_mode(
+            self._require_handle(), cb, None
+        )
 
         self._subscriptions[_subscription] = (
             cb,
@@ -1588,7 +1598,7 @@ class Camera:
         result_out = ctypes.c_int()
 
         result_code = self._lib.mavsdk_camera_get_mode(
-            self._handle, component_id, ctypes.byref(result_out)
+            self._require_handle(), component_id, ctypes.byref(result_out)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1615,7 +1625,7 @@ class Camera:
         cb = VideoStreamInfoCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_subscribe_video_stream_info(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1646,7 +1656,7 @@ class Camera:
         result_out = VideoStreamInfoCStruct()
 
         result_code = self._lib.mavsdk_camera_get_video_stream_info(
-            self._handle, component_id, ctypes.byref(result_out)
+            self._require_handle(), component_id, ctypes.byref(result_out)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1673,7 +1683,7 @@ class Camera:
         cb = CaptureInfoCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_subscribe_capture_info(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1715,7 +1725,7 @@ class Camera:
         cb = StorageCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_subscribe_storage(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1746,7 +1756,7 @@ class Camera:
         result_out = StorageCStruct()
 
         result_code = self._lib.mavsdk_camera_get_storage(
-            self._handle, component_id, ctypes.byref(result_out)
+            self._require_handle(), component_id, ctypes.byref(result_out)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1775,7 +1785,7 @@ class Camera:
         cb = CurrentSettingsCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_subscribe_current_settings(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1807,7 +1817,10 @@ class Camera:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_camera_get_current_settings(
-            self._handle, component_id, ctypes.byref(result_ptr), ctypes.byref(size)
+            self._require_handle(),
+            component_id,
+            ctypes.byref(result_ptr),
+            ctypes.byref(size),
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1838,7 +1851,7 @@ class Camera:
         cb = PossibleSettingOptionsCallback(c_callback)
 
         _subscription = self._lib.mavsdk_camera_subscribe_possible_setting_options(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -1872,7 +1885,10 @@ class Camera:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_camera_get_possible_setting_options(
-            self._handle, component_id, ctypes.byref(result_ptr), ctypes.byref(size)
+            self._require_handle(),
+            component_id,
+            ctypes.byref(result_ptr),
+            ctypes.byref(size),
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1906,14 +1922,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_set_setting_async(
-            self._handle, component_id, setting.to_c_struct(), cb, None
+            self._require_handle(), component_id, setting.to_c_struct(), cb, None
         )
 
     def set_setting(self, component_id, setting):
         """Get set_setting (blocking)"""
 
         result_code = self._lib.mavsdk_camera_set_setting(
-            self._handle,
+            self._require_handle(),
             component_id,
             setting.to_c_struct(),
         )
@@ -1947,7 +1963,7 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_get_setting_async(
-            self._handle, component_id, setting.to_c_struct(), cb, None
+            self._require_handle(), component_id, setting.to_c_struct(), cb, None
         )
 
     def get_setting(self, component_id, setting):
@@ -1956,7 +1972,10 @@ class Camera:
         result_out = SettingCStruct()
 
         result_code = self._lib.mavsdk_camera_get_setting(
-            self._handle, component_id, setting.to_c_struct(), ctypes.byref(result_out)
+            self._require_handle(),
+            component_id,
+            setting.to_c_struct(),
+            ctypes.byref(result_out),
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1986,14 +2005,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_format_storage_async(
-            self._handle, component_id, storage_id, cb, None
+            self._require_handle(), component_id, storage_id, cb, None
         )
 
     def format_storage(self, component_id, storage_id):
         """Get format_storage (blocking)"""
 
         result_code = self._lib.mavsdk_camera_format_storage(
-            self._handle,
+            self._require_handle(),
             component_id,
             storage_id,
         )
@@ -2023,14 +2042,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_reset_settings_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def reset_settings(self, component_id):
         """Get reset_settings (blocking)"""
 
         result_code = self._lib.mavsdk_camera_reset_settings(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2057,14 +2076,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_zoom_in_start_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def zoom_in_start(self, component_id):
         """Get zoom_in_start (blocking)"""
 
         result_code = self._lib.mavsdk_camera_zoom_in_start(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2091,14 +2110,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_zoom_out_start_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def zoom_out_start(self, component_id):
         """Get zoom_out_start (blocking)"""
 
         result_code = self._lib.mavsdk_camera_zoom_out_start(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2122,13 +2141,15 @@ class Camera:
         cb = ZoomStopCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_zoom_stop_async(self._handle, component_id, cb, None)
+        self._lib.mavsdk_camera_zoom_stop_async(
+            self._require_handle(), component_id, cb, None
+        )
 
     def zoom_stop(self, component_id):
         """Get zoom_stop (blocking)"""
 
         result_code = self._lib.mavsdk_camera_zoom_stop(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2155,14 +2176,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_zoom_range_async(
-            self._handle, component_id, range, cb, None
+            self._require_handle(), component_id, range, cb, None
         )
 
     def zoom_range(self, component_id, range):
         """Get zoom_range (blocking)"""
 
         result_code = self._lib.mavsdk_camera_zoom_range(
-            self._handle,
+            self._require_handle(),
             component_id,
             range,
         )
@@ -2196,14 +2217,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_track_point_async(
-            self._handle, component_id, point_x, point_y, radius, cb, None
+            self._require_handle(), component_id, point_x, point_y, radius, cb, None
         )
 
     def track_point(self, component_id, point_x, point_y, radius):
         """Get track_point (blocking)"""
 
         result_code = self._lib.mavsdk_camera_track_point(
-            self._handle,
+            self._require_handle(),
             component_id,
             point_x,
             point_y,
@@ -2242,7 +2263,7 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_track_rectangle_async(
-            self._handle,
+            self._require_handle(),
             component_id,
             top_left_x,
             top_left_y,
@@ -2258,7 +2279,7 @@ class Camera:
         """Get track_rectangle (blocking)"""
 
         result_code = self._lib.mavsdk_camera_track_rectangle(
-            self._handle,
+            self._require_handle(),
             component_id,
             top_left_x,
             top_left_y,
@@ -2294,13 +2315,15 @@ class Camera:
         cb = TrackStopCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_track_stop_async(self._handle, component_id, cb, None)
+        self._lib.mavsdk_camera_track_stop_async(
+            self._require_handle(), component_id, cb, None
+        )
 
     def track_stop(self, component_id):
         """Get track_stop (blocking)"""
 
         result_code = self._lib.mavsdk_camera_track_stop(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2327,14 +2350,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_in_step_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def focus_in_step(self, component_id):
         """Get focus_in_step (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_in_step(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2361,14 +2384,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_out_step_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def focus_out_step(self, component_id):
         """Get focus_out_step (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_out_step(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2395,14 +2418,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_in_start_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def focus_in_start(self, component_id):
         """Get focus_in_start (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_in_start(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2429,14 +2452,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_out_start_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def focus_out_start(self, component_id):
         """Get focus_out_start (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_out_start(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2460,13 +2483,15 @@ class Camera:
         cb = FocusStopCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_focus_stop_async(self._handle, component_id, cb, None)
+        self._lib.mavsdk_camera_focus_stop_async(
+            self._require_handle(), component_id, cb, None
+        )
 
     def focus_stop(self, component_id):
         """Get focus_stop (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_stop(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2493,14 +2518,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_range_async(
-            self._handle, component_id, range, cb, None
+            self._require_handle(), component_id, range, cb, None
         )
 
     def focus_range(self, component_id, range):
         """Get focus_range (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_range(
-            self._handle,
+            self._require_handle(),
             component_id,
             range,
         )
@@ -2531,14 +2556,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_meters_async(
-            self._handle, component_id, distance_m, cb, None
+            self._require_handle(), component_id, distance_m, cb, None
         )
 
     def focus_meters(self, component_id, distance_m):
         """Get focus_meters (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_meters(
-            self._handle,
+            self._require_handle(),
             component_id,
             distance_m,
         )
@@ -2563,13 +2588,15 @@ class Camera:
         cb = FocusAutoCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_focus_auto_async(self._handle, component_id, cb, None)
+        self._lib.mavsdk_camera_focus_auto_async(
+            self._require_handle(), component_id, cb, None
+        )
 
     def focus_auto(self, component_id):
         """Get focus_auto (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_auto(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2596,14 +2623,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_auto_single_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def focus_auto_single(self, component_id):
         """Get focus_auto_single (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_auto_single(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2630,14 +2657,14 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_auto_continuous_async(
-            self._handle, component_id, cb, None
+            self._require_handle(), component_id, cb, None
         )
 
     def focus_auto_continuous(self, component_id):
         """Get focus_auto_continuous (blocking)"""
 
         result_code = self._lib.mavsdk_camera_focus_auto_continuous(
-            self._handle,
+            self._require_handle(),
             component_id,
         )
         result = CameraResult(result_code)
@@ -2645,6 +2672,21 @@ class Camera:
             raise CameraError(result, "focus_auto_continuous()", component_id)
 
         return result
+
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Camera has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
