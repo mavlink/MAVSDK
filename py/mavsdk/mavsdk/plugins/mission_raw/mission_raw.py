@@ -417,7 +417,10 @@ class MissionRaw:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -469,7 +472,7 @@ class MissionRaw:
         _mission_items_size = len(mission_items)
 
         self._lib.mavsdk_mission_raw_upload_mission_async(
-            self._handle, _mission_items_array, _mission_items_size, cb, None
+            self._require_handle(), _mission_items_array, _mission_items_size, cb, None
         )
 
     def upload_mission(self, mission_items):
@@ -482,7 +485,7 @@ class MissionRaw:
         _mission_items_size = len(mission_items)
 
         result_code = self._lib.mavsdk_mission_raw_upload_mission(
-            self._handle,
+            self._require_handle(),
             _mission_items_array,
             _mission_items_size,
         )
@@ -514,7 +517,7 @@ class MissionRaw:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_raw_upload_mission_with_progress_async(
-            self._handle, mission_plan.to_c_struct(), cb, None
+            self._require_handle(), mission_plan.to_c_struct(), cb, None
         )
 
     def upload_geofence_async(
@@ -541,7 +544,7 @@ class MissionRaw:
         _mission_items_size = len(mission_items)
 
         self._lib.mavsdk_mission_raw_upload_geofence_async(
-            self._handle, _mission_items_array, _mission_items_size, cb, None
+            self._require_handle(), _mission_items_array, _mission_items_size, cb, None
         )
 
     def upload_geofence(self, mission_items):
@@ -554,7 +557,7 @@ class MissionRaw:
         _mission_items_size = len(mission_items)
 
         result_code = self._lib.mavsdk_mission_raw_upload_geofence(
-            self._handle,
+            self._require_handle(),
             _mission_items_array,
             _mission_items_size,
         )
@@ -588,7 +591,7 @@ class MissionRaw:
         _mission_items_size = len(mission_items)
 
         self._lib.mavsdk_mission_raw_upload_rally_points_async(
-            self._handle, _mission_items_array, _mission_items_size, cb, None
+            self._require_handle(), _mission_items_array, _mission_items_size, cb, None
         )
 
     def upload_rally_points(self, mission_items):
@@ -601,7 +604,7 @@ class MissionRaw:
         _mission_items_size = len(mission_items)
 
         result_code = self._lib.mavsdk_mission_raw_upload_rally_points(
-            self._handle,
+            self._require_handle(),
             _mission_items_array,
             _mission_items_size,
         )
@@ -615,7 +618,7 @@ class MissionRaw:
         """Get cancel_mission_upload (blocking)"""
 
         result_code = self._lib.mavsdk_mission_raw_cancel_mission_upload(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -647,7 +650,9 @@ class MissionRaw:
         cb = DownloadMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_raw_download_mission_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_raw_download_mission_async(
+            self._require_handle(), cb, None
+        )
 
     def download_mission(self):
         """Get download_mission (blocking)"""
@@ -656,7 +661,7 @@ class MissionRaw:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_mission_raw_download_mission(
-            self._handle, ctypes.byref(result_ptr), ctypes.byref(size)
+            self._require_handle(), ctypes.byref(result_ptr), ctypes.byref(size)
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -694,7 +699,9 @@ class MissionRaw:
         cb = DownloadGeofenceCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_raw_download_geofence_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_raw_download_geofence_async(
+            self._require_handle(), cb, None
+        )
 
     def download_geofence(self):
         """Get download_geofence (blocking)"""
@@ -703,7 +710,7 @@ class MissionRaw:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_mission_raw_download_geofence(
-            self._handle, ctypes.byref(result_ptr), ctypes.byref(size)
+            self._require_handle(), ctypes.byref(result_ptr), ctypes.byref(size)
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -741,7 +748,9 @@ class MissionRaw:
         cb = DownloadRallypointsCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_raw_download_rallypoints_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_raw_download_rallypoints_async(
+            self._require_handle(), cb, None
+        )
 
     def download_rallypoints(self):
         """Get download_rallypoints (blocking)"""
@@ -750,7 +759,7 @@ class MissionRaw:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_mission_raw_download_rallypoints(
-            self._handle, ctypes.byref(result_ptr), ctypes.byref(size)
+            self._require_handle(), ctypes.byref(result_ptr), ctypes.byref(size)
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -768,7 +777,7 @@ class MissionRaw:
         """Get cancel_mission_download (blocking)"""
 
         result_code = self._lib.mavsdk_mission_raw_cancel_mission_download(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -793,13 +802,15 @@ class MissionRaw:
         cb = StartMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_raw_start_mission_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_raw_start_mission_async(
+            self._require_handle(), cb, None
+        )
 
     def start_mission(self):
         """Get start_mission (blocking)"""
 
         result_code = self._lib.mavsdk_mission_raw_start_mission(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -827,13 +838,15 @@ class MissionRaw:
         cb = PauseMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_raw_pause_mission_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_raw_pause_mission_async(
+            self._require_handle(), cb, None
+        )
 
     def pause_mission(self):
         """Get pause_mission (blocking)"""
 
         result_code = self._lib.mavsdk_mission_raw_pause_mission(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -856,13 +869,15 @@ class MissionRaw:
         cb = ClearMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_raw_clear_mission_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_raw_clear_mission_async(
+            self._require_handle(), cb, None
+        )
 
     def clear_mission(self):
         """Get clear_mission (blocking)"""
 
         result_code = self._lib.mavsdk_mission_raw_clear_mission(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -891,14 +906,14 @@ class MissionRaw:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_raw_set_current_mission_item_async(
-            self._handle, index, cb, None
+            self._require_handle(), index, cb, None
         )
 
     def set_current_mission_item(self, index):
         """Get set_current_mission_item (blocking)"""
 
         result_code = self._lib.mavsdk_mission_raw_set_current_mission_item(
-            self._handle,
+            self._require_handle(),
             index,
         )
         result = MissionRawResult(result_code)
@@ -926,7 +941,7 @@ class MissionRaw:
         cb = MissionProgressCallback(c_callback)
 
         _subscription = self._lib.mavsdk_mission_raw_subscribe_mission_progress(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -942,11 +957,16 @@ class MissionRaw:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_mission_raw_unsubscribe_mission_progress(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_mission_raw_unsubscribe_mission_progress(
+            _plugin_handle, handle
+        )
 
     def mission_progress(self):
         """Get mission_progress (blocking)"""
@@ -954,7 +974,7 @@ class MissionRaw:
         result_out = MissionProgressCStruct()
 
         self._lib.mavsdk_mission_raw_mission_progress(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = MissionProgress.from_c_struct(result_out)
@@ -981,7 +1001,7 @@ class MissionRaw:
         cb = MissionChangedCallback(c_callback)
 
         _subscription = self._lib.mavsdk_mission_raw_subscribe_mission_changed(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -997,11 +1017,14 @@ class MissionRaw:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_mission_raw_unsubscribe_mission_changed(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_mission_raw_unsubscribe_mission_changed(_plugin_handle, handle)
 
     def import_qgroundcontrol_mission(self, qgc_plan_path):
         """Get import_qgroundcontrol_mission (blocking)"""
@@ -1009,7 +1032,7 @@ class MissionRaw:
         result_out = MissionImportDataCStruct()
 
         result_code = self._lib.mavsdk_mission_raw_import_qgroundcontrol_mission(
-            self._handle,
+            self._require_handle(),
             qgc_plan_path.encode("utf-8")
             if isinstance(qgc_plan_path, str)
             else qgc_plan_path,
@@ -1034,7 +1057,7 @@ class MissionRaw:
 
         result_code = (
             self._lib.mavsdk_mission_raw_import_qgroundcontrol_mission_from_string(
-                self._handle,
+                self._require_handle(),
                 qgc_plan.encode("utf-8") if isinstance(qgc_plan, str) else qgc_plan,
                 ctypes.byref(result_out),
             )
@@ -1057,7 +1080,7 @@ class MissionRaw:
         result_out = MissionImportDataCStruct()
 
         result_code = self._lib.mavsdk_mission_raw_import_mission_planner_mission(
-            self._handle,
+            self._require_handle(),
             mission_planner_path.encode("utf-8")
             if isinstance(mission_planner_path, str)
             else mission_planner_path,
@@ -1082,7 +1105,7 @@ class MissionRaw:
 
         result_code = (
             self._lib.mavsdk_mission_raw_import_mission_planner_mission_from_string(
-                self._handle,
+                self._require_handle(),
                 mission_planner_mission.encode("utf-8")
                 if isinstance(mission_planner_mission, str)
                 else mission_planner_mission,
@@ -1109,7 +1132,7 @@ class MissionRaw:
         result_out = ctypes.c_bool()
 
         result_code = self._lib.mavsdk_mission_raw_is_mission_finished(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -1117,17 +1140,38 @@ class MissionRaw:
 
         return result_out.value
 
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "MissionRaw has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
+
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_mission_raw_destroy(handle)
             self._callbacks.clear()

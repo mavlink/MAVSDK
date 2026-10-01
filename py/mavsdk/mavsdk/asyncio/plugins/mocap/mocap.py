@@ -39,7 +39,6 @@ class MocapAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Mocap(system._system)
 
     async def set_vision_position_estimate(self, vision_position_estimate):
@@ -113,7 +112,6 @@ class MocapAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

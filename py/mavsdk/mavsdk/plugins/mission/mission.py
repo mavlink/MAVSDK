@@ -410,7 +410,10 @@ class Mission:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -456,14 +459,14 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_upload_mission_async(
-            self._handle, mission_plan.to_c_struct(), cb, None
+            self._require_handle(), mission_plan.to_c_struct(), cb, None
         )
 
     def upload_mission(self, mission_plan):
         """Get upload_mission (blocking)"""
 
         result_code = self._lib.mavsdk_mission_upload_mission(
-            self._handle,
+            self._require_handle(),
             mission_plan.to_c_struct(),
         )
         result = MissionResult(result_code)
@@ -497,14 +500,14 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_upload_mission_with_progress_async(
-            self._handle, mission_plan.to_c_struct(), cb, None
+            self._require_handle(), mission_plan.to_c_struct(), cb, None
         )
 
     def cancel_mission_upload(self):
         """Get cancel_mission_upload (blocking)"""
 
         result_code = self._lib.mavsdk_mission_cancel_mission_upload(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -534,7 +537,9 @@ class Mission:
         cb = DownloadMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_download_mission_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_download_mission_async(
+            self._require_handle(), cb, None
+        )
 
     def download_mission(self):
         """Get download_mission (blocking)"""
@@ -542,7 +547,7 @@ class Mission:
         result_out = MissionPlanCStruct()
 
         result_code = self._lib.mavsdk_mission_download_mission(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -579,14 +584,14 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_download_mission_with_progress_async(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
     def cancel_mission_download(self):
         """Get cancel_mission_download (blocking)"""
 
         result_code = self._lib.mavsdk_mission_cancel_mission_download(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -611,13 +616,13 @@ class Mission:
         cb = StartMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_start_mission_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_start_mission_async(self._require_handle(), cb, None)
 
     def start_mission(self):
         """Get start_mission (blocking)"""
 
         result_code = self._lib.mavsdk_mission_start_mission(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -645,13 +650,13 @@ class Mission:
         cb = PauseMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_pause_mission_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_pause_mission_async(self._require_handle(), cb, None)
 
     def pause_mission(self):
         """Get pause_mission (blocking)"""
 
         result_code = self._lib.mavsdk_mission_pause_mission(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -674,13 +679,13 @@ class Mission:
         cb = ClearMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_clear_mission_async(self._handle, cb, None)
+        self._lib.mavsdk_mission_clear_mission_async(self._require_handle(), cb, None)
 
     def clear_mission(self):
         """Get clear_mission (blocking)"""
 
         result_code = self._lib.mavsdk_mission_clear_mission(
-            self._handle,
+            self._require_handle(),
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -712,14 +717,14 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_set_current_mission_item_async(
-            self._handle, index, cb, None
+            self._require_handle(), index, cb, None
         )
 
     def set_current_mission_item(self, index):
         """Get set_current_mission_item (blocking)"""
 
         result_code = self._lib.mavsdk_mission_set_current_mission_item(
-            self._handle,
+            self._require_handle(),
             index,
         )
         result = MissionResult(result_code)
@@ -734,7 +739,7 @@ class Mission:
         result_out = ctypes.c_bool()
 
         result_code = self._lib.mavsdk_mission_is_mission_finished(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -759,7 +764,7 @@ class Mission:
         cb = MissionProgressCallback(c_callback)
 
         _subscription = self._lib.mavsdk_mission_subscribe_mission_progress(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -775,11 +780,14 @@ class Mission:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_mission_unsubscribe_mission_progress(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_mission_unsubscribe_mission_progress(_plugin_handle, handle)
 
     def mission_progress(self):
         """Get mission_progress (blocking)"""
@@ -787,7 +795,7 @@ class Mission:
         result_out = MissionProgressCStruct()
 
         self._lib.mavsdk_mission_mission_progress(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = MissionProgress.from_c_struct(result_out)
@@ -800,7 +808,7 @@ class Mission:
         result_out = ctypes.c_bool()
 
         result_code = self._lib.mavsdk_mission_get_return_to_launch_after_mission(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -812,7 +820,7 @@ class Mission:
         """Get set_return_to_launch_after_mission (blocking)"""
 
         result_code = self._lib.mavsdk_mission_set_return_to_launch_after_mission(
-            self._handle,
+            self._require_handle(),
             enable,
         )
         result = MissionResult(result_code)
@@ -821,17 +829,38 @@ class Mission:
 
         return result
 
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Mission has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
+
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_mission_destroy(handle)
             self._callbacks.clear()

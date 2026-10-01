@@ -221,7 +221,10 @@ class FollowMe:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -251,7 +254,9 @@ class FollowMe:
 
         result_out = ConfigCStruct()
 
-        self._lib.mavsdk_follow_me_get_config(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_follow_me_get_config(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         py_result = Config.from_c_struct(result_out)
         self._lib.mavsdk_follow_me_config_destroy(ctypes.byref(result_out))
@@ -261,7 +266,7 @@ class FollowMe:
         """Get set_config (blocking)"""
 
         result_code = self._lib.mavsdk_follow_me_set_config(
-            self._handle,
+            self._require_handle(),
             config.to_c_struct(),
         )
         result = FollowMeResult(result_code)
@@ -275,7 +280,9 @@ class FollowMe:
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_follow_me_is_active(self._handle, ctypes.byref(result_out))
+        self._lib.mavsdk_follow_me_is_active(
+            self._require_handle(), ctypes.byref(result_out)
+        )
 
         return result_out.value
 
@@ -283,7 +290,7 @@ class FollowMe:
         """Get set_target_location (blocking)"""
 
         result_code = self._lib.mavsdk_follow_me_set_target_location(
-            self._handle,
+            self._require_handle(),
             location.to_c_struct(),
         )
         result = FollowMeResult(result_code)
@@ -298,7 +305,7 @@ class FollowMe:
         result_out = TargetLocationCStruct()
 
         self._lib.mavsdk_follow_me_get_last_location(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = TargetLocation.from_c_struct(result_out)
@@ -309,7 +316,7 @@ class FollowMe:
         """Get start (blocking)"""
 
         result_code = self._lib.mavsdk_follow_me_start(
-            self._handle,
+            self._require_handle(),
         )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
@@ -321,7 +328,7 @@ class FollowMe:
         """Get stop (blocking)"""
 
         result_code = self._lib.mavsdk_follow_me_stop(
-            self._handle,
+            self._require_handle(),
         )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
@@ -329,17 +336,38 @@ class FollowMe:
 
         return result
 
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "FollowMe has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
+
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_follow_me_destroy(handle)
             self._callbacks.clear()

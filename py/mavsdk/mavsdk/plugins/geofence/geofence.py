@@ -287,7 +287,10 @@ class Geofence:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -333,14 +336,14 @@ class Geofence:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_geofence_upload_geofence_async(
-            self._handle, geofence_data.to_c_struct(), cb, None
+            self._require_handle(), geofence_data.to_c_struct(), cb, None
         )
 
     def upload_geofence(self, geofence_data):
         """Get upload_geofence (blocking)"""
 
         result_code = self._lib.mavsdk_geofence_upload_geofence(
-            self._handle,
+            self._require_handle(),
             geofence_data.to_c_struct(),
         )
         result = GeofenceResult(result_code)
@@ -370,7 +373,9 @@ class Geofence:
         cb = DownloadGeofenceCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_geofence_download_geofence_async(self._handle, cb, None)
+        self._lib.mavsdk_geofence_download_geofence_async(
+            self._require_handle(), cb, None
+        )
 
     def download_geofence(self):
         """Get download_geofence (blocking)"""
@@ -378,7 +383,7 @@ class Geofence:
         result_out = GeofenceDataCStruct()
 
         result_code = self._lib.mavsdk_geofence_download_geofence(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
@@ -403,13 +408,13 @@ class Geofence:
         cb = ClearGeofenceCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_geofence_clear_geofence_async(self._handle, cb, None)
+        self._lib.mavsdk_geofence_clear_geofence_async(self._require_handle(), cb, None)
 
     def clear_geofence(self):
         """Get clear_geofence (blocking)"""
 
         result_code = self._lib.mavsdk_geofence_clear_geofence(
-            self._handle,
+            self._require_handle(),
         )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
@@ -417,17 +422,38 @@ class Geofence:
 
         return result
 
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Geofence has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
+
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_geofence_destroy(handle)
             self._callbacks.clear()

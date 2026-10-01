@@ -31,7 +31,6 @@ class {{ plugin_name.upper_camel_case }}Async:
     """
 
     def __init__(self, {% if is_server %}server_component{% else %}system{% endif %}):
-        self._subscription_handles: dict = {}
         self._plugin = {{ plugin_name.upper_camel_case }}({% if is_server %}server_component{% else %}system._system{% endif %})
 
     {% for method in methods %}
@@ -63,14 +62,11 @@ class {{ plugin_name.upper_camel_case }}Async:
             loop.call_soon_threadsafe(queue.put_nowait, {% if method.has_result %}(result, data){% else %}data{% endif %})
 
         handle = self._plugin.subscribe_{{ method.name.lower_snake_case }}({% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_{{ method.name.lower_snake_case }}(handle)
+            self._plugin.unsubscribe_{{ method.name.lower_snake_case }}(handle)
 
     {% endif %}
     {% if method.is_async and method.is_finite %}
@@ -139,7 +135,6 @@ class {{ plugin_name.upper_camel_case }}Async:
     {% endif %}
     {% endfor %}
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

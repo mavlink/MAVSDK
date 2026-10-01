@@ -66,7 +66,6 @@ class TelemetryAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Telemetry(system._system)
 
     async def subscribe_position(self) -> AsyncGenerator[Position, None]:
@@ -85,14 +84,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_position(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_position(handle)
+            self._plugin.unsubscribe_position(handle)
 
     async def position(self):
         """
@@ -125,14 +121,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_home(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_home(handle)
+            self._plugin.unsubscribe_home(handle)
 
     async def home(self):
         """
@@ -165,14 +158,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_in_air(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_in_air(handle)
+            self._plugin.unsubscribe_in_air(handle)
 
     async def in_air(self):
         """
@@ -205,14 +195,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_landed_state(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_landed_state(handle)
+            self._plugin.unsubscribe_landed_state(handle)
 
     async def landed_state(self):
         """
@@ -245,14 +232,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_armed(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_armed(handle)
+            self._plugin.unsubscribe_armed(handle)
 
     async def armed(self):
         """
@@ -285,14 +269,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_vtol_state(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_vtol_state(handle)
+            self._plugin.unsubscribe_vtol_state(handle)
 
     async def vtol_state(self):
         """
@@ -325,14 +306,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_attitude_quaternion(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_attitude_quaternion(handle)
+            self._plugin.unsubscribe_attitude_quaternion(handle)
 
     async def attitude_quaternion(self):
         """
@@ -367,14 +345,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_attitude_euler(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_attitude_euler(handle)
+            self._plugin.unsubscribe_attitude_euler(handle)
 
     async def attitude_euler(self):
         """
@@ -409,14 +384,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_attitude_angular_velocity_body(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_attitude_angular_velocity_body(handle)
+            self._plugin.unsubscribe_attitude_angular_velocity_body(handle)
 
     async def attitude_angular_velocity_body(self):
         """
@@ -451,14 +423,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_velocity_ned(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_velocity_ned(handle)
+            self._plugin.unsubscribe_velocity_ned(handle)
 
     async def velocity_ned(self):
         """
@@ -491,14 +460,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_gps_info(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_gps_info(handle)
+            self._plugin.unsubscribe_gps_info(handle)
 
     async def gps_info(self):
         """
@@ -531,14 +497,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_raw_gps(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_raw_gps(handle)
+            self._plugin.unsubscribe_raw_gps(handle)
 
     async def raw_gps(self):
         """
@@ -571,14 +534,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_battery(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_battery(handle)
+            self._plugin.unsubscribe_battery(handle)
 
     async def battery(self):
         """
@@ -611,14 +571,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_flight_mode(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_flight_mode(handle)
+            self._plugin.unsubscribe_flight_mode(handle)
 
     async def flight_mode(self):
         """
@@ -651,14 +608,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_health(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_health(handle)
+            self._plugin.unsubscribe_health(handle)
 
     async def health(self):
         """
@@ -691,14 +645,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_rc_status(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_rc_status(handle)
+            self._plugin.unsubscribe_rc_status(handle)
 
     async def rc_status(self):
         """
@@ -731,14 +682,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_status_text(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_status_text(handle)
+            self._plugin.unsubscribe_status_text(handle)
 
     async def status_text(self):
         """
@@ -773,14 +721,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_actuator_control_target(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_actuator_control_target(handle)
+            self._plugin.unsubscribe_actuator_control_target(handle)
 
     async def actuator_control_target(self):
         """
@@ -817,14 +762,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_actuator_output_status(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_actuator_output_status(handle)
+            self._plugin.unsubscribe_actuator_output_status(handle)
 
     async def actuator_output_status(self):
         """
@@ -859,14 +801,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_odometry(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_odometry(handle)
+            self._plugin.unsubscribe_odometry(handle)
 
     async def odometry(self):
         """
@@ -901,14 +840,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_position_velocity_ned(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_position_velocity_ned(handle)
+            self._plugin.unsubscribe_position_velocity_ned(handle)
 
     async def position_velocity_ned(self):
         """
@@ -943,14 +879,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_ground_truth(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_ground_truth(handle)
+            self._plugin.unsubscribe_ground_truth(handle)
 
     async def ground_truth(self):
         """
@@ -985,14 +918,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_fixedwing_metrics(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_fixedwing_metrics(handle)
+            self._plugin.unsubscribe_fixedwing_metrics(handle)
 
     async def fixedwing_metrics(self):
         """
@@ -1027,14 +957,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_imu(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_imu(handle)
+            self._plugin.unsubscribe_imu(handle)
 
     async def imu(self):
         """
@@ -1067,14 +994,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_scaled_imu(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_scaled_imu(handle)
+            self._plugin.unsubscribe_scaled_imu(handle)
 
     async def scaled_imu(self):
         """
@@ -1107,14 +1031,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_raw_imu(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_raw_imu(handle)
+            self._plugin.unsubscribe_raw_imu(handle)
 
     async def raw_imu(self):
         """
@@ -1147,14 +1068,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_health_all_ok(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_health_all_ok(handle)
+            self._plugin.unsubscribe_health_all_ok(handle)
 
     async def health_all_ok(self):
         """
@@ -1187,14 +1105,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_unix_epoch_time(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_unix_epoch_time(handle)
+            self._plugin.unsubscribe_unix_epoch_time(handle)
 
     async def unix_epoch_time(self):
         """
@@ -1227,14 +1142,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_distance_sensor(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_distance_sensor(handle)
+            self._plugin.unsubscribe_distance_sensor(handle)
 
     async def distance_sensor(self):
         """
@@ -1267,14 +1179,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_scaled_pressure(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_scaled_pressure(handle)
+            self._plugin.unsubscribe_scaled_pressure(handle)
 
     async def scaled_pressure(self):
         """
@@ -1307,14 +1216,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_heading(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_heading(handle)
+            self._plugin.unsubscribe_heading(handle)
 
     async def heading(self):
         """
@@ -1347,14 +1253,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_altitude(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_altitude(handle)
+            self._plugin.unsubscribe_altitude(handle)
 
     async def altitude(self):
         """
@@ -1387,14 +1290,11 @@ class TelemetryAsync:
             loop.call_soon_threadsafe(queue.put_nowait, data)
 
         handle = self._plugin.subscribe_wind(callback)
-        self._subscription_handles[id(queue)] = handle
         try:
             while True:
                 yield await queue.get()
         finally:
-            if id(queue) in self._subscription_handles:
-                self._subscription_handles.pop(id(queue))
-                self._plugin.unsubscribe_wind(handle)
+            self._plugin.unsubscribe_wind(handle)
 
     async def wind(self):
         """
@@ -1855,7 +1755,6 @@ class TelemetryAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

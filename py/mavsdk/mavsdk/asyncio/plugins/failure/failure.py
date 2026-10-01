@@ -26,7 +26,6 @@ class FailureAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Failure(system._system)
 
     async def inject(self, failure_unit, failure_type, instance):
@@ -49,7 +48,6 @@ class FailureAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

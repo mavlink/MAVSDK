@@ -25,7 +25,6 @@ class ServerUtilityAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = ServerUtility(system._system)
 
     async def send_status_text(self, type, text):
@@ -47,7 +46,6 @@ class ServerUtilityAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

@@ -29,7 +29,6 @@ class GeofenceAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Geofence(system._system)
 
     async def upload_geofence(self, geofence_data):
@@ -84,7 +83,6 @@ class GeofenceAsync:
         return await loop.run_in_executor(None, lambda: self._plugin.clear_geofence())
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

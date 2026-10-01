@@ -94,7 +94,10 @@ class Action:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -137,13 +140,13 @@ class Action:
         cb = ArmCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_arm_async(self._handle, cb, None)
+        self._lib.mavsdk_action_arm_async(self._require_handle(), cb, None)
 
     def arm(self):
         """Get arm (blocking)"""
 
         result_code = self._lib.mavsdk_action_arm(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -171,13 +174,13 @@ class Action:
         cb = ArmForceCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_arm_force_async(self._handle, cb, None)
+        self._lib.mavsdk_action_arm_force_async(self._require_handle(), cb, None)
 
     def arm_force(self):
         """Get arm_force (blocking)"""
 
         result_code = self._lib.mavsdk_action_arm_force(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -203,13 +206,13 @@ class Action:
         cb = DisarmCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_disarm_async(self._handle, cb, None)
+        self._lib.mavsdk_action_disarm_async(self._require_handle(), cb, None)
 
     def disarm(self):
         """Get disarm (blocking)"""
 
         result_code = self._lib.mavsdk_action_disarm(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -237,13 +240,13 @@ class Action:
         cb = TakeoffCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_takeoff_async(self._handle, cb, None)
+        self._lib.mavsdk_action_takeoff_async(self._require_handle(), cb, None)
 
     def takeoff(self):
         """Get takeoff (blocking)"""
 
         result_code = self._lib.mavsdk_action_takeoff(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -268,13 +271,13 @@ class Action:
         cb = LandCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_land_async(self._handle, cb, None)
+        self._lib.mavsdk_action_land_async(self._require_handle(), cb, None)
 
     def land(self):
         """Get land (blocking)"""
 
         result_code = self._lib.mavsdk_action_land(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -299,13 +302,13 @@ class Action:
         cb = RebootCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_reboot_async(self._handle, cb, None)
+        self._lib.mavsdk_action_reboot_async(self._require_handle(), cb, None)
 
     def reboot(self):
         """Get reboot (blocking)"""
 
         result_code = self._lib.mavsdk_action_reboot(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -332,13 +335,13 @@ class Action:
         cb = ShutdownCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_shutdown_async(self._handle, cb, None)
+        self._lib.mavsdk_action_shutdown_async(self._require_handle(), cb, None)
 
     def shutdown(self):
         """Get shutdown (blocking)"""
 
         result_code = self._lib.mavsdk_action_shutdown(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -363,13 +366,13 @@ class Action:
         cb = TerminateCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_terminate_async(self._handle, cb, None)
+        self._lib.mavsdk_action_terminate_async(self._require_handle(), cb, None)
 
     def terminate(self):
         """Get terminate (blocking)"""
 
         result_code = self._lib.mavsdk_action_terminate(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -395,13 +398,13 @@ class Action:
         cb = KillCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_kill_async(self._handle, cb, None)
+        self._lib.mavsdk_action_kill_async(self._require_handle(), cb, None)
 
     def kill(self):
         """Get kill (blocking)"""
 
         result_code = self._lib.mavsdk_action_kill(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -428,13 +431,13 @@ class Action:
         cb = ReturnToLaunchCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_return_to_launch_async(self._handle, cb, None)
+        self._lib.mavsdk_action_return_to_launch_async(self._require_handle(), cb, None)
 
     def return_to_launch(self):
         """Get return_to_launch (blocking)"""
 
         result_code = self._lib.mavsdk_action_return_to_launch(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -471,7 +474,7 @@ class Action:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_action_goto_location_async(
-            self._handle,
+            self._require_handle(),
             latitude_deg,
             longitude_deg,
             absolute_altitude_m,
@@ -484,7 +487,7 @@ class Action:
         """Get goto_location (blocking)"""
 
         result_code = self._lib.mavsdk_action_goto_location(
-            self._handle,
+            self._require_handle(),
             latitude_deg,
             longitude_deg,
             absolute_altitude_m,
@@ -536,7 +539,7 @@ class Action:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_action_goto_location_fixedwing_async(
-            self._handle,
+            self._require_handle(),
             latitude_deg,
             longitude_deg,
             absolute_altitude_m,
@@ -551,7 +554,7 @@ class Action:
         """Get goto_location_fixedwing (blocking)"""
 
         result_code = self._lib.mavsdk_action_goto_location_fixedwing(
-            self._handle,
+            self._require_handle(),
             latitude_deg,
             longitude_deg,
             absolute_altitude_m,
@@ -598,7 +601,7 @@ class Action:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_action_do_orbit_async(
-            self._handle,
+            self._require_handle(),
             radius_m,
             velocity_ms,
             yaw_behavior,
@@ -621,7 +624,7 @@ class Action:
         """Get do_orbit (blocking)"""
 
         result_code = self._lib.mavsdk_action_do_orbit(
-            self._handle,
+            self._require_handle(),
             radius_m,
             velocity_ms,
             yaw_behavior,
@@ -665,13 +668,13 @@ class Action:
         cb = HoldCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_hold_async(self._handle, cb, None)
+        self._lib.mavsdk_action_hold_async(self._require_handle(), cb, None)
 
     def hold(self):
         """Get hold (blocking)"""
 
         result_code = self._lib.mavsdk_action_hold(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -698,13 +701,15 @@ class Action:
         cb = SetActuatorCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_set_actuator_async(self._handle, index, value, cb, None)
+        self._lib.mavsdk_action_set_actuator_async(
+            self._require_handle(), index, value, cb, None
+        )
 
     def set_actuator(self, index, value):
         """Get set_actuator (blocking)"""
 
         result_code = self._lib.mavsdk_action_set_actuator(
-            self._handle,
+            self._require_handle(),
             index,
             value,
         )
@@ -734,13 +739,15 @@ class Action:
         cb = SetRelayCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_set_relay_async(self._handle, index, setting, cb, None)
+        self._lib.mavsdk_action_set_relay_async(
+            self._require_handle(), index, setting, cb, None
+        )
 
     def set_relay(self, index, setting):
         """Get set_relay (blocking)"""
 
         result_code = self._lib.mavsdk_action_set_relay(
-            self._handle,
+            self._require_handle(),
             index,
             setting,
         )
@@ -769,13 +776,15 @@ class Action:
         cb = TransitionToFixedwingCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_transition_to_fixedwing_async(self._handle, cb, None)
+        self._lib.mavsdk_action_transition_to_fixedwing_async(
+            self._require_handle(), cb, None
+        )
 
     def transition_to_fixedwing(self):
         """Get transition_to_fixedwing (blocking)"""
 
         result_code = self._lib.mavsdk_action_transition_to_fixedwing(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -804,13 +813,15 @@ class Action:
         cb = TransitionToMulticopterCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_transition_to_multicopter_async(self._handle, cb, None)
+        self._lib.mavsdk_action_transition_to_multicopter_async(
+            self._require_handle(), cb, None
+        )
 
     def transition_to_multicopter(self):
         """Get transition_to_multicopter (blocking)"""
 
         result_code = self._lib.mavsdk_action_transition_to_multicopter(
-            self._handle,
+            self._require_handle(),
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -835,7 +846,9 @@ class Action:
         cb = GetTakeoffAltitudeCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_action_get_takeoff_altitude_async(self._handle, cb, None)
+        self._lib.mavsdk_action_get_takeoff_altitude_async(
+            self._require_handle(), cb, None
+        )
 
     def get_takeoff_altitude(self):
         """Get get_takeoff_altitude (blocking)"""
@@ -843,7 +856,7 @@ class Action:
         result_out = ctypes.c_float()
 
         result_code = self._lib.mavsdk_action_get_takeoff_altitude(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -869,14 +882,14 @@ class Action:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_action_set_takeoff_altitude_async(
-            self._handle, altitude, cb, None
+            self._require_handle(), altitude, cb, None
         )
 
     def set_takeoff_altitude(self, altitude):
         """Get set_takeoff_altitude (blocking)"""
 
         result_code = self._lib.mavsdk_action_set_takeoff_altitude(
-            self._handle,
+            self._require_handle(),
             altitude,
         )
         result = ActionResult(result_code)
@@ -905,7 +918,7 @@ class Action:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_action_get_return_to_launch_altitude_async(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
     def get_return_to_launch_altitude(self):
@@ -914,7 +927,7 @@ class Action:
         result_out = ctypes.c_float()
 
         result_code = self._lib.mavsdk_action_get_return_to_launch_altitude(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
@@ -940,14 +953,14 @@ class Action:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_action_set_return_to_launch_altitude_async(
-            self._handle, relative_altitude_m, cb, None
+            self._require_handle(), relative_altitude_m, cb, None
         )
 
     def set_return_to_launch_altitude(self, relative_altitude_m):
         """Get set_return_to_launch_altitude (blocking)"""
 
         result_code = self._lib.mavsdk_action_set_return_to_launch_altitude(
-            self._handle,
+            self._require_handle(),
             relative_altitude_m,
         )
         result = ActionResult(result_code)
@@ -979,14 +992,14 @@ class Action:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_action_set_current_speed_async(
-            self._handle, speed_m_s, cb, None
+            self._require_handle(), speed_m_s, cb, None
         )
 
     def set_current_speed(self, speed_m_s):
         """Get set_current_speed (blocking)"""
 
         result_code = self._lib.mavsdk_action_set_current_speed(
-            self._handle,
+            self._require_handle(),
             speed_m_s,
         )
         result = ActionResult(result_code)
@@ -999,7 +1012,7 @@ class Action:
         """Get set_gps_global_origin (blocking)"""
 
         result_code = self._lib.mavsdk_action_set_gps_global_origin(
-            self._handle,
+            self._require_handle(),
             latitude_deg,
             longitude_deg,
             absolute_altitude_m,
@@ -1022,7 +1035,7 @@ class Action:
         """Get set_home (blocking)"""
 
         result_code = self._lib.mavsdk_action_set_home(
-            self._handle,
+            self._require_handle(),
             use_current_location,
             latitude_deg,
             longitude_deg,
@@ -1041,17 +1054,38 @@ class Action:
 
         return result
 
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Action has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
+
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_action_destroy(handle)
             self._callbacks.clear()

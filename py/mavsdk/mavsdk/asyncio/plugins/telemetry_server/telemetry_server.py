@@ -57,7 +57,6 @@ class TelemetryServerAsync:
     """
 
     def __init__(self, server_component):
-        self._subscription_handles: dict = {}
         self._plugin = TelemetryServer(server_component)
 
     async def publish_position(self, position, velocity_ned, heading):
@@ -375,7 +374,6 @@ class TelemetryServerAsync:
         )
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

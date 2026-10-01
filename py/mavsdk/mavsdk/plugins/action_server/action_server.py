@@ -215,7 +215,10 @@ class ActionServer:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -259,7 +262,7 @@ class ActionServer:
         cb = ArmDisarmCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_arm_disarm(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -275,11 +278,14 @@ class ActionServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_action_server_unsubscribe_arm_disarm(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_action_server_unsubscribe_arm_disarm(_plugin_handle, handle)
 
     def subscribe_flight_mode_change(self, callback: Callable, user_data: Any = None):
         """Subscribe to DO_SET_MODE"""
@@ -298,7 +304,7 @@ class ActionServer:
         cb = FlightModeChangeCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_flight_mode_change(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -314,12 +320,15 @@ class ActionServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
         self._lib.mavsdk_action_server_unsubscribe_flight_mode_change(
-            self._handle, handle
+            _plugin_handle, handle
         )
 
     def subscribe_takeoff(self, callback: Callable, user_data: Any = None):
@@ -339,7 +348,7 @@ class ActionServer:
         cb = TakeoffCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_takeoff(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -355,11 +364,14 @@ class ActionServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_action_server_unsubscribe_takeoff(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_action_server_unsubscribe_takeoff(_plugin_handle, handle)
 
     def subscribe_land(self, callback: Callable, user_data: Any = None):
         """Subscribe to land command"""
@@ -378,7 +390,7 @@ class ActionServer:
         cb = LandCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_land(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -394,11 +406,14 @@ class ActionServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_action_server_unsubscribe_land(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_action_server_unsubscribe_land(_plugin_handle, handle)
 
     def subscribe_reboot(self, callback: Callable, user_data: Any = None):
         """Subscribe to reboot command"""
@@ -417,7 +432,7 @@ class ActionServer:
         cb = RebootCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_reboot(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -433,11 +448,14 @@ class ActionServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_action_server_unsubscribe_reboot(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_action_server_unsubscribe_reboot(_plugin_handle, handle)
 
     def subscribe_shutdown(self, callback: Callable, user_data: Any = None):
         """Subscribe to shutdown command"""
@@ -456,7 +474,7 @@ class ActionServer:
         cb = ShutdownCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_shutdown(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -472,11 +490,14 @@ class ActionServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_action_server_unsubscribe_shutdown(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_action_server_unsubscribe_shutdown(_plugin_handle, handle)
 
     def subscribe_terminate(self, callback: Callable, user_data: Any = None):
         """Subscribe to terminate command"""
@@ -495,7 +516,7 @@ class ActionServer:
         cb = TerminateCallback(c_callback)
 
         _subscription = self._lib.mavsdk_action_server_subscribe_terminate(
-            self._handle, cb, None
+            self._require_handle(), cb, None
         )
 
         self._subscriptions[_subscription] = (
@@ -511,17 +532,20 @@ class ActionServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_action_server_unsubscribe_terminate(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_action_server_unsubscribe_terminate(_plugin_handle, handle)
 
     def set_allow_takeoff(self, allow_takeoff):
         """Get set_allow_takeoff (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_allow_takeoff(
-            self._handle,
+            self._require_handle(),
             allow_takeoff,
         )
         result = ActionServerResult(result_code)
@@ -534,7 +558,7 @@ class ActionServer:
         """Get set_armable (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_armable(
-            self._handle,
+            self._require_handle(),
             armable,
             force_armable,
         )
@@ -548,7 +572,7 @@ class ActionServer:
         """Get set_disarmable (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_disarmable(
-            self._handle,
+            self._require_handle(),
             disarmable,
             force_disarmable,
         )
@@ -564,7 +588,7 @@ class ActionServer:
         """Get set_allowable_flight_modes (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_allowable_flight_modes(
-            self._handle,
+            self._require_handle(),
             flight_modes.to_c_struct(),
         )
         result = ActionServerResult(result_code)
@@ -581,7 +605,7 @@ class ActionServer:
         result_out = AllowableFlightModesCStruct()
 
         self._lib.mavsdk_action_server_get_allowable_flight_modes(
-            self._handle, ctypes.byref(result_out)
+            self._require_handle(), ctypes.byref(result_out)
         )
 
         py_result = AllowableFlightModes.from_c_struct(result_out)
@@ -594,7 +618,7 @@ class ActionServer:
         """Get set_armed_state (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_armed_state(
-            self._handle,
+            self._require_handle(),
             is_armed,
         )
         result = ActionServerResult(result_code)
@@ -607,7 +631,7 @@ class ActionServer:
         """Get set_flight_mode (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_flight_mode(
-            self._handle,
+            self._require_handle(),
             flight_mode,
         )
         result = ActionServerResult(result_code)
@@ -620,7 +644,7 @@ class ActionServer:
         """Get set_flight_mode_internal (blocking)"""
 
         result_code = self._lib.mavsdk_action_server_set_flight_mode_internal(
-            self._handle,
+            self._require_handle(),
             flight_mode,
         )
         result = ActionServerResult(result_code)
@@ -629,17 +653,38 @@ class ActionServer:
 
         return result
 
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "ActionServer has been destroyed (its "
+                "server component or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
+
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_action_server_destroy(handle)
             self._callbacks.clear()

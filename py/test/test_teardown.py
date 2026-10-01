@@ -108,3 +108,161 @@ def test_plugin_collected_at_interpreter_exit():
         # Fall off the end with the plugin still referenced: __del__ runs during
         # interpreter shutdown, against an instance that is already destroyed.
     """)
+
+
+def test_unsubscribe_then_destroy():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        mavsdk.add_any_connection("raw://")
+        raw_handle = mavsdk.subscribe_raw_bytes_to_be_sent(lambda _: None)
+        system_handle = mavsdk.subscribe_on_new_system(lambda _: None)
+
+        mavsdk.unsubscribe_raw_bytes_to_be_sent(raw_handle)
+        mavsdk.unsubscribe_on_new_system(system_handle)
+        # destroy() releases what is still subscribed, which must not include
+        # the handles unsubscribed above.
+        mavsdk.destroy()
+    """)
+
+
+def test_core_unsubscribe_twice():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        mavsdk.add_any_connection("raw://")
+        raw_handle = mavsdk.subscribe_raw_bytes_to_be_sent(lambda _: None)
+        system_handle = mavsdk.subscribe_on_new_system(lambda _: None)
+
+        mavsdk.unsubscribe_raw_bytes_to_be_sent(raw_handle)
+        mavsdk.unsubscribe_raw_bytes_to_be_sent(raw_handle)
+        mavsdk.unsubscribe_on_new_system(system_handle)
+        mavsdk.unsubscribe_on_new_system(system_handle)
+        mavsdk.destroy()
+    """)
+
+
+def test_system_unsubscribe_twice():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+
+        autopilot = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.AUTOPILOT)
+        )
+        groundstation = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        groundstation.add_any_connection("udpin://0.0.0.0:17020")
+        autopilot.add_any_connection("udpout://127.0.0.1:17020")
+
+        # A System only exists once one is discovered, hence the second instance.
+        system = groundstation.first_autopilot(10.0)
+        assert system is not None
+        handle = system.subscribe_is_connected(lambda *_: None)
+
+        system.unsubscribe_is_connected(handle)
+        system.unsubscribe_is_connected(handle)
+        groundstation.destroy()
+        autopilot.destroy()
+    """)
+
+
+def test_plugin_call_after_destroy_raises():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+        from mavsdk.plugins.mission_raw_server import MissionRawServer
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.AUTOPILOT)
+        )
+        server = MissionRawServer(mavsdk.server_component())
+
+        mavsdk.destroy()
+        # The plugin went down with it. Using it anyway has to say so, rather
+        # than hand a null handle to the C wrapper and segfault there.
+        for call in (
+            server.set_current_item_complete,
+            lambda: server.subscribe_incoming_mission(lambda *_: None),
+        ):
+            try:
+                call()
+            except RuntimeError:
+                continue
+            raise AssertionError("expected RuntimeError from a destroyed plugin")
+    """)
+
+
+def test_dropped_instance_is_released():
+    run_scenario("""
+        import gc
+        import warnings
+        import weakref
+
+        from mavsdk import ComponentType, Configuration, Mavsdk
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        mavsdk.add_any_connection("udpin://0.0.0.0:17021")
+        ref = weakref.ref(mavsdk)
+
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            del mavsdk
+            gc.collect()
+
+        # Nothing may outlive the last reference: an instance kept alive would
+        # hold its connections and io thread open for the rest of the process.
+        assert ref() is None, "dropped instance was not collected"
+        assert any(w.category is ResourceWarning for w in caught), (
+            "dropping an undestroyed instance should warn"
+        )
+    """)
+
+
+def test_remove_connection_twice():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        handle = mavsdk.add_any_connection_with_handle("udpin://0.0.0.0:17022")
+
+        mavsdk.remove_connection(handle)
+        mavsdk.remove_connection(handle)
+        # Nothing left for destroy() to release either.
+        mavsdk.destroy()
+        mavsdk.remove_connection(handle)
+    """)
+
+
+def test_connection_handle_released_by_destroy():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+        from mavsdk.exceptions import ConnectionError
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        mavsdk.add_any_connection_with_handle("udpin://0.0.0.0:17023")
+
+        # A failed connection allocates a handle too, and there is no handle to
+        # hand back for it, so it has to be released on the way out.
+        try:
+            mavsdk.add_any_connection_with_handle("nonsense://")
+        except ConnectionError:
+            pass
+        else:
+            raise AssertionError("expected the bogus URL to fail")
+
+        # The connection from the first call is left in place on purpose:
+        # destroy() has to release its handle too.
+        mavsdk.destroy()
+    """)

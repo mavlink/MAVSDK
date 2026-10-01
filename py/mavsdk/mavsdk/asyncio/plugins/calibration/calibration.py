@@ -25,7 +25,6 @@ class CalibrationAsync:
     """
 
     def __init__(self, system):
-        self._subscription_handles: dict = {}
         self._plugin = Calibration(system._system)
 
     async def calibrate_gyro(self) -> AsyncGenerator:
@@ -191,7 +190,6 @@ class CalibrationAsync:
         return await loop.run_in_executor(None, lambda: self._plugin.cancel())
 
     def destroy(self):
-        self._subscription_handles.clear()
         self._plugin.destroy()
 
     def __del__(self):

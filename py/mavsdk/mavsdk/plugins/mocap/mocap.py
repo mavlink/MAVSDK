@@ -720,7 +720,10 @@ class Mocap:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -749,7 +752,7 @@ class Mocap:
         """Get set_vision_position_estimate (blocking)"""
 
         result_code = self._lib.mavsdk_mocap_set_vision_position_estimate(
-            self._handle,
+            self._require_handle(),
             vision_position_estimate.to_c_struct(),
         )
         result = MocapResult(result_code)
@@ -764,7 +767,7 @@ class Mocap:
         """Get set_vision_speed_estimate (blocking)"""
 
         result_code = self._lib.mavsdk_mocap_set_vision_speed_estimate(
-            self._handle,
+            self._require_handle(),
             vision_speed_estimate.to_c_struct(),
         )
         result = MocapResult(result_code)
@@ -779,7 +782,7 @@ class Mocap:
         """Get set_attitude_position_mocap (blocking)"""
 
         result_code = self._lib.mavsdk_mocap_set_attitude_position_mocap(
-            self._handle,
+            self._require_handle(),
             attitude_position_mocap.to_c_struct(),
         )
         result = MocapResult(result_code)
@@ -794,7 +797,7 @@ class Mocap:
         """Get set_odometry (blocking)"""
 
         result_code = self._lib.mavsdk_mocap_set_odometry(
-            self._handle,
+            self._require_handle(),
             odometry.to_c_struct(),
         )
         result = MocapResult(result_code)
@@ -803,17 +806,38 @@ class Mocap:
 
         return result
 
+    def _require_handle(self) -> ctypes.c_void_p:
+        """Fail loudly rather than dereferencing a null handle in C.
+
+        The plugin is destroyed together with its owner, which a caller holding on
+        to it may not expect, so using it afterwards would otherwise segfault in
+        the C wrapper.
+        """
+        if not self._handle:
+            raise RuntimeError(
+                "Mocap has been destroyed (its "
+                "system or "
+                "Mavsdk was destroyed, or destroy() was called explicitly)"
+            )
+        return self._handle
+
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_mocap_destroy(handle)
             self._callbacks.clear()
