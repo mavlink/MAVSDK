@@ -25,4 +25,20 @@ class TeardownTest {
         configuration.close()
         configuration.close()
     }
+
+    @Test
+    fun `a connection handle is released once, however often it is removed`() {
+        Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
+            val handle = mavsdk.addAnyConnectionWithHandle("udpin://0.0.0.0:17051").getOrThrow()
+            mavsdk.removeConnection(handle)
+            mavsdk.removeConnection(handle)
+
+            // A connection that fails to come up is allocated a handle too, and there is
+            // none to hand back for it, so it has to go back on the way out.
+            assertTrue(mavsdk.addAnyConnectionWithHandle("nonsense://").isFailure)
+
+            // Left in place on purpose: close() releases what the caller kept.
+            mavsdk.addAnyConnectionWithHandle("udpin://0.0.0.0:17052").getOrThrow()
+        }
+    }
 }
