@@ -145,12 +145,13 @@ TEST(MavlinkDirect, ForwardingUnknownMessage)
         mavsdk_receiver.add_any_connection("udpin://0.0.0.0:17007"), ConnectionResult::Success);
 
     // Define custom message that only sender and receiver will know about
+    // The ID is from the 43000-49999 range, which no mavlink dialect claims.
     std::string custom_xml = R"(<?xml version="1.0"?>
 <mavlink>
     <version>3</version>
     <dialect>0</dialect>
     <messages>
-        <message id="421" name="CUSTOM_FORWARD_TEST">
+        <message id="44002" name="CUSTOM_FORWARD_TEST">
             <description>Test message for forwarding unknown messages</description>
             <field type="uint32_t" name="test_id">Unique test identifier</field>
             <field type="uint16_t" name="sequence">Sequence number</field>

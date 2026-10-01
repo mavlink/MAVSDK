@@ -155,12 +155,13 @@ TEST(MavlinkDirectServer, LoadCustomXml)
     auto sender = MavlinkDirectServer{mavsdk_autopilot.server_component()};
     auto receiver = MavlinkDirect{system};
 
+    // The ID is from the 43000-49999 range, which no mavlink dialect claims.
     std::string custom_xml = R"(<?xml version="1.0"?>
 <mavlink>
     <version>3</version>
     <dialect>0</dialect>
     <messages>
-        <message id="420" name="CUSTOM_TEST_MESSAGE">
+        <message id="44001" name="CUSTOM_TEST_MESSAGE">
             <description>A test custom message for LoadCustomXml</description>
             <field type="uint32_t" name="test_value">Test value field</field>
             <field type="uint16_t" name="counter">Counter field</field>
