@@ -224,3 +224,45 @@ def test_dropped_instance_is_released():
             "dropping an undestroyed instance should warn"
         )
     """)
+
+
+def test_remove_connection_twice():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        handle = mavsdk.add_any_connection_with_handle("udpin://0.0.0.0:17022")
+
+        mavsdk.remove_connection(handle)
+        mavsdk.remove_connection(handle)
+        # Nothing left for destroy() to release either.
+        mavsdk.destroy()
+        mavsdk.remove_connection(handle)
+    """)
+
+
+def test_connection_handle_released_by_destroy():
+    run_scenario("""
+        from mavsdk import ComponentType, Configuration, Mavsdk
+        from mavsdk.exceptions import ConnectionError
+
+        mavsdk = Mavsdk(
+            Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+        )
+        mavsdk.add_any_connection_with_handle("udpin://0.0.0.0:17023")
+
+        # A failed connection allocates a handle too, and there is no handle to
+        # hand back for it, so it has to be released on the way out.
+        try:
+            mavsdk.add_any_connection_with_handle("nonsense://")
+        except ConnectionError:
+            pass
+        else:
+            raise AssertionError("expected the bogus URL to fail")
+
+        # The connection from the first call is left in place on purpose:
+        # destroy() has to release its handle too.
+        mavsdk.destroy()
+    """)

@@ -109,6 +109,12 @@ class Mavsdk:
         # one of them was updated.
         self._subscriptions = {}
 
+        # Connection handles handed out by add_any_connection_with_handle(). The C
+        # wrapper allocates one per call and remove_connection() frees it, so they
+        # are tracked here: removing one twice must not free it twice, and
+        # destroy() has to release the ones the caller kept.
+        self._connections = set()
+
         # Systems and server components own a handle each and must be released before
         # mavsdk_destroy runs, since Python's GC gives no ordering guarantee between
         # them and this object. The set is weak so that a System dropped by the caller
@@ -178,11 +184,7 @@ class Mavsdk:
         result = self._lib.mavsdk_add_any_connection_with_handle(
             self._handle, connection_url.encode("utf-8")
         )
-        if result.result != ConnectionResult.SUCCESS:
-            raise ConnectionError(
-                f"Connection failed: {ConnectionResult(result.result).name}"
-            )
-        return result.handle
+        return self._track_connection(result)
 
     def add_any_connection_with_handle_and_forwarding(
         self, connection_url: str, forwarding_option: ForwardingOption
@@ -193,15 +195,37 @@ class Mavsdk:
             connection_url.encode("utf-8"),
             ctypes.c_int(forwarding_option.value),
         )
+        return self._track_connection(result)
+
+    def _track_connection(self, result) -> ctypes.c_void_p:
+        """Take ownership of the handle the C wrapper allocated for this result."""
         if result.result != ConnectionResult.SUCCESS:
+            # Allocated whether or not the connection came up, so it has to go
+            # back even though there is no connection to remove.
+            self._lib.mavsdk_remove_connection(self._handle, result.handle)
             raise ConnectionError(
                 f"Connection failed: {ConnectionResult(result.result).name}"
             )
+
+        self._connections.add(result.handle)
         return result.handle
 
     def remove_connection(self, handle: ctypes.c_void_p):
-        """Remove a connection"""
-        self._lib.mavsdk_remove_connection(self._handle, handle)
+        """Remove a connection
+
+        Idempotent. Does nothing once this instance is destroyed, which removes
+        its connections already. Like _unsubscribe(), the handle is taken under
+        the lock so that it is freed exactly once.
+        """
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if handle not in self._connections:
+                return
+            self._connections.remove(handle)
+            mavsdk_handle = self._handle
+
+        self._lib.mavsdk_remove_connection(mavsdk_handle, handle)
 
     def system_count(self) -> int:
         """Get number of discovered systems"""
@@ -325,6 +349,8 @@ class Mavsdk:
             # instance already gone. Neither path releases a handle twice.
             subscriptions = list(self._subscriptions.items())
             self._subscriptions.clear()
+            connections = list(self._connections)
+            self._connections.clear()
 
         if handle:
             # Release systems and server components first. Their handles are
@@ -341,6 +367,12 @@ class Mavsdk:
             # callback cannot jump into collected memory.
             for sub_handle, (_cb, unsubscribe) in subscriptions:
                 unsubscribe(handle, sub_handle)
+
+            # Same story for the connection handles: the C wrapper allocated them
+            # and only remove_connection() frees them. Removing the connection
+            # along the way is no loss right before mavsdk_destroy.
+            for connection_handle in connections:
+                self._lib.mavsdk_remove_connection(handle, connection_handle)
 
             self._lib.mavsdk_destroy(handle)
 

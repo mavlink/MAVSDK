@@ -66,7 +66,7 @@ class Mavsdk:
         self,
         connection_url: str,
         forwarding_option: ForwardingOption = ForwardingOption.OFF,
-    ) -> None:
+    ):
         """
         Add a connection.
 
@@ -78,6 +78,11 @@ class Mavsdk:
         forwarding_option : ForwardingOption
             Enables or disables forwarding. By default, it is disabled.
 
+        Returns
+        -------
+        handle
+            The connection's handle, to pass to :meth:`remove_connection`.
+
         Raises
         ------
         MavsdkConnectionError
@@ -85,7 +90,7 @@ class Mavsdk:
         """
         loop = asyncio.get_running_loop()
         try:
-            await loop.run_in_executor(
+            return await loop.run_in_executor(
                 None,
                 self._mavsdk.add_any_connection_with_handle_and_forwarding,
                 *(connection_url, forwarding_option),
