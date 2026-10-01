@@ -40,8 +40,9 @@ class System:
         # run. Without this lock two of them can both find a live handle and
         # release it twice, which corrupts the heap.
         self._destroy_lock = threading.Lock()
-        # Keep references to prevent GC: { subscription handle: callback }
-        self._callbacks = {}
+        # Stream subscriptions, by handle: the trampoline to keep alive and the
+        # unsubscribe to call for it. destroy() releases whatever is left.
+        self._subscriptions = {}
         self._plugins = weakref.WeakSet()
 
     def _track_plugin(self, plugin) -> None:
@@ -65,6 +66,11 @@ class System:
         """Release the underlying system handle. Idempotent, safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # system already gone. Neither path releases a handle twice.
+            subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # Plugins first -- they are the ones holding references into MavsdkImpl.
@@ -76,11 +82,8 @@ class System:
             # not destroy the C++ System -- MavsdkImpl owns it -- so any subscription
             # left active would keep firing into ctypes trampolines that are about to
             # be garbage collected.
-            for subscription_handle in list(self._callbacks):
-                self._lib.mavsdk_system_unsubscribe_is_connected(
-                    handle, subscription_handle
-                )
-            self._callbacks.clear()
+            for subscription_handle, (_cb, unsubscribe) in subscriptions:
+                unsubscribe(handle, subscription_handle)
 
             self._lib.mavsdk_system_destroy(handle)
 
@@ -156,21 +159,34 @@ class System:
 
         # Held until unsubscribe: if the trampoline is collected while MAVSDK still
         # holds the pointer, the next callback jumps into freed memory.
-        self._callbacks[subscription_handle] = c_callback
+        self._subscriptions[subscription_handle] = (
+            c_callback,
+            self._lib.mavsdk_system_unsubscribe_is_connected,
+        )
 
         return subscription_handle
 
     def unsubscribe_is_connected(self, handle: ctypes.c_void_p) -> None:
         """Unsubscribe from connection state changes
 
-        A no-op if the system is already destroyed, which unsubscribed everything
-        anyway. Callers unsubscribe from ``finally`` blocks that race teardown, so
-        this must not raise there.
+        Idempotent, and a no-op if the system is already destroyed, which
+        unsubscribed everything anyway. Callers unsubscribe from ``finally``
+        blocks that race teardown, so this must not raise there.
+
+        Taking the entry under the lock leaves the handle to exactly one of
+        destroy() and this, so it is released once. The C call stays outside the
+        lock: it waits for a running callback, and a callback may unsubscribe.
         """
-        if not self._handle:
-            return
-        self._lib.mavsdk_system_unsubscribe_is_connected(self._handle, handle)
-        self._callbacks.pop(handle, None)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            entry = self._subscriptions.pop(handle, None)
+            if entry is None:
+                return
+            system_handle = self._handle
+
+        _, unsubscribe = entry
+        unsubscribe(system_handle, handle)
 
     def enable_timesync(self) -> None:
         """Enable time synchronization using the TIMESYNC messages."""

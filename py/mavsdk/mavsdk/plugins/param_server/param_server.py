@@ -284,7 +284,10 @@ class ParamServer:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -460,12 +463,15 @@ class ParamServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
         self._lib.mavsdk_param_server_unsubscribe_changed_param_int(
-            self._handle, handle
+            _plugin_handle, handle
         )
 
     def subscribe_changed_param_float(self, callback: Callable, user_data: Any = None):
@@ -501,12 +507,15 @@ class ParamServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
         self._lib.mavsdk_param_server_unsubscribe_changed_param_float(
-            self._handle, handle
+            _plugin_handle, handle
         )
 
     def subscribe_changed_param_custom(self, callback: Callable, user_data: Any = None):
@@ -542,25 +551,34 @@ class ParamServer:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
         self._lib.mavsdk_param_server_unsubscribe_changed_param_custom(
-            self._handle, handle
+            _plugin_handle, handle
         )
 
     def destroy(self):
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_param_server_destroy(handle)
             self._callbacks.clear()

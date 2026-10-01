@@ -2149,7 +2149,10 @@ class Telemetry:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         # Stream subscriptions, by handle: the trampoline to keep alive and the
-        # unsubscribe to call for it. destroy() releases whatever is left.
+        # unsubscribe to call for it. destroy() releases whatever is left. Entries
+        # are taken under the lock below, so a handle goes to either destroy() or
+        # one unsubscribe, never both. The C call then happens outside the lock,
+        # which waits for a running callback -- and a callback may unsubscribe.
         self._subscriptions = {}
         # destroy() can be reached from any thread: explicitly, from the owner
         # tearing down, or from __del__ whenever the garbage collector happens to
@@ -2207,11 +2210,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_position(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_position(_plugin_handle, handle)
 
     def position(self):
         """Get position (blocking)"""
@@ -2257,11 +2263,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_home(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_home(_plugin_handle, handle)
 
     def home(self):
         """Get home (blocking)"""
@@ -2305,11 +2314,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_in_air(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_in_air(_plugin_handle, handle)
 
     def in_air(self):
         """Get in_air (blocking)"""
@@ -2351,11 +2363,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_landed_state(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_landed_state(_plugin_handle, handle)
 
     def landed_state(self):
         """Get landed_state (blocking)"""
@@ -2397,11 +2412,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_armed(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_armed(_plugin_handle, handle)
 
     def armed(self):
         """Get armed (blocking)"""
@@ -2443,11 +2461,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_vtol_state(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_vtol_state(_plugin_handle, handle)
 
     def vtol_state(self):
         """Get vtol_state (blocking)"""
@@ -2491,11 +2512,16 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion(
+            _plugin_handle, handle
+        )
 
     def attitude_quaternion(self):
         """Get attitude_quaternion (blocking)"""
@@ -2543,11 +2569,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_euler(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_attitude_euler(_plugin_handle, handle)
 
     def attitude_euler(self):
         """Get attitude_euler (blocking)"""
@@ -2601,12 +2630,15 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
         self._lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
-            self._handle, handle
+            _plugin_handle, handle
         )
 
     def attitude_angular_velocity_body(self):
@@ -2657,11 +2689,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_velocity_ned(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_velocity_ned(_plugin_handle, handle)
 
     def velocity_ned(self):
         """Get velocity_ned (blocking)"""
@@ -2707,11 +2742,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_gps_info(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_gps_info(_plugin_handle, handle)
 
     def gps_info(self):
         """Get gps_info (blocking)"""
@@ -2757,11 +2795,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_raw_gps(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_raw_gps(_plugin_handle, handle)
 
     def raw_gps(self):
         """Get raw_gps (blocking)"""
@@ -2807,11 +2848,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_battery(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_battery(_plugin_handle, handle)
 
     def battery(self):
         """Get battery (blocking)"""
@@ -2855,11 +2899,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_flight_mode(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_flight_mode(_plugin_handle, handle)
 
     def flight_mode(self):
         """Get flight_mode (blocking)"""
@@ -2903,11 +2950,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_health(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_health(_plugin_handle, handle)
 
     def health(self):
         """Get health (blocking)"""
@@ -2953,11 +3003,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_rc_status(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_rc_status(_plugin_handle, handle)
 
     def rc_status(self):
         """Get rc_status (blocking)"""
@@ -3003,11 +3056,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_status_text(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_status_text(_plugin_handle, handle)
 
     def status_text(self):
         """Get status_text (blocking)"""
@@ -3057,12 +3113,15 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
         self._lib.mavsdk_telemetry_unsubscribe_actuator_control_target(
-            self._handle, handle
+            _plugin_handle, handle
         )
 
     def actuator_control_target(self):
@@ -3117,12 +3176,15 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
         self._lib.mavsdk_telemetry_unsubscribe_actuator_output_status(
-            self._handle, handle
+            _plugin_handle, handle
         )
 
     def actuator_output_status(self):
@@ -3173,11 +3235,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_odometry(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_odometry(_plugin_handle, handle)
 
     def odometry(self):
         """Get odometry (blocking)"""
@@ -3227,12 +3292,15 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
         self._lib.mavsdk_telemetry_unsubscribe_position_velocity_ned(
-            self._handle, handle
+            _plugin_handle, handle
         )
 
     def position_velocity_ned(self):
@@ -3283,11 +3351,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_ground_truth(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_ground_truth(_plugin_handle, handle)
 
     def ground_truth(self):
         """Get ground_truth (blocking)"""
@@ -3335,11 +3406,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics(_plugin_handle, handle)
 
     def fixedwing_metrics(self):
         """Get fixedwing_metrics (blocking)"""
@@ -3385,11 +3459,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_imu(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_imu(_plugin_handle, handle)
 
     def imu(self):
         """Get imu (blocking)"""
@@ -3435,11 +3512,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_scaled_imu(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_scaled_imu(_plugin_handle, handle)
 
     def scaled_imu(self):
         """Get scaled_imu (blocking)"""
@@ -3485,11 +3565,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_raw_imu(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_raw_imu(_plugin_handle, handle)
 
     def raw_imu(self):
         """Get raw_imu (blocking)"""
@@ -3533,11 +3616,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_health_all_ok(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_health_all_ok(_plugin_handle, handle)
 
     def health_all_ok(self):
         """Get health_all_ok (blocking)"""
@@ -3579,11 +3665,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time(_plugin_handle, handle)
 
     def unix_epoch_time(self):
         """Get unix_epoch_time (blocking)"""
@@ -3629,11 +3718,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_distance_sensor(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_distance_sensor(_plugin_handle, handle)
 
     def distance_sensor(self):
         """Get distance_sensor (blocking)"""
@@ -3681,11 +3773,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure(_plugin_handle, handle)
 
     def scaled_pressure(self):
         """Get scaled_pressure (blocking)"""
@@ -3733,11 +3828,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_heading(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_heading(_plugin_handle, handle)
 
     def heading(self):
         """Get heading (blocking)"""
@@ -3783,11 +3881,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_altitude(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_altitude(_plugin_handle, handle)
 
     def altitude(self):
         """Get altitude (blocking)"""
@@ -3833,11 +3934,14 @@ class Telemetry:
         Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
         already.
         """
-        if not self._handle:
-            return
-        if self._subscriptions.pop(handle, None) is None:
-            return
-        self._lib.mavsdk_telemetry_unsubscribe_wind(self._handle, handle)
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            if self._subscriptions.pop(handle, None) is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_telemetry_unsubscribe_wind(_plugin_handle, handle)
 
     def wind(self):
         """Get wind (blocking)"""
@@ -4732,13 +4836,19 @@ class Telemetry:
         """Destroy the plugin instance. Idempotent and safe from any thread."""
         with self._destroy_lock:
             handle, self._handle = self._handle, None
+            # Taken under the same lock as the handle, so an unsubscribe racing
+            # this either gets its entry and releases it itself, or finds the
+            # plugin already gone. Neither path releases a handle twice.
+            _subscriptions = list(self._subscriptions.items())
+            self._subscriptions.clear()
 
         if handle:
             # The C wrapper does not track these, so release them here. unsubscribe()
-            # waits for a running callback, so the trampolines can go right after.
-            for _subscription, (_cb, _unsubscribe) in list(self._subscriptions.items()):
+            # waits for a running callback, so this cannot race one. The snapshot
+            # also holds the trampolines until past destroy, so a late callback
+            # cannot jump into collected memory.
+            for _subscription, (_cb, _unsubscribe) in _subscriptions:
                 _unsubscribe(handle, _subscription)
-            self._subscriptions.clear()
 
             self._lib.mavsdk_telemetry_destroy(handle)
             self._callbacks.clear()
