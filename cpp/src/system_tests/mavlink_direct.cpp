@@ -512,12 +512,13 @@ TEST(MavlinkDirect, LoadCustomXml)
     auto receiver_mavlink_direct = MavlinkDirect{system};
 
     // Define custom XML with a test message
+    // The ID is from the 43000-49999 range, which no mavlink dialect claims.
     std::string custom_xml = R"(<?xml version="1.0"?>
 <mavlink>
     <version>3</version>
     <dialect>0</dialect>
     <messages>
-        <message id="420" name="CUSTOM_TEST_MESSAGE">
+        <message id="44001" name="CUSTOM_TEST_MESSAGE">
             <description>A test custom message for LoadCustomXml</description>
             <field type="uint32_t" name="test_value">Test value field</field>
             <field type="uint16_t" name="counter">Counter field</field>
@@ -662,12 +663,13 @@ TEST(MavlinkDirect, NanInfinityJsonHandling)
     auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     // Define custom XML with a test message containing float fields
+    // The ID is from the 43000-49999 range, which no mavlink dialect claims.
     std::string custom_xml = R"(<?xml version="1.0"?>
 <mavlink>
     <version>3</version>
     <dialect>0</dialect>
     <messages>
-        <message id="421" name="FLOAT_TEST_MESSAGE">
+        <message id="44003" name="FLOAT_TEST_MESSAGE">
             <description>A test message for NaN/infinity handling in JSON</description>
             <field type="float" name="normal_float">Normal float field</field>
             <field type="float" name="nan_float">NaN float field</field>
