@@ -297,7 +297,7 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
     auto fut = prom->get_future();
 
     auto flag = std::make_shared<std::once_flag>();
-    auto handle = subscribe_on_new_system([this, prom, flag]() {
+    auto check = [this, prom, flag]() {
         // Check all systems, not just the first one
         auto all_systems = systems();
         for (auto& system : all_systems) {
@@ -306,23 +306,61 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
                 break;
             }
         }
+    };
+
+    // An autopilot can also join a system that is already connected, for example when a
+    // companion computer on the same system ID was heard first. That is not a new system, so
+    // also watch the components of every system.
+    struct ComponentSubscriptions {
+        std::mutex mutex;
+        std::vector<std::pair<std::shared_ptr<System>, System::ComponentDiscoveredHandle>> handles;
+    };
+    auto component_subscriptions = std::make_shared<ComponentSubscriptions>();
+
+    auto handle = subscribe_on_new_system([this, check, component_subscriptions]() {
+        {
+            std::lock_guard lock(component_subscriptions->mutex);
+            auto& handles = component_subscriptions->handles;
+            for (auto& system : systems()) {
+                const bool already_watched =
+                    std::any_of(handles.begin(), handles.end(), [&system](const auto& entry) {
+                        return entry.first == system;
+                    });
+                if (!already_watched) {
+                    handles.emplace_back(
+                        system, system->subscribe_component_discovered([check](ComponentType) {
+                            check();
+                        }));
+                }
+            }
+        }
+        check();
+
+        // subscribe_component_discovered() only posts its insertion, so a component added
+        // before that lands is not reported to us. Check again once it has: posts run in order.
+        asio::post(_io_context, check);
     });
 
     if (timeout_s > 0.0) {
-        if (fut.wait_for(std::chrono::milliseconds(int64_t(timeout_s * 1e3))) ==
-            std::future_status::ready) {
-            unsubscribe_on_new_system(handle);
-            return fut.get();
-
-        } else {
-            unsubscribe_on_new_system(handle);
-            return std::nullopt;
-        }
+        fut.wait_for(std::chrono::milliseconds(int64_t(timeout_s * 1e3)));
     } else {
         fut.wait();
-        unsubscribe_on_new_system(handle);
-        return std::optional(fut.get());
     }
+
+    unsubscribe_on_new_system(handle);
+    {
+        std::lock_guard lock(component_subscriptions->mutex);
+        for (auto& [system, component_handle] : component_subscriptions->handles) {
+            system->unsubscribe_component_discovered(component_handle);
+        }
+        // Don't keep the systems referenced beyond this call.
+        component_subscriptions->handles.clear();
+    }
+
+    if (fut.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+        return fut.get();
+    }
+    return std::nullopt;
 }
 
 std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
