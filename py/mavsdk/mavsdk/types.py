@@ -41,6 +41,12 @@ ConnectionErrorCallback = ctypes.CFUNCTYPE(
 
 NewSystemCallback = ctypes.CFUNCTYPE(None, ctypes.c_void_p)
 
+FirstAutopilotCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_void_p,  # mavsdk_system_t, NULL on timeout
+    ctypes.c_void_p,
+)
+
 InterceptJsonCallback = ctypes.CFUNCTYPE(ctypes.c_int, MavsdkMessage, ctypes.c_void_p)
 
 RawBytesCallback = ctypes.CFUNCTYPE(

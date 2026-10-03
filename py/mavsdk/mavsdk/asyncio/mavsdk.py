@@ -12,6 +12,11 @@ from .enums import ForwardingOption
 from .exceptions import MavsdkConnectionError
 
 
+def _set_result_if_pending(fut: asyncio.Future, result) -> None:
+    if not fut.done():
+        fut.set_result(result)
+
+
 # Configuration has no blocking calls and no subscriptions — re-export as-is
 # so users construct it exactly the same way as with mavsdk.
 __all__ = ["Configuration", "Mavsdk"]
@@ -44,6 +49,8 @@ class Mavsdk:
 
     def __init__(self, configuration: Configuration):
         self._mavsdk = _Mavsdk(configuration)
+        # Futures of first_autopilot() calls still waiting, so destroy() can end them.
+        self._autopilot_waits = set()
 
     # ------------------------------------------------------------------
     # Non-blocking accessors
@@ -112,13 +119,14 @@ class Mavsdk:
         """
         Wait for and return the first autopilot system.
 
-        Blocks the thread (in an executor) for up to *timeout_s* seconds so
-        the event loop stays responsive.
+        Waits without blocking a thread, so it can be cancelled, and
+        :meth:`destroy` ends it: a call still waiting then returns ``None``.
 
         Parameters
         ----------
         timeout_s : float
-            How long to wait for an autopilot to appear, in seconds.
+            How long to wait for an autopilot to appear, in seconds. 0 checks
+            once without waiting, a negative value waits forever.
 
         Returns
         -------
@@ -127,7 +135,20 @@ class Mavsdk:
             expires before one appears.
         """
         loop = asyncio.get_running_loop()
-        raw = await loop.run_in_executor(None, self._mavsdk.first_autopilot, timeout_s)
+        fut = loop.create_future()
+
+        def on_result(raw):
+            # Called on MAVSDK's callback thread, so hand it over to the loop.
+            loop.call_soon_threadsafe(_set_result_if_pending, fut, raw)
+
+        handle = self._mavsdk.first_autopilot_async(timeout_s, on_result)
+        self._autopilot_waits.add(fut)
+        try:
+            raw = await fut
+        finally:
+            self._autopilot_waits.discard(fut)
+            # Releases the handle, and stops the wait if we were cancelled.
+            self._mavsdk.cancel_first_autopilot(handle)
         return System(raw) if raw is not None else None
 
     async def server_component(self, instance: int = 0) -> Optional[ServerComponent]:
@@ -185,8 +206,14 @@ class Mavsdk:
     # ------------------------------------------------------------------
 
     def destroy(self) -> None:
-        """Destroy the underlying Mavsdk instance and release resources."""
+        """Destroy the underlying Mavsdk instance and release resources.
+
+        Any first_autopilot() call still waiting returns None.
+        """
         self._mavsdk.destroy()
+        # MAVSDK drops the waits it cancels on destroy, so end them here.
+        for fut in list(self._autopilot_waits):
+            fut.get_loop().call_soon_threadsafe(_set_result_if_pending, fut, None)
 
     async def __aenter__(self):
         return self
