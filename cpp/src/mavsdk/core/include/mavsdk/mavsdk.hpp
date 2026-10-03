@@ -203,6 +203,56 @@ public:
     std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s) const;
 
     /**
+     * @brief Callback type for first_autopilot_async.
+     *
+     * Receives the autopilot system, or nothing if none was discovered within the timeout.
+     */
+    using FirstAutopilotCallback = std::function<void(std::optional<std::shared_ptr<System>>)>;
+
+    /**
+     * @brief Handle type to cancel first_autopilot_async.
+     */
+    using FirstAutopilotHandle = Handle<std::optional<std::shared_ptr<System>>>;
+
+    /**
+     * @brief Wait for the first autopilot without blocking.
+     *
+     * The non-blocking version of first_autopilot(). The callback is called exactly once,
+     * with the first autopilot that has been discovered, or with nothing once the timeout
+     * expires. It is never called from within this function, even if an autopilot has
+     * already been discovered.
+     *
+     * Unless cancelled: after cancel_first_autopilot() it is not called anymore. If this
+     * Mavsdk instance is destroyed while still waiting, the callback is not called either.
+     *
+     * @note This requires a MAVLink component with component ID 1 sending
+     *       heartbeats.
+     *
+     * @param timeout_s A timeout in seconds.
+     *                  A timeout of 0 checks once without waiting.
+     *                  A negative timeout will wait forever.
+     * @param callback Callback to receive the result.
+     *
+     * @return A handle to cancel the wait.
+     *
+     * @note The same lifetime rule as for first_autopilot() applies to the System passed to
+     *       the callback.
+     */
+    FirstAutopilotHandle
+    first_autopilot_async(double timeout_s, const FirstAutopilotCallback& callback);
+
+    /**
+     * @brief Cancel waiting for the first autopilot.
+     *
+     * After this returns, the callback passed to first_autopilot_async() is neither running
+     * nor going to run, so whatever it captured can be released. Cancelling a wait that has
+     * already completed, or cancelling twice, does nothing.
+     *
+     * @param handle Handle from first_autopilot_async.
+     */
+    void cancel_first_autopilot(FirstAutopilotHandle handle);
+
+    /**
      * @brief Possible configurations.
      */
     class MAVSDK_PUBLIC Configuration {

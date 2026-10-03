@@ -247,6 +247,45 @@ mavsdk_system_t mavsdk_first_autopilot(mavsdk_t mavsdk, double timeout_s) {
     return nullptr;
 }
 
+mavsdk_first_autopilot_handle_t mavsdk_first_autopilot_async(
+    mavsdk_t mavsdk,
+    double timeout_s,
+    mavsdk_first_autopilot_callback_t callback,
+    void* user_data
+) {
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+
+    auto handle = cpp_mavsdk->first_autopilot_async(
+        timeout_s,
+        [callback, user_data](std::optional<std::shared_ptr<System>> system_opt) {
+            mavsdk_system_t system = nullptr;
+            if (system_opt.has_value()) {
+                system = reinterpret_cast<mavsdk_system_t>(
+                    new std::shared_ptr<System>(system_opt.value()));
+            }
+            callback(system, user_data);
+        }
+    );
+
+    return reinterpret_cast<mavsdk_first_autopilot_handle_t>(
+        new Mavsdk::FirstAutopilotHandle(std::move(handle)));
+}
+
+void mavsdk_cancel_first_autopilot(
+    mavsdk_t mavsdk,
+    mavsdk_first_autopilot_handle_t handle
+) {
+    if (mavsdk == nullptr || handle == nullptr) {
+        return;
+    }
+
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+    auto* cpp_handle = reinterpret_cast<Mavsdk::FirstAutopilotHandle*>(handle);
+
+    cpp_mavsdk->cancel_first_autopilot(std::move(*cpp_handle));
+    delete cpp_handle;
+}
+
 // --- Connection Error Handling ---
 mavsdk_connection_error_handle_t mavsdk_subscribe_connection_errors(
     mavsdk_t mavsdk,
