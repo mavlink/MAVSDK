@@ -17,6 +17,7 @@ typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
 typedef struct mavsdk_connection_handle_s *mavsdk_connection_handle_t;
 typedef struct mavsdk_connection_error_handle_s *mavsdk_connection_error_handle_t;
 typedef struct mavsdk_new_system_handle_s *mavsdk_new_system_handle_t;
+typedef struct mavsdk_first_autopilot_handle_s *mavsdk_first_autopilot_handle_t;
 typedef struct mavsdk_intercept_json_handle_s *mavsdk_intercept_json_handle_t;
 typedef struct mavsdk_raw_bytes_handle_s *mavsdk_raw_bytes_handle_t;
 
@@ -73,6 +74,9 @@ typedef struct {
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_connection_error_callback_t)(const mavsdk_connection_error_t error, void *user_data);
 typedef void (*mavsdk_new_system_callback_t)(void *user_data);
+/* system is NULL if no autopilot was found in time. Otherwise it is owned by the callee and
+ * must be released with mavsdk_system_destroy(). */
+typedef void (*mavsdk_first_autopilot_callback_t)(mavsdk_system_t system, void *user_data);
 typedef int  (*mavsdk_intercept_json_callback_t)(const mavsdk_message_t message, void *user_data);
 typedef void (*mavsdk_raw_bytes_callback_t)(const uint8_t *bytes, size_t length, void *user_data);
 
@@ -141,6 +145,31 @@ CMAVSDK_EXPORT void mavsdk_free_systems_array(mavsdk_system_t *systems);
 CMAVSDK_EXPORT mavsdk_system_t mavsdk_first_autopilot(
     mavsdk_t mavsdk,
     double timeout_s
+);
+
+/*
+ * Non-blocking version of mavsdk_first_autopilot(). The callback is called exactly once, with
+ * the autopilot or with NULL on timeout, unless the wait is cancelled first. It is never
+ * called from within this function.
+ *
+ * The returned handle must be released with mavsdk_cancel_first_autopilot() exactly once,
+ * also after the callback has been called.
+ */
+CMAVSDK_EXPORT mavsdk_first_autopilot_handle_t mavsdk_first_autopilot_async(
+    mavsdk_t mavsdk,
+    double timeout_s,
+    mavsdk_first_autopilot_callback_t callback,
+    void *user_data
+);
+
+/*
+ * Cancel a wait started with mavsdk_first_autopilot_async() and release its handle. Once this
+ * returns, the callback is neither running nor going to run. After the callback has been
+ * called, this only releases the handle.
+ */
+CMAVSDK_EXPORT void mavsdk_cancel_first_autopilot(
+    mavsdk_t mavsdk,
+    mavsdk_first_autopilot_handle_t handle
 );
 
 // ===== System Event Subscriptions =====

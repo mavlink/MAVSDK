@@ -16,6 +16,7 @@ from .server_component import ServerComponent
 from .system import System
 from .types import (
     ConnectionResultWithHandle,
+    FirstAutopilotCallback,
     NewSystemCallback,
     RawBytesCallback,
 )
@@ -255,6 +256,48 @@ class Mavsdk:
             return self._track(System(self._lib, handle))
         return None
 
+    def first_autopilot_async(
+        self, timeout_s: float, callback: Callable[[Optional[System]], None]
+    ):
+        """Wait for the first autopilot without blocking.
+
+        *callback* is called exactly once from MAVSDK's callback thread, with the
+        autopilot system, or with None once *timeout_s* expires, unless the wait is
+        cancelled first. It is never called from within this call. A timeout of 0
+        checks once, a negative timeout waits forever.
+
+        Returns a handle for :meth:`cancel_first_autopilot`, which also releases it.
+        Call that once the result is no longer needed, also after the callback has
+        run; :meth:`destroy` releases any handle that is left.
+        """
+
+        def on_result(system_handle, _user_data):
+            system = None
+            if system_handle:
+                system = self._track(System(self._lib, system_handle))
+            callback(system)
+
+        c_callback = FirstAutopilotCallback(on_result)
+        handle = self._lib.mavsdk_first_autopilot_async(
+            self._handle, timeout_s, c_callback, None
+        )
+
+        self._subscriptions[handle] = (
+            c_callback,
+            self._lib.mavsdk_cancel_first_autopilot,
+        )
+
+        return handle
+
+    def cancel_first_autopilot(self, handle: ctypes.c_void_p):
+        """Cancel a wait started with :meth:`first_autopilot_async` and release it.
+
+        Once this returns, the callback is neither running nor going to run.
+        Idempotent. Does nothing once this instance is destroyed, which cancels
+        already.
+        """
+        self._unsubscribe(handle)
+
     def subscribe_on_new_system(
         self, callback: Callable[[Any], None], user_data: Any = None
     ):
@@ -486,6 +529,20 @@ _cmavsdk_lib.mavsdk_free_systems_array.restype = None
 
 _cmavsdk_lib.mavsdk_first_autopilot.argtypes = [ctypes.c_void_p, ctypes.c_double]
 _cmavsdk_lib.mavsdk_first_autopilot.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_first_autopilot_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    FirstAutopilotCallback,
+    ctypes.c_void_p,
+]
+_cmavsdk_lib.mavsdk_first_autopilot_async.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_cancel_first_autopilot.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+_cmavsdk_lib.mavsdk_cancel_first_autopilot.restype = None
 
 # Subscription functions
 _cmavsdk_lib.mavsdk_subscribe_on_new_system.argtypes = [

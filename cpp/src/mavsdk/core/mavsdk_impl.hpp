@@ -1,6 +1,9 @@
 #pragma once
 
 #include <atomic>
+#include <condition_variable>
+#include <map>
+#include <memory>
 #include <cstdint>
 #include <mutex>
 #include <optional>
@@ -77,6 +80,9 @@ public:
     std::vector<std::shared_ptr<System>> systems() const;
 
     std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s);
+    Mavsdk::FirstAutopilotHandle
+    first_autopilot_async(double timeout_s, const Mavsdk::FirstAutopilotCallback& callback);
+    void cancel_first_autopilot(Mavsdk::FirstAutopilotHandle handle);
 
     void set_configuration(Mavsdk::Configuration new_configuration);
     bool set_heartbeat_watchdog_timeout_s(double timeout_s);
@@ -274,6 +280,39 @@ private:
     std::shared_ptr<ServerComponent> _default_server_component{nullptr};
 
     CallbackList<> _new_system_callbacks{_io_context};
+
+    // One first_autopilot_async() call that has not completed or been cancelled yet.
+    struct AutopilotWait {
+        std::mutex mutex{};
+        // Signalled when the user callback returns, so cancel can wait for it.
+        std::condition_variable callback_done{};
+        Mavsdk::FirstAutopilotCallback callback{};
+
+        // Set once the result is decided, so it is delivered only once.
+        bool finished{false};
+        bool cancelled{false};
+        bool in_callback{false};
+        std::thread::id callback_thread{};
+
+        // Released by release_autopilot_wait(), at most once.
+        bool released{false};
+        Mavsdk::NewSystemHandle new_system_handle{};
+        // Weak, so a wait can't keep a System alive past its Mavsdk (see
+        // abort_if_references_outlive_us()).
+        std::vector<std::pair<std::weak_ptr<System>, System::ComponentDiscoveredHandle>>
+            component_handles{};
+        std::optional<TimeoutHandler::Cookie> timeout_cookie{};
+    };
+
+    void check_autopilot_wait(const std::shared_ptr<AutopilotWait>& wait);
+    void watch_components_for_autopilot_wait(const std::shared_ptr<AutopilotWait>& wait);
+    void finish_autopilot_wait(
+        const std::shared_ptr<AutopilotWait>& wait, const std::shared_ptr<System>& system);
+    void release_autopilot_wait(const std::shared_ptr<AutopilotWait>& wait);
+
+    HandleFactory<std::optional<std::shared_ptr<System>>> _autopilot_waits_handle_factory{};
+    std::mutex _autopilot_waits_mutex{};
+    std::map<Mavsdk::FirstAutopilotHandle, std::shared_ptr<AutopilotWait>> _autopilot_waits{};
 
     // Serializes configuration writers (set_configuration() and
     // update_configuration()) so that read-modify-write updates cannot lose

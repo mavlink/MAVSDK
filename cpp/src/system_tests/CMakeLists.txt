@@ -26,6 +26,8 @@ add_executable(system_tests_runner
     heartbeat_watchdog.cpp
     plugin_lifetime_churn.cpp
     mavsdk_outlived.cpp
+    first_autopilot_async.cpp
+    first_autopilot_late_component.cpp
     first_heartbeat.cpp
     callback_queue_overflow.cpp
     telemetry_home_position.cpp

@@ -45,6 +45,17 @@ std::optional<std::shared_ptr<System>> Mavsdk::first_autopilot(double timeout_s)
     return _impl->first_autopilot(timeout_s);
 }
 
+Mavsdk::FirstAutopilotHandle
+Mavsdk::first_autopilot_async(double timeout_s, const FirstAutopilotCallback& callback)
+{
+    return _impl->first_autopilot_async(timeout_s, callback);
+}
+
+void Mavsdk::cancel_first_autopilot(FirstAutopilotHandle handle)
+{
+    _impl->cancel_first_autopilot(handle);
+}
+
 void Mavsdk::set_configuration(Configuration configuration)
 {
     _impl->set_configuration(configuration);

@@ -519,6 +519,14 @@ void SystemImpl::add_new_component(uint8_t component_id)
             "Component {} (component ID: {}) added.",
             component_name(component_id),
             int(component_id));
+
+        if (is_autopilot(component_id) && _connected) {
+            // The system was already connected through another component, for example a
+            // companion computer that was heard first, and only now gained its autopilot.
+            // set_connected() won't run again, so ask for AUTOPILOT_VERSION here, as it would
+            // have. Posted rather than sent inline: some callers hold MavsdkImpl's mutex.
+            asio::post(_mavsdk_impl.io_context(), [this]() { send_autopilot_version_request(); });
+        }
     }
 }
 

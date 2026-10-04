@@ -293,35 +293,257 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
         return {};
     }
 
-    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto prom = std::make_shared<std::promise<std::optional<std::shared_ptr<System>>>>();
     auto fut = prom->get_future();
 
-    auto flag = std::make_shared<std::once_flag>();
-    auto handle = subscribe_on_new_system([this, prom, flag]() {
-        // Check all systems, not just the first one
-        auto all_systems = systems();
-        for (auto& system : all_systems) {
-            if (system->is_connected() && system->has_autopilot()) {
-                std::call_once(*flag, [prom, system]() { prom->set_value(system); });
-                break;
-            }
-        }
-    });
+    auto handle =
+        first_autopilot_async(timeout_s, [prom](std::optional<std::shared_ptr<System>> result) {
+            prom->set_value(std::move(result));
+        });
 
     if (timeout_s > 0.0) {
-        if (fut.wait_for(std::chrono::milliseconds(int64_t(timeout_s * 1e3))) ==
+        // Also time out here, rather than only waiting for the callback: if this is called
+        // from the thread that runs the user callbacks, the callback can't be delivered.
+        if (fut.wait_for(std::chrono::milliseconds(int64_t(timeout_s * 1e3))) !=
             std::future_status::ready) {
-            unsubscribe_on_new_system(handle);
-            return fut.get();
-
-        } else {
-            unsubscribe_on_new_system(handle);
-            return std::nullopt;
+            cancel_first_autopilot(handle);
+            if (fut.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
+                return std::nullopt;
+            }
         }
     } else {
         fut.wait();
-        unsubscribe_on_new_system(handle);
-        return std::optional(fut.get());
+    }
+    return fut.get();
+}
+
+Mavsdk::FirstAutopilotHandle
+MavsdkImpl::first_autopilot_async(double timeout_s, const Mavsdk::FirstAutopilotCallback& callback)
+{
+    auto wait = std::make_shared<AutopilotWait>();
+    wait->callback = callback;
+
+    const auto handle = _autopilot_waits_handle_factory.create();
+    {
+        std::lock_guard lock(_autopilot_waits_mutex);
+        _autopilot_waits[handle] = wait;
+    }
+
+    // An autopilot can also join a system that is already connected, for example when a
+    // companion computer on the same system ID was heard first. That is not a new system, so
+    // besides new systems also watch the components of every system.
+    //
+    // Subscribed even if an autopilot is already there, so the result is always delivered the
+    // same way: from the subscription's catch-up callback, never from within this function.
+    const auto new_system_handle = subscribe_on_new_system([this, wait]() {
+        watch_components_for_autopilot_wait(wait);
+        check_autopilot_wait(wait);
+    });
+    // The result can already have been delivered, and the wait released, before we get to
+    // store the handle. Then release it ourselves.
+    bool already_released = false;
+    {
+        std::lock_guard lock(wait->mutex);
+        already_released = wait->released;
+        if (!already_released) {
+            wait->new_system_handle = new_system_handle;
+        }
+    }
+    if (already_released) {
+        unsubscribe_on_new_system(new_system_handle);
+    }
+
+    // The catch-up callback of subscribe_on_new_system() only comes if a system is connected.
+    // Without one, an autopilot can only appear with a new system, which calls back anyway.
+    // But a timeout of 0 means a single check, so do that one explicitly in either case.
+    if (timeout_s == 0.0) {
+        asio::post(_io_context, [this, wait]() {
+            check_autopilot_wait(wait);
+            finish_autopilot_wait(wait, nullptr);
+        });
+    } else if (timeout_s > 0.0) {
+        const auto cookie = timeout_handler.add(
+            [this, wait]() { finish_autopilot_wait(wait, nullptr); }, timeout_s);
+        {
+            std::lock_guard lock(wait->mutex);
+            already_released = wait->released;
+            if (!already_released) {
+                wait->timeout_cookie = cookie;
+            }
+        }
+        if (already_released) {
+            timeout_handler.remove(cookie);
+        }
+    }
+
+    return handle;
+}
+
+void MavsdkImpl::cancel_first_autopilot(Mavsdk::FirstAutopilotHandle handle)
+{
+    std::shared_ptr<AutopilotWait> wait;
+    {
+        std::lock_guard lock(_autopilot_waits_mutex);
+        auto it = _autopilot_waits.find(handle);
+        if (it == _autopilot_waits.end()) {
+            // Already completed, or cancelled before.
+            return;
+        }
+        wait = it->second;
+        _autopilot_waits.erase(it);
+    }
+
+    {
+        std::lock_guard lock(wait->mutex);
+        wait->cancelled = true;
+    }
+
+    // Waits for subscription callbacks and a timeout that are running right now, so nothing
+    // decides a result for this wait anymore once it returns.
+    release_autopilot_wait(wait);
+
+    // And wait for the user callback, unless that is what is cancelling.
+    std::unique_lock lock(wait->mutex);
+    wait->callback_done.wait(lock, [&wait]() {
+        return !wait->in_callback || wait->callback_thread == std::this_thread::get_id();
+    });
+}
+
+void MavsdkImpl::check_autopilot_wait(const std::shared_ptr<AutopilotWait>& wait)
+{
+    {
+        std::lock_guard lock(wait->mutex);
+        if (wait->finished || wait->cancelled) {
+            return;
+        }
+    }
+
+    for (auto& system : systems()) {
+        if (system->is_connected() && system->has_autopilot()) {
+            finish_autopilot_wait(wait, system);
+            return;
+        }
+    }
+}
+
+void MavsdkImpl::watch_components_for_autopilot_wait(const std::shared_ptr<AutopilotWait>& wait)
+{
+    bool subscribed = false;
+    {
+        std::lock_guard lock(wait->mutex);
+        if (wait->finished || wait->cancelled || wait->released) {
+            return;
+        }
+
+        auto& handles = wait->component_handles;
+        for (auto& system : systems()) {
+            const bool already_watched =
+                std::any_of(handles.begin(), handles.end(), [&system](const auto& entry) {
+                    return entry.first.lock() == system;
+                });
+            if (!already_watched) {
+                handles.emplace_back(
+                    system, system->subscribe_component_discovered([this, wait](ComponentType) {
+                        check_autopilot_wait(wait);
+                    }));
+                subscribed = true;
+            }
+        }
+    }
+
+    if (subscribed) {
+        // subscribe_component_discovered() only posts its insertion, so a component added
+        // before that lands is not reported to us. Check again once it has: posts run in order.
+        asio::post(_io_context, [this, wait]() { check_autopilot_wait(wait); });
+    }
+}
+
+void MavsdkImpl::finish_autopilot_wait(
+    const std::shared_ptr<AutopilotWait>& wait, const std::shared_ptr<System>& system)
+{
+    {
+        std::lock_guard lock(wait->mutex);
+        if (wait->finished || wait->cancelled) {
+            return;
+        }
+        wait->finished = true;
+    }
+
+    // Weak, so a result that is queued but not delivered yet can't keep the System alive past
+    // its Mavsdk (see abort_if_references_outlive_us()).
+    std::weak_ptr<System> weak_system = system;
+    const bool found = (system != nullptr);
+
+    call_user_callback([this, wait, weak_system, found]() {
+        // On the user callback thread, where none of the subscription callbacks can be running
+        // at the same time, so this doesn't wait on them.
+        release_autopilot_wait(wait);
+
+        Mavsdk::FirstAutopilotCallback callback;
+        {
+            std::lock_guard lock(wait->mutex);
+            if (wait->cancelled) {
+                return;
+            }
+            wait->in_callback = true;
+            wait->callback_thread = std::this_thread::get_id();
+            callback = std::move(wait->callback);
+        }
+
+        {
+            std::lock_guard lock(_autopilot_waits_mutex);
+            for (auto it = _autopilot_waits.begin(); it != _autopilot_waits.end(); ++it) {
+                if (it->second == wait) {
+                    _autopilot_waits.erase(it);
+                    break;
+                }
+            }
+        }
+
+        auto found_system = weak_system.lock();
+        if (found && found_system) {
+            callback(found_system);
+        } else {
+            callback(std::nullopt);
+        }
+
+        {
+            std::lock_guard lock(wait->mutex);
+            wait->in_callback = false;
+        }
+        wait->callback_done.notify_all();
+    });
+}
+
+void MavsdkImpl::release_autopilot_wait(const std::shared_ptr<AutopilotWait>& wait)
+{
+    Mavsdk::NewSystemHandle new_system_handle;
+    std::vector<std::pair<std::weak_ptr<System>, System::ComponentDiscoveredHandle>>
+        component_handles;
+    std::optional<TimeoutHandler::Cookie> timeout_cookie;
+    {
+        std::lock_guard lock(wait->mutex);
+        if (wait->released) {
+            return;
+        }
+        wait->released = true;
+        new_system_handle = wait->new_system_handle;
+        component_handles = std::move(wait->component_handles);
+        timeout_cookie = wait->timeout_cookie;
+    }
+
+    // None of these with the wait's mutex held: they wait for a callback that is running right
+    // now, and those take that mutex.
+    if (new_system_handle.valid()) {
+        unsubscribe_on_new_system(new_system_handle);
+    }
+    for (auto& [weak_system, component_handle] : component_handles) {
+        if (auto system = weak_system.lock()) {
+            system->unsubscribe_component_discovered(component_handle);
+        }
+    }
+    if (timeout_cookie) {
+        timeout_handler.remove_blocking(timeout_cookie.value());
     }
 }
 

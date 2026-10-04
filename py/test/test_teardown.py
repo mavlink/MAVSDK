@@ -13,6 +13,7 @@ regression here reports as one failed test rather than killing the whole run.
 import subprocess
 import sys
 import textwrap
+import time
 
 SCENARIO_TIMEOUT_S = 60.0
 
@@ -266,3 +267,29 @@ def test_connection_handle_released_by_destroy():
         # destroy() has to release its handle too.
         mavsdk.destroy()
     """)
+
+
+def test_destroy_while_waiting_for_autopilot():
+    # first_autopilot() used to block an executor thread for its whole timeout,
+    # which then woke up inside a destroyed Mavsdk and aborted the process.
+    # Now destroy() ends the wait, and nothing is left running behind it.
+    start = time.monotonic()
+    run_scenario("""
+        import asyncio
+
+        from mavsdk.asyncio import ComponentType, Configuration, Mavsdk
+
+        async def main():
+            mavsdk = Mavsdk(
+                Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+            )
+            await mavsdk.add_any_connection("raw://")
+            waiting = asyncio.create_task(mavsdk.first_autopilot(30.0))
+            await asyncio.sleep(0.2)
+
+            mavsdk.destroy()
+            assert await asyncio.wait_for(waiting, 1.0) is None
+
+        asyncio.run(main())
+    """)
+    assert time.monotonic() - start < 10.0
