@@ -144,6 +144,8 @@ public:
                 return rpc::log_files::LogFilesResult_Result_RESULT_FILE_OPEN_FAILED;
             case mavsdk::LogFiles::Result::NoSystem:
                 return rpc::log_files::LogFilesResult_Result_RESULT_NO_SYSTEM;
+            case mavsdk::LogFiles::Result::Cancelled:
+                return rpc::log_files::LogFilesResult_Result_RESULT_CANCELLED;
         }
     }
 
@@ -169,6 +171,8 @@ public:
                 return mavsdk::LogFiles::Result::FileOpenFailed;
             case rpc::log_files::LogFilesResult_Result_RESULT_NO_SYSTEM:
                 return mavsdk::LogFiles::Result::NoSystem;
+            case rpc::log_files::LogFilesResult_Result_RESULT_CANCELLED:
+                return mavsdk::LogFiles::Result::Cancelled;
         }
     }
 
@@ -258,6 +262,34 @@ public:
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
         *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status CancelDownloadLogFile(
+        grpc::ServerContext* /* context */,
+        const rpc::log_files::CancelDownloadLogFileRequest* /* request */,
+        rpc::log_files::CancelDownloadLogFileResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::LogFiles::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        
+        auto result = _lazy_plugin.maybe_plugin()->cancel_download_log_file();
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
 
         return grpc::Status::OK;
     }

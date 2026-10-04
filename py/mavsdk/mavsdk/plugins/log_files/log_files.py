@@ -34,6 +34,7 @@ class LogFilesResult(IntEnum):
     INVALID_ARGUMENT = 5
     FILE_OPEN_FAILED = 6
     NO_SYSTEM = 7
+    CANCELLED = 8
 
 
 class LogFilesError(MavsdkError):
@@ -257,6 +258,18 @@ class LogFiles:
             None,
         )
 
+    def cancel_download_log_file(self):
+        """Get cancel_download_log_file (blocking)"""
+
+        result_code = self._lib.mavsdk_log_files_cancel_download_log_file(
+            self._require_handle(),
+        )
+        result = LogFilesResult(result_code)
+        if result != LogFilesResult.SUCCESS:
+            raise LogFilesError(result, "cancel_download_log_file()")
+
+        return result
+
     def erase_all_log_files(self):
         """Get erase_all_log_files (blocking)"""
 
@@ -375,6 +388,12 @@ _cmavsdk_lib.mavsdk_log_files_download_log_file_async.argtypes = [
 
 _cmavsdk_lib.mavsdk_log_files_download_log_file_async.restype = None
 
+
+_cmavsdk_lib.mavsdk_log_files_cancel_download_log_file.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_log_files_cancel_download_log_file.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_log_files_erase_all_log_files.argtypes = [
     ctypes.c_void_p,

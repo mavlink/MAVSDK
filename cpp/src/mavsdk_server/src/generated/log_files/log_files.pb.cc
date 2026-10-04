@@ -145,6 +145,24 @@ struct EntryDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EntryDefaultTypeInternal _Entry_default_instance_;
+              template <typename>
+PROTOBUF_CONSTEXPR CancelDownloadLogFileRequest::CancelDownloadLogFileRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct CancelDownloadLogFileRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CancelDownloadLogFileRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CancelDownloadLogFileRequestDefaultTypeInternal() {}
+  union {
+    CancelDownloadLogFileRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CancelDownloadLogFileRequestDefaultTypeInternal _CancelDownloadLogFileRequest_default_instance_;
 
 inline constexpr SubscribeDownloadLogFileRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -250,6 +268,31 @@ struct DownloadLogFileResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DownloadLogFileResponseDefaultTypeInternal _DownloadLogFileResponse_default_instance_;
+
+inline constexpr CancelDownloadLogFileResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        log_files_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CancelDownloadLogFileResponse::CancelDownloadLogFileResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CancelDownloadLogFileResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CancelDownloadLogFileResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CancelDownloadLogFileResponseDefaultTypeInternal() {}
+  union {
+    CancelDownloadLogFileResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CancelDownloadLogFileResponseDefaultTypeInternal _CancelDownloadLogFileResponse_default_instance_;
 }  // namespace log_files
 }  // namespace rpc
 }  // namespace mavsdk
@@ -303,6 +346,24 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::DownloadLogFileResponse, _impl_.progress_),
         0,
         1,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::CancelDownloadLogFileRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::CancelDownloadLogFileResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::CancelDownloadLogFileResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::CancelDownloadLogFileResponse, _impl_.log_files_result_),
+        0,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_files::EraseAllLogFilesRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -359,17 +420,21 @@ static const ::_pbi::MigrationSchema
         {8, 18, -1, sizeof(::mavsdk::rpc::log_files::GetEntriesResponse)},
         {20, 30, -1, sizeof(::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest)},
         {32, 42, -1, sizeof(::mavsdk::rpc::log_files::DownloadLogFileResponse)},
-        {44, -1, -1, sizeof(::mavsdk::rpc::log_files::EraseAllLogFilesRequest)},
-        {52, 61, -1, sizeof(::mavsdk::rpc::log_files::EraseAllLogFilesResponse)},
-        {62, -1, -1, sizeof(::mavsdk::rpc::log_files::ProgressData)},
-        {71, -1, -1, sizeof(::mavsdk::rpc::log_files::Entry)},
-        {82, -1, -1, sizeof(::mavsdk::rpc::log_files::LogFilesResult)},
+        {44, -1, -1, sizeof(::mavsdk::rpc::log_files::CancelDownloadLogFileRequest)},
+        {52, 61, -1, sizeof(::mavsdk::rpc::log_files::CancelDownloadLogFileResponse)},
+        {62, -1, -1, sizeof(::mavsdk::rpc::log_files::EraseAllLogFilesRequest)},
+        {70, 79, -1, sizeof(::mavsdk::rpc::log_files::EraseAllLogFilesResponse)},
+        {80, -1, -1, sizeof(::mavsdk::rpc::log_files::ProgressData)},
+        {89, -1, -1, sizeof(::mavsdk::rpc::log_files::Entry)},
+        {100, -1, -1, sizeof(::mavsdk::rpc::log_files::LogFilesResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::log_files::_GetEntriesRequest_default_instance_._instance,
     &::mavsdk::rpc::log_files::_GetEntriesResponse_default_instance_._instance,
     &::mavsdk::rpc::log_files::_SubscribeDownloadLogFileRequest_default_instance_._instance,
     &::mavsdk::rpc::log_files::_DownloadLogFileResponse_default_instance_._instance,
+    &::mavsdk::rpc::log_files::_CancelDownloadLogFileRequest_default_instance_._instance,
+    &::mavsdk::rpc::log_files::_CancelDownloadLogFileResponse_default_instance_._instance,
     &::mavsdk::rpc::log_files::_EraseAllLogFilesRequest_default_instance_._instance,
     &::mavsdk::rpc::log_files::_EraseAllLogFilesResponse_default_instance_._instance,
     &::mavsdk::rpc::log_files::_ProgressData_default_instance_._instance,
@@ -389,31 +454,38 @@ const char descriptor_table_protodef_log_5ffiles_2flog_5ffiles_2eproto[] ABSL_AT
     "\001\n\027DownloadLogFileResponse\022>\n\020log_files_"
     "result\030\001 \001(\0132$.mavsdk.rpc.log_files.LogF"
     "ilesResult\0224\n\010progress\030\002 \001(\0132\".mavsdk.rp"
-    "c.log_files.ProgressData\"\031\n\027EraseAllLogF"
-    "ilesRequest\"Z\n\030EraseAllLogFilesResponse\022"
-    ">\n\020log_files_result\030\001 \001(\0132$.mavsdk.rpc.l"
-    "og_files.LogFilesResult\")\n\014ProgressData\022"
-    "\031\n\010progress\030\001 \001(\002B\007\202\265\030\003NaN\"5\n\005Entry\022\n\n\002i"
-    "d\030\001 \001(\r\022\014\n\004date\030\002 \001(\t\022\022\n\nsize_bytes\030\003 \001("
-    "\r\"\241\002\n\016LogFilesResult\022;\n\006result\030\001 \001(\0162+.m"
-    "avsdk.rpc.log_files.LogFilesResult.Resul"
-    "t\022\022\n\nresult_str\030\002 \001(\t\"\275\001\n\006Result\022\022\n\016RESU"
-    "LT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\017\n\013RESU"
-    "LT_NEXT\020\002\022\026\n\022RESULT_NO_LOGFILES\020\003\022\022\n\016RES"
-    "ULT_TIMEOUT\020\004\022\033\n\027RESULT_INVALID_ARGUMENT"
-    "\020\005\022\033\n\027RESULT_FILE_OPEN_FAILED\020\006\022\024\n\020RESUL"
-    "T_NO_SYSTEM\020\0072\374\002\n\017LogFilesService\022a\n\nGet"
-    "Entries\022\'.mavsdk.rpc.log_files.GetEntrie"
-    "sRequest\032(.mavsdk.rpc.log_files.GetEntri"
-    "esResponse\"\000\022\214\001\n\030SubscribeDownloadLogFil"
-    "e\0225.mavsdk.rpc.log_files.SubscribeDownlo"
-    "adLogFileRequest\032-.mavsdk.rpc.log_files."
-    "DownloadLogFileResponse\"\010\200\265\030\000\210\265\030\0010\001\022w\n\020E"
-    "raseAllLogFiles\022-.mavsdk.rpc.log_files.E"
-    "raseAllLogFilesRequest\032..mavsdk.rpc.log_"
-    "files.EraseAllLogFilesResponse\"\004\200\265\030\001B$\n\023"
-    "io.mavsdk.log_filesB\rLogFilesProtob\006prot"
-    "o3"
+    "c.log_files.ProgressData\"\036\n\034CancelDownlo"
+    "adLogFileRequest\"_\n\035CancelDownloadLogFil"
+    "eResponse\022>\n\020log_files_result\030\001 \001(\0132$.ma"
+    "vsdk.rpc.log_files.LogFilesResult\"\031\n\027Era"
+    "seAllLogFilesRequest\"Z\n\030EraseAllLogFiles"
+    "Response\022>\n\020log_files_result\030\001 \001(\0132$.mav"
+    "sdk.rpc.log_files.LogFilesResult\")\n\014Prog"
+    "ressData\022\031\n\010progress\030\001 \001(\002B\007\202\265\030\003NaN\"5\n\005E"
+    "ntry\022\n\n\002id\030\001 \001(\r\022\014\n\004date\030\002 \001(\t\022\022\n\nsize_b"
+    "ytes\030\003 \001(\r\"\267\002\n\016LogFilesResult\022;\n\006result\030"
+    "\001 \001(\0162+.mavsdk.rpc.log_files.LogFilesRes"
+    "ult.Result\022\022\n\nresult_str\030\002 \001(\t\"\323\001\n\006Resul"
+    "t\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020"
+    "\001\022\017\n\013RESULT_NEXT\020\002\022\026\n\022RESULT_NO_LOGFILES"
+    "\020\003\022\022\n\016RESULT_TIMEOUT\020\004\022\033\n\027RESULT_INVALID"
+    "_ARGUMENT\020\005\022\033\n\027RESULT_FILE_OPEN_FAILED\020\006"
+    "\022\024\n\020RESULT_NO_SYSTEM\020\007\022\024\n\020RESULT_CANCELL"
+    "ED\020\0102\205\004\n\017LogFilesService\022a\n\nGetEntries\022\'"
+    ".mavsdk.rpc.log_files.GetEntriesRequest\032"
+    "(.mavsdk.rpc.log_files.GetEntriesRespons"
+    "e\"\000\022\214\001\n\030SubscribeDownloadLogFile\0225.mavsd"
+    "k.rpc.log_files.SubscribeDownloadLogFile"
+    "Request\032-.mavsdk.rpc.log_files.DownloadL"
+    "ogFileResponse\"\010\200\265\030\000\210\265\030\0010\001\022\206\001\n\025CancelDow"
+    "nloadLogFile\0222.mavsdk.rpc.log_files.Canc"
+    "elDownloadLogFileRequest\0323.mavsdk.rpc.lo"
+    "g_files.CancelDownloadLogFileResponse\"\004\200"
+    "\265\030\001\022w\n\020EraseAllLogFiles\022-.mavsdk.rpc.log"
+    "_files.EraseAllLogFilesRequest\032..mavsdk."
+    "rpc.log_files.EraseAllLogFilesResponse\"\004"
+    "\200\265\030\001B$\n\023io.mavsdk.log_filesB\rLogFilesPro"
+    "tob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_deps[1] =
     {
@@ -423,13 +495,13 @@ static ::absl::once_flag descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_once
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_log_5ffiles_2flog_5ffiles_2eproto = {
     false,
     false,
-    1402,
+    1690,
     descriptor_table_protodef_log_5ffiles_2flog_5ffiles_2eproto,
     "log_files/log_files.proto",
     &descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_once,
     descriptor_table_log_5ffiles_2flog_5ffiles_2eproto_deps,
     1,
-    9,
+    11,
     schemas,
     file_default_instances,
     TableStruct_log_5ffiles_2flog_5ffiles_2eproto::offsets,
@@ -444,9 +516,9 @@ const ::google::protobuf::EnumDescriptor* LogFilesResult_Result_descriptor() {
   return file_level_enum_descriptors_log_5ffiles_2flog_5ffiles_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t LogFilesResult_Result_internal_data_[] = {
-    524288u, 0u, };
+    589824u, 0u, };
 bool LogFilesResult_Result_IsValid(int value) {
-  return 0 <= value && value <= 7;
+  return 0 <= value && value <= 8;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -459,6 +531,7 @@ constexpr LogFilesResult_Result LogFilesResult::RESULT_TIMEOUT;
 constexpr LogFilesResult_Result LogFilesResult::RESULT_INVALID_ARGUMENT;
 constexpr LogFilesResult_Result LogFilesResult::RESULT_FILE_OPEN_FAILED;
 constexpr LogFilesResult_Result LogFilesResult::RESULT_NO_SYSTEM;
+constexpr LogFilesResult_Result LogFilesResult::RESULT_CANCELLED;
 constexpr LogFilesResult_Result LogFilesResult::Result_MIN;
 constexpr LogFilesResult_Result LogFilesResult::Result_MAX;
 constexpr int LogFilesResult::Result_ARRAYSIZE;
@@ -1448,6 +1521,359 @@ void DownloadLogFileResponse::InternalSwap(DownloadLogFileResponse* PROTOBUF_RES
 }
 
 ::google::protobuf::Metadata DownloadLogFileResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CancelDownloadLogFileRequest::_Internal {
+ public:
+};
+
+CancelDownloadLogFileRequest::CancelDownloadLogFileRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.log_files.CancelDownloadLogFileRequest)
+}
+CancelDownloadLogFileRequest::CancelDownloadLogFileRequest(
+    ::google::protobuf::Arena* arena,
+    const CancelDownloadLogFileRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CancelDownloadLogFileRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.log_files.CancelDownloadLogFileRequest)
+}
+
+inline void* CancelDownloadLogFileRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CancelDownloadLogFileRequest(arena);
+}
+constexpr auto CancelDownloadLogFileRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(CancelDownloadLogFileRequest),
+                                            alignof(CancelDownloadLogFileRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CancelDownloadLogFileRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CancelDownloadLogFileRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CancelDownloadLogFileRequest::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<CancelDownloadLogFileRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CancelDownloadLogFileRequest::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<CancelDownloadLogFileRequest>(), &CancelDownloadLogFileRequest::ByteSizeLong,
+            &CancelDownloadLogFileRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CancelDownloadLogFileRequest, _impl_._cached_size_),
+        false,
+    },
+    &CancelDownloadLogFileRequest::kDescriptorMethods,
+    &descriptor_table_log_5ffiles_2flog_5ffiles_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CancelDownloadLogFileRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> CancelDownloadLogFileRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::log_files::CancelDownloadLogFileRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata CancelDownloadLogFileRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CancelDownloadLogFileResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<CancelDownloadLogFileResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(CancelDownloadLogFileResponse, _impl_._has_bits_);
+};
+
+CancelDownloadLogFileResponse::CancelDownloadLogFileResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE CancelDownloadLogFileResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+CancelDownloadLogFileResponse::CancelDownloadLogFileResponse(
+    ::google::protobuf::Arena* arena,
+    const CancelDownloadLogFileResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CancelDownloadLogFileResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.log_files_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::log_files::LogFilesResult>(
+                              arena, *from._impl_.log_files_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE CancelDownloadLogFileResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void CancelDownloadLogFileResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.log_files_result_ = {};
+}
+CancelDownloadLogFileResponse::~CancelDownloadLogFileResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+  SharedDtor(*this);
+}
+inline void CancelDownloadLogFileResponse::SharedDtor(MessageLite& self) {
+  CancelDownloadLogFileResponse& this_ = static_cast<CancelDownloadLogFileResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.log_files_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* CancelDownloadLogFileResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CancelDownloadLogFileResponse(arena);
+}
+constexpr auto CancelDownloadLogFileResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(CancelDownloadLogFileResponse),
+                                            alignof(CancelDownloadLogFileResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CancelDownloadLogFileResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CancelDownloadLogFileResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CancelDownloadLogFileResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<CancelDownloadLogFileResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CancelDownloadLogFileResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<CancelDownloadLogFileResponse>(), &CancelDownloadLogFileResponse::ByteSizeLong,
+            &CancelDownloadLogFileResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CancelDownloadLogFileResponse, _impl_._cached_size_),
+        false,
+    },
+    &CancelDownloadLogFileResponse::kDescriptorMethods,
+    &descriptor_table_log_5ffiles_2flog_5ffiles_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CancelDownloadLogFileResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> CancelDownloadLogFileResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(CancelDownloadLogFileResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::log_files::CancelDownloadLogFileResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.log_files.LogFilesResult log_files_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CancelDownloadLogFileResponse, _impl_.log_files_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.log_files.LogFilesResult log_files_result = 1;
+    {PROTOBUF_FIELD_OFFSET(CancelDownloadLogFileResponse, _impl_.log_files_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::log_files::LogFilesResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void CancelDownloadLogFileResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.log_files_result_ != nullptr);
+    _impl_.log_files_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* CancelDownloadLogFileResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const CancelDownloadLogFileResponse& this_ = static_cast<const CancelDownloadLogFileResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* CancelDownloadLogFileResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const CancelDownloadLogFileResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.log_files.LogFilesResult log_files_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.log_files_result_, this_._impl_.log_files_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t CancelDownloadLogFileResponse::ByteSizeLong(const MessageLite& base) {
+          const CancelDownloadLogFileResponse& this_ = static_cast<const CancelDownloadLogFileResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t CancelDownloadLogFileResponse::ByteSizeLong() const {
+          const CancelDownloadLogFileResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.log_files.LogFilesResult log_files_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.log_files_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void CancelDownloadLogFileResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CancelDownloadLogFileResponse*>(&to_msg);
+  auto& from = static_cast<const CancelDownloadLogFileResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.log_files_result_ != nullptr);
+    if (_this->_impl_.log_files_result_ == nullptr) {
+      _this->_impl_.log_files_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::log_files::LogFilesResult>(arena, *from._impl_.log_files_result_);
+    } else {
+      _this->_impl_.log_files_result_->MergeFrom(*from._impl_.log_files_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CancelDownloadLogFileResponse::CopyFrom(const CancelDownloadLogFileResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.log_files.CancelDownloadLogFileResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CancelDownloadLogFileResponse::InternalSwap(CancelDownloadLogFileResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.log_files_result_, other->_impl_.log_files_result_);
+}
+
+::google::protobuf::Metadata CancelDownloadLogFileResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

@@ -62,6 +62,10 @@ private class LogFilesNativeImpl(private val handle: Long) : LogFilesNative {
         }
     }
 
+    override fun cancelDownloadLogFile(): Int = withOpen {
+        NativeLogFiles.cancelDownloadLogFile(handle)
+    }
+
     override fun eraseAllLogFiles(): Int = withOpen { NativeLogFiles.eraseAllLogFiles(handle) }
 
     override fun destroy() {
