@@ -18,6 +18,7 @@ add_executable(system_tests_runner
     param_change_notification.cpp
     mission_raw_upload.cpp
     mission_raw_upload_empty.cpp
+    log_files_download.cpp
     telemetry_subscription.cpp
     telemetry_timestamp.cpp
     telemetry_rc_status.cpp
