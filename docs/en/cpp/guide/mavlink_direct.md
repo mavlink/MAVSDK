@@ -117,6 +117,7 @@ The sections below go through this in more detail. The complete examples are in 
 | [mavlink_direct](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct) | Subscribing to a message (GPS_RAW_INT), and stats about all arriving messages |
 | [mavlink_direct_sender](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender) | Sending a message (OBSTACLE_DISTANCE) |
 | [mavlink_direct_sender_custom](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom) | Sending a custom message (GAS_SENSOR), by loading its XML definition |
+| [mavlink_direct_receiver_custom](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_receiver_custom) | Receiving the custom message (GAS_SENSOR), by loading the same XML definition |
 
 For Python, see [MavlinkDirect in Python](../../python/mavlink_direct.md).
 
@@ -167,27 +168,55 @@ In the example below we define and load our own message for a gas sensor. The me
     }
 ```
 
-Once loaded, the message can be sent and received by name like any other, e.g.:
+Once loaded, the message can be sent by name like any other, with the fields assembled using nlohmann/json:
 
 ```cpp
-    MavlinkDirect::MavlinkMessage gas_sensor_message{};
-    gas_sensor_message.message_name = "GAS_SENSOR";
-    gas_sensor_message.system_id = config.get_system_id();
-    gas_sensor_message.component_id = config.get_component_id();
-    gas_sensor_message.target_system_id = 0; // Does not apply for this message
-    gas_sensor_message.target_component_id = 0; // Does not apply for this message
-    gas_sensor_message.fields_json =
-        R"({"time_usec": 1000000, "id": 0, "co2": 420.0, "ch4": 1.9, "temperature": 2150})";
+using json = nlohmann::json;
 
-    auto result = mavlink_direct.send_message(gas_sensor_message);
+// ...
+
+    const json fields = {
+        {"time_usec", 1000000},
+        {"id", 0},
+        {"co2", 420.0},
+        {"ch4", 1.9},
+        {"temperature", 2150},
+    };
+
+    MavlinkDirect::MavlinkMessage message{};
+    message.message_name = "GAS_SENSOR";
+    message.system_id = config.get_system_id();
+    message.component_id = config.get_component_id();
+    message.target_system_id = 0; // Does not apply for this message
+    message.target_component_id = 0; // Does not apply for this message
+    message.fields_json = fields.dump();
+
+    auto result = mavlink_direct.send_message(message);
+```
+
+The receiving side needs to know about the message as well. If it uses MAVSDK, it has to load the same XML, and can then subscribe to it by name and parse its fields:
+
+```cpp
+void on_gas_sensor(const MavlinkDirect::MavlinkMessage& message)
+{
+    const auto fields = json::parse(message.fields_json);
+    // The temperature is in cdegC, as given by the message definition.
+    std::cout << std::fixed << std::setprecision(1) << "GAS_SENSOR " << fields["id"].get<int>()
+              << " received: " << fields["co2"].get<double>() << " ppm CO2, "
+              << fields["ch4"].get<double>() << " ppm CH4, "
+              << fields["temperature"].get<int>() / 100.0 << " degC" << std::endl;
+}
+
+// ...
+
+    mavlink_direct.subscribe_message("GAS_SENSOR", on_gas_sensor);
 ```
 
 ::: info
-The receiving side needs to know about the message as well. If it uses MAVSDK, it has to load the same XML.
-Forwarding MAVSDK instances in between do not need to know about it.
+Forwarding MAVSDK instances in between do not need to know about the message.
 :::
 
-Check out the [full example on GitHub](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom)
+Check out the full examples on GitHub for [sending](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom) and [receiving](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_receiver_custom).
 
 
 ## Sending messages
