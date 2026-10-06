@@ -1,8 +1,10 @@
-# Example to use MavlinkDirect to receive a MAVLink message (GLOBAL_POSITION_INT)
-# and to send a custom message (GAS_SENSOR) by loading its XML definition.
+# Example to use MavlinkDirect to send a custom message (GAS_SENSOR) which
+# is not part of MAVLink, by loading its XML definition at runtime.
 #
-# MavlinkDirect represents the message fields as JSON, so we can use the json
-# module from the standard library to read and write them.
+# Use together with the mavlink_direct_receiver_custom example.
+#
+# MavlinkDirect represents the message fields as JSON, so we use the json
+# module from the standard library to write them.
 
 import asyncio
 import json
@@ -30,18 +32,20 @@ GAS_SENSOR_XML = """
 """
 
 
-async def print_positions(mavlink_direct: MavlinkDirectAsync):
-    async for message in mavlink_direct.subscribe_message("GLOBAL_POSITION_INT"):
-        fields = json.loads(message.fields_json)
-        # The units are the ones from the MAVLink message definition:
-        # degrees * 1e7, and millimeters above the home position.
-        print(
-            f"Position: {fields['lat'] / 1e7:.6f}, {fields['lon'] / 1e7:.6f}"
-            f" at {fields['relative_alt'] / 1e3:.1f} m"
-        )
+async def main():
+    # Set up as companion computer
+    configuration = Configuration.create_with_component_type(ComponentType.COMPANION_COMPUTER)
+    mavsdk = Mavsdk(configuration)
+    await mavsdk.add_any_connection("udpin://0.0.0.0:14540")
 
+    print("Waiting for an autopilot...")
+    drone = await mavsdk.first_autopilot(timeout_s=10.0)
+    if drone is None:
+        print("No autopilot found")
+        return
 
-async def send_gas_sensor(mavlink_direct: MavlinkDirectAsync, system_id: int, component_id: int):
+    mavlink_direct = MavlinkDirectAsync(drone)
+
     await mavlink_direct.load_custom_xml(GAS_SENSOR_XML)
     print("Custom XML loaded successfully")
 
@@ -59,8 +63,8 @@ async def send_gas_sensor(mavlink_direct: MavlinkDirectAsync, system_id: int, co
 
         message = MavlinkMessage(
             message_name="GAS_SENSOR",
-            system_id=system_id,
-            component_id=component_id,
+            system_id=configuration.system_id,
+            component_id=configuration.component_id,
             target_system_id=0,  # Does not apply for this message
             target_component_id=0,  # Does not apply for this message
             fields_json=json.dumps(fields),
@@ -74,30 +78,7 @@ async def send_gas_sensor(mavlink_direct: MavlinkDirectAsync, system_id: int, co
 
         await asyncio.sleep(1)
 
-
-async def main():
-    # Set up as companion computer
-    configuration = Configuration.create_with_component_type(ComponentType.COMPANION_COMPUTER)
-    # Our own IDs, which we need to send messages
-    system_id = configuration.system_id
-    component_id = configuration.component_id
-    mavsdk = Mavsdk(configuration)
-    await mavsdk.add_any_connection("udpin://0.0.0.0:14540")
-
-    print("Waiting for an autopilot...")
-    drone = await mavsdk.first_autopilot(timeout_s=10.0)
-    if drone is None:
-        print("No autopilot found")
-        return
-
-    mavlink_direct = MavlinkDirectAsync(drone)
-
-    position_task = asyncio.create_task(print_positions(mavlink_direct))
-
-    await send_gas_sensor(mavlink_direct, system_id, component_id)
-
     print("Sent all 20 GAS_SENSOR messages. Exiting.")
-    position_task.cancel()
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 //
-// Example to use MavlinkDirect to send a custom message (GAS_SENSOR) which
+// Example to use MavlinkDirect to receive a custom message (GAS_SENSOR) which
 // is not part of MAVLink, by loading its XML definition at runtime.
 //
-// Use together with the mavlink_direct_receiver_custom example.
+// Use together with the mavlink_direct_sender_custom example.
 //
 // MavlinkDirect represents the message fields as JSON, so we use the
-// nlohmann/json library to write them.
+// nlohmann/json library to read them.
 //
 
 #include <mavsdk/mavsdk.hpp>
@@ -19,9 +19,7 @@
 using namespace mavsdk;
 using json = nlohmann::json;
 
-// Our own message for a gas sensor. It is not part of any MAVLink dialect, so
-// MAVSDK does not know about it until we load its definition.
-// Note that the receiving side needs to know the definition as well to make sense of it.
+// Same definition as on the sending side. We need it to make sense of the message.
 const std::string gas_sensor_xml = R"(
 <mavlink>
     <messages>
@@ -46,7 +44,17 @@ void usage(const std::string& bin_name)
               << " For UDP server: udpin://<our_ip>:<port>\n"
               << " For UDP client: udpout://<remote_ip>:<port>\n"
               << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14550\n";
+}
+
+void on_gas_sensor(const MavlinkDirect::MavlinkMessage& message)
+{
+    const auto fields = json::parse(message.fields_json);
+    // The temperature is in cdegC, as given by the message definition.
+    std::cout << std::fixed << std::setprecision(1) << "GAS_SENSOR " << fields["id"].get<int>()
+              << " received: " << fields["co2"].get<double>() << " ppm CO2, "
+              << fields["ch4"].get<double>() << " ppm CH4, "
+              << fields["temperature"].get<int>() / 100.0 << " degC" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -56,9 +64,8 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    // Set up as companion computer
-    auto config = Mavsdk::Configuration{ComponentType::CompanionComputer};
-    Mavsdk mavsdk{config};
+    // Set up as ground station
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     auto connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != ConnectionResult::Success) {
@@ -82,42 +89,12 @@ int main(int argc, char** argv)
     }
     std::cout << "Custom XML loaded successfully" << std::endl;
 
-    const auto start_time = std::chrono::steady_clock::now();
+    mavlink_direct.subscribe_message("GAS_SENSOR", on_gas_sensor);
 
-    for (int counter = 0; counter < 20; ++counter) {
-        // Made-up values that change a bit over time
-        const json fields = {
-            {"time_usec",
-             std::chrono::duration_cast<std::chrono::microseconds>(
-                 std::chrono::steady_clock::now() - start_time)
-                 .count()},
-            {"id", 0},
-            {"co2", 420.0 + counter * 5.0},
-            {"ch4", 1.9 + counter * 0.1},
-            {"temperature", 2150 + counter * 10}, // 21.5 degC and rising
-        };
-
-        MavlinkDirect::MavlinkMessage message{};
-        message.message_name = "GAS_SENSOR";
-        message.system_id = config.get_system_id();
-        message.component_id = config.get_component_id();
-        message.target_system_id = 0; // Does not apply for this message
-        message.target_component_id = 0; // Does not apply for this message
-        message.fields_json = fields.dump();
-
-        auto result = mavlink_direct.send_message(message);
-        if (result != MavlinkDirect::Result::Success) {
-            std::cerr << "GAS_SENSOR message could not be sent: " << result << std::endl;
-            return 1;
-        }
-        std::cout << std::fixed << std::setprecision(1) << "GAS_SENSOR message " << (counter + 1)
-                  << "/20 sent: " << fields["co2"].get<double>() << " ppm CO2, "
-                  << fields["ch4"].get<double>() << " ppm CH4" << std::endl;
-
+    std::cout << "Waiting for GAS_SENSOR messages. Press Ctrl+C to exit..." << std::endl;
+    while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-
-    std::cout << "Sent all 20 GAS_SENSOR messages. Exiting." << std::endl;
 
     return 0;
 }
