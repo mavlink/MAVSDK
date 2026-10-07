@@ -39,6 +39,8 @@ struct LogData {
     TimeoutHandler::Cookie timeout_cookie{};
 
     LogFiles::DownloadLogFileCallback user_callback{};
+
+    bool active{false};
 };
 
 class LogFilesImpl : public PluginImplBase {
@@ -64,6 +66,8 @@ public:
         const std::string& file_path,
         LogFiles::DownloadLogFileCallback callback);
 
+    LogFiles::Result cancel_download_log_file();
+
     LogFiles::Result erase_all_log_files();
 
 private:
@@ -71,7 +75,7 @@ private:
     void entries_timeout();
 
     void process_log_data(const mavlink_message_t& message);
-    void data_timeout();
+    void data_timeout(uint32_t download_id);
     void check_and_request_missing_bins();
     void check_and_request_missing_entries();
 
@@ -79,6 +83,8 @@ private:
     void request_log_data(unsigned id, unsigned start, unsigned count);
 
     void request_end();
+
+    void stop_download_and_remove_file();
 
     std::mutex _entries_mutex;
     std::vector<std::optional<LogFiles::Entry>> _log_entries;
@@ -91,6 +97,8 @@ private:
     // The current log download data structure
     std::mutex _download_data_mutex;
     LogData _download_data;
+    // Incremented per download so a stale timeout from a previous download is ignored.
+    uint32_t _download_id{0};
 };
 
 } // namespace mavsdk

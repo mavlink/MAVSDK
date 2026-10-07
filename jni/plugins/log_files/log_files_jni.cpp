@@ -406,6 +406,22 @@ Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_downloadLogFileAsync(
 
 JNIEXPORT
 jint
+JNICALL Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_cancelDownloadLogFile(
+    JNIEnv* env,
+    jclass,
+    jlong handle) {
+    if (!requireHandle(env, handle, "LogFiles plugin")) {
+        return {};
+    }
+
+    mavsdk_log_files_result_t result =
+        mavsdk_log_files_cancel_download_log_file(
+            reinterpret_cast<mavsdk_log_files_t>(handle));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT
+jint
 JNICALL Java_io_mavsdk_jni_plugins_log_1files_NativeLogFiles_eraseAllLogFiles(
     JNIEnv* env,
     jclass,

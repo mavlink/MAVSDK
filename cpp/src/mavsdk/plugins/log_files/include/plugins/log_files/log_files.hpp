@@ -132,6 +132,7 @@ public:
         InvalidArgument = 5, /**< @brief Invalid argument. */
         FileOpenFailed = 6, /**< @brief File open failed. */
         NoSystem = 7, /**< @brief No system is connected. */
+        Cancelled = 8, /**< @brief Download was cancelled. */
     };
 
     /**
@@ -198,6 +199,26 @@ public:
         
 
 
+
+
+
+
+
+
+    /**
+     * @brief Cancel an ongoing log file download.
+     *
+     * Returns Success, also if no download is in progress (a warning is logged).
+     * The callback of the ongoing download is called once with Cancelled,
+     * the vehicle is told to stop sending, and the partially downloaded file is deleted.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result cancel_download_log_file() const;
 
 
 

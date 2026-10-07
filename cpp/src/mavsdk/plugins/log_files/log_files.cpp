@@ -37,6 +37,11 @@ void LogFiles::download_log_file_async(
     _impl->download_log_file_async(entry, path, callback);
 }
 
+LogFiles::Result LogFiles::cancel_download_log_file() const
+{
+    return _impl->cancel_download_log_file();
+}
+
 LogFiles::Result LogFiles::erase_all_log_files() const
 {
     return _impl->erase_all_log_files();
@@ -92,6 +97,8 @@ MAVSDK_PUBLIC std::string_view to_string(LogFiles::Result const& result)
             return "File Open Failed";
         case LogFiles::Result::NoSystem:
             return "No System";
+        case LogFiles::Result::Cancelled:
+            return "Cancelled";
         default:
             return "Unknown";
     }
