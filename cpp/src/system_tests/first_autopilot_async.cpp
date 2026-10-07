@@ -232,11 +232,17 @@ TEST(FirstAutopilotAsync, DestroyWithResultQueued)
     // The result is decided on MAVSDK's threads and delivered on the callback thread. If the
     // Mavsdk goes away in between, the queued result must not hold the System alive past it.
     for (int i = 0; i < 20; ++i) {
-        auto collector = std::make_shared<Collector>();
-        Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
-        ASSERT_EQ(mavsdk.add_any_connection("raw://"), ConnectionResult::Success);
-        pass_autopilot_heartbeat(mavsdk);
-        ASSERT_TRUE(mavsdk.first_autopilot(2.0));
-        mavsdk.first_autopilot_async(5.0, collector->callback());
+        // Counts only, and lets the result go again: whether the callback still runs before the
+        // Mavsdk is destroyed is a race, and keeping the System here would make this test
+        // outlive it -- the very mistake abort_if_references_outlive_us() aborts on.
+        auto calls = std::make_shared<std::atomic<int>>(0);
+        {
+            Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
+            ASSERT_EQ(mavsdk.add_any_connection("raw://"), ConnectionResult::Success);
+            pass_autopilot_heartbeat(mavsdk);
+            ASSERT_TRUE(mavsdk.first_autopilot(2.0));
+            mavsdk.first_autopilot_async(5.0, [calls](Result) { ++(*calls); });
+        }
+        EXPECT_LE(calls->load(), 1) << "the result must be delivered at most once";
     }
 }
