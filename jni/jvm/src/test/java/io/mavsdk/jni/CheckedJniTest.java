@@ -12,6 +12,7 @@ import io.mavsdk.jni.plugins.camera_server.NativeCameraServer;
  */
 public final class CheckedJniTest {
     private static final int COMPONENT_TYPE_CAMERA = 3;
+    private static final int CAMERA_SERVER_RESULT_SUCCESS = 1;
 
     public static void main(String[] args) {
         System.load(args[0]);
@@ -34,7 +35,7 @@ public final class CheckedJniTest {
         int result = NativeCameraServer.setInformation(cameraServer, new NativeCameraServer.Information(
             "MAVSDK", "Test camera", "1.0.0", 3.0f, 3.68f, 2.76f, 3280, 2464, 0, 0, "", false, false));
         NativeCameraServer.destroy(cameraServer);
-        check(result == 0, "setInformation returned " + result);
+        check(result == CAMERA_SERVER_RESULT_SUCCESS, "setInformation returned " + result);
     }
 
     private static void check(boolean condition, String message) {
