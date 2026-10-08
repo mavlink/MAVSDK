@@ -82,9 +82,7 @@ MetadataDataFromJava::MetadataDataFromJava(JNIEnv* env, jobject object) {
         clazz, "jsonMetadata", "Ljava/lang/String;");
     auto json_metadataString =
         static_cast<jstring>(env->GetObjectField(object, json_metadataField));
-    JStringHolder json_metadataHolder(env, json_metadataString);
-    json_metadataValue =
-        json_metadataHolder.c_str() ? json_metadataHolder.c_str() : "";
+    json_metadataValue = toStdString(env, json_metadataString);
     value.json_metadata = const_cast<char*>(json_metadataValue.c_str());
     env->DeleteLocalRef(json_metadataString);
     env->DeleteLocalRef(clazz);
@@ -108,9 +106,7 @@ MetadataUpdateFromJava::MetadataUpdateFromJava(JNIEnv* env, jobject object) {
         clazz, "jsonMetadata", "Ljava/lang/String;");
     auto json_metadataString =
         static_cast<jstring>(env->GetObjectField(object, json_metadataField));
-    JStringHolder json_metadataHolder(env, json_metadataString);
-    json_metadataValue =
-        json_metadataHolder.c_str() ? json_metadataHolder.c_str() : "";
+    json_metadataValue = toStdString(env, json_metadataString);
     value.json_metadata = const_cast<char*>(json_metadataValue.c_str());
     env->DeleteLocalRef(json_metadataString);
     env->DeleteLocalRef(clazz);

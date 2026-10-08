@@ -55,9 +55,7 @@ ReceiveFromJava::ReceiveFromJava(JNIEnv* env, jobject object) {
         clazz, "data", "Ljava/lang/String;");
     auto dataString =
         static_cast<jstring>(env->GetObjectField(object, dataField));
-    JStringHolder dataHolder(env, dataString);
-    dataValue =
-        dataHolder.c_str() ? dataHolder.c_str() : "";
+    dataValue = toStdString(env, dataString);
     value.data = const_cast<char*>(dataValue.c_str());
     env->DeleteLocalRef(dataString);
     jfieldID deviceField = env->GetFieldID(

@@ -56,9 +56,7 @@ MavlinkMessageFromJava::MavlinkMessageFromJava(JNIEnv* env, jobject object) {
         clazz, "messageName", "Ljava/lang/String;");
     auto message_nameString =
         static_cast<jstring>(env->GetObjectField(object, message_nameField));
-    JStringHolder message_nameHolder(env, message_nameString);
-    message_nameValue =
-        message_nameHolder.c_str() ? message_nameHolder.c_str() : "";
+    message_nameValue = toStdString(env, message_nameString);
     value.message_name = const_cast<char*>(message_nameValue.c_str());
     env->DeleteLocalRef(message_nameString);
     jfieldID system_idField = env->GetFieldID(
@@ -81,9 +79,7 @@ MavlinkMessageFromJava::MavlinkMessageFromJava(JNIEnv* env, jobject object) {
         clazz, "fieldsJson", "Ljava/lang/String;");
     auto fields_jsonString =
         static_cast<jstring>(env->GetObjectField(object, fields_jsonField));
-    JStringHolder fields_jsonHolder(env, fields_jsonString);
-    fields_jsonValue =
-        fields_jsonHolder.c_str() ? fields_jsonHolder.c_str() : "";
+    fields_jsonValue = toStdString(env, fields_jsonString);
     value.fields_json = const_cast<char*>(fields_jsonValue.c_str());
     env->DeleteLocalRef(fields_jsonString);
     env->DeleteLocalRef(clazz);

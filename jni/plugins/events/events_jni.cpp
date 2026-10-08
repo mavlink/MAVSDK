@@ -176,18 +176,14 @@ EventFromJava::EventFromJava(JNIEnv* env, jobject object) {
         clazz, "message", "Ljava/lang/String;");
     auto messageString =
         static_cast<jstring>(env->GetObjectField(object, messageField));
-    JStringHolder messageHolder(env, messageString);
-    messageValue =
-        messageHolder.c_str() ? messageHolder.c_str() : "";
+    messageValue = toStdString(env, messageString);
     value.message = const_cast<char*>(messageValue.c_str());
     env->DeleteLocalRef(messageString);
     jfieldID descriptionField = env->GetFieldID(
         clazz, "description", "Ljava/lang/String;");
     auto descriptionString =
         static_cast<jstring>(env->GetObjectField(object, descriptionField));
-    JStringHolder descriptionHolder(env, descriptionString);
-    descriptionValue =
-        descriptionHolder.c_str() ? descriptionHolder.c_str() : "";
+    descriptionValue = toStdString(env, descriptionString);
     value.description = const_cast<char*>(descriptionValue.c_str());
     env->DeleteLocalRef(descriptionString);
     jfieldID log_levelField = env->GetFieldID(
@@ -198,18 +194,14 @@ EventFromJava::EventFromJava(JNIEnv* env, jobject object) {
         clazz, "eventNamespace", "Ljava/lang/String;");
     auto event_namespaceString =
         static_cast<jstring>(env->GetObjectField(object, event_namespaceField));
-    JStringHolder event_namespaceHolder(env, event_namespaceString);
-    event_namespaceValue =
-        event_namespaceHolder.c_str() ? event_namespaceHolder.c_str() : "";
+    event_namespaceValue = toStdString(env, event_namespaceString);
     value.event_namespace = const_cast<char*>(event_namespaceValue.c_str());
     env->DeleteLocalRef(event_namespaceString);
     jfieldID event_nameField = env->GetFieldID(
         clazz, "eventName", "Ljava/lang/String;");
     auto event_nameString =
         static_cast<jstring>(env->GetObjectField(object, event_nameField));
-    JStringHolder event_nameHolder(env, event_nameString);
-    event_nameValue =
-        event_nameHolder.c_str() ? event_nameHolder.c_str() : "";
+    event_nameValue = toStdString(env, event_nameString);
     value.event_name = const_cast<char*>(event_nameValue.c_str());
     env->DeleteLocalRef(event_nameString);
     env->DeleteLocalRef(clazz);
@@ -225,18 +217,14 @@ HealthAndArmingCheckProblemFromJava::HealthAndArmingCheckProblemFromJava(JNIEnv*
         clazz, "message", "Ljava/lang/String;");
     auto messageString =
         static_cast<jstring>(env->GetObjectField(object, messageField));
-    JStringHolder messageHolder(env, messageString);
-    messageValue =
-        messageHolder.c_str() ? messageHolder.c_str() : "";
+    messageValue = toStdString(env, messageString);
     value.message = const_cast<char*>(messageValue.c_str());
     env->DeleteLocalRef(messageString);
     jfieldID descriptionField = env->GetFieldID(
         clazz, "description", "Ljava/lang/String;");
     auto descriptionString =
         static_cast<jstring>(env->GetObjectField(object, descriptionField));
-    JStringHolder descriptionHolder(env, descriptionString);
-    descriptionValue =
-        descriptionHolder.c_str() ? descriptionHolder.c_str() : "";
+    descriptionValue = toStdString(env, descriptionString);
     value.description = const_cast<char*>(descriptionValue.c_str());
     env->DeleteLocalRef(descriptionString);
     jfieldID log_levelField = env->GetFieldID(
@@ -247,9 +235,7 @@ HealthAndArmingCheckProblemFromJava::HealthAndArmingCheckProblemFromJava(JNIEnv*
         clazz, "healthComponent", "Ljava/lang/String;");
     auto health_componentString =
         static_cast<jstring>(env->GetObjectField(object, health_componentField));
-    JStringHolder health_componentHolder(env, health_componentString);
-    health_componentValue =
-        health_componentHolder.c_str() ? health_componentHolder.c_str() : "";
+    health_componentValue = toStdString(env, health_componentString);
     value.health_component = const_cast<char*>(health_componentValue.c_str());
     env->DeleteLocalRef(health_componentString);
     env->DeleteLocalRef(clazz);
@@ -265,9 +251,7 @@ HealthAndArmingCheckModeFromJava::HealthAndArmingCheckModeFromJava(JNIEnv* env, 
         clazz, "modeName", "Ljava/lang/String;");
     auto mode_nameString =
         static_cast<jstring>(env->GetObjectField(object, mode_nameField));
-    JStringHolder mode_nameHolder(env, mode_nameString);
-    mode_nameValue =
-        mode_nameHolder.c_str() ? mode_nameHolder.c_str() : "";
+    mode_nameValue = toStdString(env, mode_nameString);
     value.mode_name = const_cast<char*>(mode_nameValue.c_str());
     env->DeleteLocalRef(mode_nameString);
     jfieldID can_arm_or_runField = env->GetFieldID(
@@ -300,18 +284,14 @@ HealthComponentReportFromJava::HealthComponentReportFromJava(JNIEnv* env, jobjec
         clazz, "name", "Ljava/lang/String;");
     auto nameString =
         static_cast<jstring>(env->GetObjectField(object, nameField));
-    JStringHolder nameHolder(env, nameString);
-    nameValue =
-        nameHolder.c_str() ? nameHolder.c_str() : "";
+    nameValue = toStdString(env, nameString);
     value.name = const_cast<char*>(nameValue.c_str());
     env->DeleteLocalRef(nameString);
     jfieldID labelField = env->GetFieldID(
         clazz, "label", "Ljava/lang/String;");
     auto labelString =
         static_cast<jstring>(env->GetObjectField(object, labelField));
-    JStringHolder labelHolder(env, labelString);
-    labelValue =
-        labelHolder.c_str() ? labelHolder.c_str() : "";
+    labelValue = toStdString(env, labelString);
     value.label = const_cast<char*>(labelValue.c_str());
     env->DeleteLocalRef(labelString);
     jfieldID is_presentField = env->GetFieldID(

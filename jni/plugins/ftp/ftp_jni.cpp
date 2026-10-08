@@ -108,9 +108,7 @@ FilesystemEntryFromJava::FilesystemEntryFromJava(JNIEnv* env, jobject object) {
         clazz, "name", "Ljava/lang/String;");
     auto nameString =
         static_cast<jstring>(env->GetObjectField(object, nameField));
-    JStringHolder nameHolder(env, nameString);
-    nameValue =
-        nameHolder.c_str() ? nameHolder.c_str() : "";
+    nameValue = toStdString(env, nameString);
     value.name = const_cast<char*>(nameValue.c_str());
     env->DeleteLocalRef(nameString);
     jfieldID entry_typeField = env->GetFieldID(

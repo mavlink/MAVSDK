@@ -67,9 +67,7 @@ ProgressDataFromJava::ProgressDataFromJava(JNIEnv* env, jobject object) {
         clazz, "statusText", "Ljava/lang/String;");
     auto status_textString =
         static_cast<jstring>(env->GetObjectField(object, status_textField));
-    JStringHolder status_textHolder(env, status_textString);
-    status_textValue =
-        status_textHolder.c_str() ? status_textHolder.c_str() : "";
+    status_textValue = toStdString(env, status_textString);
     value.status_text = const_cast<char*>(status_textValue.c_str());
     env->DeleteLocalRef(status_textString);
     env->DeleteLocalRef(clazz);

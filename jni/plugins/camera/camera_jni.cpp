@@ -492,18 +492,14 @@ OptionFromJava::OptionFromJava(JNIEnv* env, jobject object) {
         clazz, "optionId", "Ljava/lang/String;");
     auto option_idString =
         static_cast<jstring>(env->GetObjectField(object, option_idField));
-    JStringHolder option_idHolder(env, option_idString);
-    option_idValue =
-        option_idHolder.c_str() ? option_idHolder.c_str() : "";
+    option_idValue = toStdString(env, option_idString);
     value.option_id = const_cast<char*>(option_idValue.c_str());
     env->DeleteLocalRef(option_idString);
     jfieldID option_descriptionField = env->GetFieldID(
         clazz, "optionDescription", "Ljava/lang/String;");
     auto option_descriptionString =
         static_cast<jstring>(env->GetObjectField(object, option_descriptionField));
-    JStringHolder option_descriptionHolder(env, option_descriptionString);
-    option_descriptionValue =
-        option_descriptionHolder.c_str() ? option_descriptionHolder.c_str() : "";
+    option_descriptionValue = toStdString(env, option_descriptionString);
     value.option_description = const_cast<char*>(option_descriptionValue.c_str());
     env->DeleteLocalRef(option_descriptionString);
     env->DeleteLocalRef(clazz);
@@ -519,18 +515,14 @@ SettingFromJava::SettingFromJava(JNIEnv* env, jobject object) {
         clazz, "settingId", "Ljava/lang/String;");
     auto setting_idString =
         static_cast<jstring>(env->GetObjectField(object, setting_idField));
-    JStringHolder setting_idHolder(env, setting_idString);
-    setting_idValue =
-        setting_idHolder.c_str() ? setting_idHolder.c_str() : "";
+    setting_idValue = toStdString(env, setting_idString);
     value.setting_id = const_cast<char*>(setting_idValue.c_str());
     env->DeleteLocalRef(setting_idString);
     jfieldID setting_descriptionField = env->GetFieldID(
         clazz, "settingDescription", "Ljava/lang/String;");
     auto setting_descriptionString =
         static_cast<jstring>(env->GetObjectField(object, setting_descriptionField));
-    JStringHolder setting_descriptionHolder(env, setting_descriptionString);
-    setting_descriptionValue =
-        setting_descriptionHolder.c_str() ? setting_descriptionHolder.c_str() : "";
+    setting_descriptionValue = toStdString(env, setting_descriptionString);
     value.setting_description = const_cast<char*>(setting_descriptionValue.c_str());
     env->DeleteLocalRef(setting_descriptionString);
     jfieldID optionField = env->GetFieldID(
@@ -563,18 +555,14 @@ SettingOptionsFromJava::SettingOptionsFromJava(JNIEnv* env, jobject object) {
         clazz, "settingId", "Ljava/lang/String;");
     auto setting_idString =
         static_cast<jstring>(env->GetObjectField(object, setting_idField));
-    JStringHolder setting_idHolder(env, setting_idString);
-    setting_idValue =
-        setting_idHolder.c_str() ? setting_idHolder.c_str() : "";
+    setting_idValue = toStdString(env, setting_idString);
     value.setting_id = const_cast<char*>(setting_idValue.c_str());
     env->DeleteLocalRef(setting_idString);
     jfieldID setting_descriptionField = env->GetFieldID(
         clazz, "settingDescription", "Ljava/lang/String;");
     auto setting_descriptionString =
         static_cast<jstring>(env->GetObjectField(object, setting_descriptionField));
-    JStringHolder setting_descriptionHolder(env, setting_descriptionString);
-    setting_descriptionValue =
-        setting_descriptionHolder.c_str() ? setting_descriptionHolder.c_str() : "";
+    setting_descriptionValue = toStdString(env, setting_descriptionString);
     value.setting_description = const_cast<char*>(setting_descriptionValue.c_str());
     env->DeleteLocalRef(setting_descriptionString);
     jfieldID optionsField = env->GetFieldID(
@@ -627,9 +615,7 @@ VideoStreamSettingsFromJava::VideoStreamSettingsFromJava(JNIEnv* env, jobject ob
         clazz, "uri", "Ljava/lang/String;");
     auto uriString =
         static_cast<jstring>(env->GetObjectField(object, uriField));
-    JStringHolder uriHolder(env, uriString);
-    uriValue =
-        uriHolder.c_str() ? uriHolder.c_str() : "";
+    uriValue = toStdString(env, uriString);
     value.uri = const_cast<char*>(uriValue.c_str());
     env->DeleteLocalRef(uriString);
     jfieldID horizontal_fov_degField = env->GetFieldID(
@@ -746,9 +732,7 @@ StorageFromJava::StorageFromJava(JNIEnv* env, jobject object) {
         clazz, "mediaFolderName", "Ljava/lang/String;");
     auto media_folder_nameString =
         static_cast<jstring>(env->GetObjectField(object, media_folder_nameField));
-    JStringHolder media_folder_nameHolder(env, media_folder_nameString);
-    media_folder_nameValue =
-        media_folder_nameHolder.c_str() ? media_folder_nameHolder.c_str() : "";
+    media_folder_nameValue = toStdString(env, media_folder_nameString);
     value.media_folder_name = const_cast<char*>(media_folder_nameValue.c_str());
     env->DeleteLocalRef(media_folder_nameString);
     jfieldID storage_statusField = env->GetFieldID(
@@ -964,9 +948,7 @@ CaptureInfoFromJava::CaptureInfoFromJava(JNIEnv* env, jobject object) {
         clazz, "fileUrl", "Ljava/lang/String;");
     auto file_urlString =
         static_cast<jstring>(env->GetObjectField(object, file_urlField));
-    JStringHolder file_urlHolder(env, file_urlString);
-    file_urlValue =
-        file_urlHolder.c_str() ? file_urlHolder.c_str() : "";
+    file_urlValue = toStdString(env, file_urlString);
     value.file_url = const_cast<char*>(file_urlValue.c_str());
     env->DeleteLocalRef(file_urlString);
     env->DeleteLocalRef(clazz);
@@ -986,18 +968,14 @@ InformationFromJava::InformationFromJava(JNIEnv* env, jobject object) {
         clazz, "vendorName", "Ljava/lang/String;");
     auto vendor_nameString =
         static_cast<jstring>(env->GetObjectField(object, vendor_nameField));
-    JStringHolder vendor_nameHolder(env, vendor_nameString);
-    vendor_nameValue =
-        vendor_nameHolder.c_str() ? vendor_nameHolder.c_str() : "";
+    vendor_nameValue = toStdString(env, vendor_nameString);
     value.vendor_name = const_cast<char*>(vendor_nameValue.c_str());
     env->DeleteLocalRef(vendor_nameString);
     jfieldID model_nameField = env->GetFieldID(
         clazz, "modelName", "Ljava/lang/String;");
     auto model_nameString =
         static_cast<jstring>(env->GetObjectField(object, model_nameField));
-    JStringHolder model_nameHolder(env, model_nameString);
-    model_nameValue =
-        model_nameHolder.c_str() ? model_nameHolder.c_str() : "";
+    model_nameValue = toStdString(env, model_nameString);
     value.model_name = const_cast<char*>(model_nameValue.c_str());
     env->DeleteLocalRef(model_nameString);
     jfieldID focal_length_mmField = env->GetFieldID(

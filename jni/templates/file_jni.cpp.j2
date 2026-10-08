@@ -230,8 +230,7 @@ struct {{ struct.name.upper_camel_case }}ArrayFromJava {
     {{ field.name.lower_snake_case }}Values.reserve(static_cast<size_t>({{ field.name.lower_snake_case }}Count));
     for (jsize i = 0; i < {{ field.name.lower_snake_case }}Count; ++i) {
         auto item = static_cast<jstring>(env->GetObjectArrayElement({{ field.name.lower_snake_case }}Array, i));
-        JStringHolder holder(env, item);
-        {{ field.name.lower_snake_case }}Strings.emplace_back(holder.c_str() ? holder.c_str() : "");
+        {{ field.name.lower_snake_case }}Strings.push_back(toStdString(env, item));
         env->DeleteLocalRef(item);
     }
     for (auto& item : {{ field.name.lower_snake_case }}Strings) {
@@ -304,9 +303,7 @@ struct {{ struct.name.upper_camel_case }}ArrayFromJava {
 {% elif field.type_info.is_string %}
     auto {{ field.name.lower_snake_case }}String =
         static_cast<jstring>(env->GetObjectField(object, {{ field.name.lower_snake_case }}Field));
-    JStringHolder {{ field.name.lower_snake_case }}Holder(env, {{ field.name.lower_snake_case }}String);
-    {{ field.name.lower_snake_case }}Value =
-        {{ field.name.lower_snake_case }}Holder.c_str() ? {{ field.name.lower_snake_case }}Holder.c_str() : "";
+    {{ field.name.lower_snake_case }}Value = toStdString(env, {{ field.name.lower_snake_case }}String);
     value.{{ field.name.lower_snake_case }} = const_cast<char*>({{ field.name.lower_snake_case }}Value.c_str());
     env->DeleteLocalRef({{ field.name.lower_snake_case }}String);
 {% elif field.type_info.is_enum or field.type_info.is_primitive %}
@@ -464,8 +461,7 @@ jobjectArray toJava{{ struct.name.upper_camel_case }}Array(
     for (jsize i = 0; i < {{ param.name.lower_snake_case }}Count; ++i) {
         auto item = static_cast<jstring>(
             env->GetObjectArrayElement({{ param.name.lower_snake_case }}, i));
-        JStringHolder holder(env, item);
-        {{ param.name.lower_snake_case }}Strings.emplace_back(holder.c_str() ? holder.c_str() : "");
+        {{ param.name.lower_snake_case }}Strings.push_back(toStdString(env, item));
         env->DeleteLocalRef(item);
     }
     for (auto& item : {{ param.name.lower_snake_case }}Strings) {

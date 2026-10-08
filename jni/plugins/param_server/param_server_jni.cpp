@@ -139,9 +139,7 @@ IntParamFromJava::IntParamFromJava(JNIEnv* env, jobject object) {
         clazz, "name", "Ljava/lang/String;");
     auto nameString =
         static_cast<jstring>(env->GetObjectField(object, nameField));
-    JStringHolder nameHolder(env, nameString);
-    nameValue =
-        nameHolder.c_str() ? nameHolder.c_str() : "";
+    nameValue = toStdString(env, nameString);
     value.name = const_cast<char*>(nameValue.c_str());
     env->DeleteLocalRef(nameString);
     jfieldID valueField = env->GetFieldID(
@@ -161,9 +159,7 @@ FloatParamFromJava::FloatParamFromJava(JNIEnv* env, jobject object) {
         clazz, "name", "Ljava/lang/String;");
     auto nameString =
         static_cast<jstring>(env->GetObjectField(object, nameField));
-    JStringHolder nameHolder(env, nameString);
-    nameValue =
-        nameHolder.c_str() ? nameHolder.c_str() : "";
+    nameValue = toStdString(env, nameString);
     value.name = const_cast<char*>(nameValue.c_str());
     env->DeleteLocalRef(nameString);
     jfieldID valueField = env->GetFieldID(
@@ -183,18 +179,14 @@ CustomParamFromJava::CustomParamFromJava(JNIEnv* env, jobject object) {
         clazz, "name", "Ljava/lang/String;");
     auto nameString =
         static_cast<jstring>(env->GetObjectField(object, nameField));
-    JStringHolder nameHolder(env, nameString);
-    nameValue =
-        nameHolder.c_str() ? nameHolder.c_str() : "";
+    nameValue = toStdString(env, nameString);
     value.name = const_cast<char*>(nameValue.c_str());
     env->DeleteLocalRef(nameString);
     jfieldID valueField = env->GetFieldID(
         clazz, "value", "Ljava/lang/String;");
     auto valueString =
         static_cast<jstring>(env->GetObjectField(object, valueField));
-    JStringHolder valueHolder(env, valueString);
-    valueValue =
-        valueHolder.c_str() ? valueHolder.c_str() : "";
+    valueValue = toStdString(env, valueString);
     value.value = const_cast<char*>(valueValue.c_str());
     env->DeleteLocalRef(valueString);
     env->DeleteLocalRef(clazz);

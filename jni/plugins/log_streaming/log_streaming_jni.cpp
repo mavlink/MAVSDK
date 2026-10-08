@@ -55,9 +55,7 @@ LogStreamingRawFromJava::LogStreamingRawFromJava(JNIEnv* env, jobject object) {
         clazz, "dataBase64", "Ljava/lang/String;");
     auto data_base64String =
         static_cast<jstring>(env->GetObjectField(object, data_base64Field));
-    JStringHolder data_base64Holder(env, data_base64String);
-    data_base64Value =
-        data_base64Holder.c_str() ? data_base64Holder.c_str() : "";
+    data_base64Value = toStdString(env, data_base64String);
     value.data_base64 = const_cast<char*>(data_base64Value.c_str());
     env->DeleteLocalRef(data_base64String);
     env->DeleteLocalRef(clazz);

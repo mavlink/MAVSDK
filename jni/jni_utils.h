@@ -45,6 +45,15 @@ private:
 };
 
 /**
+ * Copy a Java string, empty if null. The chars are released before this
+ * returns, so the caller may delete its reference to the string right after.
+ */
+inline std::string toStdString(JNIEnv* env, jstring str) {
+    JStringHolder holder(env, str);
+    return holder.c_str() ? holder.c_str() : "";
+}
+
+/**
  * Convert C string to Java string
  */
 inline jstring toJavaString(JNIEnv* env, const char* str) {

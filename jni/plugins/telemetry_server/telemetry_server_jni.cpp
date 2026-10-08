@@ -982,9 +982,7 @@ StatusTextFromJava::StatusTextFromJava(JNIEnv* env, jobject object) {
         clazz, "text", "Ljava/lang/String;");
     auto textString =
         static_cast<jstring>(env->GetObjectField(object, textField));
-    JStringHolder textHolder(env, textString);
-    textValue =
-        textHolder.c_str() ? textHolder.c_str() : "";
+    textValue = toStdString(env, textString);
     value.text = const_cast<char*>(textValue.c_str());
     env->DeleteLocalRef(textString);
     env->DeleteLocalRef(clazz);
