@@ -162,9 +162,7 @@ IdentificationFromJava::IdentificationFromJava(JNIEnv* env, jobject object) {
         clazz, "hardwareUid", "Ljava/lang/String;");
     auto hardware_uidString =
         static_cast<jstring>(env->GetObjectField(object, hardware_uidField));
-    JStringHolder hardware_uidHolder(env, hardware_uidString);
-    hardware_uidValue =
-        hardware_uidHolder.c_str() ? hardware_uidHolder.c_str() : "";
+    hardware_uidValue = toStdString(env, hardware_uidString);
     value.hardware_uid = const_cast<char*>(hardware_uidValue.c_str());
     env->DeleteLocalRef(hardware_uidString);
     jfieldID legacy_uidField = env->GetFieldID(
@@ -188,9 +186,7 @@ ProductFromJava::ProductFromJava(JNIEnv* env, jobject object) {
         clazz, "vendorName", "Ljava/lang/String;");
     auto vendor_nameString =
         static_cast<jstring>(env->GetObjectField(object, vendor_nameField));
-    JStringHolder vendor_nameHolder(env, vendor_nameString);
-    vendor_nameValue =
-        vendor_nameHolder.c_str() ? vendor_nameHolder.c_str() : "";
+    vendor_nameValue = toStdString(env, vendor_nameString);
     value.vendor_name = const_cast<char*>(vendor_nameValue.c_str());
     env->DeleteLocalRef(vendor_nameString);
     jfieldID product_idField = env->GetFieldID(
@@ -201,9 +197,7 @@ ProductFromJava::ProductFromJava(JNIEnv* env, jobject object) {
         clazz, "productName", "Ljava/lang/String;");
     auto product_nameString =
         static_cast<jstring>(env->GetObjectField(object, product_nameField));
-    JStringHolder product_nameHolder(env, product_nameString);
-    product_nameValue =
-        product_nameHolder.c_str() ? product_nameHolder.c_str() : "";
+    product_nameValue = toStdString(env, product_nameString);
     value.product_name = const_cast<char*>(product_nameValue.c_str());
     env->DeleteLocalRef(product_nameString);
     env->DeleteLocalRef(clazz);
@@ -255,18 +249,14 @@ VersionFromJava::VersionFromJava(JNIEnv* env, jobject object) {
         clazz, "flightSwGitHash", "Ljava/lang/String;");
     auto flight_sw_git_hashString =
         static_cast<jstring>(env->GetObjectField(object, flight_sw_git_hashField));
-    JStringHolder flight_sw_git_hashHolder(env, flight_sw_git_hashString);
-    flight_sw_git_hashValue =
-        flight_sw_git_hashHolder.c_str() ? flight_sw_git_hashHolder.c_str() : "";
+    flight_sw_git_hashValue = toStdString(env, flight_sw_git_hashString);
     value.flight_sw_git_hash = const_cast<char*>(flight_sw_git_hashValue.c_str());
     env->DeleteLocalRef(flight_sw_git_hashString);
     jfieldID os_sw_git_hashField = env->GetFieldID(
         clazz, "osSwGitHash", "Ljava/lang/String;");
     auto os_sw_git_hashString =
         static_cast<jstring>(env->GetObjectField(object, os_sw_git_hashField));
-    JStringHolder os_sw_git_hashHolder(env, os_sw_git_hashString);
-    os_sw_git_hashValue =
-        os_sw_git_hashHolder.c_str() ? os_sw_git_hashHolder.c_str() : "";
+    os_sw_git_hashValue = toStdString(env, os_sw_git_hashString);
     value.os_sw_git_hash = const_cast<char*>(os_sw_git_hashValue.c_str());
     env->DeleteLocalRef(os_sw_git_hashString);
     jfieldID flight_sw_version_typeField = env->GetFieldID(

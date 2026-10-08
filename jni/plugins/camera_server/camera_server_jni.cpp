@@ -270,27 +270,21 @@ InformationFromJava::InformationFromJava(JNIEnv* env, jobject object) {
         clazz, "vendorName", "Ljava/lang/String;");
     auto vendor_nameString =
         static_cast<jstring>(env->GetObjectField(object, vendor_nameField));
-    JStringHolder vendor_nameHolder(env, vendor_nameString);
-    vendor_nameValue =
-        vendor_nameHolder.c_str() ? vendor_nameHolder.c_str() : "";
+    vendor_nameValue = toStdString(env, vendor_nameString);
     value.vendor_name = const_cast<char*>(vendor_nameValue.c_str());
     env->DeleteLocalRef(vendor_nameString);
     jfieldID model_nameField = env->GetFieldID(
         clazz, "modelName", "Ljava/lang/String;");
     auto model_nameString =
         static_cast<jstring>(env->GetObjectField(object, model_nameField));
-    JStringHolder model_nameHolder(env, model_nameString);
-    model_nameValue =
-        model_nameHolder.c_str() ? model_nameHolder.c_str() : "";
+    model_nameValue = toStdString(env, model_nameString);
     value.model_name = const_cast<char*>(model_nameValue.c_str());
     env->DeleteLocalRef(model_nameString);
     jfieldID firmware_versionField = env->GetFieldID(
         clazz, "firmwareVersion", "Ljava/lang/String;");
     auto firmware_versionString =
         static_cast<jstring>(env->GetObjectField(object, firmware_versionField));
-    JStringHolder firmware_versionHolder(env, firmware_versionString);
-    firmware_versionValue =
-        firmware_versionHolder.c_str() ? firmware_versionHolder.c_str() : "";
+    firmware_versionValue = toStdString(env, firmware_versionString);
     value.firmware_version = const_cast<char*>(firmware_versionValue.c_str());
     env->DeleteLocalRef(firmware_versionString);
     jfieldID focal_length_mmField = env->GetFieldID(
@@ -325,9 +319,7 @@ InformationFromJava::InformationFromJava(JNIEnv* env, jobject object) {
         clazz, "definitionFileUri", "Ljava/lang/String;");
     auto definition_file_uriString =
         static_cast<jstring>(env->GetObjectField(object, definition_file_uriField));
-    JStringHolder definition_file_uriHolder(env, definition_file_uriString);
-    definition_file_uriValue =
-        definition_file_uriHolder.c_str() ? definition_file_uriHolder.c_str() : "";
+    definition_file_uriValue = toStdString(env, definition_file_uriString);
     value.definition_file_uri = const_cast<char*>(definition_file_uriValue.c_str());
     env->DeleteLocalRef(definition_file_uriString);
     jfieldID image_in_video_mode_supportedField = env->GetFieldID(
@@ -355,9 +347,7 @@ VideoStreamingFromJava::VideoStreamingFromJava(JNIEnv* env, jobject object) {
         clazz, "rtspUri", "Ljava/lang/String;");
     auto rtsp_uriString =
         static_cast<jstring>(env->GetObjectField(object, rtsp_uriField));
-    JStringHolder rtsp_uriHolder(env, rtsp_uriString);
-    rtsp_uriValue =
-        rtsp_uriHolder.c_str() ? rtsp_uriHolder.c_str() : "";
+    rtsp_uriValue = toStdString(env, rtsp_uriString);
     value.rtsp_uri = const_cast<char*>(rtsp_uriValue.c_str());
     env->DeleteLocalRef(rtsp_uriString);
     env->DeleteLocalRef(clazz);
@@ -453,9 +443,7 @@ CaptureInfoFromJava::CaptureInfoFromJava(JNIEnv* env, jobject object) {
         clazz, "fileUrl", "Ljava/lang/String;");
     auto file_urlString =
         static_cast<jstring>(env->GetObjectField(object, file_urlField));
-    JStringHolder file_urlHolder(env, file_urlString);
-    file_urlValue =
-        file_urlHolder.c_str() ? file_urlHolder.c_str() : "";
+    file_urlValue = toStdString(env, file_urlString);
     value.file_url = const_cast<char*>(file_urlValue.c_str());
     env->DeleteLocalRef(file_urlString);
     env->DeleteLocalRef(clazz);

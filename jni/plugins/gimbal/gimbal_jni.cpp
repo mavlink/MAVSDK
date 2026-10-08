@@ -352,27 +352,21 @@ GimbalItemFromJava::GimbalItemFromJava(JNIEnv* env, jobject object) {
         clazz, "vendorName", "Ljava/lang/String;");
     auto vendor_nameString =
         static_cast<jstring>(env->GetObjectField(object, vendor_nameField));
-    JStringHolder vendor_nameHolder(env, vendor_nameString);
-    vendor_nameValue =
-        vendor_nameHolder.c_str() ? vendor_nameHolder.c_str() : "";
+    vendor_nameValue = toStdString(env, vendor_nameString);
     value.vendor_name = const_cast<char*>(vendor_nameValue.c_str());
     env->DeleteLocalRef(vendor_nameString);
     jfieldID model_nameField = env->GetFieldID(
         clazz, "modelName", "Ljava/lang/String;");
     auto model_nameString =
         static_cast<jstring>(env->GetObjectField(object, model_nameField));
-    JStringHolder model_nameHolder(env, model_nameString);
-    model_nameValue =
-        model_nameHolder.c_str() ? model_nameHolder.c_str() : "";
+    model_nameValue = toStdString(env, model_nameString);
     value.model_name = const_cast<char*>(model_nameValue.c_str());
     env->DeleteLocalRef(model_nameString);
     jfieldID custom_nameField = env->GetFieldID(
         clazz, "customName", "Ljava/lang/String;");
     auto custom_nameString =
         static_cast<jstring>(env->GetObjectField(object, custom_nameField));
-    JStringHolder custom_nameHolder(env, custom_nameString);
-    custom_nameValue =
-        custom_nameHolder.c_str() ? custom_nameHolder.c_str() : "";
+    custom_nameValue = toStdString(env, custom_nameString);
     value.custom_name = const_cast<char*>(custom_nameValue.c_str());
     env->DeleteLocalRef(custom_nameString);
     jfieldID gimbal_manager_component_idField = env->GetFieldID(

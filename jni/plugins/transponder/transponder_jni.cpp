@@ -87,9 +87,7 @@ AdsbVehicleFromJava::AdsbVehicleFromJava(JNIEnv* env, jobject object) {
         clazz, "callsign", "Ljava/lang/String;");
     auto callsignString =
         static_cast<jstring>(env->GetObjectField(object, callsignField));
-    JStringHolder callsignHolder(env, callsignString);
-    callsignValue =
-        callsignHolder.c_str() ? callsignHolder.c_str() : "";
+    callsignValue = toStdString(env, callsignString);
     value.callsign = const_cast<char*>(callsignValue.c_str());
     env->DeleteLocalRef(callsignString);
     jfieldID emitter_typeField = env->GetFieldID(

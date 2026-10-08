@@ -19,3 +19,11 @@ symbols, callback descriptors, and representative carrier shapes:
 ```sh
 ./jvm/validate.sh
 ```
+
+Run the library with the JVM checking the JNI calls it makes (`-Xcheck:jni`),
+which catches misuse that otherwise goes unnoticed on a desktop JVM and
+aborts a debuggable Android app:
+
+```sh
+./jvm/test.sh
+```

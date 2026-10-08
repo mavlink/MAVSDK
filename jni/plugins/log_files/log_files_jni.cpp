@@ -98,9 +98,7 @@ EntryFromJava::EntryFromJava(JNIEnv* env, jobject object) {
         clazz, "date", "Ljava/lang/String;");
     auto dateString =
         static_cast<jstring>(env->GetObjectField(object, dateField));
-    JStringHolder dateHolder(env, dateString);
-    dateValue =
-        dateHolder.c_str() ? dateHolder.c_str() : "";
+    dateValue = toStdString(env, dateString);
     value.date = const_cast<char*>(dateValue.c_str());
     env->DeleteLocalRef(dateString);
     jfieldID size_bytesField = env->GetFieldID(
