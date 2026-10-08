@@ -284,6 +284,10 @@ inline void initClassLoader(JNIEnv* env) {
     jmethodID getClassLoader =
         env->GetMethodID(classClass, "getClassLoader", "()Ljava/lang/ClassLoader;");
     jobject loader = getClassLoader ? env->CallObjectMethod(anchor, getClassLoader) : nullptr;
+    if (env->ExceptionCheck()) {
+        env->ExceptionClear();
+        loader = nullptr;
+    }
 
     if (loader) {
         cache.loader = env->NewGlobalRef(loader);
