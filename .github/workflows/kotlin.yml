@@ -101,6 +101,10 @@ jobs:
       # symbols actually exported by the library we just built.
       - name: validate JNI contracts
         run: ./jni/jvm/validate.sh "$(pwd)/jni/build/kotlin/${{ matrix.library }}"
+      # Runs the library under -Xcheck:jni, which aborts on a misuse of JNI
+      # that the JVM otherwise lets through.
+      - name: test JNI usage
+        run: ./jni/jvm/test.sh "$(pwd)/jni/build/kotlin/${{ matrix.library }}"
       - name: upload native library
         uses: actions/upload-artifact@v4
         with:
