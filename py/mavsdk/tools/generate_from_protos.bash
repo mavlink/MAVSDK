@@ -9,7 +9,7 @@ proto_dir="$project_root/../../proto/protos"
 pb_plugins_dir="$project_root/../../proto/pb_plugins"
 
 # Default plugins if none provided
-default_plugins=("action" "action_server" "arm_authorizer_server" "calibration" "camera" "camera_server" "component_metadata" "component_metadata_server" "events" "failure" "follow_me" "ftp" "ftp_server" "geofence" "gimbal" "gripper" "info" "log_files" "log_streaming" "manual_control" "mavlink_direct" "mission" "mission_raw" "mission_raw_server" "mocap" "offboard" "param" "param_server" "rtk" "server_utility" "shell" "telemetry" "telemetry_server" "transponder" "tune" "winch")
+default_plugins=("action" "action_server" "arm_authorizer_server" "calibration" "camera" "camera_server" "component_metadata" "component_metadata_server" "events" "failure" "follow_me" "ftp" "ftp_server" "geofence" "gimbal" "gripper" "info" "log_files" "log_streaming" "manual_control" "mavlink_direct" "mavlink_direct_server" "mission" "mission_raw" "mission_raw_server" "mocap" "offboard" "param" "param_server" "rtk" "server_utility" "shell" "telemetry" "telemetry_server" "transponder" "tune" "winch")
 
 # Use provided plugins or defaults
 plugins=("${@:-${default_plugins[@]}}")

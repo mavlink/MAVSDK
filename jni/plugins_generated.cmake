@@ -22,6 +22,7 @@ set(PLUGIN_SOURCES
     plugins/log_streaming/log_streaming_jni.cpp
     plugins/manual_control/manual_control_jni.cpp
     plugins/mavlink_direct/mavlink_direct_jni.cpp
+    plugins/mavlink_direct_server/mavlink_direct_server_jni.cpp
     plugins/mission/mission_jni.cpp
     plugins/mission_raw/mission_raw_jni.cpp
     plugins/mission_raw_server/mission_raw_server_jni.cpp
