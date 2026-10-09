@@ -8,8 +8,13 @@ project_root="$(cd "$script_dir/.." && pwd)"
 proto_dir="$project_root/../../proto/protos"
 pb_plugins_dir="$project_root/../../proto/pb_plugins"
 
-# Default plugins if none provided
-default_plugins=("action" "action_server" "arm_authorizer_server" "calibration" "camera" "camera_server" "component_metadata" "component_metadata_server" "events" "failure" "follow_me" "ftp" "ftp_server" "geofence" "gimbal" "gripper" "info" "log_files" "log_streaming" "manual_control" "mavlink_direct" "mission" "mission_raw" "mission_raw_server" "mocap" "offboard" "param" "param_server" "rtk" "server_utility" "shell" "telemetry" "telemetry_server" "transponder" "tune" "winch")
+# Default plugins if none provided: the ones C++ has, which its own generation
+# script lists from the proto directory.
+plugins_file="$proto_dir/../../cpp/src/plugins.txt"
+default_plugins=()
+while IFS= read -r plugin; do
+    [ -n "$plugin" ] && default_plugins+=("$plugin")
+done < "$plugins_file"
 
 # Use provided plugins or defaults
 plugins=("${@:-${default_plugins[@]}}")
