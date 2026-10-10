@@ -847,10 +847,9 @@ Mission::Result MissionImpl::start_mission()
 
 void MissionImpl::start_mission_async(const Mission::ResultCallback& callback)
 {
-    _system_impl->set_flight_mode_async(
-        FlightMode::Mission, [this, callback](MavlinkCommandSender::Result result, float) {
-            report_flight_mode_change(callback, result);
-        });
+    _system_impl->start_mission_async([this, callback](MavlinkCommandSender::Result result, float) {
+        report_flight_mode_change(callback, result);
+    });
 }
 
 Mission::Result MissionImpl::pause_mission()

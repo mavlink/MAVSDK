@@ -236,6 +236,9 @@ public:
         const CommandResultCallback& callback,
         uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
 
+    // Switches to the mission flight mode, and does what else the autopilot needs to start.
+    void start_mission_async(const CommandResultCallback& callback);
+
     using GetParamAnyCallback =
         std::function<void(MavlinkParameterClient::Result result, ParamValue value)>;
     using GetParamFloatCallback =

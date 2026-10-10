@@ -931,6 +931,30 @@ void SystemImpl::set_flight_mode_async(
     send_command_async(result.second, callback);
 }
 
+void SystemImpl::start_mission_async(const CommandResultCallback& callback)
+{
+    set_flight_mode_async(
+        FlightMode::Mission, [this, callback](MavlinkCommandSender::Result result, float) {
+            if (result != MavlinkCommandSender::Result::Success ||
+                effective_autopilot() != Autopilot::ArduPilot) {
+                if (callback) {
+                    callback(result, NAN);
+                }
+                return;
+            }
+
+            // In its mission mode on the ground, ArduCopter waits for the pilot to raise the
+            // throttle and disarms when nobody does. This is its way to start without a pilot.
+            MavlinkCommandSender::CommandLong command{};
+            command.command = MAV_CMD_MISSION_START;
+            command.params.maybe_param1 = 0.0f; // first item, not supported
+            command.params.maybe_param2 = 0.0f; // last item, not supported
+            command.target_component_id = get_autopilot_id();
+
+            send_command_async(command, callback);
+        });
+}
+
 std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
 SystemImpl::make_command_flight_mode(FlightMode flight_mode, uint8_t component_id)
 {
