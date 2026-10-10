@@ -68,6 +68,7 @@ FlightMode to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode)
             return FlightMode::Posctl;
         case ardupilot::CopterMode::FlowHold:
         case ardupilot::CopterMode::Loiter:
+        case ardupilot::CopterMode::Brake:
             return FlightMode::Hold;
         case ardupilot::CopterMode::Rtl:
         case ardupilot::CopterMode::AutoRtl:
