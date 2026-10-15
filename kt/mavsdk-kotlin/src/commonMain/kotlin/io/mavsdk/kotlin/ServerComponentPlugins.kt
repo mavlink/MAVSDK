@@ -14,6 +14,8 @@ import io.mavsdk.kotlin.plugins.component_metadata_server.ComponentMetadataServe
 import io.mavsdk.kotlin.plugins.component_metadata_server.createComponentMetadataServerNative
 import io.mavsdk.kotlin.plugins.ftp_server.FtpServer
 import io.mavsdk.kotlin.plugins.ftp_server.createFtpServerNative
+import io.mavsdk.kotlin.plugins.mavlink_direct_server.MavlinkDirectServer
+import io.mavsdk.kotlin.plugins.mavlink_direct_server.createMavlinkDirectServerNative
 import io.mavsdk.kotlin.plugins.mission_raw_server.MissionRawServer
 import io.mavsdk.kotlin.plugins.mission_raw_server.createMissionRawServerNative
 import io.mavsdk.kotlin.plugins.param_server.ParamServer
@@ -88,6 +90,15 @@ abstract class ServerComponentPlugins internal constructor() {
                 FtpServer::class,
                 { FtpServer(createFtpServerNative(getHandle())) },
                 FtpServer::destroy,
+            )
+
+    /** The canonical MavlinkDirectServer plugin for this server component. */
+    val mavlinkDirectServer: MavlinkDirectServer
+        get() =
+            plugin(
+                MavlinkDirectServer::class,
+                { MavlinkDirectServer(createMavlinkDirectServerNative(getHandle())) },
+                MavlinkDirectServer::destroy,
             )
 
     /** The canonical MissionRawServer plugin for this server component. */

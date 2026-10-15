@@ -139,6 +139,8 @@ private:
     Action::Result set_takeoff_altitude_px4(float relative_altitude_m);
     Action::Result set_takeoff_altitude_apm(float relative_altitude_m);
 
+    bool return_to_launch_altitude_supported() const;
+
     std::atomic<bool> _vtol_transition_support_known{false};
     std::atomic<bool> _vtol_transition_possible{false};
 
@@ -148,6 +150,9 @@ private:
     static constexpr auto TAKEOFF_ALT_PARAM = "MIS_TAKEOFF_ALT";
     static constexpr auto MAX_SPEED_PARAM = "MPC_XY_CRUISE";
     static constexpr auto RTL_RETURN_ALTITUDE_PARAM = "RTL_RETURN_ALT";
+    // ArduCopter's return altitude, in metres, and what it was before that, in centimetres.
+    static constexpr auto ARDUCOPTER_RTL_ALT_M_PARAM = "RTL_ALT_M";
+    static constexpr auto ARDUCOPTER_RTL_ALT_CM_PARAM = "RTL_ALT";
 };
 
 } // namespace mavsdk

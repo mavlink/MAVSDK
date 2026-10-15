@@ -852,8 +852,7 @@ std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 void ActionImpl::set_return_to_launch_altitude_async(
     const float relative_altitude_m, const Action::ResultCallback& callback) const
 {
-    // RTL_RETURN_ALT param is PX4-specific.
-    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+    if (!return_to_launch_altitude_supported()) {
         if (callback) {
             _system_impl->call_user_callback(
                 [callback]() { callback(Action::Result::Unsupported); });
@@ -865,9 +864,22 @@ void ActionImpl::set_return_to_launch_altitude_async(
 
 Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_altitude_m) const
 {
-    // RTL_RETURN_ALT param is PX4-specific.
-    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+    if (!return_to_launch_altitude_supported()) {
         return Action::Result::Unsupported;
+    }
+
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        if (_system_impl->set_param_float(ARDUCOPTER_RTL_ALT_M_PARAM, relative_altitude_m) ==
+            MavlinkParameterClient::Result::Success) {
+            return Action::Result::Success;
+        }
+        if (_system_impl->set_param_int(
+                ARDUCOPTER_RTL_ALT_CM_PARAM,
+                static_cast<int32_t>(std::lround(relative_altitude_m * 100.0f))) ==
+            MavlinkParameterClient::Result::Success) {
+            return Action::Result::Success;
+        }
+        return Action::Result::ParameterError;
     }
 
     const MavlinkParameterClient::Result result =
@@ -879,8 +891,7 @@ Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_al
 void ActionImpl::get_return_to_launch_altitude_async(
     const Action::GetReturnToLaunchAltitudeCallback& callback) const
 {
-    // RTL_RETURN_ALT param is PX4-specific.
-    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+    if (!return_to_launch_altitude_supported()) {
         if (callback) {
             _system_impl->call_user_callback(
                 [callback]() { callback(Action::Result::Unsupported, NAN); });
@@ -893,9 +904,21 @@ void ActionImpl::get_return_to_launch_altitude_async(
 
 std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() const
 {
-    // RTL_RETURN_ALT param is PX4-specific.
-    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+    if (!return_to_launch_altitude_supported()) {
         return std::make_pair(Action::Result::Unsupported, NAN);
+    }
+
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        const auto result_m = _system_impl->get_param_float(ARDUCOPTER_RTL_ALT_M_PARAM);
+        if (result_m.first == MavlinkParameterClient::Result::Success) {
+            return std::make_pair(Action::Result::Success, result_m.second);
+        }
+        const auto result_cm = _system_impl->get_param_int(ARDUCOPTER_RTL_ALT_CM_PARAM);
+        if (result_cm.first == MavlinkParameterClient::Result::Success) {
+            return std::make_pair(
+                Action::Result::Success, static_cast<float>(result_cm.second) / 100.0f);
+        }
+        return std::make_pair(Action::Result::ParameterError, NAN);
     }
 
     auto result = _system_impl->get_param_float(RTL_RETURN_ALTITUDE_PARAM);
@@ -903,6 +926,31 @@ std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() con
         (result.first == MavlinkParameterClient::Result::Success) ? Action::Result::Success :
                                                                     Action::Result::ParameterError,
         result.second);
+}
+
+bool ActionImpl::return_to_launch_altitude_supported() const
+{
+    switch (_system_impl->effective_autopilot()) {
+        case Autopilot::Px4:
+            return true;
+        case Autopilot::ArduPilot:
+            // Plane and Rover keep it elsewhere, or not at all.
+            switch (_system_impl->get_vehicle_type()) {
+                case MAV_TYPE::MAV_TYPE_QUADROTOR:
+                case MAV_TYPE::MAV_TYPE_COAXIAL:
+                case MAV_TYPE::MAV_TYPE_HELICOPTER:
+                case MAV_TYPE::MAV_TYPE_HEXAROTOR:
+                case MAV_TYPE::MAV_TYPE_OCTOROTOR:
+                case MAV_TYPE::MAV_TYPE_TRICOPTER:
+                case MAV_TYPE::MAV_TYPE_DODECAROTOR:
+                case MAV_TYPE::MAV_TYPE_DECAROTOR:
+                    return true;
+                default:
+                    return false;
+            }
+        default:
+            return false;
+    }
 }
 
 void ActionImpl::set_current_speed_async(float speed_m_s, const Action::ResultCallback& callback)
