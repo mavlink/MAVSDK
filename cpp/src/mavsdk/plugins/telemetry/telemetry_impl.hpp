@@ -256,6 +256,7 @@ private:
     void process_extended_sys_state(const mavlink_message_t& message);
     void process_fixedwing_metrics(const mavlink_message_t& message);
     void process_sys_status(const mavlink_message_t& message);
+    void process_ekf_status_report(const mavlink_message_t& message);
     void process_battery_status(const mavlink_message_t& message);
     void process_heartbeat(const mavlink_message_t& message);
     void process_rc_channels(const mavlink_message_t& message);
@@ -436,6 +437,10 @@ private:
     double _health_rate_hz{0.0};
     double _rc_status_rate_hz{0.0};
     Telemetry::Result set_rate_sys_status();
+
+    // ArduPilot says whether its position estimate is usable in EKF_STATUS_REPORT. Once one
+    // has been received, the position health comes from there and not from SYS_STATUS.
+    std::atomic_bool _has_ekf_status_report{false};
 
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
