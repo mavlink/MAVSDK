@@ -171,6 +171,10 @@ TEST(FlightMode, ArduCopterExtraModes)
         FlightMode::Hold);
     EXPECT_EQ(
         to_flight_mode_from_ardupilot_copter_mode(
+            static_cast<uint32_t>(ardupilot::CopterMode::Brake)),
+        FlightMode::Hold);
+    EXPECT_EQ(
+        to_flight_mode_from_ardupilot_copter_mode(
             static_cast<uint32_t>(ardupilot::CopterMode::FlowHold)),
         FlightMode::Hold);
     EXPECT_EQ(

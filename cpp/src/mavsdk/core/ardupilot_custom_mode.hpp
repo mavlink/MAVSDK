@@ -35,7 +35,7 @@ enum class CopterMode {
     Flip = 14,
     AutoTune = 15,
     PosHold = 16,
-    Break = 17,
+    Brake = 17,
     Throw = 18,
     AvoidAdsb = 19,
     GuidedNoGps = 20,
