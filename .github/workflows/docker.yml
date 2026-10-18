@@ -11,7 +11,7 @@ on:
 jobs:
   determine-docker-tag:
     name: Determine Docker Image Tag
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       docker_tag: ${{ steps.set-docker-tag.outputs.docker_tag }}
     steps:
@@ -27,7 +27,7 @@ jobs:
   build-docker-images:
     name: Build ${{ matrix.name }}
     needs: determine-docker-tag
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
       matrix:
@@ -39,6 +39,9 @@ jobs:
           - name: Ubuntu 24.04
             dockerfile: Dockerfile-ubuntu-24.04
             image: mavsdk-ubuntu-24.04
+          - name: Ubuntu 26.04
+            dockerfile: Dockerfile-ubuntu-26.04
+            image: mavsdk-ubuntu-26.04
             extra_tag: mavsdk-dev
           # Add Debian images
           - name: Debian 12 (Bookworm)

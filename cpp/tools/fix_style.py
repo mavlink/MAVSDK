@@ -22,12 +22,12 @@ try:
 except ImportError:
     HAS_TQDM = False
 
-VERSION_REQUIRED_MAJOR = 19
+VERSION_REQUIRED_MAJOR = 21
 
 
 def print_installation_instructions():
     """Print instructions for installing the required clang-format version."""
-    print("On Ubuntu 24.04, you can install it:")
+    print("On Ubuntu 26.04, you can install it:")
     print()
     print(f"    'sudo apt install clang-format-{VERSION_REQUIRED_MAJOR}'")
     print()
