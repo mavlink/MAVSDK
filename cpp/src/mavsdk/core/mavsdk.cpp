@@ -123,8 +123,9 @@ Mavsdk::Configuration::Configuration(
     _component_id(component_id),
     _always_send_heartbeats(always_send_heartbeats),
     _component_type(component_type_for_component_id(component_id)),
-    _mav_type(static_cast<MavType>(
-        MavsdkImpl::mav_type_for_component_type(component_type_for_component_id(component_id))))
+    _mav_type(
+        static_cast<MavType>(
+            MavsdkImpl::mav_type_for_component_type(component_type_for_component_id(component_id))))
 {}
 
 ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)

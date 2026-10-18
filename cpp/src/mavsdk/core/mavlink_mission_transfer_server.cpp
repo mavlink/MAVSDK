@@ -339,20 +339,21 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::process_mission_item_
         return;
     }
 
-    _items.push_back(ItemInt{
-        item_int.seq,
-        item_int.frame,
-        item_int.command,
-        item_int.current,
-        item_int.autocontinue,
-        item_int.param1,
-        item_int.param2,
-        item_int.param3,
-        item_int.param4,
-        item_int.x,
-        item_int.y,
-        item_int.z,
-        item_int.mission_type});
+    _items.push_back(
+        ItemInt{
+            item_int.seq,
+            item_int.frame,
+            item_int.command,
+            item_int.current,
+            item_int.autocontinue,
+            item_int.param1,
+            item_int.param2,
+            item_int.param3,
+            item_int.param4,
+            item_int.x,
+            item_int.y,
+            item_int.z,
+            item_int.mission_type});
 
     if (_next_sequence + 1 == _expected_count) {
         _timeout_handler.remove(_cookie);

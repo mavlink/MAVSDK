@@ -151,8 +151,9 @@ SystemTimePoint AutopilotTime::system_time()
 AutopilotTimePoint AutopilotTime::now()
 {
     std::lock_guard<std::mutex> lock(_autopilot_system_time_offset_mutex);
-    return AutopilotTimePoint(std::chrono::duration_cast<std::chrono::microseconds>(
-        system_time().time_since_epoch() + _autopilot_time_offset));
+    return AutopilotTimePoint(
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            system_time().time_since_epoch() + _autopilot_time_offset));
 }
 
 void AutopilotTime::shift_time_by(std::chrono::nanoseconds offset)
@@ -164,8 +165,9 @@ void AutopilotTime::shift_time_by(std::chrono::nanoseconds offset)
 AutopilotTimePoint AutopilotTime::time_in(SystemTimePoint local_system_time_point)
 {
     std::lock_guard<std::mutex> lock(_autopilot_system_time_offset_mutex);
-    return AutopilotTimePoint(std::chrono::duration_cast<std::chrono::microseconds>(
-        local_system_time_point.time_since_epoch() + _autopilot_time_offset));
+    return AutopilotTimePoint(
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            local_system_time_point.time_since_epoch() + _autopilot_time_offset));
 };
 
 } // namespace mavsdk

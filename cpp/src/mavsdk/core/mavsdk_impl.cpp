@@ -221,8 +221,9 @@ void MavsdkImpl::abort_if_references_outlive_us()
     }
     // One complete sentence per line, so each stands on its own in a log and can be grepped.
     LogErr("A System, a ServerComponent or a plugin must not outlive the Mavsdk instance.");
-    LogErr("They hold a reference back into it, so using one afterwards -- or merely letting "
-           "it be destroyed -- is a use-after-free.");
+    LogErr(
+        "They hold a reference back into it, so using one afterwards -- or merely letting "
+        "it be destroyed -- is a use-after-free.");
     LogErr("Keep the Mavsdk instance alive at least as long as everything obtained from it.");
     LogErr("Aborting now: continuing would crash later and much less clearly.");
 
@@ -672,8 +673,9 @@ MavsdkImpl::server_component_by_id_with_lock(uint8_t component_id, uint8_t mav_t
         }
     }
 
-    _server_components.emplace_back(std::pair<uint8_t, std::shared_ptr<ServerComponent>>(
-        component_id, std::make_shared<ServerComponent>(*this, component_id, mav_type)));
+    _server_components.emplace_back(
+        std::pair<uint8_t, std::shared_ptr<ServerComponent>>(
+            component_id, std::make_shared<ServerComponent>(*this, component_id, mav_type)));
 
     return _server_components.back().second;
 }
@@ -2183,8 +2185,9 @@ Mavsdk::RawBytesHandle
 MavsdkImpl::subscribe_raw_bytes_to_be_sent(const Mavsdk::RawBytesCallback& callback)
 {
     if (find_raw_connection() == nullptr) {
-        LogWarn("No raw connection available. Subscription will only receive bytes after you "
-                "add a connection using add_any_connection(\"raw://\")");
+        LogWarn(
+            "No raw connection available. Subscription will only receive bytes after you "
+            "add a connection using add_any_connection(\"raw://\")");
     }
     return _raw_bytes_subscriptions.subscribe(callback);
 }

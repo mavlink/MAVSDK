@@ -81,8 +81,8 @@ void InfoImpl::process_autopilot_version(const mavlink_message_t& message)
     _version.flight_sw_major = (autopilot_version.flight_sw_version >> (8 * 3)) & 0xFF;
     _version.flight_sw_minor = (autopilot_version.flight_sw_version >> (8 * 2)) & 0xFF;
     _version.flight_sw_patch = (autopilot_version.flight_sw_version >> (8 * 1)) & 0xFF;
-    _version.flight_sw_version_type =
-        get_flight_software_version_type(static_cast<FIRMWARE_VERSION_TYPE>(
+    _version.flight_sw_version_type = get_flight_software_version_type(
+        static_cast<FIRMWARE_VERSION_TYPE>(
             (autopilot_version.flight_sw_version >> (8 * 0)) & 0xFF));
 
     // first three bytes of flight_custom_version (little endian) describe vendor version
@@ -277,9 +277,10 @@ void InfoImpl::process_attitude(const mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_mutex);
 
     if (_last_time_boot_ms != 0) {
-        _speed_factor_measurements.push(SpeedFactorMeasurement{
-            static_cast<double>(attitude.time_boot_ms - _last_time_boot_ms) * 1e-3,
-            _time.elapsed_since_s(_last_time_attitude_arrived)});
+        _speed_factor_measurements.push(
+            SpeedFactorMeasurement{
+                static_cast<double>(attitude.time_boot_ms - _last_time_boot_ms) * 1e-3,
+                _time.elapsed_since_s(_last_time_attitude_arrived)});
     }
 
     _last_time_boot_ms = attitude.time_boot_ms;
