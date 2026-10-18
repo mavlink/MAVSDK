@@ -36,53 +36,52 @@ MavlinkCommandSender::~MavlinkCommandSender()
     for (const auto& work : _work_queue) {
         _system_impl.unregister_timeout_handler_blocking(work->timeout_cookie);
     }
+
+    // Fail calls still blocked rather than leaving them waiting forever.
+    if (const auto released = _blocking_calls.release_all(); released > 0) {
+        LogErr(
+            "{} blocking command call(s) still in progress on destruction: keep the plugin and "
+            "Mavsdk alive until blocking calls return",
+            released);
+    }
 }
 
 MavlinkCommandSender::Result MavlinkCommandSender::send_command(
     const MavlinkCommandSender::CommandInt& command, unsigned retries)
 {
-    // We wrap the async call with a promise and future.
-    auto prom = std::make_shared<std::promise<Result>>();
-    auto res = prom->get_future();
-
-    queue_command_async(
-        command,
-        [prom](Result result, float progress) {
-            UNUSED(progress);
-            // We can only fulfill the promise once in C++11.
-            // Therefore, we have to ignore the IN_PROGRESS state and wait
-            // for the final result.
-            if (result != Result::InProgress) {
-                prom->set_value(result);
-            }
+    return _blocking_calls.wait(
+        [&](auto complete) {
+            queue_command_async(
+                command,
+                [complete](Result result, float progress) {
+                    UNUSED(progress);
+                    // Only the final result completes the call, not the progress updates.
+                    if (result != Result::InProgress) {
+                        complete(result);
+                    }
+                },
+                retries);
         },
-        retries);
-
-    // Block now to wait for result.
-    return res.get();
+        Result::ConnectionError);
 }
 
 MavlinkCommandSender::Result MavlinkCommandSender::send_command(
     const MavlinkCommandSender::CommandLong& command, unsigned retries)
 {
-    // We wrap the async call with a promise and future.
-    auto prom = std::make_shared<std::promise<Result>>();
-    auto res = prom->get_future();
-
-    queue_command_async(
-        command,
-        [prom](Result result, float progress) {
-            UNUSED(progress);
-            // We can only fulfill the promise once in C++11.
-            // Therefore, we have to ignore the IN_PROGRESS state and wait
-            // for the final result.
-            if (result != Result::InProgress) {
-                prom->set_value(result);
-            }
+    return _blocking_calls.wait(
+        [&](auto complete) {
+            queue_command_async(
+                command,
+                [complete](Result result, float progress) {
+                    UNUSED(progress);
+                    // Only the final result completes the call, not the progress updates.
+                    if (result != Result::InProgress) {
+                        complete(result);
+                    }
+                },
+                retries);
         },
-        retries);
-
-    return res.get();
+        Result::ConnectionError);
 }
 
 void MavlinkCommandSender::queue_command_async(

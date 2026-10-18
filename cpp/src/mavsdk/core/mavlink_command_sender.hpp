@@ -1,6 +1,7 @@
 #pragma once
 
 #include "timeout_handler.hpp"
+#include "blocking_calls.hpp"
 #include "mavlink_include.hpp"
 #include "mavsdk_time.hpp"
 #include <asio/io_context.hpp>
@@ -167,6 +168,8 @@ private:
 
     SystemImpl& _system_impl;
     std::deque<std::shared_ptr<Work>> _work_queue{};
+
+    BlockingCalls _blocking_calls{};
     asio::io_context& _io_context;
 
     bool _command_debugging{false};

@@ -9,6 +9,8 @@
 #include "mavlink_parameter_cache.hpp"
 #include "mavlink_parameter_helper.hpp"
 #include "timeout_handler.hpp"
+#include "blocking_calls.hpp"
+#include "mavsdk_export.h"
 #include <asio/io_context.hpp>
 #include <asio/post.hpp>
 
@@ -29,7 +31,7 @@ namespace mavsdk {
 class Sender;
 class MavlinkMessageHandler;
 
-class MavlinkParameterClient : public MavlinkParameterSubscription {
+class MAVSDK_TEST_EXPORT MavlinkParameterClient : public MavlinkParameterSubscription {
 public:
     MavlinkParameterClient() = delete;
     explicit MavlinkParameterClient(
@@ -220,6 +222,8 @@ private:
     // These are specific depending on the work item type
     std::deque<std::shared_ptr<WorkItem>> _work_queue{};
     asio::io_context& _io_context;
+
+    BlockingCalls _blocking_calls{};
     TimeoutHandler::Cookie _timeout_cookie{};
 
     MavlinkParameterCache _param_cache{};

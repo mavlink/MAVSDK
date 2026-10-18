@@ -82,15 +82,22 @@ MavlinkParameterClient::~MavlinkParameterClient()
     // (Today this runs during teardown with the io thread already stopped, in which case
     // it degrades to a direct erase.)
     _message_handler.unregister_all_blocking(this);
+
+    // Fail calls still blocked rather than leaving them waiting forever.
+    if (const auto released = _blocking_calls.release_all(); released > 0) {
+        LogErr(
+            "{} blocking param call(s) still in progress on destruction: keep the plugin and "
+            "Mavsdk alive until blocking calls return",
+            released);
+    }
 }
 
 MavlinkParameterClient::Result
 MavlinkParameterClient::set_param(const std::string& name, const ParamValue& value)
 {
-    auto prom = std::promise<Result>();
-    auto res = prom.get_future();
-    set_param_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
-    return res.get();
+    return _blocking_calls.wait(
+        [&](auto complete) { set_param_async(name, value, complete, this); },
+        Result::ConnectionError);
 }
 
 void MavlinkParameterClient::set_param_async(
@@ -191,10 +198,9 @@ void MavlinkParameterClient::set_param_int_async(
 MavlinkParameterClient::Result
 MavlinkParameterClient::set_param_int(const std::string& name, int32_t value)
 {
-    auto prom = std::promise<Result>();
-    auto res = prom.get_future();
-    set_param_int_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
-    return res.get();
+    return _blocking_calls.wait(
+        [&](auto complete) { set_param_int_async(name, value, complete, this); },
+        Result::ConnectionError);
 }
 
 void MavlinkParameterClient::set_param_float_async(
@@ -208,12 +214,9 @@ void MavlinkParameterClient::set_param_float_async(
 MavlinkParameterClient::Result
 MavlinkParameterClient::set_param_float(const std::string& name, float value)
 {
-    auto prom = std::promise<Result>();
-    auto res = prom.get_future();
-
-    set_param_float_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
-
-    return res.get();
+    return _blocking_calls.wait(
+        [&](auto complete) { set_param_float_async(name, value, complete, this); },
+        Result::ConnectionError);
 }
 
 void MavlinkParameterClient::set_param_custom_async(
@@ -245,10 +248,9 @@ void MavlinkParameterClient::set_param_custom_async(
 MavlinkParameterClient::Result
 MavlinkParameterClient::set_param_custom(const std::string& name, const std::string& value)
 {
-    auto prom = std::promise<Result>();
-    auto res = prom.get_future();
-    set_param_custom_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
-    return res.get();
+    return _blocking_calls.wait(
+        [&](auto complete) { set_param_custom_async(name, value, complete, this); },
+        Result::ConnectionError);
 }
 
 void MavlinkParameterClient::get_param_async(
@@ -360,53 +362,61 @@ void MavlinkParameterClient::get_param_custom_async(
 std::pair<MavlinkParameterClient::Result, ParamValue>
 MavlinkParameterClient::get_param(const std::string& name)
 {
-    auto prom = std::promise<std::pair<Result, ParamValue>>();
-    auto res = prom.get_future();
-    get_param_async(
-        name,
-        [&prom](Result result, ParamValue new_value) {
-            prom.set_value(std::make_pair<>(result, std::move(new_value)));
+    return _blocking_calls.wait(
+        [&](auto complete) {
+            get_param_async(
+                name,
+                [complete](Result result, ParamValue value) {
+                    complete(std::make_pair(result, std::move(value)));
+                },
+                this);
         },
-        this);
-    return res.get();
+        std::make_pair(Result::ConnectionError, ParamValue{}));
 }
 
 std::pair<MavlinkParameterClient::Result, int32_t>
 MavlinkParameterClient::get_param_int(const std::string& name)
 {
-    auto prom = std::promise<std::pair<Result, int32_t>>();
-    auto res = prom.get_future();
-    get_param_int_async(
-        name,
-        [&prom](Result result, int32_t value) { prom.set_value(std::make_pair<>(result, value)); },
-        this);
-    return res.get();
+    return _blocking_calls.wait(
+        [&](auto complete) {
+            get_param_int_async(
+                name,
+                [complete](Result result, int32_t value) {
+                    complete(std::make_pair(result, std::move(value)));
+                },
+                this);
+        },
+        std::make_pair(Result::ConnectionError, int32_t{}));
 }
 
 std::pair<MavlinkParameterClient::Result, float>
 MavlinkParameterClient::get_param_float(const std::string& name)
 {
-    auto prom = std::promise<std::pair<Result, float>>();
-    auto res = prom.get_future();
-    get_param_float_async(
-        name,
-        [&prom](Result result, float value) { prom.set_value(std::make_pair<>(result, value)); },
-        this);
-    return res.get();
+    return _blocking_calls.wait(
+        [&](auto complete) {
+            get_param_float_async(
+                name,
+                [complete](Result result, float value) {
+                    complete(std::make_pair(result, std::move(value)));
+                },
+                this);
+        },
+        std::make_pair(Result::ConnectionError, float{}));
 }
 
 std::pair<MavlinkParameterClient::Result, std::string>
 MavlinkParameterClient::get_param_custom(const std::string& name)
 {
-    auto prom = std::promise<std::pair<Result, std::string>>();
-    auto res = prom.get_future();
-    get_param_custom_async(
-        name,
-        [&prom](Result result, const std::string& value) {
-            prom.set_value(std::make_pair<>(result, value));
+    return _blocking_calls.wait(
+        [&](auto complete) {
+            get_param_custom_async(
+                name,
+                [complete](Result result, std::string value) {
+                    complete(std::make_pair(result, std::move(value)));
+                },
+                this);
         },
-        this);
-    return res.get();
+        std::make_pair(Result::ConnectionError, std::string{}));
 }
 
 void MavlinkParameterClient::get_all_params_async(GetAllParamsCallback callback, void* cookie)
@@ -429,18 +439,18 @@ void MavlinkParameterClient::get_all_params_async(GetAllParamsCallback callback,
 std::pair<MavlinkParameterClient::Result, std::map<std::string, ParamValue>>
 MavlinkParameterClient::get_all_params()
 {
-    std::promise<std::pair<MavlinkParameterClient::Result, std::map<std::string, ParamValue>>> prom;
-    auto res = prom.get_future();
-    get_all_params_async(
-        // Make sure to NOT use a reference for all_params here, pass by value.
-        // Since for example on a timeout, the empty all_params result is constructed in-place and
-        // then goes out of scope when the callback returns.
-        [&prom](Result result, std::map<std::string, ParamValue> set) {
-            prom.set_value({result, std::move(set)});
+    return _blocking_calls.wait(
+        [&](auto complete) {
+            get_all_params_async(
+                // Make sure to NOT use a reference for all_params here, pass by value.
+                // Since for example on a timeout, the empty all_params result is constructed
+                // in-place and then goes out of scope when the callback returns.
+                [complete](Result result, std::map<std::string, ParamValue> set) {
+                    complete(std::make_pair(result, std::move(set)));
+                },
+                this);
         },
-        this);
-    auto ret = res.get();
-    return ret;
+        std::make_pair(Result::ConnectionError, std::map<std::string, ParamValue>{}));
 }
 
 void MavlinkParameterClient::cancel_all_param(const void* cookie)

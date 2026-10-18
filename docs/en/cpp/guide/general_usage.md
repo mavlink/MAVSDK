@@ -13,12 +13,27 @@ API consumers use [Mavsdk](../api_reference/classmavsdk_1_1_mavsdk.md) to discov
 Access to drone information and control objects are provided [by plugins](../guide/using_plugins.md) (e.g. Telemetry, Action, Mission etc.).
 Plugin objects are instantiated with a *specific* `System` object (a plugin instance must be created for every system that needs it).
 
-Plugin objects are created as shared pointers that will be destroyed when all associated handles are out of scope.
-All objects are automatically cleaned up when the parent `Mavsdk` object is destroyed.
-
 ::: info
 The term plugin is a bit misleading as they are not "plugged in" (loaded at runtime), but modules compiled in.
 :::
+
+### Lifetimes {#lifetimes}
+
+Plugins, `System` objects and `ServerComponent` objects all refer back to the `Mavsdk` object they came from, so none of them may outlive it.
+Destroy them before the `Mavsdk` object.
+If `Mavsdk` is destroyed while any of them is still alive, it aborts with an explanation of what was left behind.
+
+Keep in mind that class members are destroyed in reverse order of declaration, so declare the `Mavsdk` member before any plugin members (see the example in [API Changes](../api_changes.md#behaviour-changes)).
+
+### Blocking Calls {#blocking_calls}
+
+Methods without the `_async` suffix (e.g. `Param::get_param_int()` or `Action::arm()`) block until the vehicle answers or the request [times out](#timeouts).
+
+While a blocking call is in progress, the plugin it was called on, its `System` and the `Mavsdk` object must stay alive.
+Destroying any of them from another thread to cancel or end the call is not supported.
+Depending on the call, it then returns an error, never returns, or crashes.
+
+If your application shuts down while other threads may be in blocking calls, first stop those threads and wait for them to finish (each call returns at the latest when it times out), and only then destroy the plugins and the `Mavsdk` object.
 
 
 ## Error Handling
