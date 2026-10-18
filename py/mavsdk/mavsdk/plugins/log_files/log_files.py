@@ -91,7 +91,7 @@ class ProgressData:
     """
 
     def __init__(self, progress=None):
-        self.progress = progress
+        self.progress = progress if progress is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -118,9 +118,9 @@ class Entry:
     """
 
     def __init__(self, id=None, date=None, size_bytes=None):
-        self.id = id
-        self.date = date
-        self.size_bytes = size_bytes
+        self.id = id if id is not None else 0
+        self.date = date if date is not None else ""
+        self.size_bytes = size_bytes if size_bytes is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):

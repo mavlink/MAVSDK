@@ -115,12 +115,20 @@ class Config:
         max_tangential_vel_m_s=None,
         follow_angle_deg=None,
     ):
-        self.follow_height_m = follow_height_m
-        self.follow_distance_m = follow_distance_m
-        self.responsiveness = responsiveness
-        self.altitude_mode = altitude_mode
-        self.max_tangential_vel_m_s = max_tangential_vel_m_s
-        self.follow_angle_deg = follow_angle_deg
+        self.follow_height_m = follow_height_m if follow_height_m is not None else 8.0
+        self.follow_distance_m = (
+            follow_distance_m if follow_distance_m is not None else 8.0
+        )
+        self.responsiveness = responsiveness if responsiveness is not None else 0.1
+        self.altitude_mode = (
+            altitude_mode if altitude_mode is not None else Config.FollowAltitudeMode(0)
+        )
+        self.max_tangential_vel_m_s = (
+            max_tangential_vel_m_s if max_tangential_vel_m_s is not None else 8.0
+        )
+        self.follow_angle_deg = (
+            follow_angle_deg if follow_angle_deg is not None else 180.0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -170,12 +178,22 @@ class TargetLocation:
         velocity_y_m_s=None,
         velocity_z_m_s=None,
     ):
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
-        self.absolute_altitude_m = absolute_altitude_m
-        self.velocity_x_m_s = velocity_x_m_s
-        self.velocity_y_m_s = velocity_y_m_s
-        self.velocity_z_m_s = velocity_z_m_s
+        self.latitude_deg = latitude_deg if latitude_deg is not None else float("nan")
+        self.longitude_deg = (
+            longitude_deg if longitude_deg is not None else float("nan")
+        )
+        self.absolute_altitude_m = (
+            absolute_altitude_m if absolute_altitude_m is not None else float("nan")
+        )
+        self.velocity_x_m_s = (
+            velocity_x_m_s if velocity_x_m_s is not None else float("nan")
+        )
+        self.velocity_y_m_s = (
+            velocity_y_m_s if velocity_y_m_s is not None else float("nan")
+        )
+        self.velocity_z_m_s = (
+            velocity_z_m_s if velocity_z_m_s is not None else float("nan")
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):

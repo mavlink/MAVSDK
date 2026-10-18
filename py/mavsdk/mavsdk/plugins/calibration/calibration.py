@@ -88,10 +88,10 @@ class ProgressData:
     def __init__(
         self, has_progress=None, progress=None, has_status_text=None, status_text=None
     ):
-        self.has_progress = has_progress
-        self.progress = progress
-        self.has_status_text = has_status_text
-        self.status_text = status_text
+        self.has_progress = has_progress if has_progress is not None else False
+        self.progress = progress if progress is not None else float("nan")
+        self.has_status_text = has_status_text if has_status_text is not None else False
+        self.status_text = status_text if status_text is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):

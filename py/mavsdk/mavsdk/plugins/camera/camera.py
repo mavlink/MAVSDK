@@ -335,8 +335,10 @@ class Option:
     """
 
     def __init__(self, option_id=None, option_description=None):
-        self.option_id = option_id
-        self.option_description = option_description
+        self.option_id = option_id if option_id is not None else ""
+        self.option_description = (
+            option_description if option_description is not None else ""
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -368,10 +370,12 @@ class Setting:
     def __init__(
         self, setting_id=None, setting_description=None, option=None, is_range=None
     ):
-        self.setting_id = setting_id
-        self.setting_description = setting_description
-        self.option = option
-        self.is_range = is_range
+        self.setting_id = setting_id if setting_id is not None else ""
+        self.setting_description = (
+            setting_description if setting_description is not None else ""
+        )
+        self.option = option if option is not None else Option()
+        self.is_range = is_range if is_range is not None else False
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -414,11 +418,13 @@ class SettingOptions:
         options=None,
         is_range=None,
     ):
-        self.component_id = component_id
-        self.setting_id = setting_id
-        self.setting_description = setting_description
+        self.component_id = component_id if component_id is not None else 0
+        self.setting_id = setting_id if setting_id is not None else ""
+        self.setting_description = (
+            setting_description if setting_description is not None else ""
+        )
         self.options = options or []
-        self.is_range = is_range
+        self.is_range = is_range if is_range is not None else False
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -477,13 +483,19 @@ class VideoStreamSettings:
         uri=None,
         horizontal_fov_deg=None,
     ):
-        self.frame_rate_hz = frame_rate_hz
-        self.horizontal_resolution_pix = horizontal_resolution_pix
-        self.vertical_resolution_pix = vertical_resolution_pix
-        self.bit_rate_b_s = bit_rate_b_s
-        self.rotation_deg = rotation_deg
-        self.uri = uri
-        self.horizontal_fov_deg = horizontal_fov_deg
+        self.frame_rate_hz = frame_rate_hz if frame_rate_hz is not None else 0.0
+        self.horizontal_resolution_pix = (
+            horizontal_resolution_pix if horizontal_resolution_pix is not None else 0
+        )
+        self.vertical_resolution_pix = (
+            vertical_resolution_pix if vertical_resolution_pix is not None else 0
+        )
+        self.bit_rate_b_s = bit_rate_b_s if bit_rate_b_s is not None else 0
+        self.rotation_deg = rotation_deg if rotation_deg is not None else 0
+        self.uri = uri if uri is not None else ""
+        self.horizontal_fov_deg = (
+            horizontal_fov_deg if horizontal_fov_deg is not None else 0.0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -541,10 +553,14 @@ class VideoStreamInfo:
         INFRARED = 2
 
     def __init__(self, stream_id=None, settings=None, status=None, spectrum=None):
-        self.stream_id = stream_id
-        self.settings = settings
-        self.status = status
-        self.spectrum = spectrum
+        self.stream_id = stream_id if stream_id is not None else 0
+        self.settings = settings if settings is not None else VideoStreamSettings()
+        self.status = (
+            status if status is not None else VideoStreamInfo.VideoStreamStatus(0)
+        )
+        self.spectrum = (
+            spectrum if spectrum is not None else VideoStreamInfo.VideoStreamSpectrum(0)
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -580,8 +596,8 @@ class ModeUpdate:
     """
 
     def __init__(self, component_id=None, mode=None):
-        self.component_id = component_id
-        self.mode = mode
+        self.component_id = component_id if component_id is not None else 0
+        self.mode = mode if mode is not None else Mode(0)
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -611,8 +627,10 @@ class VideoStreamUpdate:
     """
 
     def __init__(self, component_id=None, video_stream_info=None):
-        self.component_id = component_id
-        self.video_stream_info = video_stream_info
+        self.component_id = component_id if component_id is not None else 0
+        self.video_stream_info = (
+            video_stream_info if video_stream_info is not None else VideoStreamInfo()
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -675,17 +693,33 @@ class Storage:
         storage_id=None,
         storage_type=None,
     ):
-        self.component_id = component_id
-        self.video_on = video_on
-        self.photo_interval_on = photo_interval_on
-        self.used_storage_mib = used_storage_mib
-        self.available_storage_mib = available_storage_mib
-        self.total_storage_mib = total_storage_mib
-        self.recording_time_s = recording_time_s
-        self.media_folder_name = media_folder_name
-        self.storage_status = storage_status
-        self.storage_id = storage_id
-        self.storage_type = storage_type
+        self.component_id = component_id if component_id is not None else 0
+        self.video_on = video_on if video_on is not None else False
+        self.photo_interval_on = (
+            photo_interval_on if photo_interval_on is not None else False
+        )
+        self.used_storage_mib = (
+            used_storage_mib if used_storage_mib is not None else 0.0
+        )
+        self.available_storage_mib = (
+            available_storage_mib if available_storage_mib is not None else 0.0
+        )
+        self.total_storage_mib = (
+            total_storage_mib if total_storage_mib is not None else 0.0
+        )
+        self.recording_time_s = (
+            recording_time_s if recording_time_s is not None else 0.0
+        )
+        self.media_folder_name = (
+            media_folder_name if media_folder_name is not None else ""
+        )
+        self.storage_status = (
+            storage_status if storage_status is not None else Storage.StorageStatus(0)
+        )
+        self.storage_id = storage_id if storage_id is not None else 0
+        self.storage_type = (
+            storage_type if storage_type is not None else Storage.StorageType(0)
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -742,8 +776,8 @@ class StorageUpdate:
     """
 
     def __init__(self, component_id=None, storage=None):
-        self.component_id = component_id
-        self.storage = storage
+        self.component_id = component_id if component_id is not None else 0
+        self.storage = storage if storage is not None else Storage()
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -773,7 +807,7 @@ class CurrentSettingsUpdate:
     """
 
     def __init__(self, component_id=None, current_settings=None):
-        self.component_id = component_id
+        self.component_id = component_id if component_id is not None else 0
         self.current_settings = current_settings or []
 
     @classmethod
@@ -815,7 +849,7 @@ class PossibleSettingOptionsUpdate:
     """
 
     def __init__(self, component_id=None, setting_options=None):
-        self.component_id = component_id
+        self.component_id = component_id if component_id is not None else 0
         self.setting_options = setting_options or []
 
     @classmethod
@@ -865,10 +899,14 @@ class Position:
         absolute_altitude_m=None,
         relative_altitude_m=None,
     ):
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
-        self.absolute_altitude_m = absolute_altitude_m
-        self.relative_altitude_m = relative_altitude_m
+        self.latitude_deg = latitude_deg if latitude_deg is not None else 0.0
+        self.longitude_deg = longitude_deg if longitude_deg is not None else 0.0
+        self.absolute_altitude_m = (
+            absolute_altitude_m if absolute_altitude_m is not None else 0.0
+        )
+        self.relative_altitude_m = (
+            relative_altitude_m if relative_altitude_m is not None else 0.0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -911,10 +949,10 @@ class Quaternion:
     """
 
     def __init__(self, w=None, x=None, y=None, z=None):
-        self.w = w
-        self.x = x
-        self.y = y
-        self.z = z
+        self.w = w if w is not None else 0.0
+        self.x = x if x is not None else 0.0
+        self.y = y if y is not None else 0.0
+        self.z = z if z is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -955,9 +993,9 @@ class EulerAngle:
     """
 
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None):
-        self.roll_deg = roll_deg
-        self.pitch_deg = pitch_deg
-        self.yaw_deg = yaw_deg
+        self.roll_deg = roll_deg if roll_deg is not None else 0.0
+        self.pitch_deg = pitch_deg if pitch_deg is not None else 0.0
+        self.yaw_deg = yaw_deg if yaw_deg is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1000,14 +1038,18 @@ class CaptureInfo:
         index=None,
         file_url=None,
     ):
-        self.component_id = component_id
-        self.position = position
-        self.attitude_quaternion = attitude_quaternion
-        self.attitude_euler_angle = attitude_euler_angle
-        self.time_utc_us = time_utc_us
-        self.is_success = is_success
-        self.index = index
-        self.file_url = file_url
+        self.component_id = component_id if component_id is not None else 0
+        self.position = position if position is not None else Position()
+        self.attitude_quaternion = (
+            attitude_quaternion if attitude_quaternion is not None else Quaternion()
+        )
+        self.attitude_euler_angle = (
+            attitude_euler_angle if attitude_euler_angle is not None else EulerAngle()
+        )
+        self.time_utc_us = time_utc_us if time_utc_us is not None else 0
+        self.is_success = is_success if is_success is not None else False
+        self.index = index if index is not None else 0
+        self.file_url = file_url if file_url is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1069,14 +1111,22 @@ class Information:
         horizontal_resolution_px=None,
         vertical_resolution_px=None,
     ):
-        self.component_id = component_id
-        self.vendor_name = vendor_name
-        self.model_name = model_name
-        self.focal_length_mm = focal_length_mm
-        self.horizontal_sensor_size_mm = horizontal_sensor_size_mm
-        self.vertical_sensor_size_mm = vertical_sensor_size_mm
-        self.horizontal_resolution_px = horizontal_resolution_px
-        self.vertical_resolution_px = vertical_resolution_px
+        self.component_id = component_id if component_id is not None else 0
+        self.vendor_name = vendor_name if vendor_name is not None else ""
+        self.model_name = model_name if model_name is not None else ""
+        self.focal_length_mm = focal_length_mm if focal_length_mm is not None else 0.0
+        self.horizontal_sensor_size_mm = (
+            horizontal_sensor_size_mm if horizontal_sensor_size_mm is not None else 0.0
+        )
+        self.vertical_sensor_size_mm = (
+            vertical_sensor_size_mm if vertical_sensor_size_mm is not None else 0.0
+        )
+        self.horizontal_resolution_px = (
+            horizontal_resolution_px if horizontal_resolution_px is not None else 0
+        )
+        self.vertical_resolution_px = (
+            vertical_resolution_px if vertical_resolution_px is not None else 0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):

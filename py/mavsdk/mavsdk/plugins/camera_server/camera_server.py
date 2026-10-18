@@ -237,19 +237,39 @@ class Information:
         image_in_video_mode_supported=None,
         video_in_image_mode_supported=None,
     ):
-        self.vendor_name = vendor_name
-        self.model_name = model_name
-        self.firmware_version = firmware_version
-        self.focal_length_mm = focal_length_mm
-        self.horizontal_sensor_size_mm = horizontal_sensor_size_mm
-        self.vertical_sensor_size_mm = vertical_sensor_size_mm
-        self.horizontal_resolution_px = horizontal_resolution_px
-        self.vertical_resolution_px = vertical_resolution_px
-        self.lens_id = lens_id
-        self.definition_file_version = definition_file_version
-        self.definition_file_uri = definition_file_uri
-        self.image_in_video_mode_supported = image_in_video_mode_supported
-        self.video_in_image_mode_supported = video_in_image_mode_supported
+        self.vendor_name = vendor_name if vendor_name is not None else ""
+        self.model_name = model_name if model_name is not None else ""
+        self.firmware_version = firmware_version if firmware_version is not None else ""
+        self.focal_length_mm = focal_length_mm if focal_length_mm is not None else 0.0
+        self.horizontal_sensor_size_mm = (
+            horizontal_sensor_size_mm if horizontal_sensor_size_mm is not None else 0.0
+        )
+        self.vertical_sensor_size_mm = (
+            vertical_sensor_size_mm if vertical_sensor_size_mm is not None else 0.0
+        )
+        self.horizontal_resolution_px = (
+            horizontal_resolution_px if horizontal_resolution_px is not None else 0
+        )
+        self.vertical_resolution_px = (
+            vertical_resolution_px if vertical_resolution_px is not None else 0
+        )
+        self.lens_id = lens_id if lens_id is not None else 0
+        self.definition_file_version = (
+            definition_file_version if definition_file_version is not None else 0
+        )
+        self.definition_file_uri = (
+            definition_file_uri if definition_file_uri is not None else ""
+        )
+        self.image_in_video_mode_supported = (
+            image_in_video_mode_supported
+            if image_in_video_mode_supported is not None
+            else False
+        )
+        self.video_in_image_mode_supported = (
+            video_in_image_mode_supported
+            if video_in_image_mode_supported is not None
+            else False
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -316,8 +336,8 @@ class VideoStreaming:
     """
 
     def __init__(self, has_rtsp_server=None, rtsp_uri=None):
-        self.has_rtsp_server = has_rtsp_server
-        self.rtsp_uri = rtsp_uri
+        self.has_rtsp_server = has_rtsp_server if has_rtsp_server is not None else False
+        self.rtsp_uri = rtsp_uri if rtsp_uri is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -353,10 +373,14 @@ class Position:
         absolute_altitude_m=None,
         relative_altitude_m=None,
     ):
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
-        self.absolute_altitude_m = absolute_altitude_m
-        self.relative_altitude_m = relative_altitude_m
+        self.latitude_deg = latitude_deg if latitude_deg is not None else 0.0
+        self.longitude_deg = longitude_deg if longitude_deg is not None else 0.0
+        self.absolute_altitude_m = (
+            absolute_altitude_m if absolute_altitude_m is not None else 0.0
+        )
+        self.relative_altitude_m = (
+            relative_altitude_m if relative_altitude_m is not None else 0.0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -399,10 +423,10 @@ class Quaternion:
     """
 
     def __init__(self, w=None, x=None, y=None, z=None):
-        self.w = w
-        self.x = x
-        self.y = y
-        self.z = z
+        self.w = w if w is not None else 0.0
+        self.x = x if x is not None else 0.0
+        self.y = y if y is not None else 0.0
+        self.z = z if z is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -446,12 +470,14 @@ class CaptureInfo:
         index=None,
         file_url=None,
     ):
-        self.position = position
-        self.attitude_quaternion = attitude_quaternion
-        self.time_utc_us = time_utc_us
-        self.is_success = is_success
-        self.index = index
-        self.file_url = file_url
+        self.position = position if position is not None else Position()
+        self.attitude_quaternion = (
+            attitude_quaternion if attitude_quaternion is not None else Quaternion()
+        )
+        self.time_utc_us = time_utc_us if time_utc_us is not None else 0
+        self.is_success = is_success if is_success is not None else False
+        self.index = index if index is not None else 0
+        self.file_url = file_url if file_url is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -523,14 +549,32 @@ class StorageInformation:
         read_speed_mib_s=None,
         write_speed_mib_s=None,
     ):
-        self.used_storage_mib = used_storage_mib
-        self.available_storage_mib = available_storage_mib
-        self.total_storage_mib = total_storage_mib
-        self.storage_status = storage_status
-        self.storage_id = storage_id
-        self.storage_type = storage_type
-        self.read_speed_mib_s = read_speed_mib_s
-        self.write_speed_mib_s = write_speed_mib_s
+        self.used_storage_mib = (
+            used_storage_mib if used_storage_mib is not None else 0.0
+        )
+        self.available_storage_mib = (
+            available_storage_mib if available_storage_mib is not None else 0.0
+        )
+        self.total_storage_mib = (
+            total_storage_mib if total_storage_mib is not None else 0.0
+        )
+        self.storage_status = (
+            storage_status
+            if storage_status is not None
+            else StorageInformation.StorageStatus(0)
+        )
+        self.storage_id = storage_id if storage_id is not None else 0
+        self.storage_type = (
+            storage_type
+            if storage_type is not None
+            else StorageInformation.StorageType(0)
+        )
+        self.read_speed_mib_s = (
+            read_speed_mib_s if read_speed_mib_s is not None else 0.0
+        )
+        self.write_speed_mib_s = (
+            write_speed_mib_s if write_speed_mib_s is not None else 0.0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -602,12 +646,22 @@ class CaptureStatus:
         video_status=None,
         image_count=None,
     ):
-        self.image_interval_s = image_interval_s
-        self.recording_time_s = recording_time_s
-        self.available_capacity_mib = available_capacity_mib
-        self.image_status = image_status
-        self.video_status = video_status
-        self.image_count = image_count
+        self.image_interval_s = (
+            image_interval_s if image_interval_s is not None else 0.0
+        )
+        self.recording_time_s = (
+            recording_time_s if recording_time_s is not None else 0.0
+        )
+        self.available_capacity_mib = (
+            available_capacity_mib if available_capacity_mib is not None else 0.0
+        )
+        self.image_status = (
+            image_status if image_status is not None else CaptureStatus.ImageStatus(0)
+        )
+        self.video_status = (
+            video_status if video_status is not None else CaptureStatus.VideoStatus(0)
+        )
+        self.image_count = image_count if image_count is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -649,9 +703,9 @@ class TrackPoint:
     """
 
     def __init__(self, point_x=None, point_y=None, radius=None):
-        self.point_x = point_x
-        self.point_y = point_y
-        self.radius = radius
+        self.point_x = point_x if point_x is not None else 0.0
+        self.point_y = point_y if point_y is not None else 0.0
+        self.radius = radius if radius is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -690,10 +744,18 @@ class TrackRectangle:
         bottom_right_corner_x=None,
         bottom_right_corner_y=None,
     ):
-        self.top_left_corner_x = top_left_corner_x
-        self.top_left_corner_y = top_left_corner_y
-        self.bottom_right_corner_x = bottom_right_corner_x
-        self.bottom_right_corner_y = bottom_right_corner_y
+        self.top_left_corner_x = (
+            top_left_corner_x if top_left_corner_x is not None else 0.0
+        )
+        self.top_left_corner_y = (
+            top_left_corner_y if top_left_corner_y is not None else 0.0
+        )
+        self.bottom_right_corner_x = (
+            bottom_right_corner_x if bottom_right_corner_x is not None else 0.0
+        )
+        self.bottom_right_corner_y = (
+            bottom_right_corner_y if bottom_right_corner_y is not None else 0.0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):

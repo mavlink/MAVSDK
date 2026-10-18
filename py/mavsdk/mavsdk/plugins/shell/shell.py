@@ -100,8 +100,8 @@ class Receive:
     """
 
     def __init__(self, data=None, device=None):
-        self.data = data
-        self.device = device
+        self.data = data if data is not None else ""
+        self.device = device if device is not None else Device(0)
 
     @classmethod
     def from_c_struct(cls, c_struct):

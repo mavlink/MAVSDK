@@ -489,10 +489,16 @@ class Position:
         absolute_altitude_m=None,
         relative_altitude_m=None,
     ):
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
-        self.absolute_altitude_m = absolute_altitude_m
-        self.relative_altitude_m = relative_altitude_m
+        self.latitude_deg = latitude_deg if latitude_deg is not None else float("nan")
+        self.longitude_deg = (
+            longitude_deg if longitude_deg is not None else float("nan")
+        )
+        self.absolute_altitude_m = (
+            absolute_altitude_m if absolute_altitude_m is not None else float("nan")
+        )
+        self.relative_altitude_m = (
+            relative_altitude_m if relative_altitude_m is not None else float("nan")
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -528,7 +534,7 @@ class Heading:
     """
 
     def __init__(self, heading_deg=None):
-        self.heading_deg = heading_deg
+        self.heading_deg = heading_deg if heading_deg is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -562,11 +568,11 @@ class Quaternion:
     """
 
     def __init__(self, w=None, x=None, y=None, z=None, timestamp_us=None):
-        self.w = w
-        self.x = x
-        self.y = y
-        self.z = z
-        self.timestamp_us = timestamp_us
+        self.w = w if w is not None else float("nan")
+        self.x = x if x is not None else float("nan")
+        self.y = y if y is not None else float("nan")
+        self.z = z if z is not None else float("nan")
+        self.timestamp_us = timestamp_us if timestamp_us is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -610,10 +616,10 @@ class EulerAngle:
     """
 
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None, timestamp_us=None):
-        self.roll_deg = roll_deg
-        self.pitch_deg = pitch_deg
-        self.yaw_deg = yaw_deg
-        self.timestamp_us = timestamp_us
+        self.roll_deg = roll_deg if roll_deg is not None else float("nan")
+        self.pitch_deg = pitch_deg if pitch_deg is not None else float("nan")
+        self.yaw_deg = yaw_deg if yaw_deg is not None else float("nan")
+        self.timestamp_us = timestamp_us if timestamp_us is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -649,9 +655,9 @@ class AngularVelocityBody:
     """
 
     def __init__(self, roll_rad_s=None, pitch_rad_s=None, yaw_rad_s=None):
-        self.roll_rad_s = roll_rad_s
-        self.pitch_rad_s = pitch_rad_s
-        self.yaw_rad_s = yaw_rad_s
+        self.roll_rad_s = roll_rad_s if roll_rad_s is not None else float("nan")
+        self.pitch_rad_s = pitch_rad_s if pitch_rad_s is not None else float("nan")
+        self.yaw_rad_s = yaw_rad_s if yaw_rad_s is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -684,8 +690,8 @@ class GpsInfo:
     """
 
     def __init__(self, num_satellites=None, fix_type=None):
-        self.num_satellites = num_satellites
-        self.fix_type = fix_type
+        self.num_satellites = num_satellites if num_satellites is not None else 0
+        self.fix_type = fix_type if fix_type is not None else FixType(0)
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -734,20 +740,32 @@ class RawGps:
         heading_uncertainty_deg=None,
         yaw_deg=None,
     ):
-        self.timestamp_us = timestamp_us
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
-        self.absolute_altitude_m = absolute_altitude_m
-        self.hdop = hdop
-        self.vdop = vdop
-        self.velocity_m_s = velocity_m_s
-        self.cog_deg = cog_deg
-        self.altitude_ellipsoid_m = altitude_ellipsoid_m
-        self.horizontal_uncertainty_m = horizontal_uncertainty_m
-        self.vertical_uncertainty_m = vertical_uncertainty_m
-        self.velocity_uncertainty_m_s = velocity_uncertainty_m_s
-        self.heading_uncertainty_deg = heading_uncertainty_deg
-        self.yaw_deg = yaw_deg
+        self.timestamp_us = timestamp_us if timestamp_us is not None else 0
+        self.latitude_deg = latitude_deg if latitude_deg is not None else 0.0
+        self.longitude_deg = longitude_deg if longitude_deg is not None else 0.0
+        self.absolute_altitude_m = (
+            absolute_altitude_m if absolute_altitude_m is not None else 0.0
+        )
+        self.hdop = hdop if hdop is not None else 0.0
+        self.vdop = vdop if vdop is not None else 0.0
+        self.velocity_m_s = velocity_m_s if velocity_m_s is not None else 0.0
+        self.cog_deg = cog_deg if cog_deg is not None else 0.0
+        self.altitude_ellipsoid_m = (
+            altitude_ellipsoid_m if altitude_ellipsoid_m is not None else 0.0
+        )
+        self.horizontal_uncertainty_m = (
+            horizontal_uncertainty_m if horizontal_uncertainty_m is not None else 0.0
+        )
+        self.vertical_uncertainty_m = (
+            vertical_uncertainty_m if vertical_uncertainty_m is not None else 0.0
+        )
+        self.velocity_uncertainty_m_s = (
+            velocity_uncertainty_m_s if velocity_uncertainty_m_s is not None else 0.0
+        )
+        self.heading_uncertainty_deg = (
+            heading_uncertainty_deg if heading_uncertainty_deg is not None else 0.0
+        )
+        self.yaw_deg = yaw_deg if yaw_deg is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -813,8 +831,10 @@ class Battery:
     """
 
     def __init__(self, voltage_v=None, remaining_percent=None):
-        self.voltage_v = voltage_v
-        self.remaining_percent = remaining_percent
+        self.voltage_v = voltage_v if voltage_v is not None else float("nan")
+        self.remaining_percent = (
+            remaining_percent if remaining_percent is not None else float("nan")
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -846,9 +866,15 @@ class RcStatus:
     def __init__(
         self, was_available_once=None, is_available=None, signal_strength_percent=None
     ):
-        self.was_available_once = was_available_once
-        self.is_available = is_available
-        self.signal_strength_percent = signal_strength_percent
+        self.was_available_once = (
+            was_available_once if was_available_once is not None else False
+        )
+        self.is_available = is_available if is_available is not None else False
+        self.signal_strength_percent = (
+            signal_strength_percent
+            if signal_strength_percent is not None
+            else float("nan")
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -881,8 +907,8 @@ class StatusText:
     """
 
     def __init__(self, type=None, text=None):
-        self.type = type
-        self.text = text
+        self.type = type if type is not None else StatusTextType(0)
+        self.text = text if text is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -912,7 +938,7 @@ class ActuatorControlTarget:
     """
 
     def __init__(self, group=None, controls=None):
-        self.group = group
+        self.group = group if group is not None else 0
         self.controls = controls or []
 
     @classmethod
@@ -950,7 +976,7 @@ class ActuatorOutputStatus:
     """
 
     def __init__(self, active=None, actuator=None):
-        self.active = active
+        self.active = active if active is not None else 0
         self.actuator = actuator or []
 
     @classmethod
@@ -1027,9 +1053,9 @@ class VelocityBody:
     """
 
     def __init__(self, x_m_s=None, y_m_s=None, z_m_s=None):
-        self.x_m_s = x_m_s
-        self.y_m_s = y_m_s
-        self.z_m_s = z_m_s
+        self.x_m_s = x_m_s if x_m_s is not None else 0.0
+        self.y_m_s = y_m_s if y_m_s is not None else 0.0
+        self.z_m_s = z_m_s if z_m_s is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1062,9 +1088,9 @@ class PositionBody:
     """
 
     def __init__(self, x_m=None, y_m=None, z_m=None):
-        self.x_m = x_m
-        self.y_m = y_m
-        self.z_m = z_m
+        self.x_m = x_m if x_m is not None else 0.0
+        self.y_m = y_m if y_m is not None else 0.0
+        self.z_m = z_m if z_m is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1116,15 +1142,29 @@ class Odometry:
         pose_covariance=None,
         velocity_covariance=None,
     ):
-        self.time_usec = time_usec
-        self.frame_id = frame_id
-        self.child_frame_id = child_frame_id
-        self.position_body = position_body
-        self.q = q
-        self.velocity_body = velocity_body
-        self.angular_velocity_body = angular_velocity_body
-        self.pose_covariance = pose_covariance
-        self.velocity_covariance = velocity_covariance
+        self.time_usec = time_usec if time_usec is not None else 0
+        self.frame_id = frame_id if frame_id is not None else Odometry.MavFrame(0)
+        self.child_frame_id = (
+            child_frame_id if child_frame_id is not None else Odometry.MavFrame(0)
+        )
+        self.position_body = (
+            position_body if position_body is not None else PositionBody()
+        )
+        self.q = q if q is not None else Quaternion()
+        self.velocity_body = (
+            velocity_body if velocity_body is not None else VelocityBody()
+        )
+        self.angular_velocity_body = (
+            angular_velocity_body
+            if angular_velocity_body is not None
+            else AngularVelocityBody()
+        )
+        self.pose_covariance = (
+            pose_covariance if pose_covariance is not None else Covariance()
+        )
+        self.velocity_covariance = (
+            velocity_covariance if velocity_covariance is not None else Covariance()
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1181,9 +1221,15 @@ class DistanceSensor:
     def __init__(
         self, minimum_distance_m=None, maximum_distance_m=None, current_distance_m=None
     ):
-        self.minimum_distance_m = minimum_distance_m
-        self.maximum_distance_m = maximum_distance_m
-        self.current_distance_m = current_distance_m
+        self.minimum_distance_m = (
+            minimum_distance_m if minimum_distance_m is not None else float("nan")
+        )
+        self.maximum_distance_m = (
+            maximum_distance_m if maximum_distance_m is not None else float("nan")
+        )
+        self.current_distance_m = (
+            current_distance_m if current_distance_m is not None else float("nan")
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1223,12 +1269,18 @@ class ScaledPressure:
         temperature_deg=None,
         differential_pressure_temperature_deg=None,
     ):
-        self.timestamp_us = timestamp_us
-        self.absolute_pressure_hpa = absolute_pressure_hpa
-        self.differential_pressure_hpa = differential_pressure_hpa
-        self.temperature_deg = temperature_deg
+        self.timestamp_us = timestamp_us if timestamp_us is not None else 0
+        self.absolute_pressure_hpa = (
+            absolute_pressure_hpa if absolute_pressure_hpa is not None else 0.0
+        )
+        self.differential_pressure_hpa = (
+            differential_pressure_hpa if differential_pressure_hpa is not None else 0.0
+        )
+        self.temperature_deg = temperature_deg if temperature_deg is not None else 0.0
         self.differential_pressure_temperature_deg = (
             differential_pressure_temperature_deg
+            if differential_pressure_temperature_deg is not None
+            else 0.0
         )
 
     @classmethod
@@ -1274,9 +1326,9 @@ class PositionNed:
     """
 
     def __init__(self, north_m=None, east_m=None, down_m=None):
-        self.north_m = north_m
-        self.east_m = east_m
-        self.down_m = down_m
+        self.north_m = north_m if north_m is not None else float("nan")
+        self.east_m = east_m if east_m is not None else float("nan")
+        self.down_m = down_m if down_m is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1309,9 +1361,9 @@ class VelocityNed:
     """
 
     def __init__(self, north_m_s=None, east_m_s=None, down_m_s=None):
-        self.north_m_s = north_m_s
-        self.east_m_s = east_m_s
-        self.down_m_s = down_m_s
+        self.north_m_s = north_m_s if north_m_s is not None else 0.0
+        self.east_m_s = east_m_s if east_m_s is not None else 0.0
+        self.down_m_s = down_m_s if down_m_s is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1344,8 +1396,8 @@ class PositionVelocityNed:
     """
 
     def __init__(self, position=None, velocity=None):
-        self.position = position
-        self.velocity = velocity
+        self.position = position if position is not None else PositionNed()
+        self.velocity = velocity if velocity is not None else VelocityNed()
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1381,10 +1433,14 @@ class GroundTruth:
         absolute_altitude_m=None,
         timestamp_us=None,
     ):
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
-        self.absolute_altitude_m = absolute_altitude_m
-        self.timestamp_us = timestamp_us
+        self.latitude_deg = latitude_deg if latitude_deg is not None else float("nan")
+        self.longitude_deg = (
+            longitude_deg if longitude_deg is not None else float("nan")
+        )
+        self.absolute_altitude_m = (
+            absolute_altitude_m if absolute_altitude_m is not None else float("nan")
+        )
+        self.timestamp_us = timestamp_us if timestamp_us is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1428,12 +1484,20 @@ class FixedwingMetrics:
         heading_deg=None,
         absolute_altitude_m=None,
     ):
-        self.airspeed_m_s = airspeed_m_s
-        self.throttle_percentage = throttle_percentage
-        self.climb_rate_m_s = climb_rate_m_s
-        self.groundspeed_m_s = groundspeed_m_s
-        self.heading_deg = heading_deg
-        self.absolute_altitude_m = absolute_altitude_m
+        self.airspeed_m_s = airspeed_m_s if airspeed_m_s is not None else float("nan")
+        self.throttle_percentage = (
+            throttle_percentage if throttle_percentage is not None else float("nan")
+        )
+        self.climb_rate_m_s = (
+            climb_rate_m_s if climb_rate_m_s is not None else float("nan")
+        )
+        self.groundspeed_m_s = (
+            groundspeed_m_s if groundspeed_m_s is not None else float("nan")
+        )
+        self.heading_deg = heading_deg if heading_deg is not None else float("nan")
+        self.absolute_altitude_m = (
+            absolute_altitude_m if absolute_altitude_m is not None else float("nan")
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1475,9 +1539,9 @@ class AccelerationFrd:
     """
 
     def __init__(self, forward_m_s2=None, right_m_s2=None, down_m_s2=None):
-        self.forward_m_s2 = forward_m_s2
-        self.right_m_s2 = right_m_s2
-        self.down_m_s2 = down_m_s2
+        self.forward_m_s2 = forward_m_s2 if forward_m_s2 is not None else float("nan")
+        self.right_m_s2 = right_m_s2 if right_m_s2 is not None else float("nan")
+        self.down_m_s2 = down_m_s2 if down_m_s2 is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1510,9 +1574,11 @@ class AngularVelocityFrd:
     """
 
     def __init__(self, forward_rad_s=None, right_rad_s=None, down_rad_s=None):
-        self.forward_rad_s = forward_rad_s
-        self.right_rad_s = right_rad_s
-        self.down_rad_s = down_rad_s
+        self.forward_rad_s = (
+            forward_rad_s if forward_rad_s is not None else float("nan")
+        )
+        self.right_rad_s = right_rad_s if right_rad_s is not None else float("nan")
+        self.down_rad_s = down_rad_s if down_rad_s is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1545,9 +1611,11 @@ class MagneticFieldFrd:
     """
 
     def __init__(self, forward_gauss=None, right_gauss=None, down_gauss=None):
-        self.forward_gauss = forward_gauss
-        self.right_gauss = right_gauss
-        self.down_gauss = down_gauss
+        self.forward_gauss = (
+            forward_gauss if forward_gauss is not None else float("nan")
+        )
+        self.right_gauss = right_gauss if right_gauss is not None else float("nan")
+        self.down_gauss = down_gauss if down_gauss is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1587,11 +1655,21 @@ class Imu:
         temperature_degc=None,
         timestamp_us=None,
     ):
-        self.acceleration_frd = acceleration_frd
-        self.angular_velocity_frd = angular_velocity_frd
-        self.magnetic_field_frd = magnetic_field_frd
-        self.temperature_degc = temperature_degc
-        self.timestamp_us = timestamp_us
+        self.acceleration_frd = (
+            acceleration_frd if acceleration_frd is not None else AccelerationFrd()
+        )
+        self.angular_velocity_frd = (
+            angular_velocity_frd
+            if angular_velocity_frd is not None
+            else AngularVelocityFrd()
+        )
+        self.magnetic_field_frd = (
+            magnetic_field_frd if magnetic_field_frd is not None else MagneticFieldFrd()
+        )
+        self.temperature_degc = (
+            temperature_degc if temperature_degc is not None else float("nan")
+        )
+        self.timestamp_us = timestamp_us if timestamp_us is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):

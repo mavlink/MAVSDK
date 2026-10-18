@@ -189,20 +189,44 @@ class MissionItem:
         camera_photo_distance_m=None,
         vehicle_action=None,
     ):
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
-        self.relative_altitude_m = relative_altitude_m
-        self.speed_m_s = speed_m_s
-        self.is_fly_through = is_fly_through
-        self.gimbal_pitch_deg = gimbal_pitch_deg
-        self.gimbal_yaw_deg = gimbal_yaw_deg
-        self.camera_action = camera_action
-        self.loiter_time_s = loiter_time_s
-        self.camera_photo_interval_s = camera_photo_interval_s
-        self.acceptance_radius_m = acceptance_radius_m
-        self.yaw_deg = yaw_deg
-        self.camera_photo_distance_m = camera_photo_distance_m
-        self.vehicle_action = vehicle_action
+        self.latitude_deg = latitude_deg if latitude_deg is not None else float("nan")
+        self.longitude_deg = (
+            longitude_deg if longitude_deg is not None else float("nan")
+        )
+        self.relative_altitude_m = (
+            relative_altitude_m if relative_altitude_m is not None else float("nan")
+        )
+        self.speed_m_s = speed_m_s if speed_m_s is not None else float("nan")
+        self.is_fly_through = is_fly_through if is_fly_through is not None else False
+        self.gimbal_pitch_deg = (
+            gimbal_pitch_deg if gimbal_pitch_deg is not None else float("nan")
+        )
+        self.gimbal_yaw_deg = (
+            gimbal_yaw_deg if gimbal_yaw_deg is not None else float("nan")
+        )
+        self.camera_action = (
+            camera_action if camera_action is not None else MissionItem.CameraAction(0)
+        )
+        self.loiter_time_s = (
+            loiter_time_s if loiter_time_s is not None else float("nan")
+        )
+        self.camera_photo_interval_s = (
+            camera_photo_interval_s if camera_photo_interval_s is not None else 1.0
+        )
+        self.acceptance_radius_m = (
+            acceptance_radius_m if acceptance_radius_m is not None else float("nan")
+        )
+        self.yaw_deg = yaw_deg if yaw_deg is not None else float("nan")
+        self.camera_photo_distance_m = (
+            camera_photo_distance_m
+            if camera_photo_distance_m is not None
+            else float("nan")
+        )
+        self.vehicle_action = (
+            vehicle_action
+            if vehicle_action is not None
+            else MissionItem.VehicleAction(0)
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -308,8 +332,8 @@ class MissionProgress:
     """
 
     def __init__(self, current=None, total=None):
-        self.current = current
-        self.total = total
+        self.current = current if current is not None else 0
+        self.total = total if total is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -339,7 +363,7 @@ class ProgressData:
     """
 
     def __init__(self, progress=None):
-        self.progress = progress
+        self.progress = progress if progress is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -368,10 +392,10 @@ class ProgressDataOrMission:
     def __init__(
         self, has_progress=None, progress=None, has_mission=None, mission_plan=None
     ):
-        self.has_progress = has_progress
-        self.progress = progress
-        self.has_mission = has_mission
-        self.mission_plan = mission_plan
+        self.has_progress = has_progress if has_progress is not None else False
+        self.progress = progress if progress is not None else float("nan")
+        self.has_mission = has_mission if has_mission is not None else False
+        self.mission_plan = mission_plan if mission_plan is not None else MissionPlan()
 
     @classmethod
     def from_c_struct(cls, c_struct):

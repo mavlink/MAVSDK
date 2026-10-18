@@ -130,10 +130,14 @@ class FlightInfo:
         duration_since_arming_ms=None,
         duration_since_takeoff_ms=None,
     ):
-        self.time_boot_ms = time_boot_ms
-        self.flight_uid = flight_uid
-        self.duration_since_arming_ms = duration_since_arming_ms
-        self.duration_since_takeoff_ms = duration_since_takeoff_ms
+        self.time_boot_ms = time_boot_ms if time_boot_ms is not None else 0
+        self.flight_uid = flight_uid if flight_uid is not None else 0
+        self.duration_since_arming_ms = (
+            duration_since_arming_ms if duration_since_arming_ms is not None else 0
+        )
+        self.duration_since_takeoff_ms = (
+            duration_since_takeoff_ms if duration_since_takeoff_ms is not None else 0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -169,8 +173,8 @@ class Identification:
     """
 
     def __init__(self, hardware_uid=None, legacy_uid=None):
-        self.hardware_uid = hardware_uid
-        self.legacy_uid = legacy_uid
+        self.hardware_uid = hardware_uid if hardware_uid is not None else ""
+        self.legacy_uid = legacy_uid if legacy_uid is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -202,10 +206,10 @@ class Product:
     def __init__(
         self, vendor_id=None, vendor_name=None, product_id=None, product_name=None
     ):
-        self.vendor_id = vendor_id
-        self.vendor_name = vendor_name
-        self.product_id = product_id
-        self.product_name = product_name
+        self.vendor_id = vendor_id if vendor_id is not None else 0
+        self.vendor_name = vendor_name if vendor_name is not None else ""
+        self.product_id = product_id if product_id is not None else 0
+        self.product_name = product_name if product_name is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -265,18 +269,30 @@ class Version:
         os_sw_git_hash=None,
         flight_sw_version_type=None,
     ):
-        self.flight_sw_major = flight_sw_major
-        self.flight_sw_minor = flight_sw_minor
-        self.flight_sw_patch = flight_sw_patch
-        self.flight_sw_vendor_major = flight_sw_vendor_major
-        self.flight_sw_vendor_minor = flight_sw_vendor_minor
-        self.flight_sw_vendor_patch = flight_sw_vendor_patch
-        self.os_sw_major = os_sw_major
-        self.os_sw_minor = os_sw_minor
-        self.os_sw_patch = os_sw_patch
-        self.flight_sw_git_hash = flight_sw_git_hash
-        self.os_sw_git_hash = os_sw_git_hash
-        self.flight_sw_version_type = flight_sw_version_type
+        self.flight_sw_major = flight_sw_major if flight_sw_major is not None else 0
+        self.flight_sw_minor = flight_sw_minor if flight_sw_minor is not None else 0
+        self.flight_sw_patch = flight_sw_patch if flight_sw_patch is not None else 0
+        self.flight_sw_vendor_major = (
+            flight_sw_vendor_major if flight_sw_vendor_major is not None else 0
+        )
+        self.flight_sw_vendor_minor = (
+            flight_sw_vendor_minor if flight_sw_vendor_minor is not None else 0
+        )
+        self.flight_sw_vendor_patch = (
+            flight_sw_vendor_patch if flight_sw_vendor_patch is not None else 0
+        )
+        self.os_sw_major = os_sw_major if os_sw_major is not None else 0
+        self.os_sw_minor = os_sw_minor if os_sw_minor is not None else 0
+        self.os_sw_patch = os_sw_patch if os_sw_patch is not None else 0
+        self.flight_sw_git_hash = (
+            flight_sw_git_hash if flight_sw_git_hash is not None else ""
+        )
+        self.os_sw_git_hash = os_sw_git_hash if os_sw_git_hash is not None else ""
+        self.flight_sw_version_type = (
+            flight_sw_version_type
+            if flight_sw_version_type is not None
+            else Version.FlightSoftwareVersionType(0)
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):

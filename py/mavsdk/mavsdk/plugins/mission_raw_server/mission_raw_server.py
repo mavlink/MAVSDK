@@ -134,19 +134,19 @@ class MissionItem:
         z=None,
         mission_type=None,
     ):
-        self.seq = seq
-        self.frame = frame
-        self.command = command
-        self.current = current
-        self.autocontinue = autocontinue
-        self.param1 = param1
-        self.param2 = param2
-        self.param3 = param3
-        self.param4 = param4
-        self.x = x
-        self.y = y
-        self.z = z
-        self.mission_type = mission_type
+        self.seq = seq if seq is not None else 0
+        self.frame = frame if frame is not None else 0
+        self.command = command if command is not None else 0
+        self.current = current if current is not None else 0
+        self.autocontinue = autocontinue if autocontinue is not None else 0
+        self.param1 = param1 if param1 is not None else 0.0
+        self.param2 = param2 if param2 is not None else 0.0
+        self.param3 = param3 if param3 is not None else 0.0
+        self.param4 = param4 if param4 is not None else 0.0
+        self.x = x if x is not None else 0
+        self.y = y if y is not None else 0
+        self.z = z if z is not None else 0.0
+        self.mission_type = mission_type if mission_type is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -249,8 +249,8 @@ class MissionProgress:
     """
 
     def __init__(self, current=None, total=None):
-        self.current = current
-        self.total = total
+        self.current = current if current is not None else 0
+        self.total = total if total is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):

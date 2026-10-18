@@ -94,12 +94,14 @@ class MavlinkMessage:
         target_component_id=None,
         fields_json=None,
     ):
-        self.message_name = message_name
-        self.system_id = system_id
-        self.component_id = component_id
-        self.target_system_id = target_system_id
-        self.target_component_id = target_component_id
-        self.fields_json = fields_json
+        self.message_name = message_name if message_name is not None else ""
+        self.system_id = system_id if system_id is not None else 0
+        self.component_id = component_id if component_id is not None else 0
+        self.target_system_id = target_system_id if target_system_id is not None else 0
+        self.target_component_id = (
+            target_component_id if target_component_id is not None else 0
+        )
+        self.fields_json = fields_json if fields_json is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):

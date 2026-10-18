@@ -194,10 +194,10 @@ class Quaternion:
     """
 
     def __init__(self, w=None, x=None, y=None, z=None):
-        self.w = w
-        self.x = x
-        self.y = y
-        self.z = z
+        self.w = w if w is not None else float("nan")
+        self.x = x if x is not None else float("nan")
+        self.y = y if y is not None else float("nan")
+        self.z = z if z is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -239,9 +239,9 @@ class EulerAngle:
     """
 
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None):
-        self.roll_deg = roll_deg
-        self.pitch_deg = pitch_deg
-        self.yaw_deg = yaw_deg
+        self.roll_deg = roll_deg if roll_deg is not None else float("nan")
+        self.pitch_deg = pitch_deg if pitch_deg is not None else float("nan")
+        self.yaw_deg = yaw_deg if yaw_deg is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -274,9 +274,9 @@ class AngularVelocityBody:
     """
 
     def __init__(self, roll_rad_s=None, pitch_rad_s=None, yaw_rad_s=None):
-        self.roll_rad_s = roll_rad_s
-        self.pitch_rad_s = pitch_rad_s
-        self.yaw_rad_s = yaw_rad_s
+        self.roll_rad_s = roll_rad_s if roll_rad_s is not None else float("nan")
+        self.pitch_rad_s = pitch_rad_s if pitch_rad_s is not None else float("nan")
+        self.yaw_rad_s = yaw_rad_s if yaw_rad_s is not None else float("nan")
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -318,13 +318,23 @@ class Attitude:
         angular_velocity=None,
         timestamp_us=None,
     ):
-        self.gimbal_id = gimbal_id
-        self.euler_angle_forward = euler_angle_forward
-        self.quaternion_forward = quaternion_forward
-        self.euler_angle_north = euler_angle_north
-        self.quaternion_north = quaternion_north
-        self.angular_velocity = angular_velocity
-        self.timestamp_us = timestamp_us
+        self.gimbal_id = gimbal_id if gimbal_id is not None else 0
+        self.euler_angle_forward = (
+            euler_angle_forward if euler_angle_forward is not None else EulerAngle()
+        )
+        self.quaternion_forward = (
+            quaternion_forward if quaternion_forward is not None else Quaternion()
+        )
+        self.euler_angle_north = (
+            euler_angle_north if euler_angle_north is not None else EulerAngle()
+        )
+        self.quaternion_north = (
+            quaternion_north if quaternion_north is not None else Quaternion()
+        )
+        self.angular_velocity = (
+            angular_velocity if angular_velocity is not None else AngularVelocityBody()
+        )
+        self.timestamp_us = timestamp_us if timestamp_us is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -385,12 +395,16 @@ class GimbalItem:
         gimbal_manager_component_id=None,
         gimbal_device_id=None,
     ):
-        self.gimbal_id = gimbal_id
-        self.vendor_name = vendor_name
-        self.model_name = model_name
-        self.custom_name = custom_name
-        self.gimbal_manager_component_id = gimbal_manager_component_id
-        self.gimbal_device_id = gimbal_device_id
+        self.gimbal_id = gimbal_id if gimbal_id is not None else 0
+        self.vendor_name = vendor_name if vendor_name is not None else ""
+        self.model_name = model_name if model_name is not None else ""
+        self.custom_name = custom_name if custom_name is not None else ""
+        self.gimbal_manager_component_id = (
+            gimbal_manager_component_id
+            if gimbal_manager_component_id is not None
+            else 0
+        )
+        self.gimbal_device_id = gimbal_device_id if gimbal_device_id is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -478,12 +492,20 @@ class ControlStatus:
         sysid_secondary_control=None,
         compid_secondary_control=None,
     ):
-        self.gimbal_id = gimbal_id
-        self.control_mode = control_mode
-        self.sysid_primary_control = sysid_primary_control
-        self.compid_primary_control = compid_primary_control
-        self.sysid_secondary_control = sysid_secondary_control
-        self.compid_secondary_control = compid_secondary_control
+        self.gimbal_id = gimbal_id if gimbal_id is not None else 0
+        self.control_mode = control_mode if control_mode is not None else ControlMode(0)
+        self.sysid_primary_control = (
+            sysid_primary_control if sysid_primary_control is not None else 0
+        )
+        self.compid_primary_control = (
+            compid_primary_control if compid_primary_control is not None else 0
+        )
+        self.sysid_secondary_control = (
+            sysid_secondary_control if sysid_secondary_control is not None else 0
+        )
+        self.compid_secondary_control = (
+            compid_secondary_control if compid_secondary_control is not None else 0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):

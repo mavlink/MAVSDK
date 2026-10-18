@@ -118,8 +118,8 @@ class IntParam:
     """
 
     def __init__(self, name=None, value=None):
-        self.name = name
-        self.value = value
+        self.name = name if name is not None else ""
+        self.value = value if value is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -149,8 +149,8 @@ class FloatParam:
     """
 
     def __init__(self, name=None, value=None):
-        self.name = name
-        self.value = value
+        self.name = name if name is not None else ""
+        self.value = value if value is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -180,8 +180,8 @@ class CustomParam:
     """
 
     def __init__(self, name=None, value=None):
-        self.name = name
-        self.value = value
+        self.name = name if name is not None else ""
+        self.value = value if value is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
