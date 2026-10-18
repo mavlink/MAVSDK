@@ -10,15 +10,15 @@
 ## Data Fields
 
 
-uint32_t [seq](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a4100d5f8bf1e8a8a18495e4d3e2df9c7) {} - Sequence (uint16_t)
+uint32_t [seq](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a4100d5f8bf1e8a8a18495e4d3e2df9c7) {} - Sequence (uint16_t).
 
-uint32_t [frame](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a003abd4f7877609a5352e8c2d5b6f878) {} - The coordinate system of the waypoint (actually uint8_t)
+uint32_t [frame](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a003abd4f7877609a5352e8c2d5b6f878) {} - The coordinate system of the waypoint (actually uint8_t).
 
-uint32_t [command](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a8a1a528bfbcdb3106c947cf3618967c9) {} - The scheduled action for the waypoint (actually uint16_t)
+uint32_t [command](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a8a1a528bfbcdb3106c947cf3618967c9) {} - The scheduled action for the waypoint (actually uint16_t).
 
 uint32_t [current](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a0853859a211fd5fbc002b83f60292232) {} - false:0, true:1 (actually uint8_t)
 
-uint32_t [autocontinue](#structmavsdk_1_1_mission_raw_1_1_mission_item_1ab832f0f1788c75f0b5b0a1f12561aa06) {} - Autocontinue to next waypoint (actually uint8_t)
+uint32_t [autocontinue](#structmavsdk_1_1_mission_raw_1_1_mission_item_1ab832f0f1788c75f0b5b0a1f12561aa06) {} - Autocontinue to next waypoint (actually uint8_t).
 
 float [param1](#structmavsdk_1_1_mission_raw_1_1_mission_item_1ae1d81f82162e3103b47af5b6a4c1aa02) {} - PARAM1, see MAV_CMD enum.
 
@@ -32,9 +32,9 @@ int32_t [x](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a6081b94f11c03da8cdb
 
 int32_t [y](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a9dbe5c8be2a48a4d64da03ea26ab0693) {} - PARAM6 / y position: local: x position in meters * 1e4, global: longitude in degrees *10^7.
 
-float [z](#structmavsdk_1_1_mission_raw_1_1_mission_item_1ab2805706c6b8ed802c2454ce91f28c9e) {} - PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame)
+float [z](#structmavsdk_1_1_mission_raw_1_1_mission_item_1ab2805706c6b8ed802c2454ce91f28c9e) {} - PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame).
 
-uint32_t [mission_type](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a2228069197f29aa98ec03e69a74434b3) {} - [Mission](classmavsdk_1_1_mission.md) type (actually uint8_t)
+uint32_t [mission_type](#structmavsdk_1_1_mission_raw_1_1_mission_item_1a2228069197f29aa98ec03e69a74434b3) {} - [Mission](classmavsdk_1_1_mission.md) type (actually uint8_t).
 
 
 ## Field Documentation
@@ -47,7 +47,7 @@ uint32_t mavsdk::MissionRaw::MissionItem::seq {}
 ```
 
 
-Sequence (uint16_t)
+Sequence (uint16_t).
 
 
 ### frame {#structmavsdk_1_1_mission_raw_1_1_mission_item_1a003abd4f7877609a5352e8c2d5b6f878}
@@ -57,7 +57,7 @@ uint32_t mavsdk::MissionRaw::MissionItem::frame {}
 ```
 
 
-The coordinate system of the waypoint (actually uint8_t)
+The coordinate system of the waypoint (actually uint8_t).
 
 
 ### command {#structmavsdk_1_1_mission_raw_1_1_mission_item_1a8a1a528bfbcdb3106c947cf3618967c9}
@@ -67,7 +67,7 @@ uint32_t mavsdk::MissionRaw::MissionItem::command {}
 ```
 
 
-The scheduled action for the waypoint (actually uint16_t)
+The scheduled action for the waypoint (actually uint16_t).
 
 
 ### current {#structmavsdk_1_1_mission_raw_1_1_mission_item_1a0853859a211fd5fbc002b83f60292232}
@@ -87,7 +87,7 @@ uint32_t mavsdk::MissionRaw::MissionItem::autocontinue {}
 ```
 
 
-Autocontinue to next waypoint (actually uint8_t)
+Autocontinue to next waypoint (actually uint8_t).
 
 
 ### param1 {#structmavsdk_1_1_mission_raw_1_1_mission_item_1ae1d81f82162e3103b47af5b6a4c1aa02}
@@ -157,7 +157,7 @@ float mavsdk::MissionRaw::MissionItem::z {}
 ```
 
 
-PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame)
+PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame).
 
 
 ### mission_type {#structmavsdk_1_1_mission_raw_1_1_mission_item_1a2228069197f29aa98ec03e69a74434b3}
@@ -167,5 +167,5 @@ uint32_t mavsdk::MissionRaw::MissionItem::mission_type {}
 ```
 
 
-[Mission](classmavsdk_1_1_mission.md) type (actually uint8_t)
+[Mission](classmavsdk_1_1_mission.md) type (actually uint8_t).
 

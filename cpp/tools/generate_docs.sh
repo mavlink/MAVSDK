@@ -26,8 +26,8 @@ if ! command -v doxygen >/dev/null 2>&1; then
 fi
 
 DOXYGEN_VERSION=$(doxygen --version)
-if [ "$DOXYGEN_VERSION" != "1.9.8" ]; then
-    echo "Error: Required Doxygen version 1.9.8 not found. Found version: $DOXYGEN_VERSION"
+if [ "$DOXYGEN_VERSION" != "1.15.0" ]; then
+    echo "Error: Required Doxygen version 1.15.0 not found. Found version: $DOXYGEN_VERSION"
     show_docker_message
     exit 1
 fi

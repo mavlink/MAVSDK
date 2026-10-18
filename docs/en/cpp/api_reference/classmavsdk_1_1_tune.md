@@ -29,10 +29,10 @@ Type | Name | Description
 &nbsp; | [Tune](#classmavsdk_1_1_tune_1a1f60ea360006940e2bbae055733cc40a) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Tune](#classmavsdk_1_1_tune_1ae53cb416ec500a56d796e85376420c0a) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Tune](#classmavsdk_1_1_tune_1a5f157ec4a056b0dad4fb7c15542a555f) () override | Destructor (internal use only).
-&nbsp; | [Tune](#classmavsdk_1_1_tune_1ae3fb9d4ec2116f1c9543c0e09371b2e0) (const [Tune](classmavsdk_1_1_tune.md) & other) | Copy constructor.
+&nbsp; | [Tune](#classmavsdk_1_1_tune_1ae3fb9d4ec2116f1c9543c0e09371b2e0) (const Tune & other) | Copy constructor.
 void | [play_tune_async](#classmavsdk_1_1_tune_1a6a88b2cfe944a4c1e4ab6945b06620d5) ([TuneDescription](structmavsdk_1_1_tune_1_1_tune_description.md) tune_description, const [ResultCallback](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1aa283f6824bee43d341fec56d7ff70985) callback) | Send a tune to be played by the system.
 [Result](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1aed2b008974298098cedd69b7e95e909d) | [play_tune](#classmavsdk_1_1_tune_1a94df5e7c5d8f5ca49fd9844557060695) ([TuneDescription](structmavsdk_1_1_tune_1_1_tune_description.md) tune_description)const | Send a tune to be played by the system.
-const [Tune](classmavsdk_1_1_tune.md) & | [operator=](#classmavsdk_1_1_tune_1a0f3ee8fe02178e0944f183a8e7f24cdd) (const [Tune](classmavsdk_1_1_tune.md) &)=delete | Equality operator (object is not copyable).
+const [Tune](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1a1f60ea360006940e2bbae055733cc40a) & | [operator=](#classmavsdk_1_1_tune_1a0f3ee8fe02178e0944f183a8e7f24cdd) (const [Tune](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1a1f60ea360006940e2bbae055733cc40a) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -94,7 +94,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Tune](classmavsdk_1_1_tune.md)& **other** - 
+* const Tune& **other** - 
 
 ## Member Typdef Documentation
 
@@ -191,7 +191,7 @@ This function is blocking. See 'play_tune_async' for the non-blocking counterpar
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1aed2b008974298098cedd69b7e95e909d) - Result of request.
+&emsp;[Result](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1aed2b008974298098cedd69b7e95e909d) - [Result](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1aed2b008974298098cedd69b7e95e909d) of request.
 
 ### operator=() {#classmavsdk_1_1_tune_1a0f3ee8fe02178e0944f183a8e7f24cdd}
 ```cpp
@@ -204,8 +204,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Tune](classmavsdk_1_1_tune.md)&  - 
+* const [Tune](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1a1f60ea360006940e2bbae055733cc40a)&  - 
 
 **Returns**
 
-&emsp;const [Tune](classmavsdk_1_1_tune.md) & - 
+&emsp;const [Tune](classmavsdk_1_1_tune.md#classmavsdk_1_1_tune_1a1f60ea360006940e2bbae055733cc40a) & - 

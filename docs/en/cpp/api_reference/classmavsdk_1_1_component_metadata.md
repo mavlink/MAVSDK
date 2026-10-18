@@ -33,13 +33,13 @@ Type | Name | Description
 &nbsp; | [ComponentMetadata](#classmavsdk_1_1_component_metadata_1a1d5efd4730ac6cc96131195675e76dd9) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [ComponentMetadata](#classmavsdk_1_1_component_metadata_1aa6ecff15e5832fbcd023d140a5583341) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~ComponentMetadata](#classmavsdk_1_1_component_metadata_1aac93ac109e9327015fd199646df75a73) () override | Destructor (internal use only).
-&nbsp; | [ComponentMetadata](#classmavsdk_1_1_component_metadata_1a3b145559b5d92068e1bc9f7689223a48) (const [ComponentMetadata](classmavsdk_1_1_component_metadata.md) & other) | Copy constructor.
+&nbsp; | [ComponentMetadata](#classmavsdk_1_1_component_metadata_1a3b145559b5d92068e1bc9f7689223a48) (const ComponentMetadata & other) | Copy constructor.
 void | [request_component](#classmavsdk_1_1_component_metadata_1a1237d1aad4d8ab70470cf3390370625a) (uint32_t compid)const | Request metadata from a specific component. This is used to start requesting metadata from a component. The metadata can later be accessed via subscription (see below) or GetMetadata.
 void | [request_autopilot_component](#classmavsdk_1_1_component_metadata_1a7620b5ef1adb417b6fea0222c44d2c33) () const | Request metadata from the autopilot component. This is used to start requesting metadata from the autopilot. The metadata can later be accessed via subscription (see below) or GetMetadata.
 [MetadataAvailableHandle](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1a374204a0542af5f4a73bf36e25513910) | [subscribe_metadata_available](#classmavsdk_1_1_component_metadata_1a622e41c77a19b137ae8dfd40bdb44ee5) (const [MetadataAvailableCallback](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1aba4946a5e2219b6b24a9dd3ce4f9ace1) & callback) | Register a callback that gets called when metadata is available.
 void | [unsubscribe_metadata_available](#classmavsdk_1_1_component_metadata_1a1245bcbb6d6edc650fe7e0b7035d90f4) ([MetadataAvailableHandle](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1a374204a0542af5f4a73bf36e25513910) handle) | Unsubscribe from subscribe_metadata_available.
 std::pair< [Result](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44), [ComponentMetadata::MetadataData](structmavsdk_1_1_component_metadata_1_1_metadata_data.md) > | [get_metadata](#classmavsdk_1_1_component_metadata_1a2a268428596fe70a97b6be3ec0d4046d) (uint32_t compid, [MetadataType](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1a0d85236afbbb3dc6b2dd46351a6b38bc) metadata_type)const | Access metadata. This can be used if you know the metadata is available already, otherwise use the subscription to get notified when it becomes available.
-const [ComponentMetadata](classmavsdk_1_1_component_metadata.md) & | [operator=](#classmavsdk_1_1_component_metadata_1a2be7fadaa2dad61f558430278ecf51bb) (const [ComponentMetadata](classmavsdk_1_1_component_metadata.md) &)=delete | Equality operator (object is not copyable).
+const [ComponentMetadata](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1a1d5efd4730ac6cc96131195675e76dd9) & | [operator=](#classmavsdk_1_1_component_metadata_1a2be7fadaa2dad61f558430278ecf51bb) (const [ComponentMetadata](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1a1d5efd4730ac6cc96131195675e76dd9) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -101,7 +101,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [ComponentMetadata](classmavsdk_1_1_component_metadata.md)& **other** - 
+* const ComponentMetadata& **other** - 
 
 ## Member Typdef Documentation
 
@@ -244,7 +244,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44), [ComponentMetadata::MetadataData](structmavsdk_1_1_component_metadata_1_1_metadata_data.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44), [ComponentMetadata::MetadataData](structmavsdk_1_1_component_metadata_1_1_metadata_data.md) > - [Result](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44) of request.
 
 ### operator=() {#classmavsdk_1_1_component_metadata_1a2be7fadaa2dad61f558430278ecf51bb}
 ```cpp
@@ -257,8 +257,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [ComponentMetadata](classmavsdk_1_1_component_metadata.md)&  - 
+* const [ComponentMetadata](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1a1d5efd4730ac6cc96131195675e76dd9)&  - 
 
 **Returns**
 
-&emsp;const [ComponentMetadata](classmavsdk_1_1_component_metadata.md) & - 
+&emsp;const [ComponentMetadata](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1a1d5efd4730ac6cc96131195675e76dd9) & - 

@@ -10,9 +10,9 @@
 ## Data Fields
 
 
-double [latitude_deg](#structmavsdk_1_1_camera_1_1_position_1a6f8941d78449d5228fa43fe8c1182317) {} - Latitude in degrees (range: -90 to +90)
+double [latitude_deg](#structmavsdk_1_1_camera_1_1_position_1a6f8941d78449d5228fa43fe8c1182317) {} - Latitude in degrees (range: -90 to +90).
 
-double [longitude_deg](#structmavsdk_1_1_camera_1_1_position_1a7b464ed04437649533787e1442400264) {} - Longitude in degrees (range: -180 to +180)
+double [longitude_deg](#structmavsdk_1_1_camera_1_1_position_1a7b464ed04437649533787e1442400264) {} - Longitude in degrees (range: -180 to +180).
 
 float [absolute_altitude_m](#structmavsdk_1_1_camera_1_1_position_1a543460f2a6039e6be3a4dfe50fd3b2d0) {} - Altitude AMSL (above mean sea level) in metres.
 
@@ -29,7 +29,7 @@ double mavsdk::Camera::Position::latitude_deg {}
 ```
 
 
-Latitude in degrees (range: -90 to +90)
+Latitude in degrees (range: -90 to +90).
 
 
 ### longitude_deg {#structmavsdk_1_1_camera_1_1_position_1a7b464ed04437649533787e1442400264}
@@ -39,7 +39,7 @@ double mavsdk::Camera::Position::longitude_deg {}
 ```
 
 
-Longitude in degrees (range: -180 to +180)
+Longitude in degrees (range: -180 to +180).
 
 
 ### absolute_altitude_m {#structmavsdk_1_1_camera_1_1_position_1a543460f2a6039e6be3a4dfe50fd3b2d0}

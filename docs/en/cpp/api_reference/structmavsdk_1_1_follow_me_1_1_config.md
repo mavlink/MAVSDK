@@ -21,7 +21,7 @@ float [follow_height_m](#structmavsdk_1_1_follow_me_1_1_config_1a221d2136ba04ffc
 
 float [follow_distance_m](#structmavsdk_1_1_follow_me_1_1_config_1a2f1407099516da129f650875e676a7eb) {8.0f} - [m] Follow distance to target in meters (recommended minimum 4 meter)
 
-float [responsiveness](#structmavsdk_1_1_follow_me_1_1_config_1a3b0bced94506c4248cbaa9cc0894616a) {0.1f} - How responsive the vehicle is to the motion of the target, Lower value = More responsive (range 0.0 to 1.0)
+float [responsiveness](#structmavsdk_1_1_follow_me_1_1_config_1a3b0bced94506c4248cbaa9cc0894616a) {0.1f} - How responsive the vehicle is to the motion of the target, Lower value = More responsive (range 0.0 to 1.0).
 
 [FollowAltitudeMode](structmavsdk_1_1_follow_me_1_1_config.md#structmavsdk_1_1_follow_me_1_1_config_1a25f3b39bc6d0eda07891537478bed85b) [altitude_mode](#structmavsdk_1_1_follow_me_1_1_config_1a70d86547c8f23e1fbd2b66632b484dcd) {} - Follow Altitude control mode.
 
@@ -75,7 +75,7 @@ float mavsdk::FollowMe::Config::responsiveness {0.1f}
 ```
 
 
-How responsive the vehicle is to the motion of the target, Lower value = More responsive (range 0.0 to 1.0)
+How responsive the vehicle is to the motion of the target, Lower value = More responsive (range 0.0 to 1.0).
 
 
 ### altitude_mode {#structmavsdk_1_1_follow_me_1_1_config_1a70d86547c8f23e1fbd2b66632b484dcd}

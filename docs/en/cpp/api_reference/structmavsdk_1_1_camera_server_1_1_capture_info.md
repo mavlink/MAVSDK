@@ -12,7 +12,7 @@
 
 [Position](structmavsdk_1_1_camera_server_1_1_position.md) [position](#structmavsdk_1_1_camera_server_1_1_capture_info_1a102ac2967a54137616bd1f80275a39d2) {} - Location where the picture was taken.
 
-[Quaternion](structmavsdk_1_1_camera_server_1_1_quaternion.md) [attitude_quaternion](#structmavsdk_1_1_camera_server_1_1_capture_info_1a4a94c6c925f09106212b4af3ba3bde97) {} - Attitude of the camera when the picture was taken (quaternion)
+[Quaternion](structmavsdk_1_1_camera_server_1_1_quaternion.md) [attitude_quaternion](#structmavsdk_1_1_camera_server_1_1_capture_info_1a4a94c6c925f09106212b4af3ba3bde97) {} - Attitude of the camera when the picture was taken (quaternion).
 
 uint64_t [time_utc_us](#structmavsdk_1_1_camera_server_1_1_capture_info_1afbc9b59d9f231ae420fd36c0a847f466) {} - Timestamp in UTC (since UNIX epoch) in microseconds.
 
@@ -43,7 +43,7 @@ Quaternion mavsdk::CameraServer::CaptureInfo::attitude_quaternion {}
 ```
 
 
-Attitude of the camera when the picture was taken (quaternion)
+Attitude of the camera when the picture was taken (quaternion).
 
 
 ### time_utc_us {#structmavsdk_1_1_camera_server_1_1_capture_info_1afbc9b59d9f231ae420fd36c0a847f466}

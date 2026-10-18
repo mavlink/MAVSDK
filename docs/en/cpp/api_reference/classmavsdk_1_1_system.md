@@ -28,7 +28,7 @@ std::function< void([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7
 Type | Name | Description
 ---: | --- | ---
 &nbsp; | [~System](#classmavsdk_1_1_system_1abdc4208c07d776c628acdc037a881ea6) () | Destructor.
-&nbsp; | [System](#classmavsdk_1_1_system_1ac0e97e92181683f6b31fe208165dc35c) (const [System](classmavsdk_1_1_system.md) &)=delete | Copy constructor (object is not copyable).
+&nbsp; | [System](#classmavsdk_1_1_system_1ac0e97e92181683f6b31fe208165dc35c) (const System &)=delete | Copy constructor (object is not copyable).
 void | [init](#classmavsdk_1_1_system_1a80c88a6e14e1b14c0e8bc1b6bd42407b) (uint32_t system_id, uint8_t component_id)const | Initialize the system.
 bool | [has_autopilot](#classmavsdk_1_1_system_1a0c3d766baa73f5b35e2950a6f0a38c02) () const | Checks whether the system has an autopilot.
 bool | [is_standalone](#classmavsdk_1_1_system_1a7fb7ed01204498dcaa2ab7d9cc31acf2) () const | Checks whether the system is a standalone (non-autopilot).
@@ -46,7 +46,7 @@ void | [unsubscribe_component_discovered_id](#classmavsdk_1_1_system_1a37bca6373
 void | [enable_timesync](#classmavsdk_1_1_system_1a7c7177fb0789aefbfb375f4bb12ce824) () | Enable time synchronization using the TIMESYNC messages.
 [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | [autopilot_type](#classmavsdk_1_1_system_1af3ded5464f6025f5d31955e100e15894) () const | Get autopilot type.
 [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [vehicle_type](#classmavsdk_1_1_system_1aababe0d2e6c91aef11a06dcdbccdf69e) () const | Get vehicle type.
-const [System](classmavsdk_1_1_system.md) & | [operator=](#classmavsdk_1_1_system_1ace4603ebad199e8619876993a2ad5237) (const [System](classmavsdk_1_1_system.md) &)=delete | Equality operator (object is not copyable).
+const System & | [operator=](#classmavsdk_1_1_system_1ace4603ebad199e8619876993a2ad5237) (const System &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -72,7 +72,7 @@ Copy constructor (object is not copyable).
 
 **Parameters**
 
-* const [System](classmavsdk_1_1_system.md)&  - 
+* const System&  - 
 
 ## Member Typdef Documentation
 
@@ -394,8 +394,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [System](classmavsdk_1_1_system.md)&  - 
+* const System&  - 
 
 **Returns**
 
-&emsp;const [System](classmavsdk_1_1_system.md) & - 
+&emsp;const System & - 

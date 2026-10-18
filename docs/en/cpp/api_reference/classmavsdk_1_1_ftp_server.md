@@ -22,9 +22,9 @@ Type | Name | Description
 ---: | --- | ---
 &nbsp; | [FtpServer](#classmavsdk_1_1_ftp_server_1aa22c68e2fe9a3ac22c4ef55f2636ddd3) (std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > server_component) | Constructor. Creates the plugin for a [ServerComponent](classmavsdk_1_1_server_component.md) instance.
 &nbsp; | [~FtpServer](#classmavsdk_1_1_ftp_server_1a685d6499b3fbc7d8b4fac6f8031e7e99) () override | Destructor (internal use only).
-&nbsp; | [FtpServer](#classmavsdk_1_1_ftp_server_1afed6d9c192b299e27d5e0014e63c275f) (const [FtpServer](classmavsdk_1_1_ftp_server.md) & other) | Copy constructor.
+&nbsp; | [FtpServer](#classmavsdk_1_1_ftp_server_1afed6d9c192b299e27d5e0014e63c275f) (const FtpServer & other) | Copy constructor.
 [Result](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1a24027b6ade1f681dd191a81c25653763) | [set_root_dir](#classmavsdk_1_1_ftp_server_1aa79196f0d3cd0bc178a57711252ed8f3) (std::string path)const | Set root directory.
-const [FtpServer](classmavsdk_1_1_ftp_server.md) & | [operator=](#classmavsdk_1_1_ftp_server_1ae2226ea7897a33dfa5225cdc023f23ed) (const [FtpServer](classmavsdk_1_1_ftp_server.md) &)=delete | Equality operator (object is not copyable).
+const [FtpServer](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1aa22c68e2fe9a3ac22c4ef55f2636ddd3) & | [operator=](#classmavsdk_1_1_ftp_server_1ae2226ea7897a33dfa5225cdc023f23ed) (const [FtpServer](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1aa22c68e2fe9a3ac22c4ef55f2636ddd3) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -68,7 +68,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [FtpServer](classmavsdk_1_1_ftp_server.md)& **other** - 
+* const FtpServer& **other** - 
 
 ## Member Typdef Documentation
 
@@ -124,7 +124,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1a24027b6ade1f681dd191a81c25653763) - Result of request.
+&emsp;[Result](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1a24027b6ade1f681dd191a81c25653763) - [Result](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1a24027b6ade1f681dd191a81c25653763) of request.
 
 ### operator=() {#classmavsdk_1_1_ftp_server_1ae2226ea7897a33dfa5225cdc023f23ed}
 ```cpp
@@ -137,8 +137,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [FtpServer](classmavsdk_1_1_ftp_server.md)&  - 
+* const [FtpServer](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1aa22c68e2fe9a3ac22c4ef55f2636ddd3)&  - 
 
 **Returns**
 
-&emsp;const [FtpServer](classmavsdk_1_1_ftp_server.md) & - 
+&emsp;const [FtpServer](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1aa22c68e2fe9a3ac22c4ef55f2636ddd3) & - 

@@ -12,13 +12,13 @@ Get event notifications, such as takeoff, or arming checks.
 
 struct [Event](structmavsdk_1_1_events_1_1_event.md)
 
-struct [HealthAndArmingCheckMode](structmavsdk_1_1_events_1_1_health_and_arming_check_mode.md)
-
 struct [HealthAndArmingCheckProblem](structmavsdk_1_1_events_1_1_health_and_arming_check_problem.md)
 
-struct [HealthAndArmingCheckReport](structmavsdk_1_1_events_1_1_health_and_arming_check_report.md)
+struct [HealthAndArmingCheckMode](structmavsdk_1_1_events_1_1_health_and_arming_check_mode.md)
 
 struct [HealthComponentReport](structmavsdk_1_1_events_1_1_health_component_report.md)
+
+struct [HealthAndArmingCheckReport](structmavsdk_1_1_events_1_1_health_and_arming_check_report.md)
 
 ## Public Types
 
@@ -41,13 +41,13 @@ Type | Name | Description
 &nbsp; | [Events](#classmavsdk_1_1_events_1a2f3778cf7118bd5a11b68e28655ef485) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Events](#classmavsdk_1_1_events_1ae8e05a45bfac1043356936f1a15f8f2f) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Events](#classmavsdk_1_1_events_1ac04cade0cb57f7858655c75a321c9370) () override | Destructor (internal use only).
-&nbsp; | [Events](#classmavsdk_1_1_events_1a888740505c24a9bdad1f6e9ccd60a130) (const [Events](classmavsdk_1_1_events.md) & other) | Copy constructor.
+&nbsp; | [Events](#classmavsdk_1_1_events_1a888740505c24a9bdad1f6e9ccd60a130) (const Events & other) | Copy constructor.
 [EventsHandle](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a64c99a834c6babf6cdb3b466a923e3ee) | [subscribe_events](#classmavsdk_1_1_events_1a4f167095c9a2c6362a9e5c336a7646a3) (const [EventsCallback](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1aaa9c2f1d7915aedfdb0da5de7e31bbfb) & callback) | Subscribe to event updates.
 void | [unsubscribe_events](#classmavsdk_1_1_events_1a4e7146bf1708b3d8a00bc29dd1205c97) ([EventsHandle](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a64c99a834c6babf6cdb3b466a923e3ee) handle) | Unsubscribe from subscribe_events.
 [HealthAndArmingChecksHandle](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a09ac962d8d560de37c93b16484474fa4) | [subscribe_health_and_arming_checks](#classmavsdk_1_1_events_1a1d95f16aec0b9d9af3fc379029883b3e) (const [HealthAndArmingChecksCallback](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1ada96803a50810356893417591d91b1a3) & callback) | Subscribe to arming check updates.
 void | [unsubscribe_health_and_arming_checks](#classmavsdk_1_1_events_1a6e37b2dc8ae70404e459bf8f6d37bcb7) ([HealthAndArmingChecksHandle](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a09ac962d8d560de37c93b16484474fa4) handle) | Unsubscribe from subscribe_health_and_arming_checks.
 std::pair< [Result](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1), [Events::HealthAndArmingCheckReport](structmavsdk_1_1_events_1_1_health_and_arming_check_report.md) > | [get_health_and_arming_checks_report](#classmavsdk_1_1_events_1ae8af916ca33c66d0d6ffb6fe8e8ae60d) () const | Get the latest report.
-const [Events](classmavsdk_1_1_events.md) & | [operator=](#classmavsdk_1_1_events_1a7fa7923b2757e03a566ec46646440f75) (const [Events](classmavsdk_1_1_events.md) &)=delete | Equality operator (object is not copyable).
+const [Events](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a2f3778cf7118bd5a11b68e28655ef485) & | [operator=](#classmavsdk_1_1_events_1a7fa7923b2757e03a566ec46646440f75) (const [Events](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a2f3778cf7118bd5a11b68e28655ef485) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -109,7 +109,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Events](classmavsdk_1_1_events.md)& **other** - 
+* const Events& **other** - 
 
 ## Member Typdef Documentation
 
@@ -277,7 +277,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1), [Events::HealthAndArmingCheckReport](structmavsdk_1_1_events_1_1_health_and_arming_check_report.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1), [Events::HealthAndArmingCheckReport](structmavsdk_1_1_events_1_1_health_and_arming_check_report.md) > - [Result](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1) of request.
 
 ### operator=() {#classmavsdk_1_1_events_1a7fa7923b2757e03a566ec46646440f75}
 ```cpp
@@ -290,8 +290,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Events](classmavsdk_1_1_events.md)&  - 
+* const [Events](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a2f3778cf7118bd5a11b68e28655ef485)&  - 
 
 **Returns**
 
-&emsp;const [Events](classmavsdk_1_1_events.md) & - 
+&emsp;const [Events](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a2f3778cf7118bd5a11b68e28655ef485) & - 

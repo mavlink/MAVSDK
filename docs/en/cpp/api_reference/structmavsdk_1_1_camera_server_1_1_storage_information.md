@@ -18,11 +18,11 @@ enum [StorageType](#structmavsdk_1_1_camera_server_1_1_storage_information_1af31
 ## Data Fields
 
 
-float [used_storage_mib](#structmavsdk_1_1_camera_server_1_1_storage_information_1a94040916ab463c2ddba0d68852ea382a) {} - Used storage (in MiB)
+float [used_storage_mib](#structmavsdk_1_1_camera_server_1_1_storage_information_1a94040916ab463c2ddba0d68852ea382a) {} - Used storage (in MiB).
 
-float [available_storage_mib](#structmavsdk_1_1_camera_server_1_1_storage_information_1ae781ac7b52fa2c140f2633e13dacf4b2) {} - Available storage (in MiB)
+float [available_storage_mib](#structmavsdk_1_1_camera_server_1_1_storage_information_1ae781ac7b52fa2c140f2633e13dacf4b2) {} - Available storage (in MiB).
 
-float [total_storage_mib](#structmavsdk_1_1_camera_server_1_1_storage_information_1a72aa03291a20f7985ab73f933348d8cc) {} - Total storage (in MiB)
+float [total_storage_mib](#structmavsdk_1_1_camera_server_1_1_storage_information_1a72aa03291a20f7985ab73f933348d8cc) {} - Total storage (in MiB).
 
 [StorageStatus](structmavsdk_1_1_camera_server_1_1_storage_information.md#structmavsdk_1_1_camera_server_1_1_storage_information_1a82d24373786c582c377ac9671282910f) [storage_status](#structmavsdk_1_1_camera_server_1_1_storage_information_1a78f55db7073e7d96c4a606b65c304f2a) {} - Storage status.
 
@@ -76,7 +76,7 @@ float mavsdk::CameraServer::StorageInformation::used_storage_mib {}
 ```
 
 
-Used storage (in MiB)
+Used storage (in MiB).
 
 
 ### available_storage_mib {#structmavsdk_1_1_camera_server_1_1_storage_information_1ae781ac7b52fa2c140f2633e13dacf4b2}
@@ -86,7 +86,7 @@ float mavsdk::CameraServer::StorageInformation::available_storage_mib {}
 ```
 
 
-Available storage (in MiB)
+Available storage (in MiB).
 
 
 ### total_storage_mib {#structmavsdk_1_1_camera_server_1_1_storage_information_1a72aa03291a20f7985ab73f933348d8cc}
@@ -96,7 +96,7 @@ float mavsdk::CameraServer::StorageInformation::total_storage_mib {}
 ```
 
 
-Total storage (in MiB)
+Total storage (in MiB).
 
 
 ### storage_status {#structmavsdk_1_1_camera_server_1_1_storage_information_1a78f55db7073e7d96c4a606b65c304f2a}

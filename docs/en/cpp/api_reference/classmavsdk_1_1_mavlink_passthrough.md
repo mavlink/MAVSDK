@@ -22,9 +22,9 @@ The [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) class provides 
 ## Data Structures
 
 
-struct [CommandInt](structmavsdk_1_1_mavlink_passthrough_1_1_command_int.md)
-
 struct [CommandLong](structmavsdk_1_1_mavlink_passthrough_1_1_command_long.md)
+
+struct [CommandInt](structmavsdk_1_1_mavlink_passthrough_1_1_command_int.md)
 
 ## Public Types
 
@@ -43,7 +43,7 @@ Type | Name | Description
 DEPRECATED | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1a3b8db71291e153e753a8a316d58cfaa3) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 DEPRECATED | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1acddc4bdb520f49019f52cdafd74b43f2) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1a890faef9ad80c3e79e0b785fd07106c8) () | Destructor (internal use only).
-&nbsp; | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1ae4b30f9c2c5e938ab965729e27f50ce5) (const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) &)=delete | Copy Constructor (object is not copyable).
+&nbsp; | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1ae4b30f9c2c5e938ab965729e27f50ce5) (const MavlinkPassthrough &)=delete | Copy Constructor (object is not copyable).
 DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [send_message](#classmavsdk_1_1_mavlink_passthrough_1a9bbd09d34f7ae1b6e27bcd5c3d4ba667) (mavlink_message_t & message) | Send message (deprecated).
 DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [queue_message](#classmavsdk_1_1_mavlink_passthrough_1a272f72328f6298eb80332edacc0f7d38) (std::function< mavlink_message_t([MavlinkAddress](struct_mavlink_address.md) mavlink_address, uint8_t channel)> fun) | Send message by queueing it.
 DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [send_command_long](#classmavsdk_1_1_mavlink_passthrough_1a3c0d1373da35e5812ed1f70215ffa095) (const [CommandLong](structmavsdk_1_1_mavlink_passthrough_1_1_command_long.md) & command) | Send a MAVLink command_long.
@@ -57,7 +57,7 @@ DEPRECATED uint32_t | [get_our_sysid](#classmavsdk_1_1_mavlink_passthrough_1a76d
 DEPRECATED uint8_t | [get_our_compid](#classmavsdk_1_1_mavlink_passthrough_1a260b865afbeadfb6349ce242a4b997da) () const | Get our own component ID.
 DEPRECATED uint32_t | [get_target_sysid](#classmavsdk_1_1_mavlink_passthrough_1a44368a12438c77dd06dbd712ce8b4e1f) () const | Get system ID of target.
 DEPRECATED uint8_t | [get_target_compid](#classmavsdk_1_1_mavlink_passthrough_1a7b769a42fabf11c099cc28948ece2903) () const | Get target component ID.
-const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) & | [operator=](#classmavsdk_1_1_mavlink_passthrough_1a39b74b37094511cc5bc910a2233d024e) (const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) &)=delete | Equality operator (object is not copyable).
+const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a3b8db71291e153e753a8a316d58cfaa3) & | [operator=](#classmavsdk_1_1_mavlink_passthrough_1a39b74b37094511cc5bc910a2233d024e) (const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a3b8db71291e153e753a8a316d58cfaa3) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -127,7 +127,7 @@ Copy Constructor (object is not copyable).
 
 **Parameters**
 
-* const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md)&  - 
+* const MavlinkPassthrough&  - 
 
 ## Member Typdef Documentation
 
@@ -272,7 +272,7 @@ Create a command_ack.
 * const uint32_t **target_sysid** - Target system ID where to send command_ack to.
 * const uint8_t **target_compid** - Target component ID where to send command_ack to.
 * const uint16_t **command** - Command to respond to.
-* MAV_RESULT **result** - Result of command.
+* MAV_RESULT **result** - [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) of command.
 
 **Returns**
 
@@ -417,8 +417,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md)&  - 
+* const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a3b8db71291e153e753a8a316d58cfaa3)&  - 
 
 **Returns**
 
-&emsp;const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) & - 
+&emsp;const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a3b8db71291e153e753a8a316d58cfaa3) & - 

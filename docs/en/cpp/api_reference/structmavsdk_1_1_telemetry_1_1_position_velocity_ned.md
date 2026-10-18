@@ -10,9 +10,9 @@
 ## Data Fields
 
 
-[PositionNed](structmavsdk_1_1_telemetry_1_1_position_ned.md) [position](#structmavsdk_1_1_telemetry_1_1_position_velocity_ned_1a3efc29b2fe10b80cbf49cbf4c1498752) {} - [Position](structmavsdk_1_1_telemetry_1_1_position.md) (NED)
+[PositionNed](structmavsdk_1_1_telemetry_1_1_position_ned.md) [position](#structmavsdk_1_1_telemetry_1_1_position_velocity_ned_1a3efc29b2fe10b80cbf49cbf4c1498752) {} - [Position](structmavsdk_1_1_telemetry_1_1_position.md) (NED).
 
-[VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md) [velocity](#structmavsdk_1_1_telemetry_1_1_position_velocity_ned_1ad445b0be7cf4ad7ef02e85d06aa52e37) {} - Velocity (NED)
+[VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md) [velocity](#structmavsdk_1_1_telemetry_1_1_position_velocity_ned_1ad445b0be7cf4ad7ef02e85d06aa52e37) {} - Velocity (NED).
 
 
 ## Field Documentation
@@ -25,7 +25,7 @@ PositionNed mavsdk::Telemetry::PositionVelocityNed::position {}
 ```
 
 
-[Position](structmavsdk_1_1_telemetry_1_1_position.md) (NED)
+[Position](structmavsdk_1_1_telemetry_1_1_position.md) (NED).
 
 
 ### velocity {#structmavsdk_1_1_telemetry_1_1_position_velocity_ned_1ad445b0be7cf4ad7ef02e85d06aa52e37}
@@ -35,5 +35,5 @@ VelocityNed mavsdk::Telemetry::PositionVelocityNed::velocity {}
 ```
 
 
-Velocity (NED)
+Velocity (NED).
 

@@ -16,9 +16,9 @@ An instance of this class must be created and kept alive in order to use the lib
 ## Data Structures
 
 
-struct [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md)
-
 struct [ConnectionError](structmavsdk_1_1_mavsdk_1_1_connection_error.md)
+
+struct [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md)
 
 struct [MavlinkMessage](structmavsdk_1_1_mavsdk_1_1_mavlink_message.md)
 
@@ -30,8 +30,8 @@ Type | Description
 [Handle](classmavsdk_1_1_handle.md)<> [ConnectionHandle](#classmavsdk_1_1_mavsdk_1a1b16edeae47af0815b3267c9075f6a8f) | [Handle](classmavsdk_1_1_handle.md) type to remove a connection.
 std::function< void([ConnectionError](structmavsdk_1_1_mavsdk_1_1_connection_error.md))> [ConnectionErrorCallback](#classmavsdk_1_1_mavsdk_1ac71d182538bee6fb3ab007edafac5d5f) | 
 [Handle](classmavsdk_1_1_handle.md)< [ConnectionError](structmavsdk_1_1_mavsdk_1_1_connection_error.md) > [ConnectionErrorHandle](#classmavsdk_1_1_mavsdk_1aeb442a462d03662e4c152509fd0c203b) | [Handle](classmavsdk_1_1_handle.md) type to remove a connection error subscription.
-std::function< void(std::optional< std::shared_ptr< [System](classmavsdk_1_1_system.md) > >)> [FirstAutopilotCallback](#classmavsdk_1_1_mavsdk_1a84e12db3b557cbe34a12f353a9796d8e) | Callback type for first_autopilot_async.
-[Handle](classmavsdk_1_1_handle.md)< std::optional< std::shared_ptr< [System](classmavsdk_1_1_system.md) > > > [FirstAutopilotHandle](#classmavsdk_1_1_mavsdk_1a76af716065d57eb670485334a1dee078) | [Handle](classmavsdk_1_1_handle.md) type to cancel first_autopilot_async.
+std::function< void(std::optional< std::shared_ptr< [System](classmavsdk_1_1_system.md) > >)> [FirstAutopilotCallback](#classmavsdk_1_1_mavsdk_1a20280a8f4561c43c216efb6a82c96afe) | Callback type for first_autopilot_async.
+[Handle](classmavsdk_1_1_handle.md)< std::optional< std::shared_ptr< [System](classmavsdk_1_1_system.md) > > > [FirstAutopilotHandle](#classmavsdk_1_1_mavsdk_1ae43e5685986182b29f635dedad696ad9) | [Handle](classmavsdk_1_1_handle.md) type to cancel first_autopilot_async.
 std::function< void()> [NewSystemCallback](#classmavsdk_1_1_mavsdk_1a7a283c6a75e852a56be4c5862f8a3fab) | Callback type discover and timeout notifications.
 [Handle](classmavsdk_1_1_handle.md)<> [NewSystemHandle](#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) | [Handle](classmavsdk_1_1_handle.md) type to unsubscribe from subscribe_on_new_system.
 [Handle](classmavsdk_1_1_handle.md)< bool([MavlinkMessage](structmavsdk_1_1_mavsdk_1_1_mavlink_message.md))> [InterceptJsonHandle](#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) | [Handle](classmavsdk_1_1_handle.md) for intercepting messages.
@@ -55,8 +55,8 @@ void | [remove_connection](#classmavsdk_1_1_mavsdk_1a23cf630bb123aa53b0e99c6bd83
 void | [unsubscribe_connection_errors](#classmavsdk_1_1_mavsdk_1a377ec6517ee75981ceb2f26b30e59fbd) ([ConnectionErrorHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1aeb442a462d03662e4c152509fd0c203b) handle) |
 std::vector< std::shared_ptr< [System](classmavsdk_1_1_system.md) > > | [systems](#classmavsdk_1_1_mavsdk_1aca9c72b300d384341b00ff9ba2c6e5c5) () const | Get a vector of systems which have been discovered or set-up.
 std::optional< std::shared_ptr< [System](classmavsdk_1_1_system.md) > > | [first_autopilot](#classmavsdk_1_1_mavsdk_1aa1bcb865693dbd140478e75ce58699b7) (double timeout_s)const | Get the first autopilot that has been discovered.
-[FirstAutopilotHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a76af716065d57eb670485334a1dee078) | [first_autopilot_async](#classmavsdk_1_1_mavsdk_1a2b4a83eefa152e4b78fc54166715cd65) (double timeout_s, const [FirstAutopilotCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a84e12db3b557cbe34a12f353a9796d8e) & callback) | Wait for the first autopilot without blocking.
-void | [cancel_first_autopilot](#classmavsdk_1_1_mavsdk_1a48381c8a2bd28f53c04237496ebfe341) ([FirstAutopilotHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a76af716065d57eb670485334a1dee078) handle) | Cancel waiting for the first autopilot.
+[FirstAutopilotHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae43e5685986182b29f635dedad696ad9) | [first_autopilot_async](#classmavsdk_1_1_mavsdk_1a2b4a83eefa152e4b78fc54166715cd65) (double timeout_s, const [FirstAutopilotCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a20280a8f4561c43c216efb6a82c96afe) & callback) | Wait for the first autopilot without blocking.
+void | [cancel_first_autopilot](#classmavsdk_1_1_mavsdk_1a48381c8a2bd28f53c04237496ebfe341) ([FirstAutopilotHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae43e5685986182b29f635dedad696ad9) handle) | Cancel waiting for the first autopilot.
 void | [set_configuration](#classmavsdk_1_1_mavsdk_1acaeea86253493dc15b6540d2100a1b86) ([Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) configuration) | Set [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) of SDK.
 bool | [set_heartbeat_watchdog_timeout_s](#classmavsdk_1_1_mavsdk_1a83a387c399355c2fa541e7992b591ca8) (double timeout_s) | Set the heartbeat watchdog timeout at runtime.
 void | [set_timeout_s](#classmavsdk_1_1_mavsdk_1a765f37b61462addcfd961e720585d2c6) (double timeout_s) | Set timeout of MAVLink transfers.
@@ -152,10 +152,10 @@ using mavsdk::Mavsdk::ConnectionErrorHandle =  Handle<ConnectionError>
 [Handle](classmavsdk_1_1_handle.md) type to remove a connection error subscription.
 
 
-### typedef FirstAutopilotCallback {#classmavsdk_1_1_mavsdk_1a84e12db3b557cbe34a12f353a9796d8e}
+### typedef FirstAutopilotCallback {#classmavsdk_1_1_mavsdk_1a20280a8f4561c43c216efb6a82c96afe}
 
 ```cpp
-using mavsdk::Mavsdk::FirstAutopilotCallback =  std::function<void(std::optional<std::shared_ptr<System> >)>
+using mavsdk::Mavsdk::FirstAutopilotCallback =  std::function<void(std::optional<std::shared_ptr<System>>)>
 ```
 
 
@@ -163,10 +163,10 @@ Callback type for first_autopilot_async.
 
 Receives the autopilot system, or nothing if none was discovered within the timeout.
 
-### typedef FirstAutopilotHandle {#classmavsdk_1_1_mavsdk_1a76af716065d57eb670485334a1dee078}
+### typedef FirstAutopilotHandle {#classmavsdk_1_1_mavsdk_1ae43e5685986182b29f635dedad696ad9}
 
 ```cpp
-using mavsdk::Mavsdk::FirstAutopilotHandle =  Handle<std::optional<std::shared_ptr<System> >>
+using mavsdk::Mavsdk::FirstAutopilotHandle =  Handle<std::optional<std::shared_ptr<System>>>
 ```
 
 
@@ -461,11 +461,11 @@ The same lifetime rule as for [first_autopilot()](classmavsdk_1_1_mavsdk.md#clas
 **Parameters**
 
 * double **timeout_s** - A timeout in seconds. A timeout of 0 checks once without waiting. A negative timeout will wait forever.
-* const [FirstAutopilotCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a84e12db3b557cbe34a12f353a9796d8e)& **callback** - Callback to receive the result.
+* const [FirstAutopilotCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a20280a8f4561c43c216efb6a82c96afe)& **callback** - Callback to receive the result.
 
 **Returns**
 
-&emsp;[FirstAutopilotHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a76af716065d57eb670485334a1dee078) - A handle to cancel the wait.
+&emsp;[FirstAutopilotHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae43e5685986182b29f635dedad696ad9) - A handle to cancel the wait.
 
 ### cancel_first_autopilot() {#classmavsdk_1_1_mavsdk_1a48381c8a2bd28f53c04237496ebfe341}
 ```cpp
@@ -479,7 +479,7 @@ After this returns, the callback passed to [first_autopilot_async()](classmavsdk
 
 **Parameters**
 
-* [FirstAutopilotHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a76af716065d57eb670485334a1dee078) **handle** - [Handle](classmavsdk_1_1_handle.md) from first_autopilot_async.
+* [FirstAutopilotHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae43e5685986182b29f635dedad696ad9) **handle** - [Handle](classmavsdk_1_1_handle.md) from first_autopilot_async.
 
 ### set_configuration() {#classmavsdk_1_1_mavsdk_1acaeea86253493dc15b6540d2100a1b86}
 ```cpp
@@ -768,7 +768,7 @@ This functionality is provided primarily for testing in order to simulate packet
 
 
 ::: info
-Only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before including MAVSDK, because it exposes the MAVLink C types. Use `subscribe_incoming_messages_json` instead.
+Only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before including MAVSDK, because it exposes the MAVLink C types. Use [subscribe_incoming_messages_json](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a722fce6f1abe8337721dde710b5b40d7) instead.
 :::
 
 **Parameters**
@@ -830,7 +830,7 @@ This functionality is provided primarily for testing in order to simulate packet
 
 
 ::: info
-Only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before including MAVSDK, because it exposes the MAVLink C types. Use `subscribe_outgoing_messages_json` instead.
+Only available if `MAVSDK_ENABLE_MAVLINK_C_API` is defined before including MAVSDK, because it exposes the MAVLink C types. Use [subscribe_outgoing_messages_json](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a58f85b2f74a32404a8e975feefed8f47) instead.
 :::
 
 **Parameters**

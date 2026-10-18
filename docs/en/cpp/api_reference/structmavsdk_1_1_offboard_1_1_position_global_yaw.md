@@ -17,13 +17,13 @@ enum [AltitudeType](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a4aa4d0e
 ## Data Fields
 
 
-double [lat_deg](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a403f9dd320b8f78f02814480f9fe3f41) {} - Latitude (in degrees)
+double [lat_deg](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a403f9dd320b8f78f02814480f9fe3f41) {} - Latitude (in degrees).
 
-double [lon_deg](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a863f22ca8854073bf70b8b1208c44bfb) {} - Longitude (in degrees)
+double [lon_deg](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a863f22ca8854073bf70b8b1208c44bfb) {} - Longitude (in degrees).
 
 float [alt_m](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a64fa1a81a97035da316f1d1d76fb7728) {} - altitude (in metres)
 
-float [yaw_deg](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a4e9dcedc454807a90d3adcced041def9) {} - Yaw in degrees (0 North, positive is clock-wise looking from above)
+float [yaw_deg](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a4e9dcedc454807a90d3adcced041def9) {} - Yaw in degrees (0 North, positive is clock-wise looking from above).
 
 [AltitudeType](structmavsdk_1_1_offboard_1_1_position_global_yaw.md#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a4aa4d0ec8118f24ecc968c6fbfc0383e) [altitude_type](#structmavsdk_1_1_offboard_1_1_position_global_yaw_1ad96893eb8e298b6af25eb7f0755cb03a) {} - altitude type for this position
 
@@ -53,7 +53,7 @@ double mavsdk::Offboard::PositionGlobalYaw::lat_deg {}
 ```
 
 
-Latitude (in degrees)
+Latitude (in degrees).
 
 
 ### lon_deg {#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a863f22ca8854073bf70b8b1208c44bfb}
@@ -63,7 +63,7 @@ double mavsdk::Offboard::PositionGlobalYaw::lon_deg {}
 ```
 
 
-Longitude (in degrees)
+Longitude (in degrees).
 
 
 ### alt_m {#structmavsdk_1_1_offboard_1_1_position_global_yaw_1a64fa1a81a97035da316f1d1d76fb7728}
@@ -83,7 +83,7 @@ float mavsdk::Offboard::PositionGlobalYaw::yaw_deg {}
 ```
 
 
-Yaw in degrees (0 North, positive is clock-wise looking from above)
+Yaw in degrees (0 North, positive is clock-wise looking from above).
 
 
 ### altitude_type {#structmavsdk_1_1_offboard_1_1_position_global_yaw_1ad96893eb8e298b6af25eb7f0755cb03a}

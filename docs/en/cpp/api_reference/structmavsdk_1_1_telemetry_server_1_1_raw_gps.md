@@ -13,11 +13,11 @@ Warning: this is an advanced type! If you want the location of the drone, use th
 ## Data Fields
 
 
-uint64_t [timestamp_us](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a7b0063601df79e5d70da522adbcca5aa) {} - Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred)
+uint64_t [timestamp_us](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a7b0063601df79e5d70da522adbcca5aa) {} - Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred).
 
-double [latitude_deg](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1ad6f274fcb87f3b13a25343975354cbd0) {} - Latitude in degrees (WGS84, EGM96 ellipsoid)
+double [latitude_deg](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1ad6f274fcb87f3b13a25343975354cbd0) {} - Latitude in degrees (WGS84, EGM96 ellipsoid).
 
-double [longitude_deg](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a7762ac5c26d315a873141082606d0bf5) {} - Longitude in degrees (WGS84, EGM96 ellipsoid)
+double [longitude_deg](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a7762ac5c26d315a873141082606d0bf5) {} - Longitude in degrees (WGS84, EGM96 ellipsoid).
 
 float [absolute_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a5f5a72f832923a804fbc75bca9b552d9) {} - Altitude AMSL (above mean sea level) in metres.
 
@@ -29,7 +29,7 @@ float [velocity_m_s](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a9122eb8b3e
 
 float [cog_deg](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a33e06571290f518551ef9f4463b9d6f0) {} - Course over ground (NOT heading, but direction of movement) in degrees. If unknown, set to NaN.
 
-float [altitude_ellipsoid_m](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a034d03a361938df870409af81a741257) {} - Altitude in metres (above WGS84, EGM96 ellipsoid)
+float [altitude_ellipsoid_m](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a034d03a361938df870409af81a741257) {} - Altitude in metres (above WGS84, EGM96 ellipsoid).
 
 float [horizontal_uncertainty_m](#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1ae7ce24396bab295f4fed7d2db6883e3e) {} - [Position](structmavsdk_1_1_telemetry_server_1_1_position.md) uncertainty in metres.
 
@@ -52,7 +52,7 @@ uint64_t mavsdk::TelemetryServer::RawGps::timestamp_us {}
 ```
 
 
-Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred)
+Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred).
 
 
 ### latitude_deg {#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1ad6f274fcb87f3b13a25343975354cbd0}
@@ -62,7 +62,7 @@ double mavsdk::TelemetryServer::RawGps::latitude_deg {}
 ```
 
 
-Latitude in degrees (WGS84, EGM96 ellipsoid)
+Latitude in degrees (WGS84, EGM96 ellipsoid).
 
 
 ### longitude_deg {#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a7762ac5c26d315a873141082606d0bf5}
@@ -72,7 +72,7 @@ double mavsdk::TelemetryServer::RawGps::longitude_deg {}
 ```
 
 
-Longitude in degrees (WGS84, EGM96 ellipsoid)
+Longitude in degrees (WGS84, EGM96 ellipsoid).
 
 
 ### absolute_altitude_m {#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1a5f5a72f832923a804fbc75bca9b552d9}
@@ -132,7 +132,7 @@ float mavsdk::TelemetryServer::RawGps::altitude_ellipsoid_m {}
 ```
 
 
-Altitude in metres (above WGS84, EGM96 ellipsoid)
+Altitude in metres (above WGS84, EGM96 ellipsoid).
 
 
 ### horizontal_uncertainty_m {#structmavsdk_1_1_telemetry_server_1_1_raw_gps_1ae7ce24396bab295f4fed7d2db6883e3e}

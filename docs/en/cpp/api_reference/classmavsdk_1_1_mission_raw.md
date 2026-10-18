@@ -10,13 +10,13 @@ Enable raw missions as exposed by MAVLink.
 ## Data Structures
 
 
-struct [MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md)
-
 struct [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md)
 
 struct [MissionPlan](structmavsdk_1_1_mission_raw_1_1_mission_plan.md)
 
 struct [MissionProgress](structmavsdk_1_1_mission_raw_1_1_mission_progress.md)
+
+struct [MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md)
 
 struct [ProgressData](structmavsdk_1_1_mission_raw_1_1_progress_data.md)
 
@@ -44,7 +44,7 @@ Type | Name | Description
 &nbsp; | [MissionRaw](#classmavsdk_1_1_mission_raw_1ad03476f12988a12808a8c4385c7a7344) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [MissionRaw](#classmavsdk_1_1_mission_raw_1aec90f3e32d7366f3e27f025bb62c1e78) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~MissionRaw](#classmavsdk_1_1_mission_raw_1a1c7e90261ab67337d6b570cb3f9bfdb9) () override | Destructor (internal use only).
-&nbsp; | [MissionRaw](#classmavsdk_1_1_mission_raw_1a91216322f0b6139d5ba83127f2ef1f12) (const [MissionRaw](classmavsdk_1_1_mission_raw.md) & other) | Copy constructor.
+&nbsp; | [MissionRaw](#classmavsdk_1_1_mission_raw_1a91216322f0b6139d5ba83127f2ef1f12) (const MissionRaw & other) | Copy constructor.
 void | [upload_mission_async](#classmavsdk_1_1_mission_raw_1a77cc5df3362b7ab4cbc94e5bc9707609) (std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > mission_items, const [ResultCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a1a36a84f17dca07e1da49c13abbc9564) callback) | Upload a list of raw mission items to the system.
 [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) | [upload_mission](#classmavsdk_1_1_mission_raw_1ad4f5c2ccfb2249f6e11c9533c263926a) (std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > mission_items)const | Upload a list of raw mission items to the system.
 void | [upload_mission_with_progress_async](#classmavsdk_1_1_mission_raw_1ac7275cc2946166ac8203216a1181eae5) ([MissionPlan](structmavsdk_1_1_mission_raw_1_1_mission_plan.md) mission_plan, const [UploadMissionWithProgressCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a184a812c658d3c62cf6cf3362a995c8e) & callback) | Upload a list of raw mission items and report upload progress.
@@ -78,7 +78,7 @@ std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_mission_planner_mission](#classmavsdk_1_1_mission_raw_1abf8ac0f813d4dff4f0fe3acce0b39163) (std::string mission_planner_path)const | Import a [Mission](classmavsdk_1_1_mission.md) Planner mission in QGC WPL 110 format, from a file.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_mission_planner_mission_from_string](#classmavsdk_1_1_mission_raw_1a25e5f8e8c7f6d778f7ab6e91b39a6ec9) (std::string mission_planner_mission)const | Import a [Mission](classmavsdk_1_1_mission.md) Planner mission in QGC WPL 110 format, from a string.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), bool > | [is_mission_finished](#classmavsdk_1_1_mission_raw_1a998db451c2718d9728276ca2d01ce315) () const | Check if the mission is finished.
-const [MissionRaw](classmavsdk_1_1_mission_raw.md) & | [operator=](#classmavsdk_1_1_mission_raw_1a2b8cdc1fbee72224a9ef6eb9266b2e2a) (const [MissionRaw](classmavsdk_1_1_mission_raw.md) &)=delete | Equality operator (object is not copyable).
+const [MissionRaw](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1ad03476f12988a12808a8c4385c7a7344) & | [operator=](#classmavsdk_1_1_mission_raw_1a2b8cdc1fbee72224a9ef6eb9266b2e2a) (const [MissionRaw](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1ad03476f12988a12808a8c4385c7a7344) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -140,7 +140,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [MissionRaw](classmavsdk_1_1_mission_raw.md)& **other** - 
+* const MissionRaw& **other** - 
 
 ## Member Typdef Documentation
 
@@ -250,7 +250,7 @@ Value | Description
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Request succeeded. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa902b0d55fddef6f8d651fe1035b7d4bd"></span> `Error` | Error. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafaecc3de82f27e8e7f65807c69a114efbe"></span> `TooManyMissionItems` | Too many mission items in the mission. 
-<span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | Vehicle is busy. 
+<span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) is busy. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Request timed out. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa253ca7dd096ee0956cccee4d376cab8b"></span> `InvalidArgument` | Invalid argument. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` | [Mission](classmavsdk_1_1_mission.md) downloaded from the system is not supported. 
@@ -309,7 +309,7 @@ This function is blocking. See 'upload_mission_async' for the non-blocking count
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### upload_mission_with_progress_async() {#classmavsdk_1_1_mission_raw_1ac7275cc2946166ac8203216a1181eae5}
 ```cpp
@@ -356,7 +356,7 @@ This function is blocking. See 'upload_geofence_async' for the non-blocking coun
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### upload_rally_points_async() {#classmavsdk_1_1_mission_raw_1a2c5d52246a8ad13151fcfedeab2859e5}
 ```cpp
@@ -389,7 +389,7 @@ This function is blocking. See 'upload_rally_points_async' for the non-blocking 
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### cancel_mission_upload() {#classmavsdk_1_1_mission_raw_1aa353e3fa6e836305248be131dbe19273}
 ```cpp
@@ -403,7 +403,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### download_mission_async() {#classmavsdk_1_1_mission_raw_1a7e27b0fb58889ca5cb1202276c0e0669}
 ```cpp
@@ -431,7 +431,7 @@ This function is blocking. See 'download_mission_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionRaw::MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionRaw::MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > > - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### download_geofence_async() {#classmavsdk_1_1_mission_raw_1acc681495c318043334691ab9ccd6778d}
 ```cpp
@@ -459,7 +459,7 @@ This function is blocking. See 'download_geofence_async' for the non-blocking co
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionRaw::MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionRaw::MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > > - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### download_rallypoints_async() {#classmavsdk_1_1_mission_raw_1a38e58cdecc1737936bec5d046c8eb511}
 ```cpp
@@ -487,7 +487,7 @@ This function is blocking. See 'download_rallypoints_async' for the non-blocking
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionRaw::MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionRaw::MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > > - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### cancel_mission_download() {#classmavsdk_1_1_mission_raw_1a7c554999ca66c5434ef1fa334d949e5a}
 ```cpp
@@ -501,7 +501,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### start_mission_async() {#classmavsdk_1_1_mission_raw_1acca64e0a08978f5721be8fa955b1bb0f}
 ```cpp
@@ -535,7 +535,7 @@ This function is blocking. See 'start_mission_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### pause_mission_async() {#classmavsdk_1_1_mission_raw_1aae0eedbe4216266eb6e2115cd03c61a1}
 ```cpp
@@ -569,7 +569,7 @@ This function is blocking. See 'pause_mission_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### clear_mission_async() {#classmavsdk_1_1_mission_raw_1acf6bf293facbd45fa1126e52e99248a2}
 ```cpp
@@ -597,7 +597,7 @@ This function is blocking. See 'clear_mission_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### set_current_mission_item_async() {#classmavsdk_1_1_mission_raw_1a5540d6ca691d60ef19b66e303bae7f87}
 ```cpp
@@ -636,7 +636,7 @@ This function is blocking. See 'set_current_mission_item_async' for the non-bloc
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### subscribe_mission_progress() {#classmavsdk_1_1_mission_raw_1a88a3c4b26418e734a547f251706988d2}
 ```cpp
@@ -739,7 +739,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### import_qgroundcontrol_mission_from_string() {#classmavsdk_1_1_mission_raw_1a4a1b55650120d8af0ce7fa037f6b5ce9}
 ```cpp
@@ -768,7 +768,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### import_mission_planner_mission() {#classmavsdk_1_1_mission_raw_1abf8ac0f813d4dff4f0fe3acce0b39163}
 ```cpp
@@ -795,7 +795,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### import_mission_planner_mission_from_string() {#classmavsdk_1_1_mission_raw_1a25e5f8e8c7f6d778f7ab6e91b39a6ec9}
 ```cpp
@@ -822,7 +822,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### is_mission_finished() {#classmavsdk_1_1_mission_raw_1a998db451c2718d9728276ca2d01ce315}
 ```cpp
@@ -839,7 +839,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), bool > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), bool > - [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) of request.
 
 ### operator=() {#classmavsdk_1_1_mission_raw_1a2b8cdc1fbee72224a9ef6eb9266b2e2a}
 ```cpp
@@ -852,8 +852,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [MissionRaw](classmavsdk_1_1_mission_raw.md)&  - 
+* const [MissionRaw](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1ad03476f12988a12808a8c4385c7a7344)&  - 
 
 **Returns**
 
-&emsp;const [MissionRaw](classmavsdk_1_1_mission_raw.md) & - 
+&emsp;const [MissionRaw](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1ad03476f12988a12808a8c4385c7a7344) & - 

@@ -4,7 +4,7 @@
 ----
 
 
-ADSB Vehicle type. 
+ADSB [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) type. 
 
 
 ## Data Fields
@@ -12,7 +12,7 @@ ADSB Vehicle type.
 
 uint32_t [icao_address](#structmavsdk_1_1_transponder_1_1_adsb_vehicle_1adb4e2ab15053b2b73541dfc42bf6614c) {} - ICAO (International Civil Aviation Organization) unique worldwide identifier.
 
-double [latitude_deg](#structmavsdk_1_1_transponder_1_1_adsb_vehicle_1aa538799571c3984a9875ea2dba66020c) {} - Latitude in degrees (range: -90 to +90)
+double [latitude_deg](#structmavsdk_1_1_transponder_1_1_adsb_vehicle_1aa538799571c3984a9875ea2dba66020c) {} - Latitude in degrees (range: -90 to +90).
 
 double [longitude_deg](#structmavsdk_1_1_transponder_1_1_adsb_vehicle_1a7a4f84ff4e7b773b86c9518d555bda1e) {} - Longitude in degrees (range: -180 to +180).
 
@@ -55,7 +55,7 @@ double mavsdk::Transponder::AdsbVehicle::latitude_deg {}
 ```
 
 
-Latitude in degrees (range: -90 to +90)
+Latitude in degrees (range: -90 to +90).
 
 
 ### longitude_deg {#structmavsdk_1_1_transponder_1_1_adsb_vehicle_1a7a4f84ff4e7b773b86c9518d555bda1e}

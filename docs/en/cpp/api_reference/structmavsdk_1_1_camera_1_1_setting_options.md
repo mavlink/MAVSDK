@@ -12,9 +12,9 @@ Type to represent a setting with a list of options to choose from.
 
 int32_t [component_id](#structmavsdk_1_1_camera_1_1_setting_options_1ad497c229df9899af7e76226664ced72d) {} - Component ID.
 
-std::string [setting_id](#structmavsdk_1_1_camera_1_1_setting_options_1aca647af6e140ee78b41d85565d673f14) {} - Name of the setting (machine readable)
+std::string [setting_id](#structmavsdk_1_1_camera_1_1_setting_options_1aca647af6e140ee78b41d85565d673f14) {} - Name of the setting (machine readable).
 
-std::string [setting_description](#structmavsdk_1_1_camera_1_1_setting_options_1a8902e7f9dfc25ee9c8363cf5f4775b92) {} - Description of the setting (human readable)
+std::string [setting_description](#structmavsdk_1_1_camera_1_1_setting_options_1a8902e7f9dfc25ee9c8363cf5f4775b92) {} - Description of the setting (human readable).
 
 std::vector< [Option](structmavsdk_1_1_camera_1_1_option.md) > [options](#structmavsdk_1_1_camera_1_1_setting_options_1a06b292df50c638625ef942b1a19917c3) {} - List of options or if range [min, max] or [min, max, interval].
 
@@ -41,7 +41,7 @@ std::string mavsdk::Camera::SettingOptions::setting_id {}
 ```
 
 
-Name of the setting (machine readable)
+Name of the setting (machine readable).
 
 
 ### setting_description {#structmavsdk_1_1_camera_1_1_setting_options_1a8902e7f9dfc25ee9c8363cf5f4775b92}
@@ -51,7 +51,7 @@ std::string mavsdk::Camera::SettingOptions::setting_description {}
 ```
 
 
-Description of the setting (human readable)
+Description of the setting (human readable).
 
 
 ### options {#structmavsdk_1_1_camera_1_1_setting_options_1a06b292df50c638625ef942b1a19917c3}

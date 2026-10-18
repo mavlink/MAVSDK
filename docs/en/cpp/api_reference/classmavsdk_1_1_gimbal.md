@@ -10,19 +10,19 @@ Provide control over a gimbal within the MAVLink [Gimbal](classmavsdk_1_1_gimbal
 ## Data Structures
 
 
+struct [Quaternion](structmavsdk_1_1_gimbal_1_1_quaternion.md)
+
+struct [EulerAngle](structmavsdk_1_1_gimbal_1_1_euler_angle.md)
+
 struct [AngularVelocityBody](structmavsdk_1_1_gimbal_1_1_angular_velocity_body.md)
 
 struct [Attitude](structmavsdk_1_1_gimbal_1_1_attitude.md)
-
-struct [ControlStatus](structmavsdk_1_1_gimbal_1_1_control_status.md)
-
-struct [EulerAngle](structmavsdk_1_1_gimbal_1_1_euler_angle.md)
 
 struct [GimbalItem](structmavsdk_1_1_gimbal_1_1_gimbal_item.md)
 
 struct [GimbalList](structmavsdk_1_1_gimbal_1_1_gimbal_list.md)
 
-struct [Quaternion](structmavsdk_1_1_gimbal_1_1_quaternion.md)
+struct [ControlStatus](structmavsdk_1_1_gimbal_1_1_control_status.md)
 
 ## Public Types
 
@@ -49,7 +49,7 @@ Type | Name | Description
 &nbsp; | [Gimbal](#classmavsdk_1_1_gimbal_1aa33f4df704c7f09698884083c379f787) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Gimbal](#classmavsdk_1_1_gimbal_1aa3cb6e1e37a2f275ab5cc8ed4dd71d93) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Gimbal](#classmavsdk_1_1_gimbal_1a3b86d8209172a578f238928b9f5bfdd6) () override | Destructor (internal use only).
-&nbsp; | [Gimbal](#classmavsdk_1_1_gimbal_1ae69df278ca37deaee22fb13053fd4f2d) (const [Gimbal](classmavsdk_1_1_gimbal.md) & other) | Copy constructor.
+&nbsp; | [Gimbal](#classmavsdk_1_1_gimbal_1ae69df278ca37deaee22fb13053fd4f2d) (const Gimbal & other) | Copy constructor.
 void | [set_angles_async](#classmavsdk_1_1_gimbal_1a2da4d10fa81ec525dfda9c0036f94302) (int32_t gimbal_id, float roll_deg, float pitch_deg, float yaw_deg, [GimbalMode](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1afb92614c5d5915d3960bcea51bec2dca) gimbal_mode, [SendMode](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1a625fee23155be376ebd67853bf9383a2) send_mode, const [ResultCallback](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1a88ee7dd17821fb9b12c44b2a3630c197) callback) | Set gimbal roll, pitch and yaw angles.
 [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) | [set_angles](#classmavsdk_1_1_gimbal_1a481cc6658ef52d40469d71d4b3a1ebda) (int32_t gimbal_id, float roll_deg, float pitch_deg, float yaw_deg, [GimbalMode](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1afb92614c5d5915d3960bcea51bec2dca) gimbal_mode, [SendMode](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1a625fee23155be376ebd67853bf9383a2) send_mode)const | Set gimbal roll, pitch and yaw angles.
 void | [set_angular_rates_async](#classmavsdk_1_1_gimbal_1a0f0751ee5268f95d1833651dff78b956) (int32_t gimbal_id, float roll_rate_deg_s, float pitch_rate_deg_s, float yaw_rate_deg_s, [GimbalMode](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1afb92614c5d5915d3960bcea51bec2dca) gimbal_mode, [SendMode](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1a625fee23155be376ebd67853bf9383a2) send_mode, const [ResultCallback](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1a88ee7dd17821fb9b12c44b2a3630c197) callback) | Set gimbal angular rates.
@@ -69,7 +69,7 @@ std::pair< [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd
 [AttitudeHandle](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1af7c71cdd8516aec8c9d160977f7c5396) | [subscribe_attitude](#classmavsdk_1_1_gimbal_1aa3500df0c7adff3819493dd7d38976a3) (const [AttitudeCallback](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1a07eafc661a23ee1d55ab0dd86e3c71ed) & callback) | Subscribe to attitude updates.
 void | [unsubscribe_attitude](#classmavsdk_1_1_gimbal_1a11b1e0d91ca5c8ec50afd802d9d2532e) ([AttitudeHandle](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1af7c71cdd8516aec8c9d160977f7c5396) handle) | Unsubscribe from subscribe_attitude.
 std::pair< [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac), [Gimbal::Attitude](structmavsdk_1_1_gimbal_1_1_attitude.md) > | [get_attitude](#classmavsdk_1_1_gimbal_1a57c6e6c7297e55f5cc660e40e91b898b) (int32_t gimbal_id)const | Get attitude for specific gimbal.
-const [Gimbal](classmavsdk_1_1_gimbal.md) & | [operator=](#classmavsdk_1_1_gimbal_1a2d16cfd6fbe82b0e34d35133ab5c9617) (const [Gimbal](classmavsdk_1_1_gimbal.md) &)=delete | Equality operator (object is not copyable).
+const [Gimbal](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa33f4df704c7f09698884083c379f787) & | [operator=](#classmavsdk_1_1_gimbal_1a2d16cfd6fbe82b0e34d35133ab5c9617) (const [Gimbal](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa33f4df704c7f09698884083c379f787) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -131,7 +131,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Gimbal](classmavsdk_1_1_gimbal.md)& **other** - 
+* const Gimbal& **other** - 
 
 ## Member Typdef Documentation
 
@@ -315,7 +315,7 @@ This function is blocking. See 'set_angles_async' for the non-blocking counterpa
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - Result of request.
+&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) of request.
 
 ### set_angular_rates_async() {#classmavsdk_1_1_gimbal_1a0f0751ee5268f95d1833651dff78b956}
 ```cpp
@@ -370,7 +370,7 @@ This function is blocking. See 'set_angular_rates_async' for the non-blocking co
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - Result of request.
+&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) of request.
 
 ### set_roi_location_async() {#classmavsdk_1_1_gimbal_1a762050f84df6be7adc1eecae4f1b2e48}
 ```cpp
@@ -415,7 +415,7 @@ This function is blocking. See 'set_roi_location_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - Result of request.
+&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) of request.
 
 ### take_control_async() {#classmavsdk_1_1_gimbal_1a814363300828b02981bf2e818267c9be}
 ```cpp
@@ -462,7 +462,7 @@ This function is blocking. See 'take_control_async' for the non-blocking counter
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - Result of request.
+&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) of request.
 
 ### release_control_async() {#classmavsdk_1_1_gimbal_1a68305d969bc88353513890aa2a7a627f}
 ```cpp
@@ -501,7 +501,7 @@ This function is blocking. See 'release_control_async' for the non-blocking coun
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - Result of request.
+&emsp;[Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) - [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) of request.
 
 ### subscribe_gimbal_list() {#classmavsdk_1_1_gimbal_1a4ca185553a4a327f46c317942d2731d0}
 ```cpp
@@ -594,7 +594,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac), [Gimbal::ControlStatus](structmavsdk_1_1_gimbal_1_1_control_status.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac), [Gimbal::ControlStatus](structmavsdk_1_1_gimbal_1_1_control_status.md) > - [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) of request.
 
 ### subscribe_attitude() {#classmavsdk_1_1_gimbal_1aa3500df0c7adff3819493dd7d38976a3}
 ```cpp
@@ -643,7 +643,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac), [Gimbal::Attitude](structmavsdk_1_1_gimbal_1_1_attitude.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac), [Gimbal::Attitude](structmavsdk_1_1_gimbal_1_1_attitude.md) > - [Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) of request.
 
 ### operator=() {#classmavsdk_1_1_gimbal_1a2d16cfd6fbe82b0e34d35133ab5c9617}
 ```cpp
@@ -656,8 +656,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Gimbal](classmavsdk_1_1_gimbal.md)&  - 
+* const [Gimbal](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa33f4df704c7f09698884083c379f787)&  - 
 
 **Returns**
 
-&emsp;const [Gimbal](classmavsdk_1_1_gimbal.md) & - 
+&emsp;const [Gimbal](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa33f4df704c7f09698884083c379f787) & - 

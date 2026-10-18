@@ -30,7 +30,7 @@ Type | Name | Description
 &nbsp; | [FollowMe](#classmavsdk_1_1_follow_me_1ab85b27fcd899f4861cd2e99c08083b9e) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [FollowMe](#classmavsdk_1_1_follow_me_1a422ef7ca182c92052b0da32d789b0c14) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~FollowMe](#classmavsdk_1_1_follow_me_1a51cc272f759657eb583830cbde2785cf) () override | Destructor (internal use only).
-&nbsp; | [FollowMe](#classmavsdk_1_1_follow_me_1a204548d586c8355ab60991be4b63c7aa) (const [FollowMe](classmavsdk_1_1_follow_me.md) & other) | Copy constructor.
+&nbsp; | [FollowMe](#classmavsdk_1_1_follow_me_1a204548d586c8355ab60991be4b63c7aa) (const FollowMe & other) | Copy constructor.
 [FollowMe::Config](structmavsdk_1_1_follow_me_1_1_config.md) | [get_config](#classmavsdk_1_1_follow_me_1aca2e599cd6fb889b9f80dc7a9da57ee9) () const | Get current configuration.
 [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) | [set_config](#classmavsdk_1_1_follow_me_1aa76aab9a21bc3ae475bee6a55c0e4d30) ([Config](structmavsdk_1_1_follow_me_1_1_config.md) config)const | Apply configuration by sending it to the system.
 bool | [is_active](#classmavsdk_1_1_follow_me_1a48ab77939257e52159bd9ed19335a7de) () const | Check if [FollowMe](classmavsdk_1_1_follow_me.md) is active.
@@ -38,7 +38,7 @@ bool | [is_active](#classmavsdk_1_1_follow_me_1a48ab77939257e52159bd9ed19335a7de
 [FollowMe::TargetLocation](structmavsdk_1_1_follow_me_1_1_target_location.md) | [get_last_location](#classmavsdk_1_1_follow_me_1af2a1af346ee2fa7761b58b406e9e6e0c) () const | Get the last location of the target.
 [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) | [start](#classmavsdk_1_1_follow_me_1a4b6ae3ec1ff07d8b3a79038e04992003) () const | Start [FollowMe](classmavsdk_1_1_follow_me.md) mode.
 [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) | [stop](#classmavsdk_1_1_follow_me_1a202a7b9edf56d9b883c974a09c14ba7d) () const | Stop [FollowMe](classmavsdk_1_1_follow_me.md) mode.
-const [FollowMe](classmavsdk_1_1_follow_me.md) & | [operator=](#classmavsdk_1_1_follow_me_1ab9787b3a8301c734aa22745ac753bbb9) (const [FollowMe](classmavsdk_1_1_follow_me.md) &)=delete | Equality operator (object is not copyable).
+const [FollowMe](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1ab85b27fcd899f4861cd2e99c08083b9e) & | [operator=](#classmavsdk_1_1_follow_me_1ab9787b3a8301c734aa22745ac753bbb9) (const [FollowMe](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1ab85b27fcd899f4861cd2e99c08083b9e) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -100,7 +100,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [FollowMe](classmavsdk_1_1_follow_me.md)& **other** - 
+* const FollowMe& **other** - 
 
 ## Member Typdef Documentation
 
@@ -130,7 +130,7 @@ Value | Description
 <span id="classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Request succeeded. 
 <span id="classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system connected. 
 <span id="classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8a094a6f6b0868122a9dd008cb91c083e4"></span> `ConnectionError` | Connection error. 
-<span id="classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | Vehicle is busy. 
+<span id="classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) is busy. 
 <span id="classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8a3398e12855176d55f43d53e04f472c8a"></span> `CommandDenied` | Command denied. 
 <span id="classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Request timed out. 
 <span id="classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8a2b2c350e9a20a57773a9efa14c8c36e5"></span> `NotActive` | [FollowMe](classmavsdk_1_1_follow_me.md) is not active. 
@@ -151,7 +151,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[FollowMe::Config](structmavsdk_1_1_follow_me_1_1_config.md) - Result of request.
+&emsp;[FollowMe::Config](structmavsdk_1_1_follow_me_1_1_config.md) - [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) of request.
 
 ### set_config() {#classmavsdk_1_1_follow_me_1aa76aab9a21bc3ae475bee6a55c0e4d30}
 ```cpp
@@ -169,7 +169,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - Result of request.
+&emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) of request.
 
 ### is_active() {#classmavsdk_1_1_follow_me_1a48ab77939257e52159bd9ed19335a7de}
 ```cpp
@@ -183,7 +183,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;bool - Result of request.
+&emsp;bool - [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) of request.
 
 ### set_target_location() {#classmavsdk_1_1_follow_me_1a1a99e282472235f726bfde430873ffd5}
 ```cpp
@@ -201,7 +201,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - Result of request.
+&emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) of request.
 
 ### get_last_location() {#classmavsdk_1_1_follow_me_1af2a1af346ee2fa7761b58b406e9e6e0c}
 ```cpp
@@ -215,7 +215,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[FollowMe::TargetLocation](structmavsdk_1_1_follow_me_1_1_target_location.md) - Result of request.
+&emsp;[FollowMe::TargetLocation](structmavsdk_1_1_follow_me_1_1_target_location.md) - [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) of request.
 
 ### start() {#classmavsdk_1_1_follow_me_1a4b6ae3ec1ff07d8b3a79038e04992003}
 ```cpp
@@ -229,7 +229,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - Result of request.
+&emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) of request.
 
 ### stop() {#classmavsdk_1_1_follow_me_1a202a7b9edf56d9b883c974a09c14ba7d}
 ```cpp
@@ -243,7 +243,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - Result of request.
+&emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) of request.
 
 ### operator=() {#classmavsdk_1_1_follow_me_1ab9787b3a8301c734aa22745ac753bbb9}
 ```cpp
@@ -256,8 +256,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [FollowMe](classmavsdk_1_1_follow_me.md)&  - 
+* const [FollowMe](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1ab85b27fcd899f4861cd2e99c08083b9e)&  - 
 
 **Returns**
 
-&emsp;const [FollowMe](classmavsdk_1_1_follow_me.md) & - 
+&emsp;const [FollowMe](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1ab85b27fcd899f4861cd2e99c08083b9e) & - 

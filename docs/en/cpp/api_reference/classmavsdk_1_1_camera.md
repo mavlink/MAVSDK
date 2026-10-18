@@ -13,39 +13,39 @@ Currently only a single camera is supported. When multiple cameras are supported
 ## Data Structures
 
 
-struct [CameraList](structmavsdk_1_1_camera_1_1_camera_list.md)
-
-struct [CaptureInfo](structmavsdk_1_1_camera_1_1_capture_info.md)
-
-struct [CurrentSettingsUpdate](structmavsdk_1_1_camera_1_1_current_settings_update.md)
-
-struct [EulerAngle](structmavsdk_1_1_camera_1_1_euler_angle.md)
-
-struct [Information](structmavsdk_1_1_camera_1_1_information.md)
-
-struct [ModeUpdate](structmavsdk_1_1_camera_1_1_mode_update.md)
-
 struct [Option](structmavsdk_1_1_camera_1_1_option.md)
-
-struct [Position](structmavsdk_1_1_camera_1_1_position.md)
-
-struct [PossibleSettingOptionsUpdate](structmavsdk_1_1_camera_1_1_possible_setting_options_update.md)
-
-struct [Quaternion](structmavsdk_1_1_camera_1_1_quaternion.md)
 
 struct [Setting](structmavsdk_1_1_camera_1_1_setting.md)
 
 struct [SettingOptions](structmavsdk_1_1_camera_1_1_setting_options.md)
 
+struct [VideoStreamSettings](structmavsdk_1_1_camera_1_1_video_stream_settings.md)
+
+struct [VideoStreamInfo](structmavsdk_1_1_camera_1_1_video_stream_info.md)
+
+struct [ModeUpdate](structmavsdk_1_1_camera_1_1_mode_update.md)
+
+struct [VideoStreamUpdate](structmavsdk_1_1_camera_1_1_video_stream_update.md)
+
 struct [Storage](structmavsdk_1_1_camera_1_1_storage.md)
 
 struct [StorageUpdate](structmavsdk_1_1_camera_1_1_storage_update.md)
 
-struct [VideoStreamInfo](structmavsdk_1_1_camera_1_1_video_stream_info.md)
+struct [CurrentSettingsUpdate](structmavsdk_1_1_camera_1_1_current_settings_update.md)
 
-struct [VideoStreamSettings](structmavsdk_1_1_camera_1_1_video_stream_settings.md)
+struct [PossibleSettingOptionsUpdate](structmavsdk_1_1_camera_1_1_possible_setting_options_update.md)
 
-struct [VideoStreamUpdate](structmavsdk_1_1_camera_1_1_video_stream_update.md)
+struct [Position](structmavsdk_1_1_camera_1_1_position.md)
+
+struct [Quaternion](structmavsdk_1_1_camera_1_1_quaternion.md)
+
+struct [EulerAngle](structmavsdk_1_1_camera_1_1_euler_angle.md)
+
+struct [CaptureInfo](structmavsdk_1_1_camera_1_1_capture_info.md)
+
+struct [Information](structmavsdk_1_1_camera_1_1_information.md)
+
+struct [CameraList](structmavsdk_1_1_camera_1_1_camera_list.md)
 
 ## Public Types
 
@@ -81,7 +81,7 @@ Type | Name | Description
 &nbsp; | [Camera](#classmavsdk_1_1_camera_1a186a2853440c879b99ed7e4a726969e9) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Camera](#classmavsdk_1_1_camera_1aecd55dc849bbb967a6b9dcfd36cc075e) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Camera](#classmavsdk_1_1_camera_1afc23a58baf97868b1d9a9b983d7c2087) () override | Destructor (internal use only).
-&nbsp; | [Camera](#classmavsdk_1_1_camera_1a1b83c38c360d70b56222a94999d862fd) (const [Camera](classmavsdk_1_1_camera.md) & other) | Copy constructor.
+&nbsp; | [Camera](#classmavsdk_1_1_camera_1a1b83c38c360d70b56222a94999d862fd) (const Camera & other) | Copy constructor.
 void | [take_photo_async](#classmavsdk_1_1_camera_1ae7a59d768c597fbee8eff47073dd8690) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Take one photo.
 [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [take_photo](#classmavsdk_1_1_camera_1ae06036414213ef3af9dd1e63401b043e) (int32_t component_id)const | Take one photo.
 void | [start_photo_interval_async](#classmavsdk_1_1_camera_1af57a8398e1f2d4ca79368d04bb7c211f) (int32_t component_id, float interval_s, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Start photo timelapse with a given interval.
@@ -160,7 +160,7 @@ void | [focus_auto_single_async](#classmavsdk_1_1_camera_1adca0eeafede69b1193070
 [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_auto_single](#classmavsdk_1_1_camera_1a53f81bb24eb49cf7a8f497c4aed0075f) (int32_t component_id)const | Single auto focus. Mainly used for still pictures. Usually abbreviated as AF-S.
 void | [focus_auto_continuous_async](#classmavsdk_1_1_camera_1a4652d46a9c5ed8251bf9036d07fb3cbc) (int32_t component_id, const [ResultCallback](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a8d6d59cd8d0a3584ef60b16255b6301f) callback) | Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
 [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) | [focus_auto_continuous](#classmavsdk_1_1_camera_1ae14bd78f309cfd479b8fb2bff827c8e5) (int32_t component_id)const | Continuous auto focus. Mainly used for dynamic scenes. Abbreviated as AF-C.
-const [Camera](classmavsdk_1_1_camera.md) & | [operator=](#classmavsdk_1_1_camera_1a358026db44ff9a10cf14a166d8f1da78) (const [Camera](classmavsdk_1_1_camera.md) &)=delete | Equality operator (object is not copyable).
+const [Camera](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a186a2853440c879b99ed7e4a726969e9) & | [operator=](#classmavsdk_1_1_camera_1a358026db44ff9a10cf14a166d8f1da78) (const [Camera](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a186a2853440c879b99ed7e4a726969e9) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -222,7 +222,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Camera](classmavsdk_1_1_camera.md)& **other** - 
+* const Camera& **other** - 
 
 ## Member Typdef Documentation
 
@@ -479,7 +479,7 @@ This function is blocking. See 'take_photo_async' for the non-blocking counterpa
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### start_photo_interval_async() {#classmavsdk_1_1_camera_1af57a8398e1f2d4ca79368d04bb7c211f}
 ```cpp
@@ -514,7 +514,7 @@ This function is blocking. See 'start_photo_interval_async' for the non-blocking
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### stop_photo_interval_async() {#classmavsdk_1_1_camera_1af63064187baaa598d1b38545ec28e173}
 ```cpp
@@ -547,7 +547,7 @@ This function is blocking. See 'stop_photo_interval_async' for the non-blocking 
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### start_video_async() {#classmavsdk_1_1_camera_1af88ebe8c37534ce6cdbc2956a5b7422f}
 ```cpp
@@ -580,7 +580,7 @@ This function is blocking. See 'start_video_async' for the non-blocking counterp
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### stop_video_async() {#classmavsdk_1_1_camera_1a35e4a079f3f82e936eb592ca926808b4}
 ```cpp
@@ -613,7 +613,7 @@ This function is blocking. See 'stop_video_async' for the non-blocking counterpa
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### start_video_streaming() {#classmavsdk_1_1_camera_1a91530da971787bc240f50171ebbf756d}
 ```cpp
@@ -632,7 +632,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### stop_video_streaming() {#classmavsdk_1_1_camera_1a3992c4fc3f133904d039e3a9ab035818}
 ```cpp
@@ -651,7 +651,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### set_mode_async() {#classmavsdk_1_1_camera_1a46e3a1929048d5ebc3bad7787e0ff72e}
 ```cpp
@@ -686,7 +686,7 @@ This function is blocking. See 'set_mode_async' for the non-blocking counterpart
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### list_photos_async() {#classmavsdk_1_1_camera_1a8e9e1364079a503c705255b36cd41ff8}
 ```cpp
@@ -696,7 +696,7 @@ void mavsdk::Camera::list_photos_async(int32_t component_id, PhotosRange photos_
 
 List photos available on the camera.
 
-Note that this might need to be called initially to set the PhotosRange accordingly. Once set to 'all' rather than 'since connection', it will try to request the previous images over time.
+Note that this might need to be called initially to set the [PhotosRange](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a1211ea6664aa9c1d4ef4aede363c7c22) accordingly. Once set to 'all' rather than 'since connection', it will try to request the previous images over time.
 
 
 This function is non-blocking. See 'list_photos' for the blocking counterpart.
@@ -715,7 +715,7 @@ std::pair< Result, std::vector< Camera::CaptureInfo > > mavsdk::Camera::list_pho
 
 List photos available on the camera.
 
-Note that this might need to be called initially to set the PhotosRange accordingly. Once set to 'all' rather than 'since connection', it will try to request the previous images over time.
+Note that this might need to be called initially to set the [PhotosRange](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a1211ea6664aa9c1d4ef4aede363c7c22) accordingly. Once set to 'all' rather than 'since connection', it will try to request the previous images over time.
 
 
 This function is blocking. See 'list_photos_async' for the non-blocking counterpart.
@@ -727,7 +727,7 @@ This function is blocking. See 'list_photos_async' for the non-blocking counterp
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), std::vector< [Camera::CaptureInfo](structmavsdk_1_1_camera_1_1_capture_info.md) > > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), std::vector< [Camera::CaptureInfo](structmavsdk_1_1_camera_1_1_capture_info.md) > > - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### subscribe_camera_list() {#classmavsdk_1_1_camera_1af7de7e428b7d1f95535d27e246be615a}
 ```cpp
@@ -819,7 +819,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), [Camera::Mode](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a02bb5ce37d125ba4c65d43f172cc2d65) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), [Camera::Mode](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a02bb5ce37d125ba4c65d43f172cc2d65) > - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### subscribe_video_stream_info() {#classmavsdk_1_1_camera_1a4dcf0ebeb1f9f5e5b2b71f59c9b7eeb9}
 ```cpp
@@ -867,7 +867,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), [Camera::VideoStreamInfo](structmavsdk_1_1_camera_1_1_video_stream_info.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), [Camera::VideoStreamInfo](structmavsdk_1_1_camera_1_1_video_stream_info.md) > - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### subscribe_capture_info() {#classmavsdk_1_1_camera_1a8822ab1d802984a1acc9b53cd9810e8f}
 ```cpp
@@ -945,7 +945,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), [Camera::Storage](structmavsdk_1_1_camera_1_1_storage.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), [Camera::Storage](structmavsdk_1_1_camera_1_1_storage.md) > - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### subscribe_current_settings() {#classmavsdk_1_1_camera_1a906c431b63dde866b691ab4c839858ff}
 ```cpp
@@ -993,7 +993,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), std::vector< [Camera::Setting](structmavsdk_1_1_camera_1_1_setting.md) > > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), std::vector< [Camera::Setting](structmavsdk_1_1_camera_1_1_setting.md) > > - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### subscribe_possible_setting_options() {#classmavsdk_1_1_camera_1aef7c545aaa05e36b212255120557967b}
 ```cpp
@@ -1041,7 +1041,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), std::vector< [Camera::SettingOptions](structmavsdk_1_1_camera_1_1_setting_options.md) > > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), std::vector< [Camera::SettingOptions](structmavsdk_1_1_camera_1_1_setting_options.md) > > - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### set_setting_async() {#classmavsdk_1_1_camera_1a5861022cf053c2c347c994e0d0ae62a4}
 ```cpp
@@ -1082,7 +1082,7 @@ This function is blocking. See 'set_setting_async' for the non-blocking counterp
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### get_setting_async() {#classmavsdk_1_1_camera_1a3364fd9b2f48388148620471bc598d85}
 ```cpp
@@ -1123,7 +1123,7 @@ This function is blocking. See 'get_setting_async' for the non-blocking counterp
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), [Camera::Setting](structmavsdk_1_1_camera_1_1_setting.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf), [Camera::Setting](structmavsdk_1_1_camera_1_1_setting.md) > - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### format_storage_async() {#classmavsdk_1_1_camera_1a5ca1864fd62f357187290f753a3e7b89}
 ```cpp
@@ -1164,7 +1164,7 @@ This function is blocking. See 'format_storage_async' for the non-blocking count
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### reset_settings_async() {#classmavsdk_1_1_camera_1a6b558f5e8e6298584883a5622dd0d5eb}
 ```cpp
@@ -1203,7 +1203,7 @@ This function is blocking. See 'reset_settings_async' for the non-blocking count
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### zoom_in_start_async() {#classmavsdk_1_1_camera_1a6ff5149c53d8acc6c4a5f17081b88a15}
 ```cpp
@@ -1236,7 +1236,7 @@ This function is blocking. See 'zoom_in_start_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### zoom_out_start_async() {#classmavsdk_1_1_camera_1a088b21cec49f800ab666d7409a299937}
 ```cpp
@@ -1269,7 +1269,7 @@ This function is blocking. See 'zoom_out_start_async' for the non-blocking count
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### zoom_stop_async() {#classmavsdk_1_1_camera_1a2a30851420c2d2ceb102692cf917327b}
 ```cpp
@@ -1302,7 +1302,7 @@ This function is blocking. See 'zoom_stop_async' for the non-blocking counterpar
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### zoom_range_async() {#classmavsdk_1_1_camera_1acce728b12b8e767ee9cc55afb1d4d6ee}
 ```cpp
@@ -1337,7 +1337,7 @@ This function is blocking. See 'zoom_range_async' for the non-blocking counterpa
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### track_point_async() {#classmavsdk_1_1_camera_1ac83433124165ec1b3fbe2629a9939617}
 ```cpp
@@ -1376,7 +1376,7 @@ This function is blocking. See 'track_point_async' for the non-blocking counterp
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### track_rectangle_async() {#classmavsdk_1_1_camera_1a4fcec80674d2de32934c67a3544130f6}
 ```cpp
@@ -1417,7 +1417,7 @@ This function is blocking. See 'track_rectangle_async' for the non-blocking coun
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### track_stop_async() {#classmavsdk_1_1_camera_1a7b1c720a0a346516af8c1bc3e49210cc}
 ```cpp
@@ -1450,7 +1450,7 @@ This function is blocking. See 'track_stop_async' for the non-blocking counterpa
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_in_step_async() {#classmavsdk_1_1_camera_1aa6e9fb538089b6cfa3cf4544b26331e1}
 ```cpp
@@ -1483,7 +1483,7 @@ This function is blocking. See 'focus_in_step_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_out_step_async() {#classmavsdk_1_1_camera_1a14ff25e9f97acf2e63bf052e75e3185e}
 ```cpp
@@ -1516,7 +1516,7 @@ This function is blocking. See 'focus_out_step_async' for the non-blocking count
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_in_start_async() {#classmavsdk_1_1_camera_1ad40616613df551c00a78099e7790b880}
 ```cpp
@@ -1549,7 +1549,7 @@ This function is blocking. See 'focus_in_start_async' for the non-blocking count
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_out_start_async() {#classmavsdk_1_1_camera_1ad7917d952b7d0e43dba631a152575765}
 ```cpp
@@ -1582,7 +1582,7 @@ This function is blocking. See 'focus_out_start_async' for the non-blocking coun
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_stop_async() {#classmavsdk_1_1_camera_1a562ad9fa8f29b359785069a9dc5b8de2}
 ```cpp
@@ -1615,7 +1615,7 @@ This function is blocking. See 'focus_stop_async' for the non-blocking counterpa
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_range_async() {#classmavsdk_1_1_camera_1a44cebbb36a9bc9c203dc0233f8b52f7b}
 ```cpp
@@ -1650,7 +1650,7 @@ This function is blocking. See 'focus_range_async' for the non-blocking counterp
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_meters_async() {#classmavsdk_1_1_camera_1a43c2fa5293b95fa4e1ac69e99d377aff}
 ```cpp
@@ -1691,7 +1691,7 @@ This function is blocking. See 'focus_meters_async' for the non-blocking counter
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_auto_async() {#classmavsdk_1_1_camera_1afae9a492d20045cc61eb84359eade249}
 ```cpp
@@ -1724,7 +1724,7 @@ This function is blocking. See 'focus_auto_async' for the non-blocking counterpa
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_auto_single_async() {#classmavsdk_1_1_camera_1adca0eeafede69b11930700b45d9c9345}
 ```cpp
@@ -1757,7 +1757,7 @@ This function is blocking. See 'focus_auto_single_async' for the non-blocking co
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### focus_auto_continuous_async() {#classmavsdk_1_1_camera_1a4652d46a9c5ed8251bf9036d07fb3cbc}
 ```cpp
@@ -1790,7 +1790,7 @@ This function is blocking. See 'focus_auto_continuous_async' for the non-blockin
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - Result of request.
+&emsp;[Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) - [Result](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a2a84df3938372f4f302576227b308bcf) of request.
 
 ### operator=() {#classmavsdk_1_1_camera_1a358026db44ff9a10cf14a166d8f1da78}
 ```cpp
@@ -1803,8 +1803,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Camera](classmavsdk_1_1_camera.md)&  - 
+* const [Camera](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a186a2853440c879b99ed7e4a726969e9)&  - 
 
 **Returns**
 
-&emsp;const [Camera](classmavsdk_1_1_camera.md) & - 
+&emsp;const [Camera](classmavsdk_1_1_camera.md#classmavsdk_1_1_camera_1a186a2853440c879b99ed7e4a726969e9) & - 

@@ -36,14 +36,14 @@ Type | Name | Description
 &nbsp; | [Info](#classmavsdk_1_1_info_1a01a29a579c8ecb75ea73d48f8f6adf17) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Info](#classmavsdk_1_1_info_1ae67e006f16f1e1aa12efe94120ef83ec) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Info](#classmavsdk_1_1_info_1abbf48bc4b9aa5b9fdbdb54ec3e398f65) () override | Destructor (internal use only).
-&nbsp; | [Info](#classmavsdk_1_1_info_1a0f6e0851757046c540fe7ce920eb3fa2) (const [Info](classmavsdk_1_1_info.md) & other) | Copy constructor.
+&nbsp; | [Info](#classmavsdk_1_1_info_1a0f6e0851757046c540fe7ce920eb3fa2) (const Info & other) | Copy constructor.
 std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Identification](structmavsdk_1_1_info_1_1_identification.md) > | [get_identification](#classmavsdk_1_1_info_1a76739913366e334a4638aa187d7c40d4) () const | Get the identification of the system.
 std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Product](structmavsdk_1_1_info_1_1_product.md) > | [get_product](#classmavsdk_1_1_info_1a508cf835acaed0fad69badda62206fed) () const | Get product information of the system.
 std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Version](structmavsdk_1_1_info_1_1_version.md) > | [get_version](#classmavsdk_1_1_info_1a2ad33d89a7dd64192641bba03816a9f9) () const | Get the version information of the system.
 std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), double > | [get_speed_factor](#classmavsdk_1_1_info_1a3cfeae67032ac870b8b97aa352cc50dc) () const | Get the speed factor of a simulation (with lockstep a simulation can run faster or slower than realtime).
 [FlightInformationHandle](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1aa3be384db51ec318510ae19650762efe) | [subscribe_flight_information](#classmavsdk_1_1_info_1adba1c5a12a7c144c1cc9af73b396aa39) (const [FlightInformationCallback](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1a73d05cffe26df98cdf8ba1eaa032476f) & callback) | Subscribe to 'flight information' updates.
 void | [unsubscribe_flight_information](#classmavsdk_1_1_info_1a260ab1d6f2cf035fe8499ff52b915bd2) ([FlightInformationHandle](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1aa3be384db51ec318510ae19650762efe) handle) | Unsubscribe from subscribe_flight_information.
-const [Info](classmavsdk_1_1_info.md) & | [operator=](#classmavsdk_1_1_info_1a64647fcd6c1d71ab5fd78e987ecb3ffa) (const [Info](classmavsdk_1_1_info.md) &)=delete | Equality operator (object is not copyable).
+const [Info](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1a01a29a579c8ecb75ea73d48f8f6adf17) & | [operator=](#classmavsdk_1_1_info_1a64647fcd6c1d71ab5fd78e987ecb3ffa) (const [Info](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1a01a29a579c8ecb75ea73d48f8f6adf17) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -105,7 +105,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Info](classmavsdk_1_1_info.md)& **other** - 
+* const Info& **other** - 
 
 ## Member Typdef Documentation
 
@@ -171,7 +171,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Identification](structmavsdk_1_1_info_1_1_identification.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Identification](structmavsdk_1_1_info_1_1_identification.md) > - [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a) of request.
 
 ### get_product() {#classmavsdk_1_1_info_1a508cf835acaed0fad69badda62206fed}
 ```cpp
@@ -185,7 +185,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Product](structmavsdk_1_1_info_1_1_product.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Product](structmavsdk_1_1_info_1_1_product.md) > - [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a) of request.
 
 ### get_version() {#classmavsdk_1_1_info_1a2ad33d89a7dd64192641bba03816a9f9}
 ```cpp
@@ -199,7 +199,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Version](structmavsdk_1_1_info_1_1_version.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Version](structmavsdk_1_1_info_1_1_version.md) > - [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a) of request.
 
 ### get_speed_factor() {#classmavsdk_1_1_info_1a3cfeae67032ac870b8b97aa352cc50dc}
 ```cpp
@@ -213,7 +213,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), double > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), double > - [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a) of request.
 
 ### subscribe_flight_information() {#classmavsdk_1_1_info_1adba1c5a12a7c144c1cc9af73b396aa39}
 ```cpp
@@ -256,8 +256,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Info](classmavsdk_1_1_info.md)&  - 
+* const [Info](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1a01a29a579c8ecb75ea73d48f8f6adf17)&  - 
 
 **Returns**
 
-&emsp;const [Info](classmavsdk_1_1_info.md) & - 
+&emsp;const [Info](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1a01a29a579c8ecb75ea73d48f8f6adf17) & - 

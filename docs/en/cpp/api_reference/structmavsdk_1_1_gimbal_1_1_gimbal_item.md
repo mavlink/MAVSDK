@@ -10,7 +10,7 @@
 ## Data Fields
 
 
-int32_t [gimbal_id](#structmavsdk_1_1_gimbal_1_1_gimbal_item_1a9424d6672c7ce15ba1e76f7dba72c398) {} - ID to address it, starting at 1 (0 means all gimbals)
+int32_t [gimbal_id](#structmavsdk_1_1_gimbal_1_1_gimbal_item_1a9424d6672c7ce15ba1e76f7dba72c398) {} - ID to address it, starting at 1 (0 means all gimbals).
 
 std::string [vendor_name](#structmavsdk_1_1_gimbal_1_1_gimbal_item_1a4f242d74e738cf807770c8d45340edcb) {} - Vendor name.
 
@@ -33,7 +33,7 @@ int32_t mavsdk::Gimbal::GimbalItem::gimbal_id {}
 ```
 
 
-ID to address it, starting at 1 (0 means all gimbals)
+ID to address it, starting at 1 (0 means all gimbals).
 
 
 ### vendor_name {#structmavsdk_1_1_gimbal_1_1_gimbal_item_1a4f242d74e738cf807770c8d45340edcb}

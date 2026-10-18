@@ -26,9 +26,9 @@ Type | Name | Description
 ---: | --- | ---
 &nbsp; | [ComponentMetadataServer](#classmavsdk_1_1_component_metadata_server_1a83ef20f6459a983e6c499ec4a40232f0) (std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > server_component) | Constructor. Creates the plugin for a [ServerComponent](classmavsdk_1_1_server_component.md) instance.
 &nbsp; | [~ComponentMetadataServer](#classmavsdk_1_1_component_metadata_server_1a7597c973992ce3cab32c8270996f9900) () override | Destructor (internal use only).
-&nbsp; | [ComponentMetadataServer](#classmavsdk_1_1_component_metadata_server_1a9f56317067d68551868680af34ac1124) (const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md) & other) | Copy constructor.
-void | [set_metadata](#classmavsdk_1_1_component_metadata_server_1a441be303b7421b527d3ff3bc1dc8ac9d) (std::vector< [Metadata](structmavsdk_1_1_component_metadata_server_1_1_metadata.md) > metadata)const | Provide metadata (can only be called once)
-const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md) & | [operator=](#classmavsdk_1_1_component_metadata_server_1ae873337d2e144e0cc1fbdcfd2881dfee) (const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md) &)=delete | Equality operator (object is not copyable).
+&nbsp; | [ComponentMetadataServer](#classmavsdk_1_1_component_metadata_server_1a9f56317067d68551868680af34ac1124) (const ComponentMetadataServer & other) | Copy constructor.
+void | [set_metadata](#classmavsdk_1_1_component_metadata_server_1a441be303b7421b527d3ff3bc1dc8ac9d) (std::vector< [Metadata](structmavsdk_1_1_component_metadata_server_1_1_metadata.md) > metadata)const | Provide metadata (can only be called once).
+const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md#classmavsdk_1_1_component_metadata_server_1a83ef20f6459a983e6c499ec4a40232f0) & | [operator=](#classmavsdk_1_1_component_metadata_server_1ae873337d2e144e0cc1fbdcfd2881dfee) (const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md#classmavsdk_1_1_component_metadata_server_1a83ef20f6459a983e6c499ec4a40232f0) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -72,7 +72,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md)& **other** - 
+* const ComponentMetadataServer& **other** - 
 
 ## Member Enumeration Documentation
 
@@ -98,7 +98,7 @@ void mavsdk::ComponentMetadataServer::set_metadata(std::vector< Metadata > metad
 ```
 
 
-Provide metadata (can only be called once)
+Provide metadata (can only be called once).
 
 This function is blocking.
 
@@ -117,8 +117,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md)&  - 
+* const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md#classmavsdk_1_1_component_metadata_server_1a83ef20f6459a983e6c499ec4a40232f0)&  - 
 
 **Returns**
 
-&emsp;const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md) & - 
+&emsp;const [ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md#classmavsdk_1_1_component_metadata_server_1a83ef20f6459a983e6c499ec4a40232f0) & - 

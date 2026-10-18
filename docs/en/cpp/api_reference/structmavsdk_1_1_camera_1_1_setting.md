@@ -10,7 +10,7 @@ Type to represent a setting with a selected option.
 ## Data Fields
 
 
-std::string [setting_id](#structmavsdk_1_1_camera_1_1_setting_1a8dcb34e9a21bc0c72a38ff918d7d9efa) {} - Name of a setting (machine readable)
+std::string [setting_id](#structmavsdk_1_1_camera_1_1_setting_1a8dcb34e9a21bc0c72a38ff918d7d9efa) {} - Name of a setting (machine readable).
 
 std::string [setting_description](#structmavsdk_1_1_camera_1_1_setting_1a6a86a6d058b991d6df42b881315ace6c) {} - Description of the setting (human readable). This field is meant to be read from the drone, ignore it when setting.
 
@@ -29,7 +29,7 @@ std::string mavsdk::Camera::Setting::setting_id {}
 ```
 
 
-Name of a setting (machine readable)
+Name of a setting (machine readable).
 
 
 ### setting_description {#structmavsdk_1_1_camera_1_1_setting_1a6a86a6d058b991d6df42b881315ace6c}

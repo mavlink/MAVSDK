@@ -24,13 +24,13 @@ bool [video_on](#structmavsdk_1_1_camera_1_1_storage_1aee007d646be2f4c6d32d8c23e
 
 bool [photo_interval_on](#structmavsdk_1_1_camera_1_1_storage_1a91d5c2e653642b949889f5236ff7e1ae) {} - Whether a photo interval is currently in process.
 
-float [used_storage_mib](#structmavsdk_1_1_camera_1_1_storage_1a524b19eb489baf9ac1eea908baf9cdd9) {} - Used storage (in MiB)
+float [used_storage_mib](#structmavsdk_1_1_camera_1_1_storage_1a524b19eb489baf9ac1eea908baf9cdd9) {} - Used storage (in MiB).
 
-float [available_storage_mib](#structmavsdk_1_1_camera_1_1_storage_1a0f529192063ce6888c7411cce720ecc1) {} - Available storage (in MiB)
+float [available_storage_mib](#structmavsdk_1_1_camera_1_1_storage_1a0f529192063ce6888c7411cce720ecc1) {} - Available storage (in MiB).
 
-float [total_storage_mib](#structmavsdk_1_1_camera_1_1_storage_1a40b4ca56b8bd923fea7c50b43d1ae891) {} - Total storage (in MiB)
+float [total_storage_mib](#structmavsdk_1_1_camera_1_1_storage_1a40b4ca56b8bd923fea7c50b43d1ae891) {} - Total storage (in MiB).
 
-float [recording_time_s](#structmavsdk_1_1_camera_1_1_storage_1a903999c7001fe1f025369b35a3908a20) {} - Elapsed time since starting the video recording (in seconds)
+float [recording_time_s](#structmavsdk_1_1_camera_1_1_storage_1a903999c7001fe1f025369b35a3908a20) {} - Elapsed time since starting the video recording (in seconds).
 
 std::string [media_folder_name](#structmavsdk_1_1_camera_1_1_storage_1a210b8451c96810b54bcb7359a934a663) {} - Current folder name where media are saved.
 
@@ -112,7 +112,7 @@ float mavsdk::Camera::Storage::used_storage_mib {}
 ```
 
 
-Used storage (in MiB)
+Used storage (in MiB).
 
 
 ### available_storage_mib {#structmavsdk_1_1_camera_1_1_storage_1a0f529192063ce6888c7411cce720ecc1}
@@ -122,7 +122,7 @@ float mavsdk::Camera::Storage::available_storage_mib {}
 ```
 
 
-Available storage (in MiB)
+Available storage (in MiB).
 
 
 ### total_storage_mib {#structmavsdk_1_1_camera_1_1_storage_1a40b4ca56b8bd923fea7c50b43d1ae891}
@@ -132,7 +132,7 @@ float mavsdk::Camera::Storage::total_storage_mib {}
 ```
 
 
-Total storage (in MiB)
+Total storage (in MiB).
 
 
 ### recording_time_s {#structmavsdk_1_1_camera_1_1_storage_1a903999c7001fe1f025369b35a3908a20}
@@ -142,7 +142,7 @@ float mavsdk::Camera::Storage::recording_time_s {}
 ```
 
 
-Elapsed time since starting the video recording (in seconds)
+Elapsed time since starting the video recording (in seconds).
 
 
 ### media_folder_name {#structmavsdk_1_1_camera_1_1_storage_1a210b8451c96810b54bcb7359a934a663}

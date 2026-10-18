@@ -10,13 +10,13 @@ Provide raw access to retrieve and provide server parameters.
 ## Data Structures
 
 
-struct [AllParams](structmavsdk_1_1_param_server_1_1_all_params.md)
-
-struct [CustomParam](structmavsdk_1_1_param_server_1_1_custom_param.md)
+struct [IntParam](structmavsdk_1_1_param_server_1_1_int_param.md)
 
 struct [FloatParam](structmavsdk_1_1_param_server_1_1_float_param.md)
 
-struct [IntParam](structmavsdk_1_1_param_server_1_1_int_param.md)
+struct [CustomParam](structmavsdk_1_1_param_server_1_1_custom_param.md)
+
+struct [AllParams](structmavsdk_1_1_param_server_1_1_all_params.md)
 
 ## Public Types
 
@@ -39,7 +39,7 @@ Type | Name | Description
 ---: | --- | ---
 &nbsp; | [ParamServer](#classmavsdk_1_1_param_server_1ae86996ca7c1cf57ae1d011ca5279d231) (std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > server_component) | Constructor. Creates the plugin for a [ServerComponent](classmavsdk_1_1_server_component.md) instance.
 &nbsp; | [~ParamServer](#classmavsdk_1_1_param_server_1a0b221c28148f0278f063232059d372b5) () override | Destructor (internal use only).
-&nbsp; | [ParamServer](#classmavsdk_1_1_param_server_1a4cffcb488093838f72414c94e6c40fd0) (const [ParamServer](classmavsdk_1_1_param_server.md) & other) | Copy constructor.
+&nbsp; | [ParamServer](#classmavsdk_1_1_param_server_1a4cffcb488093838f72414c94e6c40fd0) (const ParamServer & other) | Copy constructor.
 [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) | [set_protocol](#classmavsdk_1_1_param_server_1a04dd88d5e06f4d7f184c4d8da296ba00) (bool extended_protocol)const | Set param protocol.
 std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), int32_t > | [retrieve_param_int](#classmavsdk_1_1_param_server_1aba490929e68a2a280dd4637152ab45c1) (std::string name)const | Retrieve an int parameter.
 [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) | [provide_param_int](#classmavsdk_1_1_param_server_1a9de5dade4020eda7fb1cc07c6868dad1) (std::string name, int32_t value)const | Provide an int parameter.
@@ -54,7 +54,7 @@ void | [unsubscribe_changed_param_int](#classmavsdk_1_1_param_server_1adea6bfaca
 void | [unsubscribe_changed_param_float](#classmavsdk_1_1_param_server_1a33796a9ecc396b905b51ad4d2ce7989b) ([ChangedParamFloatHandle](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a86b8aa9c92d3d6d7dd47fc9b8f0bf881) handle) | Unsubscribe from subscribe_changed_param_float.
 [ChangedParamCustomHandle](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a27cf0998ffff4bbdb3f00743b30c903f) | [subscribe_changed_param_custom](#classmavsdk_1_1_param_server_1a91d4aa280e7e0c43621ea87088781ccb) (const [ChangedParamCustomCallback](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1ada550af744c9125178f7ad74d3c1041a) & callback) | Subscribe to changed custom param.
 void | [unsubscribe_changed_param_custom](#classmavsdk_1_1_param_server_1aa78c8df43a9d4c2dbdb6516a04d5f2de) ([ChangedParamCustomHandle](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a27cf0998ffff4bbdb3f00743b30c903f) handle) | Unsubscribe from subscribe_changed_param_custom.
-const [ParamServer](classmavsdk_1_1_param_server.md) & | [operator=](#classmavsdk_1_1_param_server_1af919ccd34f6ada4ded2b9c84c448fffe) (const [ParamServer](classmavsdk_1_1_param_server.md) &)=delete | Equality operator (object is not copyable).
+const [ParamServer](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1ae86996ca7c1cf57ae1d011ca5279d231) & | [operator=](#classmavsdk_1_1_param_server_1af919ccd34f6ada4ded2b9c84c448fffe) (const [ParamServer](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1ae86996ca7c1cf57ae1d011ca5279d231) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -98,7 +98,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [ParamServer](classmavsdk_1_1_param_server.md)& **other** - 
+* const ParamServer& **other** - 
 
 ## Member Typdef Documentation
 
@@ -218,7 +218,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - Result of request.
+&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) of request.
 
 ### retrieve_param_int() {#classmavsdk_1_1_param_server_1aba490929e68a2a280dd4637152ab45c1}
 ```cpp
@@ -239,7 +239,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), int32_t > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), int32_t > - [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) of request.
 
 ### provide_param_int() {#classmavsdk_1_1_param_server_1a9de5dade4020eda7fb1cc07c6868dad1}
 ```cpp
@@ -264,7 +264,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - Result of request.
+&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) of request.
 
 ### retrieve_param_float() {#classmavsdk_1_1_param_server_1a4ad8adbaafa16f597e0141716dc440bd}
 ```cpp
@@ -285,7 +285,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), float > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), float > - [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) of request.
 
 ### provide_param_float() {#classmavsdk_1_1_param_server_1a7893e4b00609eb0826835b3d8930db1f}
 ```cpp
@@ -310,7 +310,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - Result of request.
+&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) of request.
 
 ### retrieve_param_custom() {#classmavsdk_1_1_param_server_1a60ab665d721dce7ab910b8f0abbf7946}
 ```cpp
@@ -331,7 +331,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), std::string > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), std::string > - [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) of request.
 
 ### provide_param_custom() {#classmavsdk_1_1_param_server_1a60487de3470b9b1c39b403d4c9053d73}
 ```cpp
@@ -356,7 +356,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - Result of request.
+&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) of request.
 
 ### retrieve_all_params() {#classmavsdk_1_1_param_server_1aaf6b3862213d415ff26730afad95565f}
 ```cpp
@@ -370,7 +370,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[ParamServer::AllParams](structmavsdk_1_1_param_server_1_1_all_params.md) - Result of request.
+&emsp;[ParamServer::AllParams](structmavsdk_1_1_param_server_1_1_all_params.md) - [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) of request.
 
 ### subscribe_changed_param_int() {#classmavsdk_1_1_param_server_1ad022db97fe1c040d255ce8eeb98dcbf9}
 ```cpp
@@ -473,8 +473,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [ParamServer](classmavsdk_1_1_param_server.md)&  - 
+* const [ParamServer](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1ae86996ca7c1cf57ae1d011ca5279d231)&  - 
 
 **Returns**
 
-&emsp;const [ParamServer](classmavsdk_1_1_param_server.md) & - 
+&emsp;const [ParamServer](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1ae86996ca7c1cf57ae1d011ca5279d231) & - 
