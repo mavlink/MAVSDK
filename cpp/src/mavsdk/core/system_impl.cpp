@@ -1052,7 +1052,9 @@ ardupilot::CopterMode SystemImpl::flight_mode_to_ardupilot_copter_mode(FlightMod
         case FlightMode::Acro:
             return ardupilot::CopterMode::Acro;
         case FlightMode::Hold:
-            return ardupilot::CopterMode::Loiter;
+            // Not Loiter: that takes the climb rate from the throttle stick, so a vehicle
+            // without a pilot on the sticks descends. Brake holds position by itself.
+            return ardupilot::CopterMode::Brake;
         case FlightMode::ReturnToLaunch:
             return ardupilot::CopterMode::Rtl;
         case FlightMode::Land:
