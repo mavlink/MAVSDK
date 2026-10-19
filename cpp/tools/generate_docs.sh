@@ -36,18 +36,21 @@ fi
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 overwrite=false
-
-if [ "$#" -ge 1 ]; then
-    for arg in "$@"; do
-        case "$arg" in
-            --overwrite)
-                overwrite=true
-                ;;
-        esac
-    done
-fi
-
 BUILD_DIR="${SCRIPT_DIR}/../build-docs"
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --overwrite)
+            overwrite=true
+            ;;
+        --build-dir)
+            BUILD_DIR="$2"
+            shift
+            ;;
+    esac
+    shift
+done
+
 INSTALL_DIR="${BUILD_DIR}/install"
 
 # Build and install locally.
