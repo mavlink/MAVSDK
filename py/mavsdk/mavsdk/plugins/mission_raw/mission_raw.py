@@ -960,13 +960,16 @@ class MissionRaw:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_mission_raw_unsubscribe_mission_progress(
             _plugin_handle, handle
         )
+        del _entry
 
     def mission_progress(self):
         """Get mission_progress (blocking)"""
@@ -1020,11 +1023,14 @@ class MissionRaw:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_mission_raw_unsubscribe_mission_changed(_plugin_handle, handle)
+        del _entry
 
     def import_qgroundcontrol_mission(self, qgc_plan_path):
         """Get import_qgroundcontrol_mission (blocking)"""

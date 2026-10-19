@@ -1581,11 +1581,14 @@ class Camera:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_unsubscribe_camera_list(_plugin_handle, handle)
+        del _entry
 
     def camera_list(self):
         """Get camera_list (blocking)"""
@@ -1636,11 +1639,14 @@ class Camera:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_unsubscribe_mode(_plugin_handle, handle)
+        del _entry
 
     def get_mode(self, component_id):
         """Get get_mode (blocking)"""
@@ -1694,11 +1700,14 @@ class Camera:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_unsubscribe_video_stream_info(_plugin_handle, handle)
+        del _entry
 
     def get_video_stream_info(self, component_id):
         """Get get_video_stream_info (blocking)"""
@@ -1752,11 +1761,14 @@ class Camera:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_unsubscribe_capture_info(_plugin_handle, handle)
+        del _entry
 
     def subscribe_storage(self, callback: Callable, user_data: Any = None):
         """Subscribe to camera's storage status updates."""
@@ -1794,11 +1806,14 @@ class Camera:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_unsubscribe_storage(_plugin_handle, handle)
+        del _entry
 
     def get_storage(self, component_id):
         """Get get_storage (blocking)"""
@@ -1854,11 +1869,14 @@ class Camera:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_unsubscribe_current_settings(_plugin_handle, handle)
+        del _entry
 
     def get_current_settings(self, component_id):
         """Get get_current_settings (blocking)"""
@@ -1920,13 +1938,16 @@ class Camera:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_unsubscribe_possible_setting_options(
             _plugin_handle, handle
         )
+        del _entry
 
     def get_possible_setting_options(self, component_id):
         """Get get_possible_setting_options (blocking)"""
