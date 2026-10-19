@@ -101,6 +101,11 @@ void TelemetryImpl::init()
         this);
 
     _system_impl->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_EKF_STATUS_REPORT,
+        [this](const mavlink_message_t& message) { process_ekf_status_report(message); },
+        this);
+
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_BATTERY_STATUS,
         [this](const mavlink_message_t& message) { process_battery_status(message); },
         this);
@@ -209,6 +214,8 @@ void TelemetryImpl::disable()
     {
         std::lock_guard<std::mutex> lock(_health_mutex);
         _health.is_home_position_ok = false;
+        // The next system to connect may not report its estimator.
+        _has_ekf_status_report = false;
     }
 }
 
@@ -406,7 +413,14 @@ Telemetry::Result TelemetryImpl::set_rate_altitude(double rate_hz)
 Telemetry::Result TelemetryImpl::set_rate_health(double rate_hz)
 {
     _health_rate_hz = rate_hz;
-    return set_rate_sys_status();
+    const auto result = set_rate_sys_status();
+    if (result != Telemetry::Result::Success ||
+        _system_impl->effective_autopilot() != Autopilot::ArduPilot) {
+        return result;
+    }
+    // ArduPilot's position health is in here, see process_ekf_status_report().
+    return telemetry_result_from_command_result(
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_EKF_STATUS_REPORT, rate_hz));
 }
 
 void TelemetryImpl::set_rate_position_velocity_ned_async(
@@ -480,8 +494,19 @@ void TelemetryImpl::set_rate_health_async(double rate_hz, Telemetry::ResultCallb
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_SYS_STATUS,
         max_rate_hz,
-        [callback](MavlinkCommandSender::Result command_result, float) {
-            command_result_callback(command_result, callback);
+        [this, rate_hz, callback](MavlinkCommandSender::Result command_result, float) {
+            if (command_result != MavlinkCommandSender::Result::Success ||
+                _system_impl->effective_autopilot() != Autopilot::ArduPilot) {
+                command_result_callback(command_result, callback);
+                return;
+            }
+            // ArduPilot's position health is in here, see process_ekf_status_report().
+            _system_impl->set_msg_rate_async(
+                MAVLINK_MSG_ID_EKF_STATUS_REPORT,
+                rate_hz,
+                [callback](MavlinkCommandSender::Result ekf_result, float) {
+                    command_result_callback(ekf_result, callback);
+                });
         });
 }
 
@@ -1193,8 +1218,13 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
         sys_status_present_enabled_health(sys_status, MAV_SYS_STATUS_SENSOR_OPTICAL_FLOW) ||
         sys_status_present_enabled_health(sys_status, MAV_SYS_STATUS_SENSOR_VISION_POSITION);
 
-    set_health_local_position(local_position_ok);
-    set_health_global_position(global_position_ok);
+    // ArduPilot sets the GPS flag as soon as the receiver is healthy, well before its
+    // estimator has a position it will navigate by. If it tells us about the estimator,
+    // process_ekf_status_report() knows better.
+    if (!_has_ekf_status_report) {
+        set_health_local_position(local_position_ok);
+        set_health_global_position(global_position_ok);
+    }
 
     set_rc_status({rc_ok}, std::nullopt);
 
@@ -1204,6 +1234,38 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 
     const bool armable = sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_PREARM_CHECK;
     set_health_armable(armable);
+    _health_all_ok_subscriptions.queue(health_all_ok(), [this](const auto& func) {
+        _system_impl->call_user_callback_droppable(func);
+    });
+}
+
+void TelemetryImpl::process_ekf_status_report(const mavlink_message_t& message)
+{
+    mavlink_ekf_status_report_t ekf_status_report;
+    mavlink_msg_ekf_status_report_decode(&message, &ekf_status_report);
+
+    const uint16_t flags = ekf_status_report.flags;
+
+    // The rules by which ArduPilot itself decides whether it may enter a mode that needs a
+    // position: a predicted position will do while disarmed, but not once armed.
+    bool global_position_ok = false;
+    bool local_position_ok = false;
+    if (_armed) {
+        const bool constant_position = (flags & EKF_CONST_POS_MODE) != 0;
+        global_position_ok = (flags & EKF_POS_HORIZ_ABS) != 0 && !constant_position;
+        local_position_ok = (flags & EKF_POS_HORIZ_REL) != 0 && !constant_position;
+    } else {
+        global_position_ok = (flags & (EKF_POS_HORIZ_ABS | EKF_PRED_POS_HORIZ_ABS)) != 0;
+        local_position_ok = (flags & (EKF_POS_HORIZ_REL | EKF_PRED_POS_HORIZ_REL)) != 0;
+    }
+    local_position_ok = local_position_ok || global_position_ok;
+
+    _has_ekf_status_report = true;
+    set_health_local_position(local_position_ok);
+    set_health_global_position(global_position_ok);
+
+    _health_subscriptions.queue(
+        health(), [this](const auto& func) { _system_impl->call_user_callback_droppable(func); });
     _health_all_ok_subscriptions.queue(health_all_ok(), [this](const auto& func) {
         _system_impl->call_user_callback_droppable(func);
     });
