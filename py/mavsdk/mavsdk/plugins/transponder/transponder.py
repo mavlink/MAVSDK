@@ -132,18 +132,28 @@ class AdsbVehicle:
         squawk=None,
         tslc_s=None,
     ):
-        self.icao_address = icao_address
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
-        self.altitude_type = altitude_type
-        self.absolute_altitude_m = absolute_altitude_m
-        self.heading_deg = heading_deg
-        self.horizontal_velocity_m_s = horizontal_velocity_m_s
-        self.vertical_velocity_m_s = vertical_velocity_m_s
-        self.callsign = callsign
-        self.emitter_type = emitter_type
-        self.squawk = squawk
-        self.tslc_s = tslc_s
+        self.icao_address = icao_address if icao_address is not None else 0
+        self.latitude_deg = latitude_deg if latitude_deg is not None else 0.0
+        self.longitude_deg = longitude_deg if longitude_deg is not None else 0.0
+        self.altitude_type = (
+            altitude_type if altitude_type is not None else AdsbAltitudeType(0)
+        )
+        self.absolute_altitude_m = (
+            absolute_altitude_m if absolute_altitude_m is not None else 0.0
+        )
+        self.heading_deg = heading_deg if heading_deg is not None else 0.0
+        self.horizontal_velocity_m_s = (
+            horizontal_velocity_m_s if horizontal_velocity_m_s is not None else 0.0
+        )
+        self.vertical_velocity_m_s = (
+            vertical_velocity_m_s if vertical_velocity_m_s is not None else 0.0
+        )
+        self.callsign = callsign if callsign is not None else ""
+        self.emitter_type = (
+            emitter_type if emitter_type is not None else AdsbEmitterType(0)
+        )
+        self.squawk = squawk if squawk is not None else 0
+        self.tslc_s = tslc_s if tslc_s is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):

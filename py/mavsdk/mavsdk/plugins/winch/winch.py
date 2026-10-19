@@ -142,20 +142,20 @@ class StatusFlags:
         load_line=None,
         load_payload=None,
     ):
-        self.healthy = healthy
-        self.fully_retracted = fully_retracted
-        self.moving = moving
-        self.clutch_engaged = clutch_engaged
-        self.locked = locked
-        self.dropping = dropping
-        self.arresting = arresting
-        self.ground_sense = ground_sense
-        self.retracting = retracting
-        self.redeliver = redeliver
-        self.abandon_line = abandon_line
-        self.locking = locking
-        self.load_line = load_line
-        self.load_payload = load_payload
+        self.healthy = healthy if healthy is not None else False
+        self.fully_retracted = fully_retracted if fully_retracted is not None else False
+        self.moving = moving if moving is not None else False
+        self.clutch_engaged = clutch_engaged if clutch_engaged is not None else False
+        self.locked = locked if locked is not None else False
+        self.dropping = dropping if dropping is not None else False
+        self.arresting = arresting if arresting is not None else False
+        self.ground_sense = ground_sense if ground_sense is not None else False
+        self.retracting = retracting if retracting is not None else False
+        self.redeliver = redeliver if redeliver is not None else False
+        self.abandon_line = abandon_line if abandon_line is not None else False
+        self.locking = locking if locking is not None else False
+        self.load_line = load_line if load_line is not None else False
+        self.load_payload = load_payload if load_payload is not None else False
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -231,14 +231,14 @@ class Status:
         temperature_c=None,
         status_flags=None,
     ):
-        self.time_usec = time_usec
-        self.line_length_m = line_length_m
-        self.speed_m_s = speed_m_s
-        self.tension_kg = tension_kg
-        self.voltage_v = voltage_v
-        self.current_a = current_a
-        self.temperature_c = temperature_c
-        self.status_flags = status_flags
+        self.time_usec = time_usec if time_usec is not None else 0
+        self.line_length_m = line_length_m if line_length_m is not None else 0.0
+        self.speed_m_s = speed_m_s if speed_m_s is not None else 0.0
+        self.tension_kg = tension_kg if tension_kg is not None else 0.0
+        self.voltage_v = voltage_v if voltage_v is not None else 0.0
+        self.current_a = current_a if current_a is not None else 0.0
+        self.temperature_c = temperature_c if temperature_c is not None else 0
+        self.status_flags = status_flags if status_flags is not None else StatusFlags()
 
     @classmethod
     def from_c_struct(cls, c_struct):

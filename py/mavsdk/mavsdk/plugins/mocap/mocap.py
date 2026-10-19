@@ -221,9 +221,9 @@ class PositionBody:
     """
 
     def __init__(self, x_m=None, y_m=None, z_m=None):
-        self.x_m = x_m
-        self.y_m = y_m
-        self.z_m = z_m
+        self.x_m = x_m if x_m is not None else 0.0
+        self.y_m = y_m if y_m is not None else 0.0
+        self.z_m = z_m if z_m is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -256,9 +256,9 @@ class AngleBody:
     """
 
     def __init__(self, roll_rad=None, pitch_rad=None, yaw_rad=None):
-        self.roll_rad = roll_rad
-        self.pitch_rad = pitch_rad
-        self.yaw_rad = yaw_rad
+        self.roll_rad = roll_rad if roll_rad is not None else 0.0
+        self.pitch_rad = pitch_rad if pitch_rad is not None else 0.0
+        self.yaw_rad = yaw_rad if yaw_rad is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -291,9 +291,9 @@ class SpeedBody:
     """
 
     def __init__(self, x_m_s=None, y_m_s=None, z_m_s=None):
-        self.x_m_s = x_m_s
-        self.y_m_s = y_m_s
-        self.z_m_s = z_m_s
+        self.x_m_s = x_m_s if x_m_s is not None else 0.0
+        self.y_m_s = y_m_s if y_m_s is not None else 0.0
+        self.z_m_s = z_m_s if z_m_s is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -326,9 +326,9 @@ class SpeedNed:
     """
 
     def __init__(self, north_m_s=None, east_m_s=None, down_m_s=None):
-        self.north_m_s = north_m_s
-        self.east_m_s = east_m_s
-        self.down_m_s = down_m_s
+        self.north_m_s = north_m_s if north_m_s is not None else 0.0
+        self.east_m_s = east_m_s if east_m_s is not None else 0.0
+        self.down_m_s = down_m_s if down_m_s is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -361,9 +361,9 @@ class AngularVelocityBody:
     """
 
     def __init__(self, roll_rad_s=None, pitch_rad_s=None, yaw_rad_s=None):
-        self.roll_rad_s = roll_rad_s
-        self.pitch_rad_s = pitch_rad_s
-        self.yaw_rad_s = yaw_rad_s
+        self.roll_rad_s = roll_rad_s if roll_rad_s is not None else 0.0
+        self.pitch_rad_s = pitch_rad_s if pitch_rad_s is not None else 0.0
+        self.yaw_rad_s = yaw_rad_s if yaw_rad_s is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -441,10 +441,10 @@ class Quaternion:
     """
 
     def __init__(self, w=None, x=None, y=None, z=None):
-        self.w = w
-        self.x = x
-        self.y = y
-        self.z = z
+        self.w = w if w is not None else 0.0
+        self.x = x if x is not None else 0.0
+        self.y = y if y is not None else 0.0
+        self.z = z if z is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -487,11 +487,15 @@ class VisionPositionEstimate:
         pose_covariance=None,
         reset_counter=None,
     ):
-        self.time_usec = time_usec
-        self.position_body = position_body
-        self.angle_body = angle_body
-        self.pose_covariance = pose_covariance
-        self.reset_counter = reset_counter
+        self.time_usec = time_usec if time_usec is not None else 0
+        self.position_body = (
+            position_body if position_body is not None else PositionBody()
+        )
+        self.angle_body = angle_body if angle_body is not None else AngleBody()
+        self.pose_covariance = (
+            pose_covariance if pose_covariance is not None else Covariance()
+        )
+        self.reset_counter = reset_counter if reset_counter is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -532,10 +536,12 @@ class VisionSpeedEstimate:
     def __init__(
         self, time_usec=None, speed_ned=None, speed_covariance=None, reset_counter=None
     ):
-        self.time_usec = time_usec
-        self.speed_ned = speed_ned
-        self.speed_covariance = speed_covariance
-        self.reset_counter = reset_counter
+        self.time_usec = time_usec if time_usec is not None else 0
+        self.speed_ned = speed_ned if speed_ned is not None else SpeedNed()
+        self.speed_covariance = (
+            speed_covariance if speed_covariance is not None else Covariance()
+        )
+        self.reset_counter = reset_counter if reset_counter is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -573,10 +579,14 @@ class AttitudePositionMocap:
     def __init__(
         self, time_usec=None, q=None, position_body=None, pose_covariance=None
     ):
-        self.time_usec = time_usec
-        self.q = q
-        self.position_body = position_body
-        self.pose_covariance = pose_covariance
+        self.time_usec = time_usec if time_usec is not None else 0
+        self.q = q if q is not None else Quaternion()
+        self.position_body = (
+            position_body if position_body is not None else PositionBody()
+        )
+        self.pose_covariance = (
+            pose_covariance if pose_covariance is not None else Covariance()
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -644,17 +654,31 @@ class Odometry:
         estimator_type=None,
         quality_percent=None,
     ):
-        self.time_usec = time_usec
-        self.frame_id = frame_id
-        self.position_body = position_body
-        self.q = q
-        self.speed_body = speed_body
-        self.angular_velocity_body = angular_velocity_body
-        self.pose_covariance = pose_covariance
-        self.velocity_covariance = velocity_covariance
-        self.reset_counter = reset_counter
-        self.estimator_type = estimator_type
-        self.quality_percent = quality_percent
+        self.time_usec = time_usec if time_usec is not None else 0
+        self.frame_id = frame_id if frame_id is not None else Odometry.MavFrame(0)
+        self.position_body = (
+            position_body if position_body is not None else PositionBody()
+        )
+        self.q = q if q is not None else Quaternion()
+        self.speed_body = speed_body if speed_body is not None else SpeedBody()
+        self.angular_velocity_body = (
+            angular_velocity_body
+            if angular_velocity_body is not None
+            else AngularVelocityBody()
+        )
+        self.pose_covariance = (
+            pose_covariance if pose_covariance is not None else Covariance()
+        )
+        self.velocity_covariance = (
+            velocity_covariance if velocity_covariance is not None else Covariance()
+        )
+        self.reset_counter = reset_counter if reset_counter is not None else 0
+        self.estimator_type = (
+            estimator_type
+            if estimator_type is not None
+            else Odometry.MavEstimatorType(0)
+        )
+        self.quality_percent = quality_percent if quality_percent is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):

@@ -160,12 +160,12 @@ class Event:
         event_namespace=None,
         event_name=None,
     ):
-        self.compid = compid
-        self.message = message
-        self.description = description
-        self.log_level = log_level
-        self.event_namespace = event_namespace
-        self.event_name = event_name
+        self.compid = compid if compid is not None else 0
+        self.message = message if message is not None else ""
+        self.description = description if description is not None else ""
+        self.log_level = log_level if log_level is not None else LogLevel(0)
+        self.event_namespace = event_namespace if event_namespace is not None else ""
+        self.event_name = event_name if event_name is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -209,10 +209,10 @@ class HealthAndArmingCheckProblem:
     def __init__(
         self, message=None, description=None, log_level=None, health_component=None
     ):
-        self.message = message
-        self.description = description
-        self.log_level = log_level
-        self.health_component = health_component
+        self.message = message if message is not None else ""
+        self.description = description if description is not None else ""
+        self.log_level = log_level if log_level is not None else LogLevel(0)
+        self.health_component = health_component if health_component is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -248,8 +248,8 @@ class HealthAndArmingCheckMode:
     """
 
     def __init__(self, mode_name=None, can_arm_or_run=None, problems=None):
-        self.mode_name = mode_name
-        self.can_arm_or_run = can_arm_or_run
+        self.mode_name = mode_name if mode_name is not None else ""
+        self.can_arm_or_run = can_arm_or_run if can_arm_or_run is not None else False
         self.problems = problems or []
 
     @classmethod
@@ -298,11 +298,11 @@ class HealthComponentReport:
     def __init__(
         self, name=None, label=None, is_present=None, has_error=None, has_warning=None
     ):
-        self.name = name
-        self.label = label
-        self.is_present = is_present
-        self.has_error = has_error
-        self.has_warning = has_warning
+        self.name = name if name is not None else ""
+        self.label = label if label is not None else ""
+        self.is_present = is_present if is_present is not None else False
+        self.has_error = has_error if has_error is not None else False
+        self.has_warning = has_warning if has_warning is not None else False
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -343,7 +343,11 @@ class HealthAndArmingCheckReport:
     def __init__(
         self, current_mode_intention=None, health_components=None, all_problems=None
     ):
-        self.current_mode_intention = current_mode_intention
+        self.current_mode_intention = (
+            current_mode_intention
+            if current_mode_intention is not None
+            else HealthAndArmingCheckMode()
+        )
         self.health_components = health_components or []
         self.all_problems = all_problems or []
 

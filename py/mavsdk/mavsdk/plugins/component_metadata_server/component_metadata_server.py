@@ -73,8 +73,8 @@ class Metadata:
     """
 
     def __init__(self, type=None, json_metadata=None):
-        self.type = type
-        self.json_metadata = json_metadata
+        self.type = type if type is not None else MetadataType(0)
+        self.json_metadata = json_metadata if json_metadata is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):

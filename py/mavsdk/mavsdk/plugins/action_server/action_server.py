@@ -130,13 +130,23 @@ class AllowableFlightModes:
         can_auto_land_mode=None,
         can_auto_loiter_mode=None,
     ):
-        self.can_auto_mode = can_auto_mode
-        self.can_guided_mode = can_guided_mode
-        self.can_stabilize_mode = can_stabilize_mode
-        self.can_auto_rtl_mode = can_auto_rtl_mode
-        self.can_auto_takeoff_mode = can_auto_takeoff_mode
-        self.can_auto_land_mode = can_auto_land_mode
-        self.can_auto_loiter_mode = can_auto_loiter_mode
+        self.can_auto_mode = can_auto_mode if can_auto_mode is not None else False
+        self.can_guided_mode = can_guided_mode if can_guided_mode is not None else False
+        self.can_stabilize_mode = (
+            can_stabilize_mode if can_stabilize_mode is not None else False
+        )
+        self.can_auto_rtl_mode = (
+            can_auto_rtl_mode if can_auto_rtl_mode is not None else False
+        )
+        self.can_auto_takeoff_mode = (
+            can_auto_takeoff_mode if can_auto_takeoff_mode is not None else False
+        )
+        self.can_auto_land_mode = (
+            can_auto_land_mode if can_auto_land_mode is not None else False
+        )
+        self.can_auto_loiter_mode = (
+            can_auto_loiter_mode if can_auto_loiter_mode is not None else False
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -181,8 +191,8 @@ class ArmDisarm:
     """
 
     def __init__(self, arm=None, force=None):
-        self.arm = arm
-        self.force = force
+        self.arm = arm if arm is not None else False
+        self.force = force if force is not None else False
 
     @classmethod
     def from_c_struct(cls, c_struct):

@@ -118,10 +118,14 @@ class FilesystemEntry:
     def __init__(
         self, name=None, entry_type=None, size_bytes=None, modification_time_s=None
     ):
-        self.name = name
-        self.entry_type = entry_type
-        self.size_bytes = size_bytes
-        self.modification_time_s = modification_time_s
+        self.name = name if name is not None else ""
+        self.entry_type = (
+            entry_type if entry_type is not None else FilesystemEntry.EntryType(0)
+        )
+        self.size_bytes = size_bytes if size_bytes is not None else 0
+        self.modification_time_s = (
+            modification_time_s if modification_time_s is not None else 0
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -195,8 +199,10 @@ class ProgressData:
     """
 
     def __init__(self, bytes_transferred=None, total_bytes=None):
-        self.bytes_transferred = bytes_transferred
-        self.total_bytes = total_bytes
+        self.bytes_transferred = (
+            bytes_transferred if bytes_transferred is not None else 0
+        )
+        self.total_bytes = total_bytes if total_bytes is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):

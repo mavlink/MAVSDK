@@ -123,8 +123,8 @@ class Point:
     """
 
     def __init__(self, latitude_deg=None, longitude_deg=None):
-        self.latitude_deg = latitude_deg
-        self.longitude_deg = longitude_deg
+        self.latitude_deg = latitude_deg if latitude_deg is not None else 0.0
+        self.longitude_deg = longitude_deg if longitude_deg is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -155,7 +155,7 @@ class Polygon:
 
     def __init__(self, points=None, fence_type=None):
         self.points = points or []
-        self.fence_type = fence_type
+        self.fence_type = fence_type if fence_type is not None else FenceType(0)
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -196,9 +196,9 @@ class Circle:
     """
 
     def __init__(self, point=None, radius=None, fence_type=None):
-        self.point = point
-        self.radius = radius
-        self.fence_type = fence_type
+        self.point = point if point is not None else Point()
+        self.radius = radius if radius is not None else float("nan")
+        self.fence_type = fence_type if fence_type is not None else FenceType(0)
 
     @classmethod
     def from_c_struct(cls, c_struct):

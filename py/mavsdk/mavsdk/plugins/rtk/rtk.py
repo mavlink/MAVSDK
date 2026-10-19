@@ -74,7 +74,7 @@ class RtcmData:
     """
 
     def __init__(self, data_base64=None):
-        self.data_base64 = data_base64
+        self.data_base64 = data_base64 if data_base64 is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):

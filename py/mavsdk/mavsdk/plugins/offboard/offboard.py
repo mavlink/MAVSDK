@@ -196,10 +196,10 @@ class Attitude:
     """
 
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None, thrust_value=None):
-        self.roll_deg = roll_deg
-        self.pitch_deg = pitch_deg
-        self.yaw_deg = yaw_deg
-        self.thrust_value = thrust_value
+        self.roll_deg = roll_deg if roll_deg is not None else 0.0
+        self.pitch_deg = pitch_deg if pitch_deg is not None else 0.0
+        self.yaw_deg = yaw_deg if yaw_deg is not None else 0.0
+        self.thrust_value = thrust_value if thrust_value is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -326,10 +326,10 @@ class AttitudeRate:
     def __init__(
         self, roll_deg_s=None, pitch_deg_s=None, yaw_deg_s=None, thrust_value=None
     ):
-        self.roll_deg_s = roll_deg_s
-        self.pitch_deg_s = pitch_deg_s
-        self.yaw_deg_s = yaw_deg_s
-        self.thrust_value = thrust_value
+        self.roll_deg_s = roll_deg_s if roll_deg_s is not None else 0.0
+        self.pitch_deg_s = pitch_deg_s if pitch_deg_s is not None else 0.0
+        self.yaw_deg_s = yaw_deg_s if yaw_deg_s is not None else 0.0
+        self.thrust_value = thrust_value if thrust_value is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -365,10 +365,10 @@ class PositionNedYaw:
     """
 
     def __init__(self, north_m=None, east_m=None, down_m=None, yaw_deg=None):
-        self.north_m = north_m
-        self.east_m = east_m
-        self.down_m = down_m
-        self.yaw_deg = yaw_deg
+        self.north_m = north_m if north_m is not None else 0.0
+        self.east_m = east_m if east_m is not None else 0.0
+        self.down_m = down_m if down_m is not None else 0.0
+        self.yaw_deg = yaw_deg if yaw_deg is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -413,11 +413,15 @@ class PositionGlobalYaw:
     def __init__(
         self, lat_deg=None, lon_deg=None, alt_m=None, yaw_deg=None, altitude_type=None
     ):
-        self.lat_deg = lat_deg
-        self.lon_deg = lon_deg
-        self.alt_m = alt_m
-        self.yaw_deg = yaw_deg
-        self.altitude_type = altitude_type
+        self.lat_deg = lat_deg if lat_deg is not None else 0.0
+        self.lon_deg = lon_deg if lon_deg is not None else 0.0
+        self.alt_m = alt_m if alt_m is not None else 0.0
+        self.yaw_deg = yaw_deg if yaw_deg is not None else 0.0
+        self.altitude_type = (
+            altitude_type
+            if altitude_type is not None
+            else PositionGlobalYaw.AltitudeType(0)
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -458,10 +462,10 @@ class VelocityBodyYawspeed:
     def __init__(
         self, forward_m_s=None, right_m_s=None, down_m_s=None, yawspeed_deg_s=None
     ):
-        self.forward_m_s = forward_m_s
-        self.right_m_s = right_m_s
-        self.down_m_s = down_m_s
-        self.yawspeed_deg_s = yawspeed_deg_s
+        self.forward_m_s = forward_m_s if forward_m_s is not None else 0.0
+        self.right_m_s = right_m_s if right_m_s is not None else 0.0
+        self.down_m_s = down_m_s if down_m_s is not None else 0.0
+        self.yawspeed_deg_s = yawspeed_deg_s if yawspeed_deg_s is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -497,10 +501,10 @@ class VelocityNedYaw:
     """
 
     def __init__(self, north_m_s=None, east_m_s=None, down_m_s=None, yaw_deg=None):
-        self.north_m_s = north_m_s
-        self.east_m_s = east_m_s
-        self.down_m_s = down_m_s
-        self.yaw_deg = yaw_deg
+        self.north_m_s = north_m_s if north_m_s is not None else 0.0
+        self.east_m_s = east_m_s if east_m_s is not None else 0.0
+        self.down_m_s = down_m_s if down_m_s is not None else 0.0
+        self.yaw_deg = yaw_deg if yaw_deg is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -536,9 +540,9 @@ class AccelerationNed:
     """
 
     def __init__(self, north_m_s2=None, east_m_s2=None, down_m_s2=None):
-        self.north_m_s2 = north_m_s2
-        self.east_m_s2 = east_m_s2
-        self.down_m_s2 = down_m_s2
+        self.north_m_s2 = north_m_s2 if north_m_s2 is not None else 0.0
+        self.east_m_s2 = east_m_s2 if east_m_s2 is not None else 0.0
+        self.down_m_s2 = down_m_s2 if down_m_s2 is not None else 0.0
 
     @classmethod
     def from_c_struct(cls, c_struct):

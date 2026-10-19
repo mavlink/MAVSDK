@@ -101,7 +101,7 @@ class TuneDescription:
 
     def __init__(self, song_elements=None, tempo=None):
         self.song_elements = song_elements or []
-        self.tempo = tempo
+        self.tempo = tempo if tempo is not None else 0
 
     @classmethod
     def from_c_struct(cls, c_struct):

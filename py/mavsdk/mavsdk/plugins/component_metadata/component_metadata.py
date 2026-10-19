@@ -98,7 +98,7 @@ class MetadataData:
     """
 
     def __init__(self, json_metadata=None):
-        self.json_metadata = json_metadata
+        self.json_metadata = json_metadata if json_metadata is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -125,9 +125,9 @@ class MetadataUpdate:
     """
 
     def __init__(self, compid=None, type=None, json_metadata=None):
-        self.compid = compid
-        self.type = type
-        self.json_metadata = json_metadata
+        self.compid = compid if compid is not None else 0
+        self.type = type if type is not None else MetadataType(0)
+        self.json_metadata = json_metadata if json_metadata is not None else ""
 
     @classmethod
     def from_c_struct(cls, c_struct):
