@@ -10,7 +10,7 @@
 ## Data Fields
 
 
-double [heading_deg](#structmavsdk_1_1_telemetry_1_1_heading_1af5dc43d082cf706bc2a4ce26c3d2f453) {double(NAN)} - [Heading](structmavsdk_1_1_telemetry_1_1_heading.md) in degrees (range: 0 to +360)
+double [heading_deg](#structmavsdk_1_1_telemetry_1_1_heading_1af5dc43d082cf706bc2a4ce26c3d2f453) {double(NAN)} - [Heading](structmavsdk_1_1_telemetry_1_1_heading.md) in degrees (range: 0 to +360).
 
 
 ## Field Documentation
@@ -23,5 +23,5 @@ double mavsdk::Telemetry::Heading::heading_deg {double(NAN)}
 ```
 
 
-[Heading](structmavsdk_1_1_telemetry_1_1_heading.md) in degrees (range: 0 to +360)
+[Heading](structmavsdk_1_1_telemetry_1_1_heading.md) in degrees (range: 0 to +360).
 

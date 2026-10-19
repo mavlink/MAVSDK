@@ -10,15 +10,15 @@
 ## Data Fields
 
 
-uint32_t [seq](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a092dabd74c220d25cec7b6a51b390ebf) {} - Sequence (uint16_t)
+uint32_t [seq](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a092dabd74c220d25cec7b6a51b390ebf) {} - Sequence (uint16_t).
 
-uint32_t [frame](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a106ba1ec51be8f9af968376e50abe09d) {} - The coordinate system of the waypoint (actually uint8_t)
+uint32_t [frame](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a106ba1ec51be8f9af968376e50abe09d) {} - The coordinate system of the waypoint (actually uint8_t).
 
-uint32_t [command](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1aee980795d98404f05469505802bd3860) {} - The scheduled action for the waypoint (actually uint16_t)
+uint32_t [command](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1aee980795d98404f05469505802bd3860) {} - The scheduled action for the waypoint (actually uint16_t).
 
 uint32_t [current](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a495cc2fb336f0b075c38140772cf9c0e) {} - false:0, true:1 (actually uint8_t)
 
-uint32_t [autocontinue](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a798872e29696ad78c12de35ff013157d) {} - Autocontinue to next waypoint (actually uint8_t)
+uint32_t [autocontinue](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a798872e29696ad78c12de35ff013157d) {} - Autocontinue to next waypoint (actually uint8_t).
 
 float [param1](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1aaf09bf8604f290b18817d9440b0fd2df) {} - PARAM1, see MAV_CMD enum.
 
@@ -32,9 +32,9 @@ int32_t [x](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a10dbaabc66e3
 
 int32_t [y](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1aeb1c4e1399f493f128cc43b3f3d166a3) {} - PARAM6 / y position: local: x position in meters * 1e4, global: longitude in degrees *10^7.
 
-float [z](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a9513624833c36a8a29472cb582e175b8) {} - PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame)
+float [z](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a9513624833c36a8a29472cb582e175b8) {} - PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame).
 
-uint32_t [mission_type](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1acb990a5dee9f2aae87c578095534747c) {} - [Mission](classmavsdk_1_1_mission.md) type (actually uint8_t)
+uint32_t [mission_type](#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1acb990a5dee9f2aae87c578095534747c) {} - [Mission](classmavsdk_1_1_mission.md) type (actually uint8_t).
 
 
 ## Field Documentation
@@ -47,7 +47,7 @@ uint32_t mavsdk::MissionRawServer::MissionItem::seq {}
 ```
 
 
-Sequence (uint16_t)
+Sequence (uint16_t).
 
 
 ### frame {#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a106ba1ec51be8f9af968376e50abe09d}
@@ -57,7 +57,7 @@ uint32_t mavsdk::MissionRawServer::MissionItem::frame {}
 ```
 
 
-The coordinate system of the waypoint (actually uint8_t)
+The coordinate system of the waypoint (actually uint8_t).
 
 
 ### command {#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1aee980795d98404f05469505802bd3860}
@@ -67,7 +67,7 @@ uint32_t mavsdk::MissionRawServer::MissionItem::command {}
 ```
 
 
-The scheduled action for the waypoint (actually uint16_t)
+The scheduled action for the waypoint (actually uint16_t).
 
 
 ### current {#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1a495cc2fb336f0b075c38140772cf9c0e}
@@ -87,7 +87,7 @@ uint32_t mavsdk::MissionRawServer::MissionItem::autocontinue {}
 ```
 
 
-Autocontinue to next waypoint (actually uint8_t)
+Autocontinue to next waypoint (actually uint8_t).
 
 
 ### param1 {#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1aaf09bf8604f290b18817d9440b0fd2df}
@@ -157,7 +157,7 @@ float mavsdk::MissionRawServer::MissionItem::z {}
 ```
 
 
-PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame)
+PARAM7 / local: Z coordinate, global: altitude (relative or absolute, depending on frame).
 
 
 ### mission_type {#structmavsdk_1_1_mission_raw_server_1_1_mission_item_1acb990a5dee9f2aae87c578095534747c}
@@ -167,5 +167,5 @@ uint32_t mavsdk::MissionRawServer::MissionItem::mission_type {}
 ```
 
 
-[Mission](classmavsdk_1_1_mission.md) type (actually uint8_t)
+[Mission](classmavsdk_1_1_mission.md) type (actually uint8_t).
 

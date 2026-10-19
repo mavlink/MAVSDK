@@ -12,13 +12,13 @@ Type for video stream settings.
 
 float [frame_rate_hz](#structmavsdk_1_1_camera_1_1_video_stream_settings_1ae638dd09c73fb7b375871c37eac54959) {} - Frames per second.
 
-uint32_t [horizontal_resolution_pix](#structmavsdk_1_1_camera_1_1_video_stream_settings_1a4e0d6c3ee9a7c9798a63cabd63f97daf) {} - Horizontal resolution (in pixels)
+uint32_t [horizontal_resolution_pix](#structmavsdk_1_1_camera_1_1_video_stream_settings_1a4e0d6c3ee9a7c9798a63cabd63f97daf) {} - Horizontal resolution (in pixels).
 
-uint32_t [vertical_resolution_pix](#structmavsdk_1_1_camera_1_1_video_stream_settings_1abaf114324d371b1adeec18cfa6cf243a) {} - Vertical resolution (in pixels)
+uint32_t [vertical_resolution_pix](#structmavsdk_1_1_camera_1_1_video_stream_settings_1abaf114324d371b1adeec18cfa6cf243a) {} - Vertical resolution (in pixels).
 
-uint32_t [bit_rate_b_s](#structmavsdk_1_1_camera_1_1_video_stream_settings_1af32e3577263d4a94cdc92839e3074d42) {} - Bit rate (in bits per second)
+uint32_t [bit_rate_b_s](#structmavsdk_1_1_camera_1_1_video_stream_settings_1af32e3577263d4a94cdc92839e3074d42) {} - Bit rate (in bits per second).
 
-uint32_t [rotation_deg](#structmavsdk_1_1_camera_1_1_video_stream_settings_1ac96202a9dabb5699322986d526d48d0a) {} - Video image rotation (clockwise, 0-359 degrees)
+uint32_t [rotation_deg](#structmavsdk_1_1_camera_1_1_video_stream_settings_1ac96202a9dabb5699322986d526d48d0a) {} - Video image rotation (clockwise, 0-359 degrees).
 
 std::string [uri](#structmavsdk_1_1_camera_1_1_video_stream_settings_1add3b459a45527b64b21eaf64757d7bf2) {} - Video stream URI.
 
@@ -45,7 +45,7 @@ uint32_t mavsdk::Camera::VideoStreamSettings::horizontal_resolution_pix {}
 ```
 
 
-Horizontal resolution (in pixels)
+Horizontal resolution (in pixels).
 
 
 ### vertical_resolution_pix {#structmavsdk_1_1_camera_1_1_video_stream_settings_1abaf114324d371b1adeec18cfa6cf243a}
@@ -55,7 +55,7 @@ uint32_t mavsdk::Camera::VideoStreamSettings::vertical_resolution_pix {}
 ```
 
 
-Vertical resolution (in pixels)
+Vertical resolution (in pixels).
 
 
 ### bit_rate_b_s {#structmavsdk_1_1_camera_1_1_video_stream_settings_1af32e3577263d4a94cdc92839e3074d42}
@@ -65,7 +65,7 @@ uint32_t mavsdk::Camera::VideoStreamSettings::bit_rate_b_s {}
 ```
 
 
-Bit rate (in bits per second)
+Bit rate (in bits per second).
 
 
 ### rotation_deg {#structmavsdk_1_1_camera_1_1_video_stream_settings_1ac96202a9dabb5699322986d526d48d0a}
@@ -75,7 +75,7 @@ uint32_t mavsdk::Camera::VideoStreamSettings::rotation_deg {}
 ```
 
 
-Video image rotation (clockwise, 0-359 degrees)
+Video image rotation (clockwise, 0-359 degrees).
 
 
 ### uri {#structmavsdk_1_1_camera_1_1_video_stream_settings_1add3b459a45527b64b21eaf64757d7bf2}

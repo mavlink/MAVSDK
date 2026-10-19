@@ -37,7 +37,7 @@ Type | Name | Description
 ---: | --- | ---
 &nbsp; | [MissionRawServer](#classmavsdk_1_1_mission_raw_server_1a8a899f742cf7b52c27185cee5e5b29e8) (std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > server_component) | Constructor. Creates the plugin for a [ServerComponent](classmavsdk_1_1_server_component.md) instance.
 &nbsp; | [~MissionRawServer](#classmavsdk_1_1_mission_raw_server_1a7e14a210c0e7ac4b19633cf8dbd4bbec) () override | Destructor (internal use only).
-&nbsp; | [MissionRawServer](#classmavsdk_1_1_mission_raw_server_1a14b11b78ba44bdda6fb718ed13e1ab77) (const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) & other) | Copy constructor.
+&nbsp; | [MissionRawServer](#classmavsdk_1_1_mission_raw_server_1a14b11b78ba44bdda6fb718ed13e1ab77) (const MissionRawServer & other) | Copy constructor.
 [IncomingMissionHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a71173397d112f738fd05014ccc0952ff) | [subscribe_incoming_mission](#classmavsdk_1_1_mission_raw_server_1aede616f945d7c59d2da6afad830f377b) (const [IncomingMissionCallback](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1ac8bb83c581ff08945314e51973728693) & callback) | Subscribe to when a new mission is uploaded (asynchronous).
 void | [unsubscribe_incoming_mission](#classmavsdk_1_1_mission_raw_server_1a93107d6ee73d03edc0050401c5a5f169) ([IncomingMissionHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a71173397d112f738fd05014ccc0952ff) handle) | Unsubscribe from subscribe_incoming_mission.
 [CurrentItemChangedHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a490cab4b8b06fd5d6eb8e759427f5b47) | [subscribe_current_item_changed](#classmavsdk_1_1_mission_raw_server_1a287af1e5ca18de2e84345b4f5f8fa386) (const [CurrentItemChangedCallback](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1aca7ac64b6e39e612d05ff6497cd572b1) & callback) | Subscribe to when a new current item is set.
@@ -45,7 +45,7 @@ void | [unsubscribe_current_item_changed](#classmavsdk_1_1_mission_raw_server_1a
 void | [set_current_item_complete](#classmavsdk_1_1_mission_raw_server_1a496791a14c2bdc1e9917f5d04622330a) () const | Set Current item as completed.
 [ClearAllHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a59022e22386a18e9d51f88e6ed3cf120) | [subscribe_clear_all](#classmavsdk_1_1_mission_raw_server_1a9b08ba6c1607618e67fd1ec723883415) (const [ClearAllCallback](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1ae9d7d9d863d1552274440d091e2ec869) & callback) | Subscribe when a MISSION_CLEAR_ALL is received.
 void | [unsubscribe_clear_all](#classmavsdk_1_1_mission_raw_server_1af337c8126b52d78436605a3b2e558397) ([ClearAllHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a59022e22386a18e9d51f88e6ed3cf120) handle) | Unsubscribe from subscribe_clear_all.
-const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) & | [operator=](#classmavsdk_1_1_mission_raw_server_1a9d589d816286937b2c9c5d29451f0f91) (const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) &)=delete | Equality operator (object is not copyable).
+const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a8a899f742cf7b52c27185cee5e5b29e8) & | [operator=](#classmavsdk_1_1_mission_raw_server_1a9d589d816286937b2c9c5d29451f0f91) (const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a8a899f742cf7b52c27185cee5e5b29e8) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -89,7 +89,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md)& **other** - 
+* const MissionRawServer& **other** - 
 
 ## Member Typdef Documentation
 
@@ -179,7 +179,7 @@ Value | Description
 <span id="classmavsdk_1_1_mission_raw_server_1a14f2cae8b098b7221d8aae547b70f7bda505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Request succeeded. 
 <span id="classmavsdk_1_1_mission_raw_server_1a14f2cae8b098b7221d8aae547b70f7bda902b0d55fddef6f8d651fe1035b7d4bd"></span> `Error` | Error. 
 <span id="classmavsdk_1_1_mission_raw_server_1a14f2cae8b098b7221d8aae547b70f7bdaecc3de82f27e8e7f65807c69a114efbe"></span> `TooManyMissionItems` | Too many mission items in the mission. 
-<span id="classmavsdk_1_1_mission_raw_server_1a14f2cae8b098b7221d8aae547b70f7bdad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | Vehicle is busy. 
+<span id="classmavsdk_1_1_mission_raw_server_1a14f2cae8b098b7221d8aae547b70f7bdad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) is busy. 
 <span id="classmavsdk_1_1_mission_raw_server_1a14f2cae8b098b7221d8aae547b70f7bdac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Request timed out. 
 <span id="classmavsdk_1_1_mission_raw_server_1a14f2cae8b098b7221d8aae547b70f7bda253ca7dd096ee0956cccee4d376cab8b"></span> `InvalidArgument` | Invalid argument. 
 <span id="classmavsdk_1_1_mission_raw_server_1a14f2cae8b098b7221d8aae547b70f7bdab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` | [Mission](classmavsdk_1_1_mission.md) downloaded from the system is not supported. 
@@ -303,8 +303,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md)&  - 
+* const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a8a899f742cf7b52c27185cee5e5b29e8)&  - 
 
 **Returns**
 
-&emsp;const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) & - 
+&emsp;const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a8a899f742cf7b52c27185cee5e5b29e8) & - 

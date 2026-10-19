@@ -592,8 +592,9 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                         // to CMD_LIST_DIRECTORY and start over.
                         stop_timer();
                         if (_debugging) {
-                            LogDebug("ListDirectoryWithTime unsupported, falling back to "
-                                     "ListDirectory");
+                            LogDebug(
+                                "ListDirectoryWithTime unsupported, falling back to "
+                                "ListDirectory");
                         }
                         item.with_time = false;
                         item.offset = 0;
@@ -1457,15 +1458,17 @@ void MavlinkFtpClient::download_async(
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        enqueue_work(std::make_shared<Work>(
-            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())}));
+        enqueue_work(
+            std::make_shared<Work>(
+                Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())}));
     } else {
         auto item = DownloadItem{};
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        enqueue_work(std::make_shared<Work>(
-            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())}));
+        enqueue_work(
+            std::make_shared<Work>(
+                Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())}));
     }
 }
 

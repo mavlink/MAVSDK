@@ -24,12 +24,12 @@ Type | Name | Description
 &nbsp; | [Gripper](#classmavsdk_1_1_gripper_1a566993706ef599eae17761f4b0810c4b) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Gripper](#classmavsdk_1_1_gripper_1a83a53647a8fb1bf1ef463fd3ddd14726) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Gripper](#classmavsdk_1_1_gripper_1a90b0ea53617492b3f3fa6406430a08e8) () override | Destructor (internal use only).
-&nbsp; | [Gripper](#classmavsdk_1_1_gripper_1a3d5e59b3647fd93c8cf43910cdf01468) (const [Gripper](classmavsdk_1_1_gripper.md) & other) | Copy constructor.
+&nbsp; | [Gripper](#classmavsdk_1_1_gripper_1a3d5e59b3647fd93c8cf43910cdf01468) (const Gripper & other) | Copy constructor.
 void | [grab_async](#classmavsdk_1_1_gripper_1a90c5ebf377fa1691a045a3ae70d885fa) (uint32_t instance, const [ResultCallback](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1ac8cce161ab7fe573125f4915de0a993f) callback) | [Gripper](classmavsdk_1_1_gripper.md) grab cargo.
 [Result](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a82c5d2dec9badc2fad436ae56962b534) | [grab](#classmavsdk_1_1_gripper_1abba980736acaf541721c7e23a9f2f8b1) (uint32_t instance)const | [Gripper](classmavsdk_1_1_gripper.md) grab cargo.
 void | [release_async](#classmavsdk_1_1_gripper_1acb9a3f03a7c67f1a5c066aa2380a5e34) (uint32_t instance, const [ResultCallback](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1ac8cce161ab7fe573125f4915de0a993f) callback) | [Gripper](classmavsdk_1_1_gripper.md) release cargo.
 [Result](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a82c5d2dec9badc2fad436ae56962b534) | [release](#classmavsdk_1_1_gripper_1a7b0d151d7a596d3977f2da9861204d8c) (uint32_t instance)const | [Gripper](classmavsdk_1_1_gripper.md) release cargo.
-const [Gripper](classmavsdk_1_1_gripper.md) & | [operator=](#classmavsdk_1_1_gripper_1a2823e5efade717a7c7c9f5b330b26c72) (const [Gripper](classmavsdk_1_1_gripper.md) &)=delete | Equality operator (object is not copyable).
+const [Gripper](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a566993706ef599eae17761f4b0810c4b) & | [operator=](#classmavsdk_1_1_gripper_1a2823e5efade717a7c7c9f5b330b26c72) (const [Gripper](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a566993706ef599eae17761f4b0810c4b) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -91,7 +91,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Gripper](classmavsdk_1_1_gripper.md)& **other** - 
+* const Gripper& **other** - 
 
 ## Member Typdef Documentation
 
@@ -171,7 +171,7 @@ This function is blocking. See 'grab_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a82c5d2dec9badc2fad436ae56962b534) - Result of request.
+&emsp;[Result](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a82c5d2dec9badc2fad436ae56962b534) - [Result](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a82c5d2dec9badc2fad436ae56962b534) of request.
 
 ### release_async() {#classmavsdk_1_1_gripper_1acb9a3f03a7c67f1a5c066aa2380a5e34}
 ```cpp
@@ -204,7 +204,7 @@ This function is blocking. See 'release_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a82c5d2dec9badc2fad436ae56962b534) - Result of request.
+&emsp;[Result](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a82c5d2dec9badc2fad436ae56962b534) - [Result](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a82c5d2dec9badc2fad436ae56962b534) of request.
 
 ### operator=() {#classmavsdk_1_1_gripper_1a2823e5efade717a7c7c9f5b330b26c72}
 ```cpp
@@ -217,8 +217,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Gripper](classmavsdk_1_1_gripper.md)&  - 
+* const [Gripper](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a566993706ef599eae17761f4b0810c4b)&  - 
 
 **Returns**
 
-&emsp;const [Gripper](classmavsdk_1_1_gripper.md) & - 
+&emsp;const [Gripper](classmavsdk_1_1_gripper.md#classmavsdk_1_1_gripper_1a566993706ef599eae17761f4b0810c4b) & - 

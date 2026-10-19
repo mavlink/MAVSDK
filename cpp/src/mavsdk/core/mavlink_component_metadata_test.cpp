@@ -8,16 +8,18 @@ TEST(MavlinkComponentMetadata, mavftp_uri)
 {
     std::string download_path;
     uint8_t compid = 3;
-    EXPECT_FALSE(MavlinkComponentMetadata::uri_is_mavlinkftp(
-        "http://url.com/file.json", download_path, compid));
+    EXPECT_FALSE(
+        MavlinkComponentMetadata::uri_is_mavlinkftp(
+            "http://url.com/file.json", download_path, compid));
 
     EXPECT_TRUE(
         MavlinkComponentMetadata::uri_is_mavlinkftp("mftp:///file.json", download_path, compid));
     EXPECT_EQ(compid, 3);
     EXPECT_EQ(download_path, "/file.json");
 
-    EXPECT_TRUE(MavlinkComponentMetadata::uri_is_mavlinkftp(
-        "mftp://[;comp=39]/path/to/file.json", download_path, compid));
+    EXPECT_TRUE(
+        MavlinkComponentMetadata::uri_is_mavlinkftp(
+            "mftp://[;comp=39]/path/to/file.json", download_path, compid));
     EXPECT_EQ(compid, 39);
     EXPECT_EQ(download_path, "/path/to/file.json");
 }

@@ -14,9 +14,9 @@ int32_t [component_id](#structmavsdk_1_1_camera_1_1_capture_info_1a4911c3f31733e
 
 [Position](structmavsdk_1_1_camera_1_1_position.md) [position](#structmavsdk_1_1_camera_1_1_capture_info_1a570779eaff94d3cf3c1a160938096d0f) {} - Location where the picture was taken.
 
-[Quaternion](structmavsdk_1_1_camera_1_1_quaternion.md) [attitude_quaternion](#structmavsdk_1_1_camera_1_1_capture_info_1add20201828d0e0a82a6ee6366022abc4) {} - Attitude of the camera when the picture was taken (quaternion)
+[Quaternion](structmavsdk_1_1_camera_1_1_quaternion.md) [attitude_quaternion](#structmavsdk_1_1_camera_1_1_capture_info_1add20201828d0e0a82a6ee6366022abc4) {} - Attitude of the camera when the picture was taken (quaternion).
 
-[EulerAngle](structmavsdk_1_1_camera_1_1_euler_angle.md) [attitude_euler_angle](#structmavsdk_1_1_camera_1_1_capture_info_1a6265295864a8f4e7081a34edb070a531) {} - Attitude of the camera when the picture was taken (euler angle)
+[EulerAngle](structmavsdk_1_1_camera_1_1_euler_angle.md) [attitude_euler_angle](#structmavsdk_1_1_camera_1_1_capture_info_1a6265295864a8f4e7081a34edb070a531) {} - Attitude of the camera when the picture was taken (euler angle).
 
 uint64_t [time_utc_us](#structmavsdk_1_1_camera_1_1_capture_info_1ad0e92389ab305025ce3cebe0e35d0b51) {} - Timestamp in UTC (since UNIX epoch) in microseconds.
 
@@ -57,7 +57,7 @@ Quaternion mavsdk::Camera::CaptureInfo::attitude_quaternion {}
 ```
 
 
-Attitude of the camera when the picture was taken (quaternion)
+Attitude of the camera when the picture was taken (quaternion).
 
 
 ### attitude_euler_angle {#structmavsdk_1_1_camera_1_1_capture_info_1a6265295864a8f4e7081a34edb070a531}
@@ -67,7 +67,7 @@ EulerAngle mavsdk::Camera::CaptureInfo::attitude_euler_angle {}
 ```
 
 
-Attitude of the camera when the picture was taken (euler angle)
+Attitude of the camera when the picture was taken (euler angle).
 
 
 ### time_utc_us {#structmavsdk_1_1_camera_1_1_capture_info_1ad0e92389ab305025ce3cebe0e35d0b51}

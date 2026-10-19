@@ -28,9 +28,9 @@ Type | Name | Description
 &nbsp; | [Rtk](#classmavsdk_1_1_rtk_1af3b0f558cdab23843d06d898cfe7cf34) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Rtk](#classmavsdk_1_1_rtk_1a5b3d107b883e74885cc2c966cb6ebd10) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Rtk](#classmavsdk_1_1_rtk_1a008724fb2e96cb9a96024f38130c6213) () override | Destructor (internal use only).
-&nbsp; | [Rtk](#classmavsdk_1_1_rtk_1af9118d75e7ef85846bcf7a637d8df73c) (const [Rtk](classmavsdk_1_1_rtk.md) & other) | Copy constructor.
+&nbsp; | [Rtk](#classmavsdk_1_1_rtk_1af9118d75e7ef85846bcf7a637d8df73c) (const Rtk & other) | Copy constructor.
 [Result](classmavsdk_1_1_rtk.md#classmavsdk_1_1_rtk_1a7e310a6ab3cfc82efb46e238bc918a94) | [send_rtcm_data](#classmavsdk_1_1_rtk_1ab0f183ba8e57944e6f9d383f51490d09) ([RtcmData](structmavsdk_1_1_rtk_1_1_rtcm_data.md) rtcm_data)const | Send RTCM data.
-const [Rtk](classmavsdk_1_1_rtk.md) & | [operator=](#classmavsdk_1_1_rtk_1aeb2a7981da98ddffe9ce095ff3846ac8) (const [Rtk](classmavsdk_1_1_rtk.md) &)=delete | Equality operator (object is not copyable).
+const [Rtk](classmavsdk_1_1_rtk.md#classmavsdk_1_1_rtk_1af3b0f558cdab23843d06d898cfe7cf34) & | [operator=](#classmavsdk_1_1_rtk_1aeb2a7981da98ddffe9ce095ff3846ac8) (const [Rtk](classmavsdk_1_1_rtk.md#classmavsdk_1_1_rtk_1af3b0f558cdab23843d06d898cfe7cf34) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -92,7 +92,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Rtk](classmavsdk_1_1_rtk.md)& **other** - 
+* const Rtk& **other** - 
 
 ## Member Typdef Documentation
 
@@ -143,7 +143,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_rtk.md#classmavsdk_1_1_rtk_1a7e310a6ab3cfc82efb46e238bc918a94) - Result of request.
+&emsp;[Result](classmavsdk_1_1_rtk.md#classmavsdk_1_1_rtk_1a7e310a6ab3cfc82efb46e238bc918a94) - [Result](classmavsdk_1_1_rtk.md#classmavsdk_1_1_rtk_1a7e310a6ab3cfc82efb46e238bc918a94) of request.
 
 ### operator=() {#classmavsdk_1_1_rtk_1aeb2a7981da98ddffe9ce095ff3846ac8}
 ```cpp
@@ -156,8 +156,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Rtk](classmavsdk_1_1_rtk.md)&  - 
+* const [Rtk](classmavsdk_1_1_rtk.md#classmavsdk_1_1_rtk_1af3b0f558cdab23843d06d898cfe7cf34)&  - 
 
 **Returns**
 
-&emsp;const [Rtk](classmavsdk_1_1_rtk.md) & - 
+&emsp;const [Rtk](classmavsdk_1_1_rtk.md#classmavsdk_1_1_rtk_1af3b0f558cdab23843d06d898cfe7cf34) & - 

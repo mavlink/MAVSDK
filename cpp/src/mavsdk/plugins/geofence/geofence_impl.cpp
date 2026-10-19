@@ -239,20 +239,21 @@ GeofenceImpl::assemble_items(const Geofence::GeofenceData& geofence_data)
             const uint8_t autocontinue = 0;
             const float param1 = float(polygon.points.size());
 
-            items.push_back(MavlinkMissionTransferClient::ItemInt{
-                sequence,
-                MAV_FRAME_GLOBAL_INT,
-                command,
-                current,
-                autocontinue,
-                param1,
-                0.0f,
-                0.0f,
-                0.0f,
-                int32_t(std::round(point.latitude_deg * 1e7)),
-                int32_t(std::round(point.longitude_deg * 1e7)),
-                0.0f,
-                MAV_MISSION_TYPE_FENCE});
+            items.push_back(
+                MavlinkMissionTransferClient::ItemInt{
+                    sequence,
+                    MAV_FRAME_GLOBAL_INT,
+                    command,
+                    current,
+                    autocontinue,
+                    param1,
+                    0.0f,
+                    0.0f,
+                    0.0f,
+                    int32_t(std::round(point.latitude_deg * 1e7)),
+                    int32_t(std::round(point.longitude_deg * 1e7)),
+                    0.0f,
+                    MAV_MISSION_TYPE_FENCE});
             ++sequence;
         }
     }
@@ -265,20 +266,21 @@ GeofenceImpl::assemble_items(const Geofence::GeofenceData& geofence_data)
                  MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION :
                  MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION);
 
-        items.push_back(MavlinkMissionTransferClient::ItemInt{
-            sequence,
-            MAV_FRAME_GLOBAL_INT,
-            command,
-            current,
-            autocontinue,
-            circle.radius,
-            0.0f,
-            0.0f,
-            0.0f,
-            int32_t(std::round(circle.point.latitude_deg * 1e7)),
-            int32_t(std::round(circle.point.longitude_deg * 1e7)),
-            0.0f,
-            MAV_MISSION_TYPE_FENCE});
+        items.push_back(
+            MavlinkMissionTransferClient::ItemInt{
+                sequence,
+                MAV_FRAME_GLOBAL_INT,
+                command,
+                current,
+                autocontinue,
+                circle.radius,
+                0.0f,
+                0.0f,
+                0.0f,
+                int32_t(std::round(circle.point.latitude_deg * 1e7)),
+                int32_t(std::round(circle.point.longitude_deg * 1e7)),
+                0.0f,
+                MAV_MISSION_TYPE_FENCE});
         ++sequence;
     }
 

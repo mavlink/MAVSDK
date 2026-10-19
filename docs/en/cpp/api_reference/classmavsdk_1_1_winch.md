@@ -10,9 +10,9 @@ Allows users to send winch actions, as well as receive status information from w
 ## Data Structures
 
 
-struct [Status](structmavsdk_1_1_winch_1_1_status.md)
-
 struct [StatusFlags](structmavsdk_1_1_winch_1_1_status_flags.md)
+
+struct [Status](structmavsdk_1_1_winch_1_1_status.md)
 
 ## Public Types
 
@@ -33,7 +33,7 @@ Type | Name | Description
 &nbsp; | [Winch](#classmavsdk_1_1_winch_1a222e543b5ef54c89ee41411e800d3b88) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Winch](#classmavsdk_1_1_winch_1a7546040a07899cc9fe3edb00cb1b2007) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Winch](#classmavsdk_1_1_winch_1a06330946e884dae7415003aa89c3010e) () override | Destructor (internal use only).
-&nbsp; | [Winch](#classmavsdk_1_1_winch_1a9125a173b929f9a1a2e5ca0199961fb4) (const [Winch](classmavsdk_1_1_winch.md) & other) | Copy constructor.
+&nbsp; | [Winch](#classmavsdk_1_1_winch_1a9125a173b929f9a1a2e5ca0199961fb4) (const Winch & other) | Copy constructor.
 [StatusHandle](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a78284180b73b3092c37e45b3c2bdc2ab) | [subscribe_status](#classmavsdk_1_1_winch_1a92363df861842edf0b81aa18fba26bc8) (const [StatusCallback](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a6c84089eac00fc9de890ab7e8c0eb32a) & callback) | Subscribe to 'winch status' updates.
 void | [unsubscribe_status](#classmavsdk_1_1_winch_1af1176a4992e0a6850dbd44ea2b1f0bad) ([StatusHandle](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a78284180b73b3092c37e45b3c2bdc2ab) handle) | Unsubscribe from subscribe_status.
 [Status](structmavsdk_1_1_winch_1_1_status.md) | [status](#classmavsdk_1_1_winch_1aa24ccd5e6e44db1fbf96e4aca6947689) () const | Poll for '[Status](structmavsdk_1_1_winch_1_1_status.md)' (blocking).
@@ -57,7 +57,7 @@ void | [abandon_line_async](#classmavsdk_1_1_winch_1a3970c74e067d3734ba8dd3382c5
 [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) | [abandon_line](#classmavsdk_1_1_winch_1a625f6d58d5447afbe0c40e3d896071b0) (uint32_t instance)const | Spool out the entire length of the line.
 void | [load_payload_async](#classmavsdk_1_1_winch_1af715b6c01dc75c44868c2936af04d40a) (uint32_t instance, const [ResultCallback](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a683fc7d385d461efb059df917622a6b7) callback) | Spools out just enough to present the hook to the user to load the payload.
 [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) | [load_payload](#classmavsdk_1_1_winch_1a01fec2758f7f09d8aef5de23f4566d47) (uint32_t instance)const | Spools out just enough to present the hook to the user to load the payload.
-const [Winch](classmavsdk_1_1_winch.md) & | [operator=](#classmavsdk_1_1_winch_1a95e5998fc48ba20b61001d344a7274ff) (const [Winch](classmavsdk_1_1_winch.md) &)=delete | Equality operator (object is not copyable).
+const [Winch](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a222e543b5ef54c89ee41411e800d3b88) & | [operator=](#classmavsdk_1_1_winch_1a95e5998fc48ba20b61001d344a7274ff) (const [Winch](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a222e543b5ef54c89ee41411e800d3b88) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -119,7 +119,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Winch](classmavsdk_1_1_winch.md)& **other** - 
+* const Winch& **other** - 
 
 ## Member Typdef Documentation
 
@@ -269,7 +269,7 @@ This function is blocking. See 'relax_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### relative_length_control_async() {#classmavsdk_1_1_winch_1aa2cb382d36cda8e0fe918ae07fb7a9ec}
 ```cpp
@@ -306,7 +306,7 @@ This function is blocking. See 'relative_length_control_async' for the non-block
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### rate_control_async() {#classmavsdk_1_1_winch_1a21ce05ef8cedd2601d22209d31a980f8}
 ```cpp
@@ -341,7 +341,7 @@ This function is blocking. See 'rate_control_async' for the non-blocking counter
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### lock_async() {#classmavsdk_1_1_winch_1a0ff91279058752931bee2bc5dfd7c711}
 ```cpp
@@ -374,7 +374,7 @@ This function is blocking. See 'lock_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### deliver_async() {#classmavsdk_1_1_winch_1acbd43a3f00ab1e910b6b05654afc9458}
 ```cpp
@@ -407,7 +407,7 @@ This function is blocking. See 'deliver_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### hold_async() {#classmavsdk_1_1_winch_1a6c97626d33532469871a687e8043e27e}
 ```cpp
@@ -440,7 +440,7 @@ This function is blocking. See 'hold_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### retract_async() {#classmavsdk_1_1_winch_1a6485b743115d441b43f3d0e39341412d}
 ```cpp
@@ -473,7 +473,7 @@ This function is blocking. See 'retract_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### load_line_async() {#classmavsdk_1_1_winch_1ad0588792ef3fbd469511f99988140637}
 ```cpp
@@ -512,7 +512,7 @@ This function is blocking. See 'load_line_async' for the non-blocking counterpar
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### abandon_line_async() {#classmavsdk_1_1_winch_1a3970c74e067d3734ba8dd3382c534b0a}
 ```cpp
@@ -545,7 +545,7 @@ This function is blocking. See 'abandon_line_async' for the non-blocking counter
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### load_payload_async() {#classmavsdk_1_1_winch_1af715b6c01dc75c44868c2936af04d40a}
 ```cpp
@@ -578,7 +578,7 @@ This function is blocking. See 'load_payload_async' for the non-blocking counter
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
+&emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) of request.
 
 ### operator=() {#classmavsdk_1_1_winch_1a95e5998fc48ba20b61001d344a7274ff}
 ```cpp
@@ -591,8 +591,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Winch](classmavsdk_1_1_winch.md)&  - 
+* const [Winch](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a222e543b5ef54c89ee41411e800d3b88)&  - 
 
 **Returns**
 
-&emsp;const [Winch](classmavsdk_1_1_winch.md) & - 
+&emsp;const [Winch](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a222e543b5ef54c89ee41411e800d3b88) & - 

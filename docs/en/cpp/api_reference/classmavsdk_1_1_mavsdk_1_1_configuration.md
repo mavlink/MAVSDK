@@ -243,7 +243,7 @@ Get the MAV_TYPE (e.g. vehicle type) of this configuration.
 
 **Returns**
 
-&emsp;[MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) - `MavType` the MAV_TYPE stored in this configuration
+&emsp;[MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) - [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) the MAV_TYPE stored in this configuration
 
 ### set_mav_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a1aefe23e2ac605383a9cd255b0639aab}
 ```cpp

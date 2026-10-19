@@ -12,7 +12,7 @@ Health and arming check problem type.
 
 std::string [message](#structmavsdk_1_1_events_1_1_health_and_arming_check_problem_1afd72427f3eba7f5592dce7f69731bbd6) {} - Short, single-line message.
 
-std::string [description](#structmavsdk_1_1_events_1_1_health_and_arming_check_problem_1a81dc36ffb30a64e4a47b5512df37a45f) {} - Detailed description (optional, might be multiple lines)
+std::string [description](#structmavsdk_1_1_events_1_1_health_and_arming_check_problem_1a81dc36ffb30a64e4a47b5512df37a45f) {} - Detailed description (optional, might be multiple lines).
 
 [LogLevel](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecc) [log_level](#structmavsdk_1_1_events_1_1_health_and_arming_check_problem_1ac05048809875f80d0c02b643165b0c33) {} - Log level of message.
 
@@ -39,7 +39,7 @@ std::string mavsdk::Events::HealthAndArmingCheckProblem::description {}
 ```
 
 
-Detailed description (optional, might be multiple lines)
+Detailed description (optional, might be multiple lines).
 
 
 ### log_level {#structmavsdk_1_1_events_1_1_health_and_arming_check_problem_1ac05048809875f80d0c02b643165b0c33}

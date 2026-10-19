@@ -14,8 +14,8 @@ Type | Name | Description
 ---: | --- | ---
 &nbsp; | [ServerPluginBase](#classmavsdk_1_1_server_plugin_base_1a77b7c74e4e2a10cf55071e95b53eedae) ()=default | Default Constructor.
 &nbsp; | [~ServerPluginBase](#classmavsdk_1_1_server_plugin_base_1a97e1d14c2b72253d53f9284621b1d248) ()=default | Default Destructor.
-&nbsp; | [ServerPluginBase](#classmavsdk_1_1_server_plugin_base_1a86ef071b10d0afc7d287069ac8d11575) (const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md) &)=delete | Copy constructor (object is not copyable).
-const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md) & | [operator=](#classmavsdk_1_1_server_plugin_base_1a2b3d42760fa4b0edd07caae73e3e5f46) (const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md) &)=delete | Assign operator (object is not copyable).
+&nbsp; | [ServerPluginBase](#classmavsdk_1_1_server_plugin_base_1a86ef071b10d0afc7d287069ac8d11575) (const ServerPluginBase &)=delete | Copy constructor (object is not copyable).
+const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md#classmavsdk_1_1_server_plugin_base_1a77b7c74e4e2a10cf55071e95b53eedae) & | [operator=](#classmavsdk_1_1_server_plugin_base_1a2b3d42760fa4b0edd07caae73e3e5f46) (const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md#classmavsdk_1_1_server_plugin_base_1a77b7c74e4e2a10cf55071e95b53eedae) &)=delete | Assign operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -50,7 +50,7 @@ Copy constructor (object is not copyable).
 
 **Parameters**
 
-* const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md)&  - 
+* const ServerPluginBase&  - 
 
 ## Member Function Documentation
 
@@ -66,8 +66,8 @@ Assign operator (object is not copyable).
 
 **Parameters**
 
-* const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md)&  - 
+* const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md#classmavsdk_1_1_server_plugin_base_1a77b7c74e4e2a10cf55071e95b53eedae)&  - 
 
 **Returns**
 
-&emsp;const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md) & - 
+&emsp;const [ServerPluginBase](classmavsdk_1_1_server_plugin_base.md#classmavsdk_1_1_server_plugin_base_1a77b7c74e4e2a10cf55071e95b53eedae) & - 

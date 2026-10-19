@@ -30,14 +30,14 @@ Type | Name | Description
 &nbsp; | [LogStreaming](#classmavsdk_1_1_log_streaming_1a16a64f4ea20ba98b5151b588fb84f5ee) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [LogStreaming](#classmavsdk_1_1_log_streaming_1a8be3bbd9068f03c390fc78dd426058b4) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~LogStreaming](#classmavsdk_1_1_log_streaming_1a2b99fc2e1f535afb8f107430d1fb1926) () override | Destructor (internal use only).
-&nbsp; | [LogStreaming](#classmavsdk_1_1_log_streaming_1a2e2dddc59ab55af1cf57479dc73c9842) (const [LogStreaming](classmavsdk_1_1_log_streaming.md) & other) | Copy constructor.
+&nbsp; | [LogStreaming](#classmavsdk_1_1_log_streaming_1a2e2dddc59ab55af1cf57479dc73c9842) (const LogStreaming & other) | Copy constructor.
 void | [start_log_streaming_async](#classmavsdk_1_1_log_streaming_1a00797f79a2d17db031be24184ca326ea) (const [ResultCallback](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1af5383eb2fda579379ab3c722d074f818) callback) | Start streaming logging data.
 [Result](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a29f3219817d4aefebf1a0d59cda39c17) | [start_log_streaming](#classmavsdk_1_1_log_streaming_1aad5edb63b5b66bc9b4189c298ab5f957) () const | Start streaming logging data.
 void | [stop_log_streaming_async](#classmavsdk_1_1_log_streaming_1a6d4db2bb2a2c869fcbc11d6c2124f02c) (const [ResultCallback](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1af5383eb2fda579379ab3c722d074f818) callback) | Stop streaming logging data.
 [Result](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a29f3219817d4aefebf1a0d59cda39c17) | [stop_log_streaming](#classmavsdk_1_1_log_streaming_1a656b17357693c83e579104c5fd3281d8) () const | Stop streaming logging data.
 [LogStreamingRawHandle](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1af245af3fad21ca1198987babbd728925) | [subscribe_log_streaming_raw](#classmavsdk_1_1_log_streaming_1afeef206b7843bdd3d1a85806764b2110) (const [LogStreamingRawCallback](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1af3197cf6a041f85c6ea879dcccbc354a) & callback) | Subscribe to logging messages.
 void | [unsubscribe_log_streaming_raw](#classmavsdk_1_1_log_streaming_1a31b33a0318907668f6939cea52f02d5b) ([LogStreamingRawHandle](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1af245af3fad21ca1198987babbd728925) handle) | Unsubscribe from subscribe_log_streaming_raw.
-const [LogStreaming](classmavsdk_1_1_log_streaming.md) & | [operator=](#classmavsdk_1_1_log_streaming_1a51a20fe975a0cde08e077fe89d9b3a99) (const [LogStreaming](classmavsdk_1_1_log_streaming.md) &)=delete | Equality operator (object is not copyable).
+const [LogStreaming](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a16a64f4ea20ba98b5151b588fb84f5ee) & | [operator=](#classmavsdk_1_1_log_streaming_1a51a20fe975a0cde08e077fe89d9b3a99) (const [LogStreaming](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a16a64f4ea20ba98b5151b588fb84f5ee) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -99,7 +99,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [LogStreaming](classmavsdk_1_1_log_streaming.md)& **other** - 
+* const LogStreaming& **other** - 
 
 ## Member Typdef Documentation
 
@@ -183,7 +183,7 @@ This function is blocking. See 'start_log_streaming_async' for the non-blocking 
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a29f3219817d4aefebf1a0d59cda39c17) - Result of request.
+&emsp;[Result](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a29f3219817d4aefebf1a0d59cda39c17) - [Result](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a29f3219817d4aefebf1a0d59cda39c17) of request.
 
 ### stop_log_streaming_async() {#classmavsdk_1_1_log_streaming_1a6d4db2bb2a2c869fcbc11d6c2124f02c}
 ```cpp
@@ -211,7 +211,7 @@ This function is blocking. See 'stop_log_streaming_async' for the non-blocking c
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a29f3219817d4aefebf1a0d59cda39c17) - Result of request.
+&emsp;[Result](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a29f3219817d4aefebf1a0d59cda39c17) - [Result](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a29f3219817d4aefebf1a0d59cda39c17) of request.
 
 ### subscribe_log_streaming_raw() {#classmavsdk_1_1_log_streaming_1afeef206b7843bdd3d1a85806764b2110}
 ```cpp
@@ -254,8 +254,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [LogStreaming](classmavsdk_1_1_log_streaming.md)&  - 
+* const [LogStreaming](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a16a64f4ea20ba98b5151b588fb84f5ee)&  - 
 
 **Returns**
 
-&emsp;const [LogStreaming](classmavsdk_1_1_log_streaming.md) & - 
+&emsp;const [LogStreaming](classmavsdk_1_1_log_streaming.md#classmavsdk_1_1_log_streaming_1a16a64f4ea20ba98b5151b588fb84f5ee) & - 

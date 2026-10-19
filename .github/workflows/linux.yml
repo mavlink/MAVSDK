@@ -27,7 +27,7 @@ defaults:
 jobs:
   check-docker-changes:
     name: Check Docker Changes
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       docker_changed: ${{ steps.set-any-changed.outputs.docker_changed }}
       docker_tag: ${{ steps.set-docker-tag.outputs.docker_tag}}
@@ -39,8 +39,7 @@ jobs:
         id: check-changes
         uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
-          files: ../docker/**
-          since_last_remote_commit: true
+          files: docker/**
       - name: List all changed files
         id: set-any-changed
         run: |
@@ -62,12 +61,12 @@ jobs:
     secrets: inherit
 
   ubuntu-debug:
-    name: Ubuntu 24.04 (Debug Build)
+    name: Ubuntu 26.04 (Debug Build)
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-26.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -83,7 +82,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/debug/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -95,7 +94,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
         with:
           path: ./cpp/build/debug/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: build
         run: cmake --build build/debug -j$(nproc)
       - name: unit tests
@@ -105,12 +104,12 @@ jobs:
         timeout-minutes: 15
 
   ubuntu-asan:
-    name: Ubuntu 24.04 (AddressSanitizer)
+    name: Ubuntu 26.04 (AddressSanitizer)
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-26.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -126,7 +125,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/asan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -134,14 +133,14 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/asan/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: |
-          export CC=clang-19
-          export CXX=clang++-19
+          export CC=clang-21
+          export CXX=clang++-21
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DWERROR=ON -Bbuild/asan -H.
       - uses: actions/cache/save@v5
         if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
         with:
           path: ./cpp/build/asan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: build
         run: cmake --build build/asan -j$(nproc)
       - name: unit tests
@@ -151,12 +150,14 @@ jobs:
         timeout-minutes: 15
 
   ubuntu-tsan:
-    name: Ubuntu 24.04 (ThreadSanitizer)
+    name: Ubuntu 26.04 (ThreadSanitizer)
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-26.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      # TSan re-execs with ASLR disabled, which the default seccomp profile blocks.
+      options: --security-opt seccomp=unconfined
     steps:
       - uses: actions/checkout@v6
         with:
@@ -172,7 +173,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/tsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -180,14 +181,14 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/tsan/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: |
-          export CC=clang-19
-          export CXX=clang++-19
+          export CC=clang-21
+          export CXX=clang++-21
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DTSAN=ON -DWERROR=ON -Bbuild/tsan -H.
       - uses: actions/cache/save@v5
         if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
         with:
           path: ./cpp/build/tsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: build
         run: cmake --build build/tsan -j$(nproc)
       - name: unit tests
@@ -197,12 +198,12 @@ jobs:
         timeout-minutes: 15
 
   ubuntu-ubsan:
-    name: Ubuntu 24.04 (UndefinedBehaviour)
+    name: Ubuntu 26.04 (UndefinedBehaviour)
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-26.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -218,24 +219,22 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/ubsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/ubsan/third_party/install" >> $GITHUB_ENV
-      - name: Install clang-19
-        run: sudo apt-get update && sudo apt-get install -y clang-19
       - name: configure
         run: |
-          export CC=clang-19
-          export CXX=clang++-19
+          export CC=clang-21
+          export CXX=clang++-21
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DUBSAN=ON -DWERROR=ON -Bbuild/ubsan -H.
       - uses: actions/cache/save@v5
         if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
         with:
           path: ./cpp/build/ubsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: build
         run: cmake --build build/ubsan -j$(nproc)
       - name: unit tests
@@ -248,7 +247,7 @@ jobs:
     name: ${{ matrix.description }}
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
       options: --privileged --ulimit core=-1 --security-opt seccomp=unconfined
@@ -260,14 +259,14 @@ jobs:
             cc: gcc-13
             cxx: g++-13
             description: Ubuntu 24.04 (GCC 13)
-          - ubuntu_version: "24.04"
-            cc: gcc-14
-            cxx: g++-14
-            description: Ubuntu 24.04 (GCC 14)
-          - ubuntu_version: "24.04"
-            cc: clang-19
-            cxx: clang++-19
-            description: Ubuntu 24.04 (clang 19)
+          - ubuntu_version: "26.04"
+            cc: gcc-15
+            cxx: g++-15
+            description: Ubuntu 26.04 (GCC 15)
+          - ubuntu_version: "26.04"
+            cc: clang-21
+            cxx: clang++-21
+            description: Ubuntu 26.04 (clang 21)
     steps:
       - uses: actions/checkout@v6
         with:
@@ -384,12 +383,12 @@ jobs:
           retention-days: 7
 
   ubuntu-no-curl:
-    name: Ubuntu 24.04 (mavsdk, without curl)
+    name: Ubuntu 26.04 (mavsdk, without curl)
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-26.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -399,7 +398,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -412,13 +411,13 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: build
         run: cmake --build build/release -j$(nproc)
 
   ubuntu-superbuild-off:
-    name: Ubuntu 24.04 (SUPERBUILD=OFF)
-    runs-on: ubuntu-24.04
+    name: Ubuntu 26.04 (SUPERBUILD=OFF)
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
         with:
@@ -437,12 +436,12 @@ jobs:
         timeout-minutes: 15
 
   ubuntu24-style-and-proto-check:
-    name: ubuntu-24.04 (style and proto check)
+    name: ubuntu-26.04 (style and proto check)
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-26.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -466,9 +465,9 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
           restore-keys: |
-            ubuntu-superbuild-24.04-gcc-13-${{ hashFiles('./cpp/third_party/**') }}-
+            ubuntu-superbuild-26.04-gcc-15-${{ hashFiles('./cpp/third_party/**') }}-
             ubuntu-superbuild-
       - name: disable superbuild on cache restore
         run: |
@@ -482,7 +481,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: generate code from protos
         working-directory: .
         run: PATH="$PATH:$HOME/.local/bin:$(pwd)/cpp/build/release/third_party/install/bin" tools/generate_from_protos.bash
@@ -495,12 +494,12 @@ jobs:
         run: git diff --exit-code
 
   ubuntu24-docs-check:
-    name: ubuntu-24.04 (docs check)
+    name: ubuntu-26.04 (docs check)
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-26.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -521,7 +520,7 @@ jobs:
     name: ${{ matrix.os_name }} ${{ matrix.os_version }} (package, non-mavsdk_server)
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container:
       image: docker.io/mavsdk/mavsdk-${{ matrix.os_type }}-${{ matrix.os_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
       options: --privileged --ulimit core=-1 --security-opt seccomp=unconfined
@@ -535,6 +534,9 @@ jobs:
           - os_type: ubuntu
             os_name: Ubuntu
             os_version: "24.04"
+          - os_type: ubuntu
+            os_name: Ubuntu
+            os_version: "26.04"
           - os_type: debian
             os_name: Debian
             os_version: "12"
@@ -639,7 +641,7 @@ jobs:
     name: linux-${{ matrix.docker_name }}
     needs: [check-docker-changes, update-docker-images]
     if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       ARG_IMAGE: docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.docker_name }}-custom:${{ needs.check-docker-changes.outputs.docker_tag }}
       OCI_EXE: docker
@@ -705,7 +707,7 @@ jobs:
 
   alpine-linux:
     name: alpine 3.19.0 (musl)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     container: alpine:3.19.0
     steps:
       - name: install tools
@@ -725,7 +727,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -737,7 +739,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
       - name: build
         run: cmake --build build/release --target install -- -j$(nproc)
       - name: unit tests
@@ -776,7 +778,7 @@ jobs:
 
   dockcross-linux-musl:
     name: ${{ matrix.arch_name }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       OCI_EXE: docker
     strategy:
@@ -834,7 +836,7 @@ jobs:
 
   dockcross-manylinux:
     name: ${{ matrix.arch_name }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       OCI_EXE: docker
     strategy:
@@ -969,7 +971,7 @@ jobs:
 
   dockcross-android:
     name: ${{ matrix.name }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       OCI_EXE: docker
     strategy:

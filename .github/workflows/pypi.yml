@@ -46,7 +46,7 @@ jobs:
       (github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.event == 'push' &&
        startsWith(github.event.workflow_run.head_branch, 'v'))
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       ready: ${{ steps.check.outputs.ready }}
       version: ${{ steps.check.outputs.version }}
@@ -142,7 +142,7 @@ jobs:
     name: Publish ${{ needs.check.outputs.version }}
     needs: check
     if: needs.check.outputs.ready == 'true'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     environment:
       name: pypi
       url: https://pypi.org/project/mavsdk/

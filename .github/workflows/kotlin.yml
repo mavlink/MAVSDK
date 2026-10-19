@@ -32,7 +32,7 @@ jobs:
       matrix:
         include:
           - platform: linux-x86_64
-            runner: ubuntu-24.04
+            runner: ubuntu-26.04
             library: libmavsdk_jni.so
           - platform: darwin-aarch64
             runner: macos-15
@@ -118,7 +118,7 @@ jobs:
   # NDK inside the dockcross image supplies the headers.
   jni-android:
     name: jni-android-${{ matrix.abi }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       OCI_EXE: docker
     strategy:
@@ -185,7 +185,7 @@ jobs:
   kotlin-jvm:
     name: kotlin-jvm
     needs: jni-desktop
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -248,7 +248,7 @@ jobs:
   kotlin-android:
     name: kotlin-android
     needs: jni-android
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -293,7 +293,7 @@ jobs:
     name: publish to Maven Central
     needs: [kotlin-jvm, kotlin-android]
     if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
         with:

@@ -359,8 +359,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionSendsCount)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_correct_mission_send_count(
                 MAV_MISSION_TYPE_FENCE, items.size(), fun(own_address, channel));
         })));
@@ -383,8 +384,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsCount)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_correct_mission_send_count(
                 MAV_MISSION_TYPE_FENCE, items.size(), fun(own_address, channel));
         })))
@@ -411,8 +413,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutAfterSendCount)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_correct_mission_send_count(
                 MAV_MISSION_TYPE_MISSION, items.size(), fun(own_address, channel));
         })))
@@ -518,8 +521,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionSendsMissionItems)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
@@ -527,8 +531,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionSendsMissionItems)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[1], fun(own_address, channel));
         })));
 
@@ -568,8 +573,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItems)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
@@ -577,8 +583,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItems)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
@@ -587,8 +594,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItems)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[1], fun(own_address, channel));
         })));
 
@@ -625,8 +633,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItemsButGive
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })))
         .Times(MavlinkMissionTransferClient::retries);
@@ -667,8 +676,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionAckArrivesTooEarly)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
@@ -713,8 +723,9 @@ TEST_P(MavlinkMissionTransferClientNack, UploadMissionNackAreHandled)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
@@ -771,8 +782,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutNotTriggeredDuringT
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
@@ -784,8 +796,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutNotTriggeredDuringT
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[1], fun(own_address, channel));
         })));
 
@@ -796,8 +809,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutNotTriggeredDuringT
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[2], fun(own_address, channel));
         })));
 
@@ -836,8 +850,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutAfterSendMissionIte
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
@@ -986,8 +1001,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionNacksNonIntCase)
 
     EXPECT_CALL(
         mock_sender,
-        queue_message(Truly([&items](std::function<mavlink_message_t(
-                                         MavlinkAddress mavlink_address, uint8_t channel)> fun) {
+        queue_message(Truly([&items](
+                                std::function<mavlink_message_t(
+                                    MavlinkAddress mavlink_address, uint8_t channel)> fun) {
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
@@ -1545,26 +1561,30 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionTimeoutNotTriggeredDurin
     do_work();
 
     // We almost use up the max timeout in each cycle.
-    time.sleep_for(std::chrono::milliseconds(
-        static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
+    time.sleep_for(
+        std::chrono::milliseconds(
+            static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
     run_timeouts();
 
     process_message(make_mission_count(real_items.size()));
 
-    time.sleep_for(std::chrono::milliseconds(
-        static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
+    time.sleep_for(
+        std::chrono::milliseconds(
+            static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
     run_timeouts();
 
     process_message(make_mission_item(real_items, 0));
 
-    time.sleep_for(std::chrono::milliseconds(
-        static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
+    time.sleep_for(
+        std::chrono::milliseconds(
+            static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
     run_timeouts();
 
     process_message(make_mission_item(real_items, 1));
 
-    time.sleep_for(std::chrono::milliseconds(
-        static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
+    time.sleep_for(
+        std::chrono::milliseconds(
+            static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
     run_timeouts();
 
     process_message(make_mission_item(real_items, 2));

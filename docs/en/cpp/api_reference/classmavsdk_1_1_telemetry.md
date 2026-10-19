@@ -10,67 +10,67 @@ Allow users to get vehicle telemetry and state information (e.g. battery, GPS, R
 ## Data Structures
 
 
-struct [AccelerationFrd](structmavsdk_1_1_telemetry_1_1_acceleration_frd.md)
+struct [Position](structmavsdk_1_1_telemetry_1_1_position.md)
+
+struct [Heading](structmavsdk_1_1_telemetry_1_1_heading.md)
+
+struct [Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md)
+
+struct [HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md)
+
+struct [EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md)
+
+struct [AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md)
+
+struct [GpsInfo](structmavsdk_1_1_telemetry_1_1_gps_info.md)
+
+struct [RawGps](structmavsdk_1_1_telemetry_1_1_raw_gps.md)
+
+struct [Battery](structmavsdk_1_1_telemetry_1_1_battery.md)
+
+struct [Health](structmavsdk_1_1_telemetry_1_1_health.md)
+
+struct [RcStatus](structmavsdk_1_1_telemetry_1_1_rc_status.md)
+
+struct [StatusText](structmavsdk_1_1_telemetry_1_1_status_text.md)
 
 struct [ActuatorControlTarget](structmavsdk_1_1_telemetry_1_1_actuator_control_target.md)
 
 struct [ActuatorOutputStatus](structmavsdk_1_1_telemetry_1_1_actuator_output_status.md)
 
-struct [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)
-
-struct [AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md)
-
-struct [AngularVelocityFrd](structmavsdk_1_1_telemetry_1_1_angular_velocity_frd.md)
-
-struct [Battery](structmavsdk_1_1_telemetry_1_1_battery.md)
-
 struct [Covariance](structmavsdk_1_1_telemetry_1_1_covariance.md)
-
-struct [DistanceSensor](structmavsdk_1_1_telemetry_1_1_distance_sensor.md)
-
-struct [EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md)
-
-struct [FixedwingMetrics](structmavsdk_1_1_telemetry_1_1_fixedwing_metrics.md)
-
-struct [GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md)
-
-struct [GpsInfo](structmavsdk_1_1_telemetry_1_1_gps_info.md)
-
-struct [GroundTruth](structmavsdk_1_1_telemetry_1_1_ground_truth.md)
-
-struct [Heading](structmavsdk_1_1_telemetry_1_1_heading.md)
-
-struct [Health](structmavsdk_1_1_telemetry_1_1_health.md)
-
-struct [HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md)
-
-struct [Imu](structmavsdk_1_1_telemetry_1_1_imu.md)
-
-struct [MagneticFieldFrd](structmavsdk_1_1_telemetry_1_1_magnetic_field_frd.md)
-
-struct [Odometry](structmavsdk_1_1_telemetry_1_1_odometry.md)
-
-struct [Position](structmavsdk_1_1_telemetry_1_1_position.md)
-
-struct [PositionBody](structmavsdk_1_1_telemetry_1_1_position_body.md)
-
-struct [PositionNed](structmavsdk_1_1_telemetry_1_1_position_ned.md)
-
-struct [PositionVelocityNed](structmavsdk_1_1_telemetry_1_1_position_velocity_ned.md)
-
-struct [Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md)
-
-struct [RawGps](structmavsdk_1_1_telemetry_1_1_raw_gps.md)
-
-struct [RcStatus](structmavsdk_1_1_telemetry_1_1_rc_status.md)
-
-struct [ScaledPressure](structmavsdk_1_1_telemetry_1_1_scaled_pressure.md)
-
-struct [StatusText](structmavsdk_1_1_telemetry_1_1_status_text.md)
 
 struct [VelocityBody](structmavsdk_1_1_telemetry_1_1_velocity_body.md)
 
+struct [PositionBody](structmavsdk_1_1_telemetry_1_1_position_body.md)
+
+struct [Odometry](structmavsdk_1_1_telemetry_1_1_odometry.md)
+
+struct [DistanceSensor](structmavsdk_1_1_telemetry_1_1_distance_sensor.md)
+
+struct [ScaledPressure](structmavsdk_1_1_telemetry_1_1_scaled_pressure.md)
+
+struct [PositionNed](structmavsdk_1_1_telemetry_1_1_position_ned.md)
+
 struct [VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md)
+
+struct [PositionVelocityNed](structmavsdk_1_1_telemetry_1_1_position_velocity_ned.md)
+
+struct [GroundTruth](structmavsdk_1_1_telemetry_1_1_ground_truth.md)
+
+struct [FixedwingMetrics](structmavsdk_1_1_telemetry_1_1_fixedwing_metrics.md)
+
+struct [AccelerationFrd](structmavsdk_1_1_telemetry_1_1_acceleration_frd.md)
+
+struct [AngularVelocityFrd](structmavsdk_1_1_telemetry_1_1_angular_velocity_frd.md)
+
+struct [MagneticFieldFrd](structmavsdk_1_1_telemetry_1_1_magnetic_field_frd.md)
+
+struct [Imu](structmavsdk_1_1_telemetry_1_1_imu.md)
+
+struct [GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md)
+
+struct [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)
 
 struct [Wind](structmavsdk_1_1_telemetry_1_1_wind.md)
 
@@ -163,7 +163,7 @@ Type | Name | Description
 &nbsp; | [Telemetry](#classmavsdk_1_1_telemetry_1a6c8c8ed8759fc8c6e9fd4e7644c63cbe) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Telemetry](#classmavsdk_1_1_telemetry_1af78f18fbb117c82d5ffe21e015535067) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Telemetry](#classmavsdk_1_1_telemetry_1a6ffca3dba4c6102ae6602822a140c8fc) () override | Destructor (internal use only).
-&nbsp; | [Telemetry](#classmavsdk_1_1_telemetry_1ad734f199b82a9928c63230676c9789e9) (const [Telemetry](classmavsdk_1_1_telemetry.md) & other) | Copy constructor.
+&nbsp; | [Telemetry](#classmavsdk_1_1_telemetry_1ad734f199b82a9928c63230676c9789e9) (const Telemetry & other) | Copy constructor.
 [PositionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7d82a98ea53c2aa254624bc943ec22f1) | [subscribe_position](#classmavsdk_1_1_telemetry_1a647f3d61b4f3301fd8c2aca1afcafb31) (const [PositionCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a978b371d636226e198995462afa63552) & callback) | Subscribe to 'position' updates.
 void | [unsubscribe_position](#classmavsdk_1_1_telemetry_1abf10cb55e2c477bbb875c0944938b76c) ([PositionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7d82a98ea53c2aa254624bc943ec22f1) handle) | Unsubscribe from subscribe_position.
 [Position](structmavsdk_1_1_telemetry_1_1_position.md) | [position](#classmavsdk_1_1_telemetry_1a2299da1bc63313c429f07ab0fdbe5335) () const | Poll for '[Position](structmavsdk_1_1_telemetry_1_1_position.md)' (blocking).
@@ -175,20 +175,20 @@ void | [unsubscribe_in_air](#classmavsdk_1_1_telemetry_1a2e23bf258ef69c267ab5b8d
 bool | [in_air](#classmavsdk_1_1_telemetry_1a909738ff2fbe104c6eb4524cc9bf2dd5) () const | Poll for 'bool' (blocking).
 [LandedStateHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a125f2ecfe3f5ce588e6d1799392a5fd7) | [subscribe_landed_state](#classmavsdk_1_1_telemetry_1ae618a7ba0ed197e3d5c3427a63c3cfa0) (const [LandedStateCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0cd8ef17abdd7c3d6a9ee761ccc6ae5e) & callback) | Subscribe to landed state updates.
 void | [unsubscribe_landed_state](#classmavsdk_1_1_telemetry_1a17df3b1e3917f788725f39cf879145f6) ([LandedStateHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a125f2ecfe3f5ce588e6d1799392a5fd7) handle) | Unsubscribe from subscribe_landed_state.
-[LandedState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046) | [landed_state](#classmavsdk_1_1_telemetry_1af7d7c385852db38d6320516508ce7465) () const | Poll for 'LandedState' (blocking).
+[LandedState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046) | [landed_state](#classmavsdk_1_1_telemetry_1af7d7c385852db38d6320516508ce7465) () const | Poll for '[LandedState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046)' (blocking).
 [ArmedHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a3cfe4b90e156fb055066f8164985311c) | [subscribe_armed](#classmavsdk_1_1_telemetry_1a2ea3978439ed7e21973a41e1f2c2b24f) (const [ArmedCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a9d23a4092d94e50694390e9f41b8c419) & callback) | Subscribe to armed updates.
 void | [unsubscribe_armed](#classmavsdk_1_1_telemetry_1a8c6080d520f6d2fdac9cb97279ffcbb9) ([ArmedHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a3cfe4b90e156fb055066f8164985311c) handle) | Unsubscribe from subscribe_armed.
 bool | [armed](#classmavsdk_1_1_telemetry_1a6620142adc47f069262e5bf69dbb3876) () const | Poll for 'bool' (blocking).
 [VtolStateHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a824bab94514afa56334acf41b6f7d244) | [subscribe_vtol_state](#classmavsdk_1_1_telemetry_1a956eb63dc90a2cf905590f6f309edb36) (const [VtolStateCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1abf52126ce4d4efb99560aa8e8e58f20c) & callback) | subscribe to vtol state Updates
 void | [unsubscribe_vtol_state](#classmavsdk_1_1_telemetry_1a932eb8b43e90e64bd131b3257f747963) ([VtolStateHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a824bab94514afa56334acf41b6f7d244) handle) | Unsubscribe from subscribe_vtol_state.
-[VtolState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a256f951d993aa120c437d989a6e94166) | [vtol_state](#classmavsdk_1_1_telemetry_1a6d3fd68f3e639a2bf9940e9f38f220c3) () const | Poll for 'VtolState' (blocking).
+[VtolState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a256f951d993aa120c437d989a6e94166) | [vtol_state](#classmavsdk_1_1_telemetry_1a6d3fd68f3e639a2bf9940e9f38f220c3) () const | Poll for '[VtolState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a256f951d993aa120c437d989a6e94166)' (blocking).
 [AttitudeQuaternionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0ce62986aedcd06d845406a2d99257d3) | [subscribe_attitude_quaternion](#classmavsdk_1_1_telemetry_1a9248befe3416252c7d8fb63b19842421) (const [AttitudeQuaternionCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ad16e61245511a99e930d6fdcbd761a30) & callback) | Subscribe to 'attitude' updates (quaternion).
 void | [unsubscribe_attitude_quaternion](#classmavsdk_1_1_telemetry_1a06034401ac16901d50b850ded0b064b5) ([AttitudeQuaternionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0ce62986aedcd06d845406a2d99257d3) handle) | Unsubscribe from subscribe_attitude_quaternion.
 [Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md) | [attitude_quaternion](#classmavsdk_1_1_telemetry_1aae76890957b33727be72a39807448c88) () const | Poll for '[Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md)' (blocking).
 [AttitudeEulerHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ae73f3d3ac224438a6cd07344fda9543b) | [subscribe_attitude_euler](#classmavsdk_1_1_telemetry_1aaf90ca9cc8adcc9cb1963293bdfcefd6) (const [AttitudeEulerCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a321c7607922369926fbd5f2821986cba) & callback) | Subscribe to 'attitude' updates (Euler).
 void | [unsubscribe_attitude_euler](#classmavsdk_1_1_telemetry_1aa770088117b037446efa8cbfe058e54d) ([AttitudeEulerHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ae73f3d3ac224438a6cd07344fda9543b) handle) | Unsubscribe from subscribe_attitude_euler.
 [EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md) | [attitude_euler](#classmavsdk_1_1_telemetry_1a03035bb72324e843372eb69cf7899ce5) () const | Poll for '[EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md)' (blocking).
-[AttitudeAngularVelocityBodyHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2328e39c1a96ce9a090cb19283d3ffc1) | [subscribe_attitude_angular_velocity_body](#classmavsdk_1_1_telemetry_1a3bbefcdb4e9cd9af9692626984504cb7) (const [AttitudeAngularVelocityBodyCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a35ff8def3048faeab7f732153d51085f) & callback) | Subscribe to 'attitude' updates (angular velocity)
+[AttitudeAngularVelocityBodyHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2328e39c1a96ce9a090cb19283d3ffc1) | [subscribe_attitude_angular_velocity_body](#classmavsdk_1_1_telemetry_1a3bbefcdb4e9cd9af9692626984504cb7) (const [AttitudeAngularVelocityBodyCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a35ff8def3048faeab7f732153d51085f) & callback) | Subscribe to 'attitude' updates (angular velocity).
 void | [unsubscribe_attitude_angular_velocity_body](#classmavsdk_1_1_telemetry_1a2319d78b4e214e5b2f3ef55a1c32e2c5) ([AttitudeAngularVelocityBodyHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2328e39c1a96ce9a090cb19283d3ffc1) handle) | Unsubscribe from subscribe_attitude_angular_velocity_body.
 [AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md) | [attitude_angular_velocity_body](#classmavsdk_1_1_telemetry_1a8d9e2489b79c2cdbabaef8b6bb8e2952) () const | Poll for '[AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md)' (blocking).
 [VelocityNedHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2c3898f33bfa1bffe86681aaca33343e) | [subscribe_velocity_ned](#classmavsdk_1_1_telemetry_1a9b5e6bd8fb05324fd7a99d0260933c9d) (const [VelocityNedCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ab5859d2f6a9c9bd81282166b3de92342) & callback) | Subscribe to 'ground speed' updates (NED).
@@ -205,7 +205,7 @@ void | [unsubscribe_battery](#classmavsdk_1_1_telemetry_1a72ddd509a9480ba59f073f
 [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) | [battery](#classmavsdk_1_1_telemetry_1afb3bad3c7a36c14ae97492df3f6bbd54) () const | Poll for '[Battery](structmavsdk_1_1_telemetry_1_1_battery.md)' (blocking).
 [FlightModeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1add61cde1555ed1cec93a34bbdadeef5c) | [subscribe_flight_mode](#classmavsdk_1_1_telemetry_1accd831cbb9134c845744a5c70da1b418) (const [FlightModeCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2d7318d0823771b7a586c40199bdb482) & callback) | Subscribe to 'flight mode' updates.
 void | [unsubscribe_flight_mode](#classmavsdk_1_1_telemetry_1a64dc8d45d06b23332ba6353d50c9cc17) ([FlightModeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1add61cde1555ed1cec93a34bbdadeef5c) handle) | Unsubscribe from subscribe_flight_mode.
-[FlightMode](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe) | [flight_mode](#classmavsdk_1_1_telemetry_1a4972a3968e379d565e7700f2f51158dd) () const | Poll for 'FlightMode' (blocking).
+[FlightMode](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe) | [flight_mode](#classmavsdk_1_1_telemetry_1a4972a3968e379d565e7700f2f51158dd) () const | Poll for '[FlightMode](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe)' (blocking).
 [HealthHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a52869d9dd1a240385b0d213a7057f3df) | [subscribe_health](#classmavsdk_1_1_telemetry_1a093a702abd1370ff97f4d9ebce449942) (const [HealthCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7a120dd053091c644e0e2e47fdcbeb75) & callback) | Subscribe to 'health' updates.
 void | [unsubscribe_health](#classmavsdk_1_1_telemetry_1af7830aff90366a0255e71117c07f5484) ([HealthHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a52869d9dd1a240385b0d213a7057f3df) handle) | Unsubscribe from subscribe_health.
 [Health](structmavsdk_1_1_telemetry_1_1_health.md) | [health](#classmavsdk_1_1_telemetry_1aae4824c9eeb72603b197c864b5cc5df5) () const | Poll for '[Health](structmavsdk_1_1_telemetry_1_1_health.md)' (blocking).
@@ -239,7 +239,7 @@ void | [unsubscribe_imu](#classmavsdk_1_1_telemetry_1a2af03957c69efd9b5cbb7537de
 [ScaledImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a4968d9d418d48a4368f2915023ca0014) | [subscribe_scaled_imu](#classmavsdk_1_1_telemetry_1a61bd540f505a3a6acd858ca169e868b3) (const [ScaledImuCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a26159a775adcfbc42302234b7108d94f) & callback) | Subscribe to 'Scaled IMU' updates.
 void | [unsubscribe_scaled_imu](#classmavsdk_1_1_telemetry_1a69acf5d201425f0a318a36ad6230fb46) ([ScaledImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a4968d9d418d48a4368f2915023ca0014) handle) | Unsubscribe from subscribe_scaled_imu.
 [Imu](structmavsdk_1_1_telemetry_1_1_imu.md) | [scaled_imu](#classmavsdk_1_1_telemetry_1ab6a515ba85a67bc80e6e1c9a05d1f94d) () const | Poll for '[Imu](structmavsdk_1_1_telemetry_1_1_imu.md)' (blocking).
-[RawImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a416f5b4dc6c51d78d05572d5cc18f3fb) | [subscribe_raw_imu](#classmavsdk_1_1_telemetry_1a98db826585b84957478a6195d46f0491) (const [RawImuCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a92711da85d343cb58b73561e6b730c76) & callback) | Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
+[RawImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a416f5b4dc6c51d78d05572d5cc18f3fb) | [subscribe_raw_imu](#classmavsdk_1_1_telemetry_1a98db826585b84957478a6195d46f0491) (const [RawImuCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a92711da85d343cb58b73561e6b730c76) & callback) | Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor).
 void | [unsubscribe_raw_imu](#classmavsdk_1_1_telemetry_1aec5b5fbbb37654bb6dae9607451929d7) ([RawImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a416f5b4dc6c51d78d05572d5cc18f3fb) handle) | Unsubscribe from subscribe_raw_imu.
 [Imu](structmavsdk_1_1_telemetry_1_1_imu.md) | [raw_imu](#classmavsdk_1_1_telemetry_1a691464f001ddf8d02b97bcf137f5cf8a) () const | Poll for '[Imu](structmavsdk_1_1_telemetry_1_1_imu.md)' (blocking).
 [HealthAllOkHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aa882d4938eb491cce5b7ca6aead2384c) | [subscribe_health_all_ok](#classmavsdk_1_1_telemetry_1acc64edfa8230926024cdefe93ab10c7f) (const [HealthAllOkCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a71cdcadfaa988dc14029e0b9fdbe742d) & callback) | Subscribe to 'HealthAllOk' updates.
@@ -315,7 +315,7 @@ void | [set_rate_health_async](#classmavsdk_1_1_telemetry_1a719130f5a778c7453ba5
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_health](#classmavsdk_1_1_telemetry_1ae16c9877a63e254a566b0a8afedfb95e) (double rate_hz)const | Set rate to '[Health](structmavsdk_1_1_telemetry_1_1_health.md)' updates.
 void | [get_gps_global_origin_async](#classmavsdk_1_1_telemetry_1a60cca43e2f87e3fd3a9e170ff2b64e0a) (const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) callback) | Get the GPS location of where the estimator has been initialized.
 std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd) () const | Get the GPS location of where the estimator has been initialized.
-const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
+const [Telemetry](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a6c8c8ed8759fc8c6e9fd4e7644c63cbe) & | [operator=](#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c) (const [Telemetry](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a6c8c8ed8759fc8c6e9fd4e7644c63cbe) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -377,7 +377,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Telemetry](classmavsdk_1_1_telemetry.md)& **other** - 
+* const Telemetry& **other** - 
 
 ## Member Typdef Documentation
 
@@ -1177,7 +1177,7 @@ Value | Description
 <span id="classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Success: the telemetry command was accepted by the vehicle. 
 <span id="classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system connected. 
 <span id="classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75a094a6f6b0868122a9dd008cb91c083e4"></span> `ConnectionError` | Connection error. 
-<span id="classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | Vehicle is busy. 
+<span id="classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) is busy. 
 <span id="classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75a3398e12855176d55f43d53e04f472c8a"></span> `CommandDenied` | Command refused by vehicle. 
 <span id="classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Request timed out. 
 <span id="classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75ab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` | Request not supported. 
@@ -1350,12 +1350,12 @@ LandedState mavsdk::Telemetry::landed_state() const
 ```
 
 
-Poll for 'LandedState' (blocking).
+Poll for '[LandedState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046)' (blocking).
 
 
 **Returns**
 
-&emsp;[LandedState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046) - One LandedState update.
+&emsp;[LandedState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046) - One [LandedState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046) update.
 
 ### subscribe_armed() {#classmavsdk_1_1_telemetry_1a2ea3978439ed7e21973a41e1f2c2b24f}
 ```cpp
@@ -1436,12 +1436,12 @@ VtolState mavsdk::Telemetry::vtol_state() const
 ```
 
 
-Poll for 'VtolState' (blocking).
+Poll for '[VtolState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a256f951d993aa120c437d989a6e94166)' (blocking).
 
 
 **Returns**
 
-&emsp;[VtolState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a256f951d993aa120c437d989a6e94166) - One VtolState update.
+&emsp;[VtolState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a256f951d993aa120c437d989a6e94166) - One [VtolState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a256f951d993aa120c437d989a6e94166) update.
 
 ### subscribe_attitude_quaternion() {#classmavsdk_1_1_telemetry_1a9248befe3416252c7d8fb63b19842421}
 ```cpp
@@ -1535,7 +1535,7 @@ AttitudeAngularVelocityBodyHandle mavsdk::Telemetry::subscribe_attitude_angular_
 ```
 
 
-Subscribe to 'attitude' updates (angular velocity)
+Subscribe to 'attitude' updates (angular velocity).
 
 
 **Parameters**
@@ -1780,12 +1780,12 @@ FlightMode mavsdk::Telemetry::flight_mode() const
 ```
 
 
-Poll for 'FlightMode' (blocking).
+Poll for '[FlightMode](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe)' (blocking).
 
 
 **Returns**
 
-&emsp;[FlightMode](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe) - One FlightMode update.
+&emsp;[FlightMode](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe) - One [FlightMode](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe) update.
 
 ### subscribe_health() {#classmavsdk_1_1_telemetry_1a093a702abd1370ff97f4d9ebce449942}
 ```cpp
@@ -2266,7 +2266,7 @@ RawImuHandle mavsdk::Telemetry::subscribe_raw_imu(const RawImuCallback &callback
 ```
 
 
-Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
+Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor).
 
 
 **Parameters**
@@ -2635,7 +2635,7 @@ This function is blocking. See 'set_rate_position_async' for the non-blocking co
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_home_async() {#classmavsdk_1_1_telemetry_1a098f4c4f50fc3ac2c153ef152208fbbe}
 ```cpp
@@ -2668,7 +2668,7 @@ This function is blocking. See 'set_rate_home_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_in_air_async() {#classmavsdk_1_1_telemetry_1a9ea77b7ef64acd1e25b05e593e638c70}
 ```cpp
@@ -2701,7 +2701,7 @@ This function is blocking. See 'set_rate_in_air_async' for the non-blocking coun
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_landed_state_async() {#classmavsdk_1_1_telemetry_1a180fff93b120a67c16ad5993f0b38847}
 ```cpp
@@ -2734,7 +2734,7 @@ This function is blocking. See 'set_rate_landed_state_async' for the non-blockin
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_vtol_state_async() {#classmavsdk_1_1_telemetry_1a18f47beba583e6814061f95e68a3851d}
 ```cpp
@@ -2767,7 +2767,7 @@ This function is blocking. See 'set_rate_vtol_state_async' for the non-blocking 
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_attitude_quaternion_async() {#classmavsdk_1_1_telemetry_1a1eb6bc9b25d1043405ac30e13172a272}
 ```cpp
@@ -2800,7 +2800,7 @@ This function is blocking. See 'set_rate_attitude_quaternion_async' for the non-
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_attitude_euler_async() {#classmavsdk_1_1_telemetry_1aabf20f904d9c65582cdf167f7b0275a9}
 ```cpp
@@ -2833,7 +2833,7 @@ This function is blocking. See 'set_rate_attitude_euler_async' for the non-block
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_velocity_ned_async() {#classmavsdk_1_1_telemetry_1a9429ffa784fa56adee69c5017abedee4}
 ```cpp
@@ -2866,7 +2866,7 @@ This function is blocking. See 'set_rate_velocity_ned_async' for the non-blockin
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_gps_info_async() {#classmavsdk_1_1_telemetry_1ae6ada3cd6d4e9835dd4d1d712f1195e4}
 ```cpp
@@ -2899,7 +2899,7 @@ This function is blocking. See 'set_rate_gps_info_async' for the non-blocking co
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_raw_gps_async() {#classmavsdk_1_1_telemetry_1a38a7c22c59e87d95f154f6d8cdcf2229}
 ```cpp
@@ -2932,7 +2932,7 @@ This function is blocking. See 'set_rate_raw_gps_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_battery_async() {#classmavsdk_1_1_telemetry_1a5615e21f616997dfca1318c96a7e550e}
 ```cpp
@@ -2965,7 +2965,7 @@ This function is blocking. See 'set_rate_battery_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_rc_status_async() {#classmavsdk_1_1_telemetry_1a8cf84eaca875626bc53ed03e98d6eb7e}
 ```cpp
@@ -2998,7 +2998,7 @@ This function is blocking. See 'set_rate_rc_status_async' for the non-blocking c
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_actuator_control_target_async() {#classmavsdk_1_1_telemetry_1aa44e3a76c482f273a2f1bc1a09bec27c}
 ```cpp
@@ -3031,7 +3031,7 @@ This function is blocking. See 'set_rate_actuator_control_target_async' for the 
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_actuator_output_status_async() {#classmavsdk_1_1_telemetry_1a2ad19c1101962ed7cfeec89b7fae0f9c}
 ```cpp
@@ -3064,7 +3064,7 @@ This function is blocking. See 'set_rate_actuator_output_status_async' for the n
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_odometry_async() {#classmavsdk_1_1_telemetry_1a23e507e1d53c6603479701f5e2af49ce}
 ```cpp
@@ -3097,7 +3097,7 @@ This function is blocking. See 'set_rate_odometry_async' for the non-blocking co
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_position_velocity_ned_async() {#classmavsdk_1_1_telemetry_1a9a4c3b6affa497dd22e464f515ca278c}
 ```cpp
@@ -3130,7 +3130,7 @@ This function is blocking. See 'set_rate_position_velocity_ned_async' for the no
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_ground_truth_async() {#classmavsdk_1_1_telemetry_1a16b28ebdc6d211a5b182bd8d0abb4d2e}
 ```cpp
@@ -3163,7 +3163,7 @@ This function is blocking. See 'set_rate_ground_truth_async' for the non-blockin
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_fixedwing_metrics_async() {#classmavsdk_1_1_telemetry_1a1484ccdcf4ba20a151e380e7bd7b9869}
 ```cpp
@@ -3196,7 +3196,7 @@ This function is blocking. See 'set_rate_fixedwing_metrics_async' for the non-bl
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_imu_async() {#classmavsdk_1_1_telemetry_1a7dca435daa0de2db2d2e9d588c6bed99}
 ```cpp
@@ -3229,7 +3229,7 @@ This function is blocking. See 'set_rate_imu_async' for the non-blocking counter
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_scaled_imu_async() {#classmavsdk_1_1_telemetry_1aebbf2eb2e5d117d8b40f21075845467c}
 ```cpp
@@ -3262,7 +3262,7 @@ This function is blocking. See 'set_rate_scaled_imu_async' for the non-blocking 
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_raw_imu_async() {#classmavsdk_1_1_telemetry_1a36d19058a0f71d711de3e50ba718704e}
 ```cpp
@@ -3295,7 +3295,7 @@ This function is blocking. See 'set_rate_raw_imu_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_unix_epoch_time_async() {#classmavsdk_1_1_telemetry_1a74b18cd8a5faed4d46b244db0a6e3c50}
 ```cpp
@@ -3328,7 +3328,7 @@ This function is blocking. See 'set_rate_unix_epoch_time_async' for the non-bloc
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_distance_sensor_async() {#classmavsdk_1_1_telemetry_1a0371c470866b539b3aa1e254c974aa43}
 ```cpp
@@ -3361,7 +3361,7 @@ This function is blocking. See 'set_rate_distance_sensor_async' for the non-bloc
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_altitude_async() {#classmavsdk_1_1_telemetry_1a15461dd3f64aef2b921c9f06ee144bc1}
 ```cpp
@@ -3394,7 +3394,7 @@ This function is blocking. See 'set_rate_altitude_async' for the non-blocking co
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### set_rate_health_async() {#classmavsdk_1_1_telemetry_1a719130f5a778c7453ba52a1184eb691c}
 ```cpp
@@ -3427,7 +3427,7 @@ This function is blocking. See 'set_rate_health_async' for the non-blocking coun
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### get_gps_global_origin_async() {#classmavsdk_1_1_telemetry_1a60cca43e2f87e3fd3a9e170ff2b64e0a}
 ```cpp
@@ -3455,7 +3455,7 @@ This function is blocking. See 'get_gps_global_origin_async' for the non-blockin
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > - [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) of request.
 
 ### operator=() {#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c}
 ```cpp
@@ -3468,8 +3468,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Telemetry](classmavsdk_1_1_telemetry.md)&  - 
+* const [Telemetry](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a6c8c8ed8759fc8c6e9fd4e7644c63cbe)&  - 
 
 **Returns**
 
-&emsp;const [Telemetry](classmavsdk_1_1_telemetry.md) & - 
+&emsp;const [Telemetry](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a6c8c8ed8759fc8c6e9fd4e7644c63cbe) & - 

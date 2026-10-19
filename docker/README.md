@@ -9,6 +9,7 @@ This directory contains Dockerfiles for building Docker images used in the MAVSD
 - `Dockerfile-ubuntu-20.04`: Ubuntu 20.04 with build dependencies for MAVSDK
 - `Dockerfile-ubuntu-22.04`: Ubuntu 22.04 with build dependencies for MAVSDK
 - `Dockerfile-ubuntu-24.04`: Ubuntu 24.04 with build dependencies for MAVSDK
+- `Dockerfile-ubuntu-26.04`: Ubuntu 26.04 with build dependencies for MAVSDK
 
 These images include all the dependencies needed for development, CI builds, and documentation generation.
 
@@ -33,7 +34,7 @@ cd /whereever/MAVSDK
 ./cpp/tools/run-docker.sh
 ```
 
-By default, this will use the `mavsdk/mavsdk-dev` image, which is an alias for the Ubuntu 24.04 image.
+By default, this will use the `mavsdk/mavsdk-dev` image, which is an alias for the Ubuntu 26.04 image.
 
 To use a specific Ubuntu version:
 

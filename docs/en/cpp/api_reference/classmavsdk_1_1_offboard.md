@@ -16,23 +16,23 @@ Client code must specify a setpoint before starting offboard mode. [Mavsdk](clas
 ## Data Structures
 
 
-struct [AccelerationNed](structmavsdk_1_1_offboard_1_1_acceleration_ned.md)
-
-struct [ActuatorControl](structmavsdk_1_1_offboard_1_1_actuator_control.md)
+struct [Attitude](structmavsdk_1_1_offboard_1_1_attitude.md)
 
 struct [ActuatorControlGroup](structmavsdk_1_1_offboard_1_1_actuator_control_group.md)
 
-struct [Attitude](structmavsdk_1_1_offboard_1_1_attitude.md)
+struct [ActuatorControl](structmavsdk_1_1_offboard_1_1_actuator_control.md)
 
 struct [AttitudeRate](structmavsdk_1_1_offboard_1_1_attitude_rate.md)
 
-struct [PositionGlobalYaw](structmavsdk_1_1_offboard_1_1_position_global_yaw.md)
-
 struct [PositionNedYaw](structmavsdk_1_1_offboard_1_1_position_ned_yaw.md)
+
+struct [PositionGlobalYaw](structmavsdk_1_1_offboard_1_1_position_global_yaw.md)
 
 struct [VelocityBodyYawspeed](structmavsdk_1_1_offboard_1_1_velocity_body_yawspeed.md)
 
 struct [VelocityNedYaw](structmavsdk_1_1_offboard_1_1_velocity_ned_yaw.md)
+
+struct [AccelerationNed](structmavsdk_1_1_offboard_1_1_acceleration_ned.md)
 
 ## Public Types
 
@@ -50,7 +50,7 @@ Type | Name | Description
 &nbsp; | [Offboard](#classmavsdk_1_1_offboard_1aedb8ed185acabd2caa3b536f51b68dcb) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Offboard](#classmavsdk_1_1_offboard_1a9e11ce3a850ceb9a6c047288b5bc3b84) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Offboard](#classmavsdk_1_1_offboard_1a1cdbf816ec02e63681eeee3ef6f5c41a) () override | Destructor (internal use only).
-&nbsp; | [Offboard](#classmavsdk_1_1_offboard_1ab3674a3889b978e7a52626d5de6a6fa0) (const [Offboard](classmavsdk_1_1_offboard.md) & other) | Copy constructor.
+&nbsp; | [Offboard](#classmavsdk_1_1_offboard_1ab3674a3889b978e7a52626d5de6a6fa0) (const Offboard & other) | Copy constructor.
 void | [start_async](#classmavsdk_1_1_offboard_1a0c880ad3f663142e194dd6f187cfc934) (const [ResultCallback](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a16d95f55251e9f992261d46da89ef8b9) callback) | Start offboard control.
 [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) | [start](#classmavsdk_1_1_offboard_1ab71d0dd2a81f76e3a0330b0304daa30b) () const | Start offboard control.
 void | [stop_async](#classmavsdk_1_1_offboard_1a86c163d7fa1217b4e82a03daf52065c3) (const [ResultCallback](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a16d95f55251e9f992261d46da89ef8b9) callback) | Stop offboard control.
@@ -66,7 +66,7 @@ bool | [is_active](#classmavsdk_1_1_offboard_1aa5e0f3c02a03f2667f82d5e162221ff5)
 [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) | [set_position_velocity_ned](#classmavsdk_1_1_offboard_1ae422165680b434eed74e84cc901e3a33) ([PositionNedYaw](structmavsdk_1_1_offboard_1_1_position_ned_yaw.md) position_ned_yaw, [VelocityNedYaw](structmavsdk_1_1_offboard_1_1_velocity_ned_yaw.md) velocity_ned_yaw)const | Set the position in NED coordinates, with the velocity to be used as feed-forward.
 [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) | [set_position_velocity_acceleration_ned](#classmavsdk_1_1_offboard_1a845aab746fc078d1ee2848df33c04eb9) ([PositionNedYaw](structmavsdk_1_1_offboard_1_1_position_ned_yaw.md) position_ned_yaw, [VelocityNedYaw](structmavsdk_1_1_offboard_1_1_velocity_ned_yaw.md) velocity_ned_yaw, [AccelerationNed](structmavsdk_1_1_offboard_1_1_acceleration_ned.md) acceleration_ned)const | Set the position, velocity and acceleration in NED coordinates, with velocity and acceleration used as feed-forward.
 [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) | [set_acceleration_ned](#classmavsdk_1_1_offboard_1ac0d471609df13c79a37e0e352be71d03) ([AccelerationNed](structmavsdk_1_1_offboard_1_1_acceleration_ned.md) acceleration_ned)const | Set the acceleration in NED coordinates.
-const [Offboard](classmavsdk_1_1_offboard.md) & | [operator=](#classmavsdk_1_1_offboard_1a69747733dbdc9b60a8b37006674eda53) (const [Offboard](classmavsdk_1_1_offboard.md) &)=delete | Equality operator (object is not copyable).
+const [Offboard](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1aedb8ed185acabd2caa3b536f51b68dcb) & | [operator=](#classmavsdk_1_1_offboard_1a69747733dbdc9b60a8b37006674eda53) (const [Offboard](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1aedb8ed185acabd2caa3b536f51b68dcb) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -128,7 +128,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Offboard](classmavsdk_1_1_offboard.md)& **other** - 
+* const Offboard& **other** - 
 
 ## Member Typdef Documentation
 
@@ -158,7 +158,7 @@ Value | Description
 <span id="classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Request succeeded. 
 <span id="classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system is connected. 
 <span id="classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9a094a6f6b0868122a9dd008cb91c083e4"></span> `ConnectionError` | Connection error. 
-<span id="classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | Vehicle is busy. 
+<span id="classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) is busy. 
 <span id="classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9a3398e12855176d55f43d53e04f472c8a"></span> `CommandDenied` | Command denied. 
 <span id="classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Request timed out. 
 <span id="classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9abe52cc8668acd0977040ce92d399c0bb"></span> `NoSetpointSet` | Cannot start without setpoint set. 
@@ -193,7 +193,7 @@ This function is blocking. See 'start_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### stop_async() {#classmavsdk_1_1_offboard_1a86c163d7fa1217b4e82a03daf52065c3}
 ```cpp
@@ -227,7 +227,7 @@ This function is blocking. See 'stop_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### is_active() {#classmavsdk_1_1_offboard_1aa5e0f3c02a03f2667f82d5e162221ff5}
 ```cpp
@@ -244,7 +244,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;bool - Result of request.
+&emsp;bool - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_attitude() {#classmavsdk_1_1_offboard_1af6f0d3991bb6b62f39d862c46fcffb34}
 ```cpp
@@ -262,7 +262,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_actuator_control() {#classmavsdk_1_1_offboard_1a619ee02a1f73041a5cae6a5c72169b96}
 ```cpp
@@ -283,7 +283,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_attitude_rate() {#classmavsdk_1_1_offboard_1a034a98a0e7a5a7a0fac507adabf6ecf8}
 ```cpp
@@ -301,7 +301,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_position_ned() {#classmavsdk_1_1_offboard_1ade7dcec93ebee17de60687a75184b8b6}
 ```cpp
@@ -319,7 +319,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_position_global() {#classmavsdk_1_1_offboard_1a97b2bd8f516e267e5b28373f369ff8d3}
 ```cpp
@@ -337,7 +337,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_velocity_body() {#classmavsdk_1_1_offboard_1abe7364f0a48dda4df34c5c67d177cfb4}
 ```cpp
@@ -355,7 +355,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_velocity_ned() {#classmavsdk_1_1_offboard_1a4edbc6e4528ff955d4e46e7c4e711732}
 ```cpp
@@ -373,7 +373,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_position_velocity_ned() {#classmavsdk_1_1_offboard_1ae422165680b434eed74e84cc901e3a33}
 ```cpp
@@ -392,7 +392,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_position_velocity_acceleration_ned() {#classmavsdk_1_1_offboard_1a845aab746fc078d1ee2848df33c04eb9}
 ```cpp
@@ -412,7 +412,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### set_acceleration_ned() {#classmavsdk_1_1_offboard_1ac0d471609df13c79a37e0e352be71d03}
 ```cpp
@@ -430,7 +430,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
+&emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) of request.
 
 ### operator=() {#classmavsdk_1_1_offboard_1a69747733dbdc9b60a8b37006674eda53}
 ```cpp
@@ -443,8 +443,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Offboard](classmavsdk_1_1_offboard.md)&  - 
+* const [Offboard](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1aedb8ed185acabd2caa3b536f51b68dcb)&  - 
 
 **Returns**
 
-&emsp;const [Offboard](classmavsdk_1_1_offboard.md) & - 
+&emsp;const [Offboard](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1aedb8ed185acabd2caa3b536f51b68dcb) & - 

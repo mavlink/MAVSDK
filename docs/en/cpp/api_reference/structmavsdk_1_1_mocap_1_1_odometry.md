@@ -71,7 +71,7 @@ Value | Description
 <span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25edaa4d8dd7f4939adb946c14813aee11591"></span> `GpsIns` | GPS and inertial navigation estimate.. 
 <span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda0cdd90d19209c9107fb20b00e5612e09"></span> `Mocap` | Motion capture estimate.. 
 <span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25edacb7655fbcdd104b339e7053868337db7"></span> `Lidar` | Lidar estimate.. 
-<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda6ca1d2b081cc474f42cb95e3d04e6e68"></span> `Autopilot` | Autopilot estimate.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda6ca1d2b081cc474f42cb95e3d04e6e68"></span> `Autopilot` | [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) estimate.. 
 
 ## Field Documentation
 

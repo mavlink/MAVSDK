@@ -199,11 +199,12 @@ private:
             std::all_of(fields["q"].begin(), fields["q"].end(), [](const json& element) {
                 return element.is_number();
             })) {
-            setpoint = to_euler_angle_from_quaternion(Quaternion{
-                fields["q"][0].get<float>(),
-                fields["q"][1].get<float>(),
-                fields["q"][2].get<float>(),
-                fields["q"][3].get<float>()});
+            setpoint = to_euler_angle_from_quaternion(
+                Quaternion{
+                    fields["q"][0].get<float>(),
+                    fields["q"][1].get<float>(),
+                    fields["q"][2].get<float>(),
+                    fields["q"][3].get<float>()});
         }
 
         if (setpoint) {

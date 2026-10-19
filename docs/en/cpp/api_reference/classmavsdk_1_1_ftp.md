@@ -36,7 +36,7 @@ Type | Name | Description
 &nbsp; | [Ftp](#classmavsdk_1_1_ftp_1ad0b5909e631746c1dd5e2151c727e67f) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Ftp](#classmavsdk_1_1_ftp_1a88cabb7b13f63e8285e7701292dac302) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Ftp](#classmavsdk_1_1_ftp_1a9a2492d3b79cde5cd3f5a09eadbc40a3) () override | Destructor (internal use only).
-&nbsp; | [Ftp](#classmavsdk_1_1_ftp_1a7b7486356a7b04fb231c430e090c673e) (const [Ftp](classmavsdk_1_1_ftp.md) & other) | Copy constructor.
+&nbsp; | [Ftp](#classmavsdk_1_1_ftp_1a7b7486356a7b04fb231c430e090c673e) (const Ftp & other) | Copy constructor.
 void | [download_async](#classmavsdk_1_1_ftp_1a0845245b8e1d0e74ed8961c90c96d1d3) (std::string remote_file_path, std::string local_dir, bool use_burst, const [DownloadCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a7c8e0377726e349a8a4e12495db42c75) & callback) | Downloads a file to local directory.
 void | [upload_async](#classmavsdk_1_1_ftp_1affe86a8b0a035109e7df9bd85c99f442) (std::string local_file_path, std::string remote_dir, const [UploadCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a50ffb77f0730267f499656d40291f5a3) & callback) | Uploads local file to remote directory.
 void | [list_directory_async](#classmavsdk_1_1_ftp_1abf5d83104a7293413b62e7a8ba1a0f2c) (std::string remote_dir, const [ListDirectoryCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a88f904585306ce744d4f723a840c976c) callback) | Lists items from a remote directory.
@@ -52,7 +52,7 @@ void | [rename_async](#classmavsdk_1_1_ftp_1afea8b15ad7b5748b0b5f68fd7103514a) (
 void | [are_files_identical_async](#classmavsdk_1_1_ftp_1abddebf1a103b2853116e68f5f870e4a7) (std::string local_file_path, std::string remote_file_path, const [AreFilesIdenticalCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1abe24e99f7141a234206f8952d2f61318) callback) | Compares a local file to a remote file using a CRC32 checksum.
 std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), bool > | [are_files_identical](#classmavsdk_1_1_ftp_1af4c63e732c056f906a10b9fdb915c4bc) (std::string local_file_path, std::string remote_file_path)const | Compares a local file to a remote file using a CRC32 checksum.
 [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) | [set_target_compid](#classmavsdk_1_1_ftp_1ad93744cd25a89beffe0d72a090748229) (uint32_t compid)const | Set target component ID. By default it is the autopilot.
-const [Ftp](classmavsdk_1_1_ftp.md) & | [operator=](#classmavsdk_1_1_ftp_1a43e32f49ce47a9424ac2ded204413225) (const [Ftp](classmavsdk_1_1_ftp.md) &)=delete | Equality operator (object is not copyable).
+const [Ftp](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1ad0b5909e631746c1dd5e2151c727e67f) & | [operator=](#classmavsdk_1_1_ftp_1a43e32f49ce47a9424ac2ded204413225) (const [Ftp](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1ad0b5909e631746c1dd5e2151c727e67f) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -114,7 +114,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Ftp](classmavsdk_1_1_ftp.md)& **other** - 
+* const Ftp& **other** - 
 
 ## Member Typdef Documentation
 
@@ -259,7 +259,7 @@ This function is blocking. See 'list_directory_async' for the non-blocking count
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), [Ftp::ListDirectoryData](structmavsdk_1_1_ftp_1_1_list_directory_data.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), [Ftp::ListDirectoryData](structmavsdk_1_1_ftp_1_1_list_directory_data.md) > - [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) of request.
 
 ### create_directory_async() {#classmavsdk_1_1_ftp_1aa53fdd5c005bd4da3e0cb29d448689d3}
 ```cpp
@@ -292,7 +292,7 @@ This function is blocking. See 'create_directory_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - Result of request.
+&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) of request.
 
 ### remove_directory_async() {#classmavsdk_1_1_ftp_1a25823c7298dc2d081532dd094d013b8a}
 ```cpp
@@ -325,7 +325,7 @@ This function is blocking. See 'remove_directory_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - Result of request.
+&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) of request.
 
 ### remove_file_async() {#classmavsdk_1_1_ftp_1a3ecda69288fb860a8da1f8fad25af31c}
 ```cpp
@@ -358,7 +358,7 @@ This function is blocking. See 'remove_file_async' for the non-blocking counterp
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - Result of request.
+&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) of request.
 
 ### rename_async() {#classmavsdk_1_1_ftp_1afea8b15ad7b5748b0b5f68fd7103514a}
 ```cpp
@@ -393,7 +393,7 @@ This function is blocking. See 'rename_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - Result of request.
+&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) of request.
 
 ### are_files_identical_async() {#classmavsdk_1_1_ftp_1abddebf1a103b2853116e68f5f870e4a7}
 ```cpp
@@ -428,7 +428,7 @@ This function is blocking. See 'are_files_identical_async' for the non-blocking 
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), bool > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), bool > - [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) of request.
 
 ### set_target_compid() {#classmavsdk_1_1_ftp_1ad93744cd25a89beffe0d72a090748229}
 ```cpp
@@ -446,7 +446,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - Result of request.
+&emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) of request.
 
 ### operator=() {#classmavsdk_1_1_ftp_1a43e32f49ce47a9424ac2ded204413225}
 ```cpp
@@ -459,8 +459,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Ftp](classmavsdk_1_1_ftp.md)&  - 
+* const [Ftp](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1ad0b5909e631746c1dd5e2151c727e67f)&  - 
 
 **Returns**
 
-&emsp;const [Ftp](classmavsdk_1_1_ftp.md) & - 
+&emsp;const [Ftp](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1ad0b5909e631746c1dd5e2151c727e67f) & - 

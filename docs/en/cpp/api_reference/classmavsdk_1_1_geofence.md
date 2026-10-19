@@ -10,13 +10,13 @@ Enable setting a geofence.
 ## Data Structures
 
 
-struct [Circle](structmavsdk_1_1_geofence_1_1_circle.md)
-
-struct [GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md)
-
 struct [Point](structmavsdk_1_1_geofence_1_1_point.md)
 
 struct [Polygon](structmavsdk_1_1_geofence_1_1_polygon.md)
+
+struct [Circle](structmavsdk_1_1_geofence_1_1_circle.md)
+
+struct [GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md)
 
 ## Public Types
 
@@ -36,14 +36,14 @@ Type | Name | Description
 &nbsp; | [Geofence](#classmavsdk_1_1_geofence_1a115762872a12894270e758af250549f0) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Geofence](#classmavsdk_1_1_geofence_1a7e921625517d772df4125b22841b78da) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Geofence](#classmavsdk_1_1_geofence_1aa8362d021d182c807ddb5e95e40a9cbe) () override | Destructor (internal use only).
-&nbsp; | [Geofence](#classmavsdk_1_1_geofence_1a60e1f1a3123050c73980cba61b4b4009) (const [Geofence](classmavsdk_1_1_geofence.md) & other) | Copy constructor.
+&nbsp; | [Geofence](#classmavsdk_1_1_geofence_1a60e1f1a3123050c73980cba61b4b4009) (const Geofence & other) | Copy constructor.
 void | [upload_geofence_async](#classmavsdk_1_1_geofence_1a1f0c6431b86b77c29f19eafb4e55dcdb) ([GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) geofence_data, const [ResultCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1af9662e645781e4e64ed8b7c65d3d9309) callback) | Upload geofences.
 [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) | [upload_geofence](#classmavsdk_1_1_geofence_1ab2e825f0955e7a320117a21d649bab09) ([GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) geofence_data)const | Upload geofences.
 void | [download_geofence_async](#classmavsdk_1_1_geofence_1aedb57c09762303d17bf911cb46bc3403) (const [DownloadGeofenceCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a1fcce00cf17acb7e6f9cc3120f5b1e93) callback) | Download geofences from the vehicle.
 std::pair< [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642), [Geofence::GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) > | [download_geofence](#classmavsdk_1_1_geofence_1a6470bac1295b64eed9fc03c380bfbe24) () const | Download geofences from the vehicle.
 void | [clear_geofence_async](#classmavsdk_1_1_geofence_1a6947151765b621a93d35885599812752) (const [ResultCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1af9662e645781e4e64ed8b7c65d3d9309) callback) | Clear all geofences saved on the vehicle.
 [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) | [clear_geofence](#classmavsdk_1_1_geofence_1a54b2a696e8aebae6916116adb92c03c3) () const | Clear all geofences saved on the vehicle.
-const [Geofence](classmavsdk_1_1_geofence.md) & | [operator=](#classmavsdk_1_1_geofence_1a174d03979e425bf8440dfe9bbabaf7d2) (const [Geofence](classmavsdk_1_1_geofence.md) &)=delete | Equality operator (object is not copyable).
+const [Geofence](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a115762872a12894270e758af250549f0) & | [operator=](#classmavsdk_1_1_geofence_1a174d03979e425bf8440dfe9bbabaf7d2) (const [Geofence](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a115762872a12894270e758af250549f0) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -105,7 +105,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Geofence](classmavsdk_1_1_geofence.md)& **other** - 
+* const Geofence& **other** - 
 
 ## Member Typdef Documentation
 
@@ -156,7 +156,7 @@ Value | Description
 <span id="classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Request succeeded. 
 <span id="classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642a902b0d55fddef6f8d651fe1035b7d4bd"></span> `Error` | Error. 
 <span id="classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642aa74add5fe6bda878df41d8c3f07d3ef8"></span> `TooManyGeofenceItems` | Too many objects in the geofence. 
-<span id="classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | Vehicle is busy. 
+<span id="classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) is busy. 
 <span id="classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Request timed out. 
 <span id="classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642a253ca7dd096ee0956cccee4d376cab8b"></span> `InvalidArgument` | Invalid argument. 
 <span id="classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system connected. 
@@ -201,7 +201,7 @@ This function is blocking. See 'upload_geofence_async' for the non-blocking coun
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) - Result of request.
+&emsp;[Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) - [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) of request.
 
 ### download_geofence_async() {#classmavsdk_1_1_geofence_1aedb57c09762303d17bf911cb46bc3403}
 ```cpp
@@ -235,7 +235,7 @@ This function is blocking. See 'download_geofence_async' for the non-blocking co
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642), [Geofence::GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642), [Geofence::GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) > - [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) of request.
 
 ### clear_geofence_async() {#classmavsdk_1_1_geofence_1a6947151765b621a93d35885599812752}
 ```cpp
@@ -263,7 +263,7 @@ This function is blocking. See 'clear_geofence_async' for the non-blocking count
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) - Result of request.
+&emsp;[Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) - [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) of request.
 
 ### operator=() {#classmavsdk_1_1_geofence_1a174d03979e425bf8440dfe9bbabaf7d2}
 ```cpp
@@ -276,8 +276,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Geofence](classmavsdk_1_1_geofence.md)&  - 
+* const [Geofence](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a115762872a12894270e758af250549f0)&  - 
 
 **Returns**
 
-&emsp;const [Geofence](classmavsdk_1_1_geofence.md) & - 
+&emsp;const [Geofence](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a115762872a12894270e758af250549f0) & - 

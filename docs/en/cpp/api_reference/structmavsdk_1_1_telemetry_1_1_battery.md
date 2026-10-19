@@ -20,7 +20,7 @@ float [current_battery_a](#structmavsdk_1_1_telemetry_1_1_battery_1a8c459191787a
 
 float [capacity_consumed_ah](#structmavsdk_1_1_telemetry_1_1_battery_1a3593f72c606514287f2bc467408326cc) {float(NAN)} - Consumed charge in Amp hours, NAN if autopilot does not provide consumption estimate.
 
-float [remaining_percent](#structmavsdk_1_1_telemetry_1_1_battery_1aec821550739844e0fa3fe18f91e6fda7) {float(NAN)} - Estimated battery remaining (range: 0 to 100)
+float [remaining_percent](#structmavsdk_1_1_telemetry_1_1_battery_1aec821550739844e0fa3fe18f91e6fda7) {float(NAN)} - Estimated battery remaining (range: 0 to 100).
 
 float [time_remaining_s](#structmavsdk_1_1_telemetry_1_1_battery_1a9dd00470568d20ccda1b502f8ddf4ff1) {float(NAN)} - Estimated battery usage time remaining.
 
@@ -87,7 +87,7 @@ float mavsdk::Telemetry::Battery::remaining_percent {float(NAN)}
 ```
 
 
-Estimated battery remaining (range: 0 to 100)
+Estimated battery remaining (range: 0 to 100).
 
 
 ### time_remaining_s {#structmavsdk_1_1_telemetry_1_1_battery_1a9dd00470568d20ccda1b502f8ddf4ff1}

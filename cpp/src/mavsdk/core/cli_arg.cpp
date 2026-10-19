@@ -136,8 +136,9 @@ bool CliArg::parse_udpout(const std::string_view rest)
     p.mode = Udp::Mode::Out;
 
     if (p.host == "0.0.0.0") {
-        LogErr("0.0.0.0 is invalid for UDP out address. "
-               "Can only listen on all interfaces, but not send.");
+        LogErr(
+            "0.0.0.0 is invalid for UDP out address. "
+            "Can only listen on all interfaces, but not send.");
         return false;
     }
 
@@ -212,8 +213,9 @@ bool CliArg::parse_tcpout(const std::string_view rest)
     p.mode = Tcp::Mode::Out;
 
     if (p.host == "0.0.0.0") {
-        LogErr("0.0.0.0 is invalid for TCP out address. "
-               "Can only listen on all interfaces, but not send.");
+        LogErr(
+            "0.0.0.0 is invalid for TCP out address. "
+            "Can only listen on all interfaces, but not send.");
         return false;
     }
 

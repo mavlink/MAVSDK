@@ -10,9 +10,9 @@ Allow to download log files from the vehicle after a flight is complete. For log
 ## Data Structures
 
 
-struct [Entry](structmavsdk_1_1_log_files_1_1_entry.md)
-
 struct [ProgressData](structmavsdk_1_1_log_files_1_1_progress_data.md)
+
+struct [Entry](structmavsdk_1_1_log_files_1_1_entry.md)
 
 ## Public Types
 
@@ -32,12 +32,12 @@ Type | Name | Description
 &nbsp; | [LogFiles](#classmavsdk_1_1_log_files_1a4a487863501b7ef30db5179bebc45a3a) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [LogFiles](#classmavsdk_1_1_log_files_1ad42b07d8ef2f70f63ded5e5e3825f837) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~LogFiles](#classmavsdk_1_1_log_files_1a313ea62b9c45927c4140fb784578a5b9) () override | Destructor (internal use only).
-&nbsp; | [LogFiles](#classmavsdk_1_1_log_files_1ae09021cd080dc45f63019ea76968801f) (const [LogFiles](classmavsdk_1_1_log_files.md) & other) | Copy constructor.
+&nbsp; | [LogFiles](#classmavsdk_1_1_log_files_1ae09021cd080dc45f63019ea76968801f) (const LogFiles & other) | Copy constructor.
 void | [get_entries_async](#classmavsdk_1_1_log_files_1a6a922097850fb43fbb9d3348fe0b3bb7) (const [GetEntriesCallback](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a0bb101777daba9e87cb33baf55389403) callback) | Get List of log files.
 std::pair< [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd), std::vector< [LogFiles::Entry](structmavsdk_1_1_log_files_1_1_entry.md) > > | [get_entries](#classmavsdk_1_1_log_files_1a89164b17ff0a521b7ad67f3ef69b445c) () const | Get List of log files.
 void | [download_log_file_async](#classmavsdk_1_1_log_files_1a2d5eca47cfa3de13a317915cd261d642) ([Entry](structmavsdk_1_1_log_files_1_1_entry.md) entry, std::string path, const [DownloadLogFileCallback](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1af62400ee1e20bfbe948e1ec98255d236) & callback) | Download log file.
 [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd) | [erase_all_log_files](#classmavsdk_1_1_log_files_1a31cc0db36046c8211763a829b8f62414) () const | Erase all log files.
-const [LogFiles](classmavsdk_1_1_log_files.md) & | [operator=](#classmavsdk_1_1_log_files_1a2122270cf236099a445e3b4fc31573aa) (const [LogFiles](classmavsdk_1_1_log_files.md) &)=delete | Equality operator (object is not copyable).
+const [LogFiles](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a4a487863501b7ef30db5179bebc45a3a) & | [operator=](#classmavsdk_1_1_log_files_1a2122270cf236099a445e3b4fc31573aa) (const [LogFiles](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a4a487863501b7ef30db5179bebc45a3a) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -99,7 +99,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [LogFiles](classmavsdk_1_1_log_files.md)& **other** - 
+* const LogFiles& **other** - 
 
 ## Member Typdef Documentation
 
@@ -183,7 +183,7 @@ This function is blocking. See 'get_entries_async' for the non-blocking counterp
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd), std::vector< [LogFiles::Entry](structmavsdk_1_1_log_files_1_1_entry.md) > > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd), std::vector< [LogFiles::Entry](structmavsdk_1_1_log_files_1_1_entry.md) > > - [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd) of request.
 
 ### download_log_file_async() {#classmavsdk_1_1_log_files_1a2d5eca47cfa3de13a317915cd261d642}
 ```cpp
@@ -212,7 +212,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd) - Result of request.
+&emsp;[Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd) - [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd) of request.
 
 ### operator=() {#classmavsdk_1_1_log_files_1a2122270cf236099a445e3b4fc31573aa}
 ```cpp
@@ -225,8 +225,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [LogFiles](classmavsdk_1_1_log_files.md)&  - 
+* const [LogFiles](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a4a487863501b7ef30db5179bebc45a3a)&  - 
 
 **Returns**
 
-&emsp;const [LogFiles](classmavsdk_1_1_log_files.md) & - 
+&emsp;const [LogFiles](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a4a487863501b7ef30db5179bebc45a3a) & - 

@@ -7,6 +7,14 @@ Namespace for all mavsdk types.
 
 ## Data Structures
 
+* [mavsdk::FakeHandle](classmavsdk_1_1_fake_handle.md)
+* [mavsdk::HandleFactory](classmavsdk_1_1_handle_factory.md)
+* [mavsdk::Handle](classmavsdk_1_1_handle.md)
+* [mavsdk::Quaternion](structmavsdk_1_1_quaternion.md)
+* [mavsdk::EulerAngle](structmavsdk_1_1_euler_angle.md)
+* [mavsdk::Mavsdk](classmavsdk_1_1_mavsdk.md)
+* [mavsdk::overloaded](structmavsdk_1_1overloaded.md)
+* [mavsdk::PluginBase](classmavsdk_1_1_plugin_base.md)
 * [mavsdk::Action](classmavsdk_1_1_action.md)
 * [mavsdk::ActionServer](classmavsdk_1_1_action_server.md)
 * [mavsdk::ArmAuthorizerServer](classmavsdk_1_1_arm_authorizer_server.md)
@@ -15,18 +23,14 @@ Namespace for all mavsdk types.
 * [mavsdk::CameraServer](classmavsdk_1_1_camera_server.md)
 * [mavsdk::ComponentMetadata](classmavsdk_1_1_component_metadata.md)
 * [mavsdk::ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md)
-* [mavsdk::EulerAngle](structmavsdk_1_1_euler_angle.md)
 * [mavsdk::Events](classmavsdk_1_1_events.md)
 * [mavsdk::Failure](classmavsdk_1_1_failure.md)
-* [mavsdk::FakeHandle](classmavsdk_1_1_fake_handle.md)
 * [mavsdk::FollowMe](classmavsdk_1_1_follow_me.md)
 * [mavsdk::Ftp](classmavsdk_1_1_ftp.md)
 * [mavsdk::FtpServer](classmavsdk_1_1_ftp_server.md)
 * [mavsdk::Geofence](classmavsdk_1_1_geofence.md)
 * [mavsdk::Gimbal](classmavsdk_1_1_gimbal.md)
 * [mavsdk::Gripper](classmavsdk_1_1_gripper.md)
-* [mavsdk::Handle](classmavsdk_1_1_handle.md)
-* [mavsdk::HandleFactory](classmavsdk_1_1_handle_factory.md)
 * [mavsdk::Info](classmavsdk_1_1_info.md)
 * [mavsdk::LogFiles](classmavsdk_1_1_log_files.md)
 * [mavsdk::LogStreaming](classmavsdk_1_1_log_streaming.md)
@@ -34,64 +38,60 @@ Namespace for all mavsdk types.
 * [mavsdk::MavlinkDirect](classmavsdk_1_1_mavlink_direct.md)
 * [mavsdk::MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md)
 * [mavsdk::MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md)
-* [mavsdk::Mavsdk](classmavsdk_1_1_mavsdk.md)
 * [mavsdk::Mission](classmavsdk_1_1_mission.md)
 * [mavsdk::MissionRaw](classmavsdk_1_1_mission_raw.md)
 * [mavsdk::MissionRawServer](classmavsdk_1_1_mission_raw_server.md)
 * [mavsdk::Mocap](classmavsdk_1_1_mocap.md)
 * [mavsdk::Offboard](classmavsdk_1_1_offboard.md)
-* [mavsdk::overloaded](structmavsdk_1_1overloaded.md)
 * [mavsdk::Param](classmavsdk_1_1_param.md)
 * [mavsdk::ParamServer](classmavsdk_1_1_param_server.md)
-* [mavsdk::PluginBase](classmavsdk_1_1_plugin_base.md)
-* [mavsdk::Quaternion](structmavsdk_1_1_quaternion.md)
 * [mavsdk::Rtk](classmavsdk_1_1_rtk.md)
-* [mavsdk::ServerComponent](classmavsdk_1_1_server_component.md)
-* [mavsdk::ServerPluginBase](classmavsdk_1_1_server_plugin_base.md)
 * [mavsdk::ServerUtility](classmavsdk_1_1_server_utility.md)
 * [mavsdk::Shell](classmavsdk_1_1_shell.md)
-* [mavsdk::System](classmavsdk_1_1_system.md)
 * [mavsdk::Telemetry](classmavsdk_1_1_telemetry.md)
 * [mavsdk::TelemetryServer](classmavsdk_1_1_telemetry_server.md)
 * [mavsdk::Transponder](classmavsdk_1_1_transponder.md)
 * [mavsdk::Tune](classmavsdk_1_1_tune.md)
 * [mavsdk::Winch](classmavsdk_1_1_winch.md)
+* [mavsdk::ServerComponent](classmavsdk_1_1_server_component.md)
+* [mavsdk::ServerPluginBase](classmavsdk_1_1_server_plugin_base.md)
+* [mavsdk::System](classmavsdk_1_1_system.md)
 
 ## Enumerations
 
 Type | Description
 --- | ---
-enum [Autopilot](#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | Autopilot type.
+enum [Autopilot](#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) type.
 enum [CompatibilityMode](#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) | Compatibility mode for MAVLink protocol behavior.
-enum [ComponentType](#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | ComponentType of configurations, used for automatic ID setting.
+enum [ComponentType](#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) of configurations, used for automatic ID setting.
 enum [ConnectionResult](#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) | Result type returned when adding a connection.
 enum [MavType](#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) | MAVLink type of a component (MAV_TYPE).
-enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | ForwardingOption for Connection, used to set message forwarding option.
-enum [Vehicle](#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | Vehicle type.
+enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | [ForwardingOption](namespacemavsdk.md#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) for Connection, used to set message forwarding option.
+enum [Vehicle](#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) type.
 
 ## Functions
 
 Type | Name | Description
 --- | --- | ---
-MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1afe9c20bc5ec76ce959d7d6361e7287e9) (std::ostream & os, const [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) & autopilot) | Stream operator to print information about an `Autopilot`.
+MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1afe9c20bc5ec76ce959d7d6361e7287e9) (std::ostream & os, const [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) & autopilot) | Stream operator to print information about an [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297).
 MAVSDK_PUBLIC std::string | [base64_encode](#namespacemavsdk_1a941ae59331101898e2cbe2720d4d16b3) (std::vector< uint8_t > & raw) | Encode raw bytes to a base64 string.
 MAVSDK_PUBLIC std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a7f2b751289c1257fccf1d23aa087656a) (const std::string & str) | Decode a base64 string into raw bytes.
-MAVSDK_TEST_EXPORT std::ostream & | [operator<<](#namespacemavsdk_1a4582b6eac9ac0bd0cdda49aecaf4395b) (std::ostream & os, const [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) & mode) | Stream operator to print information about a `CompatibilityMode`.
-MAVSDK_PUBLIC std::string_view | [to_string](#namespacemavsdk_1a3aac85f81f4b57b1e94ee6444126da67) (const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Convert `ConnectionResult` to string.
-MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1ad44fcd033d04558206f7b68517308071) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
+MAVSDK_TEST_EXPORT std::ostream & | [operator<<](#namespacemavsdk_1a4582b6eac9ac0bd0cdda49aecaf4395b) (std::ostream & os, const [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) & mode) | Stream operator to print information about a [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00).
+MAVSDK_PUBLIC std::string_view | [to_string](#namespacemavsdk_1a3aac85f81f4b57b1e94ee6444126da67) (const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Convert [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) to string.
+MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1ad44fcd033d04558206f7b68517308071) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992).
 MAVSDK_PUBLIC bool | [operator==](#namespacemavsdk_1a47860c6de189d043fc1add6bb5f73abc) (const [Quaternion](structmavsdk_1_1_quaternion.md) & lhs, const [Quaternion](structmavsdk_1_1_quaternion.md) & rhs) | Equality comparison for [Quaternion](structmavsdk_1_1_quaternion.md). NaN-aware: two NaN components compare equal.
 MAVSDK_PUBLIC bool | [operator==](#namespacemavsdk_1ad4ed15203a218b74d4e3615b19894023) (const [EulerAngle](structmavsdk_1_1_euler_angle.md) & lhs, const [EulerAngle](structmavsdk_1_1_euler_angle.md) & rhs) | Equality comparison for [EulerAngle](structmavsdk_1_1_euler_angle.md). NaN-aware: two NaN components compare equal.
 MAVSDK_PUBLIC [EulerAngle](structmavsdk_1_1_euler_angle.md) | [to_euler_angle_from_quaternion](#namespacemavsdk_1a21544f81c4eb8499c00f1174499d7030) ([Quaternion](structmavsdk_1_1_quaternion.md) quaternion) | Convert a [Quaternion](structmavsdk_1_1_quaternion.md) to [EulerAngle](structmavsdk_1_1_euler_angle.md) in degrees (ZYX Tait-Bryan).
 MAVSDK_PUBLIC [Quaternion](structmavsdk_1_1_quaternion.md) | [to_quaternion_from_euler_angle](#namespacemavsdk_1a71efdc8df29c9e36431318137634d93d) ([EulerAngle](structmavsdk_1_1_euler_angle.md) euler_angle) | Convert an [EulerAngle](structmavsdk_1_1_euler_angle.md) (degrees) to a [Quaternion](structmavsdk_1_1_quaternion.md) (ZYX Tait-Bryan).
 MAVSDK_PUBLIC [Quaternion](structmavsdk_1_1_quaternion.md) | [operator*](#namespacemavsdk_1ad2012780466b6c652ab80ce6e014c2e8) (const [Quaternion](structmavsdk_1_1_quaternion.md) & lhs, const [Quaternion](structmavsdk_1_1_quaternion.md) & rhs) | Hamilton product of two Quaternions; composes rotations.
-constexpr T | [to_rad_from_deg](#namespacemavsdk_1adca90fd4bd3af244bfde5561bc8d72d8) (T deg) | Convert degrees to radians.
-constexpr T | [to_deg_from_rad](#namespacemavsdk_1a43239ca183cfc12177d974821150f857) (T rad) | Convert radians to degrees.
-constexpr T | [constrain](#namespacemavsdk_1a37295e1b92021003968aa7f9b4f86d6e) (T input, T min, T max) | Clamp a value to a closed interval [min, max].
-MAVSDK_PUBLIC std::string_view | [to_string](#namespacemavsdk_1af551264e68fce3e9882bb1900a205ac9) ([MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) mav_type) | Convert a `MavType` to a string.
-MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1adcff459d54b6defa0f634419b50f8394) (std::ostream & os, const [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) & mav_type) | Stream operator to print information about a `MavType`.
-&nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
-MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1a8cfa1330cee2ef5c82f295a04d98ec4a) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
-MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a25bd70a1706ba2db578aeb042a47a44b) ([MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) type) | Convert a `MavType` to a `Vehicle`.
+T | [to_rad_from_deg](#namespacemavsdk_1adca90fd4bd3af244bfde5561bc8d72d8) (T deg) | Convert degrees to radians.
+T | [to_deg_from_rad](#namespacemavsdk_1a43239ca183cfc12177d974821150f857) (T rad) | Convert radians to degrees.
+T | [constrain](#namespacemavsdk_1a37295e1b92021003968aa7f9b4f86d6e) (T input, T min, T max) | Clamp a value to a closed interval [min, max].
+MAVSDK_PUBLIC std::string_view | [to_string](#namespacemavsdk_1af551264e68fce3e9882bb1900a205ac9) ([MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) mav_type) | Convert a [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) to a string.
+MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1adcff459d54b6defa0f634419b50f8394) (std::ostream & os, const [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) & mav_type) | Stream operator to print information about a [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3).
+&nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for [overloaded](structmavsdk_1_1overloaded.md).
+MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1a8cfa1330cee2ef5c82f295a04d98ec4a) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b).
+MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a25bd70a1706ba2db578aeb042a47a44b) ([MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) type) | Convert a [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) to a [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b).
 
 ## Enumeration Type Documentation
 
@@ -103,7 +103,7 @@ MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb93
 ```
 
 
-Autopilot type.
+[Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) type.
 
 
 Value | Description
@@ -125,7 +125,7 @@ This setting determines which autopilot-specific quirks and behaviors are used w
 
 Value | Description
 --- | ---
-<span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00a06b9281e396db002010bde1de57262eb"></span> `Auto` | Use detected autopilot (default, current behavior) 
+<span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00a06b9281e396db002010bde1de57262eb"></span> `Auto` | Use detected autopilot (default, current behavior). 
 <span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00ad30973809f2e4238b7eb2bac9241674c"></span> `Pure` | Pure standard MAVLink - no autopilot-specific quirks. 
 <span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00a31e54e53a62995611ff9ccc0dd9cb510"></span> `Px4` | Force PX4 quirks regardless of detection. 
 <span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00a1f79341042063f30812f2942a48d19ed"></span> `ArduPilot` | Force ArduPilot quirks regardless of detection. 
@@ -137,7 +137,7 @@ Value | Description
 ```
 
 
-ComponentType of configurations, used for automatic ID setting.
+[ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) of configurations, used for automatic ID setting.
 
 
 Value | Description
@@ -252,7 +252,7 @@ Value | Description
 ```
 
 
-ForwardingOption for Connection, used to set message forwarding option.
+[ForwardingOption](namespacemavsdk.md#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) for Connection, used to set message forwarding option.
 
 
 Value | Description
@@ -267,7 +267,7 @@ Value | Description
 ```
 
 
-Vehicle type.
+[Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) type.
 
 
 Value | Description
@@ -314,7 +314,7 @@ MAVSDK_PUBLIC std::ostream & mavsdk::operator<<(std::ostream &os, const Autopilo
 ```
 
 
-Stream operator to print information about an `Autopilot`.
+Stream operator to print information about an [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297).
 
 
 **Parameters**
@@ -378,7 +378,7 @@ MAVSDK_TEST_EXPORT std::ostream & mavsdk::operator<<(std::ostream &os, const Com
 ```
 
 
-Stream operator to print information about a `CompatibilityMode`.
+Stream operator to print information about a [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00).
 
 
 **Parameters**
@@ -400,7 +400,7 @@ MAVSDK_PUBLIC std::string_view mavsdk::to_string(const ConnectionResult &result)
 ```
 
 
-Convert `ConnectionResult` to string.
+Convert [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) to string.
 
 
 **Parameters**
@@ -421,7 +421,7 @@ MAVSDK_PUBLIC std::ostream & mavsdk::operator<<(std::ostream &str, const Connect
 ```
 
 
-Stream operator to print information about a `ConnectionResult`.
+Stream operator to print information about a [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992).
 
 
 **Parameters**
@@ -549,7 +549,7 @@ Hamilton product of two Quaternions; composes rotations.
 #include: math_utils.hpp
 ```
 ```cpp
-constexpr T mavsdk::to_rad_from_deg(T deg)
+T mavsdk::to_rad_from_deg(T deg)
 ```
 
 
@@ -571,7 +571,7 @@ Convert degrees to radians.
 
 **Returns**
 
-&emsp;constexpr T - Angle in radians.
+&emsp;T - Angle in radians.
 
 ### to_deg_from_rad() {#namespacemavsdk_1a43239ca183cfc12177d974821150f857}
 
@@ -579,7 +579,7 @@ Convert degrees to radians.
 #include: math_utils.hpp
 ```
 ```cpp
-constexpr T mavsdk::to_deg_from_rad(T rad)
+T mavsdk::to_deg_from_rad(T rad)
 ```
 
 
@@ -601,7 +601,7 @@ Convert radians to degrees.
 
 **Returns**
 
-&emsp;constexpr T - Angle in degrees.
+&emsp;T - Angle in degrees.
 
 ### constrain() {#namespacemavsdk_1a37295e1b92021003968aa7f9b4f86d6e}
 
@@ -609,7 +609,7 @@ Convert radians to degrees.
 #include: math_utils.hpp
 ```
 ```cpp
-constexpr T mavsdk::constrain(T input, T min, T max)
+T mavsdk::constrain(T input, T min, T max)
 ```
 
 
@@ -633,7 +633,7 @@ Clamp a value to a closed interval [min, max].
 
 **Returns**
 
-&emsp;constexpr T - input clamped to [min, max].
+&emsp;T - input clamped to [min, max].
 
 ### to_string() {#namespacemavsdk_1af551264e68fce3e9882bb1900a205ac9}
 
@@ -645,7 +645,7 @@ MAVSDK_PUBLIC std::string_view mavsdk::to_string(MavType mav_type)
 ```
 
 
-Convert a `MavType` to a string.
+Convert a [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) to a string.
 
 
 **Parameters**
@@ -654,7 +654,7 @@ Convert a `MavType` to a string.
 
 **Returns**
 
-&emsp;MAVSDK_PUBLIC std::string_view - A string representation of the `MavType`.
+&emsp;MAVSDK_PUBLIC std::string_view - A string representation of the [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3).
 
 ### operator<<() {#namespacemavsdk_1adcff459d54b6defa0f634419b50f8394}
 
@@ -666,7 +666,7 @@ MAVSDK_PUBLIC std::ostream & mavsdk::operator<<(std::ostream &os, const MavType 
 ```
 
 
-Stream operator to print information about a `MavType`.
+Stream operator to print information about a [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3).
 
 
 **Parameters**
@@ -688,7 +688,7 @@ mavsdk::overloaded(Ts...) -> overloaded< Ts... >
 ```
 
 
-Template deduction helper for `overloaded`
+Template deduction helper for [overloaded](structmavsdk_1_1overloaded.md).
 
 
 **Parameters**
@@ -705,7 +705,7 @@ MAVSDK_PUBLIC std::ostream & mavsdk::operator<<(std::ostream &os, const Vehicle 
 ```
 
 
-Stream operator to print information about a `Vehicle`.
+Stream operator to print information about a [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b).
 
 
 **Parameters**
@@ -727,7 +727,7 @@ MAVSDK_PUBLIC Vehicle mavsdk::to_vehicle_from_mav_type(MavType type)
 ```
 
 
-Convert a `MavType` to a `Vehicle`.
+Convert a [MavType](namespacemavsdk.md#namespacemavsdk_1a536046800f0b0efdf994a96a6a3e49f3) to a [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b).
 
 
 **Parameters**
@@ -736,4 +736,4 @@ Convert a `MavType` to a `Vehicle`.
 
 **Returns**
 
-&emsp;MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) - The corresponding `Vehicle`, or `Vehicle::Unknown` if the type is not a vehicle.
+&emsp;MAVSDK_PUBLIC [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) - The corresponding [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b), or `Vehicle::Unknown` if the type is not a vehicle.

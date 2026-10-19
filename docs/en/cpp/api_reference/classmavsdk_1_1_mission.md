@@ -41,7 +41,7 @@ Type | Name | Description
 &nbsp; | [Mission](#classmavsdk_1_1_mission_1ab02ae9aada51b483e45d88948fe62c29) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Mission](#classmavsdk_1_1_mission_1a5222f05ac0c65c7455f19e136b8fcb22) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Mission](#classmavsdk_1_1_mission_1ab8ddd47439bbc63a0a6b175fdad0368e) () override | Destructor (internal use only).
-&nbsp; | [Mission](#classmavsdk_1_1_mission_1ab4a4a26254fdff0e3f3872f32479fe1c) (const [Mission](classmavsdk_1_1_mission.md) & other) | Copy constructor.
+&nbsp; | [Mission](#classmavsdk_1_1_mission_1ab4a4a26254fdff0e3f3872f32479fe1c) (const Mission & other) | Copy constructor.
 void | [upload_mission_async](#classmavsdk_1_1_mission_1a250fc4758d47ec12e025c327dc0eb482) ([MissionPlan](structmavsdk_1_1_mission_1_1_mission_plan.md) mission_plan, const [ResultCallback](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1a30091e79f5b67ade138e5be9d65b6591) callback) | Upload a list of mission items to the system.
 [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) | [upload_mission](#classmavsdk_1_1_mission_1a38274b1c1509375a182c44711ee9f7b1) ([MissionPlan](structmavsdk_1_1_mission_1_1_mission_plan.md) mission_plan)const | Upload a list of mission items to the system.
 void | [upload_mission_with_progress_async](#classmavsdk_1_1_mission_1a0faa587e80a59e8c40d7fc135650749c) ([MissionPlan](structmavsdk_1_1_mission_1_1_mission_plan.md) mission_plan, const [UploadMissionWithProgressCallback](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1a559c82c81b3b7694973da8a65af24837) & callback) | Upload a list of mission items to the system and report upload progress.
@@ -64,7 +64,7 @@ void | [unsubscribe_mission_progress](#classmavsdk_1_1_mission_1a2b8bc4dd210506a
 [MissionProgress](structmavsdk_1_1_mission_1_1_mission_progress.md) | [mission_progress](#classmavsdk_1_1_mission_1a5570443e7c1f08cff1759980ff44b40e) () const | Poll for '[MissionProgress](structmavsdk_1_1_mission_1_1_mission_progress.md)' (blocking).
 std::pair< [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6), bool > | [get_return_to_launch_after_mission](#classmavsdk_1_1_mission_1a15ecbb4a95da4d33b80a78b9d8ec722b) () const | Get whether to trigger Return-to-Launch (RTL) after mission is complete.
 [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) | [set_return_to_launch_after_mission](#classmavsdk_1_1_mission_1ab4adb09283b3fa64a8829f9a6e34cf37) (bool enable)const | Set whether to trigger Return-to-Launch (RTL) after the mission is complete.
-const [Mission](classmavsdk_1_1_mission.md) & | [operator=](#classmavsdk_1_1_mission_1a264bcda67c38e8e447ce36eee662924e) (const [Mission](classmavsdk_1_1_mission.md) &)=delete | Equality operator (object is not copyable).
+const [Mission](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab02ae9aada51b483e45d88948fe62c29) & | [operator=](#classmavsdk_1_1_mission_1a264bcda67c38e8e447ce36eee662924e) (const [Mission](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab02ae9aada51b483e45d88948fe62c29) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -126,7 +126,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Mission](classmavsdk_1_1_mission.md)& **other** - 
+* const Mission& **other** - 
 
 ## Member Typdef Documentation
 
@@ -206,7 +206,7 @@ Value | Description
 <span id="classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Request succeeded. 
 <span id="classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6a902b0d55fddef6f8d651fe1035b7d4bd"></span> `Error` | Error. 
 <span id="classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6aecc3de82f27e8e7f65807c69a114efbe"></span> `TooManyMissionItems` | Too many mission items in the mission. 
-<span id="classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | Vehicle is busy. 
+<span id="classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) is busy. 
 <span id="classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Request timed out. 
 <span id="classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6a253ca7dd096ee0956cccee4d376cab8b"></span> `InvalidArgument` | Invalid argument. 
 <span id="classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6ab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` | [Mission](classmavsdk_1_1_mission.md) downloaded from the system is not supported. 
@@ -259,7 +259,7 @@ This function is blocking. See 'upload_mission_async' for the non-blocking count
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### upload_mission_with_progress_async() {#classmavsdk_1_1_mission_1a0faa587e80a59e8c40d7fc135650749c}
 ```cpp
@@ -288,7 +288,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### download_mission_async() {#classmavsdk_1_1_mission_1a04e7e7074273b4591a820894c5c4ad43}
 ```cpp
@@ -322,7 +322,7 @@ This function is blocking. See 'download_mission_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6), [Mission::MissionPlan](structmavsdk_1_1_mission_1_1_mission_plan.md) > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6), [Mission::MissionPlan](structmavsdk_1_1_mission_1_1_mission_plan.md) > - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### download_mission_with_progress_async() {#classmavsdk_1_1_mission_1a5b6b93482f2599c08d75d27a31a4f1d9}
 ```cpp
@@ -350,7 +350,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### start_mission_async() {#classmavsdk_1_1_mission_1a31ca2fc6b9fe4802dbc3fbebad0bb5d7}
 ```cpp
@@ -384,7 +384,7 @@ This function is blocking. See 'start_mission_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### pause_mission_async() {#classmavsdk_1_1_mission_1a4c5679369e215ef21901fc7ffe1ce32b}
 ```cpp
@@ -418,7 +418,7 @@ This function is blocking. See 'pause_mission_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### clear_mission_async() {#classmavsdk_1_1_mission_1a51d04a808743915e3cac7f35fbd5038f}
 ```cpp
@@ -446,7 +446,7 @@ This function is blocking. See 'clear_mission_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### set_current_mission_item_async() {#classmavsdk_1_1_mission_1a81aa356215cb2131c2480dc121a6af7b}
 ```cpp
@@ -491,7 +491,7 @@ This function is blocking. See 'set_current_mission_item_async' for the non-bloc
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### is_mission_finished() {#classmavsdk_1_1_mission_1a8fe0296995ffd2130dceb338f6deb3cf}
 ```cpp
@@ -505,7 +505,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6), bool > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6), bool > - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### subscribe_mission_progress() {#classmavsdk_1_1_mission_1ac6d3e78de0ea2e6c1db2eaa5f3418660}
 ```cpp
@@ -565,7 +565,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6), bool > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6), bool > - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### set_return_to_launch_after_mission() {#classmavsdk_1_1_mission_1ab4adb09283b3fa64a8829f9a6e34cf37}
 ```cpp
@@ -586,7 +586,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) - [Result](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab3114c63db76bdc37460939a1f3316f6) of request.
 
 ### operator=() {#classmavsdk_1_1_mission_1a264bcda67c38e8e447ce36eee662924e}
 ```cpp
@@ -599,8 +599,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Mission](classmavsdk_1_1_mission.md)&  - 
+* const [Mission](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab02ae9aada51b483e45d88948fe62c29)&  - 
 
 **Returns**
 
-&emsp;const [Mission](classmavsdk_1_1_mission.md) & - 
+&emsp;const [Mission](classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1ab02ae9aada51b483e45d88948fe62c29) & - 

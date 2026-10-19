@@ -32,12 +32,12 @@ Type | Name | Description
 ---: | --- | ---
 &nbsp; | [MavlinkDirectServer](#classmavsdk_1_1_mavlink_direct_server_1a466864bb7130a52d099e29cb820987a3) (std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > server_component) | Constructor. Creates the plugin for a [ServerComponent](classmavsdk_1_1_server_component.md) instance.
 &nbsp; | [~MavlinkDirectServer](#classmavsdk_1_1_mavlink_direct_server_1af945aec68df1bf504e2110d42715e17b) () override | Destructor (internal use only).
-&nbsp; | [MavlinkDirectServer](#classmavsdk_1_1_mavlink_direct_server_1a813d207b34b938a1072652117844149a) (const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md) & other) | Copy constructor.
+&nbsp; | [MavlinkDirectServer](#classmavsdk_1_1_mavlink_direct_server_1a813d207b34b938a1072652117844149a) (const MavlinkDirectServer & other) | Copy constructor.
 [Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) | [send_message](#classmavsdk_1_1_mavlink_direct_server_1abd7cd4380f2e07588e5f180b73cb23f4) ([MavlinkMessage](structmavsdk_1_1_mavlink_direct_server_1_1_mavlink_message.md) message)const | Send a MAVLink message directly.
 [MessageHandle](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aca946e5536d779d1d6c0604388a8357f) | [subscribe_message](#classmavsdk_1_1_mavlink_direct_server_1a72f9b9439c17c117b3846ad9fc4b2588) (std::string message_name, const [MessageCallback](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1ab4984454989841e5205f77f0b3c7b51e) & callback) | Subscribe to incoming MAVLink messages.
 void | [unsubscribe_message](#classmavsdk_1_1_mavlink_direct_server_1a377e2038cef335e30fa387b8f06621fa) ([MessageHandle](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aca946e5536d779d1d6c0604388a8357f) handle) | Unsubscribe from subscribe_message.
 [Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) | [load_custom_xml](#classmavsdk_1_1_mavlink_direct_server_1a6eb99920e7b5a45fe3e015f1f4849f6e) (std::string xml_content)const | Load custom MAVLink message definitions from XML.
-const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md) & | [operator=](#classmavsdk_1_1_mavlink_direct_server_1aeadf564e850b8fea4dddb47de9d335e3) (const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md) &)=delete | Equality operator (object is not copyable).
+const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a466864bb7130a52d099e29cb820987a3) & | [operator=](#classmavsdk_1_1_mavlink_direct_server_1aeadf564e850b8fea4dddb47de9d335e3) (const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a466864bb7130a52d099e29cb820987a3) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -81,7 +81,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md)& **other** - 
+* const MavlinkDirectServer& **other** - 
 
 ## Member Typdef Documentation
 
@@ -158,7 +158,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) - [Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) of request.
 
 ### subscribe_message() {#classmavsdk_1_1_mavlink_direct_server_1a72f9b9439c17c117b3846ad9fc4b2588}
 ```cpp
@@ -211,7 +211,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) - Result of request.
+&emsp;[Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) - [Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) of request.
 
 ### operator=() {#classmavsdk_1_1_mavlink_direct_server_1aeadf564e850b8fea4dddb47de9d335e3}
 ```cpp
@@ -224,8 +224,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md)&  - 
+* const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a466864bb7130a52d099e29cb820987a3)&  - 
 
 **Returns**
 
-&emsp;const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md) & - 
+&emsp;const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a466864bb7130a52d099e29cb820987a3) & - 

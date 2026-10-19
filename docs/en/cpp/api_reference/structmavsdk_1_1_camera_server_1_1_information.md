@@ -28,9 +28,9 @@ uint32_t [vertical_resolution_px](#structmavsdk_1_1_camera_server_1_1_informatio
 
 uint32_t [lens_id](#structmavsdk_1_1_camera_server_1_1_information_1a59d0a7f30a748175399caf751745c5ac) {} - Lens ID.
 
-uint32_t [definition_file_version](#structmavsdk_1_1_camera_server_1_1_information_1ad26af2024edddb500d5e1e340afb114c) {} - [Camera](classmavsdk_1_1_camera.md) definition file version (iteration)
+uint32_t [definition_file_version](#structmavsdk_1_1_camera_server_1_1_information_1ad26af2024edddb500d5e1e340afb114c) {} - [Camera](classmavsdk_1_1_camera.md) definition file version (iteration).
 
-std::string [definition_file_uri](#structmavsdk_1_1_camera_server_1_1_information_1ac45dbba688c93cafe5750fc352917797) {} - [Camera](classmavsdk_1_1_camera.md) definition URI (http or mavlink ftp)
+std::string [definition_file_uri](#structmavsdk_1_1_camera_server_1_1_information_1ac45dbba688c93cafe5750fc352917797) {} - [Camera](classmavsdk_1_1_camera.md) definition URI (http or mavlink ftp).
 
 bool [image_in_video_mode_supported](#structmavsdk_1_1_camera_server_1_1_information_1a9c57eed55bfa60127eed4601becc523f) {} - [Camera](classmavsdk_1_1_camera.md) supports taking images while in video mode.
 
@@ -137,7 +137,7 @@ uint32_t mavsdk::CameraServer::Information::definition_file_version {}
 ```
 
 
-[Camera](classmavsdk_1_1_camera.md) definition file version (iteration)
+[Camera](classmavsdk_1_1_camera.md) definition file version (iteration).
 
 
 ### definition_file_uri {#structmavsdk_1_1_camera_server_1_1_information_1ac45dbba688c93cafe5750fc352917797}
@@ -147,7 +147,7 @@ std::string mavsdk::CameraServer::Information::definition_file_uri {}
 ```
 
 
-[Camera](classmavsdk_1_1_camera.md) definition URI (http or mavlink ftp)
+[Camera](classmavsdk_1_1_camera.md) definition URI (http or mavlink ftp).
 
 
 ### image_in_video_mode_supported {#structmavsdk_1_1_camera_server_1_1_information_1a9c57eed55bfa60127eed4601becc523f}

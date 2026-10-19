@@ -34,11 +34,11 @@ Type | Name | Description
 &nbsp; | [Shell](#classmavsdk_1_1_shell_1a31a80044ee4822e8b9ac1c515b0eea90) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Shell](#classmavsdk_1_1_shell_1ae6c98c4c854ff0803260fe49bad20a31) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Shell](#classmavsdk_1_1_shell_1aad035d078495e85c700d4c0148c5f4f9) () override | Destructor (internal use only).
-&nbsp; | [Shell](#classmavsdk_1_1_shell_1aa9d95d880297fca1a5cba341633e660e) (const [Shell](classmavsdk_1_1_shell.md) & other) | Copy constructor.
+&nbsp; | [Shell](#classmavsdk_1_1_shell_1aa9d95d880297fca1a5cba341633e660e) (const Shell & other) | Copy constructor.
 [Result](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a768bfa296ba3309f936f887fb86c9ba8) | [send](#classmavsdk_1_1_shell_1a40ed558219758cfada313801664dc6ef) (std::string command, [Device](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a02ecd441e182bfef27e9034ea5a74aa9) device)const | Send a command line.
 [ReceiveHandle](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a99fb31adcf5a5065c2e886456093c097) | [subscribe_receive](#classmavsdk_1_1_shell_1a2794ac389f4df4f1aaa344612bc8c470) (const [ReceiveCallback](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1adf8a75f2d359ef74242095876cf85c80) & callback) | [Receive](structmavsdk_1_1_shell_1_1_receive.md) feedback from a sent command line.
 void | [unsubscribe_receive](#classmavsdk_1_1_shell_1a5b696e1651459dbc3ceef2a393af433d) ([ReceiveHandle](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a99fb31adcf5a5065c2e886456093c097) handle) | Unsubscribe from subscribe_receive.
-const [Shell](classmavsdk_1_1_shell.md) & | [operator=](#classmavsdk_1_1_shell_1abd920b11e6535152ad85cb4187b0c620) (const [Shell](classmavsdk_1_1_shell.md) &)=delete | Equality operator (object is not copyable).
+const [Shell](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a31a80044ee4822e8b9ac1c515b0eea90) & | [operator=](#classmavsdk_1_1_shell_1abd920b11e6535152ad85cb4187b0c620) (const [Shell](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a31a80044ee4822e8b9ac1c515b0eea90) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -100,7 +100,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Shell](classmavsdk_1_1_shell.md)& **other** - 
+* const Shell& **other** - 
 
 ## Member Typdef Documentation
 
@@ -198,7 +198,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a768bfa296ba3309f936f887fb86c9ba8) - Result of request.
+&emsp;[Result](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a768bfa296ba3309f936f887fb86c9ba8) - [Result](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a768bfa296ba3309f936f887fb86c9ba8) of request.
 
 ### subscribe_receive() {#classmavsdk_1_1_shell_1a2794ac389f4df4f1aaa344612bc8c470}
 ```cpp
@@ -242,8 +242,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Shell](classmavsdk_1_1_shell.md)&  - 
+* const [Shell](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a31a80044ee4822e8b9ac1c515b0eea90)&  - 
 
 **Returns**
 
-&emsp;const [Shell](classmavsdk_1_1_shell.md) & - 
+&emsp;const [Shell](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a31a80044ee4822e8b9ac1c515b0eea90) & - 

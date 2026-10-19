@@ -27,7 +27,7 @@ Type | Name | Description
 &nbsp; | [Action](#classmavsdk_1_1_action_1a5e2a4d65f85d821be691a837453e56ee) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [Action](#classmavsdk_1_1_action_1a4359d18e02bca100175cd00fab814550) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Action](#classmavsdk_1_1_action_1a99352fe4e83e4b721d5c5b5942beb76f) () override | Destructor (internal use only).
-&nbsp; | [Action](#classmavsdk_1_1_action_1a99fc1d6fc90af15a93bb270b0279a095) (const [Action](classmavsdk_1_1_action.md) & other) | Copy constructor.
+&nbsp; | [Action](#classmavsdk_1_1_action_1a99fc1d6fc90af15a93bb270b0279a095) (const Action & other) | Copy constructor.
 void | [arm_async](#classmavsdk_1_1_action_1a570a3799ca5dbbf8aab30ce465687796) (const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to arm the drone.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [arm](#classmavsdk_1_1_action_1a3ee123973982842f46a9f8b6cb952566) () const | Send command to arm the drone.
 void | [arm_force_async](#classmavsdk_1_1_action_1afb89306c388181312fa23cf0b6816092) (const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to force-arm the drone without any checks.
@@ -76,7 +76,7 @@ void | [set_current_speed_async](#classmavsdk_1_1_action_1afd210be0eba436c81da79
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_current_speed](#classmavsdk_1_1_action_1af3b74cf3912411d9476b6eeac0984afb) (float speed_m_s)const | Set current speed.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_gps_global_origin](#classmavsdk_1_1_action_1abf97620153fca87f2dd89a6eb96a8479) (double latitude_deg, double longitude_deg, float absolute_altitude_m)const | Set GPS Global Origin.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_home](#classmavsdk_1_1_action_1a722270e068f74b0a57d2e3f771c3e455) (bool use_current_location, double latitude_deg, double longitude_deg, float absolute_altitude_m)const | Set home.
-const [Action](classmavsdk_1_1_action.md) & | [operator=](#classmavsdk_1_1_action_1a89482740f533e194fade200103b5adef) (const [Action](classmavsdk_1_1_action.md) &)=delete | Equality operator (object is not copyable).
+const [Action](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a5e2a4d65f85d821be691a837453e56ee) & | [operator=](#classmavsdk_1_1_action_1a89482740f533e194fade200103b5adef) (const [Action](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a5e2a4d65f85d821be691a837453e56ee) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -138,7 +138,7 @@ Copy constructor.
 
 **Parameters**
 
-* const [Action](classmavsdk_1_1_action.md)& **other** - 
+* const Action& **other** - 
 
 ## Member Typdef Documentation
 
@@ -184,10 +184,10 @@ Yaw behaviour during orbit flight.
 
 Value | Description
 --- | ---
-<span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92a79d1fbff30d2eff041b71752c0bd3f49"></span> `HoldFrontToCircleCenter` | Vehicle front points to the center (default). 
-<span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92afe072bbce18b07f94697b52cbe918cf5"></span> `HoldInitialHeading` | Vehicle front holds heading when message received. 
+<span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92a79d1fbff30d2eff041b71752c0bd3f49"></span> `HoldFrontToCircleCenter` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) front points to the center (default). 
+<span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92afe072bbce18b07f94697b52cbe918cf5"></span> `HoldInitialHeading` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) front holds heading when message received. 
 <span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92a3cbc75230c11ca34e25123273980f413"></span> `Uncontrolled` | Yaw uncontrolled. 
-<span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92a03aac6c04bac9cc0876336d842763dd0"></span> `HoldFrontTangentToCircle` | Vehicle front follows flight path (tangential to circle). 
+<span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92a03aac6c04bac9cc0876336d842763dd0"></span> `HoldFrontTangentToCircle` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) front follows flight path (tangential to circle). 
 <span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92ac48baeef91367bc4132d164d920ff697"></span> `RcControlled` | Yaw controlled by RC input. 
 
 ### enum RelayCommand {#classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21}
@@ -213,13 +213,13 @@ Value | Description
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Request was successful. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system is connected. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a094a6f6b0868122a9dd008cb91c083e4"></span> `ConnectionError` | Connection error. 
-<span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | Vehicle is busy. 
+<span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51ad8a942ef2b04672adfafef0ad817a407"></span> `Busy` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) is busy. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a3398e12855176d55f43d53e04f472c8a"></span> `CommandDenied` | Command refused by vehicle. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a2dfd6d9491cefa8820ce47f77471e5e3"></span> `CommandDeniedLandedStateUnknown` | Command refused because landed state is unknown. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a73d9a6e3b34d98fa3c4fac08f3434a9a"></span> `CommandDeniedNotLanded` | Command refused because vehicle not landed. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Request timed out. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a7006c2f81a7a1a65a23cfc16b0326336"></span> `VtolTransitionSupportUnknown` | Hybrid/VTOL transition support is unknown. 
-<span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a5039f02d708e3874858b22610ed63d1e"></span> `NoVtolTransitionSupport` | Vehicle does not support hybrid/VTOL transitions. 
+<span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a5039f02d708e3874858b22610ed63d1e"></span> `NoVtolTransitionSupport` | [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) does not support hybrid/VTOL transitions. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51a189976b733e988a6903e4d19d8cd2fea"></span> `ParameterError` | Error getting or setting parameter. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51ab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` | [Action](classmavsdk_1_1_action.md) not supported. 
 <span id="classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51ad7c8c85bf79bbe1b7188497c32c3b0ca"></span> `Failed` | [Action](classmavsdk_1_1_action.md) failed. 
@@ -260,7 +260,7 @@ This function is blocking. See 'arm_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### arm_force_async() {#classmavsdk_1_1_action_1afb89306c388181312fa23cf0b6816092}
 ```cpp
@@ -300,7 +300,7 @@ This function is blocking. See 'arm_force_async' for the non-blocking counterpar
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### disarm_async() {#classmavsdk_1_1_action_1a3107f7f5a2f4a478024667f187f8f2aa}
 ```cpp
@@ -334,7 +334,7 @@ This function is blocking. See 'disarm_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### takeoff_async() {#classmavsdk_1_1_action_1ab658d938970326db41709d83e02b41e6}
 ```cpp
@@ -374,7 +374,7 @@ This function is blocking. See 'takeoff_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### land_async() {#classmavsdk_1_1_action_1a89d146a766d49f1c706c66a3e2b9252d}
 ```cpp
@@ -408,7 +408,7 @@ This function is blocking. See 'land_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### reboot_async() {#classmavsdk_1_1_action_1a32cfcc71a00afc28f43d2a22c319618c}
 ```cpp
@@ -442,7 +442,7 @@ This function is blocking. See 'reboot_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### shutdown_async() {#classmavsdk_1_1_action_1a1658a5499c61c46340428bb819453615}
 ```cpp
@@ -476,7 +476,7 @@ This function is blocking. See 'shutdown_async' for the non-blocking counterpart
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### terminate_async() {#classmavsdk_1_1_action_1a47536c4a4bc8367ccd30a92eb09781c5}
 ```cpp
@@ -510,7 +510,7 @@ This function is blocking. See 'terminate_async' for the non-blocking counterpar
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### kill_async() {#classmavsdk_1_1_action_1a78c1f15c3b190ba94793045621819e69}
 ```cpp
@@ -544,7 +544,7 @@ This function is blocking. See 'kill_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### return_to_launch_async() {#classmavsdk_1_1_action_1abe5bd426de588b246644ee3ddb12517d}
 ```cpp
@@ -578,7 +578,7 @@ This function is blocking. See 'return_to_launch_async' for the non-blocking cou
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### goto_location_async() {#classmavsdk_1_1_action_1a6fd615e5571d6e7e3c53a79d2160ffc5}
 ```cpp
@@ -629,7 +629,7 @@ This function is blocking. See 'goto_location_async' for the non-blocking counte
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### goto_location_fixedwing_async() {#classmavsdk_1_1_action_1a190e73b01370e11c65d3ac8d799f39c7}
 ```cpp
@@ -686,7 +686,7 @@ This function is blocking. See 'goto_location_fixedwing_async' for the non-block
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### do_orbit_async() {#classmavsdk_1_1_action_1aac9a2ac57a6e8f734b25c2e6dc0729ba}
 ```cpp
@@ -735,7 +735,7 @@ This function is blocking. See 'do_orbit_async' for the non-blocking counterpart
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### hold_async() {#classmavsdk_1_1_action_1aad198c883e7ace1cf4556c3b15bd8ad8}
 ```cpp
@@ -748,7 +748,7 @@ Send command to hold position (a.k.a. "Loiter").
 Sends a command to drone to change to Hold flight mode, causing the vehicle to stop and maintain its current GPS position and altitude.
 
 
-Note: this command is specific to the PX4 Autopilot flight stack as it implies a change to a PX4-specific mode.
+Note: this command is specific to the PX4 [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) flight stack as it implies a change to a PX4-specific mode.
 
 
 This function is non-blocking. See 'hold' for the blocking counterpart.
@@ -768,14 +768,14 @@ Send command to hold position (a.k.a. "Loiter").
 Sends a command to drone to change to Hold flight mode, causing the vehicle to stop and maintain its current GPS position and altitude.
 
 
-Note: this command is specific to the PX4 Autopilot flight stack as it implies a change to a PX4-specific mode.
+Note: this command is specific to the PX4 [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) flight stack as it implies a change to a PX4-specific mode.
 
 
 This function is blocking. See 'hold_async' for the non-blocking counterpart.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### set_actuator_async() {#classmavsdk_1_1_action_1a2206033eb3469d2ae81b9cf994bfda98}
 ```cpp
@@ -816,7 +816,7 @@ This function is blocking. See 'set_actuator_async' for the non-blocking counter
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### set_relay_async() {#classmavsdk_1_1_action_1a7c4f46fe008477d60e7c2ed13edd00d0}
 ```cpp
@@ -857,7 +857,7 @@ This function is blocking. See 'set_relay_async' for the non-blocking counterpar
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### transition_to_fixedwing_async() {#classmavsdk_1_1_action_1aa56181441cd64e092a8fb91a38c7c9fd}
 ```cpp
@@ -891,7 +891,7 @@ This function is blocking. See 'transition_to_fixedwing_async' for the non-block
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### transition_to_multicopter_async() {#classmavsdk_1_1_action_1a8c109076641b5c9aa6dd78ea8b913529}
 ```cpp
@@ -925,7 +925,7 @@ This function is blocking. See 'transition_to_multicopter_async' for the non-blo
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### get_takeoff_altitude_async() {#classmavsdk_1_1_action_1a0a600e6ef75a69341d8b21243e7b1a71}
 ```cpp
@@ -953,7 +953,7 @@ This function is blocking. See 'get_takeoff_altitude_async' for the non-blocking
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51), float > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51), float > - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### set_takeoff_altitude_async() {#classmavsdk_1_1_action_1a9027c3e5f9eaf37cdfe8c426727c7693}
 ```cpp
@@ -986,7 +986,7 @@ This function is blocking. See 'set_takeoff_altitude_async' for the non-blocking
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### get_return_to_launch_altitude_async() {#classmavsdk_1_1_action_1aa19935b55d80f63e06397b3ea4b51c22}
 ```cpp
@@ -1014,7 +1014,7 @@ This function is blocking. See 'get_return_to_launch_altitude_async' for the non
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51), float > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51), float > - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### set_return_to_launch_altitude_async() {#classmavsdk_1_1_action_1acdc4360c21ec82c57125023c552b3410}
 ```cpp
@@ -1047,7 +1047,7 @@ This function is blocking. See 'set_return_to_launch_altitude_async' for the non
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### set_current_speed_async() {#classmavsdk_1_1_action_1afd210be0eba436c81da79107562a0b6c}
 ```cpp
@@ -1086,7 +1086,7 @@ This function is blocking. See 'set_current_speed_async' for the non-blocking co
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### set_gps_global_origin() {#classmavsdk_1_1_action_1abf97620153fca87f2dd89a6eb96a8479}
 ```cpp
@@ -1109,7 +1109,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### set_home() {#classmavsdk_1_1_action_1a722270e068f74b0a57d2e3f771c3e455}
 ```cpp
@@ -1133,7 +1133,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) of request.
 
 ### operator=() {#classmavsdk_1_1_action_1a89482740f533e194fade200103b5adef}
 ```cpp
@@ -1146,8 +1146,8 @@ Equality operator (object is not copyable).
 
 **Parameters**
 
-* const [Action](classmavsdk_1_1_action.md)&  - 
+* const [Action](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a5e2a4d65f85d821be691a837453e56ee)&  - 
 
 **Returns**
 
-&emsp;const [Action](classmavsdk_1_1_action.md) & - 
+&emsp;const [Action](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a5e2a4d65f85d821be691a837453e56ee) & - 
