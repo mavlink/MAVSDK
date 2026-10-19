@@ -466,13 +466,16 @@ class ParamServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_param_server_unsubscribe_changed_param_int(
             _plugin_handle, handle
         )
+        del _entry
 
     def subscribe_changed_param_float(self, callback: Callable, user_data: Any = None):
         """Subscribe to changed float param."""
@@ -510,13 +513,16 @@ class ParamServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_param_server_unsubscribe_changed_param_float(
             _plugin_handle, handle
         )
+        del _entry
 
     def subscribe_changed_param_custom(self, callback: Callable, user_data: Any = None):
         """Subscribe to changed custom param."""
@@ -554,13 +560,16 @@ class ParamServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_param_server_unsubscribe_changed_param_custom(
             _plugin_handle, handle
         )
+        del _entry
 
     def _require_handle(self) -> ctypes.c_void_p:
         """Fail loudly rather than dereferencing a null handle in C.

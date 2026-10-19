@@ -291,11 +291,14 @@ class ActionServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_action_server_unsubscribe_arm_disarm(_plugin_handle, handle)
+        del _entry
 
     def subscribe_flight_mode_change(self, callback: Callable, user_data: Any = None):
         """Subscribe to DO_SET_MODE"""
@@ -333,13 +336,16 @@ class ActionServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_action_server_unsubscribe_flight_mode_change(
             _plugin_handle, handle
         )
+        del _entry
 
     def subscribe_takeoff(self, callback: Callable, user_data: Any = None):
         """Subscribe to takeoff command"""
@@ -377,11 +383,14 @@ class ActionServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_action_server_unsubscribe_takeoff(_plugin_handle, handle)
+        del _entry
 
     def subscribe_land(self, callback: Callable, user_data: Any = None):
         """Subscribe to land command"""
@@ -419,11 +428,14 @@ class ActionServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_action_server_unsubscribe_land(_plugin_handle, handle)
+        del _entry
 
     def subscribe_reboot(self, callback: Callable, user_data: Any = None):
         """Subscribe to reboot command"""
@@ -461,11 +473,14 @@ class ActionServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_action_server_unsubscribe_reboot(_plugin_handle, handle)
+        del _entry
 
     def subscribe_shutdown(self, callback: Callable, user_data: Any = None):
         """Subscribe to shutdown command"""
@@ -503,11 +518,14 @@ class ActionServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_action_server_unsubscribe_shutdown(_plugin_handle, handle)
+        del _entry
 
     def subscribe_terminate(self, callback: Callable, user_data: Any = None):
         """Subscribe to terminate command"""
@@ -545,11 +563,14 @@ class ActionServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_action_server_unsubscribe_terminate(_plugin_handle, handle)
+        del _entry
 
     def set_allow_takeoff(self, allow_takeoff):
         """Get set_allow_takeoff (blocking)"""

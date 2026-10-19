@@ -353,11 +353,14 @@ class Winch:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_winch_unsubscribe_status(_plugin_handle, handle)
+        del _entry
 
     def status(self):
         """Get status (blocking)"""

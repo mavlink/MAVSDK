@@ -909,11 +909,14 @@ class Gimbal:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_gimbal_unsubscribe_gimbal_list(_plugin_handle, handle)
+        del _entry
 
     def gimbal_list(self):
         """Get gimbal_list (blocking)"""
@@ -968,11 +971,14 @@ class Gimbal:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_gimbal_unsubscribe_control_status(_plugin_handle, handle)
+        del _entry
 
     def get_control_status(self, gimbal_id):
         """Get get_control_status (blocking)"""
@@ -1028,11 +1034,14 @@ class Gimbal:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_gimbal_unsubscribe_attitude(_plugin_handle, handle)
+        del _entry
 
     def get_attitude(self, gimbal_id):
         """Get get_attitude (blocking)"""

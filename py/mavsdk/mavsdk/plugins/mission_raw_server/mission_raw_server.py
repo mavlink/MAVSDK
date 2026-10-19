@@ -352,13 +352,16 @@ class MissionRawServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission(
             _plugin_handle, handle
         )
+        del _entry
 
     def subscribe_current_item_changed(self, callback: Callable, user_data: Any = None):
         """Subscribe to when a new current item is set"""
@@ -400,13 +403,16 @@ class MissionRawServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed(
             _plugin_handle, handle
         )
+        del _entry
 
     def set_current_item_complete(self):
         """Get set_current_item_complete (blocking)"""
@@ -449,13 +455,16 @@ class MissionRawServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all(
             _plugin_handle, handle
         )
+        del _entry
 
     def _require_handle(self) -> ctypes.c_void_p:
         """Fail loudly rather than dereferencing a null handle in C.

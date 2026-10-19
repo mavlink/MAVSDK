@@ -242,13 +242,16 @@ class MavlinkDirectServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_mavlink_direct_server_unsubscribe_message(
             _plugin_handle, handle
         )
+        del _entry
 
     def load_custom_xml(self, xml_content):
         """Get load_custom_xml (blocking)"""

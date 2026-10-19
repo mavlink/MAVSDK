@@ -2371,11 +2371,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_position(_plugin_handle, handle)
+        del _entry
 
     def position(self):
         """Get position (blocking)"""
@@ -2426,11 +2429,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_home(_plugin_handle, handle)
+        del _entry
 
     def home(self):
         """Get home (blocking)"""
@@ -2479,11 +2485,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_in_air(_plugin_handle, handle)
+        del _entry
 
     def in_air(self):
         """Get in_air (blocking)"""
@@ -2530,11 +2539,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_landed_state(_plugin_handle, handle)
+        del _entry
 
     def landed_state(self):
         """Get landed_state (blocking)"""
@@ -2581,11 +2593,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_armed(_plugin_handle, handle)
+        del _entry
 
     def armed(self):
         """Get armed (blocking)"""
@@ -2632,11 +2647,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_vtol_state(_plugin_handle, handle)
+        del _entry
 
     def vtol_state(self):
         """Get vtol_state (blocking)"""
@@ -2685,13 +2703,16 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion(
             _plugin_handle, handle
         )
+        del _entry
 
     def attitude_quaternion(self):
         """Get attitude_quaternion (blocking)"""
@@ -2742,11 +2763,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_attitude_euler(_plugin_handle, handle)
+        del _entry
 
     def attitude_euler(self):
         """Get attitude_euler (blocking)"""
@@ -2803,13 +2827,16 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
             _plugin_handle, handle
         )
+        del _entry
 
     def attitude_angular_velocity_body(self):
         """Get attitude_angular_velocity_body (blocking)"""
@@ -2862,11 +2889,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_velocity_ned(_plugin_handle, handle)
+        del _entry
 
     def velocity_ned(self):
         """Get velocity_ned (blocking)"""
@@ -2917,11 +2947,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_gps_info(_plugin_handle, handle)
+        del _entry
 
     def gps_info(self):
         """Get gps_info (blocking)"""
@@ -2972,11 +3005,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_raw_gps(_plugin_handle, handle)
+        del _entry
 
     def raw_gps(self):
         """Get raw_gps (blocking)"""
@@ -3027,11 +3063,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_battery(_plugin_handle, handle)
+        del _entry
 
     def battery(self):
         """Get battery (blocking)"""
@@ -3080,11 +3119,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_flight_mode(_plugin_handle, handle)
+        del _entry
 
     def flight_mode(self):
         """Get flight_mode (blocking)"""
@@ -3133,11 +3175,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_health(_plugin_handle, handle)
+        del _entry
 
     def health(self):
         """Get health (blocking)"""
@@ -3188,11 +3233,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_rc_status(_plugin_handle, handle)
+        del _entry
 
     def rc_status(self):
         """Get rc_status (blocking)"""
@@ -3243,11 +3291,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_status_text(_plugin_handle, handle)
+        del _entry
 
     def status_text(self):
         """Get status_text (blocking)"""
@@ -3302,13 +3353,16 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_actuator_control_target(
             _plugin_handle, handle
         )
+        del _entry
 
     def actuator_control_target(self):
         """Get actuator_control_target (blocking)"""
@@ -3365,13 +3419,16 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_actuator_output_status(
             _plugin_handle, handle
         )
+        del _entry
 
     def actuator_output_status(self):
         """Get actuator_output_status (blocking)"""
@@ -3424,11 +3481,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_odometry(_plugin_handle, handle)
+        del _entry
 
     def odometry(self):
         """Get odometry (blocking)"""
@@ -3483,13 +3543,16 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_position_velocity_ned(
             _plugin_handle, handle
         )
+        del _entry
 
     def position_velocity_ned(self):
         """Get position_velocity_ned (blocking)"""
@@ -3542,11 +3605,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_ground_truth(_plugin_handle, handle)
+        del _entry
 
     def ground_truth(self):
         """Get ground_truth (blocking)"""
@@ -3599,11 +3665,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics(_plugin_handle, handle)
+        del _entry
 
     def fixedwing_metrics(self):
         """Get fixedwing_metrics (blocking)"""
@@ -3654,11 +3723,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_imu(_plugin_handle, handle)
+        del _entry
 
     def imu(self):
         """Get imu (blocking)"""
@@ -3707,11 +3779,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_scaled_imu(_plugin_handle, handle)
+        del _entry
 
     def scaled_imu(self):
         """Get scaled_imu (blocking)"""
@@ -3762,11 +3837,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_raw_imu(_plugin_handle, handle)
+        del _entry
 
     def raw_imu(self):
         """Get raw_imu (blocking)"""
@@ -3815,11 +3893,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_health_all_ok(_plugin_handle, handle)
+        del _entry
 
     def health_all_ok(self):
         """Get health_all_ok (blocking)"""
@@ -3866,11 +3947,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time(_plugin_handle, handle)
+        del _entry
 
     def unix_epoch_time(self):
         """Get unix_epoch_time (blocking)"""
@@ -3919,11 +4003,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_distance_sensor(_plugin_handle, handle)
+        del _entry
 
     def distance_sensor(self):
         """Get distance_sensor (blocking)"""
@@ -3974,11 +4061,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure(_plugin_handle, handle)
+        del _entry
 
     def scaled_pressure(self):
         """Get scaled_pressure (blocking)"""
@@ -4029,11 +4119,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_heading(_plugin_handle, handle)
+        del _entry
 
     def heading(self):
         """Get heading (blocking)"""
@@ -4084,11 +4177,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_altitude(_plugin_handle, handle)
+        del _entry
 
     def altitude(self):
         """Get altitude (blocking)"""
@@ -4139,11 +4235,14 @@ class Telemetry:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_telemetry_unsubscribe_wind(_plugin_handle, handle)
+        del _entry
 
     def wind(self):
         """Get wind (blocking)"""

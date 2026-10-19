@@ -895,11 +895,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_take_photo(_plugin_handle, handle)
+        del _entry
 
     def respond_take_photo(self, take_photo_feedback, capture_info):
         """Get respond_take_photo (blocking)"""
@@ -951,11 +954,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_start_video(_plugin_handle, handle)
+        del _entry
 
     def respond_start_video(self, start_video_feedback):
         """Get respond_start_video (blocking)"""
@@ -1006,11 +1012,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_stop_video(_plugin_handle, handle)
+        del _entry
 
     def respond_stop_video(self, stop_video_feedback):
         """Get respond_stop_video (blocking)"""
@@ -1061,13 +1070,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_start_video_streaming(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_start_video_streaming(self, start_video_streaming_feedback):
         """Get respond_start_video_streaming (blocking)"""
@@ -1120,13 +1132,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_stop_video_streaming(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_stop_video_streaming(self, stop_video_streaming_feedback):
         """Get respond_stop_video_streaming (blocking)"""
@@ -1177,11 +1192,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_set_mode(_plugin_handle, handle)
+        del _entry
 
     def respond_set_mode(self, set_mode_feedback):
         """Get respond_set_mode (blocking)"""
@@ -1230,13 +1248,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_storage_information(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_storage_information(
         self, storage_information_feedback, storage_information
@@ -1293,13 +1314,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_capture_status(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_capture_status(self, capture_status_feedback, capture_status):
         """Get respond_capture_status (blocking)"""
@@ -1354,13 +1378,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_format_storage(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_format_storage(self, format_storage_feedback):
         """Get respond_format_storage (blocking)"""
@@ -1411,13 +1438,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_reset_settings(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_reset_settings(self, reset_settings_feedback):
         """Get respond_reset_settings (blocking)"""
@@ -1468,11 +1498,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_zoom_in_start(_plugin_handle, handle)
+        del _entry
 
     def respond_zoom_in_start(self, zoom_in_start_feedback):
         """Get respond_zoom_in_start (blocking)"""
@@ -1523,13 +1556,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_zoom_out_start(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_zoom_out_start(self, zoom_out_start_feedback):
         """Get respond_zoom_out_start (blocking)"""
@@ -1580,11 +1616,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_zoom_stop(_plugin_handle, handle)
+        del _entry
 
     def respond_zoom_stop(self, zoom_stop_feedback):
         """Get respond_zoom_stop (blocking)"""
@@ -1633,11 +1672,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_zoom_range(_plugin_handle, handle)
+        del _entry
 
     def respond_zoom_range(self, zoom_range_feedback):
         """Get respond_zoom_range (blocking)"""
@@ -1686,11 +1728,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_in_step(_plugin_handle, handle)
+        del _entry
 
     def respond_focus_in_step(self, focus_in_step_feedback):
         """Get respond_focus_in_step (blocking)"""
@@ -1741,13 +1786,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_out_step(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_focus_out_step(self, focus_out_step_feedback):
         """Get respond_focus_out_step (blocking)"""
@@ -1798,13 +1846,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_in_start(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_focus_in_start(self, focus_in_start_feedback):
         """Get respond_focus_in_start (blocking)"""
@@ -1855,13 +1906,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_out_start(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_focus_out_start(self, focus_out_start_feedback):
         """Get respond_focus_out_start (blocking)"""
@@ -1912,11 +1966,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_stop(_plugin_handle, handle)
+        del _entry
 
     def respond_focus_stop(self, focus_stop_feedback):
         """Get respond_focus_stop (blocking)"""
@@ -1965,11 +2022,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_range(_plugin_handle, handle)
+        del _entry
 
     def respond_focus_range(self, focus_range_feedback):
         """Get respond_focus_range (blocking)"""
@@ -2020,11 +2080,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_meters(_plugin_handle, handle)
+        del _entry
 
     def respond_focus_meters(self, focus_meters_feedback):
         """Get respond_focus_meters (blocking)"""
@@ -2075,11 +2138,14 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_auto(_plugin_handle, handle)
+        del _entry
 
     def respond_focus_auto(self, focus_auto_feedback):
         """Get respond_focus_auto (blocking)"""
@@ -2128,13 +2194,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_auto_single(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_focus_auto_single(self, focus_auto_single_feedback):
         """Get respond_focus_auto_single (blocking)"""
@@ -2187,13 +2256,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_focus_auto_continuous(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_focus_auto_continuous(self, focus_auto_continuous_feedback):
         """Get respond_focus_auto_continuous (blocking)"""
@@ -2265,13 +2337,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_tracking_point_command(
             _plugin_handle, handle
         )
+        del _entry
 
     def subscribe_tracking_rectangle_command(
         self, callback: Callable, user_data: Any = None
@@ -2315,13 +2390,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
             _plugin_handle, handle
         )
+        del _entry
 
     def subscribe_tracking_off_command(self, callback: Callable, user_data: Any = None):
         """Subscribe to incoming tracking off command."""
@@ -2357,13 +2435,16 @@ class CameraServer:
         with self._destroy_lock:
             if not self._handle:
                 return
-            if self._subscriptions.pop(handle, None) is None:
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
                 return
             _plugin_handle = self._handle
 
         self._lib.mavsdk_camera_server_unsubscribe_tracking_off_command(
             _plugin_handle, handle
         )
+        del _entry
 
     def respond_tracking_point_command(self, stop_video_feedback):
         """Get respond_tracking_point_command (blocking)"""
