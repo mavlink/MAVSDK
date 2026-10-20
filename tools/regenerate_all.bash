@@ -133,7 +133,7 @@ check_tools() {
     need_command git
     need_command python3
 
-    if { [ "${do_code}" = true ] && ! have_protoc; } || [ "${do_docs}" = true ]; then
+    if [ "${do_code}" = true ] && ! have_protoc; then
         need_command cmake
         need_command make
         need_command c++
