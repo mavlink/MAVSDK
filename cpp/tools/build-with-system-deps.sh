@@ -38,7 +38,7 @@ mkdir -p "${DEPS_INSTALL_DIR}"
 
 # Build MAVLink
 # Use the same version as MAVSDK's superbuild (see third_party/CMakeLists.txt)
-MAVLINK_VERSION="85a6bf81b6aeda9267bb55d1b44d16bfb9ab3006"
+MAVLINK_VERSION="87da370c02e40f6f9a2eacf1b162d7f07e640467"
 echo "=== Building MAVLink (${MAVLINK_VERSION}) ==="
 if [ ! -d "${DEPS_DIR}/mavlink" ]; then
     git clone https://github.com/mavlink/mavlink.git "${DEPS_DIR}/mavlink"
@@ -84,7 +84,7 @@ cmake --install "${DEPS_DIR}/PicoSHA2/build" --prefix "${DEPS_INSTALL_DIR}"
 
 # Build libmav
 echo "=== Building libmav ==="
-LIBMAV_VERSION="fbcb13faa08f80fa1830c297fdbc51900d9a0306"
+LIBMAV_VERSION="1aafc0cdd5344ee0bbcf0d7abe2f8d21e0a004cb"
 if [ ! -d "${DEPS_DIR}/libmav" ]; then
     git clone https://github.com/julianoes/libmavlike "${DEPS_DIR}/libmav"
 fi

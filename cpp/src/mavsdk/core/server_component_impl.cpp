@@ -190,13 +190,16 @@ bool ServerComponentImpl::send_message(mavlink_message_t& message)
     return _mavsdk_impl.send_message(message);
 }
 
-bool ServerComponentImpl::send_command_ack(
-    mavlink_command_ack_t& command_ack, uint32_t target_system_id)
+bool ServerComponentImpl::send_command_ack(const CommandAck& command_ack)
 {
-    // mavlink_command_ack_t's target_system is only 8 bits wide, so a target
-    // above 255 has to be passed alongside it. Zero means "use the struct".
-    const uint32_t target = target_system_id != 0 ? target_system_id : command_ack.target_system;
+    return send_command_ack(command_ack, command_ack.target_system_id);
+}
 
+bool ServerComponentImpl::send_command_ack(
+    const mavlink_command_ack_t& command_ack, uint32_t target_system_id)
+{
+    // Packed rather than encoded, so that a target above 255 ends up in the extended header
+    // instead of being truncated into the 8 bit target_system field.
     return queue_message([&, this](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
         mavlink_msg_command_ack_pack_chan(
@@ -208,7 +211,7 @@ bool ServerComponentImpl::send_command_ack(
             command_ack.result,
             command_ack.progress,
             command_ack.result_param2,
-            target,
+            target_system_id,
             command_ack.target_component);
         return message;
     });
@@ -260,38 +263,36 @@ void ServerComponentImpl::remove_call_every_blocking(CallEveryHandler::Cookie co
     _mavsdk_impl.call_every_handler.remove_blocking(cookie);
 }
 
-mavlink_command_ack_t ServerComponentImpl::make_command_ack_message(
+ServerComponentImpl::CommandAck ServerComponentImpl::make_command_ack_message(
     const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result)
 {
-    mavlink_command_ack_t command_ack{};
+    CommandAck command_ack{};
     command_ack.command = command.command;
     command_ack.result = result;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.result_param2 = 0;
-    // The payload field is only 8 bits. A wider origin cannot be represented
-    // here and reads as a broadcast, matching what the wire does for an
-    // extended target; send_command_ack() takes the full value separately.
-    command_ack.target_system =
-        command.origin_system_id > 255 ? 0 : static_cast<uint8_t>(command.origin_system_id);
+    // The payload field is only 8 bits, so an origin above 255 is replaced by the same
+    // non-broadcast sentinel the wire uses. send_command_ack() uses the full value.
+    command_ack.target_system = mavlink_msg_target_field(command.origin_system_id);
     command_ack.target_component = command.origin_component_id;
+    command_ack.target_system_id = command.origin_system_id;
 
     return command_ack;
 }
 
-mavlink_command_ack_t ServerComponentImpl::make_command_ack_message(
+ServerComponentImpl::CommandAck ServerComponentImpl::make_command_ack_message(
     const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result)
 {
-    mavlink_command_ack_t command_ack{};
+    CommandAck command_ack{};
     command_ack.command = command.command;
     command_ack.result = result;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.result_param2 = 0;
-    // The payload field is only 8 bits. A wider origin cannot be represented
-    // here and reads as a broadcast, matching what the wire does for an
-    // extended target; send_command_ack() takes the full value separately.
-    command_ack.target_system =
-        command.origin_system_id > 255 ? 0 : static_cast<uint8_t>(command.origin_system_id);
+    // The payload field is only 8 bits, so an origin above 255 is replaced by the same
+    // non-broadcast sentinel the wire uses. send_command_ack() uses the full value.
+    command_ack.target_system = mavlink_msg_target_field(command.origin_system_id);
     command_ack.target_component = command.origin_component_id;
+    command_ack.target_system_id = command.origin_system_id;
 
     return command_ack;
 }

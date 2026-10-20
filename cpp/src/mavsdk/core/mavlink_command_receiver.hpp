@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mavlink_include.hpp"
+#include "mavlink_target.hpp"
 #include <cmath>
 #include <cstdint>
 #include <string>
@@ -44,7 +45,7 @@ public:
             mavlink_command_int_t command_int;
             mavlink_msg_command_int_decode(&message, &command_int);
 
-            target_system_id = command_int.target_system;
+            target_system_id = mavsdk::target_system_id(message);
             target_component_id = command_int.target_component;
             origin_system_id = message.sysid;
             origin_component_id = message.compid;
@@ -86,7 +87,7 @@ public:
             mavlink_command_long_t command_long;
             mavlink_msg_command_long_decode(&message, &command_long);
 
-            target_system_id = command_long.target_system;
+            target_system_id = mavsdk::target_system_id(message);
             target_component_id = command_long.target_component;
             origin_system_id = message.sysid;
             origin_component_id = message.compid;

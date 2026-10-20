@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "mavlink_mission_transfer_client.hpp"
+#include "mavlink_target.hpp"
 #include "log.hpp"
 #include "unused.hpp"
 
@@ -423,7 +424,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request(
             request_message.sysid,
             request_message.compid,
             &request_int_message,
-            request.target_system,
+            target_system_id(request_message),
             request.target_component,
             request.seq,
             request.mission_type);

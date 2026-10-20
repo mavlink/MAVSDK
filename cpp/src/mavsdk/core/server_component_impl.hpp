@@ -130,8 +130,15 @@ public:
 
     Time& get_time();
 
+    // A command ack together with the full system ID it goes to. The target_system field of
+    // mavlink_command_ack_t is only 8 bits wide, so it can't hold a command's origin above 255.
+    struct CommandAck : mavlink_command_ack_t {
+        uint32_t target_system_id{0};
+    };
+
     bool send_message(mavlink_message_t& message);
-    bool send_command_ack(mavlink_command_ack_t& command_ack, uint32_t target_system_id = 0);
+    bool send_command_ack(const CommandAck& command_ack);
+    bool send_command_ack(const mavlink_command_ack_t& command_ack, uint32_t target_system_id);
 
     bool queue_message(
         std::function<mavlink_message_t(MavlinkAddress mavlink_addres, uint8_t channel)> fun);
@@ -152,9 +159,9 @@ public:
     // callback itself takes.
     void remove_call_every_blocking(CallEveryHandler::Cookie cookie);
 
-    mavlink_command_ack_t
+    CommandAck
     make_command_ack_message(const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result);
-    mavlink_command_ack_t
+    CommandAck
     make_command_ack_message(const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result);
 
     void send_heartbeat();
