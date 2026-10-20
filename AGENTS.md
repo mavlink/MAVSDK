@@ -3,26 +3,22 @@
 ## Regenerating from proto
 
 Proto changes drive generated code for **all** language bindings, not just C++.
-After editing a `.proto` (in the `proto` submodule), reproduce what CI's
-"style and proto check" does, from the repo root:
+After editing a `.proto` (in the `proto` submodule), run from the repo root:
 
 ```bash
-# 1. Make sure configure step in C++ is available, e.g.
-(cd cpp && cmake -Bbuild-debug-with-server -DCMAKE_BUILD_TYPE=Debug -S. -DBUILD_MAVSDK_SERVER=ON)
-
-# 2. Regenerate every language (C++, C, Python, JNI, Kotlin)
-tools/generate_from_protos.bash --build-dir cpp/build-debug-with-server
-
-# 3. Fix C++ style
-(cd cpp && tools/fix_style.py --quiet .)
-
-# 4. Fix Kotlin style (ktfmt via the gradle wrapper)
-(cd kt/mavsdk-kotlin && ./gradlew ktfmtFormat --console=plain)
+tools/regenerate_all.bash
 ```
 
-Then commit all of the resulting changes. CI's "style and proto check"
-(`.github/workflows/linux.yml`) runs exactly these steps and then
-`git diff --exit-code`, so any file you forget to regenerate fails there.
+It regenerates every language (C++, C, Python, JNI, Kotlin), fixes C++ and
+Kotlin style and regenerates the C++ API docs. If a required tool is missing
+(e.g. clang-format 21, JDK 21, doxygen 1.15.0), it pulls the CI image and runs
+itself in docker/podman instead. CI's "style and proto check" and "docs check"
+(`.github/workflows/linux.yml`) run this same script and then
+`git diff --exit-code`.
+
+Useful options: `--skip-docs` (much faster), `--build-dir DIR` to reuse an
+existing C++ build that has protoc in `third_party/install`, `--container` /
+`--no-container`, `--no-pull`.
 
 Note that `cpp/tools/generate_from_protos.sh` only regenerates C++ — that is not
 enough on its own.

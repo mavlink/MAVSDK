@@ -447,14 +447,6 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - name: Install tools
-        run: |
-          sudo apt-get update && sudo apt-get install -y \
-            python3-venv \
-            libasio-dev \
-            libfmt-dev \
-            nlohmann-json3-dev \
-            openjdk-21-jdk-headless
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -469,27 +461,14 @@ jobs:
           restore-keys: |
             ubuntu-superbuild-26.04-gcc-15-${{ hashFiles('./cpp/third_party/**') }}-
             ubuntu-superbuild-
-      - name: disable superbuild on cache restore
-        run: |
-          if [ -f "build/release/third_party/install/bin/protoc" ]; then
-            echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
-            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
-          fi
-      - name: build necessary protoc tooling
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/release -H.
+      - name: regenerate code and fix style
+        working-directory: .
+        run: tools/regenerate_all.bash --no-container --skip-docs --build-dir cpp/build/release
       - uses: actions/cache/save@v5
         if: ${{ github.ref == 'refs/heads/main' && steps.cache.outputs.cache-hit != 'true' }}
         with:
           path: ./cpp/build/release/third_party/install
           key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-5
-      - name: generate code from protos
-        working-directory: .
-        run: PATH="$PATH:$HOME/.local/bin:$(pwd)/cpp/build/release/third_party/install/bin" tools/generate_from_protos.bash
-      - name: fix style
-        run: tools/fix_style.py . || true
-      - name: fix kotlin style
-        working-directory: kt/mavsdk-kotlin
-        run: ./gradlew ktfmtFormat --console=plain
       - name: check for diff
         run: git diff --exit-code
 
@@ -512,7 +491,8 @@ jobs:
       - name: git get version tags
         run: git fetch --tags
       - name: generate docs
-        run: tools/generate_docs.sh --overwrite
+        working-directory: .
+        run: tools/regenerate_all.bash --no-container --docs-only
       - name: check for diff
         run: git diff --exit-code
 
