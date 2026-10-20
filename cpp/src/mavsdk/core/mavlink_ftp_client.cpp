@@ -868,11 +868,22 @@ bool MavlinkFtpClient::burst_absorb(
     if (offset > item.current_offset) {
         // We missed a part. Note it down and write zeros as a placeholder, so that the
         // file has the right length while we wait for the real bytes.
-        item.missing_data.emplace_back(
-            DownloadBurstItem::MissingData{item.current_offset, offset - item.current_offset});
+        const size_t gap = offset - item.current_offset;
+
+        // The offset comes from the (untrusted) server's burst packet. A legitimate
+        // burst only ever skips a handful of lost packets, so reject an implausibly
+        // large gap instead of allocating and writing a zero buffer of
+        // attacker-controlled size (CWE-770 / CWE-789).
+        static constexpr size_t kMaxBurstGap = 2 * 1024 * 1024;
+        if (gap > kMaxBurstGap) {
+            LogWarn("Burst gap too large ({} bytes), aborting download", gap);
+            return false;
+        }
+
+        item.missing_data.emplace_back(DownloadBurstItem::MissingData{item.current_offset, gap});
 
         item.ofstream.seekp(item.current_offset);
-        const std::vector<char> empty(offset - item.current_offset, 0);
+        const std::vector<char> empty(gap, 0);
         item.ofstream.write(empty.data(), empty.size());
         if (!item.ofstream) {
             LogWarn("Write failed");
