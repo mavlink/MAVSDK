@@ -8,9 +8,28 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
+#include <vector>
 
 #include <mavsdk/mavsdk.hpp>
 #include "mavlink_include.hpp"
+
+// Build the list of valid dialect message IDs once, so the fuzzer only emits
+// messages that map to a real message entry. The previous code derived the id
+// from a single byte (fuzz_data[offset + 2]), limiting it to ids 0..255 and
+// missing every higher id in the dialect (e.g. the 300/11000-range messages).
+static const std::vector<uint32_t>& valid_msg_ids()
+{
+    static const std::vector<uint32_t> ids = [] {
+        std::vector<uint32_t> v;
+        for (uint32_t id = 0; id <= 300000; ++id) {
+            if (mavlink_get_msg_entry(id) != nullptr) {
+                v.push_back(id);
+            }
+        }
+        return v;
+    }();
+    return ids;
+}
 #include "../mavsdk/core/log.hpp"
 
 // Include all client plugins (not server plugins)
@@ -353,7 +372,12 @@ size_t MavsdkFuzzer::process_fuzz_data_to_mavlink(
         // Use fixed system ID and component ID for better plugin message routing
         uint8_t system_id = 1; // Fixed to ensure consistent message routing
         uint8_t component_id = 1; // Fixed to ensure consistent message routing
-        uint8_t msg_id = fuzz_data[offset + 2];
+        // Select a valid dialect message id from two fuzz bytes (the single-byte
+        // id used before could only reach ids 0..255).
+        const std::vector<uint32_t>& vids = valid_msg_ids();
+        const uint32_t sel = (static_cast<uint32_t>(fuzz_data[offset + 2]) << 8) ^
+                             static_cast<uint32_t>(fuzz_data[offset + 1]);
+        const uint32_t msg_id = vids.empty() ? 0u : vids[sel % vids.size()];
 
         // Fill the message with fuzz data
         msg.msgid = msg_id;
@@ -373,14 +397,22 @@ size_t MavsdkFuzzer::process_fuzz_data_to_mavlink(
             msg.len = 0;
         }
 
-        // The key insight from PX4: let MAVLink calculate the correct checksum
-        // This ensures the message passes basic validation and reaches deeper processing
+        // Use the real crc_extra / min_length / max_length for this message id,
+        // so the receiver's CRC check passes and the message actually reaches its
+        // handler. Finalizing with crc_extra = 0 (as before) made every frame fail
+        // the receiver's CRC and get dropped, so only the framing layer was ever
+        // exercised, never the plugin message handlers.
+        const mavlink_msg_entry_t* entry = mavlink_get_msg_entry(msg.msgid);
+        const uint8_t crc_extra = entry ? entry->crc_extra : 0;
+        const uint8_t min_len = entry ? entry->min_msg_len : 0;
+        const uint8_t max_len = entry ? entry->max_msg_len : static_cast<uint8_t>(msg.len);
+        if (msg.len > max_len) {
+            msg.len = max_len;
+        }
         msg.checksum = 0; // Will be calculated by mavlink_finalize_message
 
-        // Finalize the message (calculates correct checksum)
-        // For fuzzing, we don't know the actual min_length and crc_extra,
-        // so we use generic values that will still create a valid checksum
-        mavlink_finalize_message(&msg, system_id, component_id, msg.len, msg.len, 0);
+        // Finalize the message (calculates the correct checksum).
+        mavlink_finalize_message(&msg, system_id, component_id, min_len, msg.len, crc_extra);
 
         // Convert to send buffer
         size_t message_length =
