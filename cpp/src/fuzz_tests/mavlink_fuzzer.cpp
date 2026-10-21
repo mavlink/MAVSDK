@@ -412,7 +412,8 @@ size_t MavsdkFuzzer::process_fuzz_data_to_mavlink(
         msg.checksum = 0; // Will be calculated by mavlink_finalize_message
 
         // Finalize the message (calculates the correct checksum).
-        mavlink_finalize_message(&msg, system_id, component_id, entry->min_msg_len, msg.len, entry->crc_extra);
+        mavlink_finalize_message(
+            &msg, system_id, component_id, entry->min_msg_len, msg.len, entry->crc_extra);
 
         // Convert to send buffer
         size_t message_length =
