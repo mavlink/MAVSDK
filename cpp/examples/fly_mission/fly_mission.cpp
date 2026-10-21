@@ -76,7 +76,7 @@ int main(int argc, char** argv)
     auto mission = Mission{system.value()};
     auto telemetry = Telemetry{system.value()};
 
-    while (!telemetry.health_all_ok()) {
+    while (!telemetry.health_all_ok() || !telemetry.health().is_armable) {
         std::cout << "Waiting for system to be ready\n";
         sleep_for(seconds(1));
     }

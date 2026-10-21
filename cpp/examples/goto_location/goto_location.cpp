@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     auto action = Action{system.value()};
 
     // Check until vehicle is ready to arm
-    while (telemetry.health_all_ok() != true) {
+    while (!telemetry.health_all_ok() || !telemetry.health().is_armable) {
         std::cout << "Vehicle is getting ready to arm\n";
         sleep_for(seconds(1));
     }
