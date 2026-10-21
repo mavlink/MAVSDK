@@ -105,7 +105,7 @@ void takeoff_and_land(std::shared_ptr<System> system)
     });
 
     // Check if vehicle is ready to arm
-    while (telemetry.health_all_ok() != true) {
+    while (!telemetry.health_all_ok() || !telemetry.health().is_armable) {
         std::cout << "Vehicle is getting ready to arm\n";
         sleep_for(seconds(1));
     }

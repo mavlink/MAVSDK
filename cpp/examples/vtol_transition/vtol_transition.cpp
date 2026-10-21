@@ -67,7 +67,7 @@ int main(int argc, char** argv)
     });
 
     // Wait until we are ready to arm.
-    while (!telemetry.health_all_ok()) {
+    while (!telemetry.health_all_ok() || !telemetry.health().is_armable) {
         std::cout << "Waiting for vehicle to be ready to arm...\n";
         sleep_for(seconds(1));
     }

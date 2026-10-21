@@ -59,11 +59,12 @@ The vehicle will only take off once *armed*, and can only arm once it is "health
 
 ### Health Check
 
-The code fragment below shows very simple code to synchronously poll for health status (using [Telemetry:health_all_ok()](../api_reference/classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ad6d833741b5576f07204d268c5cd4d06)) prior to arming:
+The code fragment below shows very simple code to synchronously poll for health status (using [Telemetry:health_all_ok()](../api_reference/classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ad6d833741b5576f07204d268c5cd4d06)) prior to arming.
+`is_armable` additionally covers the autopilot's own pre-arm checks, such as PX4 waiting for a ground station connection:
 
 ```cpp
 // Wait until health is OK and vehicle is ready to arm
-while (telemetry.health_all_ok() != true) {
+while (!telemetry.health_all_ok() || !telemetry.health().is_armable) {
     std::cout << "Vehicle not ready to arm ..." << '\n';
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
@@ -97,7 +98,7 @@ if (calibration_required) {
 
 
 // Check if ready to arm (reporting status)
-while (telemetry.health_all_ok() != true) {
+while (!telemetry.health_all_ok() || !telemetry.health().is_armable) {
     std::cout << ERROR_CONSOLE_TEXT << "Vehicle not ready to arm. Waiting on:" << NORMAL_CONSOLE_TEXT << '\n';
     Telemetry::Health current_health = telemetry.health();
     if (!current_health.global_position_ok) {
@@ -108,6 +109,9 @@ while (telemetry.health_all_ok() != true) {
     }
     if (!current_health.home_position_ok) {
         std::cout << ERROR_CONSOLE_TEXT << "  - Home position to be set." << NORMAL_CONSOLE_TEXT << '\n';
+    }
+    if (!current_health.is_armable) {
+        std::cout << ERROR_CONSOLE_TEXT << "  - Autopilot pre-arm checks." << NORMAL_CONSOLE_TEXT << '\n';
     }
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }

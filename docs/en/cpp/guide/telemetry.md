@@ -196,7 +196,7 @@ For example, the following code shows how you might poll for whether the vehicle
 
 ```cpp
 // Check if vehicle is ready to arm
-while (!telemetry.health_all_ok()) {
+while (!telemetry.health_all_ok() || !telemetry.health().is_armable) {
     std::cout << "Vehicle not ready to arm" << '\n';
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
