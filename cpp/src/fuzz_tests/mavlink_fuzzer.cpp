@@ -402,17 +402,17 @@ size_t MavsdkFuzzer::process_fuzz_data_to_mavlink(
         // handler. Finalizing with crc_extra = 0 (as before) made every frame fail
         // the receiver's CRC and get dropped, so only the framing layer was ever
         // exercised, never the plugin message handlers.
+        // msg.msgid always comes from valid_msg_ids(), i.e. ids for which
+        // mavlink_get_msg_entry() is non-null, so the lookup is guaranteed to succeed.
         const mavlink_msg_entry_t* entry = mavlink_get_msg_entry(msg.msgid);
-        const uint8_t crc_extra = entry ? entry->crc_extra : 0;
-        const uint8_t min_len = entry ? entry->min_msg_len : 0;
-        const uint8_t max_len = entry ? entry->max_msg_len : static_cast<uint8_t>(msg.len);
+        const uint8_t max_len = entry->max_msg_len;
         if (msg.len > max_len) {
             msg.len = max_len;
         }
         msg.checksum = 0; // Will be calculated by mavlink_finalize_message
 
         // Finalize the message (calculates the correct checksum).
-        mavlink_finalize_message(&msg, system_id, component_id, min_len, msg.len, crc_extra);
+        mavlink_finalize_message(&msg, system_id, component_id, entry->min_msg_len, msg.len, entry->crc_extra);
 
         // Convert to send buffer
         size_t message_length =
