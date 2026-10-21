@@ -32,6 +32,9 @@ template class MAVSDK_TEMPL_INST CallbackList<Camera::CaptureInfo>;
 template class MAVSDK_TEMPL_INST CallbackList<Camera::VideoStreamInfo>;
 template class MAVSDK_TEMPL_INST CallbackList<Camera::Storage>;
 
+// Image indices come from the camera, so cap how many missing ones we track.
+static constexpr int max_missing_images = 1000;
+
 CameraImpl::CameraImpl(System& system) : PluginImplBase(system)
 {
     _system_impl->register_plugin(this);
@@ -1355,7 +1358,9 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
             // Save captured indices that have been dropped to request later, however, don't
             // do it from the very beginning as there might be many photos from a previous
             // time that we don't want to request.
-            for (int i = camera.capture_info.last_advertised_image_index + 1;
+            for (int i = std::max(
+                     camera.capture_info.last_advertised_image_index + 1,
+                     capture_info.index - max_missing_images);
                  i < capture_info.index;
                  ++i) {
                 if (camera.capture_info.missing_image_retries.find(i) ==
@@ -2624,7 +2629,10 @@ void CameraImpl::list_photos_async(
             [](auto& a, auto& b) { return a.first < b.first; });
 
         if (oldest_photo_it != camera.capture_status.photo_list.end()) {
-            for (int i = 0; i < oldest_photo_it->first; ++i) {
+            const int oldest_index = oldest_photo_it->first;
+            const int start_index =
+                oldest_index > max_missing_images ? oldest_index - max_missing_images : 0;
+            for (int i = start_index; i < oldest_index; ++i) {
                 if (camera.capture_info.missing_image_retries.find(i) ==
                     camera.capture_info.missing_image_retries.end()) {
                     camera.capture_info.missing_image_retries[i] = 0;
