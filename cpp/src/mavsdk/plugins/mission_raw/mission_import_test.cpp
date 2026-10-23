@@ -671,3 +671,20 @@ TEST(MissionRaw, ImportMissionPlannerWithGlobalFrame)
     EXPECT_EQ(item.x, 473978101); // Should be scaled by 1e7
     EXPECT_EQ(item.y, 85455380); // Should be scaled by 1e7
 }
+
+TEST(MissionRaw, ImportMissionPlannerWithTerrainAltFrame)
+{
+    // Test with MAV_FRAME_GLOBAL_TERRAIN_ALT (10) which should also apply 1e7 scaling
+    const std::string mission_string =
+        "QGC WPL 110\n0\t1\t10\t16\t0\t0\t0\t0\t47.3978101\t8.5455380\t15\t1\n";
+
+    const auto result_pair = MissionImport::parse_mission_planner(mission_string, Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+    EXPECT_EQ(result_pair.second.mission_items.size(), 1);
+
+    const auto& item = result_pair.second.mission_items[0];
+    EXPECT_EQ(item.frame, MAV_FRAME_GLOBAL_TERRAIN_ALT);
+    EXPECT_EQ(item.command, MAV_CMD_NAV_WAYPOINT);
+    EXPECT_EQ(item.x, 473978101); // Should be scaled by 1e7
+    EXPECT_EQ(item.y, 85455380); // Should be scaled by 1e7
+}

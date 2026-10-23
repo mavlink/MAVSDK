@@ -704,7 +704,9 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     // For lat/lon coordinates, convert from degrees to degrees * 10^7
     if (item.frame == MAV_FRAME_GLOBAL || item.frame == MAV_FRAME_GLOBAL_INT ||
         item.frame == MAV_FRAME_GLOBAL_RELATIVE_ALT ||
-        item.frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
+        item.frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT ||
+        item.frame == MAV_FRAME_GLOBAL_TERRAIN_ALT ||
+        item.frame == MAV_FRAME_GLOBAL_TERRAIN_ALT_INT) {
         item.x = static_cast<int32_t>(std::round(x_val * 1e7));
         item.y = static_cast<int32_t>(std::round(y_val * 1e7));
     } else {
