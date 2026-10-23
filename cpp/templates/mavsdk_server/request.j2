@@ -25,7 +25,7 @@ grpc::Status {{ name.upper_camel_case }}(
     }
     {%- endif %}
 
-    auto result = _lazy_plugin.maybe_plugin()->{{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.name.upper_camel_case }}({% endif %}request->{{ param.name.lower_snake_case }}(){% if not param.type_info.is_primitive %}){% endif %}{{ ", " if not loop.last }}{% endfor %});
+    auto result = _lazy_plugin.maybe_plugin()->{{ name.lower_snake_case }}({% for param in params %}{% if not param.type_info.is_primitive %}translateFromRpc{{ param.type_info.inner_name }}({% endif %}request->{{ param.name.lower_snake_case }}(){% if not param.type_info.is_primitive %}){% endif %}{{ ", " if not loop.last }}{% endfor %});
 
     if (response != nullptr) {
         {% if has_result %}fillResponseWithResult(response, result.first);{% endif %}
