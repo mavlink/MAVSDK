@@ -830,13 +830,13 @@ jobs:
             python_exec_auditwheel: /opt/python/cp39-cp39/bin/python3
             python_plat_name_arg: ""
             auditwheel_plat: manylinux_2_28_x86_64
-          - arch_name: manylinux2014-aarch64
+          - arch_name: manylinux_2_28-aarch64
             artifact_arch: aarch64
             python_exec: /opt/python/cp39-cp39-xc/bin/build-python3
             python_exec_pip: /opt/python/cp39-cp39-xc/bin/build-pip
             python_exec_auditwheel: /opt/python/cp39-cp39-xc/bin/cross-python3
             python_plat_name_arg: "--plat-name linux_aarch64"
-            auditwheel_plat: manylinux2014_aarch64
+            auditwheel_plat: manylinux_2_28_aarch64
     steps:
       - uses: actions/checkout@v6
         with:
