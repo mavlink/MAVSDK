@@ -27,6 +27,7 @@ static const char* MavlinkDirectService_method_names[] = {
   "/mavsdk.rpc.mavlink_direct.MavlinkDirectService/SendMessage",
   "/mavsdk.rpc.mavlink_direct.MavlinkDirectService/SubscribeMessage",
   "/mavsdk.rpc.mavlink_direct.MavlinkDirectService/LoadCustomXml",
+  "/mavsdk.rpc.mavlink_direct.MavlinkDirectService/SendCommand",
 };
 
 std::unique_ptr< MavlinkDirectService::Stub> MavlinkDirectService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -39,6 +40,7 @@ MavlinkDirectService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface
   : channel_(channel), rpcmethod_SendMessage_(MavlinkDirectService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeMessage_(MavlinkDirectService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_LoadCustomXml_(MavlinkDirectService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SendCommand_(MavlinkDirectService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MavlinkDirectService::Stub::SendMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SendMessageRequest& request, ::mavsdk::rpc::mavlink_direct::SendMessageResponse* response) {
@@ -103,6 +105,29 @@ void MavlinkDirectService::Stub::async::LoadCustomXml(::grpc::ClientContext* con
   return result;
 }
 
+::grpc::Status MavlinkDirectService::Stub::SendCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SendCommandRequest& request, ::mavsdk::rpc::mavlink_direct::SendCommandResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mavlink_direct::SendCommandRequest, ::mavsdk::rpc::mavlink_direct::SendCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SendCommand_, context, request, response);
+}
+
+void MavlinkDirectService::Stub::async::SendCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SendCommandRequest* request, ::mavsdk::rpc::mavlink_direct::SendCommandResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mavlink_direct::SendCommandRequest, ::mavsdk::rpc::mavlink_direct::SendCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SendCommand_, context, request, response, std::move(f));
+}
+
+void MavlinkDirectService::Stub::async::SendCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SendCommandRequest* request, ::mavsdk::rpc::mavlink_direct::SendCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SendCommand_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mavlink_direct::SendCommandResponse>* MavlinkDirectService::Stub::PrepareAsyncSendCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SendCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::mavlink_direct::SendCommandResponse, ::mavsdk::rpc::mavlink_direct::SendCommandRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SendCommand_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mavlink_direct::SendCommandResponse>* MavlinkDirectService::Stub::AsyncSendCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SendCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSendCommandRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 MavlinkDirectService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MavlinkDirectService_method_names[0],
@@ -134,6 +159,16 @@ MavlinkDirectService::Service::Service() {
              ::mavsdk::rpc::mavlink_direct::LoadCustomXmlResponse* resp) {
                return service->LoadCustomXml(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MavlinkDirectService_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MavlinkDirectService::Service, ::mavsdk::rpc::mavlink_direct::SendCommandRequest, ::mavsdk::rpc::mavlink_direct::SendCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MavlinkDirectService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::mavlink_direct::SendCommandRequest* req,
+             ::mavsdk::rpc::mavlink_direct::SendCommandResponse* resp) {
+               return service->SendCommand(ctx, req, resp);
+             }, this)));
 }
 
 MavlinkDirectService::Service::~Service() {
@@ -154,6 +189,13 @@ MavlinkDirectService::Service::~Service() {
 }
 
 ::grpc::Status MavlinkDirectService::Service::LoadCustomXml(::grpc::ServerContext* context, const ::mavsdk::rpc::mavlink_direct::LoadCustomXmlRequest* request, ::mavsdk::rpc::mavlink_direct::LoadCustomXmlResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MavlinkDirectService::Service::SendCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::mavlink_direct::SendCommandRequest* request, ::mavsdk::rpc::mavlink_direct::SendCommandResponse* response) {
   (void) context;
   (void) request;
   (void) response;

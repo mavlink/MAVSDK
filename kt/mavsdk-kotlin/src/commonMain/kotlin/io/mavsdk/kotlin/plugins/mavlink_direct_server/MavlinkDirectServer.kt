@@ -103,6 +103,30 @@ class MavlinkDirectServer internal constructor(private val native: MavlinkDirect
     fun loadCustomXml(xmlContent: String): Result =
         Result.fromValue(native.loadCustomXml(xmlContent))
 
+    /**
+     * Subscribe to incoming commands with a given command ID.
+     *
+     * Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are addressed to
+     * this server component; check message_name to see which one it is.
+     *
+     * While subscribed, MAVSDK does not ack the command itself, so every command received must be
+     * answered by sending a COMMAND_ACK with SendMessage, addressed to the sender
+     * (system_id/component_id of the received command) and with "command" set to the command ID.
+     * For a command that takes a while, send acks with MAV_RESULT_IN_PROGRESS and "progress" in
+     * percent (255 if unknown) about once per second while it runs, so the sender knows it is still
+     * going, then the final result.
+     *
+     * The sender may retransmit the command if the ack is lost, so the same command can arrive more
+     * than once.
+     *
+     * @param command MAV_CMD to subscribe to
+     * @return The received COMMAND_LONG or COMMAND_INT
+     */
+    fun subscribeCommand(command: Int): Flow<MavlinkMessage> = callbackFlow {
+        val subscriptionHandle = native.subscribeCommand(command) { value -> trySend(value) }
+        awaitClose { native.unsubscribeCommand(subscriptionHandle) }
+    }
+
     internal fun destroy() {
         if (closed) return
         closed = true
@@ -123,6 +147,10 @@ internal interface MavlinkDirectServerNative {
     fun unsubscribeMessage(subscriptionHandle: Long)
 
     fun loadCustomXml(xmlContent: String): Int
+
+    fun subscribeCommand(command: Int, callback: (MavlinkDirectServer.MavlinkMessage) -> Unit): Long
+
+    fun unsubscribeCommand(subscriptionHandle: Long)
 
     fun destroy()
 }

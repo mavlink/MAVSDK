@@ -200,6 +200,49 @@ public:
 
 
 
+        
+
+    /**
+     * @brief Callback type for subscribe_command.
+     */
+    using CommandCallback = std::function<void(MavlinkMessage)>;
+
+    /**
+     * @brief Handle type for subscribe_command.
+     */
+    using CommandHandle = Handle<MavlinkMessage>;
+
+    /**
+     * @brief Subscribe to incoming commands with a given command ID.
+     *
+     * Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are
+     * addressed to this server component; check message_name to see which one it is.
+     *
+     * While subscribed, MAVSDK does not ack the command itself, so every command
+     * received must be answered by sending a COMMAND_ACK with SendMessage, addressed
+     * to the sender (system_id/component_id of the received command) and with
+     * "command" set to the command ID. For a command that takes a while, send acks
+     * with MAV_RESULT_IN_PROGRESS and "progress" in percent (255 if unknown) about
+     * once per second while it runs, so the sender knows it is still going, then
+     * the final result.
+     *
+     * The sender may retransmit the command if the ack is lost, so the same command
+     * can arrive more than once.
+     */
+    CommandHandle subscribe_command(uint32_t command, const CommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_command
+     */
+    void unsubscribe_command(CommandHandle handle);
+
+        
+
+
+
+
+
+
     /**
      * @brief Copy constructor.
      */

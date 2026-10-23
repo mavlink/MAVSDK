@@ -71,6 +71,12 @@ extern MavlinkMessageDefaultTypeInternal _MavlinkMessage_default_instance_;
 class MessageResponse;
 struct MessageResponseDefaultTypeInternal;
 extern MessageResponseDefaultTypeInternal _MessageResponse_default_instance_;
+class SendCommandRequest;
+struct SendCommandRequestDefaultTypeInternal;
+extern SendCommandRequestDefaultTypeInternal _SendCommandRequest_default_instance_;
+class SendCommandResponse;
+struct SendCommandResponseDefaultTypeInternal;
+extern SendCommandResponseDefaultTypeInternal _SendCommandResponse_default_instance_;
 class SendMessageRequest;
 struct SendMessageRequestDefaultTypeInternal;
 extern SendMessageRequestDefaultTypeInternal _SendMessageRequest_default_instance_;
@@ -393,7 +399,7 @@ class MavlinkMessage final
     return reinterpret_cast<const MavlinkMessage*>(
         &_MavlinkMessage_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(MavlinkMessage& a, MavlinkMessage& b) { a.Swap(&b); }
   inline void Swap(MavlinkMessage* other) {
     if (other == this) return;
@@ -656,7 +662,7 @@ class MavlinkDirectResult final
     return reinterpret_cast<const MavlinkDirectResult*>(
         &_MavlinkDirectResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(MavlinkDirectResult& a, MavlinkDirectResult& b) { a.Swap(&b); }
   inline void Swap(MavlinkDirectResult* other) {
     if (other == this) return;
@@ -1414,6 +1420,417 @@ class SendMessageRequest final
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::mavsdk::rpc::mavlink_direct::MavlinkMessage* message_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mavlink_5fdirect_2fmavlink_5fdirect_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SendCommandResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mavlink_direct.SendCommandResponse) */ {
+ public:
+  inline SendCommandResponse() : SendCommandResponse(nullptr) {}
+  ~SendCommandResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SendCommandResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SendCommandResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SendCommandResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SendCommandResponse(const SendCommandResponse& from) : SendCommandResponse(nullptr, from) {}
+  inline SendCommandResponse(SendCommandResponse&& from) noexcept
+      : SendCommandResponse(nullptr, std::move(from)) {}
+  inline SendCommandResponse& operator=(const SendCommandResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SendCommandResponse& operator=(SendCommandResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SendCommandResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SendCommandResponse* internal_default_instance() {
+    return reinterpret_cast<const SendCommandResponse*>(
+        &_SendCommandResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(SendCommandResponse& a, SendCommandResponse& b) { a.Swap(&b); }
+  inline void Swap(SendCommandResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SendCommandResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SendCommandResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SendCommandResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SendCommandResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SendCommandResponse& from) { SendCommandResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SendCommandResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mavlink_direct.SendCommandResponse"; }
+
+ protected:
+  explicit SendCommandResponse(::google::protobuf::Arena* arena);
+  SendCommandResponse(::google::protobuf::Arena* arena, const SendCommandResponse& from);
+  SendCommandResponse(::google::protobuf::Arena* arena, SendCommandResponse&& from) noexcept
+      : SendCommandResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMavlinkDirectResultFieldNumber = 1,
+    kAckFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mavlink_direct.MavlinkDirectResult mavlink_direct_result = 1;
+  bool has_mavlink_direct_result() const;
+  void clear_mavlink_direct_result() ;
+  const ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult& mavlink_direct_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* release_mavlink_direct_result();
+  ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* mutable_mavlink_direct_result();
+  void set_allocated_mavlink_direct_result(::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* value);
+  void unsafe_arena_set_allocated_mavlink_direct_result(::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* value);
+  ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* unsafe_arena_release_mavlink_direct_result();
+
+  private:
+  const ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult& _internal_mavlink_direct_result() const;
+  ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* _internal_mutable_mavlink_direct_result();
+
+  public:
+  // .mavsdk.rpc.mavlink_direct.MavlinkMessage ack = 2;
+  bool has_ack() const;
+  void clear_ack() ;
+  const ::mavsdk::rpc::mavlink_direct::MavlinkMessage& ack() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mavlink_direct::MavlinkMessage* release_ack();
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* mutable_ack();
+  void set_allocated_ack(::mavsdk::rpc::mavlink_direct::MavlinkMessage* value);
+  void unsafe_arena_set_allocated_ack(::mavsdk::rpc::mavlink_direct::MavlinkMessage* value);
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* unsafe_arena_release_ack();
+
+  private:
+  const ::mavsdk::rpc::mavlink_direct::MavlinkMessage& _internal_ack() const;
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* _internal_mutable_ack();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mavlink_direct.SendCommandResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SendCommandResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* mavlink_direct_result_;
+    ::mavsdk::rpc::mavlink_direct::MavlinkMessage* ack_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mavlink_5fdirect_2fmavlink_5fdirect_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SendCommandRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mavlink_direct.SendCommandRequest) */ {
+ public:
+  inline SendCommandRequest() : SendCommandRequest(nullptr) {}
+  ~SendCommandRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SendCommandRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SendCommandRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SendCommandRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SendCommandRequest(const SendCommandRequest& from) : SendCommandRequest(nullptr, from) {}
+  inline SendCommandRequest(SendCommandRequest&& from) noexcept
+      : SendCommandRequest(nullptr, std::move(from)) {}
+  inline SendCommandRequest& operator=(const SendCommandRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SendCommandRequest& operator=(SendCommandRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SendCommandRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SendCommandRequest* internal_default_instance() {
+    return reinterpret_cast<const SendCommandRequest*>(
+        &_SendCommandRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(SendCommandRequest& a, SendCommandRequest& b) { a.Swap(&b); }
+  inline void Swap(SendCommandRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SendCommandRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SendCommandRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SendCommandRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SendCommandRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SendCommandRequest& from) { SendCommandRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SendCommandRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mavlink_direct.SendCommandRequest"; }
+
+ protected:
+  explicit SendCommandRequest(::google::protobuf::Arena* arena);
+  SendCommandRequest(::google::protobuf::Arena* arena, const SendCommandRequest& from);
+  SendCommandRequest(::google::protobuf::Arena* arena, SendCommandRequest&& from) noexcept
+      : SendCommandRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCommandFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mavlink_direct.MavlinkMessage command = 1;
+  bool has_command() const;
+  void clear_command() ;
+  const ::mavsdk::rpc::mavlink_direct::MavlinkMessage& command() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mavlink_direct::MavlinkMessage* release_command();
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* mutable_command();
+  void set_allocated_command(::mavsdk::rpc::mavlink_direct::MavlinkMessage* value);
+  void unsafe_arena_set_allocated_command(::mavsdk::rpc::mavlink_direct::MavlinkMessage* value);
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* unsafe_arena_release_command();
+
+  private:
+  const ::mavsdk::rpc::mavlink_direct::MavlinkMessage& _internal_command() const;
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* _internal_mutable_command();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mavlink_direct.SendCommandRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SendCommandRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mavlink_direct::MavlinkMessage* command_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2328,6 +2745,302 @@ inline void LoadCustomXmlResponse::set_allocated_mavlink_direct_result(::mavsdk:
 
   _impl_.mavlink_direct_result_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkDirectResult*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mavlink_direct.LoadCustomXmlResponse.mavlink_direct_result)
+}
+
+// -------------------------------------------------------------------
+
+// SendCommandRequest
+
+// .mavsdk.rpc.mavlink_direct.MavlinkMessage command = 1;
+inline bool SendCommandRequest::has_command() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.command_ != nullptr);
+  return value;
+}
+inline void SendCommandRequest::clear_command() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.command_ != nullptr) _impl_.command_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::mavlink_direct::MavlinkMessage& SendCommandRequest::_internal_command() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mavlink_direct::MavlinkMessage* p = _impl_.command_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mavlink_direct::MavlinkMessage&>(::mavsdk::rpc::mavlink_direct::_MavlinkMessage_default_instance_);
+}
+inline const ::mavsdk::rpc::mavlink_direct::MavlinkMessage& SendCommandRequest::command() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.SendCommandRequest.command)
+  return _internal_command();
+}
+inline void SendCommandRequest::unsafe_arena_set_allocated_command(::mavsdk::rpc::mavlink_direct::MavlinkMessage* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.command_);
+  }
+  _impl_.command_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkMessage*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mavlink_direct.SendCommandRequest.command)
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkMessage* SendCommandRequest::release_command() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* released = _impl_.command_;
+  _impl_.command_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkMessage* SendCommandRequest::unsafe_arena_release_command() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mavlink_direct.SendCommandRequest.command)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* temp = _impl_.command_;
+  _impl_.command_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkMessage* SendCommandRequest::_internal_mutable_command() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.command_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mavlink_direct::MavlinkMessage>(GetArena());
+    _impl_.command_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkMessage*>(p);
+  }
+  return _impl_.command_;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkMessage* SendCommandRequest::mutable_command() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* _msg = _internal_mutable_command();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mavlink_direct.SendCommandRequest.command)
+  return _msg;
+}
+inline void SendCommandRequest::set_allocated_command(::mavsdk::rpc::mavlink_direct::MavlinkMessage* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.command_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.command_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkMessage*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mavlink_direct.SendCommandRequest.command)
+}
+
+// -------------------------------------------------------------------
+
+// SendCommandResponse
+
+// .mavsdk.rpc.mavlink_direct.MavlinkDirectResult mavlink_direct_result = 1;
+inline bool SendCommandResponse::has_mavlink_direct_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mavlink_direct_result_ != nullptr);
+  return value;
+}
+inline void SendCommandResponse::clear_mavlink_direct_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mavlink_direct_result_ != nullptr) _impl_.mavlink_direct_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult& SendCommandResponse::_internal_mavlink_direct_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* p = _impl_.mavlink_direct_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult&>(::mavsdk::rpc::mavlink_direct::_MavlinkDirectResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult& SendCommandResponse::mavlink_direct_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.SendCommandResponse.mavlink_direct_result)
+  return _internal_mavlink_direct_result();
+}
+inline void SendCommandResponse::unsafe_arena_set_allocated_mavlink_direct_result(::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mavlink_direct_result_);
+  }
+  _impl_.mavlink_direct_result_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkDirectResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mavlink_direct.SendCommandResponse.mavlink_direct_result)
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* SendCommandResponse::release_mavlink_direct_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* released = _impl_.mavlink_direct_result_;
+  _impl_.mavlink_direct_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* SendCommandResponse::unsafe_arena_release_mavlink_direct_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mavlink_direct.SendCommandResponse.mavlink_direct_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* temp = _impl_.mavlink_direct_result_;
+  _impl_.mavlink_direct_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* SendCommandResponse::_internal_mutable_mavlink_direct_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mavlink_direct_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mavlink_direct::MavlinkDirectResult>(GetArena());
+    _impl_.mavlink_direct_result_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkDirectResult*>(p);
+  }
+  return _impl_.mavlink_direct_result_;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* SendCommandResponse::mutable_mavlink_direct_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* _msg = _internal_mutable_mavlink_direct_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mavlink_direct.SendCommandResponse.mavlink_direct_result)
+  return _msg;
+}
+inline void SendCommandResponse::set_allocated_mavlink_direct_result(::mavsdk::rpc::mavlink_direct::MavlinkDirectResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mavlink_direct_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mavlink_direct_result_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkDirectResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mavlink_direct.SendCommandResponse.mavlink_direct_result)
+}
+
+// .mavsdk.rpc.mavlink_direct.MavlinkMessage ack = 2;
+inline bool SendCommandResponse::has_ack() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ack_ != nullptr);
+  return value;
+}
+inline void SendCommandResponse::clear_ack() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ack_ != nullptr) _impl_.ack_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::mavsdk::rpc::mavlink_direct::MavlinkMessage& SendCommandResponse::_internal_ack() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mavlink_direct::MavlinkMessage* p = _impl_.ack_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mavlink_direct::MavlinkMessage&>(::mavsdk::rpc::mavlink_direct::_MavlinkMessage_default_instance_);
+}
+inline const ::mavsdk::rpc::mavlink_direct::MavlinkMessage& SendCommandResponse::ack() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.SendCommandResponse.ack)
+  return _internal_ack();
+}
+inline void SendCommandResponse::unsafe_arena_set_allocated_ack(::mavsdk::rpc::mavlink_direct::MavlinkMessage* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ack_);
+  }
+  _impl_.ack_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkMessage*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mavlink_direct.SendCommandResponse.ack)
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkMessage* SendCommandResponse::release_ack() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* released = _impl_.ack_;
+  _impl_.ack_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkMessage* SendCommandResponse::unsafe_arena_release_ack() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mavlink_direct.SendCommandResponse.ack)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* temp = _impl_.ack_;
+  _impl_.ack_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkMessage* SendCommandResponse::_internal_mutable_ack() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ack_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mavlink_direct::MavlinkMessage>(GetArena());
+    _impl_.ack_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkMessage*>(p);
+  }
+  return _impl_.ack_;
+}
+inline ::mavsdk::rpc::mavlink_direct::MavlinkMessage* SendCommandResponse::mutable_ack() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::mavlink_direct::MavlinkMessage* _msg = _internal_mutable_ack();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mavlink_direct.SendCommandResponse.ack)
+  return _msg;
+}
+inline void SendCommandResponse::set_allocated_ack(::mavsdk::rpc::mavlink_direct::MavlinkMessage* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ack_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.ack_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkMessage*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mavlink_direct.SendCommandResponse.ack)
 }
 
 // -------------------------------------------------------------------

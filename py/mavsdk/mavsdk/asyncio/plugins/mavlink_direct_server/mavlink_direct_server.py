@@ -105,6 +105,42 @@ class MavlinkDirectServerAsync:
             None, lambda: self._plugin.load_custom_xml(xml_content)
         )
 
+    async def subscribe_command(self, command) -> AsyncGenerator[MavlinkMessage, None]:
+        """
+               Subscribe to incoming commands with a given command ID.
+
+        Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are
+        addressed to this server component; check message_name to see which one it is.
+
+        While subscribed, MAVSDK does not ack the command itself, so every command
+        received must be answered by sending a COMMAND_ACK with SendMessage, addressed
+        to the sender (system_id/component_id of the received command) and with
+        "command" set to the command ID. For a command that takes a while, send acks
+        with MAV_RESULT_IN_PROGRESS and "progress" in percent (255 if unknown) about
+        once per second while it runs, so the sender knows it is still going, then
+        the final result.
+
+        The sender may retransmit the command if the ack is lost, so the same command
+        can arrive more than once.
+
+               Yields
+               ------
+               mavlink_message : MavlinkMessage
+                    The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_command(command, callback)
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            self._plugin.unsubscribe_command(handle)
+
     def destroy(self):
         self._plugin.destroy()
 

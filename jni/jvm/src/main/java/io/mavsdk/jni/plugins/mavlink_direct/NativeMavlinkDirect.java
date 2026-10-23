@@ -44,6 +44,11 @@ public final class NativeMavlinkDirect {
         void invoke(MavlinkMessage value);
     }
 
+    @FunctionalInterface
+    public interface SendCommandCallback {
+        void invoke(int result, MavlinkMessage value);
+    }
+
     public static native long create(long systemHandle);
 
     public static native void destroy(long pluginHandle);
@@ -55,5 +60,9 @@ public final class NativeMavlinkDirect {
     public static native void unsubscribeMessage(long pluginHandle, long subscriptionHandle);
 
     public static native int loadCustomXml(long pluginHandle, String xmlContent);
+
+    public static native MavlinkMessage sendCommand(long pluginHandle, MavlinkMessage command);
+
+    public static native void sendCommandAsync(long pluginHandle, MavlinkMessage command, SendCommandCallback callback);
 
 }

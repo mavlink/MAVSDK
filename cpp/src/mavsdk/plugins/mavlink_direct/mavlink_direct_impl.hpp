@@ -5,6 +5,13 @@
 #include "plugin_impl_base.hpp"
 #include "callback_list.hpp"
 
+#include <optional>
+#include <utility>
+
+namespace mav {
+class Message;
+}
+
 namespace mavsdk {
 
 class MavlinkDirectImpl : public PluginImplBase {
@@ -29,6 +36,12 @@ public:
 
     MavlinkDirect::Result load_custom_xml(const std::string& xml_content);
 
+    void send_command_async(
+        MavlinkDirect::MavlinkMessage command, const MavlinkDirect::SendCommandCallback& callback);
+
+    std::pair<MavlinkDirect::Result, MavlinkDirect::MavlinkMessage>
+    send_command(MavlinkDirect::MavlinkMessage command);
+
 private:
     // Internal callback management
     CallbackList<MavlinkDirect::MavlinkMessage> _callbacks{_system_impl->io_context()};
@@ -36,8 +49,8 @@ private:
 
     bool _debugging = false;
 
-    // Message handling
-    void process_mavlink_message(mavlink_message_t& message);
+    std::pair<MavlinkDirect::Result, std::optional<mav::Message>>
+    create_libmav_message(const MavlinkDirect::MavlinkMessage& message) const;
 };
 
 } // namespace mavsdk

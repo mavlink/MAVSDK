@@ -45,6 +45,17 @@ MavlinkDirect::Result MavlinkDirect::load_custom_xml(std::string xml_content) co
     return _impl->load_custom_xml(xml_content);
 }
 
+void MavlinkDirect::send_command_async(MavlinkMessage command, const SendCommandCallback callback)
+{
+    _impl->send_command_async(command, callback);
+}
+
+std::pair<MavlinkDirect::Result, MavlinkDirect::MavlinkMessage>
+MavlinkDirect::send_command(MavlinkMessage command) const
+{
+    return _impl->send_command(command);
+}
+
 MAVSDK_PUBLIC bool
 operator==(const MavlinkDirect::MavlinkMessage& lhs, const MavlinkDirect::MavlinkMessage& rhs)
 {

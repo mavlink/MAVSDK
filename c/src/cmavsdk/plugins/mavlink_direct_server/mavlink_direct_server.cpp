@@ -245,3 +245,44 @@ mavsdk_mavlink_direct_server_load_custom_xml(
 
     return translate_result(ret_value);
 }
+
+// Command async
+mavsdk_mavlink_direct_server_command_handle_t mavsdk_mavlink_direct_server_subscribe_command(
+    mavsdk_mavlink_direct_server_t mavlink_direct_server,
+    uint32_t command,
+    mavsdk_mavlink_direct_server_command_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_server_wrapper*>(mavlink_direct_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_command(
+        command,
+        [callback, user_data](
+            mavsdk::MavlinkDirectServer::MavlinkMessage value) {
+                if (callback) {
+                    callback(
+                        translate_mavlink_message_to_c(value),
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::MavlinkDirectServer::CommandHandle(std::move(cpp_handle));
+
+    return reinterpret_cast<mavsdk_mavlink_direct_server_command_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_mavlink_direct_server_unsubscribe_command(
+    mavsdk_mavlink_direct_server_t mavlink_direct_server,
+    mavsdk_mavlink_direct_server_command_handle_t handle)
+{
+    if (mavlink_direct_server == nullptr || handle == nullptr) {
+        return;
+    }
+
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_server_wrapper*>(mavlink_direct_server);
+    auto cpp_handle = reinterpret_cast<mavsdk::MavlinkDirectServer::CommandHandle*>(handle);
+
+    wrapper->cpp_plugin->unsubscribe_command(std::move(*cpp_handle));
+    delete cpp_handle;
+}
+
