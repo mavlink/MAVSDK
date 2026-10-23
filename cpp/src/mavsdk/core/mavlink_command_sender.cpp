@@ -274,18 +274,22 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
                             work->identification.command);
                     }
                 }
-                // If we get a progress update, we can raise the timeout
-                // to something higher because we know the initial command
-                // has arrived.
+                // The command has arrived, so from now on we only wait for the next ack
+                // and never retransmit it.
+                work->in_progress = true;
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 work->timeout_cookie = _system_impl.register_timeout_handler(
                     [this, identification = work->identification] {
                         receive_timeout(identification);
                     },
-                    3.0);
+                    in_progress_timeout_s);
 
+                // 255 means the progress is unknown.
                 temp_result = {
-                    Result::InProgress, static_cast<float>(command_ack.progress) / 100.0f};
+                    Result::InProgress,
+                    command_ack.progress == 255 ?
+                        NAN :
+                        static_cast<float>(command_ack.progress) / 100.0f};
                 break;
 
             case MAV_RESULT_CANCELLED:
@@ -347,7 +351,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
 
         found_command = true;
 
-        if (work->retries_to_do > 0) {
+        if (work->retries_to_do > 0 && !work->in_progress) {
             // We're not sure the command arrived, let's retransmit.
             if (_command_debugging) {
                 LogWarn(
