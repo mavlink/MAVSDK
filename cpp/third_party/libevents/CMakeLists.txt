@@ -32,7 +32,7 @@ endforeach()
 ExternalProject_Add(
         libevents
         GIT_REPOSITORY https://github.com/mavlink/libevents.git
-        GIT_TAG 840a88ea226d4eb0fd4c391ce860317422756435
+        GIT_TAG 0ef305faa4cffdb09f01ca862ebfc108b7ff0cd5
         SOURCE_SUBDIR libs/cpp
         CMAKE_ARGS "${CMAKE_ARGS}"
 )

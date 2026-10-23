@@ -49,7 +49,7 @@ ServerComponentImpl::ServerComponentImpl(
 
     _mavlink_request_message_handler.register_handler(
         MAVLINK_MSG_ID_PROTOCOL_VERSION,
-        [this](uint8_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
+        [this](uint32_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
             send_protocol_version();
             return MAV_RESULT_ACCEPTED;
         },
@@ -57,7 +57,7 @@ ServerComponentImpl::ServerComponentImpl(
 
     _mavlink_request_message_handler.register_handler(
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
-        [this](uint8_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
+        [this](uint32_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
             send_autopilot_version();
             return MAV_RESULT_ACCEPTED;
         },
@@ -166,7 +166,7 @@ Sender& ServerComponentImpl::sender()
     return _our_sender;
 }
 
-uint8_t ServerComponentImpl::get_own_system_id() const
+uint32_t ServerComponentImpl::get_own_system_id() const
 {
     return _mavsdk_impl.get_own_system_id();
 }
@@ -190,16 +190,28 @@ bool ServerComponentImpl::send_message(mavlink_message_t& message)
     return _mavsdk_impl.send_message(message);
 }
 
-bool ServerComponentImpl::send_command_ack(mavlink_command_ack_t& command_ack)
+bool ServerComponentImpl::send_command_ack(const CommandAck& command_ack)
 {
+    return send_command_ack(command_ack, command_ack.target_system_id);
+}
+
+bool ServerComponentImpl::send_command_ack(
+    const mavlink_command_ack_t& command_ack, uint32_t target_system_id)
+{
+    // Packed, so that a target above 255 goes in the extended header.
     return queue_message([&, this](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
-        mavlink_msg_command_ack_encode_chan(
+        mavlink_msg_command_ack_pack_chan(
             mavlink_address.system_id,
             mavlink_address.component_id,
             channel,
             &message,
-            &command_ack);
+            command_ack.command,
+            command_ack.result,
+            command_ack.progress,
+            command_ack.result_param2,
+            target_system_id,
+            command_ack.target_component);
         return message;
     });
 }
@@ -250,30 +262,34 @@ void ServerComponentImpl::remove_call_every_blocking(CallEveryHandler::Cookie co
     _mavsdk_impl.call_every_handler.remove_blocking(cookie);
 }
 
-mavlink_command_ack_t ServerComponentImpl::make_command_ack_message(
+ServerComponentImpl::CommandAck ServerComponentImpl::make_command_ack_message(
     const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result)
 {
-    mavlink_command_ack_t command_ack{};
+    CommandAck command_ack{};
     command_ack.command = command.command;
     command_ack.result = result;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.result_param2 = 0;
-    command_ack.target_system = command.origin_system_id;
+    // The full origin is in target_system_id.
+    command_ack.target_system = mavlink_msg_target_field(command.origin_system_id);
     command_ack.target_component = command.origin_component_id;
+    command_ack.target_system_id = command.origin_system_id;
 
     return command_ack;
 }
 
-mavlink_command_ack_t ServerComponentImpl::make_command_ack_message(
+ServerComponentImpl::CommandAck ServerComponentImpl::make_command_ack_message(
     const MavlinkCommandReceiver::CommandInt& command, MAV_RESULT result)
 {
-    mavlink_command_ack_t command_ack{};
+    CommandAck command_ack{};
     command_ack.command = command.command;
     command_ack.result = result;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.result_param2 = 0;
-    command_ack.target_system = command.origin_system_id;
+    // The full origin is in target_system_id.
+    command_ack.target_system = mavlink_msg_target_field(command.origin_system_id);
     command_ack.target_component = command.origin_component_id;
+    command_ack.target_system_id = command.origin_system_id;
 
     return command_ack;
 }
@@ -480,7 +496,7 @@ bool ServerComponentImpl::OurSender::queue_message(
     return _server_component_impl.queue_message(fun);
 }
 
-uint8_t ServerComponentImpl::OurSender::get_own_system_id() const
+uint32_t ServerComponentImpl::OurSender::get_own_system_id() const
 {
     return _server_component_impl.get_own_system_id();
 }

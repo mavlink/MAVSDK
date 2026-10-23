@@ -17,7 +17,7 @@ MavlinkParameterClient::MavlinkParameterClient(
     TimeoutHandler& timeout_handler,
     TimeoutSCallback timeout_s_callback,
     AutopilotCallback autopilot_callback,
-    uint8_t target_system_id,
+    uint32_t target_system_id,
     uint8_t target_component_id,
     bool use_extended) :
     MavlinkParameterSubscription(sender.io_context()),

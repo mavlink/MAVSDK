@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mavlink_include.hpp"
+#include "mavlink_target.hpp"
 #include <cmath>
 #include <cstdint>
 #include <string>
@@ -20,9 +21,9 @@ public:
     ~MavlinkCommandReceiver();
 
     struct CommandInt {
-        uint8_t target_system_id{0};
+        uint32_t target_system_id{0};
         uint8_t target_component_id{0};
-        uint8_t origin_system_id{0};
+        uint32_t origin_system_id{0};
         uint8_t origin_component_id{0};
         MAV_FRAME frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
         uint16_t command{0};
@@ -44,7 +45,7 @@ public:
             mavlink_command_int_t command_int;
             mavlink_msg_command_int_decode(&message, &command_int);
 
-            target_system_id = command_int.target_system;
+            target_system_id = mavsdk::target_system_id(message);
             target_component_id = command_int.target_component;
             origin_system_id = message.sysid;
             origin_component_id = message.compid;
@@ -63,9 +64,9 @@ public:
     };
 
     struct CommandLong {
-        uint8_t target_system_id{0};
+        uint32_t target_system_id{0};
         uint8_t target_component_id{0};
-        uint8_t origin_system_id{0};
+        uint32_t origin_system_id{0};
         uint8_t origin_component_id{0};
         uint16_t command{0};
         uint8_t confirmation{0};
@@ -86,7 +87,7 @@ public:
             mavlink_command_long_t command_long;
             mavlink_msg_command_long_decode(&message, &command_long);
 
-            target_system_id = command_long.target_system;
+            target_system_id = mavsdk::target_system_id(message);
             target_component_id = command_long.target_component;
             origin_system_id = message.sysid;
             origin_component_id = message.compid;

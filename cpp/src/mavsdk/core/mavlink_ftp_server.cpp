@@ -5,6 +5,7 @@
 #include <future>
 
 #include "mavlink_ftp_server.hpp"
+#include "mavlink_target.hpp"
 #include "server_component_impl.hpp"
 #include "unused.hpp"
 #include "crc32.hpp"
@@ -47,8 +48,9 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
             _server_component_impl.get_own_component_id());
     }
 
-    if (ftp_req.target_system != 0 &&
-        ftp_req.target_system != _server_component_impl.get_own_system_id()) {
+    const uint32_t ftp_target_system_id = target_system_id(msg);
+    if (ftp_target_system_id != 0 &&
+        ftp_target_system_id != _server_component_impl.get_own_system_id()) {
         if (_debugging) {
             LogDebug("Received FTP message with wrong target system ID");
         }

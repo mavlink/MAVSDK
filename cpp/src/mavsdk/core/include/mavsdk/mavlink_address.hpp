@@ -9,8 +9,8 @@ struct MavlinkAddress {
     /**
      * @brief System ID, also called sysid.
      *
-     * 32 bits wide to accommodate MAVLink's extended system IDs, which are
-     * not supported yet.
+     * 32 bits wide to accommodate MAVLink's extended system IDs. Values above
+     * 255 are only carried by peers that understand them.
      */
     uint32_t system_id;
     /**

@@ -1,4 +1,5 @@
 #include "log_streaming_backend_ardupilot.hpp"
+#include "mavlink_target.hpp"
 
 // ArduPilot uses REMOTE_LOG_DATA_BLOCK (ID 184) for real-time log streaming.
 // This is different from PX4's LOGGING_DATA protocol.
@@ -172,12 +173,13 @@ void LogStreamingBackendArdupilot::process_remote_log_data_block(const mavlink_m
     mavlink_msg_remote_log_data_block_decode(&message, &block);
 
     // Check if this message is targeted at us
-    if (block.target_system != _system_impl->get_own_system_id() ||
+    const uint32_t block_target_system_id = target_system_id(message);
+    if (block_target_system_id != _system_impl->get_own_system_id() ||
         block.target_component != _system_impl->get_own_component_id()) {
         if (_debugging) {
             LogDebug(
                 "Remote log data block with wrong target {}{}{} instead of {}{}{}",
-                block.target_system,
+                block_target_system_id,
                 '/',
                 block.target_component,
                 _system_impl->get_own_system_id(),

@@ -92,8 +92,8 @@ private:
     void process_param_ext_request_list(const mavlink_message_t& message);
     void broadcast_all_parameters(bool extended);
 
-    bool target_matches(uint16_t target_sys_id, uint16_t target_comp_id, bool is_request);
-    void log_target_mismatch(uint16_t target_sys_id, uint16_t target_comp_id);
+    bool target_matches(uint32_t target_sys_id, uint8_t target_comp_id, bool is_request);
+    void log_target_mismatch(uint32_t target_sys_id, uint8_t target_comp_id);
 
     void send_param_error(const std::string& param_id, int16_t param_index, uint8_t error_code);
 

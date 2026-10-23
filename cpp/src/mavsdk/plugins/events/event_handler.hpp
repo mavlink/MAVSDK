@@ -25,7 +25,7 @@ public:
         handle_event_f handle_event_cb,
         health_and_arming_checks_updated_f health_and_arming_checks_updated_cb,
         SystemImpl& system_impl,
-        uint8_t system_id,
+        uint32_t system_id,
         uint8_t component_id);
     ~EventHandler();
 

@@ -142,10 +142,12 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
         _last_message.raw_bytes.clear();
     }
 
-    // Extract target_system and target_component if present in message fields
+    // Targets above 255 are in the header, the payload only has a sentinel.
     uint8_t target_system_id = 0;
     uint8_t target_component_id = 0;
-    if (message.get("target_system", target_system_id) == mav::MessageResult::Success) {
+    if (header.hasWideTarget()) {
+        _last_message.target_system_id = message.extendedTargetSystemId();
+    } else if (message.get("target_system", target_system_id) == mav::MessageResult::Success) {
         _last_message.target_system_id = target_system_id;
     } else {
         _last_message.target_system_id = 0;
