@@ -18,6 +18,6 @@ Extracting the API reference does not yet work automatically on Windows.
 :::
 
 ::: info
-The *generate_docs.sh* script [builds the library](build.md), installs it locally to **/install**, and then uses *DOxygen* to create XML documentation in **/install/docs/xml**.
+The *generate_docs.sh* script copies the public headers to **/install/include/mavsdk**, the same layout they are installed with, and then uses *DOxygen* to create XML documentation in **/install/docs/xml**.
 The [generate_markdown_from_doxygen_xml.py](https://github.com/mavlink/MAVSDK/blob/main/cpp/tools/generate_markdown_from_doxygen_xml.py) script is then run on all files in the */xml* directory to generate markdown files in **/install/docs/markdown**.
 :::

@@ -8,6 +8,8 @@ project_root="$(cd "$script_dir/.." && pwd)"
 proto_dir="$project_root/../../proto/protos"
 pb_plugins_dir="$project_root/../../proto/pb_plugins"
 
+source "$project_root/../../tools/run_parallel.bash"
+
 # Default plugins if none provided: the ones C++ has, which its own generation
 # script lists from the proto directory.
 plugins_file="$proto_dir/../../cpp/src/plugins.txt"
@@ -109,10 +111,7 @@ main() {
     echo "Starting Kotlin code generation..."
     echo "Plugins to process: ${plugins[*]}"
 
-    # Process each plugin
-    for plugin in "${plugins[@]}"; do
-        process_plugin "$plugin"
-    done
+    run_parallel process_plugin "${plugins[@]}"
 
     # Always regenerated, even for a partial run: the accessors are derived from
     # whatever plugin files are on disk, not just the ones processed above.

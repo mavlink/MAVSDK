@@ -8,6 +8,8 @@ project_root="$(cd "$script_dir/.." && pwd)"
 proto_dir="$project_root/../../proto/protos"
 pb_plugins_dir="$project_root/../../proto/pb_plugins"
 
+source "$project_root/../../tools/run_parallel.bash"
+
 # Default plugins if none provided: the ones C++ has, which its own generation
 # script lists from the proto directory.
 plugins_file="$proto_dir/../../cpp/src/plugins.txt"
@@ -121,6 +123,11 @@ process_plugin() {
     echo "  $plugin ($flavour) processing complete."
 }
 
+# Takes "flavour:plugin" since run_parallel passes a single argument
+process_item() {
+    process_plugin "${1%%:*}" "${1#*:}"
+}
+
 # Main execution
 main() {
     echo "Setting up venv..."
@@ -130,12 +137,13 @@ main() {
     echo "Plugins to process: ${plugins[*]}"
 
     # Process each plugin, for each flavour
+    local items=()
     for flavour in "${flavours[@]}"; do
-        echo "Generating the $flavour API..."
         for plugin in "${plugins[@]}"; do
-            process_plugin "$flavour" "$plugin"
+            items+=("${flavour}:${plugin}")
         done
     done
+    run_parallel process_item "${items[@]}"
 
     # Apply formatter (covers both flavours, since asyncio lives inside mavsdk)
     echo "Applying ruff to ${project_root}/mavsdk"

@@ -12,6 +12,7 @@ EOF
 }
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${script_dir}/../../tools/run_parallel.bash"
 proto_dir="${script_dir}/../../proto/protos"
 build_dir="${script_dir}/../build/default"
 repo_dir="${script_dir}/../../"
@@ -113,10 +114,11 @@ template_path_mavsdk_server="${script_dir}/../templates/mavsdk_server"
 template_path_cmake="${script_dir}/../templates/cmake"
 
 plugins_file="${script_dir}/../src/plugins.txt"
-# Overwrite plugins file to be empty
-true > "${plugins_file}"
+printf '%s\n' "${plugin_list[@]}" > "${plugins_file}"
 
-for plugin in "${plugin_list_and_core[@]}"; do
+process_plugin() {
+    local plugin="$1"
+    local file_impl_h file_impl_cpp file_cmake
 
     echo "Processing ${plugin}/${plugin}.proto"
 
@@ -124,7 +126,7 @@ for plugin in "${plugin_list_and_core[@]}"; do
     ${protoc_binary} -I "${proto_dir}" --cpp_out="${mavsdk_server_generated_dir}" --grpc_out="${mavsdk_server_generated_dir}" --plugin=protoc-gen-grpc="${protoc_grpc_binary}" "${proto_dir}/${plugin}/${plugin}.proto"
 
     if [[ "${plugin}" == "core" ]]; then
-        continue
+        return 0
     fi
 
     mkdir -p "${script_dir}/../src/mavsdk/plugins/${plugin}/include/plugins/${plugin}"
@@ -173,9 +175,9 @@ for plugin in "${plugin_list_and_core[@]}"; do
             echo "-> Not creating ${file_cmake} because it already exists"
         fi
     fi
+}
 
-    echo "${plugin}" >> "${plugins_file}"
-done
+run_parallel process_plugin "${plugin_list_and_core[@]}"
 
 # Generate grpc_server.hpp and grpc_server.cpp files according to plugin list
 python3 "${script_dir}/grpc_server_jinja.py" "${plugin_list[@]}"

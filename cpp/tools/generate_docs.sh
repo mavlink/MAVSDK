@@ -6,7 +6,7 @@
 set -e
 
 # This script will
-# 1. build and install the source,
+# 1. copy the public headers into the layout they are installed with,
 # 2. run doxygen and create html and xml docs,
 # 3. run script to generate markdown from xml
 
@@ -53,14 +53,18 @@ done
 
 INSTALL_DIR="${BUILD_DIR}/install"
 
-# Build and install locally.
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" -B"${BUILD_DIR}" -S.
-make -C"${BUILD_DIR}" install -j"$(nproc --all)"
+# Doxygen only needs the public headers, so copy them instead of building and
+# installing the library. This matches the install(FILES ...) rules in CMake.
+HEADERS_DIR="${INSTALL_DIR}/include/mavsdk"
+rm -rf "${HEADERS_DIR}" "${INSTALL_DIR}/docs"
+mkdir -p "${HEADERS_DIR}/plugins"
+cp "${SCRIPT_DIR}"/../src/mavsdk/core/include/mavsdk/*.{h,hpp} "${HEADERS_DIR}/"
+cp -r "${SCRIPT_DIR}"/../src/mavsdk/plugins/*/include/plugins/* "${HEADERS_DIR}/plugins/"
 
 return_result=0
 # Doxygen likes to run where the source is (because INPUT in .doxygen is empty),
 # so we cd there.
-pushd "${INSTALL_DIR}/include/mavsdk"
+pushd "${HEADERS_DIR}"
 
 # If any warnings are thrown, we should not flag this as a success.
 doxygen_output_file=".doxygen_output.tmp"
