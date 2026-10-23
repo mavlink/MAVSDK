@@ -86,7 +86,10 @@ MavlinkCommandSender::Result MavlinkCommandSender::send_command(
 }
 
 void MavlinkCommandSender::queue_command_async(
-    const CommandInt& command, const CommandResultCallback& callback, unsigned retries)
+    const CommandInt& command,
+    const CommandResultCallback& callback,
+    unsigned retries,
+    const CommandAckCallback& final_ack_callback)
 {
     if (_command_debugging) {
         LogDebug(
@@ -101,6 +104,7 @@ void MavlinkCommandSender::queue_command_async(
     new_work->command = command;
     new_work->identification = identification_from_command(command);
     new_work->callback = callback;
+    new_work->final_ack_callback = final_ack_callback;
     new_work->retries_to_do = retries;
     asio::post(_io_context, [this, new_work]() {
         for (const auto& work : _work_queue) {
@@ -122,7 +126,10 @@ void MavlinkCommandSender::queue_command_async(
 }
 
 void MavlinkCommandSender::queue_command_async(
-    const CommandLong& command, const CommandResultCallback& callback, unsigned retries)
+    const CommandLong& command,
+    const CommandResultCallback& callback,
+    unsigned retries,
+    const CommandAckCallback& final_ack_callback)
 {
     if (_command_debugging) {
         LogDebug(
@@ -137,6 +144,7 @@ void MavlinkCommandSender::queue_command_async(
     new_work->command = command;
     new_work->identification = identification_from_command(command);
     new_work->callback = callback;
+    new_work->final_ack_callback = final_ack_callback;
     new_work->time_started = _system_impl.get_time().steady_time();
     new_work->retries_to_do = retries;
     asio::post(_io_context, [this, new_work]() {
@@ -217,6 +225,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
         }
 
         CommandResultCallback temp_callback = work->callback;
+        CommandAckCallback temp_final_ack_callback = work->final_ack_callback;
         std::pair<Result, float> temp_result{Result::UnknownError, NAN};
 
         switch (command_ack.result) {
@@ -304,6 +313,11 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
             default:
                 LogWarn("Received unknown ack.");
                 break;
+        }
+
+        if (temp_final_ack_callback != nullptr && temp_result.first != Result::InProgress &&
+            temp_result.first != Result::UnknownError) {
+            temp_final_ack_callback(message);
         }
 
         if (temp_callback != nullptr) {

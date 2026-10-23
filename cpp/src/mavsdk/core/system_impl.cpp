@@ -1266,7 +1266,9 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
 }
 
 void SystemImpl::send_command_async(
-    MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback)
+    MavlinkCommandSender::CommandLong command,
+    const CommandResultCallback& callback,
+    const MavlinkCommandSender::CommandAckCallback& final_ack_callback)
 {
     {
         std::lock_guard<std::mutex> lock(_components_mutex);
@@ -1279,11 +1281,14 @@ void SystemImpl::send_command_async(
     }
     command.target_system_id = get_system_id();
 
-    _command_sender.queue_command_async(command, callback);
+    _command_sender.queue_command_async(
+        command, callback, MavlinkCommandSender::DEFAULT_RETRIES, final_ack_callback);
 }
 
 void SystemImpl::send_command_async(
-    MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback)
+    MavlinkCommandSender::CommandInt command,
+    const CommandResultCallback& callback,
+    const MavlinkCommandSender::CommandAckCallback& final_ack_callback)
 {
     {
         std::lock_guard<std::mutex> lock(_components_mutex);
@@ -1296,7 +1301,8 @@ void SystemImpl::send_command_async(
     }
     command.target_system_id = get_system_id();
 
-    _command_sender.queue_command_async(command, callback);
+    _command_sender.queue_command_async(
+        command, callback, MavlinkCommandSender::DEFAULT_RETRIES, final_ack_callback);
 }
 
 MavlinkCommandSender::Result
@@ -1537,6 +1543,12 @@ std::vector<Connection*> SystemImpl::get_connections() const
 mav::MessageSet& SystemImpl::get_message_set() const
 {
     return _mavsdk_impl.get_message_set();
+}
+
+std::optional<Mavsdk::MavlinkMessage>
+SystemImpl::to_json_message(const mavlink_message_t& message) const
+{
+    return _mavsdk_impl.to_json_message(message);
 }
 
 bool SystemImpl::load_custom_xml_to_message_set(const std::string& xml_content)

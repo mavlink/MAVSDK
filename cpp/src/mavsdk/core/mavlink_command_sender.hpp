@@ -43,6 +43,8 @@ public:
     };
 
     using CommandResultCallback = std::function<void(Result, float)>;
+    // Called on the io thread with the final COMMAND_ACK, before the result callback.
+    using CommandAckCallback = std::function<void(const mavlink_message_t&)>;
 
     struct CommandInt {
         uint8_t target_system_id{0};
@@ -85,11 +87,13 @@ public:
     void queue_command_async(
         const CommandInt& command,
         const CommandResultCallback& callback,
-        unsigned retries = DEFAULT_RETRIES);
+        unsigned retries = DEFAULT_RETRIES,
+        const CommandAckCallback& final_ack_callback = nullptr);
     void queue_command_async(
         const CommandLong& command,
         const CommandResultCallback& callback,
-        unsigned retries = DEFAULT_RETRIES);
+        unsigned retries = DEFAULT_RETRIES,
+        const CommandAckCallback& final_ack_callback = nullptr);
 
     void do_work();
 
@@ -125,6 +129,7 @@ private:
         Command command;
         CommandIdentification identification{};
         CommandResultCallback callback{};
+        CommandAckCallback final_ack_callback{};
         SteadyTimePoint time_started{};
         TimeoutHandler::Cookie timeout_cookie{};
         double timeout_s{0.5};

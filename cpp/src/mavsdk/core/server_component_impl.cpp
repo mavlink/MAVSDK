@@ -218,6 +218,12 @@ mav::MessageSet& ServerComponentImpl::get_message_set() const
     return _mavsdk_impl.get_message_set();
 }
 
+std::optional<Mavsdk::MavlinkMessage>
+ServerComponentImpl::to_json_message(const mavlink_message_t& message) const
+{
+    return _mavsdk_impl.to_json_message(message);
+}
+
 bool ServerComponentImpl::load_custom_xml_to_message_set(const std::string& xml_content)
 {
     return _mavsdk_impl.load_custom_xml_to_message_set(xml_content);

@@ -93,6 +93,9 @@ public:
     // Get MessageSet for message creation and parsing
     mav::MessageSet& get_message_set() const;
 
+    // Convert a raw MAVLink message to its JSON representation.
+    std::optional<Mavsdk::MavlinkMessage> to_json_message(const mavlink_message_t& message) const;
+
     // Thread-safe MessageSet operations
     bool load_custom_xml_to_message_set(const std::string& xml_content);
 
@@ -133,9 +136,13 @@ public:
     MavlinkCommandSender::Result send_command(MavlinkCommandSender::CommandInt& command);
 
     void send_command_async(
-        MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback);
+        MavlinkCommandSender::CommandLong command,
+        const CommandResultCallback& callback,
+        const MavlinkCommandSender::CommandAckCallback& final_ack_callback = nullptr);
     void send_command_async(
-        MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback);
+        MavlinkCommandSender::CommandInt command,
+        const CommandResultCallback& callback,
+        const MavlinkCommandSender::CommandAckCallback& final_ack_callback = nullptr);
 
     MavlinkCommandSender::Result set_msg_rate(
         uint16_t message_id, double rate_hz, uint8_t maybe_component_id = MAV_COMP_ID_AUTOPILOT1);

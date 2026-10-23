@@ -187,6 +187,9 @@ public:
     // Get MessageSet for message creation and parsing
     mav::MessageSet& get_message_set() const;
 
+    // Convert a raw MAVLink message to its JSON representation, nullopt if unknown.
+    std::optional<Mavsdk::MavlinkMessage> to_json_message(const mavlink_message_t& message);
+
     // Thread-safe MessageSet operations
     bool load_custom_xml_to_message_set(const std::string& xml_content);
     std::optional<std::string> message_id_to_name_safe(uint32_t id) const;
