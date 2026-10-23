@@ -242,7 +242,7 @@ GeofenceImpl::assemble_items(const Geofence::GeofenceData& geofence_data)
             items.push_back(
                 MavlinkMissionTransferClient::ItemInt{
                     sequence,
-                    MAV_FRAME_GLOBAL_INT,
+                    MAV_FRAME_GLOBAL,
                     command,
                     current,
                     autocontinue,
@@ -269,7 +269,7 @@ GeofenceImpl::assemble_items(const Geofence::GeofenceData& geofence_data)
         items.push_back(
             MavlinkMissionTransferClient::ItemInt{
                 sequence,
-                MAV_FRAME_GLOBAL_INT,
+                MAV_FRAME_GLOBAL,
                 command,
                 current,
                 autocontinue,
