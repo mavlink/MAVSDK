@@ -21,6 +21,7 @@ enum [Result](#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864
 std::function< void([Result](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864))> [ResultCallback](#classmavsdk_1_1_mavlink_direct_1ae166c4e87888a21c8e3a6a5858628cb4) | Callback type for asynchronous [MavlinkDirect](classmavsdk_1_1_mavlink_direct.md) calls.
 std::function< void([MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md))> [MessageCallback](#classmavsdk_1_1_mavlink_direct_1a20acd4068f45cbde53afc55eb292692d) | Callback type for subscribe_message.
 [Handle](classmavsdk_1_1_handle.md)< [MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md) > [MessageHandle](#classmavsdk_1_1_mavlink_direct_1aa4a3a6b305c89ef6a0cde3cb47b5c6a3) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_message.
+std::function< void([Result](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864), [MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md))> [SendCommandCallback](#classmavsdk_1_1_mavlink_direct_1a13581f497ade3310e2488c1b2416af04) | Callback type for send_command_async.
 
 ## Public Member Functions
 
@@ -35,6 +36,8 @@ Type | Name | Description
 [MessageHandle](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1aa4a3a6b305c89ef6a0cde3cb47b5c6a3) | [subscribe_message](#classmavsdk_1_1_mavlink_direct_1a0fd42307f0b5e2ad427437c7a9309c9a) (std::string message_name, const [MessageCallback](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a20acd4068f45cbde53afc55eb292692d) & callback) | Subscribe to incoming MAVLink messages.
 void | [unsubscribe_message](#classmavsdk_1_1_mavlink_direct_1a2ae1167e995caf0b7b8a5193cf5dbf52) ([MessageHandle](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1aa4a3a6b305c89ef6a0cde3cb47b5c6a3) handle) | Unsubscribe from subscribe_message.
 [Result](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864) | [load_custom_xml](#classmavsdk_1_1_mavlink_direct_1a9deb1c72b084d1b2369a133c0260bd46) (std::string xml_content)const | Load custom MAVLink message definitions from XML.
+void | [send_command_async](#classmavsdk_1_1_mavlink_direct_1a9e71146144231cdb280ef4f0f9137e70) ([MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md) command, const [SendCommandCallback](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a13581f497ade3310e2488c1b2416af04) callback) | Send a command and wait for its final COMMAND_ACK.
+std::pair< [Result](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864), [MavlinkDirect::MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md) > | [send_command](#classmavsdk_1_1_mavlink_direct_1a2d88f5d401380a758f97aa3eb3eddd09) ([MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md) command)const | Send a command and wait for its final COMMAND_ACK.
 const [MavlinkDirect](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1aa52aa19602ee54074c6a9285ae7aae6c) & | [operator=](#classmavsdk_1_1_mavlink_direct_1a909f97b32d832d00488c695940760b63) (const [MavlinkDirect](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1aa52aa19602ee54074c6a9285ae7aae6c) &)=delete | Equality operator (object is not copyable).
 
 
@@ -130,6 +133,16 @@ using mavsdk::MavlinkDirect::MessageHandle =  Handle<MavlinkMessage>
 
 
 [Handle](classmavsdk_1_1_handle.md) type for subscribe_message.
+
+
+### typedef SendCommandCallback {#classmavsdk_1_1_mavlink_direct_1a13581f497ade3310e2488c1b2416af04}
+
+```cpp
+using mavsdk::MavlinkDirect::SendCommandCallback =  std::function<void(Result, MavlinkMessage)>
+```
+
+
+Callback type for send_command_async.
 
 
 ## Member Enumeration Documentation
@@ -228,6 +241,57 @@ This function is blocking.
 **Returns**
 
 &emsp;[Result](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864) - [Result](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864) of request.
+
+### send_command_async() {#classmavsdk_1_1_mavlink_direct_1a9e71146144231cdb280ef4f0f9137e70}
+```cpp
+void mavsdk::MavlinkDirect::send_command_async(MavlinkMessage command, const SendCommandCallback callback)
+```
+
+
+Send a command and wait for its final COMMAND_ACK.
+
+The command is a COMMAND_LONG or COMMAND_INT message with its fields as JSON, e.g. message_name "COMMAND_LONG" and fields_json {"target_system":1,"target_component":1,"command":400,"param1":1,...}.
+
+
+The command is retransmitted if no ack arrives. MAV_RESULT_IN_PROGRESS acks are handled internally: the command is not retransmitted after one, and the call keeps waiting for the final ack.
+
+
+RESULT_SUCCESS only means that a final COMMAND_ACK was received. Whether the command was accepted is in the "result" field of the returned ack (MAV_RESULT, e.g. 0 for MAV_RESULT_ACCEPTED, 2 for MAV_RESULT_DENIED). Any other result means no final ack was received and the returned ack is empty.
+
+
+This function is non-blocking. See 'send_command' for the blocking counterpart.
+
+**Parameters**
+
+* [MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md) **command** - 
+* const [SendCommandCallback](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a13581f497ade3310e2488c1b2416af04) **callback** - 
+
+### send_command() {#classmavsdk_1_1_mavlink_direct_1a2d88f5d401380a758f97aa3eb3eddd09}
+```cpp
+std::pair< Result, MavlinkDirect::MavlinkMessage > mavsdk::MavlinkDirect::send_command(MavlinkMessage command) const
+```
+
+
+Send a command and wait for its final COMMAND_ACK.
+
+The command is a COMMAND_LONG or COMMAND_INT message with its fields as JSON, e.g. message_name "COMMAND_LONG" and fields_json {"target_system":1,"target_component":1,"command":400,"param1":1,...}.
+
+
+The command is retransmitted if no ack arrives. MAV_RESULT_IN_PROGRESS acks are handled internally: the command is not retransmitted after one, and the call keeps waiting for the final ack.
+
+
+RESULT_SUCCESS only means that a final COMMAND_ACK was received. Whether the command was accepted is in the "result" field of the returned ack (MAV_RESULT, e.g. 0 for MAV_RESULT_ACCEPTED, 2 for MAV_RESULT_DENIED). Any other result means no final ack was received and the returned ack is empty.
+
+
+This function is blocking. See 'send_command_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* [MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md) **command** - 
+
+**Returns**
+
+&emsp;std::pair< [Result](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864), [MavlinkDirect::MavlinkMessage](structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md) > - [Result](classmavsdk_1_1_mavlink_direct.md#classmavsdk_1_1_mavlink_direct_1a63864e376328d1fe2ef7d667aa61f864) of request.
 
 ### operator=() {#classmavsdk_1_1_mavlink_direct_1a909f97b32d832d00488c695940760b63}
 ```cpp

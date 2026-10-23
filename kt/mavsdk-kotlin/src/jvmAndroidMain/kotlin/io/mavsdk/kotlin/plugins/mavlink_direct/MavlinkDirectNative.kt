@@ -7,6 +7,7 @@ package io.mavsdk.kotlin.plugins.mavlink_direct
 
 import io.mavsdk.jni.plugins.mavlink_direct.NativeMavlinkDirect
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
@@ -77,6 +78,21 @@ private class MavlinkDirectNativeImpl(private val handle: Long) : MavlinkDirectN
         NativeMavlinkDirect.loadCustomXml(handle, xmlContent)
     }
 
+    override fun sendCommandAsync(
+        command: MavlinkDirect.MavlinkMessage,
+        callback: (Int, MavlinkDirect.MavlinkMessage) -> Unit,
+    ) {
+        withOpen {
+            NativeMavlinkDirect.sendCommandAsync(
+                handle,
+                command.toNative(),
+                NativeMavlinkDirect.SendCommandCallback { result, value ->
+                    callback(result, value.toKotlin())
+                },
+            )
+        }
+    }
+
     override fun destroy() {
         lifecycle.write {
             if (destroyed) return
@@ -91,3 +107,9 @@ private class MavlinkDirectNativeImpl(private val handle: Long) : MavlinkDirectN
 
 internal actual fun createMavlinkDirectNative(systemHandle: Long): MavlinkDirectNative =
     MavlinkDirectNativeImpl(NativeMavlinkDirect.create(systemHandle))
+
+internal actual class MavlinkDirectCallbackGuard actual constructor() {
+    private val claimed = AtomicBoolean(false)
+
+    actual fun tryClaim(): Boolean = claimed.compareAndSet(false, true)
+}

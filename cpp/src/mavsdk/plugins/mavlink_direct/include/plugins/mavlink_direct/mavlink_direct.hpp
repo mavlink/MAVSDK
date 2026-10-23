@@ -206,6 +206,58 @@ public:
 
 
     /**
+    * @brief Callback type for send_command_async.
+    */
+    using SendCommandCallback = std::function<void(Result, MavlinkMessage)>;
+
+    /**
+     * @brief Send a command and wait for its final COMMAND_ACK.
+     *
+     * The command is a COMMAND_LONG or COMMAND_INT message with its fields as JSON,
+     * e.g. message_name "COMMAND_LONG" and fields_json
+     * {"target_system":1,"target_component":1,"command":400,"param1":1,...}.
+     *
+     * The command is retransmitted if no ack arrives. MAV_RESULT_IN_PROGRESS acks
+     * are handled internally: the command is not retransmitted after one, and the
+     * call keeps waiting for the final ack.
+     *
+     * RESULT_SUCCESS only means that a final COMMAND_ACK was received. Whether the
+     * command was accepted is in the "result" field of the returned ack (MAV_RESULT,
+     * e.g. 0 for MAV_RESULT_ACCEPTED, 2 for MAV_RESULT_DENIED). Any other result means
+     * no final ack was received and the returned ack is empty.
+     *
+     * This function is non-blocking. See 'send_command' for the blocking counterpart.
+     */
+    void send_command_async(MavlinkMessage command, const SendCommandCallback callback);
+
+
+
+    /**
+     * @brief Send a command and wait for its final COMMAND_ACK.
+     *
+     * The command is a COMMAND_LONG or COMMAND_INT message with its fields as JSON,
+     * e.g. message_name "COMMAND_LONG" and fields_json
+     * {"target_system":1,"target_component":1,"command":400,"param1":1,...}.
+     *
+     * The command is retransmitted if no ack arrives. MAV_RESULT_IN_PROGRESS acks
+     * are handled internally: the command is not retransmitted after one, and the
+     * call keeps waiting for the final ack.
+     *
+     * RESULT_SUCCESS only means that a final COMMAND_ACK was received. Whether the
+     * command was accepted is in the "result" field of the returned ack (MAV_RESULT,
+     * e.g. 0 for MAV_RESULT_ACCEPTED, 2 for MAV_RESULT_DENIED). Any other result means
+     * no final ack was received and the returned ack is empty.
+     *
+     * This function is blocking. See 'send_command_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, MavlinkDirect::MavlinkMessage> send_command(MavlinkMessage command) const;
+
+
+
+
+    /**
      * @brief Copy constructor.
      */
     MavlinkDirect(const MavlinkDirect& other);

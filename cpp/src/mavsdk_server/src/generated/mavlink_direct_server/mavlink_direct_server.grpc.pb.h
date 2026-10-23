@@ -83,6 +83,31 @@ class MavlinkDirectServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse>> PrepareAsyncLoadCustomXml(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse>>(PrepareAsyncLoadCustomXmlRaw(context, request, cq));
     }
+    //
+    // Subscribe to incoming commands with a given command ID.
+    //
+    // Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are
+    // addressed to this server component; check message_name to see which one it is.
+    //
+    // While subscribed, MAVSDK does not ack the command itself, so every command
+    // received must be answered by sending a COMMAND_ACK with SendMessage, addressed
+    // to the sender (system_id/component_id of the received command) and with
+    // "command" set to the command ID. For a command that takes a while, send acks
+    // with MAV_RESULT_IN_PROGRESS and "progress" in percent (255 if unknown) about
+    // once per second while it runs, so the sender knows it is still going, then
+    // the final result.
+    //
+    // The sender may retransmit the command if the ack is lost, so the same command
+    // can arrive more than once.
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>> SubscribeCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>>(SubscribeCommandRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>> AsyncSubscribeCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>>(AsyncSubscribeCommandRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>> PrepareAsyncSubscribeCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>>(PrepareAsyncSubscribeCommandRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -109,6 +134,23 @@ class MavlinkDirectServerService final {
       // extending the available message types beyond the built-in definitions.
       virtual void LoadCustomXml(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest* request, ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void LoadCustomXml(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest* request, ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // Subscribe to incoming commands with a given command ID.
+      //
+      // Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are
+      // addressed to this server component; check message_name to see which one it is.
+      //
+      // While subscribed, MAVSDK does not ack the command itself, so every command
+      // received must be answered by sending a COMMAND_ACK with SendMessage, addressed
+      // to the sender (system_id/component_id of the received command) and with
+      // "command" set to the command ID. For a command that takes a while, send acks
+      // with MAV_RESULT_IN_PROGRESS and "progress" in percent (255 if unknown) about
+      // once per second while it runs, so the sender knows it is still going, then
+      // the final result.
+      //
+      // The sender may retransmit the command if the ack is lost, so the same command
+      // can arrive more than once.
+      virtual void SubscribeCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -121,6 +163,9 @@ class MavlinkDirectServerService final {
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct_server::MessageResponse>* PrepareAsyncSubscribeMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse>* AsyncLoadCustomXmlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse>* PrepareAsyncLoadCustomXmlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* SubscribeCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* AsyncSubscribeCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* PrepareAsyncSubscribeCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -148,6 +193,15 @@ class MavlinkDirectServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse>> PrepareAsyncLoadCustomXml(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse>>(PrepareAsyncLoadCustomXmlRaw(context, request, cq));
     }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>> SubscribeCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>>(SubscribeCommandRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>> AsyncSubscribeCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>>(AsyncSubscribeCommandRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>> PrepareAsyncSubscribeCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>>(PrepareAsyncSubscribeCommandRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -156,6 +210,7 @@ class MavlinkDirectServerService final {
       void SubscribeMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeMessageRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mavlink_direct_server::MessageResponse>* reactor) override;
       void LoadCustomXml(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest* request, ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse* response, std::function<void(::grpc::Status)>) override;
       void LoadCustomXml(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest* request, ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -174,9 +229,13 @@ class MavlinkDirectServerService final {
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct_server::MessageResponse>* PrepareAsyncSubscribeMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeMessageRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse>* AsyncLoadCustomXmlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse>* PrepareAsyncLoadCustomXmlRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* SubscribeCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* AsyncSubscribeCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* PrepareAsyncSubscribeCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SendMessage_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeMessage_;
     const ::grpc::internal::RpcMethod rpcmethod_LoadCustomXml_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeCommand_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -205,6 +264,23 @@ class MavlinkDirectServerService final {
     // This allows loading custom MAVLink message definitions at runtime,
     // extending the available message types beyond the built-in definitions.
     virtual ::grpc::Status LoadCustomXml(::grpc::ServerContext* context, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest* request, ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse* response);
+    //
+    // Subscribe to incoming commands with a given command ID.
+    //
+    // Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are
+    // addressed to this server component; check message_name to see which one it is.
+    //
+    // While subscribed, MAVSDK does not ack the command itself, so every command
+    // received must be answered by sending a COMMAND_ACK with SendMessage, addressed
+    // to the sender (system_id/component_id of the received command) and with
+    // "command" set to the command ID. For a command that takes a while, send acks
+    // with MAV_RESULT_IN_PROGRESS and "progress" in percent (255 if unknown) about
+    // once per second while it runs, so the sender knows it is still going, then
+    // the final result.
+    //
+    // The sender may retransmit the command if the ack is lost, so the same command
+    // can arrive more than once.
+    virtual ::grpc::Status SubscribeCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_SendMessage : public BaseClass {
@@ -266,7 +342,27 @@ class MavlinkDirectServerService final {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SendMessage<WithAsyncMethod_SubscribeMessage<WithAsyncMethod_LoadCustomXml<Service > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeCommand() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_SubscribeCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeCommand(::grpc::ServerContext* context, ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(3, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SendMessage<WithAsyncMethod_SubscribeMessage<WithAsyncMethod_LoadCustomXml<WithAsyncMethod_SubscribeCommand<Service > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SendMessage : public BaseClass {
    private:
@@ -343,7 +439,29 @@ class MavlinkDirectServerService final {
     virtual ::grpc::ServerUnaryReactor* LoadCustomXml(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest* /*request*/, ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SendMessage<WithCallbackMethod_SubscribeMessage<WithCallbackMethod_LoadCustomXml<Service > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeCommand() {
+      ::grpc::Service::MarkMethodCallback(3,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest, ::mavsdk::rpc::mavlink_direct_server::CommandResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* request) { return this->SubscribeCommand(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* SubscribeCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* /*request*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SendMessage<WithCallbackMethod_SubscribeMessage<WithCallbackMethod_LoadCustomXml<WithCallbackMethod_SubscribeCommand<Service > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SendMessage : public BaseClass {
@@ -392,6 +510,23 @@ class MavlinkDirectServerService final {
     }
     // disable synchronous version of this method
     ::grpc::Status LoadCustomXml(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest* /*request*/, ::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeCommand() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_SubscribeCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -454,6 +589,26 @@ class MavlinkDirectServerService final {
     }
     void RequestLoadCustomXml(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeCommand() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_SubscribeCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeCommand(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(3, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -521,6 +676,28 @@ class MavlinkDirectServerService final {
     }
     virtual ::grpc::ServerUnaryReactor* LoadCustomXml(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeCommand() {
+      ::grpc::Service::MarkMethodRawCallback(3,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeCommand(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_SendMessage : public BaseClass {
@@ -604,8 +781,35 @@ class MavlinkDirectServerService final {
     // replace default version of method with split streamed
     virtual ::grpc::Status StreamedSubscribeMessage(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mavlink_direct_server::SubscribeMessageRequest,::mavsdk::rpc::mavlink_direct_server::MessageResponse>* server_split_streamer) = 0;
   };
-  typedef WithSplitStreamingMethod_SubscribeMessage<Service > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SendMessage<WithSplitStreamingMethod_SubscribeMessage<WithStreamedUnaryMethod_LoadCustomXml<Service > > > StreamedService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeCommand() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest, ::mavsdk::rpc::mavlink_direct_server::CommandResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest, ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* streamer) {
+                       return this->StreamedSubscribeCommand(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct_server::CommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeCommand(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest,::mavsdk::rpc::mavlink_direct_server::CommandResponse>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_SubscribeMessage<WithSplitStreamingMethod_SubscribeCommand<Service > > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_SendMessage<WithSplitStreamingMethod_SubscribeMessage<WithStreamedUnaryMethod_LoadCustomXml<WithSplitStreamingMethod_SubscribeCommand<Service > > > > StreamedService;
 };
 
 }  // namespace mavlink_direct_server

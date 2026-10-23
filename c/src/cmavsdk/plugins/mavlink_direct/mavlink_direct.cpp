@@ -245,3 +245,46 @@ mavsdk_mavlink_direct_load_custom_xml(
 
     return translate_result(ret_value);
 }
+
+// SendCommand async
+void mavsdk_mavlink_direct_send_command_async(
+    mavsdk_mavlink_direct_t mavlink_direct,
+    mavsdk_mavlink_direct_mavlink_message_t command,
+    mavsdk_mavlink_direct_send_command_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
+
+    wrapper->cpp_plugin->send_command_async(
+        translate_mavlink_message_from_c(command),
+        [callback, user_data](
+            mavsdk::MavlinkDirect::Result result,
+            mavsdk::MavlinkDirect::MavlinkMessage value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        translate_mavlink_message_to_c(value),
+                        user_data);
+                }
+        });
+}
+
+
+// SendCommand sync
+mavsdk_mavlink_direct_result_t
+mavsdk_mavlink_direct_send_command(
+    mavsdk_mavlink_direct_t mavlink_direct,
+    mavsdk_mavlink_direct_mavlink_message_t command,
+    mavsdk_mavlink_direct_mavlink_message_t* ack_out)
+{
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
+
+    auto result_pair = wrapper->cpp_plugin->send_command(
+        translate_mavlink_message_from_c(command));
+
+    if (ack_out != nullptr) {
+        *ack_out = translate_mavlink_message_to_c(result_pair.second);
+    }
+
+    return translate_result(result_pair.first);
+}

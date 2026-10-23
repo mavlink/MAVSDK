@@ -7,6 +7,10 @@
 #include "callback_list.tpp"
 #include "mavsdk_export.h"
 
+#include <array>
+#include <future>
+#include <memory>
+
 namespace mavsdk {
 
 template class MAVSDK_TEMPL_INST CallbackList<MavlinkDirect::MavlinkMessage>;
@@ -79,8 +83,12 @@ void MavlinkDirectImpl::enable() {}
 
 void MavlinkDirectImpl::disable() {}
 
-MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMessage message)
+std::pair<MavlinkDirect::Result, std::optional<mav::Message>>
+MavlinkDirectImpl::create_libmav_message(
+    const MavlinkDirect::MavlinkMessage& message, uint32_t& target_system_id) const
 {
+    target_system_id = 0;
+
     // Get access to the MessageSet through the system
     auto& message_set = _system_impl->get_message_set();
 
@@ -88,7 +96,7 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     auto libmav_message_opt = message_set.create(message.message_name);
     if (!libmav_message_opt) {
         LogErr("Failed to create message: {}", message.message_name);
-        return MavlinkDirect::Result::InvalidMessage; // Message type not found
+        return {MavlinkDirect::Result::InvalidMessage, std::nullopt};
     }
 
     if (_debugging) {
@@ -98,12 +106,12 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
             libmav_message_opt.value().id());
     }
 
-    auto libmav_message = libmav_message_opt.value();
+    auto& libmav_message = libmav_message_opt.value();
 
     // Convert JSON fields to libmav message fields (shared core helper)
     if (!json_to_libmav_message(message.fields_json, libmav_message)) {
         LogErr("Failed to convert JSON fields to libmav message for {}", message.message_name);
-        return MavlinkDirect::Result::InvalidField; // JSON conversion failed
+        return {MavlinkDirect::Result::InvalidField, std::nullopt};
     }
 
     if (_debugging) {
@@ -114,10 +122,9 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     // Component IDs are 8 bit on the wire.
     if (message.target_component_id > 255) {
         LogErr("target_component_id {} out of range (max 255)", message.target_component_id);
-        return MavlinkDirect::Result::InvalidField;
+        return {MavlinkDirect::Result::InvalidField, std::nullopt};
     }
     // Targets above 255 go in the extended header, the payload gets a sentinel.
-    uint32_t target_system_id = 0;
     if (message.target_system_id != 0 &&
         libmav_message.set("target_system", mavlink_msg_target_field(message.target_system_id)) ==
             mav::MessageResult::Success) {
@@ -127,6 +134,18 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
         // For messages that have target_component field, set it
         libmav_message.set("target_component", static_cast<uint8_t>(message.target_component_id));
     }
+
+    return {MavlinkDirect::Result::Success, std::move(libmav_message_opt)};
+}
+
+MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMessage message)
+{
+    uint32_t target_system_id = 0;
+    auto [result, libmav_message_opt] = create_libmav_message(message, target_system_id);
+    if (result != MavlinkDirect::Result::Success) {
+        return result;
+    }
+    auto& libmav_message = libmav_message_opt.value();
 
     if (_debugging) {
         LogDebug("Sending {} via unified libmav API", message.message_name);
@@ -202,6 +221,170 @@ MavlinkDirect::Result MavlinkDirectImpl::load_custom_xml(const std::string& xml_
         LogErr("Failed to load custom XML definitions");
         return MavlinkDirect::Result::Error;
     }
+}
+
+void MavlinkDirectImpl::send_command_async(
+    MavlinkDirect::MavlinkMessage command, const MavlinkDirect::SendCommandCallback& callback)
+{
+    auto report_error = [this, callback](MavlinkDirect::Result result) {
+        if (callback) {
+            _system_impl->call_user_callback(
+                [callback, result]() { callback(result, MavlinkDirect::MavlinkMessage{}); });
+        }
+    };
+
+    if (command.message_name != "COMMAND_LONG" && command.message_name != "COMMAND_INT") {
+        LogErr("send_command needs COMMAND_LONG or COMMAND_INT, not {}", command.message_name);
+        report_error(MavlinkDirect::Result::InvalidMessage);
+        return;
+    }
+
+    // The target system is always the system this plugin is for.
+    uint32_t target_system_id = 0;
+    auto [result, libmav_message_opt] = create_libmav_message(command, target_system_id);
+    if (result != MavlinkDirect::Result::Success) {
+        report_error(result);
+        return;
+    }
+    const auto& libmav_message = libmav_message_opt.value();
+
+    // The final ack is handed to us on the io thread before the result callback is queued.
+    auto final_ack = std::make_shared<std::optional<MavlinkDirect::MavlinkMessage>>();
+
+    // Not capturing this, the plugin may be gone by the time the ack arrives.
+    auto final_ack_callback = [weak_system_impl = std::weak_ptr<SystemImpl>(_system_impl),
+                               final_ack](const mavlink_message_t& message) {
+        auto system_impl = weak_system_impl.lock();
+        if (!system_impl) {
+            return;
+        }
+        auto maybe_json_message = system_impl->to_json_message(message);
+        if (!maybe_json_message) {
+            return;
+        }
+        MavlinkDirect::MavlinkMessage ack;
+        ack.message_name = maybe_json_message->message_name;
+        ack.system_id = maybe_json_message->system_id;
+        ack.component_id = maybe_json_message->component_id;
+        ack.target_system_id = maybe_json_message->target_system_id;
+        ack.target_component_id = maybe_json_message->target_component_id;
+        ack.fields_json = maybe_json_message->fields_json;
+        *final_ack = std::move(ack);
+    };
+
+    auto result_callback = [callback,
+                            final_ack](MavlinkCommandSender::Result command_result, float) {
+        if (command_result == MavlinkCommandSender::Result::InProgress) {
+            return;
+        }
+        if (!callback) {
+            return;
+        }
+
+        switch (command_result) {
+            case MavlinkCommandSender::Result::Success:
+            case MavlinkCommandSender::Result::Denied:
+            case MavlinkCommandSender::Result::Unsupported:
+            case MavlinkCommandSender::Result::TemporarilyRejected:
+            case MavlinkCommandSender::Result::Failed:
+            case MavlinkCommandSender::Result::Cancelled:
+                // Any final ack counts as success, the outcome is in the ack itself.
+                if (final_ack->has_value()) {
+                    callback(MavlinkDirect::Result::Success, final_ack->value());
+                } else {
+                    callback(MavlinkDirect::Result::Error, MavlinkDirect::MavlinkMessage{});
+                }
+                break;
+            case MavlinkCommandSender::Result::Timeout:
+                callback(MavlinkDirect::Result::Timeout, MavlinkDirect::MavlinkMessage{});
+                break;
+            case MavlinkCommandSender::Result::NoSystem:
+                callback(MavlinkDirect::Result::NoSystem, MavlinkDirect::MavlinkMessage{});
+                break;
+            case MavlinkCommandSender::Result::ConnectionError:
+                callback(MavlinkDirect::Result::ConnectionError, MavlinkDirect::MavlinkMessage{});
+                break;
+            default:
+                callback(MavlinkDirect::Result::Error, MavlinkDirect::MavlinkMessage{});
+                break;
+        }
+    };
+
+    uint16_t command_id = 0;
+    uint8_t target_component = 0;
+    libmav_message.get("command", command_id);
+    libmav_message.get("target_component", target_component);
+
+    if (command.message_name == "COMMAND_LONG") {
+        MavlinkCommandSender::CommandLong command_long{};
+        command_long.command = command_id;
+        command_long.target_component_id = target_component;
+        libmav_message.get("confirmation", command_long.confirmation);
+
+        std::array<std::optional<float>*, 7> params{
+            &command_long.params.maybe_param1,
+            &command_long.params.maybe_param2,
+            &command_long.params.maybe_param3,
+            &command_long.params.maybe_param4,
+            &command_long.params.maybe_param5,
+            &command_long.params.maybe_param6,
+            &command_long.params.maybe_param7};
+        for (size_t i = 0; i < params.size(); ++i) {
+            float value = 0.0f;
+            libmav_message.get("param" + std::to_string(i + 1), value);
+            *params[i] = value;
+        }
+
+        _system_impl->send_command_async(command_long, result_callback, final_ack_callback);
+    } else {
+        MavlinkCommandSender::CommandInt command_int{};
+        command_int.command = command_id;
+        command_int.target_component_id = target_component;
+
+        uint8_t frame = 0;
+        uint8_t current = 0;
+        uint8_t autocontinue = 0;
+        libmav_message.get("frame", frame);
+        libmav_message.get("current", current);
+        libmav_message.get("autocontinue", autocontinue);
+        command_int.frame = static_cast<MAV_FRAME>(frame);
+        command_int.current = current != 0;
+        command_int.autocontinue = autocontinue != 0;
+
+        std::array<std::optional<float>*, 4> params{
+            &command_int.params.maybe_param1,
+            &command_int.params.maybe_param2,
+            &command_int.params.maybe_param3,
+            &command_int.params.maybe_param4};
+        for (size_t i = 0; i < params.size(); ++i) {
+            float value = 0.0f;
+            libmav_message.get("param" + std::to_string(i + 1), value);
+            *params[i] = value;
+        }
+        libmav_message.get("x", command_int.params.x);
+        libmav_message.get("y", command_int.params.y);
+        float z = 0.0f;
+        libmav_message.get("z", z);
+        command_int.params.maybe_z = z;
+
+        _system_impl->send_command_async(command_int, result_callback, final_ack_callback);
+    }
+}
+
+std::pair<MavlinkDirect::Result, MavlinkDirect::MavlinkMessage>
+MavlinkDirectImpl::send_command(MavlinkDirect::MavlinkMessage command)
+{
+    auto prom = std::make_shared<
+        std::promise<std::pair<MavlinkDirect::Result, MavlinkDirect::MavlinkMessage>>>();
+    auto fut = prom->get_future();
+
+    send_command_async(
+        std::move(command),
+        [prom](MavlinkDirect::Result result, MavlinkDirect::MavlinkMessage ack) {
+            prom->set_value({result, std::move(ack)});
+        });
+
+    return fut.get();
 }
 
 } // namespace mavsdk

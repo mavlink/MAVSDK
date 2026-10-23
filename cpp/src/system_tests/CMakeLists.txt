@@ -51,6 +51,7 @@ add_executable(system_tests_runner
     mavlink_direct.cpp
     mavlink_direct_forwarding.cpp
     mavlink_direct_server.cpp
+    mavlink_direct_command.cpp
     mavlink_seq.cpp
     mission_cancellation.cpp
     mission_changed.cpp

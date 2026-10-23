@@ -28,6 +28,7 @@ typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
 // ===== Opaque Handles =====
 typedef struct mavsdk_mavlink_direct_server_s *mavsdk_mavlink_direct_server_t;
 typedef struct mavsdk_mavlink_direct_server_message_handle_s *mavsdk_mavlink_direct_server_message_handle_t;
+typedef struct mavsdk_mavlink_direct_server_command_handle_s *mavsdk_mavlink_direct_server_command_handle_t;
 
 // ===== Enums =====
 
@@ -181,6 +182,7 @@ CMAVSDK_EXPORT void mavsdk_mavlink_direct_server_byte_buffer_destroy(uint8_t** b
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_mavlink_direct_server_message_callback_t)(const mavsdk_mavlink_direct_server_mavlink_message_t message, void* user_data);
+typedef void (*mavsdk_mavlink_direct_server_command_callback_t)(const mavsdk_mavlink_direct_server_mavlink_message_t command, void* user_data);
 
 // ===== MavlinkDirectServer Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_mavlink_direct_server_t mavsdk_mavlink_direct_server_create(mavsdk_server_component_t server_component);
@@ -252,6 +254,50 @@ mavsdk_mavlink_direct_server_result_t
 mavsdk_mavlink_direct_server_load_custom_xml(
     mavsdk_mavlink_direct_server_t mavlink_direct_server,
     char* xml_content);
+
+
+/**
+ * @brief Subscribe to incoming commands with a given command ID.
+ * 
+ *  Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are
+ *  addressed to this server component; check message_name to see which one it is.
+ * 
+ *  While subscribed, MAVSDK does not ack the command itself, so every command
+ *  received must be answered by sending a COMMAND_ACK with SendMessage, addressed
+ *  to the sender (system_id/component_id of the received command) and with
+ *  "command" set to the command ID. For a command that takes a while, send acks
+ *  with MAV_RESULT_IN_PROGRESS and "progress" in percent (255 if unknown) about
+ *  once per second while it runs, so the sender knows it is still going, then
+ *  the final result.
+ * 
+ *  The sender may retransmit the command if the ack is lost, so the same command
+ *  can arrive more than once.
+ *
+ * @param mavlink_direct_server The mavlink_direct_server instance.
+ * @param command  MAV_CMD to subscribe to
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_mavlink_direct_server_unsubscribe_command() to unsubscribe.
+ */
+CMAVSDK_EXPORT mavsdk_mavlink_direct_server_command_handle_t mavsdk_mavlink_direct_server_subscribe_command(
+    mavsdk_mavlink_direct_server_t mavlink_direct_server,
+    uint32_t command,
+    mavsdk_mavlink_direct_server_command_callback_t callback,
+    void* user_data);
+
+/**
+ * @brief Unsubscribe from 'command' updates.
+ *
+ * Stops the subscription and frees resources associated with the handle.
+ *
+ * @param mavlink_direct_server The mavlink_direct_server instance.
+ * @param handle The subscription handle returned by mavsdk_mavlink_direct_server_subscribe_command().
+ */
+CMAVSDK_EXPORT void mavsdk_mavlink_direct_server_unsubscribe_command(
+    mavsdk_mavlink_direct_server_t mavlink_direct_server,
+    mavsdk_mavlink_direct_server_command_handle_t);
 
 
 #ifdef __cplusplus

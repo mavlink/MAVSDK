@@ -24,6 +24,8 @@ enum [Result](#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298a
 std::function< void([Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960))> [ResultCallback](#classmavsdk_1_1_mavlink_direct_server_1a2dc536637ada21cfa613c323ebe9ea85) | Callback type for asynchronous [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md) calls.
 std::function< void([MavlinkMessage](structmavsdk_1_1_mavlink_direct_server_1_1_mavlink_message.md))> [MessageCallback](#classmavsdk_1_1_mavlink_direct_server_1ab4984454989841e5205f77f0b3c7b51e) | Callback type for subscribe_message.
 [Handle](classmavsdk_1_1_handle.md)< [MavlinkMessage](structmavsdk_1_1_mavlink_direct_server_1_1_mavlink_message.md) > [MessageHandle](#classmavsdk_1_1_mavlink_direct_server_1aca946e5536d779d1d6c0604388a8357f) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_message.
+std::function< void([MavlinkMessage](structmavsdk_1_1_mavlink_direct_server_1_1_mavlink_message.md))> [CommandCallback](#classmavsdk_1_1_mavlink_direct_server_1ae58fb765777817f6c04664d21e3826e5) | Callback type for subscribe_command.
+[Handle](classmavsdk_1_1_handle.md)< [MavlinkMessage](structmavsdk_1_1_mavlink_direct_server_1_1_mavlink_message.md) > [CommandHandle](#classmavsdk_1_1_mavlink_direct_server_1a889f57c1be116f5f8202567afb96a8f0) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_command.
 
 ## Public Member Functions
 
@@ -37,6 +39,8 @@ Type | Name | Description
 [MessageHandle](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aca946e5536d779d1d6c0604388a8357f) | [subscribe_message](#classmavsdk_1_1_mavlink_direct_server_1a72f9b9439c17c117b3846ad9fc4b2588) (std::string message_name, const [MessageCallback](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1ab4984454989841e5205f77f0b3c7b51e) & callback) | Subscribe to incoming MAVLink messages.
 void | [unsubscribe_message](#classmavsdk_1_1_mavlink_direct_server_1a377e2038cef335e30fa387b8f06621fa) ([MessageHandle](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aca946e5536d779d1d6c0604388a8357f) handle) | Unsubscribe from subscribe_message.
 [Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) | [load_custom_xml](#classmavsdk_1_1_mavlink_direct_server_1a6eb99920e7b5a45fe3e015f1f4849f6e) (std::string xml_content)const | Load custom MAVLink message definitions from XML.
+[CommandHandle](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a889f57c1be116f5f8202567afb96a8f0) | [subscribe_command](#classmavsdk_1_1_mavlink_direct_server_1aeafe53a6060eee8a7af45c6f13237b2a) (uint32_t command, const [CommandCallback](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1ae58fb765777817f6c04664d21e3826e5) & callback) | Subscribe to incoming commands with a given command ID.
+void | [unsubscribe_command](#classmavsdk_1_1_mavlink_direct_server_1a5dd7e0c3f796de86ad407eb539e811a9) ([CommandHandle](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a889f57c1be116f5f8202567afb96a8f0) handle) | Unsubscribe from subscribe_command.
 const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a466864bb7130a52d099e29cb820987a3) & | [operator=](#classmavsdk_1_1_mavlink_direct_server_1aeadf564e850b8fea4dddb47de9d335e3) (const [MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a466864bb7130a52d099e29cb820987a3) &)=delete | Equality operator (object is not copyable).
 
 
@@ -114,6 +118,26 @@ using mavsdk::MavlinkDirectServer::MessageHandle =  Handle<MavlinkMessage>
 
 
 [Handle](classmavsdk_1_1_handle.md) type for subscribe_message.
+
+
+### typedef CommandCallback {#classmavsdk_1_1_mavlink_direct_server_1ae58fb765777817f6c04664d21e3826e5}
+
+```cpp
+using mavsdk::MavlinkDirectServer::CommandCallback =  std::function<void(MavlinkMessage)>
+```
+
+
+Callback type for subscribe_command.
+
+
+### typedef CommandHandle {#classmavsdk_1_1_mavlink_direct_server_1a889f57c1be116f5f8202567afb96a8f0}
+
+```cpp
+using mavsdk::MavlinkDirectServer::CommandHandle =  Handle<MavlinkMessage>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_command.
 
 
 ## Member Enumeration Documentation
@@ -212,6 +236,44 @@ This function is blocking.
 **Returns**
 
 &emsp;[Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) - [Result](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1aa816208dcb9a5634a1f42298aea17960) of request.
+
+### subscribe_command() {#classmavsdk_1_1_mavlink_direct_server_1aeafe53a6060eee8a7af45c6f13237b2a}
+```cpp
+CommandHandle mavsdk::MavlinkDirectServer::subscribe_command(uint32_t command, const CommandCallback &callback)
+```
+
+
+Subscribe to incoming commands with a given command ID.
+
+Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are addressed to this server component; check message_name to see which one it is.
+
+
+While subscribed, MAVSDK does not ack the command itself, so every command received must be answered by sending a COMMAND_ACK with SendMessage, addressed to the sender (system_id/component_id of the received command) and with "command" set to the command ID. For a command that takes a while, send acks with MAV_RESULT_IN_PROGRESS and "progress" in percent (255 if unknown) about once per second while it runs, so the sender knows it is still going, then the final result.
+
+
+The sender may retransmit the command if the ack is lost, so the same command can arrive more than once.
+
+**Parameters**
+
+* uint32_t **command** - 
+* const [CommandCallback](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1ae58fb765777817f6c04664d21e3826e5)& **callback** - 
+
+**Returns**
+
+&emsp;[CommandHandle](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a889f57c1be116f5f8202567afb96a8f0) - 
+
+### unsubscribe_command() {#classmavsdk_1_1_mavlink_direct_server_1a5dd7e0c3f796de86ad407eb539e811a9}
+```cpp
+void mavsdk::MavlinkDirectServer::unsubscribe_command(CommandHandle handle)
+```
+
+
+Unsubscribe from subscribe_command.
+
+
+**Parameters**
+
+* [CommandHandle](classmavsdk_1_1_mavlink_direct_server.md#classmavsdk_1_1_mavlink_direct_server_1a889f57c1be116f5f8202567afb96a8f0) **handle** - 
 
 ### operator=() {#classmavsdk_1_1_mavlink_direct_server_1aeadf564e850b8fea4dddb47de9d335e3}
 ```cpp

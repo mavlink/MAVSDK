@@ -6,9 +6,11 @@
 
 package io.mavsdk.kotlin.plugins.mavlink_direct
 
+import kotlin.coroutines.resume
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 /** Enable direct MAVLink communication using libmav. */
 class MavlinkDirect internal constructor(private val native: MavlinkDirectNative) {
@@ -95,6 +97,48 @@ class MavlinkDirect internal constructor(private val native: MavlinkDirectNative
     fun loadCustomXml(xmlContent: String): Result =
         Result.fromValue(native.loadCustomXml(xmlContent))
 
+    /**
+     * Send a command and wait for its final COMMAND_ACK.
+     *
+     * The command is a COMMAND_LONG or COMMAND_INT message with its fields as JSON, e.g.
+     * message_name "COMMAND_LONG" and fields_json
+     * {"target_system":1,"target_component":1,"command":400,"param1":1,...}.
+     *
+     * The command is retransmitted if no ack arrives. MAV_RESULT_IN_PROGRESS acks are handled
+     * internally: the command is not retransmitted after one, and the call keeps waiting for the
+     * final ack.
+     *
+     * RESULT_SUCCESS only means that a final COMMAND_ACK was received. Whether the command was
+     * accepted is in the "result" field of the returned ack (MAV_RESULT, e.g. 0 for
+     * MAV_RESULT_ACCEPTED, 2 for MAV_RESULT_DENIED). Any other result means no final ack was
+     * received and the returned ack is empty.
+     *
+     * @param command COMMAND_LONG or COMMAND_INT message to send
+     * @return The final COMMAND_ACK, check its "result" field (MAV_RESULT); only set on
+     *   RESULT_SUCCESS
+     */
+    suspend fun sendCommand(command: MavlinkMessage): kotlin.Result<MavlinkMessage> =
+        suspendCancellableCoroutine { continuation ->
+            val callbackGuard = MavlinkDirectCallbackGuard()
+            native.sendCommandAsync(command) { result, value ->
+                val parsedResult = Result.fromValue(result)
+                if (continuation.isActive && callbackGuard.tryClaim()) {
+                    if (parsedResult == Result.SUCCESS) {
+                        continuation.resume(kotlin.Result.success(value))
+                    } else {
+                        continuation.resume(
+                            kotlin.Result.failure(
+                                MavlinkDirectException(
+                                    parsedResult,
+                                    "sendCommand failed: ${parsedResult.name}",
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
     internal fun destroy() {
         if (closed) return
         closed = true
@@ -116,7 +160,16 @@ internal interface MavlinkDirectNative {
 
     fun loadCustomXml(xmlContent: String): Int
 
+    fun sendCommandAsync(
+        command: MavlinkDirect.MavlinkMessage,
+        callback: (Int, MavlinkDirect.MavlinkMessage) -> Unit,
+    )
+
     fun destroy()
 }
 
 internal expect fun createMavlinkDirectNative(systemHandle: Long): MavlinkDirectNative
+
+internal expect class MavlinkDirectCallbackGuard() {
+    fun tryClaim(): Boolean
+}

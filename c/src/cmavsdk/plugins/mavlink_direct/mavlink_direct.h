@@ -177,6 +177,7 @@ CMAVSDK_EXPORT void mavsdk_mavlink_direct_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_mavlink_direct_message_callback_t)(const mavsdk_mavlink_direct_mavlink_message_t message, void* user_data);
+typedef void (*mavsdk_mavlink_direct_send_command_callback_t)(const mavsdk_mavlink_direct_result_t result, const mavsdk_mavlink_direct_mavlink_message_t ack, void* user_data);
 
 // ===== MavlinkDirect Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_mavlink_direct_t mavsdk_mavlink_direct_create(mavsdk_system_t system);
@@ -246,6 +247,52 @@ mavsdk_mavlink_direct_result_t
 mavsdk_mavlink_direct_load_custom_xml(
     mavsdk_mavlink_direct_t mavlink_direct,
     char* xml_content);
+
+
+/**
+ * @brief Send a command and wait for its final COMMAND_ACK.
+ * 
+ *  The command is a COMMAND_LONG or COMMAND_INT message with its fields as JSON,
+ *  e.g. message_name "COMMAND_LONG" and fields_json
+ *  {"target_system":1,"target_component":1,"command":400,"param1":1,...}.
+ * 
+ *  The command is retransmitted if no ack arrives. MAV_RESULT_IN_PROGRESS acks
+ *  are handled internally: the command is not retransmitted after one, and the
+ *  call keeps waiting for the final ack.
+ * 
+ *  RESULT_SUCCESS only means that a final COMMAND_ACK was received. Whether the
+ *  command was accepted is in the "result" field of the returned ack (MAV_RESULT,
+ *  e.g. 0 for MAV_RESULT_ACCEPTED, 2 for MAV_RESULT_DENIED). Any other result means
+ *  no final ack was received and the returned ack is empty.
+ *
+ * @param mavlink_direct The mavlink_direct instance.
+ * @param command  COMMAND_LONG or COMMAND_INT message to send
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_mavlink_direct_send_command_async(
+    mavsdk_mavlink_direct_t mavlink_direct,
+    mavsdk_mavlink_direct_mavlink_message_t command,
+    mavsdk_mavlink_direct_send_command_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current send command (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param send_command_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_mavlink_direct_result_t
+mavsdk_mavlink_direct_send_command(
+    mavsdk_mavlink_direct_t mavlink_direct,
+    mavsdk_mavlink_direct_mavlink_message_t command,
+    mavsdk_mavlink_direct_mavlink_message_t* ack_out);
 
 
 #ifdef __cplusplus

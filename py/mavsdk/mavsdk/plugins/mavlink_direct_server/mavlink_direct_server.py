@@ -268,6 +268,69 @@ class MavlinkDirectServer:
 
         return result
 
+    def subscribe_command(self, command, callback: Callable, user_data: Any = None):
+        """Subscribe to incoming commands with a given command ID.
+
+        Delivers COMMAND_LONG and COMMAND_INT messages with this command ID that are
+        addressed to this server component; check message_name to see which one it is.
+
+        While subscribed, MAVSDK does not ack the command itself, so every command
+        received must be answered by sending a COMMAND_ACK with SendMessage, addressed
+        to the sender (system_id/component_id of the received command) and with
+        "command" set to the command ID. For a command that takes a while, send acks
+        with MAV_RESULT_IN_PROGRESS and "progress" in percent (255 if unknown) about
+        once per second while it runs, so the sender knows it is still going, then
+        the final result.
+
+        The sender may retransmit the command if the ack is lost, so the same command
+        can arrive more than once."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = MavlinkMessage.from_c_struct(c_data)
+
+                self._lib.mavsdk_mavlink_direct_server_mavlink_message_destroy(
+                    ctypes.byref(c_data)
+                )
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in command callback: {e}")
+
+        cb = CommandCallback(c_callback)
+
+        _subscription = self._lib.mavsdk_mavlink_direct_server_subscribe_command(
+            self._require_handle(), command, cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_mavlink_direct_server_unsubscribe_command,
+        )
+
+        return _subscription
+
+    def unsubscribe_command(self, handle: ctypes.c_void_p):
+        """Unsubscribe from command
+
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
+        """
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_mavlink_direct_server_unsubscribe_command(
+            _plugin_handle, handle
+        )
+        del _entry
+
     def _require_handle(self) -> ctypes.c_void_p:
         """Fail loudly rather than dereferencing a null handle in C.
 
@@ -310,6 +373,7 @@ class MavlinkDirectServer:
 
 # ===== Callback Types =====
 MessageCallback = ctypes.CFUNCTYPE(None, MavlinkMessageCStruct, ctypes.c_void_p)
+CommandCallback = ctypes.CFUNCTYPE(None, MavlinkMessageCStruct, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mavlink_direct_server_create.argtypes = [ctypes.c_void_p]
@@ -365,3 +429,18 @@ _cmavsdk_lib.mavsdk_mavlink_direct_server_load_custom_xml.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_mavlink_direct_server_load_custom_xml.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mavlink_direct_server_subscribe_command.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    CommandCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mavlink_direct_server_subscribe_command.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_mavlink_direct_server_unsubscribe_command.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mavlink_direct_server_unsubscribe_command.restype = None
