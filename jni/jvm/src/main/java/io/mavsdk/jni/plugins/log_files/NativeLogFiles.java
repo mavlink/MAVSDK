@@ -60,6 +60,8 @@ public final class NativeLogFiles {
 
     public static native void downloadLogFileAsync(long pluginHandle, Entry entry, String path, DownloadLogFileCallback callback);
 
+    public static native int cancelDownloadLogFile(long pluginHandle);
+
     public static native int eraseAllLogFiles(long pluginHandle);
 
 }

@@ -96,7 +96,13 @@ void LogFilesImpl::deinit()
     }
     {
         std::lock_guard<std::mutex> lock(_download_data_mutex);
+        // Copied before stop_download_and_remove_file() resets it: its non-blocking removal
+        // does not wait for a data_timeout() already running, the blocking one below does.
         download_cookie = _download_data.timeout_cookie;
+        if (_download_data.active) {
+            // Plugin is going away: abort without calling back into user code.
+            stop_download_and_remove_file();
+        }
     }
 
     // Outside those mutexes: the blocking removals wait for entries_timeout() /
@@ -306,6 +312,19 @@ void LogFilesImpl::download_log_file_async(
     LogFiles::Entry entry, const std::string& file_path, LogFiles::DownloadLogFileCallback callback)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
+    // Lock order: _entries_mutex before _download_data_mutex.
+    std::lock_guard<std::mutex> download_lock(_download_data_mutex);
+
+    if (_download_data.active) {
+        LogErr("Log file download already in progress");
+
+        if (callback) {
+            _system_impl->call_user_callback([callback]() {
+                callback(LogFiles::Result::InvalidArgument, LogFiles::ProgressData());
+            });
+        }
+        return;
+    }
 
     // Convert entry.id to storage index using detected min_entry_id
     // Handles both 0-based (PX4) and 1-based (ArduPilot) indexing
@@ -352,8 +371,11 @@ void LogFilesImpl::download_log_file_async(
         return;
     }
 
+    _download_data.active = true;
+    const auto download_id = ++_download_id;
     _download_data.timeout_cookie = _system_impl->register_timeout_handler(
-        [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s());
+        [this, download_id]() { LogFilesImpl::data_timeout(download_id); },
+        _system_impl->timeout_s());
 
     // Request the first chunk
     request_log_data(_download_data.entry.id, 0, _download_data.current_chunk_size());
@@ -365,6 +387,11 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     mavlink_msg_log_data_decode(&message, &msg);
 
     std::lock_guard<std::mutex> lock(_download_data_mutex);
+
+    // Late packets after a cancel or a finished download.
+    if (!_download_data.active) {
+        return;
+    }
 
     _system_impl->refresh_timeout_handler(_download_data.timeout_cookie);
 
@@ -444,8 +471,10 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
 
         if (log_complete) {
             result = LogFiles::Result::Success;
+            _download_data.active = false;
             _download_data.file.close();
             _system_impl->unregister_timeout_handler(_download_data.timeout_cookie);
+            _download_data.timeout_cookie = {};
 
         } else {
             // Request the next chunk
@@ -487,9 +516,15 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     }
 }
 
-void LogFilesImpl::data_timeout()
+void LogFilesImpl::data_timeout(uint32_t download_id)
 {
     std::lock_guard<std::mutex> lock(_download_data_mutex);
+
+    // The timer may have fired just as the download was cancelled or finished,
+    // or belong to a previous download.
+    if (!_download_data.active || download_id != _download_id) {
+        return;
+    }
 
     LogErr("Timeout!");
     LogErr(
@@ -502,7 +537,8 @@ void LogFilesImpl::data_timeout()
     check_and_request_missing_bins();
 
     _download_data.timeout_cookie = _system_impl->register_timeout_handler(
-        [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s());
+        [this, download_id]() { LogFilesImpl::data_timeout(download_id); },
+        _system_impl->timeout_s());
 }
 
 void LogFilesImpl::check_and_request_missing_bins()
@@ -596,6 +632,54 @@ void LogFilesImpl::request_log_data(unsigned id, unsigned start, unsigned count)
             count);
         return message;
     });
+}
+
+LogFiles::Result LogFilesImpl::cancel_download_log_file()
+{
+    std::lock_guard<std::mutex> lock(_download_data_mutex);
+
+    if (!_download_data.active) {
+        LogWarn("No log file download to cancel... ignoring");
+        return LogFiles::Result::Success;
+    }
+
+    const auto callback = _download_data.user_callback;
+    LogFiles::ProgressData progress_data;
+    progress_data.progress =
+        (float)_download_data.total_bytes_written / (float)_download_data.entry.size_bytes;
+
+    stop_download_and_remove_file();
+
+    // Queued under the lock, like Next/Success in process_log_data(), so it can't be
+    // overtaken by callbacks of a download started right after.
+    if (callback) {
+        _system_impl->call_user_callback(
+            [callback, progress_data]() { callback(LogFiles::Result::Cancelled, progress_data); });
+    }
+
+    return LogFiles::Result::Success;
+}
+
+void LogFilesImpl::stop_download_and_remove_file()
+{
+    // Note: This function assumes _download_data_mutex is already locked by caller
+
+    _download_data.active = false;
+    _download_data.user_callback = nullptr;
+
+    _system_impl->unregister_timeout_handler(_download_data.timeout_cookie);
+    _download_data.timeout_cookie = {};
+
+    // Tell the vehicle to stop sending LOG_DATA.
+    request_end();
+
+    _download_data.file.close();
+
+    std::error_code ec;
+    fs::remove(_download_data.file_path, ec);
+    if (ec) {
+        LogWarn("Could not remove partial log file {}: {}", _download_data.file_path, ec.message());
+    }
 }
 
 LogFiles::Result LogFilesImpl::erase_all_log_files()

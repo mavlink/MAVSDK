@@ -35,7 +35,9 @@ class LogFiles internal constructor(private val native: LogFilesNative) {
         /** File open failed */
         FILE_OPEN_FAILED(6),
         /** No system is connected */
-        NO_SYSTEM(7);
+        NO_SYSTEM(7),
+        /** Download was cancelled */
+        CANCELLED(8);
 
         companion object {
             fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
@@ -116,6 +118,17 @@ class LogFiles internal constructor(private val native: LogFilesNative) {
         }
 
     /**
+     * Cancel an ongoing log file download.
+     *
+     * Returns Success, also if no download is in progress (a warning is logged). The callback of
+     * the ongoing download is called once with Cancelled, the vehicle is told to stop sending, and
+     * the partially downloaded file is deleted.
+     *
+     * @return The result of the request.
+     */
+    fun cancelDownloadLogFile(): Result = Result.fromValue(native.cancelDownloadLogFile())
+
+    /**
      * Erase all log files.
      *
      * @return The result of the request.
@@ -139,6 +152,8 @@ internal interface LogFilesNative {
         path: String,
         callback: (Int, LogFiles.ProgressData) -> Unit,
     )
+
+    fun cancelDownloadLogFile(): Int
 
     fun eraseAllLogFiles(): Int
 

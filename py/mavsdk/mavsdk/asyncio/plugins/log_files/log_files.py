@@ -75,6 +75,24 @@ class LogFilesAsync:
             if result == LogFilesResult.SUCCESS:
                 break
 
+    async def cancel_download_log_file(self):
+        """
+               Cancel an ongoing log file download.
+
+        Returns Success, also if no download is in progress (a warning is logged).
+        The callback of the ongoing download is called once with Cancelled,
+        the vehicle is told to stop sending, and the partially downloaded file is deleted.
+
+               Raises
+               ------
+               LogFilesError
+                   If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.cancel_download_log_file()
+        )
+
     async def erase_all_log_files(self):
         """
         Erase all log files.
