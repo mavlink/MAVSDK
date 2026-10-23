@@ -10,9 +10,11 @@ add_executable(goto_location_with_terrain
 )
 
 find_package(MAVSDK REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 target_link_libraries(goto_location_with_terrain
     MAVSDK::mavsdk
+    nlohmann_json::nlohmann_json
 )
 
 if(NOT MSVC)
