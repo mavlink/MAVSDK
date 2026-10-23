@@ -313,16 +313,13 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
         return;
     }
 
+    // Commands sent around the command sender (e.g. via MavlinkDirect) end up here.
     if (_command_debugging) {
         LogDebug(
             "Received ack from {}{}{} for not-existing command: {}! Ignoring...",
             static_cast<int>(message.sysid),
             '/',
             static_cast<int>(message.compid),
-            static_cast<int>(command_ack.command));
-    } else {
-        LogWarn(
-            "Received ack for not-existing command: {}! Ignoring...",
             static_cast<int>(command_ack.command));
     }
 }
