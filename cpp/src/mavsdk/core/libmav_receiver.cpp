@@ -122,7 +122,7 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
     auto header = message.header();
 
     // Generate complete JSON with all field values
-    std::string json = libmav_message_to_json(message);
+    std::string json = libmav_message_to_json(_mavsdk_impl, message);
 
     // Fill our message structures
     _last_libmav_message = message;
@@ -168,7 +168,7 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
     return true;
 }
 
-std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) const
+std::string LibmavReceiver::libmav_message_to_json(MavsdkImpl& mavsdk_impl, const mav::Message& msg)
 {
     // Use ordered_json so fields keep their MAVLink XML-definition order
     // (plain nlohmann::json would sort keys alphabetically). nlohmann handles
@@ -178,7 +178,7 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
     json["message_name"] = msg.name();
 
     // Get message definition to iterate through all fields (using thread-safe method)
-    auto message_def_opt = _mavsdk_impl.get_message_definition_safe(static_cast<int>(msg.id()));
+    auto message_def_opt = mavsdk_impl.get_message_definition_safe(static_cast<int>(msg.id()));
 
     if (message_def_opt) {
         auto& message_def = message_def_opt.get();

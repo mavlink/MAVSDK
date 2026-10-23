@@ -910,45 +910,9 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     // message is still relayed to connected peers, but before plugin delivery so that local
     // plugins only see messages the subscriber allows through.
     {
-        uint8_t buf[MAVLINK_MAX_PACKET_LEN];
-        uint16_t len = mavlink_msg_to_send_buffer(buf, &message);
-        size_t bytes_consumed = 0;
-        auto libmav_msg_opt = parse_message_safe(buf, len, bytes_consumed);
-        if (libmav_msg_opt) {
-            Mavsdk::MavlinkMessage json_msg;
-            json_msg.message_name = libmav_msg_opt.value().name();
-            json_msg.system_id = message.sysid;
-            json_msg.component_id = message.compid;
-            json_msg.raw_bytes.assign(buf, buf + len);
-
-            {
-                std::lock_guard lock(_mutex);
-                if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
-                    json_msg.fields_json =
-                        _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
-                            libmav_msg_opt.value());
-                } else {
-                    json_msg.fields_json =
-                        "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
-                        ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
-                }
-            }
-
-            // Targets above 255 are in the header, the payload only has a sentinel.
-            uint8_t target_sys = 0;
-            uint8_t target_comp = 0;
-            if (libmav_msg_opt.value().header().hasWideTarget()) {
-                json_msg.target_system_id = libmav_msg_opt.value().extendedTargetSystemId();
-            } else if (
-                libmav_msg_opt.value().get("target_system", target_sys) ==
-                mav::MessageResult::Success) {
-                json_msg.target_system_id = target_sys;
-            }
-            if (libmav_msg_opt.value().get("target_component", target_comp) ==
-                mav::MessageResult::Success) {
-                json_msg.target_component_id = target_comp;
-            }
-
+        auto maybe_json_msg = to_json_message(message);
+        if (maybe_json_msg) {
+            auto& json_msg = maybe_json_msg.value();
             if (!call_json_interception_callbacks(json_msg, _incoming_json_message_subscriptions)) {
                 if (_message_logging_on) {
                     LogDebug(
@@ -1161,56 +1125,9 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
     }
 
     // JSON message interception for outgoing messages
-    // Convert mavlink_message_t to Mavsdk::MavlinkMessage for JSON interception
-    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-    uint16_t len = mavlink_msg_to_send_buffer(buffer, &message);
-
-    size_t bytes_consumed = 0;
-    auto libmav_msg_opt = parse_message_safe(buffer, len, bytes_consumed);
-
-    if (libmav_msg_opt) {
-        // Create Mavsdk::MavlinkMessage directly for JSON interception
-        Mavsdk::MavlinkMessage json_message;
-        json_message.message_name = libmav_msg_opt.value().name();
-        json_message.system_id = message.sysid;
-        json_message.component_id = message.compid;
-
-        // Targets above 255 are in the header, the payload only has a sentinel.
-        uint8_t target_system_id = 0;
-        uint8_t target_component_id = 0;
-        if (libmav_msg_opt.value().header().hasWideTarget()) {
-            json_message.target_system_id = libmav_msg_opt.value().extendedTargetSystemId();
-        } else if (
-            libmav_msg_opt.value().get("target_system", target_system_id) ==
-            mav::MessageResult::Success) {
-            json_message.target_system_id = target_system_id;
-        } else {
-            json_message.target_system_id = 0;
-        }
-        if (libmav_msg_opt.value().get("target_component", target_component_id) ==
-            mav::MessageResult::Success) {
-            json_message.target_component_id = target_component_id;
-        } else {
-            json_message.target_component_id = 0;
-        }
-
-        // Generate JSON using LibmavReceiver's public method.
-        // Access _connections under _mutex so remove_connection() cannot destroy
-        // the Connection object (and its _libmav_receiver) while we're using it.
-        {
-            std::lock_guard lock(_mutex);
-            if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
-                json_message.fields_json =
-                    _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
-                        libmav_msg_opt.value());
-            } else {
-                // Fallback: create minimal JSON if no receiver available
-                json_message.fields_json =
-                    "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
-                    ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
-            }
-        }
-
+    auto maybe_json_message = to_json_message(message);
+    if (maybe_json_message) {
+        const auto& json_message = maybe_json_message.value();
         if (!call_json_interception_callbacks(json_message, _outgoing_json_message_subscriptions)) {
             // Message was dropped by JSON interception callback
             if (_message_logging_on) {
@@ -2299,6 +2216,42 @@ std::optional<mav::Message> MavsdkImpl::create_message_safe(const std::string& m
 }
 
 // Thread-safe parsing for LibmavReceiver
+std::optional<Mavsdk::MavlinkMessage> MavsdkImpl::to_json_message(const mavlink_message_t& message)
+{
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    const uint16_t len = mavlink_msg_to_send_buffer(buffer, &message);
+
+    size_t bytes_consumed = 0;
+    auto libmav_msg_opt = parse_message_safe(buffer, len, bytes_consumed);
+    if (!libmav_msg_opt) {
+        return std::nullopt;
+    }
+    const auto& libmav_msg = libmav_msg_opt.value();
+
+    Mavsdk::MavlinkMessage json_message;
+    json_message.message_name = libmav_msg.name();
+    json_message.system_id = message.sysid;
+    json_message.component_id = message.compid;
+    json_message.raw_bytes.assign(buffer, buffer + len);
+
+    // Targets above 255 are in the header, the payload only has a sentinel.
+    uint8_t target_system_id = 0;
+    if (libmav_msg.header().hasWideTarget()) {
+        json_message.target_system_id = libmav_msg.extendedTargetSystemId();
+    } else if (libmav_msg.get("target_system", target_system_id) == mav::MessageResult::Success) {
+        json_message.target_system_id = target_system_id;
+    }
+    uint8_t target_component_id = 0;
+    if (libmav_msg.get("target_component", target_component_id) == mav::MessageResult::Success) {
+        json_message.target_component_id = target_component_id;
+    }
+
+    // No _mutex here, this is called from command handlers that hold the receiver lock.
+    json_message.fields_json = LibmavReceiver::libmav_message_to_json(*this, libmav_msg);
+
+    return json_message;
+}
+
 std::optional<mav::Message> MavsdkImpl::parse_message_safe(
     const uint8_t* buffer, size_t buffer_len, size_t& bytes_consumed) const
 {

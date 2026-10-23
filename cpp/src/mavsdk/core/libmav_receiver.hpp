@@ -50,8 +50,8 @@ public:
     // Load custom XML message definitions
     bool load_custom_xml(const std::string& xml_content);
 
-    // JSON conversion (made public for use in message interception)
-    std::string libmav_message_to_json(const mav::Message& msg) const;
+    // JSON conversion, only needs the MessageSet so it doesn't depend on a connection.
+    static std::string libmav_message_to_json(MavsdkImpl& mavsdk_impl, const mav::Message& msg);
 
 private:
     MavsdkImpl& _mavsdk_impl; // For thread-safe MessageSet access
