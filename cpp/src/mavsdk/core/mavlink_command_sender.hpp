@@ -24,6 +24,8 @@ public:
     ~MavlinkCommandSender();
 
     static constexpr unsigned DEFAULT_RETRIES = 3;
+    // How long to wait for the next ack once the command is in progress.
+    static constexpr double in_progress_timeout_s = 10.0;
 
     enum class Result {
         Success = 0,
@@ -128,6 +130,7 @@ private:
         double timeout_s{0.5};
         int retries_to_do;
         bool already_sent{false};
+        bool in_progress{false};
     };
 
     template<typename CommandType>
