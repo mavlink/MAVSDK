@@ -701,8 +701,9 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
             if (int_item.command == MAV_CMD_NAV_WAYPOINT ||
                 int_item.command == MAV_CMD_NAV_TAKEOFF) {
-                if (int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
-                    LogErr("Waypoint frame not supported unsupported");
+                if (int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT &&
+                    int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
+                    LogErr("Waypoint frame {} not supported", int(int_item.frame));
                     result_pair.first = Mission::Result::Unsupported;
                     break;
                 }
