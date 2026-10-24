@@ -8,9 +8,28 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
+#include <vector>
 
 #include <mavsdk/mavsdk.hpp>
 #include "mavlink_include.hpp"
+
+// Build the list of valid dialect message IDs once, so the fuzzer only emits
+// messages that map to a real message entry. The previous code derived the id
+// from a single byte (fuzz_data[offset + 2]), limiting it to ids 0..255 and
+// missing every higher id in the dialect (e.g. the 300/11000-range messages).
+static const std::vector<uint32_t>& valid_msg_ids()
+{
+    static const std::vector<uint32_t> ids = [] {
+        std::vector<uint32_t> v;
+        for (uint32_t id = 0; id <= 300000; ++id) {
+            if (mavlink_get_msg_entry(id) != nullptr) {
+                v.push_back(id);
+            }
+        }
+        return v;
+    }();
+    return ids;
+}
 #include "../mavsdk/core/log.hpp"
 
 // Include all client plugins (not server plugins)
@@ -143,6 +162,10 @@ struct SystemPlugins {
     std::unique_ptr<MavlinkPassthrough> mavlink_passthrough;
 };
 
+// System ID used only by the sentinel heartbeat (see wait_until_processed()). The fuzzed
+// messages and the keep-alive heartbeat always come from system ID 1.
+static constexpr uint8_t SENTINEL_SYSTEM_ID = 254;
+
 // Main fuzzer class that manages MAVSDK connection and plugin instances
 class MavsdkFuzzer {
 public:
@@ -160,12 +183,20 @@ public:
 
 private:
     void send_heartbeat();
+    void wait_until_processed();
     void create_plugins_for_system(std::shared_ptr<System> system);
     size_t process_fuzz_data_to_mavlink(
         const uint8_t* fuzz_data,
         size_t fuzz_size,
         uint8_t* output_buffer,
         size_t output_buffer_size);
+
+    // Declared before mavsdk_ so they outlive it: the intercept callback that updates them
+    // can run until mavsdk_ is destroyed.
+    std::mutex sentinel_mutex_;
+    std::condition_variable sentinel_cv_;
+    uint32_t sentinel_sent_{0};
+    uint32_t sentinel_seen_{0};
 
     std::unique_ptr<Mavsdk> mavsdk_;
     std::unique_ptr<Watchdog> watchdog_;
@@ -193,6 +224,36 @@ void MavsdkFuzzer::send_heartbeat()
 
     mavsdk_->pass_received_raw_bytes(
         reinterpret_cast<const char*>(heartbeat_buffer), heartbeat_size);
+}
+
+void MavsdkFuzzer::wait_until_processed()
+{
+    // pass_received_raw_bytes() only posts the bytes to the io_context, which parses them later.
+    // Without waiting, the fuzzer injects far faster than MAVSDK can process, and the queue of
+    // pending buffers grows until the fuzzer runs out of memory. The io_context handles the
+    // buffers in order, so once the sentinel queued behind them has been seen, everything passed
+    // in before it has been processed too. If processing stalls, the watchdog aborts while we
+    // wait here.
+    const uint32_t sentinel = ++sentinel_sent_;
+
+    mavlink_message_t sentinel_msg;
+    mavlink_msg_heartbeat_pack(
+        SENTINEL_SYSTEM_ID,
+        1,
+        &sentinel_msg,
+        MAV_TYPE_GCS,
+        MAV_AUTOPILOT_INVALID,
+        0,
+        sentinel, // custom_mode carries the sequence number
+        MAV_STATE_UNINIT);
+
+    uint8_t sentinel_buffer[MAVLINK_MAX_PACKET_LEN];
+    size_t sentinel_size = mavlink_msg_to_send_buffer(sentinel_buffer, &sentinel_msg);
+
+    mavsdk_->pass_received_raw_bytes(reinterpret_cast<const char*>(sentinel_buffer), sentinel_size);
+
+    std::unique_lock<std::mutex> lock(sentinel_mutex_);
+    sentinel_cv_.wait(lock, [this, sentinel]() { return sentinel_seen_ == sentinel; });
 }
 
 void MavsdkFuzzer::create_plugins_for_system(std::shared_ptr<System> system)
@@ -258,6 +319,25 @@ bool MavsdkFuzzer::initialize()
         mavsdk_.reset();
         return false;
     }
+
+    // Record and drop the sentinel heartbeats sent by wait_until_processed(). This low-level hook
+    // runs before forwarding and before any system handling, so dropping them has no other
+    // effect. Its JSON replacement would convert every incoming message to JSON, which slows the
+    // fuzzer down and changes what it exercises.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    mavsdk_->intercept_incoming_messages_async([this](mavlink_message_t& message) {
+        if (message.sysid != SENTINEL_SYSTEM_ID || message.msgid != MAVLINK_MSG_ID_HEARTBEAT) {
+            return true;
+        }
+        {
+            std::lock_guard<std::mutex> lock(sentinel_mutex_);
+            sentinel_seen_ = mavlink_msg_heartbeat_get_custom_mode(&message);
+        }
+        sentinel_cv_.notify_all();
+        return false;
+    });
+#pragma GCC diagnostic pop
 
     // Subscribe to outgoing bytes and discard them (required for raw connection to work)
     mavsdk_->subscribe_raw_bytes_to_be_sent([](const char*, size_t) {
@@ -353,7 +433,12 @@ size_t MavsdkFuzzer::process_fuzz_data_to_mavlink(
         // Use fixed system ID and component ID for better plugin message routing
         uint8_t system_id = 1; // Fixed to ensure consistent message routing
         uint8_t component_id = 1; // Fixed to ensure consistent message routing
-        uint8_t msg_id = fuzz_data[offset + 2];
+        // Select a valid dialect message id from two fuzz bytes (the single-byte
+        // id used before could only reach ids 0..255).
+        const std::vector<uint32_t>& vids = valid_msg_ids();
+        const uint32_t sel = (static_cast<uint32_t>(fuzz_data[offset + 2]) << 8) ^
+                             static_cast<uint32_t>(fuzz_data[offset + 1]);
+        const uint32_t msg_id = vids.empty() ? 0u : vids[sel % vids.size()];
 
         // Fill the message with fuzz data
         msg.msgid = msg_id;
@@ -373,14 +458,23 @@ size_t MavsdkFuzzer::process_fuzz_data_to_mavlink(
             msg.len = 0;
         }
 
-        // The key insight from PX4: let MAVLink calculate the correct checksum
-        // This ensures the message passes basic validation and reaches deeper processing
+        // Use the real crc_extra / min_length / max_length for this message id,
+        // so the receiver's CRC check passes and the message actually reaches its
+        // handler. Finalizing with crc_extra = 0 (as before) made every frame fail
+        // the receiver's CRC and get dropped, so only the framing layer was ever
+        // exercised, never the plugin message handlers.
+        // msg.msgid always comes from valid_msg_ids(), i.e. ids for which
+        // mavlink_get_msg_entry() is non-null, so the lookup is guaranteed to succeed.
+        const mavlink_msg_entry_t* entry = mavlink_get_msg_entry(msg.msgid);
+        const uint8_t max_len = entry->max_msg_len;
+        if (msg.len > max_len) {
+            msg.len = max_len;
+        }
         msg.checksum = 0; // Will be calculated by mavlink_finalize_message
 
-        // Finalize the message (calculates correct checksum)
-        // For fuzzing, we don't know the actual min_length and crc_extra,
-        // so we use generic values that will still create a valid checksum
-        mavlink_finalize_message(&msg, system_id, component_id, msg.len, msg.len, 0);
+        // Finalize the message (calculates the correct checksum).
+        mavlink_finalize_message(
+            &msg, system_id, component_id, entry->min_msg_len, msg.len, entry->crc_extra);
 
         // Convert to send buffer
         size_t message_length =
@@ -428,6 +522,9 @@ void MavsdkFuzzer::process_fuzz_input(const uint8_t* data, size_t size)
     // Pass all generated MAVLink messages directly to MAVSDK via raw connection
     mavsdk_->pass_received_raw_bytes(
         reinterpret_cast<const char*>(mavlink_buffer), total_mavlink_size);
+
+    // Don't move on to the next input before MAVSDK has processed this one.
+    wait_until_processed();
 
     // Reset watchdog after successful processing
     watchdog_->reset();
