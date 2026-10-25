@@ -29,6 +29,8 @@ translate_result(mavsdk::LogFiles::Result cpp_result) {
             return MAVSDK_LOG_FILES_RESULT_FILE_OPEN_FAILED;
         case mavsdk::LogFiles::Result::NoSystem:
             return MAVSDK_LOG_FILES_RESULT_NO_SYSTEM;
+        case mavsdk::LogFiles::Result::Cancelled:
+            return MAVSDK_LOG_FILES_RESULT_CANCELLED;
     }
 }
 
@@ -285,6 +287,19 @@ void mavsdk_log_files_download_log_file_async(
 }
 
 
+
+
+// CancelDownloadLogFile sync
+mavsdk_log_files_result_t
+mavsdk_log_files_cancel_download_log_file(
+    mavsdk_log_files_t log_files)
+{
+    auto wrapper = reinterpret_cast<mavsdk_log_files_wrapper*>(log_files);
+
+    auto ret_value = wrapper->cpp_plugin->cancel_download_log_file();
+
+    return translate_result(ret_value);
+}
 
 
 // EraseAllLogFiles sync

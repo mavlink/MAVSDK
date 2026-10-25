@@ -26,6 +26,7 @@ namespace log_files {
 static const char* LogFilesService_method_names[] = {
   "/mavsdk.rpc.log_files.LogFilesService/GetEntries",
   "/mavsdk.rpc.log_files.LogFilesService/SubscribeDownloadLogFile",
+  "/mavsdk.rpc.log_files.LogFilesService/CancelDownloadLogFile",
   "/mavsdk.rpc.log_files.LogFilesService/EraseAllLogFiles",
 };
 
@@ -38,7 +39,8 @@ std::unique_ptr< LogFilesService::Stub> LogFilesService::NewStub(const std::shar
 LogFilesService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_GetEntries_(LogFilesService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeDownloadLogFile_(LogFilesService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_EraseAllLogFiles_(LogFilesService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CancelDownloadLogFile_(LogFilesService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_EraseAllLogFiles_(LogFilesService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status LogFilesService::Stub::GetEntries(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::GetEntriesRequest& request, ::mavsdk::rpc::log_files::GetEntriesResponse* response) {
@@ -78,6 +80,29 @@ void LogFilesService::Stub::async::SubscribeDownloadLogFile(::grpc::ClientContex
 
 ::grpc::ClientAsyncReader< ::mavsdk::rpc::log_files::DownloadLogFileResponse>* LogFilesService::Stub::PrepareAsyncSubscribeDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
   return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::log_files::DownloadLogFileResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeDownloadLogFile_, context, request, false, nullptr);
+}
+
+::grpc::Status LogFilesService::Stub::CancelDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest& request, ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest, ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CancelDownloadLogFile_, context, request, response);
+}
+
+void LogFilesService::Stub::async::CancelDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest* request, ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest, ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CancelDownloadLogFile_, context, request, response, std::move(f));
+}
+
+void LogFilesService::Stub::async::CancelDownloadLogFile(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest* request, ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CancelDownloadLogFile_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse>* LogFilesService::Stub::PrepareAsyncCancelDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse, ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CancelDownloadLogFile_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse>* LogFilesService::Stub::AsyncCancelDownloadLogFileRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCancelDownloadLogFileRaw(context, request, cq);
+  result->StartCall();
+  return result;
 }
 
 ::grpc::Status LogFilesService::Stub::EraseAllLogFiles(::grpc::ClientContext* context, const ::mavsdk::rpc::log_files::EraseAllLogFilesRequest& request, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse* response) {
@@ -127,6 +152,16 @@ LogFilesService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       LogFilesService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< LogFilesService::Service, ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest, ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](LogFilesService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest* req,
+             ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse* resp) {
+               return service->CancelDownloadLogFile(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      LogFilesService_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< LogFilesService::Service, ::mavsdk::rpc::log_files::EraseAllLogFilesRequest, ::mavsdk::rpc::log_files::EraseAllLogFilesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](LogFilesService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -150,6 +185,13 @@ LogFilesService::Service::~Service() {
   (void) context;
   (void) request;
   (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status LogFilesService::Service::CancelDownloadLogFile(::grpc::ServerContext* context, const ::mavsdk::rpc::log_files::CancelDownloadLogFileRequest* request, ::mavsdk::rpc::log_files::CancelDownloadLogFileResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

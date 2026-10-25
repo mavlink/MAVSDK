@@ -127,6 +127,8 @@ typedef enum {
     MAVSDK_LOG_FILES_RESULT_FILE_OPEN_FAILED = 6,
     /**  No system is connected. */
     MAVSDK_LOG_FILES_RESULT_NO_SYSTEM = 7,
+    /**  Download was cancelled. */
+    MAVSDK_LOG_FILES_RESULT_CANCELLED = 8,
 } mavsdk_log_files_result_t;
 
 
@@ -266,6 +268,20 @@ CMAVSDK_EXPORT void mavsdk_log_files_download_log_file_async(
     mavsdk_log_files_download_log_file_callback_t callback,
     void* user_data);
 
+
+
+/**
+ * @brief Get the current cancel download log file (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param cancel_download_log_file_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_log_files_result_t
+mavsdk_log_files_cancel_download_log_file(
+    mavsdk_log_files_t log_files);
 
 
 /**
