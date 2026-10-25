@@ -37,9 +37,20 @@ function(build_target TARGET_NAME)
     endif()
 
     ProcessorCount(NUM_PROCS)
+    if(NUM_PROCS EQUAL 0)
+        set(NUM_PROCS 4)
+    endif()
     set(ENV{MAKEFLAGS} -j${NUM_PROCS})
 
     if(MSVC)
+        # MSBuild ignores MAKEFLAGS. Build projects in parallel, including the nested
+        # ExternalProject builds, and compile the files within a project in parallel.
+        set(ENV{CMAKE_BUILD_PARALLEL_LEVEL} ${NUM_PROCS})
+        string(FIND "$ENV{CL}" "/MP" CL_HAS_MP)
+        if(CL_HAS_MP EQUAL -1)
+            set(ENV{CL} "/MP $ENV{CL}")
+        endif()
+
         execute_process(COMMAND ${CMAKE_COMMAND} --build . --config ${CMAKE_BUILD_TYPE}
             WORKING_DIRECTORY ${TARGET_BINARY_DIR}
             RESULT_VARIABLE BUILD_FAILED
