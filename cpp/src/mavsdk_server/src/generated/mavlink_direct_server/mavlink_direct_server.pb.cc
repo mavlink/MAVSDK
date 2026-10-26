@@ -55,6 +55,31 @@ struct SubscribeMessageRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeMessageRequestDefaultTypeInternal _SubscribeMessageRequest_default_instance_;
 
+inline constexpr SubscribeCommandRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : command_{0u},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SubscribeCommandRequest::SubscribeCommandRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SubscribeCommandRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeCommandRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeCommandRequestDefaultTypeInternal() {}
+  union {
+    SubscribeCommandRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeCommandRequestDefaultTypeInternal _SubscribeCommandRequest_default_instance_;
+
 inline constexpr MavlinkMessage::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : message_name_(
@@ -243,6 +268,31 @@ struct LoadCustomXmlResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoadCustomXmlResponseDefaultTypeInternal _LoadCustomXmlResponse_default_instance_;
+
+inline constexpr CommandResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        command_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CommandResponse::CommandResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CommandResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CommandResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CommandResponseDefaultTypeInternal() {}
+  union {
+    CommandResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CommandResponseDefaultTypeInternal _CommandResponse_default_instance_;
 }  // namespace mavlink_direct_server
 }  // namespace rpc
 }  // namespace mavsdk
@@ -311,6 +361,25 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse, _impl_.mavlink_direct_server_result_),
         0,
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest, _impl_.command_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct_server::CommandResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct_server::CommandResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct_server::CommandResponse, _impl_.command_),
+        0,
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct_server::MavlinkMessage, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -344,8 +413,10 @@ static const ::_pbi::MigrationSchema
         {29, 38, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::MessageResponse)},
         {39, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlRequest)},
         {48, 57, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::LoadCustomXmlResponse)},
-        {58, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::MavlinkMessage)},
-        {72, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::MavlinkDirectServerResult)},
+        {58, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest)},
+        {67, 76, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::CommandResponse)},
+        {77, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::MavlinkMessage)},
+        {91, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct_server::MavlinkDirectServerResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::mavlink_direct_server::_SendMessageRequest_default_instance_._instance,
@@ -354,6 +425,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::mavlink_direct_server::_MessageResponse_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct_server::_LoadCustomXmlRequest_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct_server::_LoadCustomXmlResponse_default_instance_._instance,
+    &::mavsdk::rpc::mavlink_direct_server::_SubscribeCommandRequest_default_instance_._instance,
+    &::mavsdk::rpc::mavlink_direct_server::_CommandResponse_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct_server::_MavlinkMessage_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct_server::_MavlinkDirectServerResult_default_instance_._instance,
 };
@@ -374,32 +447,39 @@ const char descriptor_table_protodef_mavlink_5fdirect_5fserver_2fmavlink_5fdirec
     "\013xml_content\030\001 \001(\t\"z\n\025LoadCustomXmlRespo"
     "nse\022a\n\034mavlink_direct_server_result\030\001 \001("
     "\0132;.mavsdk.rpc.mavlink_direct_server.Mav"
-    "linkDirectServerResult\"\233\001\n\016MavlinkMessag"
-    "e\022\024\n\014message_name\030\001 \001(\t\022\021\n\tsystem_id\030\002 \001"
-    "(\r\022\024\n\014component_id\030\003 \001(\r\022\030\n\020target_syste"
-    "m_id\030\004 \001(\r\022\033\n\023target_component_id\030\005 \001(\r\022"
-    "\023\n\013fields_json\030\006 \001(\t\"\305\002\n\031MavlinkDirectSe"
-    "rverResult\022R\n\006result\030\001 \001(\0162B.mavsdk.rpc."
-    "mavlink_direct_server.MavlinkDirectServe"
-    "rResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\277\001\n\006R"
-    "esult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCC"
-    "ESS\020\001\022\020\n\014RESULT_ERROR\020\002\022\032\n\026RESULT_INVALI"
-    "D_MESSAGE\020\003\022\030\n\024RESULT_INVALID_FIELD\020\004\022\033\n"
-    "\027RESULT_CONNECTION_ERROR\020\005\022\024\n\020RESULT_NO_"
-    "SYSTEM\020\006\022\022\n\016RESULT_TIMEOUT\020\0072\263\003\n\032Mavlink"
-    "DirectServerService\022\200\001\n\013SendMessage\0224.ma"
-    "vsdk.rpc.mavlink_direct_server.SendMessa"
-    "geRequest\0325.mavsdk.rpc.mavlink_direct_se"
-    "rver.SendMessageResponse\"\004\200\265\030\001\022\210\001\n\020Subsc"
-    "ribeMessage\0229.mavsdk.rpc.mavlink_direct_"
-    "server.SubscribeMessageRequest\0321.mavsdk."
-    "rpc.mavlink_direct_server.MessageRespons"
-    "e\"\004\200\265\030\0000\001\022\206\001\n\rLoadCustomXml\0226.mavsdk.rpc"
-    ".mavlink_direct_server.LoadCustomXmlRequ"
-    "est\0327.mavsdk.rpc.mavlink_direct_server.L"
-    "oadCustomXmlResponse\"\004\200\265\030\001B;\n\037io.mavsdk."
-    "mavlink_direct_serverB\030MavlinkDirectServ"
-    "erProtob\006proto3"
+    "linkDirectServerResult\"*\n\027SubscribeComma"
+    "ndRequest\022\017\n\007command\030\001 \001(\r\"T\n\017CommandRes"
+    "ponse\022A\n\007command\030\001 \001(\01320.mavsdk.rpc.mavl"
+    "ink_direct_server.MavlinkMessage\"\233\001\n\016Mav"
+    "linkMessage\022\024\n\014message_name\030\001 \001(\t\022\021\n\tsys"
+    "tem_id\030\002 \001(\r\022\024\n\014component_id\030\003 \001(\r\022\030\n\020ta"
+    "rget_system_id\030\004 \001(\r\022\033\n\023target_component"
+    "_id\030\005 \001(\r\022\023\n\013fields_json\030\006 \001(\t\"\305\002\n\031Mavli"
+    "nkDirectServerResult\022R\n\006result\030\001 \001(\0162B.m"
+    "avsdk.rpc.mavlink_direct_server.MavlinkD"
+    "irectServerResult.Result\022\022\n\nresult_str\030\002"
+    " \001(\t\"\277\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016R"
+    "ESULT_SUCCESS\020\001\022\020\n\014RESULT_ERROR\020\002\022\032\n\026RES"
+    "ULT_INVALID_MESSAGE\020\003\022\030\n\024RESULT_INVALID_"
+    "FIELD\020\004\022\033\n\027RESULT_CONNECTION_ERROR\020\005\022\024\n\020"
+    "RESULT_NO_SYSTEM\020\006\022\022\n\016RESULT_TIMEOUT\020\0072\276"
+    "\004\n\032MavlinkDirectServerService\022\200\001\n\013SendMe"
+    "ssage\0224.mavsdk.rpc.mavlink_direct_server"
+    ".SendMessageRequest\0325.mavsdk.rpc.mavlink"
+    "_direct_server.SendMessageResponse\"\004\200\265\030\001"
+    "\022\210\001\n\020SubscribeMessage\0229.mavsdk.rpc.mavli"
+    "nk_direct_server.SubscribeMessageRequest"
+    "\0321.mavsdk.rpc.mavlink_direct_server.Mess"
+    "ageResponse\"\004\200\265\030\0000\001\022\206\001\n\rLoadCustomXml\0226."
+    "mavsdk.rpc.mavlink_direct_server.LoadCus"
+    "tomXmlRequest\0327.mavsdk.rpc.mavlink_direc"
+    "t_server.LoadCustomXmlResponse\"\004\200\265\030\001\022\210\001\n"
+    "\020SubscribeCommand\0229.mavsdk.rpc.mavlink_d"
+    "irect_server.SubscribeCommandRequest\0321.m"
+    "avsdk.rpc.mavlink_direct_server.CommandR"
+    "esponse\"\004\200\265\030\0000\001B;\n\037io.mavsdk.mavlink_dir"
+    "ect_serverB\030MavlinkDirectServerProtob\006pr"
+    "oto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_mavlink_5fdirect_5fserver_2fmavlink_5fdirect_5fserver_2eproto_deps[1] =
     {
@@ -409,13 +489,13 @@ static ::absl::once_flag descriptor_table_mavlink_5fdirect_5fserver_2fmavlink_5f
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_mavlink_5fdirect_5fserver_2fmavlink_5fdirect_5fserver_2eproto = {
     false,
     false,
-    1615,
+    1884,
     descriptor_table_protodef_mavlink_5fdirect_5fserver_2fmavlink_5fdirect_5fserver_2eproto,
     "mavlink_direct_server/mavlink_direct_server.proto",
     &descriptor_table_mavlink_5fdirect_5fserver_2fmavlink_5fdirect_5fserver_2eproto_once,
     descriptor_table_mavlink_5fdirect_5fserver_2fmavlink_5fdirect_5fserver_2eproto_deps,
     1,
-    8,
+    10,
     schemas,
     file_default_instances,
     TableStruct_mavlink_5fdirect_5fserver_2fmavlink_5fdirect_5fserver_2eproto::offsets,
@@ -1911,6 +1991,463 @@ void LoadCustomXmlResponse::InternalSwap(LoadCustomXmlResponse* PROTOBUF_RESTRIC
 }
 
 ::google::protobuf::Metadata LoadCustomXmlResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SubscribeCommandRequest::_Internal {
+ public:
+};
+
+SubscribeCommandRequest::SubscribeCommandRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mavlink_direct_server.SubscribeCommandRequest)
+}
+SubscribeCommandRequest::SubscribeCommandRequest(
+    ::google::protobuf::Arena* arena, const SubscribeCommandRequest& from)
+    : SubscribeCommandRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE SubscribeCommandRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SubscribeCommandRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.command_ = {};
+}
+SubscribeCommandRequest::~SubscribeCommandRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mavlink_direct_server.SubscribeCommandRequest)
+  SharedDtor(*this);
+}
+inline void SubscribeCommandRequest::SharedDtor(MessageLite& self) {
+  SubscribeCommandRequest& this_ = static_cast<SubscribeCommandRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* SubscribeCommandRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubscribeCommandRequest(arena);
+}
+constexpr auto SubscribeCommandRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeCommandRequest),
+                                            alignof(SubscribeCommandRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SubscribeCommandRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SubscribeCommandRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SubscribeCommandRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SubscribeCommandRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SubscribeCommandRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SubscribeCommandRequest>(), &SubscribeCommandRequest::ByteSizeLong,
+            &SubscribeCommandRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SubscribeCommandRequest, _impl_._cached_size_),
+        false,
+    },
+    &SubscribeCommandRequest::kDescriptorMethods,
+    &descriptor_table_mavlink_5fdirect_5fserver_2fmavlink_5fdirect_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SubscribeCommandRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> SubscribeCommandRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::mavlink_direct_server::SubscribeCommandRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // uint32 command = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SubscribeCommandRequest, _impl_.command_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(SubscribeCommandRequest, _impl_.command_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 command = 1;
+    {PROTOBUF_FIELD_OFFSET(SubscribeCommandRequest, _impl_.command_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SubscribeCommandRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mavlink_direct_server.SubscribeCommandRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.command_ = 0u;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SubscribeCommandRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SubscribeCommandRequest& this_ = static_cast<const SubscribeCommandRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SubscribeCommandRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SubscribeCommandRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mavlink_direct_server.SubscribeCommandRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint32 command = 1;
+          if (this_._internal_command() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                1, this_._internal_command(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mavlink_direct_server.SubscribeCommandRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SubscribeCommandRequest::ByteSizeLong(const MessageLite& base) {
+          const SubscribeCommandRequest& this_ = static_cast<const SubscribeCommandRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SubscribeCommandRequest::ByteSizeLong() const {
+          const SubscribeCommandRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mavlink_direct_server.SubscribeCommandRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // uint32 command = 1;
+            if (this_._internal_command() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_command());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SubscribeCommandRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SubscribeCommandRequest*>(&to_msg);
+  auto& from = static_cast<const SubscribeCommandRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mavlink_direct_server.SubscribeCommandRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_command() != 0) {
+    _this->_impl_.command_ = from._impl_.command_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SubscribeCommandRequest::CopyFrom(const SubscribeCommandRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mavlink_direct_server.SubscribeCommandRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SubscribeCommandRequest::InternalSwap(SubscribeCommandRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.command_, other->_impl_.command_);
+}
+
+::google::protobuf::Metadata SubscribeCommandRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CommandResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<CommandResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(CommandResponse, _impl_._has_bits_);
+};
+
+CommandResponse::CommandResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE CommandResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::mavlink_direct_server::CommandResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+CommandResponse::CommandResponse(
+    ::google::protobuf::Arena* arena,
+    const CommandResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CommandResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.command_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mavlink_direct_server::MavlinkMessage>(
+                              arena, *from._impl_.command_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE CommandResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void CommandResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.command_ = {};
+}
+CommandResponse::~CommandResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+  SharedDtor(*this);
+}
+inline void CommandResponse::SharedDtor(MessageLite& self) {
+  CommandResponse& this_ = static_cast<CommandResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.command_;
+  this_._impl_.~Impl_();
+}
+
+inline void* CommandResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) CommandResponse(arena);
+}
+constexpr auto CommandResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(CommandResponse),
+                                            alignof(CommandResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull CommandResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_CommandResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &CommandResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<CommandResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &CommandResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<CommandResponse>(), &CommandResponse::ByteSizeLong,
+            &CommandResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(CommandResponse, _impl_._cached_size_),
+        false,
+    },
+    &CommandResponse::kDescriptorMethods,
+    &descriptor_table_mavlink_5fdirect_5fserver_2fmavlink_5fdirect_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* CommandResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> CommandResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(CommandResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::mavlink_direct_server::CommandResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.mavlink_direct_server.MavlinkMessage command = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CommandResponse, _impl_.command_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.mavlink_direct_server.MavlinkMessage command = 1;
+    {PROTOBUF_FIELD_OFFSET(CommandResponse, _impl_.command_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::mavlink_direct_server::MavlinkMessage>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void CommandResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.command_ != nullptr);
+    _impl_.command_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* CommandResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const CommandResponse& this_ = static_cast<const CommandResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* CommandResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const CommandResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.mavlink_direct_server.MavlinkMessage command = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.command_, this_._impl_.command_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t CommandResponse::ByteSizeLong(const MessageLite& base) {
+          const CommandResponse& this_ = static_cast<const CommandResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t CommandResponse::ByteSizeLong() const {
+          const CommandResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.mavlink_direct_server.MavlinkMessage command = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.command_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void CommandResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CommandResponse*>(&to_msg);
+  auto& from = static_cast<const CommandResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.command_ != nullptr);
+    if (_this->_impl_.command_ == nullptr) {
+      _this->_impl_.command_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mavlink_direct_server::MavlinkMessage>(arena, *from._impl_.command_);
+    } else {
+      _this->_impl_.command_->MergeFrom(*from._impl_.command_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CommandResponse::CopyFrom(const CommandResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mavlink_direct_server.CommandResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CommandResponse::InternalSwap(CommandResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.command_, other->_impl_.command_);
+}
+
+::google::protobuf::Metadata CommandResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

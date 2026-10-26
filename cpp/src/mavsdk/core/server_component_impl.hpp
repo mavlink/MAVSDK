@@ -145,6 +145,9 @@ public:
     // Get MessageSet for message creation and parsing (shared per Mavsdk instance).
     mav::MessageSet& get_message_set() const;
 
+    // Convert a raw MAVLink message to its JSON representation.
+    std::optional<Mavsdk::MavlinkMessage> to_json_message(const mavlink_message_t& message) const;
+
     // Thread-safe loading of custom XML definitions into the shared MessageSet.
     // Note: this affects the whole Mavsdk instance (all systems and server components).
     bool load_custom_xml_to_message_set(const std::string& xml_content);

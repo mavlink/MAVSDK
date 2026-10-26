@@ -79,6 +79,30 @@ private class MavlinkDirectServerNativeImpl(private val handle: Long) : MavlinkD
         NativeMavlinkDirectServer.loadCustomXml(handle, xmlContent)
     }
 
+    override fun subscribeCommand(
+        command: Int,
+        callback: (MavlinkDirectServer.MavlinkMessage) -> Unit,
+    ): Long = withOpen {
+        val subscriptionHandle =
+            NativeMavlinkDirectServer.subscribeCommand(
+                handle,
+                command,
+                NativeMavlinkDirectServer.CommandCallback { value -> callback(value.toKotlin()) },
+            )
+        if (subscriptionHandle != 0L) {
+            activeSubscriptions[subscriptionHandle] = {
+                NativeMavlinkDirectServer.unsubscribeCommand(handle, subscriptionHandle)
+            }
+        }
+        subscriptionHandle
+    }
+
+    override fun unsubscribeCommand(subscriptionHandle: Long) {
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+    }
+
     override fun destroy() {
         lifecycle.write {
             if (destroyed) return

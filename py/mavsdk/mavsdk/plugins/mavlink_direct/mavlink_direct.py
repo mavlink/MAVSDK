@@ -256,6 +256,62 @@ class MavlinkDirect:
 
         return result
 
+    def send_command_async(self, command, callback: Callable, user_data: Any = None):
+        """Send a command and wait for its final COMMAND_ACK.
+
+        The command is a COMMAND_LONG or COMMAND_INT message with its fields as JSON,
+        e.g. message_name "COMMAND_LONG" and fields_json
+        {"target_system":1,"target_component":1,"command":400,"param1":1,...}.
+
+        The command is retransmitted if no ack arrives. MAV_RESULT_IN_PROGRESS acks
+        are handled internally: the command is not retransmitted after one, and the
+        call keeps waiting for the final ack.
+
+        RESULT_SUCCESS only means that a final COMMAND_ACK was received. Whether the
+        command was accepted is in the "result" field of the returned ack (MAV_RESULT,
+        e.g. 0 for MAV_RESULT_ACCEPTED, 2 for MAV_RESULT_DENIED). Any other result means
+        no final ack was received and the returned ack is empty."""
+
+        def c_callback(result, c_data, ud):
+            try:
+                py_result = MavlinkDirectResult(result)
+
+                py_data = MavlinkMessage.from_c_struct(c_data)
+
+                self._lib.mavsdk_mavlink_direct_mavlink_message_destroy(
+                    ctypes.byref(c_data)
+                )
+
+                callback(py_result, py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in send_command callback: {e}")
+
+        cb = SendCommandCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_mavlink_direct_send_command_async(
+            self._require_handle(), command.to_c_struct(), cb, None
+        )
+
+    def send_command(self, command):
+        """Get send_command (blocking)"""
+
+        result_out = MavlinkMessageCStruct()
+
+        result_code = self._lib.mavsdk_mavlink_direct_send_command(
+            self._require_handle(), command.to_c_struct(), ctypes.byref(result_out)
+        )
+        result = MavlinkDirectResult(result_code)
+        if result != MavlinkDirectResult.SUCCESS:
+            raise MavlinkDirectError(result, "send_command()", command)
+
+        py_result = MavlinkMessage.from_c_struct(result_out)
+        self._lib.mavsdk_mavlink_direct_mavlink_message_destroy(
+            ctypes.byref(result_out)
+        )
+        return py_result
+
     def _require_handle(self) -> ctypes.c_void_p:
         """Fail loudly rather than dereferencing a null handle in C.
 
@@ -298,6 +354,9 @@ class MavlinkDirect:
 
 # ===== Callback Types =====
 MessageCallback = ctypes.CFUNCTYPE(None, MavlinkMessageCStruct, ctypes.c_void_p)
+SendCommandCallback = ctypes.CFUNCTYPE(
+    None, ctypes.c_int, MavlinkMessageCStruct, ctypes.c_void_p
+)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mavlink_direct_create.argtypes = [ctypes.c_void_p]
@@ -353,3 +412,19 @@ _cmavsdk_lib.mavsdk_mavlink_direct_load_custom_xml.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_mavlink_direct_load_custom_xml.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mavlink_direct_send_command_async.argtypes = [
+    ctypes.c_void_p,
+    MavlinkMessageCStruct,
+    SendCommandCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mavlink_direct_send_command_async.restype = None
+
+_cmavsdk_lib.mavsdk_mavlink_direct_send_command.argtypes = [
+    ctypes.c_void_p,
+    MavlinkMessageCStruct,
+    ctypes.POINTER(MavlinkMessageCStruct),
+]
+
+_cmavsdk_lib.mavsdk_mavlink_direct_send_command.restype = ctypes.c_int

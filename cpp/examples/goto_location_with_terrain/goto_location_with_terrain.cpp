@@ -7,17 +7,17 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
-#include <future>
 #include <iostream>
-#include <sstream>
 #include <thread>
 #include <mavsdk/mavsdk.hpp>
 #include <mavsdk/plugins/action/action.hpp>
 #include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
 #include <mavsdk/plugins/param/param.hpp>
 #include <mavsdk/plugins/telemetry/telemetry.hpp>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
+using json = nlohmann::json;
 using std::chrono::seconds;
 using std::this_thread::sleep_for;
 
@@ -34,68 +34,46 @@ bool goto_terrain(
     double lon_deg,
     float alt_agl_m)
 {
-    std::promise<MavlinkDirect::MavlinkMessage> ack_promise;
-    auto ack_future = ack_promise.get_future();
-    auto ack_handle = mavlink_direct.subscribe_message(
-        "COMMAND_ACK", [&ack_promise](MavlinkDirect::MavlinkMessage message) {
-            if (message.fields_json.find("\"command\":192") != std::string::npos) {
-                ack_promise.set_value(std::move(message));
-            }
-        });
-
     const int32_t lat_e7 = static_cast<int32_t>(std::round(lat_deg * 1e7));
     const int32_t lon_e7 = static_cast<int32_t>(std::round(lon_deg * 1e7));
 
-    // We could make this easier by using a json library, for now this is just
-    // to avoid the dependency.
-    std::ostringstream fields;
-    fields << "{"
-           << "\"target_system\":" << static_cast<int>(target_system_id) << ","
-           << "\"target_component\":1,"
-           << "\"frame\":" << frame_global_terrain_alt_int << ","
-           << "\"command\":" << cmd_do_reposition << ","
-           << "\"current\":0,"
-           << "\"autocontinue\":0,"
-           << "\"param1\":-1,"
-           << "\"param2\":" << reposition_flags_change_mode << ","
-           << "\"param3\":0,"
-           << "\"param4\":null,"
-           << "\"x\":" << lat_e7 << ","
-           << "\"y\":" << lon_e7 << ","
-           << "\"z\":" << alt_agl_m << "}";
+    // null means NaN, which keeps the current yaw.
+    const json fields = {
+        {"target_system", target_system_id},
+        {"target_component", 1},
+        {"frame", frame_global_terrain_alt_int},
+        {"command", cmd_do_reposition},
+        {"current", 0},
+        {"autocontinue", 0},
+        {"param1", -1},
+        {"param2", reposition_flags_change_mode},
+        {"param3", 0},
+        {"param4", nullptr},
+        {"x", lat_e7},
+        {"y", lon_e7},
+        {"z", alt_agl_m}};
 
     MavlinkDirect::MavlinkMessage command_int{};
     command_int.message_name = "COMMAND_INT";
-    command_int.target_system_id = target_system_id;
-    command_int.target_component_id = 1; // MAV_COMP_ID_AUTOPILOT1
-    command_int.fields_json = fields.str();
+    command_int.fields_json = fields.dump();
 
     std::cout << "Sending DO_REPOSITION to " << lat_deg << ", " << lon_deg << " at " << alt_agl_m
               << " m AGL...\n";
-    const auto send_result = mavlink_direct.send_message(command_int);
+
+    // This retransmits if needed and waits for the final COMMAND_ACK.
+    const auto [send_result, ack] = mavlink_direct.send_command(command_int);
     if (send_result != MavlinkDirect::Result::Success) {
-        std::cerr << "Sending COMMAND_INT failed: " << send_result << '\n';
-        mavlink_direct.unsubscribe_message(ack_handle);
+        std::cerr << "No COMMAND_ACK received for DO_REPOSITION: " << send_result << '\n';
         return false;
     }
 
-    if (ack_future.wait_for(seconds(3)) == std::future_status::timeout) {
-        std::cerr << "No COMMAND_ACK received for DO_REPOSITION within 3 s\n";
-        mavlink_direct.unsubscribe_message(ack_handle);
+    // Success only means we got an ack, the outcome is its MAV_RESULT.
+    const auto ack_fields = json::parse(ack.fields_json, nullptr, false);
+    if (!ack_fields.is_object() || !ack_fields.contains("result")) {
+        std::cerr << "COMMAND_ACK missing result field: " << ack.fields_json << '\n';
         return false;
     }
-    const auto ack_json = ack_future.get().fields_json;
-    mavlink_direct.unsubscribe_message(ack_handle);
-
-    const auto result_pos = ack_json.find("\"result\":");
-    if (result_pos == std::string::npos) {
-        std::cerr << "COMMAND_ACK missing result field: " << ack_json << '\n';
-        return false;
-    }
-    const auto value_start = result_pos + std::string("\"result\":").size();
-    const auto value_end = ack_json.find_first_of(",}", value_start);
-    const int result_value =
-        std::atoi(ack_json.substr(value_start, value_end - value_start).c_str());
+    const int result_value = ack_fields["result"].get<int>();
     std::cout << "DO_REPOSITION result: " << result_value << '\n';
     return result_value == 0;
 }

@@ -44,6 +44,11 @@ public final class NativeMavlinkDirectServer {
         void invoke(MavlinkMessage value);
     }
 
+    @FunctionalInterface
+    public interface CommandCallback {
+        void invoke(MavlinkMessage value);
+    }
+
     public static native long create(long systemHandle);
 
     public static native void destroy(long pluginHandle);
@@ -55,5 +60,9 @@ public final class NativeMavlinkDirectServer {
     public static native void unsubscribeMessage(long pluginHandle, long subscriptionHandle);
 
     public static native int loadCustomXml(long pluginHandle, String xmlContent);
+
+    public static native long subscribeCommand(long pluginHandle, int command, CommandCallback callback);
+
+    public static native void unsubscribeCommand(long pluginHandle, long subscriptionHandle);
 
 }

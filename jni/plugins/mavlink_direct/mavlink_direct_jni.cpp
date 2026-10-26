@@ -182,6 +182,50 @@ struct MessageCallbackWrapper {
         }
     }
 };
+struct SendCommandCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    SendCommandCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(ILio/mavsdk/jni/plugins/mavlink_direct/NativeMavlinkDirect$MavlinkMessage;)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_mavlink_direct_result_t result,        const mavsdk_mavlink_direct_mavlink_message_t value
+    ) const {
+        struct ValueGuard {
+            mavsdk_mavlink_direct_mavlink_message_t value;
+            ~ValueGuard() {
+                mavsdk_mavlink_direct_mavlink_message_destroy(&value);
+            }
+        } valueGuard{value};
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        jobject javaValue =
+            toJavaMavlinkMessage(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , static_cast<jint>(result)
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
 
 } // namespace
 
@@ -299,6 +343,62 @@ JNICALL Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_loadCusto
             reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
             const_cast<char*>(xml_contentHolder.c_str()));
     return static_cast<jint>(result);
+}
+
+JNIEXPORT
+jobject
+JNICALL Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_sendCommand(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject command) {
+    if (!requireHandle(env, handle, "MavlinkDirect plugin")) {
+        return {};
+    }
+    MavlinkMessageFromJava
+        commandValue(env, command);
+    mavsdk_mavlink_direct_mavlink_message_t returnValue{};
+    mavsdk_mavlink_direct_result_t result =
+        mavsdk_mavlink_direct_send_command(
+            reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
+            commandValue.value,
+            &returnValue);
+    if (result != MAVSDK_MAVLINK_DIRECT_RESULT_SUCCESS) {
+        mavsdk_mavlink_direct_mavlink_message_destroy(&returnValue);
+        throwMavsdkError(env, "OperationError", "send_command failed");
+        return nullptr;
+    }
+    jobject javaResult =
+        toJavaMavlinkMessage(env, returnValue);
+    mavsdk_mavlink_direct_mavlink_message_destroy(&returnValue);
+    return javaResult;
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_mavlink_1direct_NativeMavlinkDirect_sendCommandAsync(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject command,
+    jobject callback) {
+    if (!requireHandle(env, handle, "MavlinkDirect plugin") || !callback) {
+        return;
+    }
+    MavlinkMessageFromJava
+        commandValue(env, command);
+    auto* wrapper = new SendCommandCallbackWrapper(env, callback);
+    mavsdk_mavlink_direct_send_command_async(
+        reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
+        commandValue.value,
+        [](const mavsdk_mavlink_direct_result_t result,
+           const mavsdk_mavlink_direct_mavlink_message_t value,
+           void* userData) {
+            auto* callbackWrapper =
+                static_cast<SendCommandCallbackWrapper*>(userData);
+            (*callbackWrapper)(result, value);
+            delete callbackWrapper;
+        },
+        wrapper);
 }
 
 } // extern "C"

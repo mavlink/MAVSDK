@@ -40,6 +40,17 @@ MavlinkDirectServer::Result MavlinkDirectServer::load_custom_xml(std::string xml
     return _impl->load_custom_xml(xml_content);
 }
 
+MavlinkDirectServer::CommandHandle
+MavlinkDirectServer::subscribe_command(uint32_t command, const CommandCallback& callback)
+{
+    return _impl->subscribe_command(command, callback);
+}
+
+void MavlinkDirectServer::unsubscribe_command(CommandHandle handle)
+{
+    _impl->unsubscribe_command(handle);
+}
+
 MAVSDK_PUBLIC bool operator==(
     const MavlinkDirectServer::MavlinkMessage& lhs, const MavlinkDirectServer::MavlinkMessage& rhs)
 {
