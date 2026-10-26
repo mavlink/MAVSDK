@@ -8,6 +8,7 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
+#include <string>
 #include <vector>
 
 #include <mavsdk/mavsdk.hpp>
@@ -183,6 +184,8 @@ public:
 
 private:
     void send_heartbeat();
+    void send_sentinel(uint32_t sentinel);
+    bool subscribe_to_sentinel();
     void wait_until_processed();
     void create_plugins_for_system(std::shared_ptr<System> system);
     size_t process_fuzz_data_to_mavlink(
@@ -191,7 +194,7 @@ private:
         uint8_t* output_buffer,
         size_t output_buffer_size);
 
-    // Declared before mavsdk_ so they outlive it: the intercept callback that updates them
+    // Declared before mavsdk_ so they outlive it: the sentinel callback that updates them
     // can run until mavsdk_ is destroyed.
     std::mutex sentinel_mutex_;
     std::condition_variable sentinel_cv_;
@@ -201,6 +204,7 @@ private:
     std::unique_ptr<Mavsdk> mavsdk_;
     std::unique_ptr<Watchdog> watchdog_;
     std::vector<std::unique_ptr<SystemPlugins>> system_plugins_;
+    std::unique_ptr<MavlinkDirect> sentinel_mavlink_direct_;
     std::chrono::steady_clock::time_point last_heartbeat_{std::chrono::steady_clock::now()};
     bool initialized_{false};
 };
@@ -226,16 +230,8 @@ void MavsdkFuzzer::send_heartbeat()
         reinterpret_cast<const char*>(heartbeat_buffer), heartbeat_size);
 }
 
-void MavsdkFuzzer::wait_until_processed()
+void MavsdkFuzzer::send_sentinel(uint32_t sentinel)
 {
-    // pass_received_raw_bytes() only posts the bytes to the io_context, which parses them later.
-    // Without waiting, the fuzzer injects far faster than MAVSDK can process, and the queue of
-    // pending buffers grows until the fuzzer runs out of memory. The io_context handles the
-    // buffers in order, so once the sentinel queued behind them has been seen, everything passed
-    // in before it has been processed too. If processing stalls, the watchdog aborts while we
-    // wait here.
-    const uint32_t sentinel = ++sentinel_sent_;
-
     mavlink_message_t sentinel_msg;
     mavlink_msg_heartbeat_pack(
         SENTINEL_SYSTEM_ID,
@@ -251,6 +247,64 @@ void MavsdkFuzzer::wait_until_processed()
     size_t sentinel_size = mavlink_msg_to_send_buffer(sentinel_buffer, &sentinel_msg);
 
     mavsdk_->pass_received_raw_bytes(reinterpret_cast<const char*>(sentinel_buffer), sentinel_size);
+}
+
+bool MavsdkFuzzer::subscribe_to_sentinel()
+{
+    // The first sentinel creates the sentinel system, then we listen to its heartbeats through
+    // MavlinkDirect. Only the sentinel system sends from SENTINEL_SYSTEM_ID, so the fuzzed
+    // messages (system ID 1) never reach this subscription.
+    send_sentinel(0);
+
+    std::shared_ptr<System> sentinel_system;
+    for (int i = 0; i < 100 && !sentinel_system; ++i) {
+        for (auto& system : mavsdk_->systems()) {
+            if (system->get_system_id() == SENTINEL_SYSTEM_ID) {
+                sentinel_system = system;
+                break;
+            }
+        }
+        if (!sentinel_system) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }
+
+    if (!sentinel_system) {
+        LogErr("Sentinel system did not appear");
+        return false;
+    }
+
+    sentinel_mavlink_direct_ = std::make_unique<MavlinkDirect>(sentinel_system);
+    sentinel_mavlink_direct_->subscribe_message(
+        "HEARTBEAT", [this](const MavlinkDirect::MavlinkMessage& message) {
+            static const std::string key = "\"custom_mode\":";
+            const auto pos = message.fields_json.find(key);
+            if (pos == std::string::npos) {
+                return;
+            }
+            const auto sentinel = static_cast<uint32_t>(
+                std::strtoul(message.fields_json.c_str() + pos + key.size(), nullptr, 10));
+            {
+                std::lock_guard<std::mutex> lock(sentinel_mutex_);
+                sentinel_seen_ = sentinel;
+            }
+            sentinel_cv_.notify_all();
+        });
+
+    return true;
+}
+
+void MavsdkFuzzer::wait_until_processed()
+{
+    // pass_received_raw_bytes() only posts the bytes to the io_context, which parses them later.
+    // Without waiting, the fuzzer injects far faster than MAVSDK can process, and the queue of
+    // pending buffers grows until the fuzzer runs out of memory. The io_context handles the
+    // buffers in order, so once the sentinel queued behind them has been seen, everything passed
+    // in before it has been processed too. If processing stalls, the watchdog aborts while we
+    // wait here.
+    const uint32_t sentinel = ++sentinel_sent_;
+
+    send_sentinel(sentinel);
 
     std::unique_lock<std::mutex> lock(sentinel_mutex_);
     sentinel_cv_.wait(lock, [this, sentinel]() { return sentinel_seen_ == sentinel; });
@@ -258,6 +312,12 @@ void MavsdkFuzzer::wait_until_processed()
 
 void MavsdkFuzzer::create_plugins_for_system(std::shared_ptr<System> system)
 {
+    // The sentinel system only needs the MavlinkDirect subscription set up in
+    // subscribe_to_sentinel(), not a full plugin set.
+    if (system->get_system_id() == SENTINEL_SYSTEM_ID) {
+        return;
+    }
+
     LogDebug("Creating plugins for system ID: {}", system->get_system_id());
 
     auto plugins = std::make_unique<SystemPlugins>();
@@ -319,25 +379,6 @@ bool MavsdkFuzzer::initialize()
         mavsdk_.reset();
         return false;
     }
-
-    // Record and drop the sentinel heartbeats sent by wait_until_processed(). This low-level hook
-    // runs before forwarding and before any system handling, so dropping them has no other
-    // effect. Its JSON replacement would convert every incoming message to JSON, which slows the
-    // fuzzer down and changes what it exercises.
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-    mavsdk_->intercept_incoming_messages_async([this](mavlink_message_t& message) {
-        if (message.sysid != SENTINEL_SYSTEM_ID || message.msgid != MAVLINK_MSG_ID_HEARTBEAT) {
-            return true;
-        }
-        {
-            std::lock_guard<std::mutex> lock(sentinel_mutex_);
-            sentinel_seen_ = mavlink_msg_heartbeat_get_custom_mode(&message);
-        }
-        sentinel_cv_.notify_all();
-        return false;
-    });
-#pragma GCC diagnostic pop
 
     // Subscribe to outgoing bytes and discard them (required for raw connection to work)
     mavsdk_->subscribe_raw_bytes_to_be_sent([](const char*, size_t) {
@@ -401,6 +442,12 @@ bool MavsdkFuzzer::initialize()
         } else {
             LogDebug("Post-heartbeat system already has plugins");
         }
+    }
+
+    if (!subscribe_to_sentinel()) {
+        system_plugins_.clear();
+        mavsdk_.reset();
+        return false;
     }
 
     // Start watchdog with 3 second timeout to detect stalls/deadlocks
