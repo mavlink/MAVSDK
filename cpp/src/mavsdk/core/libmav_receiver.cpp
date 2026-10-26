@@ -95,20 +95,30 @@ bool LibmavReceiver::parse_message()
 
 bool LibmavReceiver::parse_libmav_message_from_buffer()
 {
+    std::optional<mav::Message> message_opt;
     size_t bytes_consumed = 0;
 
-    // Use thread-safe parsing from MavsdkImpl (handles MessageSet synchronization internally)
-    auto message_opt = _mavsdk_impl.parse_message_safe(
-        _accumulation_buffer.data(), _accumulation_buffer.size(), bytes_consumed);
+    // The parser also returns no message when it skips something (garbage, a bad CRC, an
+    // unknown id). Keep going until we get a message or run out of complete frames, otherwise
+    // the caller stops and the messages behind the skipped bytes wait for the next datagram.
+    while (!message_opt && !_accumulation_buffer.empty()) {
+        // Use thread-safe parsing from MavsdkImpl (handles MessageSet synchronization internally)
+        message_opt = _mavsdk_impl.parse_message_safe(
+            _accumulation_buffer.data(), _accumulation_buffer.size(), bytes_consumed);
 
-    if (!message_opt) {
-        // No complete message found - consume bytes before the magic byte (if any)
-        // to avoid reprocessing garbage bytes on the next attempt
-        if (bytes_consumed > 0) {
+        if (!message_opt) {
+            if (bytes_consumed == 0) {
+                // Only a partial message is left, wait for more bytes.
+                return false;
+            }
+            // Drop the skipped bytes so we don't reprocess them.
             _accumulation_buffer.erase(
                 _accumulation_buffer.begin(),
                 _accumulation_buffer.begin() + static_cast<ptrdiff_t>(bytes_consumed));
         }
+    }
+
+    if (!message_opt) {
         return false;
     }
 

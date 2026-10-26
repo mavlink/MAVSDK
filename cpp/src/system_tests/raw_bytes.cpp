@@ -1,6 +1,7 @@
 #include "log.hpp"
 #include "mavsdk.hpp"
 #include "plugins/telemetry_server/telemetry_server.hpp"
+#include "plugins/mavlink_direct/mavlink_direct.hpp"
 #include "mavlink_include.hpp"
 #include <atomic>
 #include <chrono>
@@ -132,4 +133,68 @@ TEST(RawBytes, RemoveConnectionWithBytesInFlight)
         mavsdk.unsubscribe_raw_bytes_to_be_sent(handle);
         mavsdk.remove_connection(connection_handle);
     }
+}
+
+TEST(RawBytes, MessageAfterCorruptFrameInSameDatagram)
+{
+    // A frame the libmav parser skips (here: bad CRC) used to end the parse loop for that
+    // datagram, so MavlinkDirect only saw the messages behind it once more bytes arrived.
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
+    ASSERT_EQ(mavsdk.add_any_connection("raw://"), ConnectionResult::Success);
+
+    auto handle = mavsdk.subscribe_raw_bytes_to_be_sent([](const char*, size_t) {});
+
+    auto to_bytes = [](const mavlink_message_t& message) {
+        std::vector<char> bytes(MAVLINK_MAX_PACKET_LEN);
+        bytes.resize(
+            mavlink_msg_to_send_buffer(reinterpret_cast<uint8_t*>(bytes.data()), &message));
+        return bytes;
+    };
+
+    mavlink_message_t heartbeat;
+    mavlink_msg_heartbeat_pack_chan(
+        1,
+        1,
+        MAVLINK_COMM_NUM_BUFFERS - 1,
+        &heartbeat,
+        MAV_TYPE_QUADROTOR,
+        MAV_AUTOPILOT_PX4,
+        0,
+        0,
+        MAV_STATE_STANDBY);
+    const auto heartbeat_bytes = to_bytes(heartbeat);
+    mavsdk.pass_received_raw_bytes(heartbeat_bytes.data(), heartbeat_bytes.size());
+
+    auto system = mavsdk.first_autopilot(2.0);
+    ASSERT_TRUE(system);
+
+    auto mavlink_direct = std::make_shared<MavlinkDirect>(system.value());
+
+    auto prom = std::make_shared<std::promise<void>>();
+    auto fut = prom->get_future();
+    auto received = std::make_shared<std::atomic<bool>>(false);
+    mavlink_direct->subscribe_message(
+        "PING", [prom, received](const MavlinkDirect::MavlinkMessage& message) {
+            if (message.fields_json.find("\"seq\":43") != std::string::npos &&
+                !received->exchange(true)) {
+                prom->set_value();
+            }
+        });
+
+    mavlink_message_t ping;
+    mavlink_msg_ping_pack_chan(1, 1, MAVLINK_COMM_NUM_BUFFERS - 1, &ping, 0, 42, 0, 0);
+    auto corrupt_bytes = to_bytes(ping);
+    corrupt_bytes.back() ^= 0xFF; // Break the CRC.
+
+    mavlink_msg_ping_pack_chan(1, 1, MAVLINK_COMM_NUM_BUFFERS - 1, &ping, 0, 43, 0, 0);
+    const auto good_bytes = to_bytes(ping);
+
+    std::vector<char> datagram = corrupt_bytes;
+    datagram.insert(datagram.end(), good_bytes.begin(), good_bytes.end());
+    mavsdk.pass_received_raw_bytes(datagram.data(), datagram.size());
+
+    EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready)
+        << "PING behind the corrupt frame was not delivered";
+
+    mavsdk.unsubscribe_raw_bytes_to_be_sent(handle);
 }
