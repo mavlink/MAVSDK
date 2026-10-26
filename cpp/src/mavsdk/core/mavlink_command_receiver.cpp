@@ -44,17 +44,6 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
         LogDebug("Received command int {}", cmd.command);
     }
 
-    if (cmd.target_system_id != _server_component_impl.get_own_system_id() &&
-        cmd.target_system_id != 0) {
-        if (_debugging) {
-            LogDebug(
-                "Ignored command int to system {} instead of {}",
-                cmd.target_system_id,
-                _server_component_impl.get_own_system_id());
-        }
-        return;
-    }
-
     if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
         cmd.target_component_id != MAV_COMP_ID_ALL) {
         if (_debugging) {
@@ -113,17 +102,6 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
 
     if (_debugging) {
         LogDebug("Received command long {}", cmd.command);
-    }
-
-    if (cmd.target_system_id != _server_component_impl.get_own_system_id() &&
-        cmd.target_system_id != 0) {
-        if (_debugging) {
-            LogDebug(
-                "Ignored command long to system {} instead of {}",
-                cmd.target_system_id,
-                _server_component_impl.get_own_system_id());
-        }
-        return;
     }
 
     if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
