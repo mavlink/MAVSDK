@@ -276,3 +276,52 @@ TEST(MavlinkDirectCommand, SubscriptionsForSameCommand)
         MavlinkDirect::Result::Timeout);
     EXPECT_EQ(second_count->load(), 2);
 }
+
+TEST(MavlinkDirectCommand, CommandsForOtherSystemsIgnored)
+{
+    CommandSetup setup{17046};
+    ASSERT_TRUE(setup.client);
+
+    // A second autopilot as system 2 on the same link, so the ground station
+    // actually sends commands addressed to system 2.
+    Mavsdk::Configuration config{ComponentType::Autopilot};
+    config.set_system_id(2);
+    Mavsdk other_autopilot{config};
+    ASSERT_EQ(
+        other_autopilot.add_any_connection("udpout://127.0.0.1:17046"), ConnectionResult::Success);
+    MavlinkDirectServer other_server{other_autopilot.server_component()};
+
+    for (int i = 0; i < 100 && setup.groundstation.systems().size() < 2; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+    ASSERT_EQ(setup.groundstation.systems().size(), 2u);
+
+    auto count = std::make_shared<std::atomic<int>>(0);
+    auto other_count = std::make_shared<std::atomic<int>>(0);
+    auto handle = setup.server->subscribe_command(
+        cmd_user_1, [count](MavlinkDirectServer::MavlinkMessage) { ++(*count); });
+    auto other_handle = other_server.subscribe_command(
+        cmd_user_1, [other_count](MavlinkDirectServer::MavlinkMessage) { ++(*other_count); });
+
+    auto send_to = [&](int target_system) {
+        auto command = make_command_long({{"target_system", target_system}, {"param1", 1}});
+        EXPECT_EQ(setup.client->send_message(command), MavlinkDirect::Result::Success);
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    };
+
+    send_to(2);
+    EXPECT_EQ(count->load(), 0);
+    EXPECT_EQ(other_count->load(), 1);
+
+    send_to(1);
+    EXPECT_EQ(count->load(), 1);
+    EXPECT_EQ(other_count->load(), 1);
+
+    // Broadcast reaches both.
+    send_to(0);
+    EXPECT_EQ(count->load(), 2);
+    EXPECT_EQ(other_count->load(), 2);
+
+    setup.server->unsubscribe_command(handle);
+    other_server.unsubscribe_command(other_handle);
+}
