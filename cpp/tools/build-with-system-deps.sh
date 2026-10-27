@@ -37,8 +37,13 @@ mkdir -p "${DEPS_DIR}"
 mkdir -p "${DEPS_INSTALL_DIR}"
 
 # Build MAVLink
-# Use the same version as MAVSDK's superbuild (see third_party/CMakeLists.txt)
-MAVLINK_VERSION="87da370c02e40f6f9a2eacf1b162d7f07e640467"
+# Use the same version as MAVSDK's superbuild: MAVLINK_HASH in
+# third_party/CMakeLists.txt is the single source of truth.
+MAVLINK_VERSION="$(sed -n 's/.*set(MAVLINK_HASH "\([0-9a-f]*\)".*/\1/p' "${ROOT_DIR}/third_party/CMakeLists.txt")"
+if [ -z "${MAVLINK_VERSION}" ]; then
+    echo "Could not read MAVLINK_HASH from third_party/CMakeLists.txt" >&2
+    exit 1
+fi
 echo "=== Building MAVLink (${MAVLINK_VERSION}) ==="
 if [ ! -d "${DEPS_DIR}/mavlink" ]; then
     git clone https://github.com/mavlink/mavlink.git "${DEPS_DIR}/mavlink"
