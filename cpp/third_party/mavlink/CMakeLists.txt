@@ -11,8 +11,6 @@ list(APPEND CMAKE_ARGS
     "-DMAVLINK_ENABLE_CXX=OFF"
     )
 
-set(MAVLINK_GIT_HASH d6a7eeaf43319ce6da19a1973ca40180a4210643)
-
 ExternalProject_add(
     mavlink
     GIT_REPOSITORY "${MAVLINK_URL}"
