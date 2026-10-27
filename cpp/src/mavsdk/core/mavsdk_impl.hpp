@@ -249,6 +249,8 @@ private:
     server_component_by_id_with_lock(uint8_t component_id, uint8_t mav_type);
     ServerComponentImpl& default_server_component_with_lock();
 
+    // Messages for other systems are only forwarded, not handled.
+    bool is_addressed_to_us(uint32_t target_system_id) const;
     static uint32_t get_target_system_id(const mavlink_message_t& message);
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 

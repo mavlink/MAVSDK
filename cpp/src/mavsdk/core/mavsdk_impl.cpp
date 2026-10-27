@@ -923,6 +923,16 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         }
     }
 
+    if (!is_addressed_to_us(get_target_system_id(message))) {
+        if (_message_logging_on) {
+            LogDebug(
+                "Not handling message {} for system {}",
+                static_cast<uint32_t>(message.msgid),
+                get_target_system_id(message));
+        }
+        return;
+    }
+
     mavlink_message_handler.process_message(message);
 
     // Deliberately outside _mutex: this dispatches into plugin code, which must not run
@@ -1039,6 +1049,16 @@ void MavsdkImpl::process_libmav_message(
             // in destructor.
             return;
         }
+    }
+
+    if (!is_addressed_to_us(message.target_system_id)) {
+        if (_message_logging_on) {
+            LogDebug(
+                "Not handling libmav message {} for system {}",
+                message.message_name,
+                message.target_system_id);
+        }
+        return;
     }
 
     // Distribute libmav message to systems for libmav-specific handling.
@@ -2147,6 +2167,11 @@ void MavsdkImpl::report_connection_error(
     _connections_errors_subscriptions.queue(
         Mavsdk::ConnectionError{message, handle},
         [this](const auto& func) { call_user_callback(func); });
+}
+
+bool MavsdkImpl::is_addressed_to_us(uint32_t target_system_id) const
+{
+    return target_system_id == 0 || target_system_id == get_own_system_id();
 }
 
 uint32_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
