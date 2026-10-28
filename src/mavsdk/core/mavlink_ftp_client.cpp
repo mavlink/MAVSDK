@@ -555,11 +555,12 @@ bool MavlinkFtpClient::download_burst_continue(
 
         if (payload->offset != item.current_offset) {
             if (payload->offset < item.current_offset) {
-                // Not sure why this would happen but we don't know how to deal with it and ignore
-                // it.
+                // A delayed reply from an earlier burst/retry is already covered
+                // or recorded in missing_data. Ignore it without retiring the work:
+                // false would drop the transfer without notifying its caller.
                 LogWarn() << "Got payload offset: " << payload->offset
                           << ", next offset: " << item.current_offset;
-                return false;
+                return true;
             }
 
             if (payload->offset > item.file_size) {
@@ -1308,38 +1309,17 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
-                {
-                    // This happens when we missed the last ack containing burst complete.
-                    // We have already a file size, so we don't need to start at the
-                    // beginning any more.
-                    if (item.file_size != 0 && item.current_offset != 0) {
-                        // In that case start requesting what we missed.
-                        if (item.current_offset == item.file_size && item.missing_data.empty()) {
-                            // We are done anyway.
-                            item.ofstream.close();
-                            item.callback(ClientResult::Success, {});
-                            download_burst_end(*work);
-                            work_queue_guard.pop_front();
-                        } else {
-                            // The burst is supposedly complete but we still need data because
-                            // we missed some, so request next without burst.
-                            // We presumably missed the very last chunk.
-                            if (item.current_offset < item.file_size) {
-                                item.missing_data.emplace_back(DownloadBurstItem::MissingData{
-                                    item.current_offset, item.file_size - item.current_offset});
-                                item.current_offset = item.file_size;
-                                if (_debugging) {
-                                    LogDebug() << "Adding " << item.current_offset << " with size "
-                                               << item.file_size - item.current_offset;
-                                }
-                            }
-                            request_next_rest(*work, item);
-                        }
-                    } else {
-                        // Otherwise, start burst again.
-                        start_timer();
-                        send_mavlink_ftp_message(work->payload, work->target_compid);
-                    }
+                if (work->last_opcode == CMD_BURST_READ_FILE) {
+                    // A silent burst or lost boundary does not make the entire
+                    // unreceived tail a gap. Continue the existing burst at the
+                    // first not-yet-received offset, retaining only observed holes
+                    // for ReadFile repair. A changed offset is a new request.
+                    request_burst(*work, item);
+                } else {
+                    // Open, gap repair and close retry their exact identity.
+                    // In particular, close still requires its ACK before success.
+                    start_timer();
+                    send_mavlink_ftp_message(work->payload, work->target_compid);
                 }
             },
             [&](UploadItem& item) {
