@@ -361,7 +361,7 @@ For instance, in the case where MAVSDK is used on the companion computer, the au
 Also, having to set the default makes it less likely to misconfigure the overall integration and end up with several components that conflict.
 
 ::: info
-It is also possible to set the sysid/compid directly, just check out the API of [Mavsdk::Configuration](cpp/api_reference/classmavsdk_1_1_mavsdk_1_1_configuration.md).
+It is also possible to set the sysid/compid directly, just check out the API of [Mavsdk::Configuration](api_reference/classmavsdk_1_1_mavsdk_1_1_configuration.md).
 :::
 
 ### Subscription API

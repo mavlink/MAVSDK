@@ -49,7 +49,7 @@
         * [class Camera](cpp/api_reference/classmavsdk_1_1_camera.md)
             * [struct CameraList](cpp/api_reference/structmavsdk_1_1_camera_1_1_camera_list.md)
             * [struct CaptureInfo](cpp/api_reference/structmavsdk_1_1_camera_1_1_capture_info.md)
-            * [struct CurrentSettingsUpdate](structmavsdk_1_1_camera_1_1_current_settings_update.md)
+            * [struct CurrentSettingsUpdate](cpp/api_reference/structmavsdk_1_1_camera_1_1_current_settings_update.md)
             * [struct EulerAngle](cpp/api_reference/structmavsdk_1_1_camera_1_1_euler_angle.md)
             * [struct Information](cpp/api_reference/structmavsdk_1_1_camera_1_1_information.md)
             * [struct ModeUpdate](cpp/api_reference/structmavsdk_1_1_camera_1_1_mode_update.md)
