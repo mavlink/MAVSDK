@@ -1,11 +1,12 @@
 # Offboard Control
 
-The [Offboard](../api_reference/classmavsdk_1_1_offboard.md) MAVSDK plugin provides a simple API for controlling the vehicle using velocity and yaw setpoints.
+The [Offboard](../api_reference/classmavsdk_1_1_offboard.md) MAVSDK plugin provides APIs for controlling the vehicle using position, velocity, acceleration, attitude and thrust setpoints.
 It is useful for tasks requiring direct control from a companion computer; for example to implement collision avoidance.
 
 ::: info
 The API uses the PX4 [Offboard flight mode](https://docs.px4.io/main/en/flight_modes/offboard.html).
-The class can only be used with copter and VTOL vehicles (not fixed wing - a PX4 limitation) and currently only supports *velocity setpoint commands* (PX4 additionally supports position and thrust setpoints).
+Support for each setpoint type depends on the autopilot and vehicle configuration.
+Check the PX4 Offboard mode documentation for the supported combinations.
 :::
 
 Client code must specify a setpoint before starting *Offboard mode*.
@@ -193,9 +194,15 @@ offboard.set_velocity_body({0.0f, -5.0f, 0.0f, -30.0f});
 ```
 
 
-## Position/Thrust Setpoints
+## Position and Acceleration Setpoints
 
-The SDK does not support position or thrust setpoints (at time of writing).
+Use `set_position_ned()` to send a position and yaw setpoint in the North-East-Down frame.
+Use `set_acceleration_ned()` to send North, East and Down acceleration components in metres per second squared.
+The API also provides `set_position_velocity_ned()` and `set_position_velocity_acceleration_ned()` for combined setpoints.
+
+Acceleration setpoints are passed to the autopilot; the resulting vehicle motion depends on the autopilot controller and vehicle dynamics.
+
+For attitude and thrust setpoints, see `set_attitude()`, `set_attitude_rate()` and the [Offboard API reference](../api_reference/classmavsdk_1_1_offboard.md).
 
 
 ## Waiting on Setpoints
