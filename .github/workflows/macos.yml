@@ -91,6 +91,17 @@ jobs:
         run: |
           cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_PREFIX_PATH="$(pwd)/../cpp/build/macos/install;$(pwd)/../cpp/build/macos/third_party/install" -DBUILD_SHARED_LIBS=ON -Bbuild -S.
           cmake --build build --target install
+      - name: Generate framework dSYM
+        if: ${{ matrix.build-framework == 'ON' }}
+        run: xcrun dsymutil build/macos/src/mavsdk_server/src/mavsdk_server.framework/Versions/Current/mavsdk_server -o build/macos/src/mavsdk_server/src/mavsdk_server.framework.dSYM
+      - name: Upload framework dSYM
+        if: ${{ matrix.build-framework == 'ON' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: mavsdk_server_macos_${{ matrix.architecture }}.framework.dSYM
+          path: ./cpp/build/macos/src/mavsdk_server/src/mavsdk_server.framework.dSYM
+          if-no-files-found: error
+          retention-days: 2
       - name: Upload framework as artefact
         if: ${{ matrix.build-framework == 'ON' }}
         uses: actions/upload-artifact@v7
@@ -221,6 +232,15 @@ jobs:
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./cpp/third_party/**', './cpp/cmake/ios.toolchain.cmake') }}-3
       - name: build
         run: cmake --build build/${{ matrix.name }} -j$(sysctl -n hw.ncpu)
+      - name: Generate framework dSYM
+        run: xcrun dsymutil build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework/mavsdk_server -o build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework.dSYM
+      - name: Upload framework dSYM
+        uses: actions/upload-artifact@v7
+        with:
+          name: mavsdk_server_${{ matrix.name }}.framework.dSYM
+          path: ./cpp/build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework.dSYM
+          if-no-files-found: error
+          retention-days: 2
       - uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server_${{ matrix.name }}.framework
@@ -241,22 +261,44 @@ jobs:
           path: ./cpp/build/ios/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v7
         with:
+          name: mavsdk_server_ios.framework.dSYM
+          path: ./cpp/build/ios/src/mavsdk_server/src/mavsdk_server.framework.dSYM
+      - uses: actions/download-artifact@v7
+        with:
           name: mavsdk_server_ios_simulator_x64.framework
           path: ./cpp/build/ios_simulator_x64/src/mavsdk_server/src/mavsdk_server.framework
+      - uses: actions/download-artifact@v7
+        with:
+          name: mavsdk_server_ios_simulator_x64.framework.dSYM
+          path: ./cpp/build/ios_simulator_x64/src/mavsdk_server/src/mavsdk_server.framework.dSYM
       - uses: actions/download-artifact@v7
         with:
           name: mavsdk_server_ios_simulator_arm64.framework
           path: ./cpp/build/ios_simulator_arm64/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v7
         with:
+          name: mavsdk_server_ios_simulator_arm64.framework.dSYM
+          path: ./cpp/build/ios_simulator_arm64/src/mavsdk_server/src/mavsdk_server.framework.dSYM
+      - uses: actions/download-artifact@v7
+        with:
           name: mavsdk_server_macos_x64.framework
           path: ./cpp/build/macos_x64/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v7
         with:
+          name: mavsdk_server_macos_x64.framework.dSYM
+          path: ./cpp/build/macos_x64/src/mavsdk_server/src/mavsdk_server.framework.dSYM
+      - uses: actions/download-artifact@v7
+        with:
           name: mavsdk_server_macos_arm64.framework
           path: ./cpp/build/macos_arm64/src/mavsdk_server/src/mavsdk_server.framework
+      - uses: actions/download-artifact@v7
+        with:
+          name: mavsdk_server_macos_arm64.framework.dSYM
+          path: ./cpp/build/macos_arm64/src/mavsdk_server/src/mavsdk_server.framework.dSYM
       - name: Install tree
         run: brew install tree
+      - name: Test framework packaging
+        run: python3 src/mavsdk_server/tools/test_package_mavsdk_server_framework.py -v
       - name: Package
         run: bash ./src/mavsdk_server/tools/package_mavsdk_server_framework.bash
       - uses: actions/upload-artifact@v7
