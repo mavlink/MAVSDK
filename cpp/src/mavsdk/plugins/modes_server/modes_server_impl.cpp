@@ -2,6 +2,7 @@
 #include "standard_modes.hpp"
 
 #include <algorithm>
+#include <cstring>
 #include <limits>
 
 namespace mavsdk {
@@ -187,6 +188,10 @@ void ModesServerImpl::send_available_mode(size_t index)
     // Called with _mutex held.
     const auto& entry = _entries[index];
 
+    // The packer copies the full field width, so hand it a zero-padded buffer.
+    char name[sizeof(mavlink_available_modes_t::mode_name)]{};
+    std::memcpy(name, entry.mode.name.data(), std::min(entry.mode.name.size(), sizeof(name)));
+
     _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
         mavlink_msg_available_modes_pack_chan(
@@ -199,7 +204,7 @@ void ModesServerImpl::send_available_mode(size_t index)
             entry.standard_mode,
             entry.mode.custom_mode,
             mode_properties(entry.mode),
-            entry.mode.name.c_str(),
+            name,
             _seq);
         return message;
     });
