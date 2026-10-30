@@ -246,6 +246,12 @@ public:
     // Switches to the mission flight mode, and does what else the autopilot needs to start.
     void start_mission_async(const CommandResultCallback& callback);
 
+    // Sets a mode given by the custom_mode value as reported in HEARTBEAT or AVAILABLE_MODES.
+    void set_custom_mode_async(
+        uint32_t custom_mode,
+        const CommandResultCallback& callback,
+        uint8_t component_id = MAV_COMP_ID_AUTOPILOT1);
+
     using GetParamAnyCallback =
         std::function<void(MavlinkParameterClient::Result result, ParamValue value)>;
     using GetParamFloatCallback =

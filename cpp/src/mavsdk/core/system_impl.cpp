@@ -1203,6 +1203,32 @@ SystemImpl::make_command_px4_mode(FlightMode flight_mode, uint8_t component_id)
     return std::make_pair<>(MavlinkCommandSender::Result::Success, command);
 }
 
+void SystemImpl::set_custom_mode_async(
+    uint32_t custom_mode, const CommandResultCallback& callback, uint8_t component_id)
+{
+    const uint8_t flag_safety_armed = is_armed() ? MAV_MODE_FLAG_SAFETY_ARMED : 0;
+    const uint8_t flag_hitl_enabled = _hitl_enabled ? MAV_MODE_FLAG_HIL_ENABLED : 0;
+    const uint8_t mode_type =
+        MAV_MODE_FLAG_CUSTOM_MODE_ENABLED | flag_safety_armed | flag_hitl_enabled;
+
+    MavlinkCommandSender::CommandLong command{};
+    command.command = MAV_CMD_DO_SET_MODE;
+    command.params.maybe_param1 = static_cast<float>(mode_type);
+    command.target_component_id = component_id;
+
+    if (_autopilot == Autopilot::Px4) {
+        // PX4 takes the main and sub mode as separate params rather than the packed value.
+        px4::px4_custom_mode px4_mode{};
+        px4_mode.data = custom_mode;
+        command.params.maybe_param2 = static_cast<float>(px4_mode.main_mode);
+        command.params.maybe_param3 = static_cast<float>(px4_mode.sub_mode);
+    } else {
+        command.params.maybe_param2 = static_cast<float>(custom_mode);
+    }
+
+    send_command_async(command, callback);
+}
+
 FlightMode SystemImpl::get_flight_mode() const
 {
     return _flight_mode;
