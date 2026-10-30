@@ -42,6 +42,8 @@ import io.mavsdk.kotlin.plugins.mission_raw.MissionRaw
 import io.mavsdk.kotlin.plugins.mission_raw.createMissionRawNative
 import io.mavsdk.kotlin.plugins.mocap.Mocap
 import io.mavsdk.kotlin.plugins.mocap.createMocapNative
+import io.mavsdk.kotlin.plugins.modes.Modes
+import io.mavsdk.kotlin.plugins.modes.createModesNative
 import io.mavsdk.kotlin.plugins.offboard.Offboard
 import io.mavsdk.kotlin.plugins.offboard.createOffboardNative
 import io.mavsdk.kotlin.plugins.param.Param
@@ -208,6 +210,10 @@ abstract class SystemPlugins internal constructor() {
     /** The canonical Mocap plugin for this system. */
     val mocap: Mocap
         get() = plugin(Mocap::class, { Mocap(createMocapNative(getHandle())) }, Mocap::destroy)
+
+    /** The canonical Modes plugin for this system. */
+    val modes: Modes
+        get() = plugin(Modes::class, { Modes(createModesNative(getHandle())) }, Modes::destroy)
 
     /** The canonical Offboard plugin for this system. */
     val offboard: Offboard

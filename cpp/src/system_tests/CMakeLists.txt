@@ -56,6 +56,7 @@ add_executable(system_tests_runner
     mission_cancellation.cpp
     mission_changed.cpp
     mission_transfer_lossy.cpp
+    modes.cpp
     connections.cpp
     raw_bytes.cpp
     stalled_link.cpp

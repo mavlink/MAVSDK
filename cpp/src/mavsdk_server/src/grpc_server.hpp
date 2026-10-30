@@ -144,6 +144,11 @@
 #include "mocap/mocap_service_impl.hpp"
 #endif
 
+#ifdef MODES_ENABLED
+#include "plugins/modes/modes.hpp"
+#include "modes/modes_service_impl.hpp"
+#endif
+
 #ifdef OFFBOARD_ENABLED
 #include "plugins/offboard/offboard.hpp"
 #include "offboard/offboard_service_impl.hpp"
@@ -336,6 +341,11 @@ public:
 #ifdef MOCAP_ENABLED
     _mocap_lazy_plugin(mavsdk),
     _mocap_service(_mocap_lazy_plugin),
+#endif
+
+#ifdef MODES_ENABLED
+    _modes_lazy_plugin(mavsdk),
+    _modes_service(_modes_lazy_plugin),
 #endif
 
 #ifdef OFFBOARD_ENABLED
@@ -585,6 +595,13 @@ private:
     LazyPlugin<Mocap> _mocap_lazy_plugin;
 
     MocapServiceImpl<> _mocap_service;
+#endif
+
+#ifdef MODES_ENABLED
+
+    LazyPlugin<Modes> _modes_lazy_plugin;
+
+    ModesServiceImpl<> _modes_service;
 #endif
 
 #ifdef OFFBOARD_ENABLED
