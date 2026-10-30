@@ -67,8 +67,8 @@ void ModesServerImpl::init()
         },
         this);
 
-    _call_every_cookie =
-        _server_component_impl->add_call_every([this]() { check_current_mode(); }, check_interval_s);
+    _call_every_cookie = _server_component_impl->add_call_every(
+        [this]() { check_current_mode(); }, check_interval_s);
 }
 
 void ModesServerImpl::deinit()
@@ -93,9 +93,9 @@ ModesServerImpl::set_available_modes(const std::vector<ModesServer::Mode>& modes
             return ModesServer::Result::InvalidModes;
         }
 
-        const uint8_t standard_mode =
-            mode.is_standard ? standard_mode_from_name(mode.name) :
-                             static_cast<uint8_t>(MAV_STANDARD_MODE_NON_STANDARD);
+        const uint8_t standard_mode = mode.is_standard ?
+                                          standard_mode_from_name(mode.name) :
+                                          static_cast<uint8_t>(MAV_STANDARD_MODE_NON_STANDARD);
         if (mode.is_standard && standard_mode == MAV_STANDARD_MODE_NON_STANDARD) {
             return ModesServer::Result::InvalidModes;
         }
