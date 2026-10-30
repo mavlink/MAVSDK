@@ -80,8 +80,8 @@ public:
     struct Mode {
         
         std::string name{}; /**< @brief Name of the mode, e.g. "Position" or "Stabilize" */
-        bool is_standard{}; /**< @brief True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission" */
         uint32_t custom_mode{}; /**< @brief Autopilot specific custom mode */
+        bool is_standard{}; /**< @brief True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission" */
         bool is_user_selectable{}; /**< @brief True if the mode can be set by the user */
         bool is_advanced{}; /**< @brief True if the mode is for advanced users only */
         bool is_auto_mode{}; /**< @brief True if the mode runs autonomously, e.g. Mission or Land */

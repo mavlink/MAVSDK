@@ -62,8 +62,8 @@ Modes::Result Modes::set_mode(std::string name) const
 
 MAVSDK_PUBLIC bool operator==(const Modes::Mode& lhs, const Modes::Mode& rhs)
 {
-    return (rhs.name == lhs.name) && (rhs.is_standard == lhs.is_standard) &&
-           (rhs.custom_mode == lhs.custom_mode) &&
+    return (rhs.name == lhs.name) && (rhs.custom_mode == lhs.custom_mode) &&
+           (rhs.is_standard == lhs.is_standard) &&
            (rhs.is_user_selectable == lhs.is_user_selectable) &&
            (rhs.is_advanced == lhs.is_advanced) && (rhs.is_auto_mode == lhs.is_auto_mode);
 }
@@ -73,8 +73,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Modes::Mode const& mod
     str << std::setprecision(15);
     str << "mode:" << '\n' << "{\n";
     str << "    name: " << mode.name << '\n';
-    str << "    is_standard: " << mode.is_standard << '\n';
     str << "    custom_mode: " << mode.custom_mode << '\n';
+    str << "    is_standard: " << mode.is_standard << '\n';
     str << "    is_user_selectable: " << mode.is_user_selectable << '\n';
     str << "    is_advanced: " << mode.is_advanced << '\n';
     str << "    is_auto_mode: " << mode.is_auto_mode << '\n';

@@ -59,11 +59,11 @@ public:
             
         
             
-        rpc_obj->set_is_standard(mode.is_standard);
+        rpc_obj->set_custom_mode(mode.custom_mode);
             
         
             
-        rpc_obj->set_custom_mode(mode.custom_mode);
+        rpc_obj->set_is_standard(mode.is_standard);
             
         
             
@@ -92,11 +92,11 @@ public:
             
         
             
-        obj.is_standard = mode.is_standard();
+        obj.custom_mode = mode.custom_mode();
             
         
             
-        obj.custom_mode = mode.custom_mode();
+        obj.is_standard = mode.is_standard();
             
         
             

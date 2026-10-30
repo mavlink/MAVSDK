@@ -58,14 +58,14 @@ ModeFromJava::ModeFromJava(JNIEnv* env, jobject object) {
     nameValue = toStdString(env, nameString);
     value.name = const_cast<char*>(nameValue.c_str());
     env->DeleteLocalRef(nameString);
-    jfieldID is_standardField = env->GetFieldID(
-        clazz, "isStandard", "Z");
-    value.is_standard =
-        static_cast<bool>(env->GetBooleanField(object, is_standardField));
     jfieldID custom_modeField = env->GetFieldID(
         clazz, "customMode", "I");
     value.custom_mode =
         static_cast<uint32_t>(env->GetIntField(object, custom_modeField));
+    jfieldID is_standardField = env->GetFieldID(
+        clazz, "isStandard", "Z");
+    value.is_standard =
+        static_cast<bool>(env->GetBooleanField(object, is_standardField));
     jfieldID is_user_selectableField = env->GetFieldID(
         clazz, "isUserSelectable", "Z");
     value.is_user_selectable =
@@ -97,7 +97,7 @@ jobject toJavaMode(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(Ljava/lang/String;ZIZZZ)V");
+        carrierClass, "<init>", "(Ljava/lang/String;IZZZZ)V");
     if (!constructor) {
         return nullptr;
     }
@@ -105,8 +105,8 @@ jobject toJavaMode(
         toJavaString(env, value.name);
     jobject result = env->NewObject(carrierClass, constructor
         , nameValue
-        , static_cast<jboolean>(value.is_standard)
         , static_cast<jint>(value.custom_mode)
+        , static_cast<jboolean>(value.is_standard)
         , static_cast<jboolean>(value.is_user_selectable)
         , static_cast<jboolean>(value.is_advanced)
         , static_cast<jboolean>(value.is_auto_mode)

@@ -46,8 +46,8 @@ translate_mode_from_c(const mavsdk_modes_mode_t& c_struct) {
     if (c_struct.name) {
         cpp_struct.name = c_struct.name;
     }
-    cpp_struct.is_standard = c_struct.is_standard;
     cpp_struct.custom_mode = c_struct.custom_mode;
+    cpp_struct.is_standard = c_struct.is_standard;
     cpp_struct.is_user_selectable = c_struct.is_user_selectable;
     cpp_struct.is_advanced = c_struct.is_advanced;
     cpp_struct.is_auto_mode = c_struct.is_auto_mode;
@@ -58,8 +58,8 @@ static mavsdk_modes_mode_t
 translate_mode_to_c(const mavsdk::Modes::Mode& cpp_struct) {
     mavsdk_modes_mode_t c_struct{};
     c_struct.name = strdup(cpp_struct.name.c_str());
-    c_struct.is_standard = cpp_struct.is_standard;
     c_struct.custom_mode = cpp_struct.custom_mode;
+    c_struct.is_standard = cpp_struct.is_standard;
     c_struct.is_user_selectable = cpp_struct.is_user_selectable;
     c_struct.is_advanced = cpp_struct.is_advanced;
     c_struct.is_auto_mode = cpp_struct.is_auto_mode;

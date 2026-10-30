@@ -16,23 +16,23 @@ public final class NativeModes {
 
     public static final class Mode {
         public final String name;
-        public final boolean isStandard;
         public final int customMode;
+        public final boolean isStandard;
         public final boolean isUserSelectable;
         public final boolean isAdvanced;
         public final boolean isAutoMode;
 
         public Mode(
             String name,
-            boolean isStandard,
             int customMode,
+            boolean isStandard,
             boolean isUserSelectable,
             boolean isAdvanced,
             boolean isAutoMode
         ) {
             this.name = name;
-            this.isStandard = isStandard;
             this.customMode = customMode;
+            this.isStandard = isStandard;
             this.isUserSelectable = isUserSelectable;
             this.isAdvanced = isAdvanced;
             this.isAutoMode = isAutoMode;

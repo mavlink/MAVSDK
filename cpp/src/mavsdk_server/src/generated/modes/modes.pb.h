@@ -1013,8 +1013,8 @@ class Mode final
   // accessors -------------------------------------------------------
   enum : int {
     kNameFieldNumber = 1,
-    kCustomModeFieldNumber = 3,
-    kIsStandardFieldNumber = 2,
+    kCustomModeFieldNumber = 2,
+    kIsStandardFieldNumber = 3,
     kIsUserSelectableFieldNumber = 4,
     kIsAdvancedFieldNumber = 5,
     kIsAutoModeFieldNumber = 6,
@@ -1035,7 +1035,7 @@ class Mode final
   std::string* _internal_mutable_name();
 
   public:
-  // uint32 custom_mode = 3;
+  // uint32 custom_mode = 2;
   void clear_custom_mode() ;
   ::uint32_t custom_mode() const;
   void set_custom_mode(::uint32_t value);
@@ -1045,7 +1045,7 @@ class Mode final
   void _internal_set_custom_mode(::uint32_t value);
 
   public:
-  // bool is_standard = 2;
+  // bool is_standard = 3;
   void clear_is_standard() ;
   bool is_standard() const;
   void set_is_standard(bool value);
@@ -2090,29 +2090,7 @@ inline void Mode::set_allocated_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.modes.Mode.name)
 }
 
-// bool is_standard = 2;
-inline void Mode::clear_is_standard() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.is_standard_ = false;
-}
-inline bool Mode::is_standard() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.modes.Mode.is_standard)
-  return _internal_is_standard();
-}
-inline void Mode::set_is_standard(bool value) {
-  _internal_set_is_standard(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.modes.Mode.is_standard)
-}
-inline bool Mode::_internal_is_standard() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.is_standard_;
-}
-inline void Mode::_internal_set_is_standard(bool value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.is_standard_ = value;
-}
-
-// uint32 custom_mode = 3;
+// uint32 custom_mode = 2;
 inline void Mode::clear_custom_mode() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.custom_mode_ = 0u;
@@ -2132,6 +2110,28 @@ inline ::uint32_t Mode::_internal_custom_mode() const {
 inline void Mode::_internal_set_custom_mode(::uint32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.custom_mode_ = value;
+}
+
+// bool is_standard = 3;
+inline void Mode::clear_is_standard() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_standard_ = false;
+}
+inline bool Mode::is_standard() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.modes.Mode.is_standard)
+  return _internal_is_standard();
+}
+inline void Mode::set_is_standard(bool value) {
+  _internal_set_is_standard(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.modes.Mode.is_standard)
+}
+inline bool Mode::_internal_is_standard() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_standard_;
+}
+inline void Mode::_internal_set_is_standard(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_standard_ = value;
 }
 
 // bool is_user_selectable = 4;
