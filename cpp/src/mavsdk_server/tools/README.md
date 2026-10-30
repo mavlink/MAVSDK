@@ -4,21 +4,39 @@ This folder contains a few helper scripts meant to automatize some tasks such as
 
 ### package_mavsdk_server_framework
 
-This script makes a fat binary out of the `mavsdk_server.framework` iOS framework, containing
-architectures for iOS and those for the iOS simulator. It requires the builds for the
-`ios` and `ios_simulator` targets to have completed successfully.
+This script packages `mavsdk_server.xcframework` with three slices and matching debug symbols:
 
-It can therefore be run from a macOS system with the following commands:
+- iOS device: arm64
+- iOS simulator: arm64 and x86_64
+- macOS: arm64 and x86_64
 
+It expects framework builds under `cpp/build/{ios,ios_simulator_x64,ios_simulator_arm64,macos_x64,macos_arm64}/src/mavsdk_server/src/`.
+Each directory must contain both `mavsdk_server.framework` and `mavsdk_server.framework.dSYM`.
+Build with `RelWithDebInfo` and generate each dSYM with `xcrun dsymutil` while that build's object
+files still exist. The Apple CI workflow generates and transfers these bundles before packaging.
 
+The script merges the simulator and macOS binaries and dSYM DWARF files into universal binaries.
+It requires every architecture's UUID in each dSYM to match its framework before creating the
+XCFramework, so incomplete or mismatched symbols fail packaging rather than being published.
+Symbol bundles accompany every distributed slice so crash reports can be symbolicated on every
+supported Apple platform.
+
+Run on macOS with Xcode and `tree` installed:
+
+```bash
+bash cpp/src/mavsdk_server/tools/package_mavsdk_server_framework.bash
 ```
-make BUILD_MAVSDK_SERVER=YES
-make BUILD_MAVSDK_SERVER=YES ios
-make BUILD_MAVSDK_SERVER=YES ios_simulator
-bash package_mavsdk_server_framework.bash
-```
 
-The resulting fat binary will be generated in `./build/fat_bin/`.
+Outputs are `cpp/build/mavsdk_server.xcframework`, its `.zip` archive, and a `.zip.sha256` checksum.
+The script refuses to overwrite an existing XCFramework.
+
+The packaging regression tests compile minimal frameworks for all five target architectures without
+building MAVSDK. They check dSYM UUIDs, slice metadata, the archive/checksum, and rejection of missing
+or mismatched symbols:
+
+```bash
+python3 cpp/src/mavsdk_server/tools/test_package_mavsdk_server_framework.py -v
+```
 
 ### push_mavsdk_server_framework_to_s3
 
