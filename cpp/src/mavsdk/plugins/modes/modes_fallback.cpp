@@ -4,30 +4,6 @@
 
 namespace mavsdk {
 
-std::string modes_standard_mode_name(uint8_t standard_mode)
-{
-    switch (standard_mode) {
-        case MAV_STANDARD_MODE_POSITION_HOLD:
-            return "Position";
-        case MAV_STANDARD_MODE_ORBIT:
-            return "Orbit";
-        case MAV_STANDARD_MODE_CRUISE:
-            return "Cruise";
-        case MAV_STANDARD_MODE_ALTITUDE_HOLD:
-            return "Altitude";
-        case MAV_STANDARD_MODE_SAFE_RECOVERY:
-            return "Safe Recovery";
-        case MAV_STANDARD_MODE_MISSION:
-            return "Mission";
-        case MAV_STANDARD_MODE_LAND:
-            return "Land";
-        case MAV_STANDARD_MODE_TAKEOFF:
-            return "Takeoff";
-        default:
-            return "";
-    }
-}
-
 namespace {
 
 bool is_fixed_wing(MAV_TYPE vehicle_type)
@@ -56,7 +32,7 @@ ModeEntry make_mode(std::string name, uint8_t standard_mode, uint32_t custom_mod
     entry.standard_mode = standard_mode;
     auto& mode = entry.mode;
     mode.is_standard = standard_mode != MAV_STANDARD_MODE_NON_STANDARD;
-    mode.name = mode.is_standard ? modes_standard_mode_name(standard_mode) : std::move(name);
+    mode.name = mode.is_standard ? standard_mode_name(standard_mode) : std::move(name);
     mode.custom_mode = custom_mode;
     mode.is_user_selectable = true;
     mode.is_advanced = advanced;

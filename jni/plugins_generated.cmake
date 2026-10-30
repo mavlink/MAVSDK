@@ -28,6 +28,7 @@ set(PLUGIN_SOURCES
     plugins/mission_raw_server/mission_raw_server_jni.cpp
     plugins/mocap/mocap_jni.cpp
     plugins/modes/modes_jni.cpp
+    plugins/modes_server/modes_server_jni.cpp
     plugins/offboard/offboard_jni.cpp
     plugins/param/param_jni.cpp
     plugins/param_server/param_server_jni.cpp
