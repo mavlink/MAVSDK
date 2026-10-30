@@ -59,8 +59,7 @@ class Modes internal constructor(private val native: ModesNative) {
      *
      * @property name Name of the mode, e.g. "Position" or "Stabilize"
      * @property customMode Autopilot specific custom mode
-     * @property isStandard True if this is a MAVLink standard mode, e.g. "Position", "Safe
-     *   Recovery" or "Mission"
+     * @property isStandard True if this is a MAVLink standard mode, e.g. "Position" or "Mission"
      * @property isUserSelectable True if the mode can be set by the user
      * @property isAdvanced True if the mode is for advanced users only
      * @property isAutoMode True if the mode runs autonomously, e.g. Mission or Land
