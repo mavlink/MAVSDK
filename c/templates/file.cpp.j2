@@ -549,6 +549,19 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% else %}
     *{{ method.return_name.lower_snake_case }}_out = ret_value;
     {% endif %}
+    {% elif method.return_type.is_repeated %}
+    if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
+        *{{ method.return_name.lower_snake_case }}_out = nullptr;
+        if (!ret_value.empty()) {
+            *{{ method.return_name.lower_snake_case }}_out = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t[ret_value.size()];
+            for (size_t i = 0; i < ret_value.size(); i++) {
+                (*{{ method.return_name.lower_snake_case }}_out)[i] = translate_{{ method.return_type.inner_name.lower_snake_case }}_to_c(ret_value[i]);
+            }
+        }
+    }
+    if ({{ method.return_name.lower_snake_case }}_size_out != nullptr) {
+        *{{ method.return_name.lower_snake_case }}_size_out = ret_value.size();
+    }
     {% else %}
     if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
         *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name.lower_snake_case }}_to_c(ret_value);

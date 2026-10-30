@@ -238,7 +238,16 @@ mavsdk_modes_available_modes(
     auto ret_value = wrapper->cpp_plugin->available_modes();
 
     if (modes_out != nullptr) {
-        *modes_out = translate__to_c(ret_value);
+        *modes_out = nullptr;
+        if (!ret_value.empty()) {
+            *modes_out = new mavsdk_modes_mode_t[ret_value.size()];
+            for (size_t i = 0; i < ret_value.size(); i++) {
+                (*modes_out)[i] = translate_mode_to_c(ret_value[i]);
+            }
+        }
+    }
+    if (modes_size_out != nullptr) {
+        *modes_size_out = ret_value.size();
     }
 }
 
