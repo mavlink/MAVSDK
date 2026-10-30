@@ -11,41 +11,30 @@ namespace mavsdk {
 
 using Mode = ModesServer::Mode;
 
-
-
-
-ModesServer::ModesServer(std::shared_ptr<ServerComponent> server_component) : ServerPluginBase(), _impl{std::make_unique<ModesServerImpl>(server_component)} {}
-
+ModesServer::ModesServer(std::shared_ptr<ServerComponent> server_component) :
+    ServerPluginBase(),
+    _impl{std::make_unique<ModesServerImpl>(server_component)}
+{}
 
 ModesServer::~ModesServer() {}
-
-
-
-
 
 ModesServer::Result ModesServer::set_available_modes(std::vector<Mode> modes) const
 {
     return _impl->set_available_modes(modes);
 }
 
-
-
 MAVSDK_PUBLIC bool operator==(const ModesServer::Mode& lhs, const ModesServer::Mode& rhs)
 {
-    return
-        (rhs.name == lhs.name) &&
-        (rhs.custom_mode == lhs.custom_mode) &&
-        (rhs.is_standard == lhs.is_standard) &&
-        (rhs.is_user_selectable == lhs.is_user_selectable) &&
-        (rhs.is_advanced == lhs.is_advanced) &&
-        (rhs.is_auto_mode == lhs.is_auto_mode);
+    return (rhs.name == lhs.name) && (rhs.custom_mode == lhs.custom_mode) &&
+           (rhs.is_standard == lhs.is_standard) &&
+           (rhs.is_user_selectable == lhs.is_user_selectable) &&
+           (rhs.is_advanced == lhs.is_advanced) && (rhs.is_auto_mode == lhs.is_auto_mode);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ModesServer::Mode const& mode)
 {
     str << std::setprecision(15);
-    str << "mode:" << '\n'
-        << "{\n";
+    str << "mode:" << '\n' << "{\n";
     str << "    name: " << mode.name << '\n';
     str << "    custom_mode: " << mode.custom_mode << '\n';
     str << "    is_standard: " << mode.is_standard << '\n';
@@ -55,8 +44,6 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ModesServer::Mode cons
     str << '}';
     return str;
 }
-
-
 
 MAVSDK_PUBLIC std::string_view to_string(ModesServer::Result const& result)
 {
@@ -76,8 +63,5 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ModesServer::Result co
 {
     return str << to_string(result);
 }
-
-
-
 
 } // namespace mavsdk
