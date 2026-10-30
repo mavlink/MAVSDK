@@ -46,10 +46,10 @@ typedef struct mavsdk_modes_current_mode_handle_s *mavsdk_modes_current_mode_han
 typedef struct CMAVSDK_EXPORT {
     /**  Name of the mode, e.g. "Position" or "Stabilize" */
     char* name;
-    /**  True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission" */
-    bool is_standard;
     /**  Autopilot specific custom mode */
     uint32_t custom_mode;
+    /**  True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission" */
+    bool is_standard;
     /**  True if the mode can be set by the user */
     bool is_user_selectable;
     /**  True if the mode is for advanced users only */

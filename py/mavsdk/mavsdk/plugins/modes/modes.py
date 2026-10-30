@@ -78,8 +78,8 @@ class ModeCStruct(ctypes.Structure):
 
     _fields_ = [
         ("name", ctypes.c_char_p),
-        ("is_standard", ctypes.c_bool),
         ("custom_mode", ctypes.c_uint32),
+        ("is_standard", ctypes.c_bool),
         ("is_user_selectable", ctypes.c_bool),
         ("is_advanced", ctypes.c_bool),
         ("is_auto_mode", ctypes.c_bool),
@@ -95,15 +95,15 @@ class Mode:
     def __init__(
         self,
         name=None,
-        is_standard=None,
         custom_mode=None,
+        is_standard=None,
         is_user_selectable=None,
         is_advanced=None,
         is_auto_mode=None,
     ):
         self.name = name if name is not None else ""
-        self.is_standard = is_standard if is_standard is not None else False
         self.custom_mode = custom_mode if custom_mode is not None else 0
+        self.is_standard = is_standard if is_standard is not None else False
         self.is_user_selectable = (
             is_user_selectable if is_user_selectable is not None else False
         )
@@ -115,8 +115,8 @@ class Mode:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.name = c_struct.name.decode("utf-8")
-        instance.is_standard = c_struct.is_standard
         instance.custom_mode = c_struct.custom_mode
+        instance.is_standard = c_struct.is_standard
         instance.is_user_selectable = c_struct.is_user_selectable
         instance.is_advanced = c_struct.is_advanced
         instance.is_auto_mode = c_struct.is_auto_mode
@@ -126,8 +126,8 @@ class Mode:
         """Convert to C structure for C library calls"""
         c_struct = ModeCStruct()
         c_struct.name = self.name.encode("utf-8")
-        c_struct.is_standard = self.is_standard
         c_struct.custom_mode = self.custom_mode
+        c_struct.is_standard = self.is_standard
         c_struct.is_user_selectable = self.is_user_selectable
         c_struct.is_advanced = self.is_advanced
         c_struct.is_auto_mode = self.is_auto_mode
@@ -136,8 +136,8 @@ class Mode:
     def __str__(self):
         fields = []
         fields.append(f"name={self.name}")
-        fields.append(f"is_standard={self.is_standard}")
         fields.append(f"custom_mode={self.custom_mode}")
+        fields.append(f"is_standard={self.is_standard}")
         fields.append(f"is_user_selectable={self.is_user_selectable}")
         fields.append(f"is_advanced={self.is_advanced}")
         fields.append(f"is_auto_mode={self.is_auto_mode}")

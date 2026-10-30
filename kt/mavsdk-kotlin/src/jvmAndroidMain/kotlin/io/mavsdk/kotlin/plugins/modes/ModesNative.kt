@@ -12,10 +12,10 @@ import kotlin.concurrent.read
 import kotlin.concurrent.write
 
 private fun Modes.Mode.toNative(): NativeModes.Mode =
-    NativeModes.Mode(name, isStandard, customMode, isUserSelectable, isAdvanced, isAutoMode)
+    NativeModes.Mode(name, customMode, isStandard, isUserSelectable, isAdvanced, isAutoMode)
 
 private fun NativeModes.Mode.toKotlin(): Modes.Mode =
-    Modes.Mode(name, isStandard, customMode, isUserSelectable, isAdvanced, isAutoMode)
+    Modes.Mode(name, customMode, isStandard, isUserSelectable, isAdvanced, isAutoMode)
 
 private class ModesNativeImpl(private val handle: Long) : ModesNative {
     // The read lock keeps `handle` alive for the duration of a native call; destroy()

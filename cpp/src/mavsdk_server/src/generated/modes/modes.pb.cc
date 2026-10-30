@@ -297,8 +297,8 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.name_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.is_standard_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.custom_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.is_standard_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.is_user_selectable_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.is_advanced_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.is_auto_mode_),
@@ -345,8 +345,8 @@ const char descriptor_table_protodef_modes_2fmodes_2eproto[] ABSL_ATTRIBUTE_SECT
     " \001(\0132\026.mavsdk.rpc.modes.Mode\"\036\n\016SetModeR"
     "equest\022\014\n\004name\030\001 \001(\t\"F\n\017SetModeResponse\022"
     "3\n\014modes_result\030\001 \001(\0132\035.mavsdk.rpc.modes"
-    ".ModesResult\"\205\001\n\004Mode\022\014\n\004name\030\001 \001(\t\022\023\n\013i"
-    "s_standard\030\002 \001(\010\022\023\n\013custom_mode\030\003 \001(\r\022\032\n"
+    ".ModesResult\"\205\001\n\004Mode\022\014\n\004name\030\001 \001(\t\022\023\n\013c"
+    "ustom_mode\030\002 \001(\r\022\023\n\013is_standard\030\003 \001(\010\022\032\n"
     "\022is_user_selectable\030\004 \001(\010\022\023\n\013is_advanced"
     "\030\005 \001(\010\022\024\n\014is_auto_mode\030\006 \001(\010\"\333\002\n\013ModesRe"
     "sult\0224\n\006result\030\001 \001(\0162$.mavsdk.rpc.modes."
@@ -1725,12 +1725,12 @@ const ::_pbi::TcParseTable<3, 6, 0, 34, 2> Mode::_table_ = {
     // string name = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.name_)}},
-    // bool is_standard = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Mode, _impl_.is_standard_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_standard_)}},
-    // uint32 custom_mode = 3;
+    // uint32 custom_mode = 2;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Mode, _impl_.custom_mode_), 63>(),
-     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.custom_mode_)}},
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.custom_mode_)}},
+    // bool is_standard = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Mode, _impl_.is_standard_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_standard_)}},
     // bool is_user_selectable = 4;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Mode, _impl_.is_user_selectable_), 63>(),
      {32, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_user_selectable_)}},
@@ -1747,12 +1747,12 @@ const ::_pbi::TcParseTable<3, 6, 0, 34, 2> Mode::_table_ = {
     // string name = 1;
     {PROTOBUF_FIELD_OFFSET(Mode, _impl_.name_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // bool is_standard = 2;
-    {PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_standard_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // uint32 custom_mode = 3;
+    // uint32 custom_mode = 2;
     {PROTOBUF_FIELD_OFFSET(Mode, _impl_.custom_mode_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // bool is_standard = 3;
+    {PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_standard_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // bool is_user_selectable = 4;
     {PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_user_selectable_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
@@ -1808,18 +1808,18 @@ PROTOBUF_NOINLINE void Mode::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // bool is_standard = 2;
-          if (this_._internal_is_standard() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteBoolToArray(
-                2, this_._internal_is_standard(), target);
-          }
-
-          // uint32 custom_mode = 3;
+          // uint32 custom_mode = 2;
           if (this_._internal_custom_mode() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-                3, this_._internal_custom_mode(), target);
+                2, this_._internal_custom_mode(), target);
+          }
+
+          // bool is_standard = 3;
+          if (this_._internal_is_standard() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                3, this_._internal_is_standard(), target);
           }
 
           // bool is_user_selectable = 4;
@@ -1873,12 +1873,12 @@ PROTOBUF_NOINLINE void Mode::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_name());
             }
-            // uint32 custom_mode = 3;
+            // uint32 custom_mode = 2;
             if (this_._internal_custom_mode() != 0) {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
                   this_._internal_custom_mode());
             }
-            // bool is_standard = 2;
+            // bool is_standard = 3;
             if (this_._internal_is_standard() != 0) {
               total_size += 2;
             }
