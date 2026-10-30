@@ -58,10 +58,10 @@ ModeFromJava::ModeFromJava(JNIEnv* env, jobject object) {
     nameValue = toStdString(env, nameString);
     value.name = const_cast<char*>(nameValue.c_str());
     env->DeleteLocalRef(nameString);
-    jfieldID standard_modeField = env->GetFieldID(
-        clazz, "standardMode", "I");
-    value.standard_mode =
-        static_cast<mavsdk_modes_standard_mode_t>(env->GetIntField(object, standard_modeField));
+    jfieldID is_standardField = env->GetFieldID(
+        clazz, "isStandard", "Z");
+    value.is_standard =
+        static_cast<bool>(env->GetBooleanField(object, is_standardField));
     jfieldID custom_modeField = env->GetFieldID(
         clazz, "customMode", "I");
     value.custom_mode =
@@ -97,7 +97,7 @@ jobject toJavaMode(
         return nullptr;
     }
     jmethodID constructor = env->GetMethodID(
-        carrierClass, "<init>", "(Ljava/lang/String;IIZZZ)V");
+        carrierClass, "<init>", "(Ljava/lang/String;ZIZZZ)V");
     if (!constructor) {
         return nullptr;
     }
@@ -105,7 +105,7 @@ jobject toJavaMode(
         toJavaString(env, value.name);
     jobject result = env->NewObject(carrierClass, constructor
         , nameValue
-        , static_cast<jint>(value.standard_mode)
+        , static_cast<jboolean>(value.is_standard)
         , static_cast<jint>(value.custom_mode)
         , static_cast<jboolean>(value.is_user_selectable)
         , static_cast<jboolean>(value.is_advanced)
@@ -223,39 +223,6 @@ struct SetModeCallbackWrapper {
     jmethodID invokeMethod;
 
     SetModeCallbackWrapper(JNIEnv* env, jobject callbackObject)
-        : callback(env, callbackObject), invokeMethod(nullptr) {
-        if (callback.isValid()) {
-            jclass callbackClass = env->GetObjectClass(callbackObject);
-            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(I)V");
-            env->DeleteLocalRef(callbackClass);
-        }
-    }
-
-    void operator()(
-        const mavsdk_modes_result_t result    ) const {
-
-        if (!callback.isValid() || !invokeMethod || !g_jvm) {
-            return;
-        }
-        JavaVMAttacher attacher(g_jvm);
-        JNIEnv* env = attacher.getEnv();
-        if (!env) {
-            return;
-        }
-        env->CallVoidMethod(callback.get(), invokeMethod
-            , static_cast<jint>(result)
-        );
-        if (env->ExceptionCheck()) {
-            env->ExceptionDescribe();
-            env->ExceptionClear();
-        }
-    }
-};
-struct SetStandardModeCallbackWrapper {
-    GlobalRefHolder callback;
-    jmethodID invokeMethod;
-
-    SetStandardModeCallbackWrapper(JNIEnv* env, jobject callbackObject)
         : callback(env, callbackObject), invokeMethod(nullptr) {
         if (callback.isValid()) {
             jclass callbackClass = env->GetObjectClass(callbackObject);
@@ -492,48 +459,6 @@ Java_io_mavsdk_jni_plugins_modes_NativeModes_setModeAsync(
         [](const mavsdk_modes_result_t result, void* userData) {
             auto* callbackWrapper =
                 static_cast<SetModeCallbackWrapper*>(userData);
-            (*callbackWrapper)(result);
-            delete callbackWrapper;
-        },
-        wrapper);
-}
-
-JNIEXPORT
-jint
-JNICALL Java_io_mavsdk_jni_plugins_modes_NativeModes_setStandardMode(
-    JNIEnv* env,
-    jclass,
-    jlong handle,
-    jint standard_mode) {
-    if (!requireHandle(env, handle, "Modes plugin")) {
-        return {};
-    }
-
-    mavsdk_modes_result_t result =
-        mavsdk_modes_set_standard_mode(
-            reinterpret_cast<mavsdk_modes_t>(handle),
-            static_cast<mavsdk_modes_standard_mode_t>(standard_mode));
-    return static_cast<jint>(result);
-}
-
-JNIEXPORT void JNICALL
-Java_io_mavsdk_jni_plugins_modes_NativeModes_setStandardModeAsync(
-    JNIEnv* env,
-    jclass,
-    jlong handle,
-    jint standard_mode,
-    jobject callback) {
-    if (!requireHandle(env, handle, "Modes plugin") || !callback) {
-        return;
-    }
-
-    auto* wrapper = new SetStandardModeCallbackWrapper(env, callback);
-    mavsdk_modes_set_standard_mode_async(
-        reinterpret_cast<mavsdk_modes_t>(handle),
-        static_cast<mavsdk_modes_standard_mode_t>(standard_mode),
-        [](const mavsdk_modes_result_t result, void* userData) {
-            auto* callbackWrapper =
-                static_cast<SetStandardModeCallbackWrapper*>(userData);
             (*callbackWrapper)(result);
             delete callbackWrapper;
         },

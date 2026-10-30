@@ -12,17 +12,10 @@ import kotlin.concurrent.read
 import kotlin.concurrent.write
 
 private fun Modes.Mode.toNative(): NativeModes.Mode =
-    NativeModes.Mode(name, standardMode.value, customMode, isUserSelectable, isAdvanced, isAutoMode)
+    NativeModes.Mode(name, isStandard, customMode, isUserSelectable, isAdvanced, isAutoMode)
 
 private fun NativeModes.Mode.toKotlin(): Modes.Mode =
-    Modes.Mode(
-        name,
-        Modes.StandardMode.fromValue(standardMode),
-        customMode,
-        isUserSelectable,
-        isAdvanced,
-        isAutoMode,
-    )
+    Modes.Mode(name, isStandard, customMode, isUserSelectable, isAdvanced, isAutoMode)
 
 private class ModesNativeImpl(private val handle: Long) : ModesNative {
     // The read lock keeps `handle` alive for the duration of a native call; destroy()
@@ -96,16 +89,6 @@ private class ModesNativeImpl(private val handle: Long) : ModesNative {
                 handle,
                 name,
                 NativeModes.SetModeCallback { result -> callback(result) },
-            )
-        }
-    }
-
-    override fun setStandardModeAsync(standardMode: Modes.StandardMode, callback: (Int) -> Unit) {
-        withOpen {
-            NativeModes.setStandardModeAsync(
-                handle,
-                standardMode.value,
-                NativeModes.SetStandardModeCallback { result -> callback(result) },
             )
         }
     }

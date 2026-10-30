@@ -10,14 +10,14 @@ Discover and set flight modes at runtime.
  implement it, a list of known modes is used as a fallback.
 
  Modes are identified by name. Standard modes have a fixed name, e.g.
- "Position" or "Mission", custom modes use the name reported by the vehicle.
+ "Position" or "Mission", other modes use the name reported by the vehicle.
+ Setting a mode works the same way for both.
 """
 
 # Import main plugin class
 from .modes import Modes
 
 # Import enums
-from .modes import StandardMode
 
 # Import result enum
 from .modes import ModesResult
@@ -29,7 +29,6 @@ from .modes import Mode
 # Define __all__ for explicit exports
 __all__ = [
     "Modes",
-    "StandardMode",
     "ModesResult",
     "ModesError",
     "Mode",

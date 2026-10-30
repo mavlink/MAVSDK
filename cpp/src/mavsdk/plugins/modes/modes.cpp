@@ -11,19 +11,15 @@ namespace mavsdk {
 
 using Mode = Modes::Mode;
 
-
-
-
 Modes::Modes(System& system) : PluginBase(), _impl{std::make_unique<ModesImpl>(system)} {}
 
-Modes::Modes(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<ModesImpl>(system)} {}
-
+Modes::Modes(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<ModesImpl>(system)}
+{}
 
 Modes::~Modes() {}
 
-
-
-    
 Modes::AvailableModesHandle Modes::subscribe_available_modes(const AvailableModesCallback& callback)
 {
     return _impl->subscribe_available_modes(callback);
@@ -33,20 +29,12 @@ void Modes::unsubscribe_available_modes(AvailableModesHandle handle)
 {
     _impl->unsubscribe_available_modes(handle);
 }
-    
 
-
-
-
-std::vector<Modes::Mode>
-Modes::available_modes() const
+std::vector<Modes::Mode> Modes::available_modes() const
 {
     return _impl->available_modes();
 }
 
-
-
-    
 Modes::CurrentModeHandle Modes::subscribe_current_mode(const CurrentModeCallback& callback)
 {
     return _impl->subscribe_current_mode(callback);
@@ -56,65 +44,36 @@ void Modes::unsubscribe_current_mode(CurrentModeHandle handle)
 {
     _impl->unsubscribe_current_mode(handle);
 }
-    
 
-
-
-
-Modes::Mode
-Modes::current_mode() const
+Modes::Mode Modes::current_mode() const
 {
     return _impl->current_mode();
 }
-
-
 
 void Modes::set_mode_async(std::string name, const ResultCallback callback)
 {
     _impl->set_mode_async(name, callback);
 }
 
-
-
 Modes::Result Modes::set_mode(std::string name) const
 {
     return _impl->set_mode(name);
 }
 
-
-
-void Modes::set_standard_mode_async(StandardMode standard_mode, const ResultCallback callback)
-{
-    _impl->set_standard_mode_async(standard_mode, callback);
-}
-
-
-
-Modes::Result Modes::set_standard_mode(StandardMode standard_mode) const
-{
-    return _impl->set_standard_mode(standard_mode);
-}
-
-
-
 MAVSDK_PUBLIC bool operator==(const Modes::Mode& lhs, const Modes::Mode& rhs)
 {
-    return
-        (rhs.name == lhs.name) &&
-        (rhs.standard_mode == lhs.standard_mode) &&
-        (rhs.custom_mode == lhs.custom_mode) &&
-        (rhs.is_user_selectable == lhs.is_user_selectable) &&
-        (rhs.is_advanced == lhs.is_advanced) &&
-        (rhs.is_auto_mode == lhs.is_auto_mode);
+    return (rhs.name == lhs.name) && (rhs.is_standard == lhs.is_standard) &&
+           (rhs.custom_mode == lhs.custom_mode) &&
+           (rhs.is_user_selectable == lhs.is_user_selectable) &&
+           (rhs.is_advanced == lhs.is_advanced) && (rhs.is_auto_mode == lhs.is_auto_mode);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Modes::Mode const& mode)
 {
     str << std::setprecision(15);
-    str << "mode:" << '\n'
-        << "{\n";
+    str << "mode:" << '\n' << "{\n";
     str << "    name: " << mode.name << '\n';
-    str << "    standard_mode: " << mode.standard_mode << '\n';
+    str << "    is_standard: " << mode.is_standard << '\n';
     str << "    custom_mode: " << mode.custom_mode << '\n';
     str << "    is_user_selectable: " << mode.is_user_selectable << '\n';
     str << "    is_advanced: " << mode.is_advanced << '\n';
@@ -122,8 +81,6 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Modes::Mode const& mod
     str << '}';
     return str;
 }
-
-
 
 MAVSDK_PUBLIC std::string_view to_string(Modes::Result const& result)
 {
@@ -159,39 +116,5 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Modes::Result const& r
 {
     return str << to_string(result);
 }
-
-
-
-MAVSDK_PUBLIC std::string_view to_string(Modes::StandardMode const& standard_mode)
-{
-    switch (standard_mode) {
-        case Modes::StandardMode::NonStandard:
-            return "Non Standard";
-        case Modes::StandardMode::PositionHold:
-            return "Position Hold";
-        case Modes::StandardMode::Orbit:
-            return "Orbit";
-        case Modes::StandardMode::Cruise:
-            return "Cruise";
-        case Modes::StandardMode::AltitudeHold:
-            return "Altitude Hold";
-        case Modes::StandardMode::SafeRecovery:
-            return "Safe Recovery";
-        case Modes::StandardMode::Mission:
-            return "Mission";
-        case Modes::StandardMode::Land:
-            return "Land";
-        case Modes::StandardMode::Takeoff:
-            return "Takeoff";
-        default:
-            return "Unknown";
-    }
-}
-
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Modes::StandardMode const& standard_mode)
-{
-    return str << to_string(standard_mode);
-}
-
 
 } // namespace mavsdk

@@ -32,7 +32,8 @@ class System;class ModesImpl;
  * implement it, a list of known modes is used as a fallback.
  *
  * Modes are identified by name. Standard modes have a fixed name, e.g.
- * "Position" or "Mission", custom modes use the name reported by the vehicle.
+ * "Position" or "Mission", other modes use the name reported by the vehicle.
+ * Setting a mode works the same way for both.
  */
 class MAVSDK_PUBLIC Modes : public PluginBase {
 public:
@@ -70,37 +71,6 @@ public:
     ~Modes() override;
 
 
-    /**
-     * @brief Standard mode.
-     *
-     * See https://mavlink.io/en/messages/common.html#MAV_STANDARD_MODE
-     */
-    enum class StandardMode {
-        NonStandard = 0, /**< @brief Non-standard mode, specific to the autopilot. */
-        PositionHold = 1, /**< @brief Position hold, named "Position". */
-        Orbit = 2, /**< @brief Orbit, named "Orbit". */
-        Cruise = 3, /**< @brief Cruise, named "Cruise". */
-        AltitudeHold = 4, /**< @brief Altitude hold, named "Altitude". */
-        SafeRecovery = 5, /**< @brief Safe recovery such as return to launch, named "Safe Recovery". */
-        Mission = 6, /**< @brief Mission, named "Mission". */
-        Land = 7, /**< @brief Land, named "Land". */
-        Takeoff = 8, /**< @brief Takeoff, named "Takeoff". */
-    };
-
-    /**
-     * @brief Convert `Modes::StandardMode` to string.
-     *
-     * @return A string representation of the enum.
-     */
-    friend MAVSDK_PUBLIC std::string_view to_string(Modes::StandardMode const& standard_mode);
-
-    /**
-     * @brief Stream operator to print information about a `Modes::StandardMode`.
-     *
-     * @return A reference to the stream.
-     */
-    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Modes::StandardMode const& standard_mode);
-
 
 
 
@@ -110,7 +80,7 @@ public:
     struct Mode {
         
         std::string name{}; /**< @brief Name of the mode, e.g. "Position" or "Stabilize" */
-        StandardMode standard_mode{}; /**< @brief Standard mode, or non-standard for custom modes */
+        bool is_standard{}; /**< @brief True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission" */
         uint32_t custom_mode{}; /**< @brief Autopilot specific custom mode */
         bool is_user_selectable{}; /**< @brief True if the mode can be set by the user */
         bool is_advanced{}; /**< @brief True if the mode is for advanced users only */
@@ -273,29 +243,6 @@ public:
      
      */
     Result set_mode(std::string name) const;
-
-
-
-
-    /**
-     * @brief Set a standard mode.
-     *
-     * This function is non-blocking. See 'set_standard_mode' for the blocking counterpart.
-     */
-    void set_standard_mode_async(StandardMode standard_mode, const ResultCallback callback);
-
-
-
-    /**
-     * @brief Set a standard mode.
-     *
-     * This function is blocking. See 'set_standard_mode_async' for the non-blocking counterpart.
-     *
-     
-     * @return Result of request.
-     
-     */
-    Result set_standard_mode(StandardMode standard_mode) const;
 
 
 

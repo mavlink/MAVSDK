@@ -47,60 +47,6 @@ public:
     }
 
 
-    static rpc::modes::StandardMode translateToRpcStandardMode(const mavsdk::Modes::StandardMode& standard_mode)
-    {
-        switch (standard_mode) {
-            default:
-                LogErr("Unknown standard_mode enum value: {}", static_cast<int>(standard_mode));
-            // FALLTHROUGH
-            case mavsdk::Modes::StandardMode::NonStandard:
-                return rpc::modes::STANDARD_MODE_NON_STANDARD;
-            case mavsdk::Modes::StandardMode::PositionHold:
-                return rpc::modes::STANDARD_MODE_POSITION_HOLD;
-            case mavsdk::Modes::StandardMode::Orbit:
-                return rpc::modes::STANDARD_MODE_ORBIT;
-            case mavsdk::Modes::StandardMode::Cruise:
-                return rpc::modes::STANDARD_MODE_CRUISE;
-            case mavsdk::Modes::StandardMode::AltitudeHold:
-                return rpc::modes::STANDARD_MODE_ALTITUDE_HOLD;
-            case mavsdk::Modes::StandardMode::SafeRecovery:
-                return rpc::modes::STANDARD_MODE_SAFE_RECOVERY;
-            case mavsdk::Modes::StandardMode::Mission:
-                return rpc::modes::STANDARD_MODE_MISSION;
-            case mavsdk::Modes::StandardMode::Land:
-                return rpc::modes::STANDARD_MODE_LAND;
-            case mavsdk::Modes::StandardMode::Takeoff:
-                return rpc::modes::STANDARD_MODE_TAKEOFF;
-        }
-    }
-
-    static mavsdk::Modes::StandardMode translateFromRpcStandardMode(const rpc::modes::StandardMode standard_mode)
-    {
-        switch (standard_mode) {
-            default:
-                LogErr("Unknown standard_mode enum value: {}", static_cast<int>(standard_mode));
-            // FALLTHROUGH
-            case rpc::modes::STANDARD_MODE_NON_STANDARD:
-                return mavsdk::Modes::StandardMode::NonStandard;
-            case rpc::modes::STANDARD_MODE_POSITION_HOLD:
-                return mavsdk::Modes::StandardMode::PositionHold;
-            case rpc::modes::STANDARD_MODE_ORBIT:
-                return mavsdk::Modes::StandardMode::Orbit;
-            case rpc::modes::STANDARD_MODE_CRUISE:
-                return mavsdk::Modes::StandardMode::Cruise;
-            case rpc::modes::STANDARD_MODE_ALTITUDE_HOLD:
-                return mavsdk::Modes::StandardMode::AltitudeHold;
-            case rpc::modes::STANDARD_MODE_SAFE_RECOVERY:
-                return mavsdk::Modes::StandardMode::SafeRecovery;
-            case rpc::modes::STANDARD_MODE_MISSION:
-                return mavsdk::Modes::StandardMode::Mission;
-            case rpc::modes::STANDARD_MODE_LAND:
-                return mavsdk::Modes::StandardMode::Land;
-            case rpc::modes::STANDARD_MODE_TAKEOFF:
-                return mavsdk::Modes::StandardMode::Takeoff;
-        }
-    }
-
 
 
     static std::unique_ptr<rpc::modes::Mode> translateToRpcMode(const mavsdk::Modes::Mode &mode)
@@ -113,9 +59,7 @@ public:
             
         
             
-                
-        rpc_obj->set_standard_mode(translateToRpcStandardMode(mode.standard_mode));
-                
+        rpc_obj->set_is_standard(mode.is_standard);
             
         
             
@@ -148,7 +92,7 @@ public:
             
         
             
-        obj.standard_mode = translateFromRpcStandardMode(mode.standard_mode());
+        obj.is_standard = mode.is_standard();
             
         
             
@@ -347,39 +291,6 @@ public:
             
         
         auto result = _lazy_plugin.maybe_plugin()->set_mode(request->name());
-        
-
-        
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-        
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SetStandardMode(
-        grpc::ServerContext* /* context */,
-        const rpc::modes::SetStandardModeRequest* request,
-        rpc::modes::SetStandardModeResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
-            if (response != nullptr) {
-                auto result = mavsdk::Modes::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-            
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn("SetStandardMode sent with a null request! Ignoring...");
-            return grpc::Status::OK;
-        }
-            
-        
-        auto result = _lazy_plugin.maybe_plugin()->set_standard_mode(translateFromRpcStandardMode(request->standard_mode()));
         
 
         

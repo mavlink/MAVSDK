@@ -85,10 +85,21 @@ void ModesImpl::unsubscribe_available_modes(Modes::AvailableModesHandle handle)
 std::vector<Modes::Mode> ModesImpl::available_modes() const
 {
     std::lock_guard<std::mutex> lock(_mutex);
-    return _modes;
+    return modes();
 }
 
-Modes::CurrentModeHandle ModesImpl::subscribe_current_mode(const Modes::CurrentModeCallback& callback)
+std::vector<Modes::Mode> ModesImpl::modes() const
+{
+    std::vector<Modes::Mode> modes;
+    modes.reserve(_entries.size());
+    for (const auto& entry : _entries) {
+        modes.push_back(entry.mode);
+    }
+    return modes;
+}
+
+Modes::CurrentModeHandle
+ModesImpl::subscribe_current_mode(const Modes::CurrentModeCallback& callback)
 {
     return _current_mode_callbacks.subscribe(callback);
 }
@@ -106,7 +117,8 @@ Modes::Mode ModesImpl::current_mode() const
 
 void ModesImpl::set_mode_async(const std::string& name, const Modes::ResultCallback& callback)
 {
-    uint32_t custom_mode;
+    ModeEntry entry;
+    Source source;
     {
         std::lock_guard<std::mutex> lock(_mutex);
         if (_source == Source::None) {
@@ -114,17 +126,42 @@ void ModesImpl::set_mode_async(const std::string& name, const Modes::ResultCallb
             return;
         }
 
-        const auto it = std::find_if(_modes.begin(), _modes.end(), [&](const Modes::Mode& mode) {
-            return mode.name == name;
+        const auto it = std::find_if(_entries.begin(), _entries.end(), [&](const ModeEntry& e) {
+            return e.mode.name == name;
         });
-        if (it == _modes.end()) {
+        if (it == _entries.end()) {
             call_result_callback(callback, Modes::Result::ModeNotFound);
             return;
         }
-        custom_mode = it->custom_mode;
+        entry = *it;
+        source = _source;
     }
 
-    set_custom_mode(custom_mode, callback);
+    // An autopilot without AVAILABLE_MODES won't know MAV_CMD_DO_SET_STANDARD_MODE either.
+    if (entry.standard_mode == MAV_STANDARD_MODE_NON_STANDARD || source == Source::Fallback) {
+        set_custom_mode(entry.mode.custom_mode, callback);
+        return;
+    }
+
+    MavlinkCommandSender::CommandLong command{};
+    command.command = MAV_CMD_DO_SET_STANDARD_MODE;
+    command.params.maybe_param1 = static_cast<float>(entry.standard_mode);
+    command.target_component_id = _system_impl->get_autopilot_id();
+
+    _system_impl->send_command_async(
+        command,
+        [this, callback, custom_mode = entry.mode.custom_mode](
+            MavlinkCommandSender::Result result, float) {
+            if (result == MavlinkCommandSender::Result::InProgress) {
+                return;
+            }
+            // The autopilot reports the mode as standard but doesn't implement the command.
+            if (result == MavlinkCommandSender::Result::Unsupported) {
+                set_custom_mode(custom_mode, callback);
+                return;
+            }
+            call_result_callback(callback, result_from_command_result(result));
+        });
 }
 
 Modes::Result ModesImpl::set_mode(const std::string& name)
@@ -133,70 +170,6 @@ Modes::Result ModesImpl::set_mode(const std::string& name)
     auto fut = prom.get_future();
 
     set_mode_async(name, [&prom](Modes::Result result) { prom.set_value(result); });
-
-    return fut.get();
-}
-
-void ModesImpl::set_standard_mode_async(
-    Modes::StandardMode standard_mode, const Modes::ResultCallback& callback)
-{
-    if (standard_mode == Modes::StandardMode::NonStandard) {
-        call_result_callback(callback, Modes::Result::Unsupported);
-        return;
-    }
-
-    std::optional<uint32_t> maybe_custom_mode;
-    Source source;
-    {
-        std::lock_guard<std::mutex> lock(_mutex);
-        source = _source;
-        const auto it = std::find_if(_modes.begin(), _modes.end(), [&](const Modes::Mode& mode) {
-            return mode.standard_mode == standard_mode;
-        });
-        if (it != _modes.end()) {
-            maybe_custom_mode = it->custom_mode;
-        }
-    }
-
-    // An autopilot without AVAILABLE_MODES won't know MAV_CMD_DO_SET_STANDARD_MODE either.
-    if (source == Source::Fallback) {
-        if (maybe_custom_mode) {
-            set_custom_mode(maybe_custom_mode.value(), callback);
-        } else {
-            call_result_callback(callback, Modes::Result::Unsupported);
-        }
-        return;
-    }
-
-    MavlinkCommandSender::CommandLong command{};
-    command.command = MAV_CMD_DO_SET_STANDARD_MODE;
-    command.params.maybe_param1 = static_cast<float>(standard_mode);
-    command.target_component_id = _system_impl->get_autopilot_id();
-
-    _system_impl->send_command_async(
-        command,
-        [this, callback, maybe_custom_mode](MavlinkCommandSender::Result result, float) {
-            if (result == MavlinkCommandSender::Result::InProgress) {
-                return;
-            }
-            // Fall back to the custom mode if the autopilot reports the mode as standard but
-            // doesn't implement the command.
-            if (result == MavlinkCommandSender::Result::Unsupported && maybe_custom_mode) {
-                set_custom_mode(maybe_custom_mode.value(), callback);
-                return;
-            }
-            call_result_callback(callback, result_from_command_result(result));
-        });
-}
-
-Modes::Result ModesImpl::set_standard_mode(Modes::StandardMode standard_mode)
-{
-    auto prom = std::promise<Modes::Result>();
-    auto fut = prom.get_future();
-
-    set_standard_mode_async(standard_mode, [&prom](Modes::Result result) {
-        prom.set_value(result);
-    });
 
     return fut.get();
 }
@@ -275,7 +248,9 @@ void ModesImpl::handle_available_modes_result(
         if (result != MavlinkCommandSender::Result::Success) {
             _downloading = false;
             if (_source == Source::None || _source == Source::Fallback) {
-                LogInfo("AVAILABLE_MODES not supported ({}), using known modes", static_cast<int>(result));
+                LogInfo(
+                    "AVAILABLE_MODES not supported ({}), using known modes",
+                    static_cast<int>(result));
                 use_fallback();
             } else {
                 LogWarn(
@@ -315,23 +290,26 @@ void ModesImpl::handle_available_modes_result(
                 _number_modes = available_modes.number_modes;
                 _maybe_download_seq = available_modes.seq;
 
-                Modes::Mode mode{};
-                mode.standard_mode = standard_mode_from_mavlink(available_modes.standard_mode);
-                if (mode.standard_mode == Modes::StandardMode::NonStandard) {
+                ModeEntry entry{};
+                entry.standard_mode = available_modes.standard_mode;
+                auto& mode = entry.mode;
+                // Standard modes come without a name, so we give them a fixed one. Unknown
+                // standard modes (newer than us) are treated as non-standard.
+                const auto standard_name = modes_standard_mode_name(entry.standard_mode);
+                mode.is_standard = !standard_name.empty();
+                if (mode.is_standard) {
+                    mode.name = standard_name;
+                } else {
                     char name[sizeof(available_modes.mode_name) + 1]{};
                     std::memcpy(name, available_modes.mode_name, sizeof(available_modes.mode_name));
                     mode.name = name;
-                } else {
-                    // Standard modes come without a name, so we give them a fixed one.
-                    mode.name = modes_standard_mode_name(mode.standard_mode);
                 }
                 mode.custom_mode = available_modes.custom_mode;
                 mode.is_user_selectable =
                     (available_modes.properties & MAV_MODE_PROPERTY_NOT_USER_SELECTABLE) == 0;
                 mode.is_advanced = (available_modes.properties & MAV_MODE_PROPERTY_ADVANCED) != 0;
-                mode.is_auto_mode =
-                    (available_modes.properties & MAV_MODE_PROPERTY_AUTO_MODE) != 0;
-                _received_modes[available_modes.mode_index] = mode;
+                mode.is_auto_mode = (available_modes.properties & MAV_MODE_PROPERTY_AUTO_MODE) != 0;
+                _received_modes[available_modes.mode_index] = entry;
             }
         }
     }
@@ -346,19 +324,20 @@ void ModesImpl::finish_download()
     _maybe_last_seq = _maybe_download_seq;
     _source = Source::AvailableModes;
 
-    _modes.clear();
-    for (const auto& [index, mode] : _received_modes) {
+    _entries.clear();
+    for (const auto& [index, entry] : _received_modes) {
         // Skip exact duplicates, they would only show up as "name (1)".
         const bool duplicate =
-            std::any_of(_modes.begin(), _modes.end(), [&](const Modes::Mode& existing) {
-                return existing.custom_mode == mode.custom_mode && existing.name == mode.name;
+            std::any_of(_entries.begin(), _entries.end(), [&](const ModeEntry& existing) {
+                return existing.mode.custom_mode == entry.mode.custom_mode &&
+                       existing.mode.name == entry.mode.name;
             });
         if (!duplicate) {
-            _modes.push_back(mode);
+            _entries.push_back(entry);
         }
     }
     _received_modes.clear();
-    ensure_unique_names(_modes);
+    ensure_unique_names(_entries);
 
     publish_available_modes();
 }
@@ -366,14 +345,14 @@ void ModesImpl::finish_download()
 void ModesImpl::use_fallback()
 {
     _source = Source::Fallback;
-    _modes = modes_fallback(_system_impl->autopilot(), _system_impl->get_vehicle_type());
+    _entries = modes_fallback(_system_impl->autopilot(), _system_impl->get_vehicle_type());
     publish_available_modes();
 }
 
 void ModesImpl::publish_available_modes()
 {
     _available_modes_callbacks.queue(
-        _modes, [this](const auto& func) { _system_impl->call_user_callback(func); });
+        modes(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
     // The current mode might have been unknown until now.
     if (_maybe_custom_mode) {
@@ -407,8 +386,7 @@ void ModesImpl::handle_current_mode(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_mutex);
     _current_mode_received = true;
-    update_current_mode(
-        current_mode.custom_mode, standard_mode_from_mavlink(current_mode.standard_mode));
+    update_current_mode(current_mode.custom_mode, current_mode.standard_mode);
 }
 
 void ModesImpl::handle_heartbeat(const mavlink_message_t& message)
@@ -429,22 +407,22 @@ void ModesImpl::handle_heartbeat(const mavlink_message_t& message)
 }
 
 void ModesImpl::update_current_mode(
-    uint32_t custom_mode, std::optional<Modes::StandardMode> maybe_standard_mode)
+    uint32_t custom_mode, std::optional<uint8_t> maybe_standard_mode)
 {
     _maybe_custom_mode = custom_mode;
     _maybe_standard_mode = maybe_standard_mode;
 
     Modes::Mode new_mode{};
-    const auto it = std::find_if(_modes.begin(), _modes.end(), [&](const Modes::Mode& mode) {
-        return mode.custom_mode == custom_mode;
+    const auto it = std::find_if(_entries.begin(), _entries.end(), [&](const ModeEntry& entry) {
+        return entry.mode.custom_mode == custom_mode;
     });
-    if (it != _modes.end()) {
-        new_mode = *it;
+    if (it != _entries.end()) {
+        new_mode = it->mode;
     } else {
         // Not in the list (yet), so all we know is what we were told.
         new_mode.custom_mode = custom_mode;
-        new_mode.standard_mode = maybe_standard_mode.value_or(Modes::StandardMode::NonStandard);
-        new_mode.name = modes_standard_mode_name(new_mode.standard_mode);
+        new_mode.name = modes_standard_mode_name(maybe_standard_mode.value_or(0));
+        new_mode.is_standard = !new_mode.name.empty();
     }
 
     if (new_mode == _current_mode) {
@@ -488,39 +466,15 @@ Modes::Result ModesImpl::result_from_command_result(MavlinkCommandSender::Result
     }
 }
 
-Modes::StandardMode ModesImpl::standard_mode_from_mavlink(uint8_t standard_mode)
-{
-    switch (standard_mode) {
-        case MAV_STANDARD_MODE_POSITION_HOLD:
-            return Modes::StandardMode::PositionHold;
-        case MAV_STANDARD_MODE_ORBIT:
-            return Modes::StandardMode::Orbit;
-        case MAV_STANDARD_MODE_CRUISE:
-            return Modes::StandardMode::Cruise;
-        case MAV_STANDARD_MODE_ALTITUDE_HOLD:
-            return Modes::StandardMode::AltitudeHold;
-        case MAV_STANDARD_MODE_SAFE_RECOVERY:
-            return Modes::StandardMode::SafeRecovery;
-        case MAV_STANDARD_MODE_MISSION:
-            return Modes::StandardMode::Mission;
-        case MAV_STANDARD_MODE_LAND:
-            return Modes::StandardMode::Land;
-        case MAV_STANDARD_MODE_TAKEOFF:
-            return Modes::StandardMode::Takeoff;
-        default:
-            return Modes::StandardMode::NonStandard;
-    }
-}
-
-void ModesImpl::ensure_unique_names(std::vector<Modes::Mode>& modes)
+void ModesImpl::ensure_unique_names(std::vector<ModeEntry>& entries)
 {
     // Names are what users select modes by, so they need to be unique. Same scheme as
     // QGroundControl: append " (1)", " (2)", ... to later duplicates.
-    for (auto it = modes.begin(); it != modes.end(); ++it) {
+    for (auto it = entries.begin(); it != entries.end(); ++it) {
         unsigned duplicate_index = 0;
-        for (auto it2 = std::next(it); it2 != modes.end(); ++it2) {
-            if (it2->name == it->name) {
-                it2->name += " (" + std::to_string(++duplicate_index) + ")";
+        for (auto it2 = std::next(it); it2 != entries.end(); ++it2) {
+            if (it2->mode.name == it->mode.name) {
+                it2->mode.name += " (" + std::to_string(++duplicate_index) + ")";
             }
         }
     }

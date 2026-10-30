@@ -9,14 +9,14 @@ Discover and set flight modes at runtime.
  implement it, a list of known modes is used as a fallback.
 
  Modes are identified by name. Standard modes have a fixed name, e.g.
- "Position" or "Mission", custom modes use the name reported by the vehicle.
+ "Position" or "Mission", other modes use the name reported by the vehicle.
+ Setting a mode works the same way for both.
 """
 
 from .modes import ModesAsync
 
 from mavsdk.plugins.modes import (
     Modes,
-    StandardMode,
     ModesResult,
     ModesError,
     Mode,
@@ -25,7 +25,6 @@ from mavsdk.plugins.modes import (
 __all__ = [
     "ModesAsync",
     "Modes",
-    "StandardMode",
     "ModesResult",
     "ModesError",
     "Mode",

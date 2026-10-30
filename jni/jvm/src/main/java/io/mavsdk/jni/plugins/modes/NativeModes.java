@@ -16,7 +16,7 @@ public final class NativeModes {
 
     public static final class Mode {
         public final String name;
-        public final int standardMode;
+        public final boolean isStandard;
         public final int customMode;
         public final boolean isUserSelectable;
         public final boolean isAdvanced;
@@ -24,14 +24,14 @@ public final class NativeModes {
 
         public Mode(
             String name,
-            int standardMode,
+            boolean isStandard,
             int customMode,
             boolean isUserSelectable,
             boolean isAdvanced,
             boolean isAutoMode
         ) {
             this.name = name;
-            this.standardMode = standardMode;
+            this.isStandard = isStandard;
             this.customMode = customMode;
             this.isUserSelectable = isUserSelectable;
             this.isAdvanced = isAdvanced;
@@ -54,11 +54,6 @@ public final class NativeModes {
         void invoke(int result);
     }
 
-    @FunctionalInterface
-    public interface SetStandardModeCallback {
-        void invoke(int result);
-    }
-
     public static native long create(long systemHandle);
 
     public static native void destroy(long pluginHandle);
@@ -78,9 +73,5 @@ public final class NativeModes {
     public static native int setMode(long pluginHandle, String name);
 
     public static native void setModeAsync(long pluginHandle, String name, SetModeCallback callback);
-
-    public static native int setStandardMode(long pluginHandle, int standardMode);
-
-    public static native void setStandardModeAsync(long pluginHandle, int standardMode, SetStandardModeCallback callback);
 
 }

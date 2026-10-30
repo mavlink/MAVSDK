@@ -19,7 +19,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
  * used as a fallback.
  *
  * Modes are identified by name. Standard modes have a fixed name, e.g. "Position" or "Mission",
- * custom modes use the name reported by the vehicle.
+ * other modes use the name reported by the vehicle. Setting a mode works the same way for both.
  */
 class Modes internal constructor(private val native: ModesNative) {
     private var closed = false
@@ -55,41 +55,11 @@ class Modes internal constructor(private val native: ModesNative) {
     }
 
     /**
-     * Standard mode.
-     *
-     * See https://mavlink.io/en/messages/common.html#MAV_STANDARD_MODE
-     */
-    enum class StandardMode(val value: Int) {
-        /** Non-standard mode, specific to the autopilot */
-        NON_STANDARD(0),
-        /** Position hold, named "Position" */
-        POSITION_HOLD(1),
-        /** Orbit, named "Orbit" */
-        ORBIT(2),
-        /** Cruise, named "Cruise" */
-        CRUISE(3),
-        /** Altitude hold, named "Altitude" */
-        ALTITUDE_HOLD(4),
-        /** Safe recovery such as return to launch, named "Safe Recovery" */
-        SAFE_RECOVERY(5),
-        /** Mission, named "Mission" */
-        MISSION(6),
-        /** Land, named "Land" */
-        LAND(7),
-        /** Takeoff, named "Takeoff" */
-        TAKEOFF(8);
-
-        companion object {
-            fun fromValue(value: Int): StandardMode =
-                entries.find { it.value == value } ?: entries.first()
-        }
-    }
-
-    /**
      * Mode type.
      *
      * @property name Name of the mode, e.g. "Position" or "Stabilize"
-     * @property standardMode Standard mode, or non-standard for custom modes
+     * @property isStandard True if this is a MAVLink standard mode, e.g. "Position", "Safe
+     *   Recovery" or "Mission"
      * @property customMode Autopilot specific custom mode
      * @property isUserSelectable True if the mode can be set by the user
      * @property isAdvanced True if the mode is for advanced users only
@@ -97,7 +67,7 @@ class Modes internal constructor(private val native: ModesNative) {
      */
     data class Mode(
         val name: String,
-        val standardMode: StandardMode,
+        val isStandard: Boolean,
         val customMode: Int,
         val isUserSelectable: Boolean,
         val isAdvanced: Boolean,
@@ -160,23 +130,6 @@ class Modes internal constructor(private val native: ModesNative) {
         }
     }
 
-    /**
-     * Set a standard mode.
-     *
-     * @param standardMode Standard mode to set
-     * @return The result of the request.
-     */
-    suspend fun setStandardMode(standardMode: StandardMode): Result =
-        suspendCancellableCoroutine { continuation ->
-            val callbackGuard = ModesCallbackGuard()
-            native.setStandardModeAsync(standardMode) { result ->
-                val parsedResult = Result.fromValue(result)
-                if (continuation.isActive && true && callbackGuard.tryClaim()) {
-                    continuation.resume(parsedResult)
-                }
-            }
-        }
-
     internal fun destroy() {
         if (closed) return
         closed = true
@@ -200,8 +153,6 @@ internal interface ModesNative {
     fun unsubscribeCurrentMode(subscriptionHandle: Long)
 
     fun setModeAsync(name: String, callback: (Int) -> Unit)
-
-    fun setStandardModeAsync(standardMode: Modes.StandardMode, callback: (Int) -> Unit)
 
     fun destroy()
 }

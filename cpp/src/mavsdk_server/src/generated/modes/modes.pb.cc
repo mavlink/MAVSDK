@@ -64,31 +64,6 @@ struct SubscribeAvailableModesRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeAvailableModesRequestDefaultTypeInternal _SubscribeAvailableModesRequest_default_instance_;
 
-inline constexpr SetStandardModeRequest::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : standard_mode_{static_cast< ::mavsdk::rpc::modes::StandardMode >(0)},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetStandardModeRequest::SetStandardModeRequest(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct SetStandardModeRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetStandardModeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetStandardModeRequestDefaultTypeInternal() {}
-  union {
-    SetStandardModeRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetStandardModeRequestDefaultTypeInternal _SetStandardModeRequest_default_instance_;
-
 inline constexpr SetModeRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : name_(
@@ -149,8 +124,8 @@ inline constexpr Mode::Impl_::Impl_(
       : name_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        standard_mode_{static_cast< ::mavsdk::rpc::modes::StandardMode >(0)},
         custom_mode_{0u},
+        is_standard_{false},
         is_user_selectable_{false},
         is_advanced_{false},
         is_auto_mode_{false},
@@ -175,31 +150,6 @@ struct ModeDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ModeDefaultTypeInternal _Mode_default_instance_;
-
-inline constexpr SetStandardModeResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        modes_result_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetStandardModeResponse::SetStandardModeResponse(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct SetStandardModeResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetStandardModeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetStandardModeResponseDefaultTypeInternal() {}
-  union {
-    SetStandardModeResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetStandardModeResponseDefaultTypeInternal _SetStandardModeResponse_default_instance_;
 
 inline constexpr SetModeResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -278,7 +228,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace modes
 }  // namespace rpc
 }  // namespace mavsdk
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_modes_2fmodes_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_modes_2fmodes_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_modes_2fmodes_2eproto = nullptr;
 const ::uint32_t
@@ -339,25 +289,6 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::SetModeResponse, _impl_.modes_result_),
         0,
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::SetStandardModeRequest, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::SetStandardModeRequest, _impl_.standard_mode_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::SetStandardModeResponse, _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::SetStandardModeResponse, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::SetStandardModeResponse, _impl_.modes_result_),
-        0,
-        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -366,7 +297,7 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.name_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.standard_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.is_standard_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.custom_mode_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.is_user_selectable_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes::Mode, _impl_.is_advanced_),
@@ -391,10 +322,8 @@ static const ::_pbi::MigrationSchema
         {25, 34, -1, sizeof(::mavsdk::rpc::modes::CurrentModeResponse)},
         {35, -1, -1, sizeof(::mavsdk::rpc::modes::SetModeRequest)},
         {44, 53, -1, sizeof(::mavsdk::rpc::modes::SetModeResponse)},
-        {54, -1, -1, sizeof(::mavsdk::rpc::modes::SetStandardModeRequest)},
-        {63, 72, -1, sizeof(::mavsdk::rpc::modes::SetStandardModeResponse)},
-        {73, -1, -1, sizeof(::mavsdk::rpc::modes::Mode)},
-        {87, -1, -1, sizeof(::mavsdk::rpc::modes::ModesResult)},
+        {54, -1, -1, sizeof(::mavsdk::rpc::modes::Mode)},
+        {68, -1, -1, sizeof(::mavsdk::rpc::modes::ModesResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::modes::_SubscribeAvailableModesRequest_default_instance_._instance,
@@ -403,8 +332,6 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::modes::_CurrentModeResponse_default_instance_._instance,
     &::mavsdk::rpc::modes::_SetModeRequest_default_instance_._instance,
     &::mavsdk::rpc::modes::_SetModeResponse_default_instance_._instance,
-    &::mavsdk::rpc::modes::_SetStandardModeRequest_default_instance_._instance,
-    &::mavsdk::rpc::modes::_SetStandardModeResponse_default_instance_._instance,
     &::mavsdk::rpc::modes::_Mode_default_instance_._instance,
     &::mavsdk::rpc::modes::_ModesResult_default_instance_._instance,
 };
@@ -418,55 +345,40 @@ const char descriptor_table_protodef_modes_2fmodes_2eproto[] ABSL_ATTRIBUTE_SECT
     " \001(\0132\026.mavsdk.rpc.modes.Mode\"\036\n\016SetModeR"
     "equest\022\014\n\004name\030\001 \001(\t\"F\n\017SetModeResponse\022"
     "3\n\014modes_result\030\001 \001(\0132\035.mavsdk.rpc.modes"
-    ".ModesResult\"O\n\026SetStandardModeRequest\0225"
-    "\n\rstandard_mode\030\001 \001(\0162\036.mavsdk.rpc.modes"
-    ".StandardMode\"N\n\027SetStandardModeResponse"
-    "\0223\n\014modes_result\030\001 \001(\0132\035.mavsdk.rpc.mode"
-    "s.ModesResult\"\247\001\n\004Mode\022\014\n\004name\030\001 \001(\t\0225\n\r"
-    "standard_mode\030\002 \001(\0162\036.mavsdk.rpc.modes.S"
-    "tandardMode\022\023\n\013custom_mode\030\003 \001(\r\022\032\n\022is_u"
-    "ser_selectable\030\004 \001(\010\022\023\n\013is_advanced\030\005 \001("
-    "\010\022\024\n\014is_auto_mode\030\006 \001(\010\"\333\002\n\013ModesResult\022"
-    "4\n\006result\030\001 \001(\0162$.mavsdk.rpc.modes.Modes"
-    "Result.Result\022\022\n\nresult_str\030\002 \001(\t\"\201\002\n\006Re"
-    "sult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCE"
-    "SS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CON"
-    "NECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\021\n\rRESU"
-    "LT_DENIED\020\005\022\026\n\022RESULT_UNSUPPORTED\020\006\022\022\n\016R"
-    "ESULT_TIMEOUT\020\007\022\021\n\rRESULT_FAILED\020\010\022\031\n\025RE"
-    "SULT_MODE_NOT_FOUND\020\t\022\036\n\032RESULT_MODES_NO"
-    "T_KNOWN_YET\020\n*\222\002\n\014StandardMode\022\036\n\032STANDA"
-    "RD_MODE_NON_STANDARD\020\000\022\037\n\033STANDARD_MODE_"
-    "POSITION_HOLD\020\001\022\027\n\023STANDARD_MODE_ORBIT\020\002"
-    "\022\030\n\024STANDARD_MODE_CRUISE\020\003\022\037\n\033STANDARD_M"
-    "ODE_ALTITUDE_HOLD\020\004\022\037\n\033STANDARD_MODE_SAF"
-    "E_RECOVERY\020\005\022\031\n\025STANDARD_MODE_MISSION\020\006\022"
-    "\026\n\022STANDARD_MODE_LAND\020\007\022\031\n\025STANDARD_MODE"
-    "_TAKEOFF\020\0102\267\003\n\014ModesService\022y\n\027Subscribe"
-    "AvailableModes\0220.mavsdk.rpc.modes.Subscr"
-    "ibeAvailableModesRequest\032(.mavsdk.rpc.mo"
-    "des.AvailableModesResponse\"\0000\001\022p\n\024Subscr"
-    "ibeCurrentMode\022-.mavsdk.rpc.modes.Subscr"
-    "ibeCurrentModeRequest\032%.mavsdk.rpc.modes"
-    ".CurrentModeResponse\"\0000\001\022P\n\007SetMode\022 .ma"
-    "vsdk.rpc.modes.SetModeRequest\032!.mavsdk.r"
-    "pc.modes.SetModeResponse\"\000\022h\n\017SetStandar"
-    "dMode\022(.mavsdk.rpc.modes.SetStandardMode"
-    "Request\032).mavsdk.rpc.modes.SetStandardMo"
-    "deResponse\"\000B\035\n\017io.mavsdk.modesB\nModesPr"
-    "otob\006proto3"
+    ".ModesResult\"\205\001\n\004Mode\022\014\n\004name\030\001 \001(\t\022\023\n\013i"
+    "s_standard\030\002 \001(\010\022\023\n\013custom_mode\030\003 \001(\r\022\032\n"
+    "\022is_user_selectable\030\004 \001(\010\022\023\n\013is_advanced"
+    "\030\005 \001(\010\022\024\n\014is_auto_mode\030\006 \001(\010\"\333\002\n\013ModesRe"
+    "sult\0224\n\006result\030\001 \001(\0162$.mavsdk.rpc.modes."
+    "ModesResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\201"
+    "\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_"
+    "SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESUL"
+    "T_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\021\n"
+    "\rRESULT_DENIED\020\005\022\026\n\022RESULT_UNSUPPORTED\020\006"
+    "\022\022\n\016RESULT_TIMEOUT\020\007\022\021\n\rRESULT_FAILED\020\010\022"
+    "\031\n\025RESULT_MODE_NOT_FOUND\020\t\022\036\n\032RESULT_MOD"
+    "ES_NOT_KNOWN_YET\020\n2\315\002\n\014ModesService\022y\n\027S"
+    "ubscribeAvailableModes\0220.mavsdk.rpc.mode"
+    "s.SubscribeAvailableModesRequest\032(.mavsd"
+    "k.rpc.modes.AvailableModesResponse\"\0000\001\022p"
+    "\n\024SubscribeCurrentMode\022-.mavsdk.rpc.mode"
+    "s.SubscribeCurrentModeRequest\032%.mavsdk.r"
+    "pc.modes.CurrentModeResponse\"\0000\001\022P\n\007SetM"
+    "ode\022 .mavsdk.rpc.modes.SetModeRequest\032!."
+    "mavsdk.rpc.modes.SetModeResponse\"\000B\035\n\017io"
+    ".mavsdk.modesB\nModesProtob\006proto3"
 };
 static ::absl::once_flag descriptor_table_modes_2fmodes_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_modes_2fmodes_2eproto = {
     false,
     false,
-    1771,
+    1193,
     descriptor_table_protodef_modes_2fmodes_2eproto,
     "modes/modes.proto",
     &descriptor_table_modes_2fmodes_2eproto_once,
     nullptr,
     0,
-    10,
+    8,
     schemas,
     file_default_instances,
     TableStruct_modes_2fmodes_2eproto::offsets,
@@ -505,15 +417,6 @@ constexpr int ModesResult::Result_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::google::protobuf::EnumDescriptor* StandardMode_descriptor() {
-  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_modes_2fmodes_2eproto);
-  return file_level_enum_descriptors_modes_2fmodes_2eproto[1];
-}
-PROTOBUF_CONSTINIT const uint32_t StandardMode_internal_data_[] = {
-    589824u, 0u, };
-bool StandardMode_IsValid(int value) {
-  return 0 <= value && value <= 8;
-}
 // ===================================================================
 
 class SubscribeAvailableModesRequest::_Internal {
@@ -1695,463 +1598,6 @@ void SetModeResponse::InternalSwap(SetModeResponse* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
-class SetStandardModeRequest::_Internal {
- public:
-};
-
-SetStandardModeRequest::SetStandardModeRequest(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.modes.SetStandardModeRequest)
-}
-SetStandardModeRequest::SetStandardModeRequest(
-    ::google::protobuf::Arena* arena, const SetStandardModeRequest& from)
-    : SetStandardModeRequest(arena) {
-  MergeFrom(from);
-}
-inline PROTOBUF_NDEBUG_INLINE SetStandardModeRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void SetStandardModeRequest::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.standard_mode_ = {};
-}
-SetStandardModeRequest::~SetStandardModeRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.modes.SetStandardModeRequest)
-  SharedDtor(*this);
-}
-inline void SetStandardModeRequest::SharedDtor(MessageLite& self) {
-  SetStandardModeRequest& this_ = static_cast<SetStandardModeRequest&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.~Impl_();
-}
-
-inline void* SetStandardModeRequest::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) SetStandardModeRequest(arena);
-}
-constexpr auto SetStandardModeRequest::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetStandardModeRequest),
-                                            alignof(SetStandardModeRequest));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull SetStandardModeRequest::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_SetStandardModeRequest_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &SetStandardModeRequest::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<SetStandardModeRequest>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &SetStandardModeRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetStandardModeRequest>(), &SetStandardModeRequest::ByteSizeLong,
-            &SetStandardModeRequest::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(SetStandardModeRequest, _impl_._cached_size_),
-        false,
-    },
-    &SetStandardModeRequest::kDescriptorMethods,
-    &descriptor_table_modes_2fmodes_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* SetStandardModeRequest::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 0, 2> SetStandardModeRequest::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::mavsdk::rpc::modes::SetStandardModeRequest>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // .mavsdk.rpc.modes.StandardMode standard_mode = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetStandardModeRequest, _impl_.standard_mode_), 63>(),
-     {8, 63, 0, PROTOBUF_FIELD_OFFSET(SetStandardModeRequest, _impl_.standard_mode_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.modes.StandardMode standard_mode = 1;
-    {PROTOBUF_FIELD_OFFSET(SetStandardModeRequest, _impl_.standard_mode_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-  }},
-  // no aux_entries
-  {{
-  }},
-};
-
-PROTOBUF_NOINLINE void SetStandardModeRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.modes.SetStandardModeRequest)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.standard_mode_ = 0;
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* SetStandardModeRequest::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const SetStandardModeRequest& this_ = static_cast<const SetStandardModeRequest&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* SetStandardModeRequest::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const SetStandardModeRequest& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.modes.SetStandardModeRequest)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // .mavsdk.rpc.modes.StandardMode standard_mode = 1;
-          if (this_._internal_standard_mode() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteEnumToArray(
-                1, this_._internal_standard_mode(), target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.modes.SetStandardModeRequest)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t SetStandardModeRequest::ByteSizeLong(const MessageLite& base) {
-          const SetStandardModeRequest& this_ = static_cast<const SetStandardModeRequest&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t SetStandardModeRequest::ByteSizeLong() const {
-          const SetStandardModeRequest& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.modes.SetStandardModeRequest)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // .mavsdk.rpc.modes.StandardMode standard_mode = 1;
-            if (this_._internal_standard_mode() != 0) {
-              total_size += 1 +
-                            ::_pbi::WireFormatLite::EnumSize(this_._internal_standard_mode());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void SetStandardModeRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<SetStandardModeRequest*>(&to_msg);
-  auto& from = static_cast<const SetStandardModeRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.modes.SetStandardModeRequest)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from._internal_standard_mode() != 0) {
-    _this->_impl_.standard_mode_ = from._impl_.standard_mode_;
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetStandardModeRequest::CopyFrom(const SetStandardModeRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.modes.SetStandardModeRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void SetStandardModeRequest::InternalSwap(SetStandardModeRequest* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.standard_mode_, other->_impl_.standard_mode_);
-}
-
-::google::protobuf::Metadata SetStandardModeRequest::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class SetStandardModeResponse::_Internal {
- public:
-  using HasBits =
-      decltype(std::declval<SetStandardModeResponse>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(SetStandardModeResponse, _impl_._has_bits_);
-};
-
-SetStandardModeResponse::SetStandardModeResponse(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.modes.SetStandardModeResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE SetStandardModeResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::mavsdk::rpc::modes::SetStandardModeResponse& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-SetStandardModeResponse::SetStandardModeResponse(
-    ::google::protobuf::Arena* arena,
-    const SetStandardModeResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SetStandardModeResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.modes_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::modes::ModesResult>(
-                              arena, *from._impl_.modes_result_)
-                        : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.modes.SetStandardModeResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE SetStandardModeResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void SetStandardModeResponse::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.modes_result_ = {};
-}
-SetStandardModeResponse::~SetStandardModeResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.modes.SetStandardModeResponse)
-  SharedDtor(*this);
-}
-inline void SetStandardModeResponse::SharedDtor(MessageLite& self) {
-  SetStandardModeResponse& this_ = static_cast<SetStandardModeResponse&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  delete this_._impl_.modes_result_;
-  this_._impl_.~Impl_();
-}
-
-inline void* SetStandardModeResponse::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) SetStandardModeResponse(arena);
-}
-constexpr auto SetStandardModeResponse::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetStandardModeResponse),
-                                            alignof(SetStandardModeResponse));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull SetStandardModeResponse::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_SetStandardModeResponse_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &SetStandardModeResponse::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<SetStandardModeResponse>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &SetStandardModeResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetStandardModeResponse>(), &SetStandardModeResponse::ByteSizeLong,
-            &SetStandardModeResponse::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(SetStandardModeResponse, _impl_._cached_size_),
-        false,
-    },
-    &SetStandardModeResponse::kDescriptorMethods,
-    &descriptor_table_modes_2fmodes_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* SetStandardModeResponse::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetStandardModeResponse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(SetStandardModeResponse, _impl_._has_bits_),
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::mavsdk::rpc::modes::SetStandardModeResponse>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // .mavsdk.rpc.modes.ModesResult modes_result = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetStandardModeResponse, _impl_.modes_result_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.modes.ModesResult modes_result = 1;
-    {PROTOBUF_FIELD_OFFSET(SetStandardModeResponse, _impl_.modes_result_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::modes::ModesResult>()},
-  }}, {{
-  }},
-};
-
-PROTOBUF_NOINLINE void SetStandardModeResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.modes.SetStandardModeResponse)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.modes_result_ != nullptr);
-    _impl_.modes_result_->Clear();
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* SetStandardModeResponse::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const SetStandardModeResponse& this_ = static_cast<const SetStandardModeResponse&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* SetStandardModeResponse::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const SetStandardModeResponse& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.modes.SetStandardModeResponse)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          cached_has_bits = this_._impl_._has_bits_[0];
-          // .mavsdk.rpc.modes.ModesResult modes_result = 1;
-          if (cached_has_bits & 0x00000001u) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                1, *this_._impl_.modes_result_, this_._impl_.modes_result_->GetCachedSize(), target,
-                stream);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.modes.SetStandardModeResponse)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t SetStandardModeResponse::ByteSizeLong(const MessageLite& base) {
-          const SetStandardModeResponse& this_ = static_cast<const SetStandardModeResponse&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t SetStandardModeResponse::ByteSizeLong() const {
-          const SetStandardModeResponse& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.modes.SetStandardModeResponse)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // .mavsdk.rpc.modes.ModesResult modes_result = 1;
-            cached_has_bits = this_._impl_._has_bits_[0];
-            if (cached_has_bits & 0x00000001u) {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.modes_result_);
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void SetStandardModeResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<SetStandardModeResponse*>(&to_msg);
-  auto& from = static_cast<const SetStandardModeResponse&>(from_msg);
-  ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.modes.SetStandardModeResponse)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(from._impl_.modes_result_ != nullptr);
-    if (_this->_impl_.modes_result_ == nullptr) {
-      _this->_impl_.modes_result_ =
-          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::modes::ModesResult>(arena, *from._impl_.modes_result_);
-    } else {
-      _this->_impl_.modes_result_->MergeFrom(*from._impl_.modes_result_);
-    }
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetStandardModeResponse::CopyFrom(const SetStandardModeResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.modes.SetStandardModeResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void SetStandardModeResponse::InternalSwap(SetStandardModeResponse* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.modes_result_, other->_impl_.modes_result_);
-}
-
-::google::protobuf::Metadata SetStandardModeResponse::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
 class Mode::_Internal {
  public:
 };
@@ -2185,11 +1631,11 @@ Mode::Mode(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
   ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, standard_mode_),
+               offsetof(Impl_, custom_mode_),
            reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, standard_mode_),
+               offsetof(Impl_, custom_mode_),
            offsetof(Impl_, is_auto_mode_) -
-               offsetof(Impl_, standard_mode_) +
+               offsetof(Impl_, custom_mode_) +
                sizeof(Impl_::is_auto_mode_));
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.modes.Mode)
@@ -2203,10 +1649,10 @@ inline PROTOBUF_NDEBUG_INLINE Mode::Impl_::Impl_(
 inline void Mode::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, standard_mode_),
+               offsetof(Impl_, custom_mode_),
            0,
            offsetof(Impl_, is_auto_mode_) -
-               offsetof(Impl_, standard_mode_) +
+               offsetof(Impl_, custom_mode_) +
                sizeof(Impl_::is_auto_mode_));
 }
 Mode::~Mode() {
@@ -2279,9 +1725,9 @@ const ::_pbi::TcParseTable<3, 6, 0, 34, 2> Mode::_table_ = {
     // string name = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.name_)}},
-    // .mavsdk.rpc.modes.StandardMode standard_mode = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Mode, _impl_.standard_mode_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.standard_mode_)}},
+    // bool is_standard = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(Mode, _impl_.is_standard_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_standard_)}},
     // uint32 custom_mode = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Mode, _impl_.custom_mode_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(Mode, _impl_.custom_mode_)}},
@@ -2301,9 +1747,9 @@ const ::_pbi::TcParseTable<3, 6, 0, 34, 2> Mode::_table_ = {
     // string name = 1;
     {PROTOBUF_FIELD_OFFSET(Mode, _impl_.name_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // .mavsdk.rpc.modes.StandardMode standard_mode = 2;
-    {PROTOBUF_FIELD_OFFSET(Mode, _impl_.standard_mode_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // bool is_standard = 2;
+    {PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_standard_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // uint32 custom_mode = 3;
     {PROTOBUF_FIELD_OFFSET(Mode, _impl_.custom_mode_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
@@ -2333,9 +1779,9 @@ PROTOBUF_NOINLINE void Mode::Clear() {
   (void) cached_has_bits;
 
   _impl_.name_.ClearToEmpty();
-  ::memset(&_impl_.standard_mode_, 0, static_cast<::size_t>(
+  ::memset(&_impl_.custom_mode_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.is_auto_mode_) -
-      reinterpret_cast<char*>(&_impl_.standard_mode_)) + sizeof(_impl_.is_auto_mode_));
+      reinterpret_cast<char*>(&_impl_.custom_mode_)) + sizeof(_impl_.is_auto_mode_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2362,11 +1808,11 @@ PROTOBUF_NOINLINE void Mode::Clear() {
             target = stream->WriteStringMaybeAliased(1, _s, target);
           }
 
-          // .mavsdk.rpc.modes.StandardMode standard_mode = 2;
-          if (this_._internal_standard_mode() != 0) {
+          // bool is_standard = 2;
+          if (this_._internal_is_standard() != 0) {
             target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteEnumToArray(
-                2, this_._internal_standard_mode(), target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                2, this_._internal_is_standard(), target);
           }
 
           // uint32 custom_mode = 3;
@@ -2427,15 +1873,14 @@ PROTOBUF_NOINLINE void Mode::Clear() {
               total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                               this_._internal_name());
             }
-            // .mavsdk.rpc.modes.StandardMode standard_mode = 2;
-            if (this_._internal_standard_mode() != 0) {
-              total_size += 1 +
-                            ::_pbi::WireFormatLite::EnumSize(this_._internal_standard_mode());
-            }
             // uint32 custom_mode = 3;
             if (this_._internal_custom_mode() != 0) {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
                   this_._internal_custom_mode());
+            }
+            // bool is_standard = 2;
+            if (this_._internal_is_standard() != 0) {
+              total_size += 2;
             }
             // bool is_user_selectable = 4;
             if (this_._internal_is_user_selectable() != 0) {
@@ -2465,11 +1910,11 @@ void Mode::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::pr
   if (!from._internal_name().empty()) {
     _this->_internal_set_name(from._internal_name());
   }
-  if (from._internal_standard_mode() != 0) {
-    _this->_impl_.standard_mode_ = from._impl_.standard_mode_;
-  }
   if (from._internal_custom_mode() != 0) {
     _this->_impl_.custom_mode_ = from._impl_.custom_mode_;
+  }
+  if (from._internal_is_standard() != 0) {
+    _this->_impl_.is_standard_ = from._impl_.is_standard_;
   }
   if (from._internal_is_user_selectable() != 0) {
     _this->_impl_.is_user_selectable_ = from._impl_.is_user_selectable_;
@@ -2500,9 +1945,9 @@ void Mode::InternalSwap(Mode* PROTOBUF_RESTRICT other) {
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Mode, _impl_.is_auto_mode_)
       + sizeof(Mode::_impl_.is_auto_mode_)
-      - PROTOBUF_FIELD_OFFSET(Mode, _impl_.standard_mode_)>(
-          reinterpret_cast<char*>(&_impl_.standard_mode_),
-          reinterpret_cast<char*>(&other->_impl_.standard_mode_));
+      - PROTOBUF_FIELD_OFFSET(Mode, _impl_.custom_mode_)>(
+          reinterpret_cast<char*>(&_impl_.custom_mode_),
+          reinterpret_cast<char*>(&other->_impl_.custom_mode_));
 }
 
 ::google::protobuf::Metadata Mode::GetMetadata() const {
