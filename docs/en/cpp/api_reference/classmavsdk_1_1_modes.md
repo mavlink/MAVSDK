@@ -41,7 +41,7 @@ Type | Name | Description
 &nbsp; | [Modes](#classmavsdk_1_1_modes_1a14e2bd6010e5b7c25470f4aea74f28dc) (const Modes & other) | Copy constructor.
 [AvailableModesHandle](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a2dd3e0a89d40f91253d2aa50f822ded1) | [subscribe_available_modes](#classmavsdk_1_1_modes_1a2e5140a6487f05df7df167db67bb67b8) (const [AvailableModesCallback](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a72459eb3770c061df9091171724de0fc) & callback) | Subscribe to the list of available modes.
 void | [unsubscribe_available_modes](#classmavsdk_1_1_modes_1a85b53fe77fb6eeac7653a3656e72fa31) ([AvailableModesHandle](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a2dd3e0a89d40f91253d2aa50f822ded1) handle) | Unsubscribe from subscribe_available_modes.
-std::vector< [Mode](structmavsdk_1_1_modes_1_1_mode.md) > | [available_modes](#classmavsdk_1_1_modes_1a526cfdd4da5e3525a835cb84c51d78c9) () const | Poll for 'std::vector<Mode>' (blocking).
+std::vector< [Mode](structmavsdk_1_1_modes_1_1_mode.md) > | [available_modes](#classmavsdk_1_1_modes_1a526cfdd4da5e3525a835cb84c51d78c9) () const | Poll for the list of '[Mode](structmavsdk_1_1_modes_1_1_mode.md)' (blocking).
 [CurrentModeHandle](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a30444308c870abdc0d504510e13c01f1) | [subscribe_current_mode](#classmavsdk_1_1_modes_1aac542b8cc01d0b9f80d6af64c3ea99fb) (const [CurrentModeCallback](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a78e6a9114493f8a2529aa2e78c209700) & callback) | Subscribe to the current mode.
 void | [unsubscribe_current_mode](#classmavsdk_1_1_modes_1af953a21419fb1c60f873df86908b5d4d) ([CurrentModeHandle](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a30444308c870abdc0d504510e13c01f1) handle) | Unsubscribe from subscribe_current_mode.
 [Mode](structmavsdk_1_1_modes_1_1_mode.md) | [current_mode](#classmavsdk_1_1_modes_1a1c1f29355c56a24b37434ad2c5908135) () const | Poll for '[Mode](structmavsdk_1_1_modes_1_1_mode.md)' (blocking).
@@ -227,12 +227,12 @@ std::vector< Mode > mavsdk::Modes::available_modes() const
 ```
 
 
-Poll for 'std::vector<Mode>' (blocking).
+Poll for the list of '[Mode](structmavsdk_1_1_modes_1_1_mode.md)' (blocking).
 
 
 **Returns**
 
-&emsp;std::vector< [Mode](structmavsdk_1_1_modes_1_1_mode.md) > - One std::vector<Mode> update.
+&emsp;std::vector< [Mode](structmavsdk_1_1_modes_1_1_mode.md) > - The current list of [Mode](structmavsdk_1_1_modes_1_1_mode.md).
 
 ### subscribe_current_mode() {#classmavsdk_1_1_modes_1aac542b8cc01d0b9f80d6af64c3ea99fb}
 ```cpp
