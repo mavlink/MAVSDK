@@ -126,6 +126,9 @@ void MavlinkRequestMessage::send_request_using_new_command(WorkItem& item)
     command_request_message.target_system_id = _system_impl.get_system_id();
     command_request_message.target_component_id = item.target_component;
     command_request_message.params.maybe_param1 = {static_cast<float>(item.message_id)};
+    // Message specific, e.g. the mode index for AVAILABLE_MODES or the sequence number for
+    // CAMERA_IMAGE_CAPTURED.
+    command_request_message.params.maybe_param2 = {static_cast<float>(item.param2)};
     _command_sender.queue_command_async(
         command_request_message,
         [this, id = item.id, attempt = item.retries](MavlinkCommandSender::Result result, float) {
