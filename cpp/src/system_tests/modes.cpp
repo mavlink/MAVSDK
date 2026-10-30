@@ -1,6 +1,8 @@
 #include "log.hpp"
 #include "mavsdk.hpp"
+#include "plugins/action_server/action_server.hpp"
 #include "plugins/modes/modes.hpp"
+#include "plugins/modes_server/modes_server.hpp"
 #include "plugins/mavlink_direct_server/mavlink_direct_server.hpp"
 #include <algorithm>
 #include <chrono>
@@ -511,4 +513,185 @@ TEST(SystemTest, ModesFallback)
     ASSERT_TRUE(command);
     EXPECT_EQ(static_cast<int>((*command)["param2"].get<float>()), 4); // AUTO
     EXPECT_EQ(static_cast<int>((*command)["param3"].get<float>()), 5); // RTL
+}
+
+namespace {
+
+// PX4 custom modes (main mode in the third byte, sub mode in the fourth), so that ActionServer,
+// which only understands PX4 modes, can set them.
+const std::vector<ModesServer::Mode> px4_server_modes{
+    {"Manual", 0x00010000, false, true, false, false},
+    {"Stabilized", 0x00070000, false, true, true, false},
+    {"Takeoff", 0x02040000, true, true, false, true},
+    {"Mission", 0x04040000, true, true, false, true},
+    {"Land", 0x06040000, true, true, false, true},
+    {"Offboard", 0x00060000, false, false, true, false},
+};
+
+Mavsdk::Configuration px4_autopilot_configuration()
+{
+    Mavsdk::Configuration configuration{ComponentType::Autopilot};
+    configuration.set_autopilot(Autopilot::Px4);
+    return configuration;
+}
+
+} // namespace
+
+TEST(SystemTest, ModesServerInvalidModes)
+{
+    Mavsdk mavsdk_autopilot{px4_autopilot_configuration()};
+    ModesServer modes_server{mavsdk_autopilot.server_component()};
+
+    // Duplicate name.
+    EXPECT_EQ(
+        modes_server.set_available_modes(
+            {{"Manual", 1, false, true, false, false}, {"Manual", 2, false, true, false, false}}),
+        ModesServer::Result::InvalidModes);
+    // Duplicate custom mode.
+    EXPECT_EQ(
+        modes_server.set_available_modes(
+            {{"Manual", 1, false, true, false, false}, {"Acro", 1, false, true, false, false}}),
+        ModesServer::Result::InvalidModes);
+    // Unknown standard mode.
+    EXPECT_EQ(
+        modes_server.set_available_modes({{"Acro", 1, true, true, false, false}}),
+        ModesServer::Result::InvalidModes);
+    // Empty and too long names.
+    EXPECT_EQ(
+        modes_server.set_available_modes({{"", 1, false, true, false, false}}),
+        ModesServer::Result::InvalidModes);
+    EXPECT_EQ(
+        modes_server.set_available_modes({{std::string(36, 'a'), 1, false, true, false, false}}),
+        ModesServer::Result::InvalidModes);
+
+    EXPECT_EQ(modes_server.set_available_modes(px4_server_modes), ModesServer::Result::Success);
+}
+
+TEST(SystemTest, ModesServerAvailableModes)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{px4_autopilot_configuration()};
+
+    ModesServer modes_server{mavsdk_autopilot.server_component()};
+    ASSERT_EQ(modes_server.set_available_modes(px4_server_modes), ModesServer::Result::Success);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17085"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17085"), ConnectionResult::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto modes = Modes{maybe_system.value()};
+
+    // The fallback list for PX4 might show up first, so wait for the announced one.
+    ASSERT_TRUE(wait_until(
+        [&]() {
+            const auto available_modes = modes.available_modes();
+            return available_modes.size() == px4_server_modes.size() &&
+                   find_mode(available_modes, "Stabilized");
+        },
+        5s));
+
+    const auto available_modes = modes.available_modes();
+    for (const auto& server_mode : px4_server_modes) {
+        const auto mode = find_mode(available_modes, server_mode.name);
+        ASSERT_TRUE(mode) << server_mode.name;
+        EXPECT_EQ(mode->custom_mode, server_mode.custom_mode) << server_mode.name;
+        EXPECT_EQ(mode->is_standard, server_mode.is_standard) << server_mode.name;
+        EXPECT_EQ(mode->is_user_selectable, server_mode.is_user_selectable) << server_mode.name;
+        EXPECT_EQ(mode->is_advanced, server_mode.is_advanced) << server_mode.name;
+        EXPECT_EQ(mode->is_auto_mode, server_mode.is_auto_mode) << server_mode.name;
+    }
+
+    // A new list is picked up through AVAILABLE_MODES_MONITOR.
+    auto new_modes = px4_server_modes;
+    new_modes.push_back({"Altitude", 0x00020000, true, true, false, false});
+    ASSERT_EQ(modes_server.set_available_modes(new_modes), ModesServer::Result::Success);
+
+    ASSERT_TRUE(wait_until(
+        [&]() {
+            const auto altitude = find_mode(modes.available_modes(), "Altitude");
+            return altitude && altitude->is_standard && altitude->custom_mode == 0x00020000;
+        },
+        5s));
+    EXPECT_EQ(modes.available_modes().size(), new_modes.size());
+}
+
+TEST(SystemTest, ModesServerWithActionServer)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{px4_autopilot_configuration()};
+
+    // ModesServer announces the modes, ActionServer changes them.
+    ModesServer modes_server{mavsdk_autopilot.server_component()};
+    ActionServer action_server{mavsdk_autopilot.server_component()};
+    ASSERT_EQ(modes_server.set_available_modes(px4_server_modes), ModesServer::Result::Success);
+
+    ActionServer::AllowableFlightModes allowable_flight_modes{};
+    allowable_flight_modes.can_auto_mode = true;
+    allowable_flight_modes.can_auto_land_mode = true;
+    allowable_flight_modes.can_stabilize_mode = true;
+    ASSERT_EQ(
+        action_server.set_allowable_flight_modes(allowable_flight_modes),
+        ActionServer::Result::Success);
+
+    std::mutex flight_modes_mutex;
+    std::vector<ActionServer::FlightMode> flight_modes;
+    auto flight_mode_handle = action_server.subscribe_flight_mode_change(
+        [&](ActionServer::Result result, ActionServer::FlightMode flight_mode) {
+            if (result == ActionServer::Result::Success) {
+                std::lock_guard<std::mutex> lock(flight_modes_mutex);
+                flight_modes.push_back(flight_mode);
+            }
+        });
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17086"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17086"), ConnectionResult::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto modes = Modes{maybe_system.value()};
+
+    ASSERT_TRUE(wait_until(
+        [&]() {
+            const auto available_modes = modes.available_modes();
+            return available_modes.size() == px4_server_modes.size() &&
+                   find_mode(available_modes, "Stabilized");
+        },
+        5s));
+
+    // A standard mode: MAV_CMD_DO_SET_STANDARD_MODE is unsupported, so this goes through
+    // MAV_CMD_DO_SET_MODE to ActionServer.
+    EXPECT_EQ(modes.set_mode("Mission"), Modes::Result::Success);
+    ASSERT_TRUE(wait_until([&]() { return modes.current_mode().name == "Mission"; }, 2s));
+    EXPECT_TRUE(modes.current_mode().is_standard);
+
+    // A custom mode.
+    EXPECT_EQ(modes.set_mode("Stabilized"), Modes::Result::Success);
+    ASSERT_TRUE(wait_until([&]() { return modes.current_mode().name == "Stabilized"; }, 2s));
+    EXPECT_FALSE(modes.current_mode().is_standard);
+
+    EXPECT_EQ(modes.set_mode("Land"), Modes::Result::Success);
+    ASSERT_TRUE(wait_until([&]() { return modes.current_mode().name == "Land"; }, 2s));
+
+    // ActionServer decides which modes are allowed.
+    EXPECT_NE(modes.set_mode("Takeoff"), Modes::Result::Success);
+    std::this_thread::sleep_for(300ms);
+    EXPECT_EQ(modes.current_mode().name, "Land");
+
+    action_server.unsubscribe_flight_mode_change(flight_mode_handle);
+    {
+        std::lock_guard<std::mutex> lock(flight_modes_mutex);
+        EXPECT_EQ(
+            flight_modes,
+            (std::vector<ActionServer::FlightMode>{
+                ActionServer::FlightMode::Mission,
+                ActionServer::FlightMode::Stabilized,
+                ActionServer::FlightMode::Land}));
+    }
 }

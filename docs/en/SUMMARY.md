@@ -155,6 +155,8 @@
             * [struct VisionPositionEstimate](cpp/api_reference/structmavsdk_1_1_mocap_1_1_vision_position_estimate.md)
         * [class Modes](cpp/api_reference/classmavsdk_1_1_modes.md)
             * [struct Mode](cpp/api_reference/structmavsdk_1_1_modes_1_1_mode.md)
+        * [class ModesServer](cpp/api_reference/classmavsdk_1_1_modes_server.md)
+            * [struct Mode](cpp/api_reference/structmavsdk_1_1_modes_server_1_1_mode.md)
         * [class Offboard](cpp/api_reference/classmavsdk_1_1_offboard.md)
             * [struct AccelerationNed](cpp/api_reference/structmavsdk_1_1_offboard_1_1_acceleration_ned.md)
             * [struct ActuatorControlGroup](cpp/api_reference/structmavsdk_1_1_offboard_1_1_actuator_control_group.md)

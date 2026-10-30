@@ -25,6 +25,7 @@ mission_raw
 mission_raw_server
 mocap
 modes
+modes_server
 offboard
 param
 param_server

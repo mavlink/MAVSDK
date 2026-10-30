@@ -38,16 +38,16 @@ uint32_t px4_custom_mode(uint8_t main_mode, uint8_t sub_mode = 0)
 
 TEST(ModesFallback, StandardModeNames)
 {
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_POSITION_HOLD), "Position");
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_ORBIT), "Orbit");
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_CRUISE), "Cruise");
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_ALTITUDE_HOLD), "Altitude");
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_SAFE_RECOVERY), "Safe Recovery");
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_MISSION), "Mission");
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_LAND), "Land");
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_TAKEOFF), "Takeoff");
-    EXPECT_EQ(modes_standard_mode_name(MAV_STANDARD_MODE_NON_STANDARD), "");
-    EXPECT_EQ(modes_standard_mode_name(200), "");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_POSITION_HOLD), "Position");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_ORBIT), "Orbit");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_CRUISE), "Cruise");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_ALTITUDE_HOLD), "Altitude");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_SAFE_RECOVERY), "Safe Recovery");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_MISSION), "Mission");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_LAND), "Land");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_TAKEOFF), "Takeoff");
+    EXPECT_EQ(standard_mode_name(MAV_STANDARD_MODE_NON_STANDARD), "");
+    EXPECT_EQ(standard_mode_name(200), "");
 }
 
 TEST(ModesFallback, Px4Multicopter)

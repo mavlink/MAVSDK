@@ -295,7 +295,7 @@ void ModesImpl::handle_available_modes_result(
                 auto& mode = entry.mode;
                 // Standard modes come without a name, so we give them a fixed one. Unknown
                 // standard modes (newer than us) are treated as non-standard.
-                const auto standard_name = modes_standard_mode_name(entry.standard_mode);
+                const auto standard_name = standard_mode_name(entry.standard_mode);
                 mode.is_standard = !standard_name.empty();
                 if (mode.is_standard) {
                     mode.name = standard_name;
@@ -421,7 +421,7 @@ void ModesImpl::update_current_mode(
     } else {
         // Not in the list (yet), so all we know is what we were told.
         new_mode.custom_mode = custom_mode;
-        new_mode.name = modes_standard_mode_name(maybe_standard_mode.value_or(0));
+        new_mode.name = standard_mode_name(maybe_standard_mode.value_or(0));
         new_mode.is_standard = !new_mode.name.empty();
     }
 
