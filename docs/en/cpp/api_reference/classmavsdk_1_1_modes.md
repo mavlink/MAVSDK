@@ -10,7 +10,7 @@ Discover and set flight modes at runtime.
 The modes are queried from the vehicle using the MAVLink standard modes protocol (AVAILABLE_MODES, CURRENT_MODE). For autopilots that don't implement it, a list of known modes is used as a fallback.
 
 
-[Modes](classmavsdk_1_1_modes.md) are identified by name. Standard modes have a fixed name, e.g. "Position" or "Mission", custom modes use the name reported by the vehicle. 
+[Modes](classmavsdk_1_1_modes.md) are identified by name. Standard modes have a fixed name, e.g. "Position" or "Mission", other modes use the name reported by the vehicle. Setting a mode works the same way for both. 
 
 
 ## Data Structures
@@ -23,7 +23,6 @@ struct [Mode](structmavsdk_1_1_modes_1_1_mode.md)
 
 Type | Description
 --- | ---
-enum [StandardMode](#classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503f) | Standard mode.
 enum [Result](#classmavsdk_1_1_modes_1a4f59f3b330144fa7f6134c82686d875c) | Possible results returned for mode requests.
 std::function< void([Result](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a4f59f3b330144fa7f6134c82686d875c))> [ResultCallback](#classmavsdk_1_1_modes_1a7be484d39016a070a7197ca125c02e6e) | Callback type for asynchronous [Modes](classmavsdk_1_1_modes.md) calls.
 std::function< void(std::vector< [Mode](structmavsdk_1_1_modes_1_1_mode.md) >)> [AvailableModesCallback](#classmavsdk_1_1_modes_1a72459eb3770c061df9091171724de0fc) | Callback type for subscribe_available_modes.
@@ -48,8 +47,6 @@ void | [unsubscribe_current_mode](#classmavsdk_1_1_modes_1af953a21419fb1c60f873d
 [Mode](structmavsdk_1_1_modes_1_1_mode.md) | [current_mode](#classmavsdk_1_1_modes_1a1c1f29355c56a24b37434ad2c5908135) () const | Poll for '[Mode](structmavsdk_1_1_modes_1_1_mode.md)' (blocking).
 void | [set_mode_async](#classmavsdk_1_1_modes_1ac3391e69db47e486b3a162e1b3862541) (std::string name, const [ResultCallback](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a7be484d39016a070a7197ca125c02e6e) callback) | Set mode by name.
 [Result](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a4f59f3b330144fa7f6134c82686d875c) | [set_mode](#classmavsdk_1_1_modes_1abaff878b0f8963eb7df02e6c8f563712) (std::string name)const | Set mode by name.
-void | [set_standard_mode_async](#classmavsdk_1_1_modes_1acc7168f461137eb6c1e44fff39f0cf5a) ([StandardMode](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503f) standard_mode, const [ResultCallback](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a7be484d39016a070a7197ca125c02e6e) callback) | Set a standard mode.
-[Result](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a4f59f3b330144fa7f6134c82686d875c) | [set_standard_mode](#classmavsdk_1_1_modes_1a335479e64ffb6f46779c6cb82972c07a) ([StandardMode](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503f) standard_mode)const | Set a standard mode.
 const [Modes](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a8eef812a07efdb7f8f25d8157d8d96b4) & | [operator=](#classmavsdk_1_1_modes_1ad3cb22ad695fc5c86cfc82d64fb73f32) (const [Modes](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a8eef812a07efdb7f8f25d8157d8d96b4) &)=delete | Equality operator (object is not copyable).
 
 
@@ -169,25 +166,6 @@ using mavsdk::Modes::CurrentModeHandle =  Handle<Mode>
 
 ## Member Enumeration Documentation
 
-
-### enum StandardMode {#classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503f}
-
-
-Standard mode.
-
-See [https://mavlink.io/en/messages/common.html#MAV_STANDARD_MODE](https://mavlink.io/en/messages/common.html#MAV_STANDARD_MODE)
-
-Value | Description
---- | ---
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fa1a50650f175a7245612a1a9b54707b30"></span> `NonStandard` | Non-standard mode, specific to the autopilot. 
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fa8d2de68ea2876232af1076cd4f7e2565"></span> `PositionHold` | Position hold, named "Position". 
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fa76e1ab7a1df8e64fe867b420645c8a68"></span> `Orbit` | Orbit, named "Orbit". 
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fab4137253e38d50243b9983114c671d69"></span> `Cruise` | Cruise, named "Cruise". 
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fa567370df7e57e1c165827b5676af4957"></span> `AltitudeHold` | Altitude hold, named "Altitude". 
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fa54df7f8a6a971da836ed3306f5a7d4df"></span> `SafeRecovery` | Safe recovery such as return to launch, named "Safe Recovery". 
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fa70d529695c253d17e992cb9265abc57f"></span> `Mission` | [Mission](classmavsdk_1_1_mission.md), named "Mission". 
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fa512ef7c688a2c8572d5e16f44e17e869"></span> `Land` | Land, named "Land". 
-<span id="classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503fa56373a80447c41b9a29e500e62d6884e"></span> `Takeoff` | Takeoff, named "Takeoff". 
 
 ### enum Result {#classmavsdk_1_1_modes_1a4f59f3b330144fa7f6134c82686d875c}
 
@@ -333,39 +311,6 @@ This function is blocking. See 'set_mode_async' for the non-blocking counterpart
 **Parameters**
 
 * std::string **name** - 
-
-**Returns**
-
-&emsp;[Result](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a4f59f3b330144fa7f6134c82686d875c) - [Result](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a4f59f3b330144fa7f6134c82686d875c) of request.
-
-### set_standard_mode_async() {#classmavsdk_1_1_modes_1acc7168f461137eb6c1e44fff39f0cf5a}
-```cpp
-void mavsdk::Modes::set_standard_mode_async(StandardMode standard_mode, const ResultCallback callback)
-```
-
-
-Set a standard mode.
-
-This function is non-blocking. See 'set_standard_mode' for the blocking counterpart.
-
-**Parameters**
-
-* [StandardMode](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503f) **standard_mode** - 
-* const [ResultCallback](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a7be484d39016a070a7197ca125c02e6e) **callback** - 
-
-### set_standard_mode() {#classmavsdk_1_1_modes_1a335479e64ffb6f46779c6cb82972c07a}
-```cpp
-Result mavsdk::Modes::set_standard_mode(StandardMode standard_mode) const
-```
-
-
-Set a standard mode.
-
-This function is blocking. See 'set_standard_mode_async' for the non-blocking counterpart.
-
-**Parameters**
-
-* [StandardMode](classmavsdk_1_1_modes.md#classmavsdk_1_1_modes_1a07200f4c73aa57ac268500ba4c61503f) **standard_mode** - 
 
 **Returns**
 

@@ -38,56 +38,6 @@ translate_result(mavsdk::Modes::Result cpp_result) {
     }
 }
 
-static mavsdk::Modes::StandardMode
-translate_standard_mode_from_c(mavsdk_modes_standard_mode_t c_enum) {
-    switch(c_enum) {
-        case MAVSDK_MODES_STANDARD_MODE_NON_STANDARD:
-            return mavsdk::Modes::StandardMode::NonStandard;
-        case MAVSDK_MODES_STANDARD_MODE_POSITION_HOLD:
-            return mavsdk::Modes::StandardMode::PositionHold;
-        case MAVSDK_MODES_STANDARD_MODE_ORBIT:
-            return mavsdk::Modes::StandardMode::Orbit;
-        case MAVSDK_MODES_STANDARD_MODE_CRUISE:
-            return mavsdk::Modes::StandardMode::Cruise;
-        case MAVSDK_MODES_STANDARD_MODE_ALTITUDE_HOLD:
-            return mavsdk::Modes::StandardMode::AltitudeHold;
-        case MAVSDK_MODES_STANDARD_MODE_SAFE_RECOVERY:
-            return mavsdk::Modes::StandardMode::SafeRecovery;
-        case MAVSDK_MODES_STANDARD_MODE_MISSION:
-            return mavsdk::Modes::StandardMode::Mission;
-        case MAVSDK_MODES_STANDARD_MODE_LAND:
-            return mavsdk::Modes::StandardMode::Land;
-        case MAVSDK_MODES_STANDARD_MODE_TAKEOFF:
-            return mavsdk::Modes::StandardMode::Takeoff;
-    }
-    return mavsdk::Modes::StandardMode::NonStandard;
-}
-
-static mavsdk_modes_standard_mode_t
-translate_standard_mode_to_c(mavsdk::Modes::StandardMode cpp_enum) {
-    switch(cpp_enum) {
-        case mavsdk::Modes::StandardMode::NonStandard:
-            return MAVSDK_MODES_STANDARD_MODE_NON_STANDARD;
-        case mavsdk::Modes::StandardMode::PositionHold:
-            return MAVSDK_MODES_STANDARD_MODE_POSITION_HOLD;
-        case mavsdk::Modes::StandardMode::Orbit:
-            return MAVSDK_MODES_STANDARD_MODE_ORBIT;
-        case mavsdk::Modes::StandardMode::Cruise:
-            return MAVSDK_MODES_STANDARD_MODE_CRUISE;
-        case mavsdk::Modes::StandardMode::AltitudeHold:
-            return MAVSDK_MODES_STANDARD_MODE_ALTITUDE_HOLD;
-        case mavsdk::Modes::StandardMode::SafeRecovery:
-            return MAVSDK_MODES_STANDARD_MODE_SAFE_RECOVERY;
-        case mavsdk::Modes::StandardMode::Mission:
-            return MAVSDK_MODES_STANDARD_MODE_MISSION;
-        case mavsdk::Modes::StandardMode::Land:
-            return MAVSDK_MODES_STANDARD_MODE_LAND;
-        case mavsdk::Modes::StandardMode::Takeoff:
-            return MAVSDK_MODES_STANDARD_MODE_TAKEOFF;
-    }
-    return MAVSDK_MODES_STANDARD_MODE_NON_STANDARD;
-}
-
 
 
 static mavsdk::Modes::Mode
@@ -96,7 +46,7 @@ translate_mode_from_c(const mavsdk_modes_mode_t& c_struct) {
     if (c_struct.name) {
         cpp_struct.name = c_struct.name;
     }
-    cpp_struct.standard_mode = translate_standard_mode_from_c(c_struct.standard_mode);
+    cpp_struct.is_standard = c_struct.is_standard;
     cpp_struct.custom_mode = c_struct.custom_mode;
     cpp_struct.is_user_selectable = c_struct.is_user_selectable;
     cpp_struct.is_advanced = c_struct.is_advanced;
@@ -108,7 +58,7 @@ static mavsdk_modes_mode_t
 translate_mode_to_c(const mavsdk::Modes::Mode& cpp_struct) {
     mavsdk_modes_mode_t c_struct{};
     c_struct.name = strdup(cpp_struct.name.c_str());
-    c_struct.standard_mode = translate_standard_mode_to_c(cpp_struct.standard_mode);
+    c_struct.is_standard = cpp_struct.is_standard;
     c_struct.custom_mode = cpp_struct.custom_mode;
     c_struct.is_user_selectable = cpp_struct.is_user_selectable;
     c_struct.is_advanced = cpp_struct.is_advanced;
@@ -376,41 +326,6 @@ mavsdk_modes_set_mode(
     auto wrapper = reinterpret_cast<mavsdk_modes_wrapper*>(modes);
 
     auto ret_value = wrapper->cpp_plugin->set_mode(        name);
-
-    return translate_result(ret_value);
-}
-
-// SetStandardMode async
-void mavsdk_modes_set_standard_mode_async(
-    mavsdk_modes_t modes,
-    mavsdk_modes_standard_mode_t standard_mode,
-    mavsdk_modes_set_standard_mode_callback_t callback,
-    void* user_data)
-{
-    auto wrapper = reinterpret_cast<mavsdk_modes_wrapper*>(modes);
-
-    wrapper->cpp_plugin->set_standard_mode_async(
-        translate_standard_mode_from_c(standard_mode),
-        [callback, user_data](
-            mavsdk::Modes::Result result) {
-                if (callback) {
-                    callback(
-                        translate_result(result),
-                        user_data);
-                }
-        });
-}
-
-
-// SetStandardMode sync
-mavsdk_modes_result_t
-mavsdk_modes_set_standard_mode(
-    mavsdk_modes_t modes,
-    mavsdk_modes_standard_mode_t standard_mode)
-{
-    auto wrapper = reinterpret_cast<mavsdk_modes_wrapper*>(modes);
-
-    auto ret_value = wrapper->cpp_plugin->set_standard_mode(        translate_standard_mode_from_c(standard_mode));
 
     return translate_result(ret_value);
 }

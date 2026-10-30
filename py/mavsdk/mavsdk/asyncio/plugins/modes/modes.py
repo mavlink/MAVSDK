@@ -10,7 +10,8 @@ Discover and set flight modes at runtime.
  implement it, a list of known modes is used as a fallback.
 
  Modes are identified by name. Standard modes have a fixed name, e.g.
- "Position" or "Mission", custom modes use the name reported by the vehicle.
+ "Position" or "Mission", other modes use the name reported by the vehicle.
+ Setting a mode works the same way for both.
 """
 
 import asyncio
@@ -19,7 +20,6 @@ from mavsdk.plugins.modes import (
     Modes,
     ModesResult,
     ModesError,
-    StandardMode,
     Mode,
 )
 
@@ -33,7 +33,8 @@ class ModesAsync:
     implement it, a list of known modes is used as a fallback.
 
     Modes are identified by name. Standard modes have a fixed name, e.g.
-    "Position" or "Mission", custom modes use the name reported by the vehicle.
+    "Position" or "Mission", other modes use the name reported by the vehicle.
+    Setting a mode works the same way for both.
 
        Async wrapper around :class:`Modes` that mirrors the gRPC-based
        asyncio API while using the ctypes-based C library directly.
@@ -136,23 +137,6 @@ class ModesAsync:
         """
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, lambda: self._plugin.set_mode(name))
-
-    async def set_standard_mode(self, standard_mode):
-        """
-        Set a standard mode.
-
-        Parameters
-        ----------
-        standard_mode : StandardMode
-        Raises
-        ------
-        ModesError
-            If the request fails. The error contains the reason for the failure.
-        """
-        loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(
-            None, lambda: self._plugin.set_standard_mode(standard_mode)
-        )
 
     def destroy(self):
         self._plugin.destroy()

@@ -12,7 +12,8 @@ Discover and set flight modes at runtime.
  implement it, a list of known modes is used as a fallback.
 
  Modes are identified by name. Standard modes have a fixed name, e.g.
- "Position" or "Mission", custom modes use the name reported by the vehicle.
+ "Position" or "Mission", other modes use the name reported by the vehicle.
+ Setting a mode works the same way for both.
 """
 
 import ctypes
@@ -26,20 +27,6 @@ from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
-class StandardMode(IntEnum):
-    """Standard mode.
-
-    See https://mavlink.io/en/messages/common.html#MAV_STANDARD_MODE"""
-
-    NON_STANDARD = 0
-    POSITION_HOLD = 1
-    ORBIT = 2
-    CRUISE = 3
-    ALTITUDE_HOLD = 4
-    SAFE_RECOVERY = 5
-    MISSION = 6
-    LAND = 7
-    TAKEOFF = 8
 
 
 # ===== Result Enums =====
@@ -91,7 +78,7 @@ class ModeCStruct(ctypes.Structure):
 
     _fields_ = [
         ("name", ctypes.c_char_p),
-        ("standard_mode", ctypes.c_int),
+        ("is_standard", ctypes.c_bool),
         ("custom_mode", ctypes.c_uint32),
         ("is_user_selectable", ctypes.c_bool),
         ("is_advanced", ctypes.c_bool),
@@ -108,16 +95,14 @@ class Mode:
     def __init__(
         self,
         name=None,
-        standard_mode=None,
+        is_standard=None,
         custom_mode=None,
         is_user_selectable=None,
         is_advanced=None,
         is_auto_mode=None,
     ):
         self.name = name if name is not None else ""
-        self.standard_mode = (
-            standard_mode if standard_mode is not None else StandardMode(0)
-        )
+        self.is_standard = is_standard if is_standard is not None else False
         self.custom_mode = custom_mode if custom_mode is not None else 0
         self.is_user_selectable = (
             is_user_selectable if is_user_selectable is not None else False
@@ -130,7 +115,7 @@ class Mode:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.name = c_struct.name.decode("utf-8")
-        instance.standard_mode = StandardMode(c_struct.standard_mode)
+        instance.is_standard = c_struct.is_standard
         instance.custom_mode = c_struct.custom_mode
         instance.is_user_selectable = c_struct.is_user_selectable
         instance.is_advanced = c_struct.is_advanced
@@ -141,7 +126,7 @@ class Mode:
         """Convert to C structure for C library calls"""
         c_struct = ModeCStruct()
         c_struct.name = self.name.encode("utf-8")
-        c_struct.standard_mode = int(self.standard_mode)
+        c_struct.is_standard = self.is_standard
         c_struct.custom_mode = self.custom_mode
         c_struct.is_user_selectable = self.is_user_selectable
         c_struct.is_advanced = self.is_advanced
@@ -151,7 +136,7 @@ class Mode:
     def __str__(self):
         fields = []
         fields.append(f"name={self.name}")
-        fields.append(f"standard_mode={self.standard_mode}")
+        fields.append(f"is_standard={self.is_standard}")
         fields.append(f"custom_mode={self.custom_mode}")
         fields.append(f"is_user_selectable={self.is_user_selectable}")
         fields.append(f"is_advanced={self.is_advanced}")
@@ -168,7 +153,8 @@ class Modes:
     implement it, a list of known modes is used as a fallback.
 
     Modes are identified by name. Standard modes have a fixed name, e.g.
-    "Position" or "Mission", custom modes use the name reported by the vehicle."""
+    "Position" or "Mission", other modes use the name reported by the vehicle.
+    Setting a mode works the same way for both."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -362,40 +348,6 @@ class Modes:
 
         return result
 
-    def set_standard_mode_async(
-        self, standard_mode, callback: Callable, user_data: Any = None
-    ):
-        """Set a standard mode."""
-
-        def c_callback(result, ud):
-            try:
-                py_result = ModesResult(result)
-
-                callback(py_result, user_data)
-
-            except Exception as e:
-                print(f"Error in set_standard_mode callback: {e}")
-
-        cb = SetStandardModeCallback(c_callback)
-        self._callbacks.append(cb)
-
-        self._lib.mavsdk_modes_set_standard_mode_async(
-            self._require_handle(), standard_mode, cb, None
-        )
-
-    def set_standard_mode(self, standard_mode):
-        """Get set_standard_mode (blocking)"""
-
-        result_code = self._lib.mavsdk_modes_set_standard_mode(
-            self._require_handle(),
-            standard_mode,
-        )
-        result = ModesResult(result_code)
-        if result != ModesResult.SUCCESS:
-            raise ModesError(result, "set_standard_mode()", standard_mode)
-
-        return result
-
     def _require_handle(self) -> ctypes.c_void_p:
         """Fail loudly rather than dereferencing a null handle in C.
 
@@ -442,7 +394,6 @@ AvailableModesCallback = ctypes.CFUNCTYPE(
 )
 CurrentModeCallback = ctypes.CFUNCTYPE(None, ModeCStruct, ctypes.c_void_p)
 SetModeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
-SetStandardModeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_modes_create.argtypes = [ctypes.c_void_p]
@@ -522,18 +473,3 @@ _cmavsdk_lib.mavsdk_modes_set_mode.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_modes_set_mode.restype = ctypes.c_int
-_cmavsdk_lib.mavsdk_modes_set_standard_mode_async.argtypes = [
-    ctypes.c_void_p,
-    ctypes.c_int,
-    SetStandardModeCallback,
-    ctypes.c_void_p,
-]
-
-_cmavsdk_lib.mavsdk_modes_set_standard_mode_async.restype = None
-
-_cmavsdk_lib.mavsdk_modes_set_standard_mode.argtypes = [
-    ctypes.c_void_p,
-    ctypes.c_int,
-]
-
-_cmavsdk_lib.mavsdk_modes_set_standard_mode.restype = ctypes.c_int

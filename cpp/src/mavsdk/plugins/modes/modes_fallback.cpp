@@ -4,26 +4,25 @@
 
 namespace mavsdk {
 
-std::string modes_standard_mode_name(Modes::StandardMode standard_mode)
+std::string modes_standard_mode_name(uint8_t standard_mode)
 {
     switch (standard_mode) {
-        case Modes::StandardMode::PositionHold:
+        case MAV_STANDARD_MODE_POSITION_HOLD:
             return "Position";
-        case Modes::StandardMode::Orbit:
+        case MAV_STANDARD_MODE_ORBIT:
             return "Orbit";
-        case Modes::StandardMode::Cruise:
+        case MAV_STANDARD_MODE_CRUISE:
             return "Cruise";
-        case Modes::StandardMode::AltitudeHold:
+        case MAV_STANDARD_MODE_ALTITUDE_HOLD:
             return "Altitude";
-        case Modes::StandardMode::SafeRecovery:
+        case MAV_STANDARD_MODE_SAFE_RECOVERY:
             return "Safe Recovery";
-        case Modes::StandardMode::Mission:
+        case MAV_STANDARD_MODE_MISSION:
             return "Mission";
-        case Modes::StandardMode::Land:
+        case MAV_STANDARD_MODE_LAND:
             return "Land";
-        case Modes::StandardMode::Takeoff:
+        case MAV_STANDARD_MODE_TAKEOFF:
             return "Takeoff";
-        case Modes::StandardMode::NonStandard:
         default:
             return "";
     }
@@ -51,19 +50,18 @@ bool is_vtol(MAV_TYPE vehicle_type)
     }
 }
 
-Modes::Mode make_mode(
-    std::string name, Modes::StandardMode standard_mode, uint32_t custom_mode, bool advanced)
+ModeEntry make_mode(std::string name, uint8_t standard_mode, uint32_t custom_mode, bool advanced)
 {
-    Modes::Mode mode{};
-    mode.name = standard_mode == Modes::StandardMode::NonStandard ?
-                    std::move(name) :
-                    modes_standard_mode_name(standard_mode);
-    mode.standard_mode = standard_mode;
+    ModeEntry entry{};
+    entry.standard_mode = standard_mode;
+    auto& mode = entry.mode;
+    mode.is_standard = standard_mode != MAV_STANDARD_MODE_NON_STANDARD;
+    mode.name = mode.is_standard ? modes_standard_mode_name(standard_mode) : std::move(name);
     mode.custom_mode = custom_mode;
     mode.is_user_selectable = true;
     mode.is_advanced = advanced;
     mode.is_auto_mode = false;
-    return mode;
+    return entry;
 }
 
 uint32_t px4_mode(uint8_t main_mode, uint8_t sub_mode = 0)
@@ -76,7 +74,7 @@ uint32_t px4_mode(uint8_t main_mode, uint8_t sub_mode = 0)
 
 // Mirrors what PX4 v1.15 and later reports in AVAILABLE_MODES, so that the same names work
 // against older and newer PX4 versions.
-std::vector<Modes::Mode> px4_modes(MAV_TYPE vehicle_type)
+std::vector<ModeEntry> px4_modes(MAV_TYPE vehicle_type)
 {
     using px4::PX4_CUSTOM_MAIN_MODE_ACRO;
     using px4::PX4_CUSTOM_MAIN_MODE_ALTCTL;
@@ -91,65 +89,78 @@ std::vector<Modes::Mode> px4_modes(MAV_TYPE vehicle_type)
     using px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
     using px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
     using px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
-    using SM = Modes::StandardMode;
 
     // PX4 maps position control to "Position" for multicopters and "Cruise" for fixed-wing,
     // and to neither for VTOLs.
-    SM position_standard_mode = SM::PositionHold;
+    uint8_t position_standard_mode = MAV_STANDARD_MODE_POSITION_HOLD;
     if (is_vtol(vehicle_type)) {
-        position_standard_mode = SM::NonStandard;
+        position_standard_mode = MAV_STANDARD_MODE_NON_STANDARD;
     } else if (is_fixed_wing(vehicle_type)) {
-        position_standard_mode = SM::Cruise;
+        position_standard_mode = MAV_STANDARD_MODE_CRUISE;
     }
 
     return {
-        make_mode("Manual", SM::NonStandard, px4_mode(PX4_CUSTOM_MAIN_MODE_MANUAL), true),
-        make_mode("Altitude", SM::AltitudeHold, px4_mode(PX4_CUSTOM_MAIN_MODE_ALTCTL), false),
+        make_mode(
+            "Manual", MAV_STANDARD_MODE_NON_STANDARD, px4_mode(PX4_CUSTOM_MAIN_MODE_MANUAL), true),
+        make_mode(
+            "Altitude",
+            MAV_STANDARD_MODE_ALTITUDE_HOLD,
+            px4_mode(PX4_CUSTOM_MAIN_MODE_ALTCTL),
+            false),
         make_mode("Position", position_standard_mode, px4_mode(PX4_CUSTOM_MAIN_MODE_POSCTL), false),
         make_mode(
             "Mission",
-            SM::Mission,
+            MAV_STANDARD_MODE_MISSION,
             px4_mode(PX4_CUSTOM_MAIN_MODE_AUTO, PX4_CUSTOM_SUB_MODE_AUTO_MISSION),
             true),
         make_mode(
             "Hold",
-            SM::NonStandard,
+            MAV_STANDARD_MODE_NON_STANDARD,
             px4_mode(PX4_CUSTOM_MAIN_MODE_AUTO, PX4_CUSTOM_SUB_MODE_AUTO_LOITER),
             true),
         make_mode(
             "Return",
-            SM::SafeRecovery,
+            MAV_STANDARD_MODE_SAFE_RECOVERY,
             px4_mode(PX4_CUSTOM_MAIN_MODE_AUTO, PX4_CUSTOM_SUB_MODE_AUTO_RTL),
             true),
-        make_mode("Acro", SM::NonStandard, px4_mode(PX4_CUSTOM_MAIN_MODE_ACRO), true),
-        make_mode("Offboard", SM::NonStandard, px4_mode(PX4_CUSTOM_MAIN_MODE_OFFBOARD), true),
-        make_mode("Stabilized", SM::NonStandard, px4_mode(PX4_CUSTOM_MAIN_MODE_STABILIZED), true),
+        make_mode(
+            "Acro", MAV_STANDARD_MODE_NON_STANDARD, px4_mode(PX4_CUSTOM_MAIN_MODE_ACRO), true),
+        make_mode(
+            "Offboard",
+            MAV_STANDARD_MODE_NON_STANDARD,
+            px4_mode(PX4_CUSTOM_MAIN_MODE_OFFBOARD),
+            true),
+        make_mode(
+            "Stabilized",
+            MAV_STANDARD_MODE_NON_STANDARD,
+            px4_mode(PX4_CUSTOM_MAIN_MODE_STABILIZED),
+            true),
         make_mode(
             "Takeoff",
-            SM::Takeoff,
+            MAV_STANDARD_MODE_TAKEOFF,
             px4_mode(PX4_CUSTOM_MAIN_MODE_AUTO, PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF),
             true),
         make_mode(
             "Land",
-            SM::Land,
+            MAV_STANDARD_MODE_LAND,
             px4_mode(PX4_CUSTOM_MAIN_MODE_AUTO, PX4_CUSTOM_SUB_MODE_AUTO_LAND),
             true),
         make_mode(
             "Follow Target",
-            SM::NonStandard,
+            MAV_STANDARD_MODE_NON_STANDARD,
             px4_mode(PX4_CUSTOM_MAIN_MODE_AUTO, PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET),
             true),
     };
 }
 
-template<typename T> Modes::Mode ardupilot_mode(const char* name, T mode_number)
+template<typename T> ModeEntry ardupilot_mode(const char* name, T mode_number)
 {
     return make_mode(
-        name, Modes::StandardMode::NonStandard, static_cast<uint32_t>(mode_number), false);
+        name, MAV_STANDARD_MODE_NON_STANDARD, static_cast<uint32_t>(mode_number), false);
 }
 
 // Names as ArduPilot 4.7 and later reports them in AVAILABLE_MODES (Mode::name()).
-std::vector<Modes::Mode> ardupilot_copter_modes()
+std::vector<ModeEntry> ardupilot_copter_modes()
 {
     using M = ardupilot::CopterMode;
     return {
@@ -182,7 +193,7 @@ std::vector<Modes::Mode> ardupilot_copter_modes()
     };
 }
 
-std::vector<Modes::Mode> ardupilot_plane_modes()
+std::vector<ModeEntry> ardupilot_plane_modes()
 {
     using M = ardupilot::PlaneMode;
     return {
@@ -212,7 +223,7 @@ std::vector<Modes::Mode> ardupilot_plane_modes()
     };
 }
 
-std::vector<Modes::Mode> ardupilot_rover_modes()
+std::vector<ModeEntry> ardupilot_rover_modes()
 {
     using M = ardupilot::RoverMode;
     return {
@@ -232,7 +243,7 @@ std::vector<Modes::Mode> ardupilot_rover_modes()
 
 } // namespace
 
-std::vector<Modes::Mode> modes_fallback(Autopilot autopilot, MAV_TYPE vehicle_type)
+std::vector<ModeEntry> modes_fallback(Autopilot autopilot, MAV_TYPE vehicle_type)
 {
     switch (autopilot) {
         case Autopilot::Px4:

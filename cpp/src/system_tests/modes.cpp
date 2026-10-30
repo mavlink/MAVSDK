@@ -254,8 +254,7 @@ std::optional<Modes::Mode> find_mode(const std::vector<Modes::Mode>& modes, cons
     return *it;
 }
 
-template<typename Predicate>
-bool wait_until(Predicate predicate, std::chrono::milliseconds timeout)
+template<typename Predicate> bool wait_until(Predicate predicate, std::chrono::milliseconds timeout)
 {
     const auto deadline = std::chrono::steady_clock::now() + timeout;
     while (std::chrono::steady_clock::now() < deadline) {
@@ -292,7 +291,7 @@ TEST(SystemTest, ModesAvailableModes)
 
     const auto manual = find_mode(available_modes, "Manual");
     ASSERT_TRUE(manual);
-    EXPECT_EQ(manual->standard_mode, Modes::StandardMode::NonStandard);
+    EXPECT_FALSE(manual->is_standard);
     EXPECT_EQ(manual->custom_mode, 0x00010000u);
     EXPECT_TRUE(manual->is_user_selectable);
     EXPECT_TRUE(manual->is_advanced);
@@ -301,13 +300,13 @@ TEST(SystemTest, ModesAvailableModes)
     // Standard modes get their standard name.
     const auto position = find_mode(available_modes, "Position");
     ASSERT_TRUE(position);
-    EXPECT_EQ(position->standard_mode, Modes::StandardMode::PositionHold);
+    EXPECT_TRUE(position->is_standard);
     EXPECT_EQ(position->custom_mode, 0x00030000u);
     EXPECT_FALSE(position->is_advanced);
 
     const auto safe_recovery = find_mode(available_modes, "Safe Recovery");
     ASSERT_TRUE(safe_recovery);
-    EXPECT_EQ(safe_recovery->standard_mode, Modes::StandardMode::SafeRecovery);
+    EXPECT_TRUE(safe_recovery->is_standard);
 
     const auto offboard = find_mode(available_modes, "Offboard");
     ASSERT_TRUE(offboard);
@@ -367,7 +366,7 @@ TEST(SystemTest, ModesSetModeAndCurrentMode)
 
     autopilot.send_current_mode(0x05040000, MAV_STANDARD_MODE_SAFE_RECOVERY);
     ASSERT_TRUE(wait_until([&]() { return modes.current_mode().name == "Safe Recovery"; }, 2s));
-    EXPECT_EQ(modes.current_mode().standard_mode, Modes::StandardMode::SafeRecovery);
+    EXPECT_TRUE(modes.current_mode().is_standard);
 
     // Sending the same mode again is not a change.
     autopilot.send_current_mode(0x05040000, MAV_STANDARD_MODE_SAFE_RECOVERY);
@@ -382,7 +381,7 @@ TEST(SystemTest, ModesSetModeAndCurrentMode)
     }
 }
 
-TEST(SystemTest, ModesSetStandardMode)
+TEST(SystemTest, ModesSetStandardModeByName)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -402,23 +401,21 @@ TEST(SystemTest, ModesSetStandardMode)
 
     ASSERT_TRUE(wait_until([&]() { return modes.available_modes().size() == 6; }, 5s));
 
-    EXPECT_EQ(modes.set_standard_mode(Modes::StandardMode::NonStandard), Modes::Result::Unsupported);
-
-    EXPECT_EQ(modes.set_standard_mode(Modes::StandardMode::SafeRecovery), Modes::Result::Success);
+    // Standard modes are set with MAV_CMD_DO_SET_STANDARD_MODE.
+    EXPECT_EQ(modes.set_mode("Safe Recovery"), Modes::Result::Success);
     auto command = autopilot.wait_for_command(MAV_CMD_DO_SET_STANDARD_MODE, 1s);
     ASSERT_TRUE(command);
-    EXPECT_EQ(
-        static_cast<int>((*command)["param1"].get<float>()), MAV_STANDARD_MODE_SAFE_RECOVERY);
+    EXPECT_EQ(static_cast<int>((*command)["param1"].get<float>()), MAV_STANDARD_MODE_SAFE_RECOVERY);
 
     // Without MAV_CMD_DO_SET_STANDARD_MODE, a known standard mode is set as custom mode.
     autopilot.set_supports_set_standard_mode(false);
-    EXPECT_EQ(modes.set_standard_mode(Modes::StandardMode::PositionHold), Modes::Result::Success);
+    EXPECT_EQ(modes.set_mode("Position"), Modes::Result::Success);
     command = autopilot.wait_for_command(MAV_CMD_DO_SET_MODE, 1s);
     ASSERT_TRUE(command);
     EXPECT_EQ(static_cast<uint32_t>((*command)["param2"].get<float>()), 0x00030000u);
 
     // A standard mode the autopilot doesn't have.
-    EXPECT_EQ(modes.set_standard_mode(Modes::StandardMode::Orbit), Modes::Result::Unsupported);
+    EXPECT_EQ(modes.set_mode("Orbit"), Modes::Result::ModeNotFound);
 }
 
 TEST(SystemTest, ModesMonitorTriggersUpdate)
@@ -509,7 +506,7 @@ TEST(SystemTest, ModesFallback)
     EXPECT_EQ(static_cast<int>((*command)["param3"].get<float>()), 3); // LOITER
 
     // Standard modes are set as custom modes, without trying MAV_CMD_DO_SET_STANDARD_MODE.
-    EXPECT_EQ(modes.set_standard_mode(Modes::StandardMode::SafeRecovery), Modes::Result::Success);
+    EXPECT_EQ(modes.set_mode("Safe Recovery"), Modes::Result::Success);
     command = autopilot.wait_for_command(MAV_CMD_DO_SET_MODE, 1s);
     ASSERT_TRUE(command);
     EXPECT_EQ(static_cast<int>((*command)["param2"].get<float>()), 4); // AUTO

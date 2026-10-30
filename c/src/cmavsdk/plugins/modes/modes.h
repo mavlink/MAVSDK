@@ -22,7 +22,8 @@ extern "C" {
  * implement it, a list of known modes is used as a fallback.
  *
  * Modes are identified by name. Standard modes have a fixed name, e.g.
- * "Position" or "Mission", custom modes use the name reported by the vehicle.
+ * "Position" or "Mission", other modes use the name reported by the vehicle.
+ * Setting a mode works the same way for both.
  */
 
 // ===== Forward Declarations =====
@@ -34,32 +35,6 @@ typedef struct mavsdk_modes_available_modes_handle_s *mavsdk_modes_available_mod
 typedef struct mavsdk_modes_current_mode_handle_s *mavsdk_modes_current_mode_handle_t;
 
 // ===== Enums =====
-/**
- * @brief Standard mode.
- *
- * See https://mavlink.io/en/messages/common.html#MAV_STANDARD_MODE
- */
-typedef enum {
-    /**  Non-standard mode, specific to the autopilot. */
-    MAVSDK_MODES_STANDARD_MODE_NON_STANDARD = 0,
-    /**  Position hold, named "Position". */
-    MAVSDK_MODES_STANDARD_MODE_POSITION_HOLD = 1,
-    /**  Orbit, named "Orbit". */
-    MAVSDK_MODES_STANDARD_MODE_ORBIT = 2,
-    /**  Cruise, named "Cruise". */
-    MAVSDK_MODES_STANDARD_MODE_CRUISE = 3,
-    /**  Altitude hold, named "Altitude". */
-    MAVSDK_MODES_STANDARD_MODE_ALTITUDE_HOLD = 4,
-    /**  Safe recovery such as return to launch, named "Safe Recovery". */
-    MAVSDK_MODES_STANDARD_MODE_SAFE_RECOVERY = 5,
-    /**  Mission, named "Mission". */
-    MAVSDK_MODES_STANDARD_MODE_MISSION = 6,
-    /**  Land, named "Land". */
-    MAVSDK_MODES_STANDARD_MODE_LAND = 7,
-    /**  Takeoff, named "Takeoff". */
-    MAVSDK_MODES_STANDARD_MODE_TAKEOFF = 8,
-} mavsdk_modes_standard_mode_t;
-
 
 // ===== Structs =====
 /**
@@ -71,8 +46,8 @@ typedef enum {
 typedef struct CMAVSDK_EXPORT {
     /**  Name of the mode, e.g. "Position" or "Stabilize" */
     char* name;
-    /**  Standard mode, or non-standard for custom modes */
-    mavsdk_modes_standard_mode_t standard_mode;
+    /**  True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission" */
+    bool is_standard;
     /**  Autopilot specific custom mode */
     uint32_t custom_mode;
     /**  True if the mode can be set by the user */
@@ -219,7 +194,6 @@ CMAVSDK_EXPORT void mavsdk_modes_byte_buffer_destroy(uint8_t** buffer);
 typedef void (*mavsdk_modes_available_modes_callback_t)(const mavsdk_modes_mode_t* modes, size_t modes_size, void* user_data);
 typedef void (*mavsdk_modes_current_mode_callback_t)(const mavsdk_modes_mode_t mode, void* user_data);
 typedef void (*mavsdk_modes_set_mode_callback_t)(const mavsdk_modes_result_t result, void* user_data);
-typedef void (*mavsdk_modes_set_standard_mode_callback_t)(const mavsdk_modes_result_t result, void* user_data);
 
 // ===== Modes Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_modes_t mavsdk_modes_create(mavsdk_system_t system);
@@ -344,38 +318,6 @@ mavsdk_modes_result_t
 mavsdk_modes_set_mode(
     mavsdk_modes_t modes,
     char* name);
-
-
-/**
- * @brief Set a standard mode.
- *
- * @param modes The modes instance.
- * @param standard_mode  Standard mode to set
- * 
- *
- * @param callback Function to call when new data is available.
- * @param user_data User data to pass to the callback.
- */
-CMAVSDK_EXPORT void mavsdk_modes_set_standard_mode_async(
-    mavsdk_modes_t modes,
-    mavsdk_modes_standard_mode_t standard_mode,
-    mavsdk_modes_set_standard_mode_callback_t callback,
-    void* user_data);
-
-
-/**
- * @brief Get the current set standard mode (blocking).
- *
- * This function blocks until a value is available.
- *
- * @param telemetry The telemetry instance.
- * @param set_standard_mode_out Pointer to store the result.
- */
-CMAVSDK_EXPORT
-mavsdk_modes_result_t
-mavsdk_modes_set_standard_mode(
-    mavsdk_modes_t modes,
-    mavsdk_modes_standard_mode_t standard_mode);
 
 
 #ifdef __cplusplus
