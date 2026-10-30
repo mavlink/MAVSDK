@@ -14,7 +14,7 @@ std::string [name](#structmavsdk_1_1_modes_1_1_mode_1a9c3520ebdb5cbe478b92ef9c98
 
 uint32_t [custom_mode](#structmavsdk_1_1_modes_1_1_mode_1a80dcd8a21f248af4d24d59b0bdbbf699) {} - [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) specific custom mode.
 
-bool [is_standard](#structmavsdk_1_1_modes_1_1_mode_1ab07349894a75582bc5f24f419074df2c) {} - True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission".
+bool [is_standard](#structmavsdk_1_1_modes_1_1_mode_1ab07349894a75582bc5f24f419074df2c) {} - True if this is a MAVLink standard mode, e.g. "Position" or "Mission".
 
 bool [is_user_selectable](#structmavsdk_1_1_modes_1_1_mode_1ac7f37f7e4a591d6af2941c2a8a566cf0) {} - True if the mode can be set by the user.
 
@@ -53,7 +53,7 @@ bool mavsdk::Modes::Mode::is_standard {}
 ```
 
 
-True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission".
+True if this is a MAVLink standard mode, e.g. "Position" or "Mission".
 
 
 ### is_user_selectable {#structmavsdk_1_1_modes_1_1_mode_1ac7f37f7e4a591d6af2941c2a8a566cf0}

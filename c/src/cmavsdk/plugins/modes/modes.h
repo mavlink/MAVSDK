@@ -48,7 +48,7 @@ typedef struct CMAVSDK_EXPORT {
     char* name;
     /**  Autopilot specific custom mode */
     uint32_t custom_mode;
-    /**  True if this is a MAVLink standard mode, e.g. "Position", "Safe Recovery" or "Mission" */
+    /**  True if this is a MAVLink standard mode, e.g. "Position" or "Mission" */
     bool is_standard;
     /**  True if the mode can be set by the user */
     bool is_user_selectable;
