@@ -175,9 +175,9 @@ public:
 
 
     /**
-     * @brief Poll for 'std::vector<Mode>' (blocking).
+     * @brief Poll for the list of 'Mode' (blocking).
      *
-     * @return One std::vector<Mode> update.
+     * @return The current list of Mode.
      */
     std::vector<Mode> available_modes() const;
 
