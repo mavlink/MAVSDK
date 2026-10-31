@@ -19,6 +19,8 @@ translate_result(mavsdk::ModesServer::Result cpp_result) {
             return MAVSDK_MODES_SERVER_RESULT_SUCCESS;
         case mavsdk::ModesServer::Result::InvalidModes:
             return MAVSDK_MODES_SERVER_RESULT_INVALID_MODES;
+        case mavsdk::ModesServer::Result::ModeNotFound:
+            return MAVSDK_MODES_SERVER_RESULT_MODE_NOT_FOUND;
     }
 }
 
@@ -179,6 +181,59 @@ mavsdk_modes_server_set_available_modes(
             }
             return vec;
         }());
+
+    return translate_result(ret_value);
+}
+
+// ModeRequested async
+mavsdk_modes_server_mode_requested_handle_t mavsdk_modes_server_subscribe_mode_requested(
+    mavsdk_modes_server_t modes_server,
+    mavsdk_modes_server_mode_requested_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_modes_server_wrapper*>(modes_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_mode_requested(
+        [callback, user_data](
+            mavsdk::ModesServer::Mode value) {
+                if (callback) {
+                    callback(
+                        translate_mode_to_c(value),
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::ModesServer::ModeRequestedHandle(std::move(cpp_handle));
+
+    return reinterpret_cast<mavsdk_modes_server_mode_requested_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_modes_server_unsubscribe_mode_requested(
+    mavsdk_modes_server_t modes_server,
+    mavsdk_modes_server_mode_requested_handle_t handle)
+{
+    if (modes_server == nullptr || handle == nullptr) {
+        return;
+    }
+
+    auto wrapper = reinterpret_cast<mavsdk_modes_server_wrapper*>(modes_server);
+    auto cpp_handle = reinterpret_cast<mavsdk::ModesServer::ModeRequestedHandle*>(handle);
+
+    wrapper->cpp_plugin->unsubscribe_mode_requested(std::move(*cpp_handle));
+    delete cpp_handle;
+}
+
+
+
+// SetCurrentMode sync
+mavsdk_modes_server_result_t
+mavsdk_modes_server_set_current_mode(
+    mavsdk_modes_server_t modes_server,
+    char* name)
+{
+    auto wrapper = reinterpret_cast<mavsdk_modes_server_wrapper*>(modes_server);
+
+    auto ret_value = wrapper->cpp_plugin->set_current_mode(        name);
 
     return translate_result(ret_value);
 }

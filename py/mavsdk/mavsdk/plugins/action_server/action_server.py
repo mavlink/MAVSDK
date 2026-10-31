@@ -6,6 +6,9 @@
 
 """
 Provide vehicle actions (as a server) such as arming, taking off, and landing.
+
+ The flight mode API is deprecated, use the ModesServer plugin instead. Once
+ ModesServer has modes set, mode change requests are left to it.
 """
 
 import ctypes
@@ -218,7 +221,10 @@ class ArmDisarm:
 
 # ===== Plugin =====
 class ActionServer:
-    """Provide vehicle actions (as a server) such as arming, taking off, and landing."""
+    """Provide vehicle actions (as a server) such as arming, taking off, and landing.
+
+    The flight mode API is deprecated, use the ModesServer plugin instead. Once
+    ModesServer has modes set, mode change requests are left to it."""
 
     def __init__(self, server_component):
         self._lib = _cmavsdk_lib
@@ -301,7 +307,7 @@ class ActionServer:
         del _entry
 
     def subscribe_flight_mode_change(self, callback: Callable, user_data: Any = None):
-        """Subscribe to DO_SET_MODE"""
+        """Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)"""
 
         def c_callback(result, c_data, ud):
             try:

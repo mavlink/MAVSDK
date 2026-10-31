@@ -23,6 +23,22 @@ ModesServer::Result ModesServer::set_available_modes(std::vector<Mode> modes) co
     return _impl->set_available_modes(modes);
 }
 
+ModesServer::ModeRequestedHandle
+ModesServer::subscribe_mode_requested(const ModeRequestedCallback& callback)
+{
+    return _impl->subscribe_mode_requested(callback);
+}
+
+void ModesServer::unsubscribe_mode_requested(ModeRequestedHandle handle)
+{
+    _impl->unsubscribe_mode_requested(handle);
+}
+
+ModesServer::Result ModesServer::set_current_mode(std::string name) const
+{
+    return _impl->set_current_mode(name);
+}
+
 MAVSDK_PUBLIC bool operator==(const ModesServer::Mode& lhs, const ModesServer::Mode& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.custom_mode == lhs.custom_mode) &&
@@ -54,6 +70,8 @@ MAVSDK_PUBLIC std::string_view to_string(ModesServer::Result const& result)
             return "Success";
         case ModesServer::Result::InvalidModes:
             return "Invalid Modes";
+        case ModesServer::Result::ModeNotFound:
+            return "Mode Not Found";
         default:
             return "Unknown";
     }

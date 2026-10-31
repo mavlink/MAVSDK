@@ -5,15 +5,14 @@
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/modes_server/modes_server.proto)
 
 """
-Announce the flight modes of an autopilot, the counterpart of the Modes plugin.
+Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
 
  The modes are announced using the MAVLink standard modes protocol
- (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE). The current mode
- is the custom mode of the server component.
+ (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE).
 
- This plugin doesn't change modes itself: MAV_CMD_DO_SET_STANDARD_MODE is
- answered as unsupported, so clients fall back to MAV_CMD_DO_SET_MODE, which
- the ActionServer plugin handles.
+ Once modes are set, this plugin also handles mode change requests
+ (MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE and SET_MODE) for those
+ modes, instead of the deprecated flight mode API of the ActionServer plugin.
 """
 
 import ctypes
@@ -36,6 +35,7 @@ class ModesServerResult(IntEnum):
     UNKNOWN = 0
     SUCCESS = 1
     INVALID_MODES = 2
+    MODE_NOT_FOUND = 3
 
 
 class ModesServerError(MavsdkError):
@@ -138,15 +138,14 @@ class Mode:
 
 # ===== Plugin =====
 class ModesServer:
-    """Announce the flight modes of an autopilot, the counterpart of the Modes plugin.
+    """Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
 
     The modes are announced using the MAVLink standard modes protocol
-    (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE). The current mode
-    is the custom mode of the server component.
+    (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE).
 
-    This plugin doesn't change modes itself: MAV_CMD_DO_SET_STANDARD_MODE is
-    answered as unsupported, so clients fall back to MAV_CMD_DO_SET_MODE, which
-    the ActionServer plugin handles."""
+    Once modes are set, this plugin also handles mode change requests
+    (MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE and SET_MODE) for those
+    modes, instead of the deprecated flight mode API of the ActionServer plugin."""
 
     def __init__(self, server_component):
         self._lib = _cmavsdk_lib
@@ -201,6 +200,68 @@ class ModesServer:
 
         return result
 
+    def subscribe_mode_requested(self, callback: Callable, user_data: Any = None):
+        """Subscribe to mode change requests.
+
+        Requests for a mode in the list are accepted and reported here. The
+        vehicle should then switch and call SetCurrentMode, or call
+        SetCurrentMode with the mode it stays in if it can't switch."""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = Mode.from_c_struct(c_data)
+
+                self._lib.mavsdk_modes_server_mode_destroy(ctypes.byref(c_data))
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in mode_requested callback: {e}")
+
+        cb = ModeRequestedCallback(c_callback)
+
+        _subscription = self._lib.mavsdk_modes_server_subscribe_mode_requested(
+            self._require_handle(), cb, None
+        )
+
+        self._subscriptions[_subscription] = (
+            cb,
+            self._lib.mavsdk_modes_server_unsubscribe_mode_requested,
+        )
+
+        return _subscription
+
+    def unsubscribe_mode_requested(self, handle: ctypes.c_void_p):
+        """Unsubscribe from mode_requested
+
+        Idempotent. Does nothing once the plugin is destroyed, which unsubscribes
+        already.
+        """
+        with self._destroy_lock:
+            if not self._handle:
+                return
+            # Holds the callback trampoline until the C unsubscribe has returned.
+            _entry = self._subscriptions.pop(handle, None)
+            if _entry is None:
+                return
+            _plugin_handle = self._handle
+
+        self._lib.mavsdk_modes_server_unsubscribe_mode_requested(_plugin_handle, handle)
+        del _entry
+
+    def set_current_mode(self, name):
+        """Get set_current_mode (blocking)"""
+
+        result_code = self._lib.mavsdk_modes_server_set_current_mode(
+            self._require_handle(),
+            name.encode("utf-8") if isinstance(name, str) else name,
+        )
+        result = ModesServerResult(result_code)
+        if result != ModesServerResult.SUCCESS:
+            raise ModesServerError(result, "set_current_mode()", name)
+
+        return result
+
     def _require_handle(self) -> ctypes.c_void_p:
         """Fail loudly rather than dereferencing a null handle in C.
 
@@ -242,6 +303,7 @@ class ModesServer:
 
 
 # ===== Callback Types =====
+ModeRequestedCallback = ctypes.CFUNCTYPE(None, ModeCStruct, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_modes_server_create.argtypes = [ctypes.c_void_p]
@@ -273,3 +335,25 @@ _cmavsdk_lib.mavsdk_modes_server_set_available_modes.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_modes_server_set_available_modes.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_modes_server_subscribe_mode_requested.argtypes = [
+    ctypes.c_void_p,
+    ModeRequestedCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_modes_server_subscribe_mode_requested.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_modes_server_unsubscribe_mode_requested.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_modes_server_unsubscribe_mode_requested.restype = None
+
+
+_cmavsdk_lib.mavsdk_modes_server_set_current_mode.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+]
+
+_cmavsdk_lib.mavsdk_modes_server_set_current_mode.restype = ctypes.c_int

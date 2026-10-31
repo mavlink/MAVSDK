@@ -132,6 +132,49 @@ jobjectArray toJavaModeArray(
     return result;
 }
 
+struct ModeRequestedCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+
+    ModeRequestedCallbackWrapper(JNIEnv* env, jobject callbackObject)
+        : callback(env, callbackObject), invokeMethod(nullptr) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callbackObject);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/jni/plugins/modes_server/NativeModesServer$Mode;)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()(
+        const mavsdk_modes_server_mode_t value
+    ) const {
+        struct ValueGuard {
+            mavsdk_modes_server_mode_t value;
+            ~ValueGuard() {
+                mavsdk_modes_server_mode_destroy(&value);
+            }
+        } valueGuard{value};
+
+        if (!callback.isValid() || !invokeMethod || !g_jvm) {
+            return;
+        }
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) {
+            return;
+        }
+        jobject javaValue =
+            toJavaMode(env, value);
+        env->CallVoidMethod(callback.get(), invokeMethod
+            , javaValue
+        );
+        env->DeleteLocalRef(javaValue);
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
 
 } // namespace
 
@@ -179,6 +222,73 @@ JNICALL Java_io_mavsdk_jni_plugins_modes_1server_NativeModesServer_setAvailableM
             reinterpret_cast<mavsdk_modes_server_t>(handle),
             modesValues.values.data(),
 modesValues.values.size());
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_plugins_modes_1server_NativeModesServer_subscribeModeRequested(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject callback) {
+    if (!requireHandle(env, handle, "ModesServer plugin") || !callback) {
+        return 0;
+    }
+
+    auto* wrapper = new ModeRequestedCallbackWrapper(env, callback);
+    auto subscriptionHandle =
+        mavsdk_modes_server_subscribe_mode_requested(
+            reinterpret_cast<mavsdk_modes_server_t>(handle),
+            [](
+               const mavsdk_modes_server_mode_t value,
+               void* userData) {
+                auto* callbackWrapper =
+                    static_cast<ModeRequestedCallbackWrapper*>(userData);
+                (*callbackWrapper)(value);
+            },
+            wrapper);
+    auto* handlePair = new std::pair<
+        mavsdk_modes_server_mode_requested_handle_t,
+        ModeRequestedCallbackWrapper*>(subscriptionHandle, wrapper);
+    return reinterpret_cast<jlong>(handlePair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_plugins_modes_1server_NativeModesServer_unsubscribeModeRequested(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jlong subscriptionHandle) {
+    if (!requireHandle(env, handle, "ModesServer plugin") ||
+        !subscriptionHandle) {
+        return;
+    }
+    auto* handlePair = reinterpret_cast<std::pair<
+        mavsdk_modes_server_mode_requested_handle_t,
+        ModeRequestedCallbackWrapper*>*>(subscriptionHandle);
+    mavsdk_modes_server_unsubscribe_mode_requested(
+        reinterpret_cast<mavsdk_modes_server_t>(handle),
+        handlePair->first);
+    delete handlePair->second;
+    delete handlePair;
+}
+
+JNIEXPORT
+jint
+JNICALL Java_io_mavsdk_jni_plugins_modes_1server_NativeModesServer_setCurrentMode(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jobject name) {
+    if (!requireHandle(env, handle, "ModesServer plugin")) {
+        return {};
+    }
+    JStringHolder nameHolder(
+        env, static_cast<jstring>(name));
+    mavsdk_modes_server_result_t result =
+        mavsdk_modes_server_set_current_mode(
+            reinterpret_cast<mavsdk_modes_server_t>(handle),
+            const_cast<char*>(nameHolder.c_str()));
     return static_cast<jint>(result);
 }
 

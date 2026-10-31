@@ -2,15 +2,14 @@
 # Edits need to be made to the proto files
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/modes_server/modes_server.proto)
 """
-Announce the flight modes of an autopilot, the counterpart of the Modes plugin.
+Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
 
  The modes are announced using the MAVLink standard modes protocol
- (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE). The current mode
- is the custom mode of the server component.
+ (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE).
 
- This plugin doesn't change modes itself: MAV_CMD_DO_SET_STANDARD_MODE is
- answered as unsupported, so clients fall back to MAV_CMD_DO_SET_MODE, which
- the ActionServer plugin handles.
+ Once modes are set, this plugin also handles mode change requests
+ (MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE and SET_MODE) for those
+ modes, instead of the deprecated flight mode API of the ActionServer plugin.
 """
 
 from .modes_server import ModesServerAsync

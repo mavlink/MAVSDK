@@ -3,15 +3,14 @@
 # Edits need to be made to the proto files
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/modes_server/modes_server.proto)
 """
-Announce the flight modes of an autopilot, the counterpart of the Modes plugin.
+Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
 
  The modes are announced using the MAVLink standard modes protocol
- (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE). The current mode
- is the custom mode of the server component.
+ (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE).
 
- This plugin doesn't change modes itself: MAV_CMD_DO_SET_STANDARD_MODE is
- answered as unsupported, so clients fall back to MAV_CMD_DO_SET_MODE, which
- the ActionServer plugin handles.
+ Once modes are set, this plugin also handles mode change requests
+ (MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE and SET_MODE) for those
+ modes, instead of the deprecated flight mode API of the ActionServer plugin.
 """
 
 import asyncio
@@ -26,15 +25,14 @@ from mavsdk.plugins.modes_server import (
 
 class ModesServerAsync:
     """
-       Announce the flight modes of an autopilot, the counterpart of the Modes plugin.
+       Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
 
     The modes are announced using the MAVLink standard modes protocol
-    (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE). The current mode
-    is the custom mode of the server component.
+    (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE).
 
-    This plugin doesn't change modes itself: MAV_CMD_DO_SET_STANDARD_MODE is
-    answered as unsupported, so clients fall back to MAV_CMD_DO_SET_MODE, which
-    the ActionServer plugin handles.
+    Once modes are set, this plugin also handles mode change requests
+    (MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE and SET_MODE) for those
+    modes, instead of the deprecated flight mode API of the ActionServer plugin.
 
        Async wrapper around :class:`ModesServer` that mirrors the gRPC-based
        asyncio API while using the ctypes-based C library directly.
@@ -48,6 +46,7 @@ class ModesServerAsync:
                Set the modes the vehicle provides.
 
         Ground stations are told that the list changed so they download it again.
+        From then on, mode change requests are handled by this plugin.
 
                Parameters
                ----------
@@ -60,6 +59,49 @@ class ModesServerAsync:
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, lambda: self._plugin.set_available_modes(modes)
+        )
+
+    async def subscribe_mode_requested(self) -> AsyncGenerator[Mode, None]:
+        """
+               Subscribe to mode change requests.
+
+        Requests for a mode in the list are accepted and reported here. The
+        vehicle should then switch and call SetCurrentMode, or call
+        SetCurrentMode with the mode it stays in if it can't switch.
+
+               Yields
+               ------
+               mode : Mode
+                    The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_mode_requested(callback)
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            self._plugin.unsubscribe_mode_requested(handle)
+
+    async def set_current_mode(self, name):
+        """
+        Set the mode the vehicle is in.
+
+        Parameters
+        ----------
+        name : str
+        Raises
+        ------
+        ModesServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.set_current_mode(name)
         )
 
     def destroy(self):

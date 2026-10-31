@@ -16,6 +16,9 @@ extern "C" {
 
 /**
  * @brief Provide vehicle actions (as a server) such as arming, taking off, and landing.
+ *
+ * The flight mode API is deprecated, use the ModesServer plugin instead. Once
+ * ModesServer has modes set, mode change requests are left to it.
  */
 
 // ===== Forward Declarations =====
@@ -313,7 +316,7 @@ CMAVSDK_EXPORT void mavsdk_action_server_unsubscribe_arm_disarm(
 
 
 /**
- * @brief Subscribe to DO_SET_MODE
+ * @brief Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)
  *
  * @param action_server The action_server instance.
  *

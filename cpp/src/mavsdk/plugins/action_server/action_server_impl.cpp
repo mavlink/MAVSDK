@@ -192,7 +192,13 @@ void ActionServerImpl::init()
     // Flight mode (long)
     _server_component_impl->register_mavlink_command_handler(
         MAV_CMD_DO_SET_MODE,
-        [this](const MavlinkCommandReceiver::CommandLong& command) {
+        [this](const MavlinkCommandReceiver::CommandLong& command)
+            -> std::optional<mavlink_command_ack_t> {
+            // ModesServer handles mode changes once it has modes.
+            if (_server_component_impl->modes_server_handles_mode_changes()) {
+                return std::nullopt;
+            }
+
             auto base_mode = static_cast<uint8_t>(command.params.param1);
             auto is_custom = (base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) ==
                              MAV_MODE_FLAG_CUSTOM_MODE_ENABLED;
@@ -284,6 +290,11 @@ void ActionServerImpl::init()
     _server_component_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_SET_MODE,
         [this](const mavlink_message_t& message) {
+            // ModesServer handles mode changes once it has modes.
+            if (_server_component_impl->modes_server_handles_mode_changes()) {
+                return;
+            }
+
             mavlink_set_mode_t set_mode;
             mavlink_msg_set_mode_decode(&message, &set_mode);
 

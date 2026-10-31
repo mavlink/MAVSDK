@@ -5,15 +5,19 @@
 
 package io.mavsdk.kotlin.plugins.modes_server
 
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+
 /**
- * Announce the flight modes of an autopilot, the counterpart of the Modes plugin.
+ * Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
  *
  * The modes are announced using the MAVLink standard modes protocol (AVAILABLE_MODES,
- * AVAILABLE_MODES_MONITOR, CURRENT_MODE). The current mode is the custom mode of the server
- * component.
+ * AVAILABLE_MODES_MONITOR, CURRENT_MODE).
  *
- * This plugin doesn't change modes itself: MAV_CMD_DO_SET_STANDARD_MODE is answered as unsupported,
- * so clients fall back to MAV_CMD_DO_SET_MODE, which the ActionServer plugin handles.
+ * Once modes are set, this plugin also handles mode change requests (MAV_CMD_DO_SET_STANDARD_MODE,
+ * MAV_CMD_DO_SET_MODE and SET_MODE) for those modes, instead of the deprecated flight mode API of
+ * the ActionServer plugin.
  */
 class ModesServer internal constructor(private val native: ModesServerNative) {
     private var closed = false
@@ -25,10 +29,12 @@ class ModesServer internal constructor(private val native: ModesServerNative) {
         /** Request was successful */
         SUCCESS(1),
         /**
-         * Modes are invalid, e.g. a name or custom mode is used twice, or a standard mode name is
-         * unknown
+         * Modes are invalid, e.g. none are given, a name or custom mode is used twice, or a
+         * standard mode name is unknown
          */
-        INVALID_MODES(2);
+        INVALID_MODES(2),
+        /** No available mode with this name */
+        MODE_NOT_FOUND(3);
 
         companion object {
             fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
@@ -58,13 +64,36 @@ class ModesServer internal constructor(private val native: ModesServerNative) {
     /**
      * Set the modes the vehicle provides.
      *
-     * Ground stations are told that the list changed so they download it again.
+     * Ground stations are told that the list changed so they download it again. From then on, mode
+     * change requests are handled by this plugin.
      *
      * @param modes The available modes
      * @return The result of the request.
      */
     fun setAvailableModes(modes: List<Mode>): Result =
         Result.fromValue(native.setAvailableModes(modes))
+
+    /**
+     * Subscribe to mode change requests.
+     *
+     * Requests for a mode in the list are accepted and reported here. The vehicle should then
+     * switch and call SetCurrentMode, or call SetCurrentMode with the mode it stays in if it can't
+     * switch.
+     *
+     * @return The requested mode
+     */
+    fun subscribeModeRequested(): Flow<Mode> = callbackFlow {
+        val subscriptionHandle = native.subscribeModeRequested() { value -> trySend(value) }
+        awaitClose { native.unsubscribeModeRequested(subscriptionHandle) }
+    }
+
+    /**
+     * Set the mode the vehicle is in.
+     *
+     * @param name Name of the mode, one of the available modes
+     * @return The result of the request.
+     */
+    fun setCurrentMode(name: String): Result = Result.fromValue(native.setCurrentMode(name))
 
     internal fun destroy() {
         if (closed) return
@@ -77,6 +106,12 @@ class ModesServer internal constructor(private val native: ModesServerNative) {
 
 internal interface ModesServerNative {
     fun setAvailableModes(modes: List<ModesServer.Mode>): Int
+
+    fun subscribeModeRequested(callback: (ModesServer.Mode) -> Unit): Long
+
+    fun unsubscribeModeRequested(subscriptionHandle: Long)
+
+    fun setCurrentMode(name: String): Int
 
     fun destroy()
 }
