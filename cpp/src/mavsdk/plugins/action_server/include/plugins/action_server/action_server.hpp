@@ -27,6 +27,9 @@ class ActionServerImpl;
 
 /**
  * @brief Provide vehicle actions (as a server) such as arming, taking off, and landing.
+ *
+ * The flight mode API is deprecated, use the ModesServer plugin instead. Once
+ * ModesServer has modes set, mode change requests are left to it.
  */
 class MAVSDK_PUBLIC ActionServer : public ServerPluginBase {
 public:
@@ -235,7 +238,7 @@ public:
     using FlightModeChangeHandle = Handle<Result, FlightMode>;
 
     /**
-     * @brief Subscribe to DO_SET_MODE
+     * @brief Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)
      */
     FlightModeChangeHandle subscribe_flight_mode_change(const FlightModeChangeCallback& callback);
 
@@ -447,7 +450,7 @@ public:
 
 
     /**
-     * @brief Set which modes the vehicle can transition to (Manual always allowed)
+     * @brief Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
      *
      * This function is blocking.
      *
@@ -463,7 +466,7 @@ public:
 
 
     /**
-     * @brief Get which modes the vehicle can transition to (Manual always allowed)
+     * @brief Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
      *
      * This function is blocking.
      *
@@ -493,7 +496,7 @@ public:
 
 
     /**
-     * @brief Set/override the flight mode of the vehicle directly, and notify subscribers
+     * @brief Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use the ModesServer plugin instead)
      *
      * This function is blocking.
      *
@@ -509,7 +512,7 @@ public:
 
 
     /**
-     * @brief Set/override the flight mode of the vehicle directly, and *do not* notify subscribers
+     * @brief Set/override the flight mode of the vehicle directly, and *do not* notify subscribers (deprecated, use the ModesServer plugin instead)
      *
      * This function is blocking.
      *

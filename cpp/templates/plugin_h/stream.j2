@@ -37,9 +37,15 @@ void unsubscribe_{{ name.lower_snake_case }}({{ name.upper_camel_case }}Handle h
 
 {% if is_sync %}
 /**
+{%- if return_type.is_repeated %}
+ * @brief Poll for the list of '{{ return_type.inner_name }}' (blocking).
+ *
+ * @return The current list of {{ return_type.inner_name }}.
+{%- else %}
  * @brief Poll for '{{ return_type.name }}' (blocking).
  *
  * @return One {{ return_type.name }} update.
+{%- endif %}
  */
 {{ return_type.name }} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}) const;
 {% endif %}

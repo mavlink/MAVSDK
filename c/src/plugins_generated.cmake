@@ -27,6 +27,8 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/mission_raw/mission_raw.cpp
     cmavsdk/plugins/mission_raw_server/mission_raw_server.cpp
     cmavsdk/plugins/mocap/mocap.cpp
+    cmavsdk/plugins/modes/modes.cpp
+    cmavsdk/plugins/modes_server/modes_server.cpp
     cmavsdk/plugins/offboard/offboard.cpp
     cmavsdk/plugins/param/param.cpp
     cmavsdk/plugins/param_server/param_server.cpp
@@ -67,6 +69,8 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/mission_raw/mission_raw.h
     cmavsdk/plugins/mission_raw_server/mission_raw_server.h
     cmavsdk/plugins/mocap/mocap.h
+    cmavsdk/plugins/modes/modes.h
+    cmavsdk/plugins/modes_server/modes_server.h
     cmavsdk/plugins/offboard/offboard.h
     cmavsdk/plugins/param/param.h
     cmavsdk/plugins/param_server/param_server.h
