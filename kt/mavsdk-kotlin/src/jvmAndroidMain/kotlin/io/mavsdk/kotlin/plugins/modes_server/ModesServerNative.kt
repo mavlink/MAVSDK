@@ -5,6 +5,7 @@
 package io.mavsdk.kotlin.plugins.modes_server
 
 import io.mavsdk.jni.plugins.modes_server.NativeModesServer
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
@@ -22,6 +23,7 @@ private class ModesServerNativeImpl(private val handle: Long) : ModesServerNativ
     // and cancelling a subscription does not queue behind a slow blocking call.
     private val lifecycle = ReentrantReadWriteLock()
     @Volatile private var destroyed = false
+    private val activeSubscriptions = ConcurrentHashMap<Long, () -> Unit>()
 
     private inline fun <Value> withOpen(action: () -> Value): Value = lifecycle.read {
         check(!destroyed) { "ModesServer is closed" }
@@ -32,10 +34,37 @@ private class ModesServerNativeImpl(private val handle: Long) : ModesServerNativ
         NativeModesServer.setAvailableModes(handle, modes.map { it.toNative() }.toTypedArray())
     }
 
+    override fun subscribeModeRequested(callback: (ModesServer.Mode) -> Unit): Long = withOpen {
+        val subscriptionHandle =
+            NativeModesServer.subscribeModeRequested(
+                handle,
+                NativeModesServer.ModeRequestedCallback { value -> callback(value.toKotlin()) },
+            )
+        if (subscriptionHandle != 0L) {
+            activeSubscriptions[subscriptionHandle] = {
+                NativeModesServer.unsubscribeModeRequested(handle, subscriptionHandle)
+            }
+        }
+        subscriptionHandle
+    }
+
+    override fun unsubscribeModeRequested(subscriptionHandle: Long) {
+        // No destroyed check: flow cancellation races teardown, and destroy() already
+        // drained the map, so this is a no-op rather than an error after close.
+        lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
+    }
+
+    override fun setCurrentMode(name: String): Int = withOpen {
+        NativeModesServer.setCurrentMode(handle, name)
+    }
+
     override fun destroy() {
         lifecycle.write {
             if (destroyed) return
             destroyed = true
+            activeSubscriptions.keys.toList().forEach { subscriptionHandle ->
+                activeSubscriptions.remove(subscriptionHandle)?.invoke()
+            }
             NativeModesServer.destroy(handle)
         }
     }

@@ -129,6 +129,8 @@ public:
                 return rpc::modes_server::ModesServerResult_Result_RESULT_SUCCESS;
             case mavsdk::ModesServer::Result::InvalidModes:
                 return rpc::modes_server::ModesServerResult_Result_RESULT_INVALID_MODES;
+            case mavsdk::ModesServer::Result::ModeNotFound:
+                return rpc::modes_server::ModesServerResult_Result_RESULT_MODE_NOT_FOUND;
         }
     }
 
@@ -144,6 +146,8 @@ public:
                 return mavsdk::ModesServer::Result::Success;
             case rpc::modes_server::ModesServerResult_Result_RESULT_INVALID_MODES:
                 return mavsdk::ModesServer::Result::InvalidModes;
+            case rpc::modes_server::ModesServerResult_Result_RESULT_MODE_NOT_FOUND:
+                return mavsdk::ModesServer::Result::ModeNotFound;
         }
     }
 
@@ -179,6 +183,83 @@ public:
             
         
         auto result = _lazy_plugin.maybe_plugin()->set_available_modes(modes_vec);
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeModeRequested(grpc::ServerContext* /* context */, const mavsdk::rpc::modes_server::SubscribeModeRequestedRequest* /* request */, grpc::ServerWriter<rpc::modes_server::ModeRequestedResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::ModesServer::ModeRequestedHandle handle = _lazy_plugin.maybe_plugin()->subscribe_mode_requested(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::ModesServer::Mode mode_requested) {
+
+            rpc::modes_server::ModeRequestedResponse rpc_response;
+        
+            rpc_response.set_allocated_mode(translateToRpcMode(mode_requested).release());
+        
+
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_mode_requested(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetCurrentMode(
+        grpc::ServerContext* /* context */,
+        const rpc::modes_server::SetCurrentModeRequest* request,
+        rpc::modes_server::SetCurrentModeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::ModesServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("SetCurrentMode sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_current_mode(request->name());
         
 
         

@@ -175,6 +175,13 @@ public:
     void set_custom_mode(uint32_t custom_mode);
     [[nodiscard]] uint32_t get_custom_mode() const;
 
+    // Set while ModesServer handles mode change requests, ActionServer leaves them alone then.
+    void set_modes_server_handles_mode_changes(bool handles);
+    [[nodiscard]] bool modes_server_handles_mode_changes() const;
+
+    // The MAV_AUTOPILOT we report in the heartbeat.
+    [[nodiscard]] uint8_t get_mav_autopilot() const;
+
     void call_user_callback_located(
         const std::string& filename, const int linenumber, const std::function<void()>& func);
 
@@ -222,6 +229,7 @@ private:
     std::atomic<MAV_STATE> _system_status{MAV_STATE_UNINIT};
     std::atomic<uint8_t> _base_mode{0};
     std::atomic<uint32_t> _custom_mode{0};
+    std::atomic<bool> _modes_server_handles_mode_changes{false};
 
     std::mutex _autopilot_version_mutex{};
     AutopilotVersion _autopilot_version{};

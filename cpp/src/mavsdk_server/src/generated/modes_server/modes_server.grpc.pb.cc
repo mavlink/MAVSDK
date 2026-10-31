@@ -25,6 +25,8 @@ namespace modes_server {
 
 static const char* ModesServerService_method_names[] = {
   "/mavsdk.rpc.modes_server.ModesServerService/SetAvailableModes",
+  "/mavsdk.rpc.modes_server.ModesServerService/SubscribeModeRequested",
+  "/mavsdk.rpc.modes_server.ModesServerService/SetCurrentMode",
 };
 
 std::unique_ptr< ModesServerService::Stub> ModesServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -35,6 +37,8 @@ std::unique_ptr< ModesServerService::Stub> ModesServerService::NewStub(const std
 
 ModesServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_SetAvailableModes_(ModesServerService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeModeRequested_(ModesServerService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SetCurrentMode_(ModesServerService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ModesServerService::Stub::SetAvailableModes(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetAvailableModesRequest& request, ::mavsdk::rpc::modes_server::SetAvailableModesResponse* response) {
@@ -60,6 +64,45 @@ void ModesServerService::Stub::async::SetAvailableModes(::grpc::ClientContext* c
   return result;
 }
 
+::grpc::ClientReader< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* ModesServerService::Stub::SubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::modes_server::ModeRequestedResponse>::Create(channel_.get(), rpcmethod_SubscribeModeRequested_, context, request);
+}
+
+void ModesServerService::Stub::async::SubscribeModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::modes_server::ModeRequestedResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeModeRequested_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* ModesServerService::Stub::AsyncSubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::modes_server::ModeRequestedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeModeRequested_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* ModesServerService::Stub::PrepareAsyncSubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::modes_server::ModeRequestedResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeModeRequested_, context, request, false, nullptr);
+}
+
+::grpc::Status ModesServerService::Stub::SetCurrentMode(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::modes_server::SetCurrentModeRequest, ::mavsdk::rpc::modes_server::SetCurrentModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetCurrentMode_, context, request, response);
+}
+
+void ModesServerService::Stub::async::SetCurrentMode(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::modes_server::SetCurrentModeRequest, ::mavsdk::rpc::modes_server::SetCurrentModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMode_, context, request, response, std::move(f));
+}
+
+void ModesServerService::Stub::async::SetCurrentMode(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetCurrentMode_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>* ModesServerService::Stub::PrepareAsyncSetCurrentModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::modes_server::SetCurrentModeResponse, ::mavsdk::rpc::modes_server::SetCurrentModeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetCurrentMode_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>* ModesServerService::Stub::AsyncSetCurrentModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetCurrentModeRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ModesServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ModesServerService_method_names[0],
@@ -71,12 +114,46 @@ ModesServerService::Service::Service() {
              ::mavsdk::rpc::modes_server::SetAvailableModesResponse* resp) {
                return service->SetAvailableModes(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ModesServerService_method_names[1],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< ModesServerService::Service, ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest, ::mavsdk::rpc::modes_server::ModeRequestedResponse>(
+          [](ModesServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::modes_server::ModeRequestedResponse>* writer) {
+               return service->SubscribeModeRequested(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ModesServerService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ModesServerService::Service, ::mavsdk::rpc::modes_server::SetCurrentModeRequest, ::mavsdk::rpc::modes_server::SetCurrentModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](ModesServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* req,
+             ::mavsdk::rpc::modes_server::SetCurrentModeResponse* resp) {
+               return service->SetCurrentMode(ctx, req, resp);
+             }, this)));
 }
 
 ModesServerService::Service::~Service() {
 }
 
 ::grpc::Status ModesServerService::Service::SetAvailableModes(::grpc::ServerContext* context, const ::mavsdk::rpc::modes_server::SetAvailableModesRequest* request, ::mavsdk::rpc::modes_server::SetAvailableModesResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ModesServerService::Service::SubscribeModeRequested(::grpc::ServerContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ModesServerService::Service::SetCurrentMode(::grpc::ServerContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response) {
   (void) context;
   (void) request;
   (void) response;

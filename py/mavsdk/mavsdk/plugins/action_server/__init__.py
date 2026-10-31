@@ -4,6 +4,9 @@
 
 """
 Provide vehicle actions (as a server) such as arming, taking off, and landing.
+
+ The flight mode API is deprecated, use the ModesServer plugin instead. Once
+ ModesServer has modes set, mode change requests are left to it.
 """
 
 # Import main plugin class

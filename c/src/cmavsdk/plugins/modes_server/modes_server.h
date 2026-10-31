@@ -15,15 +15,14 @@ extern "C" {
 #endif
 
 /**
- * @brief Announce the flight modes of an autopilot, the counterpart of the Modes plugin.
+ * @brief Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
  *
  * The modes are announced using the MAVLink standard modes protocol
- * (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE). The current mode
- * is the custom mode of the server component.
+ * (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE).
  *
- * This plugin doesn't change modes itself: MAV_CMD_DO_SET_STANDARD_MODE is
- * answered as unsupported, so clients fall back to MAV_CMD_DO_SET_MODE, which
- * the ActionServer plugin handles.
+ * Once modes are set, this plugin also handles mode change requests
+ * (MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE and SET_MODE) for those
+ * modes, instead of the deprecated flight mode API of the ActionServer plugin.
  */
 
 // ===== Forward Declarations =====
@@ -31,6 +30,7 @@ typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
 
 // ===== Opaque Handles =====
 typedef struct mavsdk_modes_server_s *mavsdk_modes_server_t;
+typedef struct mavsdk_modes_server_mode_requested_handle_s *mavsdk_modes_server_mode_requested_handle_t;
 
 // ===== Enums =====
 
@@ -90,8 +90,10 @@ typedef enum {
     MAVSDK_MODES_SERVER_RESULT_UNKNOWN = 0,
     /**  Request was successful. */
     MAVSDK_MODES_SERVER_RESULT_SUCCESS = 1,
-    /**  Modes are invalid, e.g. a name or custom mode is used twice, or a standard mode name is unknown. */
+    /**  Modes are invalid, e.g. none are given, a name or custom mode is used twice, or a standard mode name is unknown. */
     MAVSDK_MODES_SERVER_RESULT_INVALID_MODES = 2,
+    /**  No available mode with this name. */
+    MAVSDK_MODES_SERVER_RESULT_MODE_NOT_FOUND = 3,
 } mavsdk_modes_server_result_t;
 
 
@@ -173,6 +175,7 @@ CMAVSDK_EXPORT void mavsdk_modes_server_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_modes_server_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
+typedef void (*mavsdk_modes_server_mode_requested_callback_t)(const mavsdk_modes_server_mode_t mode, void* user_data);
 
 // ===== ModesServer Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_modes_server_t mavsdk_modes_server_create(mavsdk_server_component_t server_component);
@@ -194,6 +197,52 @@ mavsdk_modes_server_set_available_modes(
     mavsdk_modes_server_t modes_server,
     const mavsdk_modes_server_mode_t* modes,
     size_t modes_size);
+
+
+/**
+ * @brief Subscribe to mode change requests.
+ * 
+ *  Requests for a mode in the list are accepted and reported here. The
+ *  vehicle should then switch and call SetCurrentMode, or call
+ *  SetCurrentMode with the mode it stays in if it can't switch.
+ *
+ * @param modes_server The modes_server instance.
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_modes_server_unsubscribe_mode_requested() to unsubscribe.
+ */
+CMAVSDK_EXPORT mavsdk_modes_server_mode_requested_handle_t mavsdk_modes_server_subscribe_mode_requested(
+    mavsdk_modes_server_t modes_server,
+    mavsdk_modes_server_mode_requested_callback_t callback,
+    void* user_data);
+
+/**
+ * @brief Unsubscribe from 'mode_requested' updates.
+ *
+ * Stops the subscription and frees resources associated with the handle.
+ *
+ * @param modes_server The modes_server instance.
+ * @param handle The subscription handle returned by mavsdk_modes_server_subscribe_mode_requested().
+ */
+CMAVSDK_EXPORT void mavsdk_modes_server_unsubscribe_mode_requested(
+    mavsdk_modes_server_t modes_server,
+    mavsdk_modes_server_mode_requested_handle_t);
+
+
+/**
+ * @brief Get the current set current mode (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_current_mode_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_modes_server_result_t
+mavsdk_modes_server_set_current_mode(
+    mavsdk_modes_server_t modes_server,
+    char* name);
 
 
 #ifdef __cplusplus

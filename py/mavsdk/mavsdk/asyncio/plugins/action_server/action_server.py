@@ -4,6 +4,9 @@
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/action_server/action_server.proto)
 """
 Provide vehicle actions (as a server) such as arming, taking off, and landing.
+
+ The flight mode API is deprecated, use the ModesServer plugin instead. Once
+ ModesServer has modes set, mode change requests are left to it.
 """
 
 import asyncio
@@ -20,10 +23,13 @@ from mavsdk.plugins.action_server import (
 
 class ActionServerAsync:
     """
-    Provide vehicle actions (as a server) such as arming, taking off, and landing.
+       Provide vehicle actions (as a server) such as arming, taking off, and landing.
 
-    Async wrapper around :class:`ActionServer` that mirrors the gRPC-based
-    asyncio API while using the ctypes-based C library directly.
+    The flight mode API is deprecated, use the ModesServer plugin instead. Once
+    ModesServer has modes set, mode change requests are left to it.
+
+       Async wrapper around :class:`ActionServer` that mirrors the gRPC-based
+       asyncio API while using the ctypes-based C library directly.
     """
 
     def __init__(self, server_component):
@@ -59,7 +65,7 @@ class ActionServerAsync:
         self,
     ) -> AsyncGenerator[Tuple[ActionServerResult, FlightMode], None]:
         """
-        Subscribe to DO_SET_MODE
+        Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)
 
         Yields
         ------
@@ -266,7 +272,7 @@ class ActionServerAsync:
 
     async def set_allowable_flight_modes(self, flight_modes):
         """
-        Set which modes the vehicle can transition to (Manual always allowed)
+        Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
 
         Parameters
         ----------
@@ -283,7 +289,7 @@ class ActionServerAsync:
 
     async def get_allowable_flight_modes(self):
         """
-        Get which modes the vehicle can transition to (Manual always allowed)
+        Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
 
         Returns
         -------
@@ -317,7 +323,7 @@ class ActionServerAsync:
 
     async def set_flight_mode(self, flight_mode):
         """
-        Set/override the flight mode of the vehicle directly, and notify subscribers
+        Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use the ModesServer plugin instead)
 
         Parameters
         ----------
@@ -334,7 +340,7 @@ class ActionServerAsync:
 
     async def set_flight_mode_internal(self, flight_mode):
         """
-        Set/override the flight mode of the vehicle directly, and *do not* notify subscribers
+        Set/override the flight mode of the vehicle directly, and *do not* notify subscribers (deprecated, use the ModesServer plugin instead)
 
         Parameters
         ----------

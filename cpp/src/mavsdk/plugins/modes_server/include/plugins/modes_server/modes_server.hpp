@@ -26,15 +26,14 @@ class ServerComponent;
 class ModesServerImpl;
 
 /**
- * @brief Announce the flight modes of an autopilot, the counterpart of the Modes plugin.
+ * @brief Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
  *
  * The modes are announced using the MAVLink standard modes protocol
- * (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE). The current mode
- * is the custom mode of the server component.
+ * (AVAILABLE_MODES, AVAILABLE_MODES_MONITOR, CURRENT_MODE).
  *
- * This plugin doesn't change modes itself: MAV_CMD_DO_SET_STANDARD_MODE is
- * answered as unsupported, so clients fall back to MAV_CMD_DO_SET_MODE, which
- * the ActionServer plugin handles.
+ * Once modes are set, this plugin also handles mode change requests
+ * (MAV_CMD_DO_SET_STANDARD_MODE, MAV_CMD_DO_SET_MODE and SET_MODE) for those
+ * modes, instead of the deprecated flight mode API of the ActionServer plugin.
  */
 class MAVSDK_PUBLIC ModesServer : public ServerPluginBase {
 public:
@@ -99,7 +98,8 @@ public:
     enum class Result {
         Unknown = 0, /**< @brief Unknown result. */
         Success = 1, /**< @brief Request was successful. */
-        InvalidModes = 2, /**< @brief Modes are invalid, e.g. a name or custom mode is used twice, or a standard mode name is unknown. */
+        InvalidModes = 2, /**< @brief Modes are invalid, e.g. none are given, a name or custom mode is used twice, or a standard mode name is unknown. */
+        ModeNotFound = 3, /**< @brief No available mode with this name. */
     };
 
     /**
@@ -132,6 +132,7 @@ public:
      * @brief Set the modes the vehicle provides.
      *
      * Ground stations are told that the list changed so they download it again.
+     * From then on, mode change requests are handled by this plugin.
      *
      * This function is blocking.
      *
@@ -140,6 +141,55 @@ public:
      
      */
     Result set_available_modes(std::vector<Mode> modes) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_mode_requested.
+     */
+    using ModeRequestedCallback = std::function<void(Mode)>;
+
+    /**
+     * @brief Handle type for subscribe_mode_requested.
+     */
+    using ModeRequestedHandle = Handle<Mode>;
+
+    /**
+     * @brief Subscribe to mode change requests.
+     *
+     * Requests for a mode in the list are accepted and reported here. The
+     * vehicle should then switch and call SetCurrentMode, or call
+     * SetCurrentMode with the mode it stays in if it can't switch.
+     */
+    ModeRequestedHandle subscribe_mode_requested(const ModeRequestedCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_mode_requested
+     */
+    void unsubscribe_mode_requested(ModeRequestedHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Set the mode the vehicle is in.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_current_mode(std::string name) const;
 
 
 

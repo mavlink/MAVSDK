@@ -3,6 +3,9 @@
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/action_server/action_server.proto)
 """
 Provide vehicle actions (as a server) such as arming, taking off, and landing.
+
+ The flight mode API is deprecated, use the ModesServer plugin instead. Once
+ ModesServer has modes set, mode change requests are left to it.
 """
 
 from .action_server import ActionServerAsync

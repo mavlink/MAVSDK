@@ -39,10 +39,21 @@ public final class NativeModesServer {
         }
     }
 
+    @FunctionalInterface
+    public interface ModeRequestedCallback {
+        void invoke(Mode value);
+    }
+
     public static native long create(long systemHandle);
 
     public static native void destroy(long pluginHandle);
 
     public static native int setAvailableModes(long pluginHandle, Mode[] modes);
+
+    public static native long subscribeModeRequested(long pluginHandle, ModeRequestedCallback callback);
+
+    public static native void unsubscribeModeRequested(long pluginHandle, long subscriptionHandle);
+
+    public static native int setCurrentMode(long pluginHandle, String name);
 
 }
