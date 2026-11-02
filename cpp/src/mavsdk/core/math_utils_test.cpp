@@ -246,6 +246,25 @@ TEST(MathUtils, QuaternionIdentityMultiply)
     EXPECT_NEAR(right.z, q.z, 1e-5);
 }
 
+TEST(MathUtils, QuaternionHamiltonProduct)
+{
+    const Quaternion i{0.f, 1.f, 0.f, 0.f};
+    const Quaternion j{0.f, 0.f, 1.f, 0.f};
+
+    EXPECT_EQ(i * j, (Quaternion{0.f, 0.f, 0.f, 1.f}));
+    EXPECT_EQ(j * i, (Quaternion{0.f, 0.f, 0.f, -1.f}));
+
+    const Quaternion lhs{1.f, 2.f, 3.f, 4.f};
+    const Quaternion rhs{5.f, 6.f, 7.f, 8.f};
+    const Quaternion product = lhs * rhs;
+    EXPECT_EQ(product, (Quaternion{-60.f, 12.f, 30.f, 24.f}));
+
+    const auto squared_norm = [](const Quaternion& q) {
+        return q.w * q.w + q.x * q.x + q.y * q.y + q.z * q.z;
+    };
+    EXPECT_FLOAT_EQ(squared_norm(product), squared_norm(lhs) * squared_norm(rhs));
+}
+
 TEST(MathUtils, EulerZeroRoundTrip)
 {
     EulerAngle z{0.f, 0.f, 0.f};
