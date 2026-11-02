@@ -466,18 +466,4 @@ Modes::Result ModesImpl::result_from_command_result(MavlinkCommandSender::Result
     }
 }
 
-void ModesImpl::ensure_unique_names(std::vector<ModeEntry>& entries)
-{
-    // Names are what users select modes by, so they need to be unique. Same scheme as
-    // QGroundControl: append " (1)", " (2)", ... to later duplicates.
-    for (auto it = entries.begin(); it != entries.end(); ++it) {
-        unsigned duplicate_index = 0;
-        for (auto it2 = std::next(it); it2 != entries.end(); ++it2) {
-            if (it2->mode.name == it->mode.name) {
-                it2->mode.name += " (" + std::to_string(++duplicate_index) + ")";
-            }
-        }
-    }
-}
-
 } // namespace mavsdk

@@ -243,4 +243,16 @@ std::vector<ModeEntry> modes_fallback(Autopilot autopilot, MAV_TYPE vehicle_type
     }
 }
 
+void ensure_unique_names(std::vector<ModeEntry>& entries)
+{
+    for (auto it = entries.begin(); it != entries.end(); ++it) {
+        unsigned duplicate_index = 0;
+        for (auto it2 = std::next(it); it2 != entries.end(); ++it2) {
+            if (it2->mode.name == it->mode.name) {
+                it2->mode.name += " (" + std::to_string(++duplicate_index) + ")";
+            }
+        }
+    }
+}
+
 } // namespace mavsdk

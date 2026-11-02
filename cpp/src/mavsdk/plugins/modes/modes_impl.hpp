@@ -62,7 +62,6 @@ private:
     void set_custom_mode(uint32_t custom_mode, const Modes::ResultCallback& callback);
     void call_result_callback(const Modes::ResultCallback& callback, Modes::Result result);
     static Modes::Result result_from_command_result(MavlinkCommandSender::Result result);
-    static void ensure_unique_names(std::vector<ModeEntry>& entries);
 
     mutable std::mutex _mutex{};
 

@@ -22,4 +22,8 @@ struct ModeEntry {
 MAVSDK_TEST_EXPORT std::vector<ModeEntry>
 modes_fallback(Autopilot autopilot, MAV_TYPE vehicle_type);
 
+// Names are what users select modes by, so they need to be unique. Same scheme as
+// QGroundControl: append " (1)", " (2)", ... to later duplicates.
+MAVSDK_TEST_EXPORT void ensure_unique_names(std::vector<ModeEntry>& entries);
+
 } // namespace mavsdk

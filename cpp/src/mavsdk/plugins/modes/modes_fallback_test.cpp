@@ -128,3 +128,21 @@ TEST(ModesFallback, UnknownAutopilot)
 {
     EXPECT_TRUE(modes_fallback(Autopilot::Unknown, MAV_TYPE_QUADROTOR).empty());
 }
+
+TEST(ModesFallback, EnsureUniqueNames)
+{
+    std::vector<ModeEntry> entries;
+    for (const auto* name : {"Hold", "Manual", "Hold", "Hold"}) {
+        ModeEntry entry{};
+        entry.mode.name = name;
+        entries.push_back(entry);
+    }
+
+    ensure_unique_names(entries);
+
+    std::vector<std::string> names;
+    for (const auto& entry : entries) {
+        names.push_back(entry.mode.name);
+    }
+    EXPECT_EQ(names, (std::vector<std::string>{"Hold", "Manual", "Hold (1)", "Hold (2)"}));
+}
