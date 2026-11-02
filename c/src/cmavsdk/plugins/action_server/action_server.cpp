@@ -8,6 +8,15 @@
 #include <cstring>
 #include <vector>
 
+// Wrappers still have to call methods that are marked deprecated.
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
+
 // ===== C++ to C Type Conversions =====
 
 static mavsdk_action_server_result_t

@@ -17,6 +17,7 @@
 #include "server_plugin_base.hpp"
 
 #include "handle.hpp"
+#include "deprecated.hpp"
 #include "mavsdk_export.h"
 
 namespace mavsdk {
@@ -239,13 +240,15 @@ public:
 
     /**
      * @brief Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)
+     *
+     * @deprecated This method is deprecated and may be removed in a future release.
      */
-    FlightModeChangeHandle subscribe_flight_mode_change(const FlightModeChangeCallback& callback);
+    DEPRECATED FlightModeChangeHandle subscribe_flight_mode_change(const FlightModeChangeCallback& callback);
 
     /**
      * @brief Unsubscribe from subscribe_flight_mode_change
      */
-    void unsubscribe_flight_mode_change(FlightModeChangeHandle handle);
+    DEPRECATED void unsubscribe_flight_mode_change(FlightModeChangeHandle handle);
 
         
 
@@ -452,13 +455,15 @@ public:
     /**
      * @brief Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
      *
+     * @deprecated This method is deprecated and may be removed in a future release.
+     *
      * This function is blocking.
      *
      
      * @return Result of request.
      
      */
-    Result set_allowable_flight_modes(AllowableFlightModes flight_modes) const;
+    DEPRECATED Result set_allowable_flight_modes(AllowableFlightModes flight_modes) const;
 
 
 
@@ -468,11 +473,13 @@ public:
     /**
      * @brief Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
      *
+     * @deprecated This method is deprecated and may be removed in a future release.
+     *
      * This function is blocking.
      *
      * @return Result of request.
      */
-    ActionServer::AllowableFlightModes get_allowable_flight_modes() const;
+    DEPRECATED ActionServer::AllowableFlightModes get_allowable_flight_modes() const;
 
 
 
@@ -498,13 +505,15 @@ public:
     /**
      * @brief Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use the ModesServer plugin instead)
      *
+     * @deprecated This method is deprecated and may be removed in a future release.
+     *
      * This function is blocking.
      *
      
      * @return Result of request.
      
      */
-    Result set_flight_mode(FlightMode flight_mode) const;
+    DEPRECATED Result set_flight_mode(FlightMode flight_mode) const;
 
 
 
@@ -514,13 +523,15 @@ public:
     /**
      * @brief Set/override the flight mode of the vehicle directly, and *do not* notify subscribers (deprecated, use the ModesServer plugin instead)
      *
+     * @deprecated This method is deprecated and may be removed in a future release.
+     *
      * This function is blocking.
      *
      
      * @return Result of request.
      
      */
-    Result set_flight_mode_internal(FlightMode flight_mode) const;
+    DEPRECATED Result set_flight_mode_internal(FlightMode flight_mode) const;
 
 
 

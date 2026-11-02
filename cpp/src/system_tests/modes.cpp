@@ -620,6 +620,14 @@ TEST(SystemTest, ModesServerAvailableModes)
     EXPECT_EQ(modes.available_modes().size(), new_modes.size());
 }
 
+// This test checks that ActionServer's deprecated flight mode API leaves modes to ModesServer.
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
 TEST(SystemTest, ModesServerChangesModes)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
@@ -695,6 +703,11 @@ TEST(SystemTest, ModesServerChangesModes)
     }
     EXPECT_EQ(action_server_flight_mode_changes, 0u);
 }
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 TEST(SystemTest, ModesServerGenericAutopilot)
 {
