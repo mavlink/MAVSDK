@@ -1,15 +1,19 @@
 {% if is_async %}
 /**
- * @brief {{ method_description | replace('\n', '\n *')}}
+ * @brief {{ method_description | replace('\n', '\n *')}}{% if is_deprecated %}
+ *
+ * @deprecated This method is deprecated and may be removed in a future release.{% endif %}
  *
  * This function is non-blocking.{% if is_sync %} See '{{ name.lower_snake_case }}' for the blocking counterpart.{% endif %}
  */
-void {{ name.lower_snake_case }}_async({% for param in params %}{% if param.type_info.is_result %}Result{% else %}{{ param.type_info.name }}{% endif %} {{ param.name.lower_snake_case }}, {% endfor %}const ResultCallback callback);
+{% if is_deprecated %}DEPRECATED {% endif %}void {{ name.lower_snake_case }}_async({% for param in params %}{% if param.type_info.is_result %}Result{% else %}{{ param.type_info.name }}{% endif %} {{ param.name.lower_snake_case }}, {% endfor %}const ResultCallback callback);
 {% endif %}
 
 {% if is_sync %}
 /**
- * @brief {{ method_description | replace('\n', '\n *')}}
+ * @brief {{ method_description | replace('\n', '\n *')}}{% if is_deprecated %}
+ *
+ * @deprecated This method is deprecated and may be removed in a future release.{% endif %}
  *
  * This function is blocking.{% if is_async %} See '{{ name.lower_snake_case }}_async' for the non-blocking counterpart.{% endif %}
  *
@@ -17,5 +21,5 @@ void {{ name.lower_snake_case }}_async({% for param in params %}{% if param.type
  * @return Result of request.
  {% endif %}
  */
-{% if has_result %}Result{% else %}void{% endif %} {{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.is_result %}Result{% else %}{{ param.type_info.name }}{% endif %} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
+{% if is_deprecated %}DEPRECATED {% endif %}{% if has_result %}Result{% else %}void{% endif %} {{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.is_result %}Result{% else %}{{ param.type_info.name }}{% endif %} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
 {% endif %}

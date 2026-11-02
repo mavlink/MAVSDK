@@ -6,9 +6,11 @@
 using {{ name.upper_camel_case }}Callback = std::function<void({% if has_result %}Result, {% endif %}{{ return_type.name }})>;
 
 /**
- * @brief {{ method_description | replace('\n', '\n *')}}
+ * @brief {{ method_description | replace('\n', '\n *')}}{% if is_deprecated %}
+ *
+ * @deprecated This method is deprecated and may be removed in a future release.{% endif %}
  */
-void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.upper_camel_case }}Callback& callback);
+{% if is_deprecated %}DEPRECATED {% endif %}void {{ name.lower_snake_case }}_async({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.upper_camel_case }}Callback& callback);
 
     {% else %}
 
@@ -23,14 +25,16 @@ using {{ name.upper_camel_case }}Callback = std::function<void({% if has_result 
 using {{ name.upper_camel_case }}Handle = Handle<{% if has_result %}Result, {% endif %}{{ return_type.name }}>;
 
 /**
- * @brief {{ method_description | replace('\n', '\n *')}}
+ * @brief {{ method_description | replace('\n', '\n *')}}{% if is_deprecated %}
+ *
+ * @deprecated This method is deprecated and may be removed in a future release.{% endif %}
  */
-{{ name.upper_camel_case }}Handle subscribe_{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.upper_camel_case }}Callback& callback);
+{% if is_deprecated %}DEPRECATED {% endif %}{{ name.upper_camel_case }}Handle subscribe_{{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}, {% endfor %}const {{ name.upper_camel_case }}Callback& callback);
 
 /**
  * @brief Unsubscribe from subscribe_{{ name.lower_snake_case }}
  */
-void unsubscribe_{{ name.lower_snake_case }}({{ name.upper_camel_case }}Handle handle);
+{% if is_deprecated %}DEPRECATED {% endif %}void unsubscribe_{{ name.lower_snake_case }}({{ name.upper_camel_case }}Handle handle);
 
     {% endif %}
 {% endif %}
@@ -41,5 +45,5 @@ void unsubscribe_{{ name.lower_snake_case }}({{ name.upper_camel_case }}Handle h
  *
  * @return One {{ return_type.name }} update.
  */
-{{ return_type.name }} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}) const;
+{% if is_deprecated %}DEPRECATED {% endif %}{{ return_type.name }} {{ name.lower_snake_case }}({% for param in params %}{{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}) const;
 {% endif %}

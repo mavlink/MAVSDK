@@ -19,7 +19,8 @@
 #include "plugin_base.hpp"
 {% endif %}
 #include "handle.hpp"
-#include "mavsdk_export.h"
+{% if has_deprecated %}#include "deprecated.hpp"
+{% endif %}#include "mavsdk_export.h"
 
 namespace mavsdk {
 

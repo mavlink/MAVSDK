@@ -21,7 +21,16 @@
 #include <sstream>
 #include <vector>
 
-namespace {{ package.lower_snake_case.split('.')[0] }} {
+{% if has_deprecated %}// Wrappers still have to call methods that are marked deprecated.
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
+
+{% endif %}namespace {{ package.lower_snake_case.split('.')[0] }} {
 namespace mavsdk_server {
 
 {% if is_server %}
@@ -112,4 +121,10 @@ private:
 };
 
 } // namespace mavsdk_server
-} // namespace {{ package.lower_snake_case.split('.')[0] }}
+} // namespace {{ package.lower_snake_case.split('.')[0] }}{% if has_deprecated %}
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+{% endif %}
