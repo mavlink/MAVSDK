@@ -54,6 +54,8 @@ public final class NativeModesServer {
 
     public static native void unsubscribeModeRequested(long pluginHandle, long subscriptionHandle);
 
+    public static native int respondModeRequested(long pluginHandle, int modeFeedback);
+
     public static native int setCurrentMode(long pluginHandle, String name);
 
 }

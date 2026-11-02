@@ -275,6 +275,24 @@ Java_io_mavsdk_jni_plugins_modes_1server_NativeModesServer_unsubscribeModeReques
 
 JNIEXPORT
 jint
+JNICALL Java_io_mavsdk_jni_plugins_modes_1server_NativeModesServer_respondModeRequested(
+    JNIEnv* env,
+    jclass,
+    jlong handle,
+    jint mode_feedback) {
+    if (!requireHandle(env, handle, "ModesServer plugin")) {
+        return {};
+    }
+
+    mavsdk_modes_server_result_t result =
+        mavsdk_modes_server_respond_mode_requested(
+            reinterpret_cast<mavsdk_modes_server_t>(handle),
+            static_cast<mavsdk_modes_server_mode_feedback_t>(mode_feedback));
+    return static_cast<jint>(result);
+}
+
+JNIEXPORT
+jint
 JNICALL Java_io_mavsdk_jni_plugins_modes_1server_NativeModesServer_setCurrentMode(
     JNIEnv* env,
     jclass,

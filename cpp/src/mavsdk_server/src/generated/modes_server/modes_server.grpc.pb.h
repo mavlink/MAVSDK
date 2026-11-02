@@ -61,9 +61,9 @@ class ModesServerService final {
     //
     // Subscribe to mode change requests.
     //
-    // Requests for a mode in the list are accepted and reported here. The
-    // vehicle should then switch and call SetCurrentMode, or call
-    // SetCurrentMode with the mode it stays in if it can't switch.
+    // Requests for a mode in the list are reported here and need to be
+    // answered with RespondModeRequested. Until then, the ground station is
+    // told that the request is in progress.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::modes_server::ModeRequestedResponse>> SubscribeModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::modes_server::ModeRequestedResponse>>(SubscribeModeRequestedRaw(context, request));
     }
@@ -72,6 +72,19 @@ class ModesServerService final {
     }
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::modes_server::ModeRequestedResponse>> PrepareAsyncSubscribeModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::modes_server::ModeRequestedResponse>>(PrepareAsyncSubscribeModeRequestedRaw(context, request, cq));
+    }
+    //
+    // Respond to the last mode change request.
+    //
+    // If the request is accepted, the requested mode becomes the current mode.
+    // Otherwise the vehicle stays in its current mode, e.g. if it can't switch
+    // to Position without GPS.
+    virtual ::grpc::Status RespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>> AsyncRespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>>(AsyncRespondModeRequestedRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>> PrepareAsyncRespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>>(PrepareAsyncRespondModeRequestedRaw(context, request, cq));
     }
     //
     // Set the mode the vehicle is in.
@@ -95,10 +108,18 @@ class ModesServerService final {
       //
       // Subscribe to mode change requests.
       //
-      // Requests for a mode in the list are accepted and reported here. The
-      // vehicle should then switch and call SetCurrentMode, or call
-      // SetCurrentMode with the mode it stays in if it can't switch.
+      // Requests for a mode in the list are reported here and need to be
+      // answered with RespondModeRequested. Until then, the ground station is
+      // told that the request is in progress.
       virtual void SubscribeModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* reactor) = 0;
+      //
+      // Respond to the last mode change request.
+      //
+      // If the request is accepted, the requested mode becomes the current mode.
+      // Otherwise the vehicle stays in its current mode, e.g. if it can't switch
+      // to Position without GPS.
+      virtual void RespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* request, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* request, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
       // Set the mode the vehicle is in.
       virtual void SetCurrentMode(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -113,6 +134,8 @@ class ModesServerService final {
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* SubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* AsyncSubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* PrepareAsyncSubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>* AsyncRespondModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>* PrepareAsyncRespondModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>* AsyncSetCurrentModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>* PrepareAsyncSetCurrentModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -135,6 +158,13 @@ class ModesServerService final {
     std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::modes_server::ModeRequestedResponse>> PrepareAsyncSubscribeModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::modes_server::ModeRequestedResponse>>(PrepareAsyncSubscribeModeRequestedRaw(context, request, cq));
     }
+    ::grpc::Status RespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>> AsyncRespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>>(AsyncRespondModeRequestedRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>> PrepareAsyncRespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>>(PrepareAsyncRespondModeRequestedRaw(context, request, cq));
+    }
     ::grpc::Status SetCurrentMode(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>> AsyncSetCurrentMode(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>>(AsyncSetCurrentModeRaw(context, request, cq));
@@ -148,6 +178,8 @@ class ModesServerService final {
       void SetAvailableModes(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetAvailableModesRequest* request, ::mavsdk::rpc::modes_server::SetAvailableModesResponse* response, std::function<void(::grpc::Status)>) override;
       void SetAvailableModes(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetAvailableModesRequest* request, ::mavsdk::rpc::modes_server::SetAvailableModesResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SubscribeModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* reactor) override;
+      void RespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* request, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* response, std::function<void(::grpc::Status)>) override;
+      void RespondModeRequested(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* request, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SetCurrentMode(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response, std::function<void(::grpc::Status)>) override;
       void SetCurrentMode(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
@@ -166,10 +198,13 @@ class ModesServerService final {
     ::grpc::ClientReader< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* SubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* AsyncSubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* PrepareAsyncSubscribeModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>* AsyncRespondModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>* PrepareAsyncRespondModeRequestedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>* AsyncSetCurrentModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>* PrepareAsyncSetCurrentModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SetAvailableModes_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeModeRequested_;
+    const ::grpc::internal::RpcMethod rpcmethod_RespondModeRequested_;
     const ::grpc::internal::RpcMethod rpcmethod_SetCurrentMode_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -187,10 +222,17 @@ class ModesServerService final {
     //
     // Subscribe to mode change requests.
     //
-    // Requests for a mode in the list are accepted and reported here. The
-    // vehicle should then switch and call SetCurrentMode, or call
-    // SetCurrentMode with the mode it stays in if it can't switch.
+    // Requests for a mode in the list are reported here and need to be
+    // answered with RespondModeRequested. Until then, the ground station is
+    // told that the request is in progress.
     virtual ::grpc::Status SubscribeModeRequested(::grpc::ServerContext* context, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::modes_server::ModeRequestedResponse>* writer);
+    //
+    // Respond to the last mode change request.
+    //
+    // If the request is accepted, the requested mode becomes the current mode.
+    // Otherwise the vehicle stays in its current mode, e.g. if it can't switch
+    // to Position without GPS.
+    virtual ::grpc::Status RespondModeRequested(::grpc::ServerContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* request, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* response);
     //
     // Set the mode the vehicle is in.
     virtual ::grpc::Status SetCurrentMode(::grpc::ServerContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response);
@@ -236,12 +278,32 @@ class ModesServerService final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_RespondModeRequested : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_RespondModeRequested() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_RespondModeRequested() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondModeRequested(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* /*request*/, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondModeRequested(::grpc::ServerContext* context, ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_SetCurrentMode : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetCurrentMode() {
-      ::grpc::Service::MarkMethodAsync(2);
+      ::grpc::Service::MarkMethodAsync(3);
     }
     ~WithAsyncMethod_SetCurrentMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -252,10 +314,10 @@ class ModesServerService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetCurrentMode(::grpc::ServerContext* context, ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::modes_server::SetCurrentModeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetAvailableModes<WithAsyncMethod_SubscribeModeRequested<WithAsyncMethod_SetCurrentMode<Service > > > AsyncService;
+  typedef WithAsyncMethod_SetAvailableModes<WithAsyncMethod_SubscribeModeRequested<WithAsyncMethod_RespondModeRequested<WithAsyncMethod_SetCurrentMode<Service > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SetAvailableModes : public BaseClass {
    private:
@@ -306,18 +368,45 @@ class ModesServerService final {
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithCallbackMethod_RespondModeRequested : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_RespondModeRequested() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::modes_server::RespondModeRequestedRequest, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* request, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* response) { return this->RespondModeRequested(context, request, response); }));}
+    void SetMessageAllocatorFor_RespondModeRequested(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::modes_server::RespondModeRequestedRequest, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::modes_server::RespondModeRequestedRequest, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_RespondModeRequested() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondModeRequested(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* /*request*/, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondModeRequested(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* /*request*/, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithCallbackMethod_SetCurrentMode : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SetCurrentMode() {
-      ::grpc::Service::MarkMethodCallback(2,
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::modes_server::SetCurrentModeRequest, ::mavsdk::rpc::modes_server::SetCurrentModeResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* request, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* response) { return this->SetCurrentMode(context, request, response); }));}
     void SetMessageAllocatorFor_SetCurrentMode(
         ::grpc::MessageAllocator< ::mavsdk::rpc::modes_server::SetCurrentModeRequest, ::mavsdk::rpc::modes_server::SetCurrentModeResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::modes_server::SetCurrentModeRequest, ::mavsdk::rpc::modes_server::SetCurrentModeResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -332,7 +421,7 @@ class ModesServerService final {
     virtual ::grpc::ServerUnaryReactor* SetCurrentMode(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::modes_server::SetCurrentModeRequest* /*request*/, ::mavsdk::rpc::modes_server::SetCurrentModeResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SetAvailableModes<WithCallbackMethod_SubscribeModeRequested<WithCallbackMethod_SetCurrentMode<Service > > > CallbackService;
+  typedef WithCallbackMethod_SetAvailableModes<WithCallbackMethod_SubscribeModeRequested<WithCallbackMethod_RespondModeRequested<WithCallbackMethod_SetCurrentMode<Service > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetAvailableModes : public BaseClass {
@@ -369,12 +458,29 @@ class ModesServerService final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_RespondModeRequested : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_RespondModeRequested() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_RespondModeRequested() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondModeRequested(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* /*request*/, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_SetCurrentMode : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetCurrentMode() {
-      ::grpc::Service::MarkMethodGeneric(2);
+      ::grpc::Service::MarkMethodGeneric(3);
     }
     ~WithGenericMethod_SetCurrentMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -426,12 +532,32 @@ class ModesServerService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_RespondModeRequested : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_RespondModeRequested() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_RespondModeRequested() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondModeRequested(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* /*request*/, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondModeRequested(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_SetCurrentMode : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetCurrentMode() {
-      ::grpc::Service::MarkMethodRaw(2);
+      ::grpc::Service::MarkMethodRaw(3);
     }
     ~WithRawMethod_SetCurrentMode() override {
       BaseClassMustBeDerivedFromService(this);
@@ -442,7 +568,7 @@ class ModesServerService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetCurrentMode(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -490,12 +616,34 @@ class ModesServerService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_RespondModeRequested : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_RespondModeRequested() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondModeRequested(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_RespondModeRequested() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondModeRequested(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* /*request*/, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondModeRequested(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_SetCurrentMode : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SetCurrentMode() {
-      ::grpc::Service::MarkMethodRawCallback(2,
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetCurrentMode(context, request, response); }));
@@ -539,12 +687,39 @@ class ModesServerService final {
     virtual ::grpc::Status StreamedSetAvailableModes(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::modes_server::SetAvailableModesRequest,::mavsdk::rpc::modes_server::SetAvailableModesResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_RespondModeRequested : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_RespondModeRequested() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::modes_server::RespondModeRequestedRequest, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::modes_server::RespondModeRequestedRequest, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse>* streamer) {
+                       return this->StreamedRespondModeRequested(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_RespondModeRequested() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status RespondModeRequested(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::modes_server::RespondModeRequestedRequest* /*request*/, ::mavsdk::rpc::modes_server::RespondModeRequestedResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedRespondModeRequested(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::modes_server::RespondModeRequestedRequest,::mavsdk::rpc::modes_server::RespondModeRequestedResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetCurrentMode : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetCurrentMode() {
-      ::grpc::Service::MarkMethodStreamed(2,
+      ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::modes_server::SetCurrentModeRequest, ::mavsdk::rpc::modes_server::SetCurrentModeResponse>(
             [this](::grpc::ServerContext* context,
@@ -565,7 +740,7 @@ class ModesServerService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetCurrentMode(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::modes_server::SetCurrentModeRequest,::mavsdk::rpc::modes_server::SetCurrentModeResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetAvailableModes<WithStreamedUnaryMethod_SetCurrentMode<Service > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_SetAvailableModes<WithStreamedUnaryMethod_RespondModeRequested<WithStreamedUnaryMethod_SetCurrentMode<Service > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeModeRequested : public BaseClass {
    private:
@@ -594,7 +769,7 @@ class ModesServerService final {
     virtual ::grpc::Status StreamedSubscribeModeRequested(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest,::mavsdk::rpc::modes_server::ModeRequestedResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeModeRequested<Service > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetAvailableModes<WithSplitStreamingMethod_SubscribeModeRequested<WithStreamedUnaryMethod_SetCurrentMode<Service > > > StreamedService;
+  typedef WithStreamedUnaryMethod_SetAvailableModes<WithSplitStreamingMethod_SubscribeModeRequested<WithStreamedUnaryMethod_RespondModeRequested<WithStreamedUnaryMethod_SetCurrentMode<Service > > > > StreamedService;
 };
 
 }  // namespace modes_server

@@ -34,10 +34,32 @@ class ModesServer internal constructor(private val native: ModesServerNative) {
          */
         INVALID_MODES(2),
         /** No available mode with this name */
-        MODE_NOT_FOUND(3);
+        MODE_NOT_FOUND(3),
+        /** There is no mode change request to respond to */
+        NO_REQUEST(4),
+        /** The feedback is unknown */
+        INVALID_FEEDBACK(5);
 
         companion object {
             fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN
+        }
+    }
+
+    /** Possible answers to a mode change request. */
+    enum class ModeFeedback(val value: Int) {
+        /** Unknown */
+        UNKNOWN(0),
+        /** The vehicle switches to the mode */
+        ACCEPTED(1),
+        /** The vehicle can't switch to the mode right now, e.g. it has no GPS */
+        BUSY(2),
+        /** The vehicle doesn't allow switching to the mode */
+        DENIED(3),
+        /** Switching to the mode failed */
+        FAILED(4);
+
+        companion object {
+            fun fromValue(value: Int): ModeFeedback = entries.find { it.value == value } ?: UNKNOWN
         }
     }
 
@@ -76,9 +98,8 @@ class ModesServer internal constructor(private val native: ModesServerNative) {
     /**
      * Subscribe to mode change requests.
      *
-     * Requests for a mode in the list are accepted and reported here. The vehicle should then
-     * switch and call SetCurrentMode, or call SetCurrentMode with the mode it stays in if it can't
-     * switch.
+     * Requests for a mode in the list are reported here and need to be answered with
+     * RespondModeRequested. Until then, the ground station is told that the request is in progress.
      *
      * @return The requested mode
      */
@@ -86,6 +107,18 @@ class ModesServer internal constructor(private val native: ModesServerNative) {
         val subscriptionHandle = native.subscribeModeRequested() { value -> trySend(value) }
         awaitClose { native.unsubscribeModeRequested(subscriptionHandle) }
     }
+
+    /**
+     * Respond to the last mode change request.
+     *
+     * If the request is accepted, the requested mode becomes the current mode. Otherwise the
+     * vehicle stays in its current mode, e.g. if it can't switch to Position without GPS.
+     *
+     * @param modeFeedback The answer to the request
+     * @return The result of the request.
+     */
+    fun respondModeRequested(modeFeedback: ModeFeedback): Result =
+        Result.fromValue(native.respondModeRequested(modeFeedback))
 
     /**
      * Set the mode the vehicle is in.
@@ -110,6 +143,8 @@ internal interface ModesServerNative {
     fun subscribeModeRequested(callback: (ModesServer.Mode) -> Unit): Long
 
     fun unsubscribeModeRequested(subscriptionHandle: Long)
+
+    fun respondModeRequested(modeFeedback: ModesServer.ModeFeedback): Int
 
     fun setCurrentMode(name: String): Int
 

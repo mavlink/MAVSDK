@@ -33,6 +33,22 @@ typedef struct mavsdk_modes_server_s *mavsdk_modes_server_t;
 typedef struct mavsdk_modes_server_mode_requested_handle_s *mavsdk_modes_server_mode_requested_handle_t;
 
 // ===== Enums =====
+/**
+ * @brief Possible answers to a mode change request.
+ */
+typedef enum {
+    /**  Unknown. */
+    MAVSDK_MODES_SERVER_MODE_FEEDBACK_UNKNOWN = 0,
+    /**  The vehicle switches to the mode. */
+    MAVSDK_MODES_SERVER_MODE_FEEDBACK_ACCEPTED = 1,
+    /**  The vehicle can't switch to the mode right now, e.g. it has no GPS. */
+    MAVSDK_MODES_SERVER_MODE_FEEDBACK_BUSY = 2,
+    /**  The vehicle doesn't allow switching to the mode. */
+    MAVSDK_MODES_SERVER_MODE_FEEDBACK_DENIED = 3,
+    /**  Switching to the mode failed. */
+    MAVSDK_MODES_SERVER_MODE_FEEDBACK_FAILED = 4,
+} mavsdk_modes_server_mode_feedback_t;
+
 
 // ===== Structs =====
 /**
@@ -94,6 +110,10 @@ typedef enum {
     MAVSDK_MODES_SERVER_RESULT_INVALID_MODES = 2,
     /**  No available mode with this name. */
     MAVSDK_MODES_SERVER_RESULT_MODE_NOT_FOUND = 3,
+    /**  There is no mode change request to respond to. */
+    MAVSDK_MODES_SERVER_RESULT_NO_REQUEST = 4,
+    /**  The feedback is unknown. */
+    MAVSDK_MODES_SERVER_RESULT_INVALID_FEEDBACK = 5,
 } mavsdk_modes_server_result_t;
 
 
@@ -202,9 +222,9 @@ mavsdk_modes_server_set_available_modes(
 /**
  * @brief Subscribe to mode change requests.
  * 
- *  Requests for a mode in the list are accepted and reported here. The
- *  vehicle should then switch and call SetCurrentMode, or call
- *  SetCurrentMode with the mode it stays in if it can't switch.
+ *  Requests for a mode in the list are reported here and need to be
+ *  answered with RespondModeRequested. Until then, the ground station is
+ *  told that the request is in progress.
  *
  * @param modes_server The modes_server instance.
  *
@@ -228,6 +248,21 @@ CMAVSDK_EXPORT mavsdk_modes_server_mode_requested_handle_t mavsdk_modes_server_s
 CMAVSDK_EXPORT void mavsdk_modes_server_unsubscribe_mode_requested(
     mavsdk_modes_server_t modes_server,
     mavsdk_modes_server_mode_requested_handle_t);
+
+
+/**
+ * @brief Get the current respond mode requested (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param respond_mode_requested_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_modes_server_result_t
+mavsdk_modes_server_respond_mode_requested(
+    mavsdk_modes_server_t modes_server,
+    mavsdk_modes_server_mode_feedback_t mode_feedback);
 
 
 /**

@@ -21,7 +21,45 @@ translate_result(mavsdk::ModesServer::Result cpp_result) {
             return MAVSDK_MODES_SERVER_RESULT_INVALID_MODES;
         case mavsdk::ModesServer::Result::ModeNotFound:
             return MAVSDK_MODES_SERVER_RESULT_MODE_NOT_FOUND;
+        case mavsdk::ModesServer::Result::NoRequest:
+            return MAVSDK_MODES_SERVER_RESULT_NO_REQUEST;
+        case mavsdk::ModesServer::Result::InvalidFeedback:
+            return MAVSDK_MODES_SERVER_RESULT_INVALID_FEEDBACK;
     }
+}
+
+static mavsdk::ModesServer::ModeFeedback
+translate_mode_feedback_from_c(mavsdk_modes_server_mode_feedback_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_MODES_SERVER_MODE_FEEDBACK_UNKNOWN:
+            return mavsdk::ModesServer::ModeFeedback::Unknown;
+        case MAVSDK_MODES_SERVER_MODE_FEEDBACK_ACCEPTED:
+            return mavsdk::ModesServer::ModeFeedback::Accepted;
+        case MAVSDK_MODES_SERVER_MODE_FEEDBACK_BUSY:
+            return mavsdk::ModesServer::ModeFeedback::Busy;
+        case MAVSDK_MODES_SERVER_MODE_FEEDBACK_DENIED:
+            return mavsdk::ModesServer::ModeFeedback::Denied;
+        case MAVSDK_MODES_SERVER_MODE_FEEDBACK_FAILED:
+            return mavsdk::ModesServer::ModeFeedback::Failed;
+    }
+    return mavsdk::ModesServer::ModeFeedback::Unknown;
+}
+
+static mavsdk_modes_server_mode_feedback_t
+translate_mode_feedback_to_c(mavsdk::ModesServer::ModeFeedback cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::ModesServer::ModeFeedback::Unknown:
+            return MAVSDK_MODES_SERVER_MODE_FEEDBACK_UNKNOWN;
+        case mavsdk::ModesServer::ModeFeedback::Accepted:
+            return MAVSDK_MODES_SERVER_MODE_FEEDBACK_ACCEPTED;
+        case mavsdk::ModesServer::ModeFeedback::Busy:
+            return MAVSDK_MODES_SERVER_MODE_FEEDBACK_BUSY;
+        case mavsdk::ModesServer::ModeFeedback::Denied:
+            return MAVSDK_MODES_SERVER_MODE_FEEDBACK_DENIED;
+        case mavsdk::ModesServer::ModeFeedback::Failed:
+            return MAVSDK_MODES_SERVER_MODE_FEEDBACK_FAILED;
+    }
+    return MAVSDK_MODES_SERVER_MODE_FEEDBACK_UNKNOWN;
 }
 
 
@@ -223,6 +261,20 @@ void mavsdk_modes_server_unsubscribe_mode_requested(
     delete cpp_handle;
 }
 
+
+
+// RespondModeRequested sync
+mavsdk_modes_server_result_t
+mavsdk_modes_server_respond_mode_requested(
+    mavsdk_modes_server_t modes_server,
+    mavsdk_modes_server_mode_feedback_t mode_feedback)
+{
+    auto wrapper = reinterpret_cast<mavsdk_modes_server_wrapper*>(modes_server);
+
+    auto ret_value = wrapper->cpp_plugin->respond_mode_requested(        translate_mode_feedback_from_c(mode_feedback));
+
+    return translate_result(ret_value);
+}
 
 
 // SetCurrentMode sync

@@ -16,6 +16,7 @@ from .modes_server import ModesServerAsync
 
 from mavsdk.plugins.modes_server import (
     ModesServer,
+    ModeFeedback,
     ModesServerResult,
     ModesServerError,
     Mode,
@@ -24,6 +25,7 @@ from mavsdk.plugins.modes_server import (
 __all__ = [
     "ModesServerAsync",
     "ModesServer",
+    "ModeFeedback",
     "ModesServerResult",
     "ModesServerError",
     "Mode",

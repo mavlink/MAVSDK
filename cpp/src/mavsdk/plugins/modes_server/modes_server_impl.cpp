@@ -59,7 +59,12 @@ void ModesServerImpl::init()
         MAV_CMD_DO_SET_STANDARD_MODE,
         [this](const MavlinkCommandReceiver::CommandLong& command)
             -> std::optional<mavlink_command_ack_t> {
-            const auto result = process_set_standard_mode(command.params.param1);
+            const auto result = process_set_standard_mode(
+                command.params.param1,
+                _server_component_impl->make_command_ack_message(command, MAV_RESULT_IN_PROGRESS));
+            if (result == MAV_RESULT_IN_PROGRESS) {
+                return std::nullopt;
+            }
             return _server_component_impl->make_command_ack_message(
                 command, result.value_or(MAV_RESULT_UNSUPPORTED));
         },
@@ -68,7 +73,12 @@ void ModesServerImpl::init()
         MAV_CMD_DO_SET_STANDARD_MODE,
         [this](const MavlinkCommandReceiver::CommandInt& command)
             -> std::optional<mavlink_command_ack_t> {
-            const auto result = process_set_standard_mode(command.params.param1);
+            const auto result = process_set_standard_mode(
+                command.params.param1,
+                _server_component_impl->make_command_ack_message(command, MAV_RESULT_IN_PROGRESS));
+            if (result == MAV_RESULT_IN_PROGRESS) {
+                return std::nullopt;
+            }
             return _server_component_impl->make_command_ack_message(
                 command, result.value_or(MAV_RESULT_UNSUPPORTED));
         },
@@ -81,8 +91,10 @@ void ModesServerImpl::init()
         [this](const MavlinkCommandReceiver::CommandLong& command)
             -> std::optional<mavlink_command_ack_t> {
             const auto result = process_set_mode(
-                static_cast<uint8_t>(command.params.param1), custom_mode_from_command(command));
-            if (!result) {
+                static_cast<uint8_t>(command.params.param1),
+                custom_mode_from_command(command),
+                _server_component_impl->make_command_ack_message(command, MAV_RESULT_IN_PROGRESS));
+            if (!result || result == MAV_RESULT_IN_PROGRESS) {
                 return std::nullopt;
             }
             return _server_component_impl->make_command_ack_message(command, result.value());
@@ -169,6 +181,52 @@ void ModesServerImpl::unsubscribe_mode_requested(ModesServer::ModeRequestedHandl
     _mode_requested_callbacks.unsubscribe(handle);
 }
 
+ModesServer::Result ModesServerImpl::respond_mode_requested(ModesServer::ModeFeedback mode_feedback)
+{
+    MAV_RESULT result;
+    switch (mode_feedback) {
+        case ModesServer::ModeFeedback::Accepted:
+            result = MAV_RESULT_ACCEPTED;
+            break;
+        case ModesServer::ModeFeedback::Busy:
+            result = MAV_RESULT_TEMPORARILY_REJECTED;
+            break;
+        case ModesServer::ModeFeedback::Denied:
+            result = MAV_RESULT_DENIED;
+            break;
+        case ModesServer::ModeFeedback::Failed:
+            result = MAV_RESULT_FAILED;
+            break;
+        case ModesServer::ModeFeedback::Unknown:
+        default:
+            return ModesServer::Result::InvalidFeedback;
+    }
+
+    ServerComponentImpl::CommandAck command_ack;
+    std::string name;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (!_pending_ack) {
+            return ModesServer::Result::NoRequest;
+        }
+        command_ack = _pending_ack.value();
+        _pending_ack.reset();
+        name = std::move(_pending_mode_name);
+        if (result != MAV_RESULT_ACCEPTED) {
+            _intended_custom_mode.reset();
+        }
+    }
+
+    command_ack.result = result;
+    _server_component_impl->send_command_ack(command_ack);
+
+    if (result == MAV_RESULT_ACCEPTED) {
+        // Fails only if the modes were replaced in the meantime.
+        return set_current_mode(name);
+    }
+    return ModesServer::Result::Success;
+}
+
 ModesServer::Result ModesServerImpl::set_current_mode(const std::string& name)
 {
     uint32_t custom_mode;
@@ -221,7 +279,8 @@ ModesServerImpl::process_available_modes_request(const MavlinkRequestMessageHand
     return MAV_RESULT_ACCEPTED;
 }
 
-std::optional<MAV_RESULT> ModesServerImpl::process_set_standard_mode(float param1)
+std::optional<MAV_RESULT> ModesServerImpl::process_set_standard_mode(
+    float param1, ServerComponentImpl::CommandAck command_ack)
 {
     std::unique_lock<std::mutex> lock(_mutex);
     if (!_modes_set) {
@@ -237,15 +296,11 @@ std::optional<MAV_RESULT> ModesServerImpl::process_set_standard_mode(float param
     if (it == _entries.end()) {
         return MAV_RESULT_DENIED;
     }
-    _intended_custom_mode = it->mode.custom_mode;
-    const ModesServer::Mode mode = it->mode;
-    lock.unlock();
-
-    report_mode_requested(mode);
-    return MAV_RESULT_ACCEPTED;
+    return request_mode(lock, it->mode, command_ack);
 }
 
-std::optional<MAV_RESULT> ModesServerImpl::process_set_mode(uint8_t base_mode, uint32_t custom_mode)
+std::optional<MAV_RESULT> ModesServerImpl::process_set_mode(
+    uint8_t base_mode, uint32_t custom_mode, ServerComponentImpl::CommandAck command_ack)
 {
     std::unique_lock<std::mutex> lock(_mutex);
     if (!_modes_set) {
@@ -262,12 +317,7 @@ std::optional<MAV_RESULT> ModesServerImpl::process_set_mode(uint8_t base_mode, u
     if (it == _entries.end()) {
         return MAV_RESULT_DENIED;
     }
-    _intended_custom_mode = it->mode.custom_mode;
-    const ModesServer::Mode mode = it->mode;
-    lock.unlock();
-
-    report_mode_requested(mode);
-    return MAV_RESULT_ACCEPTED;
+    return request_mode(lock, it->mode, command_ack);
 }
 
 void ModesServerImpl::process_set_mode_message(const mavlink_message_t& message)
@@ -275,26 +325,46 @@ void ModesServerImpl::process_set_mode_message(const mavlink_message_t& message)
     mavlink_set_mode_t set_mode;
     mavlink_msg_set_mode_decode(&message, &set_mode);
 
-    const auto result = process_set_mode(set_mode.base_mode, set_mode.custom_mode);
-    if (!result) {
-        return;
-    }
-
     // SET_MODE is a message, not a command, but is acked like one.
-    mavlink_command_ack_t command_ack{};
+    ServerComponentImpl::CommandAck command_ack{};
     command_ack.command = MAVLINK_MSG_ID_SET_MODE;
-    command_ack.result = result.value();
+    command_ack.result = MAV_RESULT_IN_PROGRESS;
     command_ack.progress = std::numeric_limits<uint8_t>::max();
     command_ack.target_system = mavlink_msg_target_field(message.sysid);
     command_ack.target_component = message.compid;
-    _server_component_impl->send_command_ack(command_ack, message.sysid);
+    command_ack.target_system_id = message.sysid;
+
+    const auto result = process_set_mode(set_mode.base_mode, set_mode.custom_mode, command_ack);
+    if (!result || result == MAV_RESULT_IN_PROGRESS) {
+        return;
+    }
+
+    command_ack.result = result.value();
+    _server_component_impl->send_command_ack(command_ack);
 }
 
-void ModesServerImpl::report_mode_requested(const ModesServer::Mode& mode)
+MAV_RESULT ModesServerImpl::request_mode(
+    std::unique_lock<std::mutex>& lock,
+    const ModesServer::Mode& mode,
+    ServerComponentImpl::CommandAck command_ack)
 {
-    std::lock_guard<std::mutex> lock(_callback_mutex);
+    std::lock_guard<std::mutex> callback_lock(_callback_mutex);
+    if (_mode_requested_callbacks.empty()) {
+        // Nobody to decide whether the vehicle can switch.
+        return MAV_RESULT_UNSUPPORTED;
+    }
+
+    // Like camera_server: say that the request is in progress until the app responds. A new
+    // request replaces one that hasn't been answered yet.
+    _intended_custom_mode = mode.custom_mode;
+    _pending_ack = command_ack;
+    _pending_mode_name = mode.name;
+    lock.unlock();
+
+    _server_component_impl->send_command_ack(command_ack);
     _mode_requested_callbacks.queue(
         mode, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
+    return MAV_RESULT_IN_PROGRESS;
 }
 
 uint32_t

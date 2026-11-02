@@ -19,6 +19,7 @@ from mavsdk.plugins.modes_server import (
     ModesServer,
     ModesServerResult,
     ModesServerError,
+    ModeFeedback,
     Mode,
 )
 
@@ -65,9 +66,9 @@ class ModesServerAsync:
         """
                Subscribe to mode change requests.
 
-        Requests for a mode in the list are accepted and reported here. The
-        vehicle should then switch and call SetCurrentMode, or call
-        SetCurrentMode with the mode it stays in if it can't switch.
+        Requests for a mode in the list are reported here and need to be
+        answered with RespondModeRequested. Until then, the ground station is
+        told that the request is in progress.
 
                Yields
                ------
@@ -86,6 +87,27 @@ class ModesServerAsync:
                 yield await queue.get()
         finally:
             self._plugin.unsubscribe_mode_requested(handle)
+
+    async def respond_mode_requested(self, mode_feedback):
+        """
+               Respond to the last mode change request.
+
+        If the request is accepted, the requested mode becomes the current mode.
+        Otherwise the vehicle stays in its current mode, e.g. if it can't switch
+        to Position without GPS.
+
+               Parameters
+               ----------
+               mode_feedback : ModeFeedback
+               Raises
+               ------
+               ModesServerError
+                   If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.respond_mode_requested(mode_feedback)
+        )
 
     async def set_current_mode(self, name):
         """

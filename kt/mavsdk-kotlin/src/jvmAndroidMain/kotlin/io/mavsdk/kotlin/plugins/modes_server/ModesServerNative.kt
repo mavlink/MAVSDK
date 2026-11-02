@@ -54,6 +54,10 @@ private class ModesServerNativeImpl(private val handle: Long) : ModesServerNativ
         lifecycle.read { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
+    override fun respondModeRequested(modeFeedback: ModesServer.ModeFeedback): Int = withOpen {
+        NativeModesServer.respondModeRequested(handle, modeFeedback.value)
+    }
+
     override fun setCurrentMode(name: String): Int = withOpen {
         NativeModesServer.setCurrentMode(handle, name)
     }

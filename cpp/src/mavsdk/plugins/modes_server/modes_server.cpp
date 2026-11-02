@@ -34,6 +34,11 @@ void ModesServer::unsubscribe_mode_requested(ModeRequestedHandle handle)
     _impl->unsubscribe_mode_requested(handle);
 }
 
+ModesServer::Result ModesServer::respond_mode_requested(ModeFeedback mode_feedback) const
+{
+    return _impl->respond_mode_requested(mode_feedback);
+}
+
 ModesServer::Result ModesServer::set_current_mode(std::string name) const
 {
     return _impl->set_current_mode(name);
@@ -72,6 +77,10 @@ MAVSDK_PUBLIC std::string_view to_string(ModesServer::Result const& result)
             return "Invalid Modes";
         case ModesServer::Result::ModeNotFound:
             return "Mode Not Found";
+        case ModesServer::Result::NoRequest:
+            return "No Request";
+        case ModesServer::Result::InvalidFeedback:
+            return "Invalid Feedback";
         default:
             return "Unknown";
     }
@@ -80,6 +89,30 @@ MAVSDK_PUBLIC std::string_view to_string(ModesServer::Result const& result)
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ModesServer::Result const& result)
 {
     return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(ModesServer::ModeFeedback const& mode_feedback)
+{
+    switch (mode_feedback) {
+        case ModesServer::ModeFeedback::Unknown:
+            return "Unknown";
+        case ModesServer::ModeFeedback::Accepted:
+            return "Accepted";
+        case ModesServer::ModeFeedback::Busy:
+            return "Busy";
+        case ModesServer::ModeFeedback::Denied:
+            return "Denied";
+        case ModesServer::ModeFeedback::Failed:
+            return "Failed";
+        default:
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ModesServer::ModeFeedback const& mode_feedback)
+{
+    return str << to_string(mode_feedback);
 }
 
 } // namespace mavsdk

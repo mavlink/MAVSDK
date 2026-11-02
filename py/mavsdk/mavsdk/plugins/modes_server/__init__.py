@@ -17,6 +17,7 @@ Provide the flight modes of an autopilot, the counterpart of the Modes plugin.
 from .modes_server import ModesServer
 
 # Import enums
+from .modes_server import ModeFeedback
 
 # Import result enum
 from .modes_server import ModesServerResult
@@ -28,6 +29,7 @@ from .modes_server import Mode
 # Define __all__ for explicit exports
 __all__ = [
     "ModesServer",
+    "ModeFeedback",
     "ModesServerResult",
     "ModesServerError",
     "Mode",

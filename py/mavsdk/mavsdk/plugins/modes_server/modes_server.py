@@ -26,6 +26,14 @@ from ...exceptions import MavsdkError
 
 
 # ===== Enums =====
+class ModeFeedback(IntEnum):
+    """Possible answers to a mode change request."""
+
+    UNKNOWN = 0
+    ACCEPTED = 1
+    BUSY = 2
+    DENIED = 3
+    FAILED = 4
 
 
 # ===== Result Enums =====
@@ -36,6 +44,8 @@ class ModesServerResult(IntEnum):
     SUCCESS = 1
     INVALID_MODES = 2
     MODE_NOT_FOUND = 3
+    NO_REQUEST = 4
+    INVALID_FEEDBACK = 5
 
 
 class ModesServerError(MavsdkError):
@@ -203,9 +213,9 @@ class ModesServer:
     def subscribe_mode_requested(self, callback: Callable, user_data: Any = None):
         """Subscribe to mode change requests.
 
-        Requests for a mode in the list are accepted and reported here. The
-        vehicle should then switch and call SetCurrentMode, or call
-        SetCurrentMode with the mode it stays in if it can't switch."""
+        Requests for a mode in the list are reported here and need to be
+        answered with RespondModeRequested. Until then, the ground station is
+        told that the request is in progress."""
 
         def c_callback(c_data, ud):
             try:
@@ -248,6 +258,19 @@ class ModesServer:
 
         self._lib.mavsdk_modes_server_unsubscribe_mode_requested(_plugin_handle, handle)
         del _entry
+
+    def respond_mode_requested(self, mode_feedback):
+        """Get respond_mode_requested (blocking)"""
+
+        result_code = self._lib.mavsdk_modes_server_respond_mode_requested(
+            self._require_handle(),
+            mode_feedback,
+        )
+        result = ModesServerResult(result_code)
+        if result != ModesServerResult.SUCCESS:
+            raise ModesServerError(result, "respond_mode_requested()", mode_feedback)
+
+        return result
 
     def set_current_mode(self, name):
         """Get set_current_mode (blocking)"""
@@ -350,6 +373,13 @@ _cmavsdk_lib.mavsdk_modes_server_unsubscribe_mode_requested.argtypes = [
 
 _cmavsdk_lib.mavsdk_modes_server_unsubscribe_mode_requested.restype = None
 
+
+_cmavsdk_lib.mavsdk_modes_server_respond_mode_requested.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_modes_server_respond_mode_requested.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_modes_server_set_current_mode.argtypes = [
     ctypes.c_void_p,

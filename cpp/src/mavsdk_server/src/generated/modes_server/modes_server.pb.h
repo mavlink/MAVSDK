@@ -66,6 +66,12 @@ extern ModeRequestedResponseDefaultTypeInternal _ModeRequestedResponse_default_i
 class ModesServerResult;
 struct ModesServerResultDefaultTypeInternal;
 extern ModesServerResultDefaultTypeInternal _ModesServerResult_default_instance_;
+class RespondModeRequestedRequest;
+struct RespondModeRequestedRequestDefaultTypeInternal;
+extern RespondModeRequestedRequestDefaultTypeInternal _RespondModeRequestedRequest_default_instance_;
+class RespondModeRequestedResponse;
+struct RespondModeRequestedResponseDefaultTypeInternal;
+extern RespondModeRequestedResponseDefaultTypeInternal _RespondModeRequestedResponse_default_instance_;
 class SetAvailableModesRequest;
 struct SetAvailableModesRequestDefaultTypeInternal;
 extern SetAvailableModesRequestDefaultTypeInternal _SetAvailableModesRequest_default_instance_;
@@ -97,6 +103,8 @@ enum ModesServerResult_Result : int {
   ModesServerResult_Result_RESULT_SUCCESS = 1,
   ModesServerResult_Result_RESULT_INVALID_MODES = 2,
   ModesServerResult_Result_RESULT_MODE_NOT_FOUND = 3,
+  ModesServerResult_Result_RESULT_NO_REQUEST = 4,
+  ModesServerResult_Result_RESULT_INVALID_FEEDBACK = 5,
   ModesServerResult_Result_ModesServerResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ModesServerResult_Result_ModesServerResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -106,8 +114,8 @@ enum ModesServerResult_Result : int {
 bool ModesServerResult_Result_IsValid(int value);
 extern const uint32_t ModesServerResult_Result_internal_data_[];
 constexpr ModesServerResult_Result ModesServerResult_Result_Result_MIN = static_cast<ModesServerResult_Result>(0);
-constexpr ModesServerResult_Result ModesServerResult_Result_Result_MAX = static_cast<ModesServerResult_Result>(3);
-constexpr int ModesServerResult_Result_Result_ARRAYSIZE = 3 + 1;
+constexpr ModesServerResult_Result ModesServerResult_Result_Result_MAX = static_cast<ModesServerResult_Result>(5);
+constexpr int ModesServerResult_Result_Result_ARRAYSIZE = 5 + 1;
 const ::google::protobuf::EnumDescriptor*
 ModesServerResult_Result_descriptor();
 template <typename T>
@@ -120,12 +128,48 @@ const std::string& ModesServerResult_Result_Name(T value) {
 template <>
 inline const std::string& ModesServerResult_Result_Name(ModesServerResult_Result value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ModesServerResult_Result_descriptor,
-                                                 0, 3>(
+                                                 0, 5>(
       static_cast<int>(value));
 }
 inline bool ModesServerResult_Result_Parse(absl::string_view name, ModesServerResult_Result* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ModesServerResult_Result>(
       ModesServerResult_Result_descriptor(), name, value);
+}
+enum ModeFeedback : int {
+  MODE_FEEDBACK_UNKNOWN = 0,
+  MODE_FEEDBACK_ACCEPTED = 1,
+  MODE_FEEDBACK_BUSY = 2,
+  MODE_FEEDBACK_DENIED = 3,
+  MODE_FEEDBACK_FAILED = 4,
+  ModeFeedback_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  ModeFeedback_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool ModeFeedback_IsValid(int value);
+extern const uint32_t ModeFeedback_internal_data_[];
+constexpr ModeFeedback ModeFeedback_MIN = static_cast<ModeFeedback>(0);
+constexpr ModeFeedback ModeFeedback_MAX = static_cast<ModeFeedback>(4);
+constexpr int ModeFeedback_ARRAYSIZE = 4 + 1;
+const ::google::protobuf::EnumDescriptor*
+ModeFeedback_descriptor();
+template <typename T>
+const std::string& ModeFeedback_Name(T value) {
+  static_assert(std::is_same<T, ModeFeedback>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to ModeFeedback_Name().");
+  return ModeFeedback_Name(static_cast<ModeFeedback>(value));
+}
+template <>
+inline const std::string& ModeFeedback_Name(ModeFeedback value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<ModeFeedback_descriptor,
+                                                 0, 4>(
+      static_cast<int>(value));
+}
+inline bool ModeFeedback_Parse(absl::string_view name, ModeFeedback* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ModeFeedback>(
+      ModeFeedback_descriptor(), name, value);
 }
 
 // ===================================================================
@@ -339,7 +383,7 @@ class SetCurrentModeRequest final
     return reinterpret_cast<const SetCurrentModeRequest*>(
         &_SetCurrentModeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(SetCurrentModeRequest& a, SetCurrentModeRequest& b) { a.Swap(&b); }
   inline void Swap(SetCurrentModeRequest* other) {
     if (other == this) return;
@@ -476,6 +520,197 @@ class SetCurrentModeRequest final
 };
 // -------------------------------------------------------------------
 
+class RespondModeRequestedRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.modes_server.RespondModeRequestedRequest) */ {
+ public:
+  inline RespondModeRequestedRequest() : RespondModeRequestedRequest(nullptr) {}
+  ~RespondModeRequestedRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondModeRequestedRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondModeRequestedRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondModeRequestedRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondModeRequestedRequest(const RespondModeRequestedRequest& from) : RespondModeRequestedRequest(nullptr, from) {}
+  inline RespondModeRequestedRequest(RespondModeRequestedRequest&& from) noexcept
+      : RespondModeRequestedRequest(nullptr, std::move(from)) {}
+  inline RespondModeRequestedRequest& operator=(const RespondModeRequestedRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondModeRequestedRequest& operator=(RespondModeRequestedRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondModeRequestedRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondModeRequestedRequest* internal_default_instance() {
+    return reinterpret_cast<const RespondModeRequestedRequest*>(
+        &_RespondModeRequestedRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(RespondModeRequestedRequest& a, RespondModeRequestedRequest& b) { a.Swap(&b); }
+  inline void Swap(RespondModeRequestedRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondModeRequestedRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondModeRequestedRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondModeRequestedRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondModeRequestedRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondModeRequestedRequest& from) { RespondModeRequestedRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondModeRequestedRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.modes_server.RespondModeRequestedRequest"; }
+
+ protected:
+  explicit RespondModeRequestedRequest(::google::protobuf::Arena* arena);
+  RespondModeRequestedRequest(::google::protobuf::Arena* arena, const RespondModeRequestedRequest& from);
+  RespondModeRequestedRequest(::google::protobuf::Arena* arena, RespondModeRequestedRequest&& from) noexcept
+      : RespondModeRequestedRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kModeFeedbackFieldNumber = 1,
+  };
+  // .mavsdk.rpc.modes_server.ModeFeedback mode_feedback = 1;
+  void clear_mode_feedback() ;
+  ::mavsdk::rpc::modes_server::ModeFeedback mode_feedback() const;
+  void set_mode_feedback(::mavsdk::rpc::modes_server::ModeFeedback value);
+
+  private:
+  ::mavsdk::rpc::modes_server::ModeFeedback _internal_mode_feedback() const;
+  void _internal_set_mode_feedback(::mavsdk::rpc::modes_server::ModeFeedback value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondModeRequestedRequest& from_msg);
+    int mode_feedback_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_modes_5fserver_2fmodes_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ModesServerResult final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.modes_server.ModesServerResult) */ {
@@ -536,7 +771,7 @@ class ModesServerResult final
     return reinterpret_cast<const ModesServerResult*>(
         &_ModesServerResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(ModesServerResult& a, ModesServerResult& b) { a.Swap(&b); }
   inline void Swap(ModesServerResult* other) {
     if (other == this) return;
@@ -625,6 +860,8 @@ class ModesServerResult final
   static constexpr Result RESULT_SUCCESS = ModesServerResult_Result_RESULT_SUCCESS;
   static constexpr Result RESULT_INVALID_MODES = ModesServerResult_Result_RESULT_INVALID_MODES;
   static constexpr Result RESULT_MODE_NOT_FOUND = ModesServerResult_Result_RESULT_MODE_NOT_FOUND;
+  static constexpr Result RESULT_NO_REQUEST = ModesServerResult_Result_RESULT_NO_REQUEST;
+  static constexpr Result RESULT_INVALID_FEEDBACK = ModesServerResult_Result_RESULT_INVALID_FEEDBACK;
   static inline bool Result_IsValid(int value) {
     return ModesServerResult_Result_IsValid(value);
   }
@@ -766,7 +1003,7 @@ class Mode final
     return reinterpret_cast<const Mode*>(
         &_Mode_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(Mode& a, Mode& b) { a.Swap(&b); }
   inline void Swap(Mode* other) {
     if (other == this) return;
@@ -1023,7 +1260,7 @@ class SetCurrentModeResponse final
     return reinterpret_cast<const SetCurrentModeResponse*>(
         &_SetCurrentModeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(SetCurrentModeResponse& a, SetCurrentModeResponse& b) { a.Swap(&b); }
   inline void Swap(SetCurrentModeResponse* other) {
     if (other == this) return;
@@ -1555,6 +1792,203 @@ class SetAvailableModesRequest final
 };
 // -------------------------------------------------------------------
 
+class RespondModeRequestedResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.modes_server.RespondModeRequestedResponse) */ {
+ public:
+  inline RespondModeRequestedResponse() : RespondModeRequestedResponse(nullptr) {}
+  ~RespondModeRequestedResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(RespondModeRequestedResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RespondModeRequestedResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RespondModeRequestedResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline RespondModeRequestedResponse(const RespondModeRequestedResponse& from) : RespondModeRequestedResponse(nullptr, from) {}
+  inline RespondModeRequestedResponse(RespondModeRequestedResponse&& from) noexcept
+      : RespondModeRequestedResponse(nullptr, std::move(from)) {}
+  inline RespondModeRequestedResponse& operator=(const RespondModeRequestedResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RespondModeRequestedResponse& operator=(RespondModeRequestedResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RespondModeRequestedResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RespondModeRequestedResponse* internal_default_instance() {
+    return reinterpret_cast<const RespondModeRequestedResponse*>(
+        &_RespondModeRequestedResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(RespondModeRequestedResponse& a, RespondModeRequestedResponse& b) { a.Swap(&b); }
+  inline void Swap(RespondModeRequestedResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(RespondModeRequestedResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  RespondModeRequestedResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RespondModeRequestedResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RespondModeRequestedResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RespondModeRequestedResponse& from) { RespondModeRequestedResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RespondModeRequestedResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.modes_server.RespondModeRequestedResponse"; }
+
+ protected:
+  explicit RespondModeRequestedResponse(::google::protobuf::Arena* arena);
+  RespondModeRequestedResponse(::google::protobuf::Arena* arena, const RespondModeRequestedResponse& from);
+  RespondModeRequestedResponse(::google::protobuf::Arena* arena, RespondModeRequestedResponse&& from) noexcept
+      : RespondModeRequestedResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kModesServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.modes_server.ModesServerResult modes_server_result = 1;
+  bool has_modes_server_result() const;
+  void clear_modes_server_result() ;
+  const ::mavsdk::rpc::modes_server::ModesServerResult& modes_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::modes_server::ModesServerResult* release_modes_server_result();
+  ::mavsdk::rpc::modes_server::ModesServerResult* mutable_modes_server_result();
+  void set_allocated_modes_server_result(::mavsdk::rpc::modes_server::ModesServerResult* value);
+  void unsafe_arena_set_allocated_modes_server_result(::mavsdk::rpc::modes_server::ModesServerResult* value);
+  ::mavsdk::rpc::modes_server::ModesServerResult* unsafe_arena_release_modes_server_result();
+
+  private:
+  const ::mavsdk::rpc::modes_server::ModesServerResult& _internal_modes_server_result() const;
+  ::mavsdk::rpc::modes_server::ModesServerResult* _internal_mutable_modes_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RespondModeRequestedResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::modes_server::ModesServerResult* modes_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_modes_5fserver_2fmodes_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ModeRequestedResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.modes_server.ModeRequestedResponse) */ {
@@ -2022,6 +2456,132 @@ inline void ModeRequestedResponse::set_allocated_mode(::mavsdk::rpc::modes_serve
 
 // -------------------------------------------------------------------
 
+// RespondModeRequestedRequest
+
+// .mavsdk.rpc.modes_server.ModeFeedback mode_feedback = 1;
+inline void RespondModeRequestedRequest::clear_mode_feedback() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mode_feedback_ = 0;
+}
+inline ::mavsdk::rpc::modes_server::ModeFeedback RespondModeRequestedRequest::mode_feedback() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.modes_server.RespondModeRequestedRequest.mode_feedback)
+  return _internal_mode_feedback();
+}
+inline void RespondModeRequestedRequest::set_mode_feedback(::mavsdk::rpc::modes_server::ModeFeedback value) {
+  _internal_set_mode_feedback(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.modes_server.RespondModeRequestedRequest.mode_feedback)
+}
+inline ::mavsdk::rpc::modes_server::ModeFeedback RespondModeRequestedRequest::_internal_mode_feedback() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::modes_server::ModeFeedback>(_impl_.mode_feedback_);
+}
+inline void RespondModeRequestedRequest::_internal_set_mode_feedback(::mavsdk::rpc::modes_server::ModeFeedback value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mode_feedback_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// RespondModeRequestedResponse
+
+// .mavsdk.rpc.modes_server.ModesServerResult modes_server_result = 1;
+inline bool RespondModeRequestedResponse::has_modes_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.modes_server_result_ != nullptr);
+  return value;
+}
+inline void RespondModeRequestedResponse::clear_modes_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.modes_server_result_ != nullptr) _impl_.modes_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::modes_server::ModesServerResult& RespondModeRequestedResponse::_internal_modes_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::modes_server::ModesServerResult* p = _impl_.modes_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::modes_server::ModesServerResult&>(::mavsdk::rpc::modes_server::_ModesServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::modes_server::ModesServerResult& RespondModeRequestedResponse::modes_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.modes_server.RespondModeRequestedResponse.modes_server_result)
+  return _internal_modes_server_result();
+}
+inline void RespondModeRequestedResponse::unsafe_arena_set_allocated_modes_server_result(::mavsdk::rpc::modes_server::ModesServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.modes_server_result_);
+  }
+  _impl_.modes_server_result_ = reinterpret_cast<::mavsdk::rpc::modes_server::ModesServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.modes_server.RespondModeRequestedResponse.modes_server_result)
+}
+inline ::mavsdk::rpc::modes_server::ModesServerResult* RespondModeRequestedResponse::release_modes_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::modes_server::ModesServerResult* released = _impl_.modes_server_result_;
+  _impl_.modes_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::modes_server::ModesServerResult* RespondModeRequestedResponse::unsafe_arena_release_modes_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.modes_server.RespondModeRequestedResponse.modes_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::modes_server::ModesServerResult* temp = _impl_.modes_server_result_;
+  _impl_.modes_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::modes_server::ModesServerResult* RespondModeRequestedResponse::_internal_mutable_modes_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.modes_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::modes_server::ModesServerResult>(GetArena());
+    _impl_.modes_server_result_ = reinterpret_cast<::mavsdk::rpc::modes_server::ModesServerResult*>(p);
+  }
+  return _impl_.modes_server_result_;
+}
+inline ::mavsdk::rpc::modes_server::ModesServerResult* RespondModeRequestedResponse::mutable_modes_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::modes_server::ModesServerResult* _msg = _internal_mutable_modes_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.modes_server.RespondModeRequestedResponse.modes_server_result)
+  return _msg;
+}
+inline void RespondModeRequestedResponse::set_allocated_modes_server_result(::mavsdk::rpc::modes_server::ModesServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.modes_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.modes_server_result_ = reinterpret_cast<::mavsdk::rpc::modes_server::ModesServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.modes_server.RespondModeRequestedResponse.modes_server_result)
+}
+
+// -------------------------------------------------------------------
+
 // SetCurrentModeRequest
 
 // string name = 1;
@@ -2426,6 +2986,12 @@ struct is_proto_enum<::mavsdk::rpc::modes_server::ModesServerResult_Result> : st
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::modes_server::ModesServerResult_Result>() {
   return ::mavsdk::rpc::modes_server::ModesServerResult_Result_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::modes_server::ModeFeedback> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::modes_server::ModeFeedback>() {
+  return ::mavsdk::rpc::modes_server::ModeFeedback_descriptor();
 }
 
 }  // namespace protobuf

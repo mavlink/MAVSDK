@@ -161,8 +161,10 @@ TEST(SystemTest, ModesServerCurrentMode)
     ModesServer modes_server{mavsdk_autopilot.server_component()};
     ASSERT_EQ(modes_server.set_available_modes(px4_server_modes), ModesServer::Result::Success);
     ASSERT_EQ(modes_server.set_current_mode("Manual"), ModesServer::Result::Success);
-    auto requested_handle = modes_server.subscribe_mode_requested([&](ModesServer::Mode mode) {
-        EXPECT_EQ(modes_server.set_current_mode(mode.name), ModesServer::Result::Success);
+    auto requested_handle = modes_server.subscribe_mode_requested([&](ModesServer::Mode) {
+        EXPECT_EQ(
+            modes_server.respond_mode_requested(ModesServer::ModeFeedback::Accepted),
+            ModesServer::Result::Success);
     });
 
     ASSERT_EQ(
@@ -242,7 +244,19 @@ TEST(SystemTest, ModesServerChangesModes)
             ++action_server_flight_mode_changes;
         });
 
-    // The vehicle switches to any requested mode but Takeoff.
+    EXPECT_EQ(modes_server.set_current_mode("Manual"), ModesServer::Result::Success);
+    EXPECT_EQ(modes_server.set_current_mode("Acro"), ModesServer::Result::ModeNotFound);
+
+    // There is nothing to respond to yet.
+    EXPECT_EQ(
+        modes_server.respond_mode_requested(ModesServer::ModeFeedback::Accepted),
+        ModesServer::Result::NoRequest);
+    EXPECT_EQ(
+        modes_server.respond_mode_requested(ModesServer::ModeFeedback::Unknown),
+        ModesServer::Result::InvalidFeedback);
+
+    // The vehicle switches to any requested mode but Takeoff, which it can't do right now, and
+    // Land, which it doesn't allow.
     std::mutex requested_mutex;
     std::vector<std::string> requested;
     auto requested_handle = modes_server.subscribe_mode_requested([&](ModesServer::Mode mode) {
@@ -250,13 +264,14 @@ TEST(SystemTest, ModesServerChangesModes)
             std::lock_guard<std::mutex> lock(requested_mutex);
             requested.push_back(mode.name);
         }
-        if (mode.name != "Takeoff") {
-            EXPECT_EQ(modes_server.set_current_mode(mode.name), ModesServer::Result::Success);
+        auto feedback = ModesServer::ModeFeedback::Accepted;
+        if (mode.name == "Takeoff") {
+            feedback = ModesServer::ModeFeedback::Busy;
+        } else if (mode.name == "Land") {
+            feedback = ModesServer::ModeFeedback::Denied;
         }
+        EXPECT_EQ(modes_server.respond_mode_requested(feedback), ModesServer::Result::Success);
     });
-
-    EXPECT_EQ(modes_server.set_current_mode("Manual"), ModesServer::Result::Success);
-    EXPECT_EQ(modes_server.set_current_mode("Acro"), ModesServer::Result::ModeNotFound);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17086"),
@@ -287,8 +302,9 @@ TEST(SystemTest, ModesServerChangesModes)
     ASSERT_TRUE(wait_until([&]() { return modes.current_mode().name == "Stabilized"; }, 2s));
     EXPECT_FALSE(modes.current_mode().is_standard);
 
-    // The request is accepted, but the vehicle doesn't switch.
-    EXPECT_EQ(modes.set_mode("Takeoff"), Modes::Result::Success);
+    // Rejected requests leave the vehicle where it is.
+    EXPECT_EQ(modes.set_mode("Takeoff"), Modes::Result::Busy);
+    EXPECT_EQ(modes.set_mode("Land"), Modes::Result::Denied);
     std::this_thread::sleep_for(300ms);
     EXPECT_EQ(modes.current_mode().name, "Stabilized");
 
@@ -296,7 +312,8 @@ TEST(SystemTest, ModesServerChangesModes)
     action_server.unsubscribe_flight_mode_change(flight_mode_handle);
     {
         std::lock_guard<std::mutex> lock(requested_mutex);
-        EXPECT_EQ(requested, (std::vector<std::string>{"Mission", "Stabilized", "Takeoff"}));
+        EXPECT_EQ(
+            requested, (std::vector<std::string>{"Mission", "Stabilized", "Takeoff", "Land"}));
     }
     EXPECT_EQ(action_server_flight_mode_changes, 0u);
 }
@@ -379,8 +396,10 @@ TEST(SystemTest, ModesServerGenericAutopilot)
     ASSERT_EQ(modes_server.set_available_modes(server_modes), ModesServer::Result::Success);
     ASSERT_EQ(modes_server.set_current_mode("Hover"), ModesServer::Result::Success);
 
-    auto requested_handle = modes_server.subscribe_mode_requested([&](ModesServer::Mode mode) {
-        EXPECT_EQ(modes_server.set_current_mode(mode.name), ModesServer::Result::Success);
+    auto requested_handle = modes_server.subscribe_mode_requested([&](ModesServer::Mode) {
+        EXPECT_EQ(
+            modes_server.respond_mode_requested(ModesServer::ModeFeedback::Accepted),
+            ModesServer::Result::Success);
     });
 
     ASSERT_EQ(

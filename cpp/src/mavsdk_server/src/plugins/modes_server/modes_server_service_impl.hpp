@@ -47,6 +47,44 @@ public:
     }
 
 
+    static rpc::modes_server::ModeFeedback translateToRpcModeFeedback(const mavsdk::ModesServer::ModeFeedback& mode_feedback)
+    {
+        switch (mode_feedback) {
+            default:
+                LogErr("Unknown mode_feedback enum value: {}", static_cast<int>(mode_feedback));
+            // FALLTHROUGH
+            case mavsdk::ModesServer::ModeFeedback::Unknown:
+                return rpc::modes_server::MODE_FEEDBACK_UNKNOWN;
+            case mavsdk::ModesServer::ModeFeedback::Accepted:
+                return rpc::modes_server::MODE_FEEDBACK_ACCEPTED;
+            case mavsdk::ModesServer::ModeFeedback::Busy:
+                return rpc::modes_server::MODE_FEEDBACK_BUSY;
+            case mavsdk::ModesServer::ModeFeedback::Denied:
+                return rpc::modes_server::MODE_FEEDBACK_DENIED;
+            case mavsdk::ModesServer::ModeFeedback::Failed:
+                return rpc::modes_server::MODE_FEEDBACK_FAILED;
+        }
+    }
+
+    static mavsdk::ModesServer::ModeFeedback translateFromRpcModeFeedback(const rpc::modes_server::ModeFeedback mode_feedback)
+    {
+        switch (mode_feedback) {
+            default:
+                LogErr("Unknown mode_feedback enum value: {}", static_cast<int>(mode_feedback));
+            // FALLTHROUGH
+            case rpc::modes_server::MODE_FEEDBACK_UNKNOWN:
+                return mavsdk::ModesServer::ModeFeedback::Unknown;
+            case rpc::modes_server::MODE_FEEDBACK_ACCEPTED:
+                return mavsdk::ModesServer::ModeFeedback::Accepted;
+            case rpc::modes_server::MODE_FEEDBACK_BUSY:
+                return mavsdk::ModesServer::ModeFeedback::Busy;
+            case rpc::modes_server::MODE_FEEDBACK_DENIED:
+                return mavsdk::ModesServer::ModeFeedback::Denied;
+            case rpc::modes_server::MODE_FEEDBACK_FAILED:
+                return mavsdk::ModesServer::ModeFeedback::Failed;
+        }
+    }
+
 
 
     static std::unique_ptr<rpc::modes_server::Mode> translateToRpcMode(const mavsdk::ModesServer::Mode &mode)
@@ -131,6 +169,10 @@ public:
                 return rpc::modes_server::ModesServerResult_Result_RESULT_INVALID_MODES;
             case mavsdk::ModesServer::Result::ModeNotFound:
                 return rpc::modes_server::ModesServerResult_Result_RESULT_MODE_NOT_FOUND;
+            case mavsdk::ModesServer::Result::NoRequest:
+                return rpc::modes_server::ModesServerResult_Result_RESULT_NO_REQUEST;
+            case mavsdk::ModesServer::Result::InvalidFeedback:
+                return rpc::modes_server::ModesServerResult_Result_RESULT_INVALID_FEEDBACK;
         }
     }
 
@@ -148,6 +190,10 @@ public:
                 return mavsdk::ModesServer::Result::InvalidModes;
             case rpc::modes_server::ModesServerResult_Result_RESULT_MODE_NOT_FOUND:
                 return mavsdk::ModesServer::Result::ModeNotFound;
+            case rpc::modes_server::ModesServerResult_Result_RESULT_NO_REQUEST:
+                return mavsdk::ModesServer::Result::NoRequest;
+            case rpc::modes_server::ModesServerResult_Result_RESULT_INVALID_FEEDBACK:
+                return mavsdk::ModesServer::Result::InvalidFeedback;
         }
     }
 
@@ -232,6 +278,41 @@ public:
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
         *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondModeRequested(
+        grpc::ServerContext* /* context */,
+        const rpc::modes_server::RespondModeRequestedRequest* request,
+        rpc::modes_server::RespondModeRequestedResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::ModesServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("RespondModeRequested sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->respond_mode_requested(translateFromRpcModeFeedback(request->mode_feedback()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
 
         return grpc::Status::OK;
     }

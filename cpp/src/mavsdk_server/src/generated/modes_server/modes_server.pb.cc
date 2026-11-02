@@ -73,6 +73,31 @@ struct SetCurrentModeRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetCurrentModeRequestDefaultTypeInternal _SetCurrentModeRequest_default_instance_;
 
+inline constexpr RespondModeRequestedRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : mode_feedback_{static_cast< ::mavsdk::rpc::modes_server::ModeFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondModeRequestedRequest::RespondModeRequestedRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondModeRequestedRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondModeRequestedRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondModeRequestedRequestDefaultTypeInternal() {}
+  union {
+    RespondModeRequestedRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondModeRequestedRequestDefaultTypeInternal _RespondModeRequestedRequest_default_instance_;
+
 inline constexpr ModesServerResult::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : result_str_(
@@ -208,6 +233,31 @@ struct SetAvailableModesRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetAvailableModesRequestDefaultTypeInternal _SetAvailableModesRequest_default_instance_;
 
+inline constexpr RespondModeRequestedResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        modes_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondModeRequestedResponse::RespondModeRequestedResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct RespondModeRequestedResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondModeRequestedResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondModeRequestedResponseDefaultTypeInternal() {}
+  union {
+    RespondModeRequestedResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondModeRequestedResponseDefaultTypeInternal _RespondModeRequestedResponse_default_instance_;
+
 inline constexpr ModeRequestedResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -235,7 +285,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace modes_server
 }  // namespace rpc
 }  // namespace mavsdk
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_modes_5fserver_2fmodes_5fserver_2eproto[1];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_modes_5fserver_2fmodes_5fserver_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_modes_5fserver_2fmodes_5fserver_2eproto = nullptr;
 const ::uint32_t
@@ -277,6 +327,25 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes_server::ModeRequestedResponse, _impl_.mode_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes_server::RespondModeRequestedRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes_server::RespondModeRequestedRequest, _impl_.mode_feedback_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes_server::RespondModeRequestedResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes_server::RespondModeRequestedResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes_server::RespondModeRequestedResponse, _impl_.modes_server_result_),
         0,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::modes_server::SetCurrentModeRequest, _internal_metadata_),
@@ -329,16 +398,20 @@ static const ::_pbi::MigrationSchema
         {9, 18, -1, sizeof(::mavsdk::rpc::modes_server::SetAvailableModesResponse)},
         {19, -1, -1, sizeof(::mavsdk::rpc::modes_server::SubscribeModeRequestedRequest)},
         {27, 36, -1, sizeof(::mavsdk::rpc::modes_server::ModeRequestedResponse)},
-        {37, -1, -1, sizeof(::mavsdk::rpc::modes_server::SetCurrentModeRequest)},
-        {46, 55, -1, sizeof(::mavsdk::rpc::modes_server::SetCurrentModeResponse)},
-        {56, -1, -1, sizeof(::mavsdk::rpc::modes_server::Mode)},
-        {70, -1, -1, sizeof(::mavsdk::rpc::modes_server::ModesServerResult)},
+        {37, -1, -1, sizeof(::mavsdk::rpc::modes_server::RespondModeRequestedRequest)},
+        {46, 55, -1, sizeof(::mavsdk::rpc::modes_server::RespondModeRequestedResponse)},
+        {56, -1, -1, sizeof(::mavsdk::rpc::modes_server::SetCurrentModeRequest)},
+        {65, 74, -1, sizeof(::mavsdk::rpc::modes_server::SetCurrentModeResponse)},
+        {75, -1, -1, sizeof(::mavsdk::rpc::modes_server::Mode)},
+        {89, -1, -1, sizeof(::mavsdk::rpc::modes_server::ModesServerResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::modes_server::_SetAvailableModesRequest_default_instance_._instance,
     &::mavsdk::rpc::modes_server::_SetAvailableModesResponse_default_instance_._instance,
     &::mavsdk::rpc::modes_server::_SubscribeModeRequestedRequest_default_instance_._instance,
     &::mavsdk::rpc::modes_server::_ModeRequestedResponse_default_instance_._instance,
+    &::mavsdk::rpc::modes_server::_RespondModeRequestedRequest_default_instance_._instance,
+    &::mavsdk::rpc::modes_server::_RespondModeRequestedResponse_default_instance_._instance,
     &::mavsdk::rpc::modes_server::_SetCurrentModeRequest_default_instance_._instance,
     &::mavsdk::rpc::modes_server::_SetCurrentModeResponse_default_instance_._instance,
     &::mavsdk::rpc::modes_server::_Mode_default_instance_._instance,
@@ -355,30 +428,44 @@ const char descriptor_table_protodef_modes_5fserver_2fmodes_5fserver_2eproto[] A
     "odesServerResult\"\037\n\035SubscribeModeRequest"
     "edRequest\"D\n\025ModeRequestedResponse\022+\n\004mo"
     "de\030\001 \001(\0132\035.mavsdk.rpc.modes_server.Mode\""
-    "%\n\025SetCurrentModeRequest\022\014\n\004name\030\001 \001(\t\"a"
-    "\n\026SetCurrentModeResponse\022G\n\023modes_server"
-    "_result\030\001 \001(\0132*.mavsdk.rpc.modes_server."
-    "ModesServerResult\"\205\001\n\004Mode\022\014\n\004name\030\001 \001(\t"
-    "\022\023\n\013custom_mode\030\002 \001(\r\022\023\n\013is_standard\030\003 \001"
-    "(\010\022\032\n\022is_user_selectable\030\004 \001(\010\022\023\n\013is_adv"
-    "anced\030\005 \001(\010\022\024\n\014is_auto_mode\030\006 \001(\010\"\321\001\n\021Mo"
-    "desServerResult\022A\n\006result\030\001 \001(\01621.mavsdk"
-    ".rpc.modes_server.ModesServerResult.Resu"
-    "lt\022\022\n\nresult_str\030\002 \001(\t\"e\n\006Result\022\022\n\016RESU"
-    "LT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\030\n\024RESU"
-    "LT_INVALID_MODES\020\002\022\031\n\025RESULT_MODE_NOT_FO"
-    "UND\020\0032\233\003\n\022ModesServerService\022\200\001\n\021SetAvai"
-    "lableModes\0221.mavsdk.rpc.modes_server.Set"
-    "AvailableModesRequest\0322.mavsdk.rpc.modes"
-    "_server.SetAvailableModesResponse\"\004\200\265\030\001\022"
-    "\210\001\n\026SubscribeModeRequested\0226.mavsdk.rpc."
-    "modes_server.SubscribeModeRequestedReque"
-    "st\032..mavsdk.rpc.modes_server.ModeRequest"
-    "edResponse\"\004\200\265\030\0000\001\022w\n\016SetCurrentMode\022..m"
-    "avsdk.rpc.modes_server.SetCurrentModeReq"
-    "uest\032/.mavsdk.rpc.modes_server.SetCurren"
-    "tModeResponse\"\004\200\265\030\001B*\n\026io.mavsdk.modes_s"
-    "erverB\020ModesServerProtob\006proto3"
+    "[\n\033RespondModeRequestedRequest\022<\n\rmode_f"
+    "eedback\030\001 \001(\0162%.mavsdk.rpc.modes_server."
+    "ModeFeedback\"g\n\034RespondModeRequestedResp"
+    "onse\022G\n\023modes_server_result\030\001 \001(\0132*.mavs"
+    "dk.rpc.modes_server.ModesServerResult\"%\n"
+    "\025SetCurrentModeRequest\022\014\n\004name\030\001 \001(\t\"a\n\026"
+    "SetCurrentModeResponse\022G\n\023modes_server_r"
+    "esult\030\001 \001(\0132*.mavsdk.rpc.modes_server.Mo"
+    "desServerResult\"\205\001\n\004Mode\022\014\n\004name\030\001 \001(\t\022\023"
+    "\n\013custom_mode\030\002 \001(\r\022\023\n\013is_standard\030\003 \001(\010"
+    "\022\032\n\022is_user_selectable\030\004 \001(\010\022\023\n\013is_advan"
+    "ced\030\005 \001(\010\022\024\n\014is_auto_mode\030\006 \001(\010\"\206\002\n\021Mode"
+    "sServerResult\022A\n\006result\030\001 \001(\01621.mavsdk.r"
+    "pc.modes_server.ModesServerResult.Result"
+    "\022\022\n\nresult_str\030\002 \001(\t\"\231\001\n\006Result\022\022\n\016RESUL"
+    "T_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\030\n\024RESUL"
+    "T_INVALID_MODES\020\002\022\031\n\025RESULT_MODE_NOT_FOU"
+    "ND\020\003\022\025\n\021RESULT_NO_REQUEST\020\004\022\033\n\027RESULT_IN"
+    "VALID_FEEDBACK\020\005*\221\001\n\014ModeFeedback\022\031\n\025MOD"
+    "E_FEEDBACK_UNKNOWN\020\000\022\032\n\026MODE_FEEDBACK_AC"
+    "CEPTED\020\001\022\026\n\022MODE_FEEDBACK_BUSY\020\002\022\030\n\024MODE"
+    "_FEEDBACK_DENIED\020\003\022\030\n\024MODE_FEEDBACK_FAIL"
+    "ED\020\0042\247\004\n\022ModesServerService\022\200\001\n\021SetAvail"
+    "ableModes\0221.mavsdk.rpc.modes_server.SetA"
+    "vailableModesRequest\0322.mavsdk.rpc.modes_"
+    "server.SetAvailableModesResponse\"\004\200\265\030\001\022\210"
+    "\001\n\026SubscribeModeRequested\0226.mavsdk.rpc.m"
+    "odes_server.SubscribeModeRequestedReques"
+    "t\032..mavsdk.rpc.modes_server.ModeRequeste"
+    "dResponse\"\004\200\265\030\0000\001\022\211\001\n\024RespondModeRequest"
+    "ed\0224.mavsdk.rpc.modes_server.RespondMode"
+    "RequestedRequest\0325.mavsdk.rpc.modes_serv"
+    "er.RespondModeRequestedResponse\"\004\200\265\030\001\022w\n"
+    "\016SetCurrentMode\022..mavsdk.rpc.modes_serve"
+    "r.SetCurrentModeRequest\032/.mavsdk.rpc.mod"
+    "es_server.SetCurrentModeResponse\"\004\200\265\030\001B*"
+    "\n\026io.mavsdk.modes_serverB\020ModesServerPro"
+    "tob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_modes_5fserver_2fmodes_5fserver_2eproto_deps[1] =
     {
@@ -388,13 +475,13 @@ static ::absl::once_flag descriptor_table_modes_5fserver_2fmodes_5fserver_2eprot
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_modes_5fserver_2fmodes_5fserver_2eproto = {
     false,
     false,
-    1311,
+    1850,
     descriptor_table_protodef_modes_5fserver_2fmodes_5fserver_2eproto,
     "modes_server/modes_server.proto",
     &descriptor_table_modes_5fserver_2fmodes_5fserver_2eproto_once,
     descriptor_table_modes_5fserver_2fmodes_5fserver_2eproto_deps,
     1,
-    8,
+    10,
     schemas,
     file_default_instances,
     TableStruct_modes_5fserver_2fmodes_5fserver_2eproto::offsets,
@@ -409,9 +496,9 @@ const ::google::protobuf::EnumDescriptor* ModesServerResult_Result_descriptor() 
   return file_level_enum_descriptors_modes_5fserver_2fmodes_5fserver_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ModesServerResult_Result_internal_data_[] = {
-    262144u, 0u, };
+    393216u, 0u, };
 bool ModesServerResult_Result_IsValid(int value) {
-  return 0 <= value && value <= 3;
+  return 0 <= value && value <= 5;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -420,12 +507,23 @@ constexpr ModesServerResult_Result ModesServerResult::RESULT_UNKNOWN;
 constexpr ModesServerResult_Result ModesServerResult::RESULT_SUCCESS;
 constexpr ModesServerResult_Result ModesServerResult::RESULT_INVALID_MODES;
 constexpr ModesServerResult_Result ModesServerResult::RESULT_MODE_NOT_FOUND;
+constexpr ModesServerResult_Result ModesServerResult::RESULT_NO_REQUEST;
+constexpr ModesServerResult_Result ModesServerResult::RESULT_INVALID_FEEDBACK;
 constexpr ModesServerResult_Result ModesServerResult::Result_MIN;
 constexpr ModesServerResult_Result ModesServerResult::Result_MAX;
 constexpr int ModesServerResult::Result_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* ModeFeedback_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_modes_5fserver_2fmodes_5fserver_2eproto);
+  return file_level_enum_descriptors_modes_5fserver_2fmodes_5fserver_2eproto[1];
+}
+PROTOBUF_CONSTINIT const uint32_t ModeFeedback_internal_data_[] = {
+    327680u, 0u, };
+bool ModeFeedback_IsValid(int value) {
+  return 0 <= value && value <= 4;
+}
 // ===================================================================
 
 class SetAvailableModesRequest::_Internal {
@@ -1269,6 +1367,463 @@ void ModeRequestedResponse::InternalSwap(ModeRequestedResponse* PROTOBUF_RESTRIC
 }
 
 ::google::protobuf::Metadata ModeRequestedResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondModeRequestedRequest::_Internal {
+ public:
+};
+
+RespondModeRequestedRequest::RespondModeRequestedRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+}
+RespondModeRequestedRequest::RespondModeRequestedRequest(
+    ::google::protobuf::Arena* arena, const RespondModeRequestedRequest& from)
+    : RespondModeRequestedRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondModeRequestedRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondModeRequestedRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.mode_feedback_ = {};
+}
+RespondModeRequestedRequest::~RespondModeRequestedRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+  SharedDtor(*this);
+}
+inline void RespondModeRequestedRequest::SharedDtor(MessageLite& self) {
+  RespondModeRequestedRequest& this_ = static_cast<RespondModeRequestedRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondModeRequestedRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondModeRequestedRequest(arena);
+}
+constexpr auto RespondModeRequestedRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondModeRequestedRequest),
+                                            alignof(RespondModeRequestedRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondModeRequestedRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondModeRequestedRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondModeRequestedRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondModeRequestedRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondModeRequestedRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondModeRequestedRequest>(), &RespondModeRequestedRequest::ByteSizeLong,
+            &RespondModeRequestedRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondModeRequestedRequest, _impl_._cached_size_),
+        false,
+    },
+    &RespondModeRequestedRequest::kDescriptorMethods,
+    &descriptor_table_modes_5fserver_2fmodes_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondModeRequestedRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondModeRequestedRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::modes_server::RespondModeRequestedRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.modes_server.ModeFeedback mode_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondModeRequestedRequest, _impl_.mode_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondModeRequestedRequest, _impl_.mode_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.modes_server.ModeFeedback mode_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondModeRequestedRequest, _impl_.mode_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondModeRequestedRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.mode_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondModeRequestedRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondModeRequestedRequest& this_ = static_cast<const RespondModeRequestedRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondModeRequestedRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondModeRequestedRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // .mavsdk.rpc.modes_server.ModeFeedback mode_feedback = 1;
+          if (this_._internal_mode_feedback() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_mode_feedback(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondModeRequestedRequest::ByteSizeLong(const MessageLite& base) {
+          const RespondModeRequestedRequest& this_ = static_cast<const RespondModeRequestedRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondModeRequestedRequest::ByteSizeLong() const {
+          const RespondModeRequestedRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.modes_server.ModeFeedback mode_feedback = 1;
+            if (this_._internal_mode_feedback() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_mode_feedback());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondModeRequestedRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondModeRequestedRequest*>(&to_msg);
+  auto& from = static_cast<const RespondModeRequestedRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_mode_feedback() != 0) {
+    _this->_impl_.mode_feedback_ = from._impl_.mode_feedback_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondModeRequestedRequest::CopyFrom(const RespondModeRequestedRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.modes_server.RespondModeRequestedRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondModeRequestedRequest::InternalSwap(RespondModeRequestedRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.mode_feedback_, other->_impl_.mode_feedback_);
+}
+
+::google::protobuf::Metadata RespondModeRequestedRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RespondModeRequestedResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<RespondModeRequestedResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(RespondModeRequestedResponse, _impl_._has_bits_);
+};
+
+RespondModeRequestedResponse::RespondModeRequestedResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondModeRequestedResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::modes_server::RespondModeRequestedResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondModeRequestedResponse::RespondModeRequestedResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondModeRequestedResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RespondModeRequestedResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.modes_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::modes_server::ModesServerResult>(
+                              arena, *from._impl_.modes_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondModeRequestedResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondModeRequestedResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.modes_server_result_ = {};
+}
+RespondModeRequestedResponse::~RespondModeRequestedResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+  SharedDtor(*this);
+}
+inline void RespondModeRequestedResponse::SharedDtor(MessageLite& self) {
+  RespondModeRequestedResponse& this_ = static_cast<RespondModeRequestedResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.modes_server_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* RespondModeRequestedResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RespondModeRequestedResponse(arena);
+}
+constexpr auto RespondModeRequestedResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RespondModeRequestedResponse),
+                                            alignof(RespondModeRequestedResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RespondModeRequestedResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RespondModeRequestedResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RespondModeRequestedResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<RespondModeRequestedResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RespondModeRequestedResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<RespondModeRequestedResponse>(), &RespondModeRequestedResponse::ByteSizeLong,
+            &RespondModeRequestedResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RespondModeRequestedResponse, _impl_._cached_size_),
+        false,
+    },
+    &RespondModeRequestedResponse::kDescriptorMethods,
+    &descriptor_table_modes_5fserver_2fmodes_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RespondModeRequestedResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondModeRequestedResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondModeRequestedResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::modes_server::RespondModeRequestedResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.modes_server.ModesServerResult modes_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondModeRequestedResponse, _impl_.modes_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.modes_server.ModesServerResult modes_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondModeRequestedResponse, _impl_.modes_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::modes_server::ModesServerResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void RespondModeRequestedResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.modes_server_result_ != nullptr);
+    _impl_.modes_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* RespondModeRequestedResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RespondModeRequestedResponse& this_ = static_cast<const RespondModeRequestedResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RespondModeRequestedResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RespondModeRequestedResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.modes_server.ModesServerResult modes_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.modes_server_result_, this_._impl_.modes_server_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RespondModeRequestedResponse::ByteSizeLong(const MessageLite& base) {
+          const RespondModeRequestedResponse& this_ = static_cast<const RespondModeRequestedResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RespondModeRequestedResponse::ByteSizeLong() const {
+          const RespondModeRequestedResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.modes_server.ModesServerResult modes_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.modes_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void RespondModeRequestedResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RespondModeRequestedResponse*>(&to_msg);
+  auto& from = static_cast<const RespondModeRequestedResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.modes_server_result_ != nullptr);
+    if (_this->_impl_.modes_server_result_ == nullptr) {
+      _this->_impl_.modes_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::modes_server::ModesServerResult>(arena, *from._impl_.modes_server_result_);
+    } else {
+      _this->_impl_.modes_server_result_->MergeFrom(*from._impl_.modes_server_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondModeRequestedResponse::CopyFrom(const RespondModeRequestedResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.modes_server.RespondModeRequestedResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void RespondModeRequestedResponse::InternalSwap(RespondModeRequestedResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.modes_server_result_, other->_impl_.modes_server_result_);
+}
+
+::google::protobuf::Metadata RespondModeRequestedResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

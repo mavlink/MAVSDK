@@ -58,6 +58,31 @@ public:
     ~ModesServer() override;
 
 
+    /**
+     * @brief Possible answers to a mode change request.
+     */
+    enum class ModeFeedback {
+        Unknown = 0, /**< @brief Unknown. */
+        Accepted = 1, /**< @brief The vehicle switches to the mode. */
+        Busy = 2, /**< @brief The vehicle can't switch to the mode right now, e.g. it has no GPS. */
+        Denied = 3, /**< @brief The vehicle doesn't allow switching to the mode. */
+        Failed = 4, /**< @brief Switching to the mode failed. */
+    };
+
+    /**
+     * @brief Convert `ModesServer::ModeFeedback` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(ModesServer::ModeFeedback const& mode_feedback);
+
+    /**
+     * @brief Stream operator to print information about a `ModesServer::ModeFeedback`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ModesServer::ModeFeedback const& mode_feedback);
+
 
 
 
@@ -100,6 +125,8 @@ public:
         Success = 1, /**< @brief Request was successful. */
         InvalidModes = 2, /**< @brief Modes are invalid, e.g. none are given, a name or custom mode is used twice, or a standard mode name is unknown. */
         ModeNotFound = 3, /**< @brief No available mode with this name. */
+        NoRequest = 4, /**< @brief There is no mode change request to respond to. */
+        InvalidFeedback = 5, /**< @brief The feedback is unknown. */
     };
 
     /**
@@ -160,9 +187,9 @@ public:
     /**
      * @brief Subscribe to mode change requests.
      *
-     * Requests for a mode in the list are accepted and reported here. The
-     * vehicle should then switch and call SetCurrentMode, or call
-     * SetCurrentMode with the mode it stays in if it can't switch.
+     * Requests for a mode in the list are reported here and need to be
+     * answered with RespondModeRequested. Until then, the ground station is
+     * told that the request is in progress.
      */
     ModeRequestedHandle subscribe_mode_requested(const ModeRequestedCallback& callback);
 
@@ -174,6 +201,26 @@ public:
         
 
 
+
+
+
+
+
+
+    /**
+     * @brief Respond to the last mode change request.
+     *
+     * If the request is accepted, the requested mode becomes the current mode.
+     * Otherwise the vehicle stays in its current mode, e.g. if it can't switch
+     * to Position without GPS.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_mode_requested(ModeFeedback mode_feedback) const;
 
 
 
