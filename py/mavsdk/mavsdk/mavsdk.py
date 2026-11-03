@@ -355,8 +355,7 @@ class Mavsdk:
         """Enable MAVLink 2 message signing with a 32 byte secret key.
 
         All outgoing MAVLink 2 messages get signed, and incoming messages
-        without a valid signature are dropped, except HEARTBEAT, RADIO_STATUS,
-        ADSB_VEHICLE and COLLISION. Applies to all connections."""
+        without a valid signature are dropped. Applies to all connections."""
         if len(secret_key) != SIGNING_KEY_LENGTH:
             raise ValueError(
                 f"secret_key must be {SIGNING_KEY_LENGTH} bytes, not {len(secret_key)}"

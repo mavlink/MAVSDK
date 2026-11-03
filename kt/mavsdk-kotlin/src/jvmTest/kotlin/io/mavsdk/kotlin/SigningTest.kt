@@ -20,8 +20,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 /**
  * End-to-end test for MAVLink 2 message signing, see EndToEndTest for the general setup.
  *
- * Heartbeats are accepted unsigned, so the autopilot is discovered whatever the keys are. Whether
- * the position gets through shows whether the signature was accepted.
+ * The autopilot publishes a position, which only gets through if both use the same key.
  */
 class SigningTest {
 
@@ -52,10 +51,17 @@ class SigningTest {
     }
 
     @Test
-    fun `a position signed with another key is dropped`() = runBlocking {
-        val received =
-            exchangePosition(port = 17056, groundStationKey = KEY, autopilotKey = OTHER_KEY)
-        assertNull(received, "a position signed with the wrong key arrived")
+    fun `an autopilot signing with another key is not discovered`() {
+        Mavsdk(ComponentType.AUTOPILOT).use { autopilot ->
+            autopilot.enableSigning(OTHER_KEY)
+            Mavsdk(ComponentType.GROUND_STATION).use { groundStation ->
+                groundStation.enableSigning(KEY)
+                groundStation.addAnyConnectionWithHandle("udpin://0.0.0.0:17056").getOrThrow()
+                autopilot.addAnyConnectionWithHandle("udpout://127.0.0.1:17056").getOrThrow()
+
+                assertNull(groundStation.firstAutopilot(timeoutSeconds = NOT_DISCOVERED_TIMEOUT_S))
+            }
+        }
     }
 
     private suspend fun exchangePosition(
@@ -94,6 +100,7 @@ class SigningTest {
 
     private companion object {
         const val DISCOVERY_TIMEOUT_S = 10.0
+        const val NOT_DISCOVERED_TIMEOUT_S = 3.0
         const val EXCHANGE_TIMEOUT_MS = 3_000L
         const val PUBLISH_INTERVAL_MS = 100L
 

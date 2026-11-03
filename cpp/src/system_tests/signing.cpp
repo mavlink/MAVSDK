@@ -32,7 +32,6 @@ Action::Result arm_and_disarm(Mavsdk& mavsdk_groundstation, Mavsdk& mavsdk_autop
     action_server.set_armable(true, true);
     action_server.set_disarmable(true, true);
 
-    // Heartbeats are accepted unsigned, so discovery works either way.
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     EXPECT_TRUE(maybe_system);
     if (!maybe_system) {
@@ -79,7 +78,8 @@ TEST(Signing, WrongKeyRejected)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17101"), ConnectionResult::Success);
 
-    EXPECT_EQ(arm_and_disarm(mavsdk_groundstation, mavsdk_autopilot), Action::Result::Timeout);
+    // Not even the heartbeats get through.
+    EXPECT_FALSE(mavsdk_groundstation.first_autopilot(3.0));
 }
 
 TEST(Signing, UnsignedRejected)
@@ -88,6 +88,8 @@ TEST(Signing, UnsignedRejected)
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.enable_signing(make_key(1));
 
+    // The ground station takes the signed messages, so it discovers the autopilot,
+    // but the autopilot drops its unsigned commands.
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17102"),
         ConnectionResult::Success);

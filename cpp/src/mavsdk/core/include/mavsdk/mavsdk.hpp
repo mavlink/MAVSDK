@@ -520,9 +520,9 @@ public:
      * @brief Enable MAVLink 2 message signing with the given secret key.
      *
      * Once enabled, all outgoing MAVLink 2 messages are signed, and incoming
-     * messages without a valid signature are dropped, except for the few that
-     * are accepted unsigned (HEARTBEAT, RADIO_STATUS, ADSB_VEHICLE, COLLISION),
-     * the same as PX4 does.
+     * messages without a valid signature are dropped, including HEARTBEAT and
+     * RADIO_STATUS: a system that doesn't sign with the same key is not
+     * discovered.
      *
      * The key applies to all connections. It is not stored, so it has to be
      * set again on each start. Setting the key on the vehicle (e.g. with

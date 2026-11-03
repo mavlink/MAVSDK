@@ -34,7 +34,7 @@ bool MavlinkSigning::check_incoming(const mavlink_message_t& message)
     }
 
     if ((message.incompat_flags & MAVLINK_IFLAG_SIGNED) == 0) {
-        return accepts_unsigned(message.msgid);
+        return false;
     }
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -45,13 +45,7 @@ bool MavlinkSigning::check_incoming(const mavlink_message_t& message)
 
     update_timestamp();
 
-    if (mavlink_signature_check(&_signing, &_streams, &message)) {
-        return true;
-    }
-
-    // Like the C parser: a bad signature doesn't matter for messages that
-    // don't need one in the first place.
-    return accepts_unsigned(message.msgid);
+    return mavlink_signature_check(&_signing, &_streams, &message);
 }
 
 void MavlinkSigning::sign_outgoing(mavlink_message_t& message, uint8_t crc_extra)
@@ -93,23 +87,6 @@ void MavlinkSigning::sign_outgoing(mavlink_message_t& message, uint8_t crc_extra
         reinterpret_cast<const uint8_t*>(_MAV_PAYLOAD(&message)),
         message.len,
         message.ck);
-}
-
-bool MavlinkSigning::accepts_unsigned(uint32_t message_id)
-{
-    switch (message_id) {
-        // Needed to discover a system and its link at all, but it means
-        // that someone without the key can make a system appear.
-        case MAVLINK_MSG_ID_HEARTBEAT:
-        // Injected by radios, which can't sign.
-        case MAVLINK_MSG_ID_RADIO_STATUS:
-        // From ADS-B receivers, which can't sign either.
-        case MAVLINK_MSG_ID_ADSB_VEHICLE:
-        case MAVLINK_MSG_ID_COLLISION:
-            return true;
-        default:
-            return false;
-    }
 }
 
 uint64_t MavlinkSigning::timestamp_now()

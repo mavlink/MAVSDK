@@ -170,13 +170,13 @@ TEST(MavlinkSigning, ReplayRejected)
     EXPECT_FALSE(receiver.check_incoming(parsed_second.value()));
 }
 
-TEST(MavlinkSigning, UnsignedOnlyAcceptedForSomeMessages)
+TEST(MavlinkSigning, UnsignedRejected)
 {
     MavlinkSigning receiver;
     receiver.enable(make_key(1));
 
     EXPECT_FALSE(receiver.check_incoming(make_attitude()));
-    EXPECT_TRUE(receiver.check_incoming(make_heartbeat()));
+    EXPECT_FALSE(receiver.check_incoming(make_heartbeat()));
 }
 
 TEST(MavlinkSigning, DisableAcceptsUnsignedAgain)

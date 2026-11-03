@@ -70,8 +70,7 @@ expect class Mavsdk(configuration: Configuration) : AutoCloseable {
      * Enable MAVLink 2 message signing
      *
      * All outgoing MAVLink 2 messages get signed, and incoming messages without a valid signature
-     * are dropped, except HEARTBEAT, RADIO_STATUS, ADSB_VEHICLE and COLLISION. Applies to all
-     * connections.
+     * are dropped. Applies to all connections.
      *
      * @param secretKey The 32 byte secret key shared with the other systems
      */

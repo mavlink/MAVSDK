@@ -24,8 +24,8 @@ Once enabled, for all connections:
 
 - All outgoing MAVLink 2 messages are signed. MAVLink 1 messages can't be signed and are sent as they are.
 - Incoming messages without a valid signature are dropped, including signed messages that are replayed.
-  The exceptions are `HEARTBEAT`, `RADIO_STATUS`, `ADSB_VEHICLE` and `COLLISION`, which are accepted unsigned, the same as PX4 does.
-  `HEARTBEAT` is needed to discover a system, and the others come from radios and ADS-B receivers which can't sign.
+  This includes `HEARTBEAT`, so a system that doesn't sign with the same key is not discovered at all.
+  It also includes `RADIO_STATUS` injected by radios that can't sign, such as SiK radios.
 
 Disabling signing again sends messages unsigned and accepts all incoming messages.
 

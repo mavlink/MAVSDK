@@ -24,8 +24,7 @@ public:
 
     bool is_enabled() const { return _enabled.load(); }
 
-    // Whether a framed message is accepted: messages with a valid signature, and unsigned
-    // (or badly signed) messages that the spec allows without one, e.g. RADIO_STATUS.
+    // Whether a framed message is accepted, i.e. has a valid signature.
     // Always true while signing is disabled.
     //
     // This is the (comparatively expensive) SHA-256 check, call it once per message.
@@ -35,9 +34,6 @@ public:
     // changes the header and thereby the CRC, so it needs the message's CRC extra.
     // No-op while signing is disabled, for MAVLink 1 and for already signed messages.
     void sign_outgoing(mavlink_message_t& message, uint8_t crc_extra);
-
-    // Messages accepted without a signature, the same as PX4 accepts.
-    static bool accepts_unsigned(uint32_t message_id);
 
     // Current time in the units of the signing timestamp: 10 microseconds since
     // 1 January 2015 GMT.
