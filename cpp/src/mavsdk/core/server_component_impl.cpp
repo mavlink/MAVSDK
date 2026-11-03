@@ -350,6 +350,21 @@ uint32_t ServerComponentImpl::get_custom_mode() const
     return _custom_mode;
 }
 
+void ServerComponentImpl::set_modes_server_handles_mode_changes(bool handles)
+{
+    _modes_server_handles_mode_changes = handles;
+}
+
+bool ServerComponentImpl::modes_server_handles_mode_changes() const
+{
+    return _modes_server_handles_mode_changes;
+}
+
+uint8_t ServerComponentImpl::get_mav_autopilot() const
+{
+    return _mavsdk_impl.get_mav_autopilot();
+}
+
 void ServerComponentImpl::call_user_callback_located(
     const std::string& filename, const int linenumber, const std::function<void()>& func)
 {

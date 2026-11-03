@@ -18,6 +18,8 @@ import io.mavsdk.kotlin.plugins.mavlink_direct_server.MavlinkDirectServer
 import io.mavsdk.kotlin.plugins.mavlink_direct_server.createMavlinkDirectServerNative
 import io.mavsdk.kotlin.plugins.mission_raw_server.MissionRawServer
 import io.mavsdk.kotlin.plugins.mission_raw_server.createMissionRawServerNative
+import io.mavsdk.kotlin.plugins.modes_server.ModesServer
+import io.mavsdk.kotlin.plugins.modes_server.createModesServerNative
 import io.mavsdk.kotlin.plugins.param_server.ParamServer
 import io.mavsdk.kotlin.plugins.param_server.createParamServerNative
 import io.mavsdk.kotlin.plugins.telemetry_server.TelemetryServer
@@ -108,6 +110,15 @@ abstract class ServerComponentPlugins internal constructor() {
                 MissionRawServer::class,
                 { MissionRawServer(createMissionRawServerNative(getHandle())) },
                 MissionRawServer::destroy,
+            )
+
+    /** The canonical ModesServer plugin for this server component. */
+    val modesServer: ModesServer
+        get() =
+            plugin(
+                ModesServer::class,
+                { ModesServer(createModesServerNative(getHandle())) },
+                ModesServer::destroy,
             )
 
     /** The canonical ParamServer plugin for this server component. */

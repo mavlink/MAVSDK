@@ -126,6 +126,14 @@ int GrpcServer::run()
     builder.RegisterService(&_mocap_service);
 #endif
 
+#ifdef MODES_ENABLED
+    builder.RegisterService(&_modes_service);
+#endif
+
+#ifdef MODES_SERVER_ENABLED
+    builder.RegisterService(&_modes_server_service);
+#endif
+
 #ifdef OFFBOARD_ENABLED
     builder.RegisterService(&_offboard_service);
 #endif
@@ -303,6 +311,14 @@ void GrpcServer::stop()
 
 #ifdef MOCAP_ENABLED
         _mocap_service.stop();
+#endif
+
+#ifdef MODES_ENABLED
+        _modes_service.stop();
+#endif
+
+#ifdef MODES_SERVER_ENABLED
+        _modes_server_service.stop();
 #endif
 
 #ifdef OFFBOARD_ENABLED

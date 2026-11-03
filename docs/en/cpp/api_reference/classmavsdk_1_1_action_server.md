@@ -7,6 +7,9 @@
 Provide vehicle actions (as a server) such as arming, taking off, and landing. 
 
 
+The flight mode API is deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead. Once [ModesServer](classmavsdk_1_1_modes_server.md) has modes set, mode change requests are left to it. 
+
+
 ## Data Structures
 
 
@@ -47,8 +50,8 @@ Type | Name | Description
 &nbsp; | [ActionServer](#classmavsdk_1_1_action_server_1a42228e948d6a50b42ac8e506dc9d094c) (const ActionServer & other) | Copy constructor.
 [ArmDisarmHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a5974c4b3e20da3418f9ca2b9de92157b) | [subscribe_arm_disarm](#classmavsdk_1_1_action_server_1a898cccbbf0fbb8e50c2d7ec75dd12164) (const [ArmDisarmCallback](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a8ef1c6ec94f6bf5173d208be15b14910) & callback) | Subscribe to ARM/DISARM commands.
 void | [unsubscribe_arm_disarm](#classmavsdk_1_1_action_server_1adef1a0b5964278a9188ffaf17d7cc1ed) ([ArmDisarmHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a5974c4b3e20da3418f9ca2b9de92157b) handle) | Unsubscribe from subscribe_arm_disarm.
-[FlightModeChangeHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa9746c14f9f1d65ee548ab97b433da2f) | [subscribe_flight_mode_change](#classmavsdk_1_1_action_server_1a4f66d83144feb3657bc50316339f1a63) (const [FlightModeChangeCallback](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a58a1284a240908bf4d9dd998d5939f6f) & callback) | Subscribe to DO_SET_MODE.
-void | [unsubscribe_flight_mode_change](#classmavsdk_1_1_action_server_1acafa3948ad27afc697926f267a5a92d4) ([FlightModeChangeHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa9746c14f9f1d65ee548ab97b433da2f) handle) | Unsubscribe from subscribe_flight_mode_change.
+DEPRECATED [FlightModeChangeHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa9746c14f9f1d65ee548ab97b433da2f) | [subscribe_flight_mode_change](#classmavsdk_1_1_action_server_1ab1ee17566c06745f433622c56cb30b1c) (const [FlightModeChangeCallback](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a58a1284a240908bf4d9dd998d5939f6f) & callback) | Subscribe to DO_SET_MODE (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
+DEPRECATED void | [unsubscribe_flight_mode_change](#classmavsdk_1_1_action_server_1a0ccf9f761b648b9f5a722d4ce2adbf30) ([FlightModeChangeHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa9746c14f9f1d65ee548ab97b433da2f) handle) | Unsubscribe from subscribe_flight_mode_change.
 [TakeoffHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aea7eff252335602cd3785a6551c6ba64) | [subscribe_takeoff](#classmavsdk_1_1_action_server_1ab289bc925bf87ecc67a16ae0f4356015) (const [TakeoffCallback](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a23074d52d687eff2c4fc0184ac1b61fd) & callback) | Subscribe to takeoff command.
 void | [unsubscribe_takeoff](#classmavsdk_1_1_action_server_1ace083efcfa2323f3fa19bc65e373ff6f) ([TakeoffHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aea7eff252335602cd3785a6551c6ba64) handle) | Unsubscribe from subscribe_takeoff.
 [LandHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1ae7c1a7d2a06cc045c9e0f29422f16278) | [subscribe_land](#classmavsdk_1_1_action_server_1ac3d8a43058e281f49e2352dad9faf44a) (const [LandCallback](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1af2eb6d32c9f903a6e9f773ddf2acf4a0) & callback) | Subscribe to land command.
@@ -62,11 +65,11 @@ void | [unsubscribe_terminate](#classmavsdk_1_1_action_server_1a3e236694f1f0beae
 [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_allow_takeoff](#classmavsdk_1_1_action_server_1a250a8a8d1aed87d7c4125c6cfe797250) (bool allow_takeoff)const | Can the vehicle takeoff.
 [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_armable](#classmavsdk_1_1_action_server_1ab5b21457f69f9f315d54dbc06e745a7a) (bool armable, bool force_armable)const | Can the vehicle arm when requested.
 [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_disarmable](#classmavsdk_1_1_action_server_1afae1336100d7a91a4f4521cee56a1ecb) (bool disarmable, bool force_disarmable)const | Can the vehicle disarm when requested.
-[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_allowable_flight_modes](#classmavsdk_1_1_action_server_1a3041d1b923a3b01021433ad43ab93b3a) ([AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) flight_modes)const | Set which modes the vehicle can transition to (Manual always allowed).
-[ActionServer::AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) | [get_allowable_flight_modes](#classmavsdk_1_1_action_server_1a0960a6ec243823729a418a3c68feaf2a) () const | Get which modes the vehicle can transition to (Manual always allowed).
+DEPRECATED [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_allowable_flight_modes](#classmavsdk_1_1_action_server_1a73c3b07348c91acb66a45ee6bfca0937) ([AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) flight_modes)const | Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
+DEPRECATED [ActionServer::AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) | [get_allowable_flight_modes](#classmavsdk_1_1_action_server_1a43dd48953ef727c0eb2851048e17fa35) () const | Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
 [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_armed_state](#classmavsdk_1_1_action_server_1a8830660884933029f104c49c31b7af24) (bool is_armed)const | Set/override the armed/disarmed state of the vehicle directly, and notify subscribers.
-[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_flight_mode](#classmavsdk_1_1_action_server_1ac5ba6d26aef83881826361aa20a9bd65) ([FlightMode](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aee12027f5d9380f2c13fa7813c6ae1d8) flight_mode)const | Set/override the flight mode of the vehicle directly, and notify subscribers.
-[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_flight_mode_internal](#classmavsdk_1_1_action_server_1a428bdf9077437da3300ef06487f4ee14) ([FlightMode](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aee12027f5d9380f2c13fa7813c6ae1d8) flight_mode)const | Set/override the flight mode of the vehicle directly, and *do not* notify subscribers.
+DEPRECATED [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_flight_mode](#classmavsdk_1_1_action_server_1afbeb14d2093161fda73e9ee0547ca1dc) ([FlightMode](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aee12027f5d9380f2c13fa7813c6ae1d8) flight_mode)const | Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
+DEPRECATED [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_flight_mode_internal](#classmavsdk_1_1_action_server_1abf7db70537f41839091b34d0f2448c74) ([FlightMode](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aee12027f5d9380f2c13fa7813c6ae1d8) flight_mode)const | Set/override the flight mode of the vehicle directly, and *do not* notify subscribers (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
 const [ActionServer](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa7a3da260716d5dc7857b26b40d45299) & | [operator=](#classmavsdk_1_1_action_server_1aa80e34dd72d2e31005085c78892bab8c) (const [ActionServer](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa7a3da260716d5dc7857b26b40d45299) &)=delete | Equality operator (object is not copyable).
 
 
@@ -348,14 +351,16 @@ Unsubscribe from subscribe_arm_disarm.
 
 * [ArmDisarmHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a5974c4b3e20da3418f9ca2b9de92157b) **handle** - 
 
-### subscribe_flight_mode_change() {#classmavsdk_1_1_action_server_1a4f66d83144feb3657bc50316339f1a63}
+### subscribe_flight_mode_change() {#classmavsdk_1_1_action_server_1ab1ee17566c06745f433622c56cb30b1c}
 ```cpp
-FlightModeChangeHandle mavsdk::ActionServer::subscribe_flight_mode_change(const FlightModeChangeCallback &callback)
+DEPRECATED FlightModeChangeHandle mavsdk::ActionServer::subscribe_flight_mode_change(const FlightModeChangeCallback &callback)
 ```
 
 
-Subscribe to DO_SET_MODE.
+Subscribe to DO_SET_MODE (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
 
+<xrefsect id="deprecated_1_deprecated000001"><xreftitle>Deprecated</xreftitle><xrefdescription><para>This method is deprecated and may be removed in a future release. </para>
+</xrefdescription></xrefsect>
 
 **Parameters**
 
@@ -363,11 +368,11 @@ Subscribe to DO_SET_MODE.
 
 **Returns**
 
-&emsp;[FlightModeChangeHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa9746c14f9f1d65ee548ab97b433da2f) - 
+&emsp;DEPRECATED [FlightModeChangeHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa9746c14f9f1d65ee548ab97b433da2f) - 
 
-### unsubscribe_flight_mode_change() {#classmavsdk_1_1_action_server_1acafa3948ad27afc697926f267a5a92d4}
+### unsubscribe_flight_mode_change() {#classmavsdk_1_1_action_server_1a0ccf9f761b648b9f5a722d4ce2adbf30}
 ```cpp
-void mavsdk::ActionServer::unsubscribe_flight_mode_change(FlightModeChangeHandle handle)
+DEPRECATED void mavsdk::ActionServer::unsubscribe_flight_mode_change(FlightModeChangeHandle handle)
 ```
 
 
@@ -377,6 +382,10 @@ Unsubscribe from subscribe_flight_mode_change.
 **Parameters**
 
 * [FlightModeChangeHandle](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aa9746c14f9f1d65ee548ab97b433da2f) **handle** - 
+
+**Returns**
+
+&emsp;DEPRECATED void - 
 
 ### subscribe_takeoff() {#classmavsdk_1_1_action_server_1ab289bc925bf87ecc67a16ae0f4356015}
 ```cpp
@@ -584,13 +593,17 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
 
-### set_allowable_flight_modes() {#classmavsdk_1_1_action_server_1a3041d1b923a3b01021433ad43ab93b3a}
+### set_allowable_flight_modes() {#classmavsdk_1_1_action_server_1a73c3b07348c91acb66a45ee6bfca0937}
 ```cpp
-Result mavsdk::ActionServer::set_allowable_flight_modes(AllowableFlightModes flight_modes) const
+DEPRECATED Result mavsdk::ActionServer::set_allowable_flight_modes(AllowableFlightModes flight_modes) const
 ```
 
 
-Set which modes the vehicle can transition to (Manual always allowed).
+Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
+
+<xrefsect id="deprecated_1_deprecated000002"><xreftitle>Deprecated</xreftitle><xrefdescription><para>This method is deprecated and may be removed in a future release.</para>
+</xrefdescription></xrefsect>
+
 
 This function is blocking.
 
@@ -600,21 +613,25 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
+&emsp;DEPRECATED [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
 
-### get_allowable_flight_modes() {#classmavsdk_1_1_action_server_1a0960a6ec243823729a418a3c68feaf2a}
+### get_allowable_flight_modes() {#classmavsdk_1_1_action_server_1a43dd48953ef727c0eb2851048e17fa35}
 ```cpp
-ActionServer::AllowableFlightModes mavsdk::ActionServer::get_allowable_flight_modes() const
+DEPRECATED ActionServer::AllowableFlightModes mavsdk::ActionServer::get_allowable_flight_modes() const
 ```
 
 
-Get which modes the vehicle can transition to (Manual always allowed).
+Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
+
+<xrefsect id="deprecated_1_deprecated000003"><xreftitle>Deprecated</xreftitle><xrefdescription><para>This method is deprecated and may be removed in a future release.</para>
+</xrefdescription></xrefsect>
+
 
 This function is blocking.
 
 **Returns**
 
-&emsp;[ActionServer::AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
+&emsp;DEPRECATED [ActionServer::AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
 
 ### set_armed_state() {#classmavsdk_1_1_action_server_1a8830660884933029f104c49c31b7af24}
 ```cpp
@@ -634,13 +651,17 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
 
-### set_flight_mode() {#classmavsdk_1_1_action_server_1ac5ba6d26aef83881826361aa20a9bd65}
+### set_flight_mode() {#classmavsdk_1_1_action_server_1afbeb14d2093161fda73e9ee0547ca1dc}
 ```cpp
-Result mavsdk::ActionServer::set_flight_mode(FlightMode flight_mode) const
+DEPRECATED Result mavsdk::ActionServer::set_flight_mode(FlightMode flight_mode) const
 ```
 
 
-Set/override the flight mode of the vehicle directly, and notify subscribers.
+Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
+
+<xrefsect id="deprecated_1_deprecated000004"><xreftitle>Deprecated</xreftitle><xrefdescription><para>This method is deprecated and may be removed in a future release.</para>
+</xrefdescription></xrefsect>
+
 
 This function is blocking.
 
@@ -650,15 +671,19 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
+&emsp;DEPRECATED [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
 
-### set_flight_mode_internal() {#classmavsdk_1_1_action_server_1a428bdf9077437da3300ef06487f4ee14}
+### set_flight_mode_internal() {#classmavsdk_1_1_action_server_1abf7db70537f41839091b34d0f2448c74}
 ```cpp
-Result mavsdk::ActionServer::set_flight_mode_internal(FlightMode flight_mode) const
+DEPRECATED Result mavsdk::ActionServer::set_flight_mode_internal(FlightMode flight_mode) const
 ```
 
 
-Set/override the flight mode of the vehicle directly, and *do not* notify subscribers.
+Set/override the flight mode of the vehicle directly, and *do not* notify subscribers (deprecated, use the [ModesServer](classmavsdk_1_1_modes_server.md) plugin instead).
+
+<xrefsect id="deprecated_1_deprecated000005"><xreftitle>Deprecated</xreftitle><xrefdescription><para>This method is deprecated and may be removed in a future release.</para>
+</xrefdescription></xrefsect>
+
 
 This function is blocking.
 
@@ -668,7 +693,7 @@ This function is blocking.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
+&emsp;DEPRECATED [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) of request.
 
 ### operator=() {#classmavsdk_1_1_action_server_1aa80e34dd72d2e31005085c78892bab8c}
 ```cpp

@@ -19,6 +19,15 @@
 #include <sstream>
 #include <vector>
 
+// Wrappers still have to call methods that are marked deprecated.
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
+
 namespace mavsdk {
 namespace mavsdk_server {
 
@@ -1026,3 +1035,8 @@ private:
 
 } // namespace mavsdk_server
 } // namespace mavsdk
+#if defined(__GNUC__) || defined(__clang__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif

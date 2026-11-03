@@ -9,7 +9,12 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-/** Provide vehicle actions (as a server) such as arming, taking off, and landing. */
+/**
+ * Provide vehicle actions (as a server) such as arming, taking off, and landing.
+ *
+ * The flight mode API is deprecated, use the ModesServer plugin instead. Once ModesServer has modes
+ * set, mode change requests are left to it.
+ */
 class ActionServer internal constructor(private val native: ActionServerNative) {
     private var closed = false
 
@@ -128,7 +133,7 @@ class ActionServer internal constructor(private val native: ActionServerNative) 
     }
 
     /**
-     * Subscribe to DO_SET_MODE
+     * Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)
      *
      * @return
      */
@@ -217,7 +222,8 @@ class ActionServer internal constructor(private val native: ActionServerNative) 
         Result.fromValue(native.setDisarmable(disarmable, forceDisarmable))
 
     /**
-     * Set which modes the vehicle can transition to (Manual always allowed)
+     * Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the
+     * ModesServer plugin instead)
      *
      * @param flightModes
      * @return The result of the request.
@@ -226,7 +232,8 @@ class ActionServer internal constructor(private val native: ActionServerNative) 
         Result.fromValue(native.setAllowableFlightModes(flightModes))
 
     /**
-     * Get which modes the vehicle can transition to (Manual always allowed)
+     * Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the
+     * ModesServer plugin instead)
      *
      * @return
      */
@@ -241,7 +248,8 @@ class ActionServer internal constructor(private val native: ActionServerNative) 
     fun setArmedState(isArmed: Boolean): Result = Result.fromValue(native.setArmedState(isArmed))
 
     /**
-     * Set/override the flight mode of the vehicle directly, and notify subscribers
+     * Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use
+     * the ModesServer plugin instead)
      *
      * @param flightMode Current vehicle flight mode, e.g. Takeoff/Mission/Land/etc.
      * @return The result of the request.
@@ -251,6 +259,7 @@ class ActionServer internal constructor(private val native: ActionServerNative) 
 
     /**
      * Set/override the flight mode of the vehicle directly, and *do not* notify subscribers
+     * (deprecated, use the ModesServer plugin instead)
      *
      * @param flightMode Current vehicle flight mode, e.g. Takeoff/Mission/Land/etc.
      * @return The result of the request.

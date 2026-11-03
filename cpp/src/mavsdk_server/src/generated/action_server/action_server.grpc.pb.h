@@ -30,6 +30,9 @@ namespace rpc {
 namespace action_server {
 
 // Provide vehicle actions (as a server) such as arming, taking off, and landing.
+//
+// The flight mode API is deprecated, use the ModesServer plugin instead. Once
+// ModesServer has modes set, mode change requests are left to it.
 class ActionServerService final {
  public:
   static constexpr char const* service_full_name() {
@@ -48,7 +51,7 @@ class ActionServerService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::action_server::ArmDisarmResponse>> PrepareAsyncSubscribeArmDisarm(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::action_server::ArmDisarmResponse>>(PrepareAsyncSubscribeArmDisarmRaw(context, request, cq));
     }
-    // Subscribe to DO_SET_MODE
+    // Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::action_server::FlightModeChangeResponse>> SubscribeFlightModeChange(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::action_server::FlightModeChangeResponse>>(SubscribeFlightModeChangeRaw(context, request));
     }
@@ -132,7 +135,7 @@ class ActionServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetDisarmableResponse>> PrepareAsyncSetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetDisarmableResponse>>(PrepareAsyncSetDisarmableRaw(context, request, cq));
     }
-    // Set which modes the vehicle can transition to (Manual always allowed)
+    // Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>> AsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>>(AsyncSetAllowableFlightModesRaw(context, request, cq));
@@ -140,7 +143,7 @@ class ActionServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>> PrepareAsyncSetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>>(PrepareAsyncSetAllowableFlightModesRaw(context, request, cq));
     }
-    // Get which modes the vehicle can transition to (Manual always allowed)
+    // Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>> AsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>>(AsyncGetAllowableFlightModesRaw(context, request, cq));
@@ -156,7 +159,7 @@ class ActionServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmedStateResponse>> PrepareAsyncSetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmedStateResponse>>(PrepareAsyncSetArmedStateRaw(context, request, cq));
     }
-    // Set/override the flight mode of the vehicle directly, and notify subscribers
+    // Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>> AsyncSetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>>(AsyncSetFlightModeRaw(context, request, cq));
@@ -164,7 +167,7 @@ class ActionServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>> PrepareAsyncSetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>>(PrepareAsyncSetFlightModeRaw(context, request, cq));
     }
-    // Set/override the flight mode of the vehicle directly, and *do not* notify subscribers
+    // Set/override the flight mode of the vehicle directly, and *do not* notify subscribers (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest& request, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeInternalResponse>> AsyncSetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeInternalResponse>>(AsyncSetFlightModeInternalRaw(context, request, cq));
@@ -177,7 +180,7 @@ class ActionServerService final {
       virtual ~async_interface() {}
       // Subscribe to ARM/DISARM commands
       virtual void SubscribeArmDisarm(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::ArmDisarmResponse>* reactor) = 0;
-      // Subscribe to DO_SET_MODE
+      // Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)
       virtual void SubscribeFlightModeChange(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* reactor) = 0;
       // Subscribe to takeoff command
       virtual void SubscribeTakeoff(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::action_server::TakeoffResponse>* reactor) = 0;
@@ -198,19 +201,19 @@ class ActionServerService final {
       // Can the vehicle disarm when requested
       virtual void SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetDisarmable(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Set which modes the vehicle can transition to (Manual always allowed)
+      // Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
       virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Get which modes the vehicle can transition to (Manual always allowed)
+      // Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
       virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Set/override the armed/disarmed state of the vehicle directly, and notify subscribers
       virtual void SetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Set/override the flight mode of the vehicle directly, and notify subscribers
+      // Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use the ModesServer plugin instead)
       virtual void SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Set/override the flight mode of the vehicle directly, and *do not* notify subscribers
+      // Set/override the flight mode of the vehicle directly, and *do not* notify subscribers (deprecated, use the ModesServer plugin instead)
       virtual void SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest* request, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest* request, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
@@ -476,7 +479,7 @@ class ActionServerService final {
     virtual ~Service();
     // Subscribe to ARM/DISARM commands
     virtual ::grpc::Status SubscribeArmDisarm(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SubscribeArmDisarmRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::action_server::ArmDisarmResponse>* writer);
-    // Subscribe to DO_SET_MODE
+    // Subscribe to DO_SET_MODE (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status SubscribeFlightModeChange(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SubscribeFlightModeChangeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::action_server::FlightModeChangeResponse>* writer);
     // Subscribe to takeoff command
     virtual ::grpc::Status SubscribeTakeoff(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SubscribeTakeoffRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::action_server::TakeoffResponse>* writer);
@@ -494,15 +497,15 @@ class ActionServerService final {
     virtual ::grpc::Status SetArmable(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetArmableRequest* request, ::mavsdk::rpc::action_server::SetArmableResponse* response);
     // Can the vehicle disarm when requested
     virtual ::grpc::Status SetDisarmable(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetDisarmableRequest* request, ::mavsdk::rpc::action_server::SetDisarmableResponse* response);
-    // Set which modes the vehicle can transition to (Manual always allowed)
+    // Set which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response);
-    // Get which modes the vehicle can transition to (Manual always allowed)
+    // Get which modes the vehicle can transition to (Manual always allowed) (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response);
     // Set/override the armed/disarmed state of the vehicle directly, and notify subscribers
     virtual ::grpc::Status SetArmedState(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response);
-    // Set/override the flight mode of the vehicle directly, and notify subscribers
+    // Set/override the flight mode of the vehicle directly, and notify subscribers (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status SetFlightMode(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response);
-    // Set/override the flight mode of the vehicle directly, and *do not* notify subscribers
+    // Set/override the flight mode of the vehicle directly, and *do not* notify subscribers (deprecated, use the ModesServer plugin instead)
     virtual ::grpc::Status SetFlightModeInternal(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest* request, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* response);
   };
   template <class BaseClass>

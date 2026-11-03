@@ -10,7 +10,7 @@ The [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) class provides 
 "With great power comes great responsibility." - This plugin allows you to send and receive MAVLink messages. There is no checking or safe-guards, you're on your own, and you have been warned.
 
 
-<xrefsect id="deprecated_1_deprecated000001"><xreftitle>Deprecated</xreftitle><xrefdescription><para><ref refid="classmavsdk_1_1_mavlink_passthrough" kindref="compound">MavlinkPassthrough</ref> is deprecated as of MAVSDK v4. Use <ref refid="classmavsdk_1_1_mavlink_direct" kindref="compound">MavlinkDirect</ref> instead. <ref refid="classmavsdk_1_1_mavlink_direct" kindref="compound">MavlinkDirect</ref> provides enhanced functionality including:<itemizedlist>
+<xrefsect id="deprecated_1_deprecated000006"><xreftitle>Deprecated</xreftitle><xrefdescription><para><ref refid="classmavsdk_1_1_mavlink_passthrough" kindref="compound">MavlinkPassthrough</ref> is deprecated as of MAVSDK v4. Use <ref refid="classmavsdk_1_1_mavlink_direct" kindref="compound">MavlinkDirect</ref> instead. <ref refid="classmavsdk_1_1_mavlink_direct" kindref="compound">MavlinkDirect</ref> provides enhanced functionality including:<itemizedlist>
 <listitem><para>Runtime message parsing with JSON field representation</para>
 </listitem><listitem><para>Custom message support via XML loading</para>
 </listitem><listitem><para>Better language wrapper integration </para>
