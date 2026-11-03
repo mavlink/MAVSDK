@@ -61,7 +61,7 @@ Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs)
     result.w = lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z;
     result.x = lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z - lhs.z * rhs.y;
     result.y = lhs.w * rhs.y + lhs.y * rhs.w - lhs.x * rhs.z + lhs.z * rhs.x;
-    result.z = lhs.w * rhs.z + lhs.z * rhs.w + lhs.x * rhs.y + lhs.y * rhs.x;
+    result.z = lhs.w * rhs.z + lhs.z * rhs.w + lhs.x * rhs.y - lhs.y * rhs.x;
 
     return result;
 }
