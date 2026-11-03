@@ -71,6 +71,21 @@ void Mavsdk::set_timeout_s(double timeout_s)
     _impl->set_timeout_s(timeout_s);
 }
 
+void Mavsdk::enable_signing(const std::array<uint8_t, SIGNING_KEY_LENGTH>& secret_key)
+{
+    _impl->signing().enable(secret_key);
+}
+
+void Mavsdk::disable_signing()
+{
+    _impl->signing().disable();
+}
+
+bool Mavsdk::is_signing_enabled() const
+{
+    return _impl->signing().is_enabled();
+}
+
 void Mavsdk::set_heartbeat_timeout_s(double timeout_s)
 {
     _impl->set_heartbeat_timeout_s(timeout_s);

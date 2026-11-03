@@ -391,20 +391,7 @@ void SerialConnection::do_receive()
                 return;
             }
 
-            _mavlink_receiver->set_new_datagram(_recv_buffer.data(), static_cast<int>(recv_len));
-
-            auto parse_result = _mavlink_receiver->parse_message();
-            while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
-                receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
-                parse_result = _mavlink_receiver->parse_message();
-            }
-
-            if (_libmav_receiver) {
-                _libmav_receiver->set_new_datagram(_recv_buffer.data(), static_cast<int>(recv_len));
-                while (_libmav_receiver->parse_message()) {
-                    receive_libmav_message(_libmav_receiver->get_last_message(), this);
-                }
-            }
+            parse_received_bytes(_recv_buffer.data(), recv_len);
 
             // Re-arm for the next chunk.
             do_receive();

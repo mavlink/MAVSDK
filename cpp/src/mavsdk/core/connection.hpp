@@ -5,6 +5,7 @@
 #include "libmav_receiver.hpp"
 #include <asio/io_context.hpp>
 #include <atomic>
+#include <functional>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -65,9 +66,17 @@ protected:
     void receive_message(
         MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection);
 
+    // Parses received bytes and hands the messages in them on, to MavsdkImpl and libmav.
+    // on_parsed is called for every valid message before it is handed on.
+    void parse_received_bytes(
+        char* bytes,
+        size_t length,
+        const std::function<void(const mavlink_message_t&)>& on_parsed = nullptr);
+
     bool start_libmav_receiver();
     void stop_libmav_receiver();
     void receive_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
+    void pass_to_libmav_receiver(const mavlink_message_t& message);
 
     // The io_context every connection does its async I/O on, owned by MavsdkImpl.
     // Preferable to static_cast-ing socket.get_executor().context() back to an

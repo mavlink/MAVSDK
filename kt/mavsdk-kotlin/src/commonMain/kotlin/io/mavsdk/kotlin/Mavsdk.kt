@@ -67,6 +67,23 @@ expect class Mavsdk(configuration: Configuration) : AutoCloseable {
     fun firstAutopilot(timeoutSeconds: Double = 3.0): System?
 
     /**
+     * Enable MAVLink 2 message signing
+     *
+     * All outgoing MAVLink 2 messages get signed, and incoming messages without a valid signature
+     * are dropped, except HEARTBEAT, RADIO_STATUS, ADSB_VEHICLE and COLLISION. Applies to all
+     * connections.
+     *
+     * @param secretKey The 32 byte secret key shared with the other systems
+     */
+    fun enableSigning(secretKey: ByteArray)
+
+    /** Disable MAVLink 2 message signing */
+    fun disableSigning()
+
+    /** Whether MAVLink 2 message signing is enabled */
+    fun isSigningEnabled(): Boolean
+
+    /**
      * Subscribe to new system discoveries
      *
      * @return Flow emitting newly discovered systems

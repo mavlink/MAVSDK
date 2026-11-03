@@ -81,23 +81,7 @@ void RawConnection::receive(const char* bytes, size_t length)
 
 void RawConnection::parse(char* bytes, size_t length)
 {
-    _mavlink_receiver->set_new_datagram(bytes, static_cast<int>(length));
-
-    // Parse all mavlink messages in one datagram. Once exhausted, we'll exit loop.
-    auto parse_result = _mavlink_receiver->parse_message();
-    while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
-        receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
-        parse_result = _mavlink_receiver->parse_message();
-    }
-
-    // Also parse with libmav if available
-    if (_libmav_receiver) {
-        _libmav_receiver->set_new_datagram(bytes, static_cast<int>(length));
-
-        while (_libmav_receiver->parse_message()) {
-            receive_libmav_message(_libmav_receiver->get_last_message(), this);
-        }
-    }
+    parse_received_bytes(bytes, length);
 }
 
 } // namespace mavsdk

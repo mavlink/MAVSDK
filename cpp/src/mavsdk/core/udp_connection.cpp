@@ -327,33 +327,16 @@ void UdpConnection::do_receive()
 
             char* buffer = reinterpret_cast<char*>(_recv_buffer.data());
 
-            _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
-
-            // Parse all mavlink messages in one datagram.
-            auto parse_result = _mavlink_receiver->parse_message();
-            while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
-                if (parse_result == MavlinkReceiver::ParseResult::MessageParsed) {
-                    const uint32_t sysid = _mavlink_receiver->get_last_message().sysid;
-                    if (sysid != 0) {
-                        add_remote_impl(
-                            _sender_endpoint.address().to_string(),
-                            static_cast<int>(_sender_endpoint.port()),
-                            sysid,
-                            RemoteOption::Found);
-                    }
+            // Remember where messages of a system come from, so we can send to it.
+            parse_received_bytes(buffer, recv_len, [this](const mavlink_message_t& message) {
+                if (message.sysid != 0) {
+                    add_remote_impl(
+                        _sender_endpoint.address().to_string(),
+                        static_cast<int>(_sender_endpoint.port()),
+                        message.sysid,
+                        RemoteOption::Found);
                 }
-                receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
-                parse_result = _mavlink_receiver->parse_message();
-            }
-
-            // Also parse with libmav if available
-            if (_libmav_receiver) {
-                _libmav_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
-
-                while (_libmav_receiver->parse_message()) {
-                    receive_libmav_message(_libmav_receiver->get_last_message(), this);
-                }
-            }
+            });
 
             // Re-post for the next datagram.
             do_receive();

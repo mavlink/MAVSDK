@@ -27,6 +27,7 @@
 #include "mavsdk.hpp"
 #include "mavlink_include.hpp"
 #include "mavlink_message_handler.hpp"
+#include "mavlink_signing.hpp"
 #include "locked_queue.hpp"
 #include "server_component.hpp"
 #include "system.hpp"
@@ -193,6 +194,10 @@ public:
     // Thread-safe MessageSet operations
     bool load_custom_xml_to_message_set(const std::string& xml_content);
     std::optional<std::string> message_id_to_name_safe(uint32_t id) const;
+    // CRC extra of a message, from the C dialect or the libmav MessageSet.
+    std::optional<uint8_t> crc_extra_safe(uint32_t id) const;
+
+    MavlinkSigning& signing() { return _signing; }
     std::optional<int> message_name_to_id_safe(const std::string& name) const;
     std::optional<mav::Message> create_message_safe(const std::string& message_name) const;
 
@@ -269,6 +274,8 @@ private:
     std::unique_ptr<mav::MessageSet> _message_set;
     std::unique_ptr<mav::BufferParser> _buffer_parser; // Thread-safe parser
     mutable std::mutex _message_set_mutex;
+
+    MavlinkSigning _signing;
 
     HandleFactory<> _connections_handle_factory;
     struct ConnectionEntry {

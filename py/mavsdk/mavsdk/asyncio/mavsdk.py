@@ -167,6 +167,18 @@ class Mavsdk:
         """Get server component by component ID."""
         return self._mavsdk.server_component_by_id(component_id)
 
+    async def enable_signing(self, secret_key: bytes) -> None:
+        """Enable MAVLink 2 message signing with a 32 byte secret key."""
+        self._mavsdk.enable_signing(secret_key)
+
+    async def disable_signing(self) -> None:
+        """Disable MAVLink 2 message signing."""
+        self._mavsdk.disable_signing()
+
+    async def is_signing_enabled(self) -> bool:
+        """Whether MAVLink 2 message signing is enabled."""
+        return self._mavsdk.is_signing_enabled()
+
     # ------------------------------------------------------------------
     # Streaming subscription
     # ------------------------------------------------------------------

@@ -734,8 +734,12 @@ void MavsdkImpl::receive_message(
         asio::dispatch(_io_context, [this, msg = message, conn = connection]() mutable {
             process_message(msg, conn);
         });
-    } else if (result == MavlinkReceiver::ParseResult::BadCrc) {
-        // Unknown message: forward only, don't process locally
+    } else if (
+        result == MavlinkReceiver::ParseResult::BadCrc ||
+        result == MavlinkReceiver::ParseResult::UnknownMessage ||
+        result == MavlinkReceiver::ParseResult::BadSignature) {
+        // Forward only, don't process locally. Anything we can't check (or whose
+        // signature we can't verify, e.g. with another key) is up to the next hop.
         forward_message(message, connection);
     }
 }
@@ -1155,6 +1159,16 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
                     "Outgoing JSON message {} dropped by interceptio", json_message.message_name);
             }
             return;
+        }
+    }
+
+    // Signed last, so that anything tampered with above is signed as it is sent.
+    if (_signing.is_enabled()) {
+        if (const auto crc_extra = crc_extra_safe(message.msgid)) {
+            _signing.sign_outgoing(message, crc_extra.value());
+        } else {
+            LogWarn(
+                "Can't sign message {}, unknown CRC extra", static_cast<uint32_t>(message.msgid));
         }
     }
 
@@ -2218,6 +2232,20 @@ bool MavsdkImpl::load_custom_xml_to_message_set(const std::string& xml_content)
 }
 
 // Thread-safe MessageSet read operations
+std::optional<uint8_t> MavsdkImpl::crc_extra_safe(uint32_t id) const
+{
+    if (const auto* entry = mavlink_get_msg_entry(id)) {
+        return entry->crc_extra;
+    }
+
+    std::lock_guard<std::mutex> lock(_message_set_mutex);
+    auto message_def = _message_set->getMessageDefinition(static_cast<int>(id));
+    if (message_def) {
+        return message_def.get().crcExtra();
+    }
+    return std::nullopt;
+}
+
 std::optional<std::string> MavsdkImpl::message_id_to_name_safe(uint32_t id) const
 {
     std::lock_guard<std::mutex> lock(_message_set_mutex);

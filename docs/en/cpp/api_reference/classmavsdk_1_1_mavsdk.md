@@ -62,6 +62,9 @@ bool | [set_heartbeat_watchdog_timeout_s](#classmavsdk_1_1_mavsdk_1a83a387c39935
 void | [set_timeout_s](#classmavsdk_1_1_mavsdk_1a765f37b61462addcfd961e720585d2c6) (double timeout_s) | Set timeout of MAVLink transfers.
 void | [set_heartbeat_timeout_s](#classmavsdk_1_1_mavsdk_1afbab63cf2a795e4ca7262836d5fe4b46) (double timeout_s) | Set heartbeat timeout.
 double | [get_heartbeat_timeout_s](#classmavsdk_1_1_mavsdk_1a6179b858f74415251ef43da11bc6edbc) () const | Get heartbeat timeout.
+void | [enable_signing](#classmavsdk_1_1_mavsdk_1af2bf87e10970adc04d04d7244246ffb6) (const std::array< uint8_t, [SIGNING_KEY_LENGTH](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1acf914031f4b0503bd8829fd086e89be0) > & secret_key) | Enable MAVLink 2 message signing with the given secret key.
+void | [disable_signing](#classmavsdk_1_1_mavsdk_1ac35dd556e9f45f5256e7fbbe2089d78f) () | Disable MAVLink 2 message signing.
+bool | [is_signing_enabled](#classmavsdk_1_1_mavsdk_1a8bf343c2c7b55d05374d8b7f0d2f924f) () const | Whether MAVLink 2 message signing is enabled.
 void | [feed_heartbeat_watchdog](#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90) () | Feed the heartbeat watchdog.
 void | [set_callback_executor](#classmavsdk_1_1_mavsdk_1a5de0ff39a51efe3b235fe022e6b58034) (std::function< void(std::function< void()>)> executor) | Set a custom callback executor.
 [NewSystemHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) | [subscribe_on_new_system](#classmavsdk_1_1_mavsdk_1a5b7c958ad2e4529dc7b950ab26618575) (const [NewSystemCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a7a283c6a75e852a56be4c5862f8a3fab) & callback) | Get notification about a change in systems.
@@ -80,6 +83,11 @@ DEPRECATED void | [intercept_outgoing_messages_async](#classmavsdk_1_1_mavsdk_1a
 void | [pass_received_raw_bytes](#classmavsdk_1_1_mavsdk_1a65329315ac07bae110839d9e054fbc05) (const char * bytes, size_t length) | Pass received raw MAVLink bytes.
 [RawBytesHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac766258f137aa3e8b0dabb5a66435ea1) | [subscribe_raw_bytes_to_be_sent](#classmavsdk_1_1_mavsdk_1a116e9bab0efdf7ec90866107ef517b20) ([RawBytesCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1acb5be9a1be97d251387ffe87ae8b9eb0) callback) | Subscribe to raw bytes to be sent.
 void | [unsubscribe_raw_bytes_to_be_sent](#classmavsdk_1_1_mavsdk_1af6ec813a9728f4258056fa1f5d399eb1) ([RawBytesHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac766258f137aa3e8b0dabb5a66435ea1) handle) | Unsubscribe from raw bytes to be sent.
+
+## Static Public Attributes
+
+
+static std::size_t [SIGNING_KEY_LENGTH](#classmavsdk_1_1_mavsdk_1acf914031f4b0503bd8829fd086e89be0) = 32 - Length of a MAVLink signing key in bytes.
 
 
 ## Constructor & Destructor Documentation
@@ -560,6 +568,49 @@ Get heartbeat timeout.
 
 &emsp;double - Timeout in seconds.
 
+### enable_signing() {#classmavsdk_1_1_mavsdk_1af2bf87e10970adc04d04d7244246ffb6}
+```cpp
+void mavsdk::Mavsdk::enable_signing(const std::array< uint8_t, SIGNING_KEY_LENGTH > &secret_key)
+```
+
+
+Enable MAVLink 2 message signing with the given secret key.
+
+Once enabled, all outgoing MAVLink 2 messages are signed, and incoming messages without a valid signature are dropped, except for the few that are accepted unsigned (HEARTBEAT, RADIO_STATUS, ADSB_VEHICLE, COLLISION), the same as PX4 does.
+
+
+The key applies to all connections. It is not stored, so it has to be set again on each start. Setting the key on the vehicle (e.g. with SETUP_SIGNING) is up to the application.
+
+
+See [https://mavlink.io/en/guide/message_signing.html](https://mavlink.io/en/guide/message_signing.html)
+
+**Parameters**
+
+* const std::array< uint8_t, [SIGNING_KEY_LENGTH](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1acf914031f4b0503bd8829fd086e89be0) >& **secret_key** - The 32 byte secret key shared with the other systems.
+
+### disable_signing() {#classmavsdk_1_1_mavsdk_1ac35dd556e9f45f5256e7fbbe2089d78f}
+```cpp
+void mavsdk::Mavsdk::disable_signing()
+```
+
+
+Disable MAVLink 2 message signing.
+
+Outgoing messages are sent unsigned again and incoming messages are accepted whether they are signed or not.
+
+### is_signing_enabled() {#classmavsdk_1_1_mavsdk_1a8bf343c2c7b55d05374d8b7f0d2f924f}
+```cpp
+bool mavsdk::Mavsdk::is_signing_enabled() const
+```
+
+
+Whether MAVLink 2 message signing is enabled.
+
+
+**Returns**
+
+&emsp;bool - true if signing is enabled.
+
 ### feed_heartbeat_watchdog() {#classmavsdk_1_1_mavsdk_1ad786bca001160944e8321355a816fe90}
 ```cpp
 void mavsdk::Mavsdk::feed_heartbeat_watchdog()
@@ -900,3 +951,16 @@ Unsubscribe from raw bytes to be sent.
 **Parameters**
 
 * [RawBytesHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac766258f137aa3e8b0dabb5a66435ea1) **handle** - [Handle](classmavsdk_1_1_handle.md) from subscribe_raw_bytes_to_be_sent.
+
+## Field Documentation
+
+
+### SIGNING_KEY_LENGTH {#classmavsdk_1_1_mavsdk_1acf914031f4b0503bd8829fd086e89be0}
+
+```cpp
+std::size_t mavsdk::Mavsdk::SIGNING_KEY_LENGTH = 32
+```
+
+
+Length of a MAVLink signing key in bytes.
+

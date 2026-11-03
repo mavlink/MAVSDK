@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <cstdint>
 #include <string>
 #include <memory>
 #include <optional>
@@ -508,6 +510,44 @@ public:
      * @return Timeout in seconds.
      */
     double get_heartbeat_timeout_s() const;
+
+    /**
+     * @brief Length of a MAVLink signing key in bytes.
+     */
+    static constexpr std::size_t SIGNING_KEY_LENGTH = 32;
+
+    /**
+     * @brief Enable MAVLink 2 message signing with the given secret key.
+     *
+     * Once enabled, all outgoing MAVLink 2 messages are signed, and incoming
+     * messages without a valid signature are dropped, except for the few that
+     * are accepted unsigned (HEARTBEAT, RADIO_STATUS, ADSB_VEHICLE, COLLISION),
+     * the same as PX4 does.
+     *
+     * The key applies to all connections. It is not stored, so it has to be
+     * set again on each start. Setting the key on the vehicle (e.g. with
+     * SETUP_SIGNING) is up to the application.
+     *
+     * See https://mavlink.io/en/guide/message_signing.html
+     *
+     * @param secret_key The 32 byte secret key shared with the other systems.
+     */
+    void enable_signing(const std::array<uint8_t, SIGNING_KEY_LENGTH>& secret_key);
+
+    /**
+     * @brief Disable MAVLink 2 message signing.
+     *
+     * Outgoing messages are sent unsigned again and incoming messages are
+     * accepted whether they are signed or not.
+     */
+    void disable_signing();
+
+    /**
+     * @brief Whether MAVLink 2 message signing is enabled.
+     *
+     * @return true if signing is enabled.
+     */
+    bool is_signing_enabled() const;
 
     /**
      * @brief Feed the heartbeat watchdog.

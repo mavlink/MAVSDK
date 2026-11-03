@@ -22,6 +22,9 @@ from .types import (
 )
 
 
+# Length of a MAVLink signing key in bytes.
+SIGNING_KEY_LENGTH = 32
+
 # Instances that have not been destroyed yet, so that a process exiting without a
 # destroy() still releases them. Weak, so that an instance the caller drops is
 # collected (and released by __del__) rather than pinned until exit.
@@ -348,6 +351,27 @@ class Mavsdk:
             return self._track(ServerComponent(self._lib, handle))
         return None
 
+    def enable_signing(self, secret_key: bytes):
+        """Enable MAVLink 2 message signing with a 32 byte secret key.
+
+        All outgoing MAVLink 2 messages get signed, and incoming messages
+        without a valid signature are dropped, except HEARTBEAT, RADIO_STATUS,
+        ADSB_VEHICLE and COLLISION. Applies to all connections."""
+        if len(secret_key) != SIGNING_KEY_LENGTH:
+            raise ValueError(
+                f"secret_key must be {SIGNING_KEY_LENGTH} bytes, not {len(secret_key)}"
+            )
+        buf = (ctypes.c_uint8 * SIGNING_KEY_LENGTH).from_buffer_copy(secret_key)
+        self._lib.mavsdk_enable_signing(self._handle, buf)
+
+    def disable_signing(self):
+        """Disable MAVLink 2 message signing."""
+        self._lib.mavsdk_disable_signing(self._handle)
+
+    def is_signing_enabled(self) -> bool:
+        """Whether MAVLink 2 message signing is enabled."""
+        return bool(self._lib.mavsdk_is_signing_enabled(self._handle))
+
     def pass_received_raw_bytes(self, data: bytes):
         """Pass received raw MAVLink bytes into MAVSDK for processing.
         Requires a 'raw://' connection."""
@@ -557,6 +581,19 @@ _cmavsdk_lib.mavsdk_unsubscribe_on_new_system.argtypes = [
     ctypes.c_void_p,
 ]
 _cmavsdk_lib.mavsdk_unsubscribe_on_new_system.restype = None
+
+# Signing functions
+_cmavsdk_lib.mavsdk_enable_signing.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_uint8),
+]
+_cmavsdk_lib.mavsdk_enable_signing.restype = None
+
+_cmavsdk_lib.mavsdk_disable_signing.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_disable_signing.restype = None
+
+_cmavsdk_lib.mavsdk_is_signing_enabled.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_is_signing_enabled.restype = ctypes.c_bool
 
 # Raw bytes functions
 _cmavsdk_lib.mavsdk_pass_received_raw_bytes.argtypes = [

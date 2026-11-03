@@ -1,6 +1,8 @@
 #include "mavsdk.h"
 
 #include <mavsdk/mavsdk.hpp>
+#include <algorithm>
+#include <array>
 #include <memory>
 #include <string>
 #include <vector>
@@ -555,6 +557,27 @@ void mavsdk_unsubscribe_raw_bytes_to_be_sent(
 void mavsdk_set_timeout_s(mavsdk_t mavsdk, double timeout_s) {
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
     cpp_mavsdk->set_timeout_s(timeout_s);
+}
+
+// --- MAVLink Signing ---
+static_assert(MAVSDK_SIGNING_KEY_LENGTH == Mavsdk::SIGNING_KEY_LENGTH,
+    "Signing key length mismatch");
+
+void mavsdk_enable_signing(mavsdk_t mavsdk, const uint8_t secret_key[MAVSDK_SIGNING_KEY_LENGTH]) {
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+    std::array<uint8_t, Mavsdk::SIGNING_KEY_LENGTH> key{};
+    std::copy(secret_key, secret_key + key.size(), key.begin());
+    cpp_mavsdk->enable_signing(key);
+}
+
+void mavsdk_disable_signing(mavsdk_t mavsdk) {
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+    cpp_mavsdk->disable_signing();
+}
+
+bool mavsdk_is_signing_enabled(mavsdk_t mavsdk) {
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+    return cpp_mavsdk->is_signing_enabled();
 }
 
 // --- Memory Management Helpers ---
