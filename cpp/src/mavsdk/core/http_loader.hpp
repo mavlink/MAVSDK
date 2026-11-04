@@ -26,12 +26,16 @@ public:
     void start();
     void stop();
 
-    bool download_sync(const std::string& url, const std::string& local_path);
+    bool download_sync(
+        const std::string& url,
+        const std::string& local_path,
+        curl_off_t max_download_size_bytes = 0);
     bool download_text_sync(const std::string& url, std::string& content);
     void download_async(
         const std::string& url,
         const std::string& local_path,
-        ProgressCallback progress_callback = nullptr);
+        ProgressCallback progress_callback = nullptr,
+        curl_off_t max_download_size_bytes = 0);
     void download_text_async(const std::string& url, TextDownloadCallback text_callback);
 
     // Non-copyable
@@ -61,10 +65,15 @@ private:
 
     class DownloadItem {
     public:
-        DownloadItem(std::string url, std::string local_path, ProgressCallback progress_callback) :
+        DownloadItem(
+            std::string url,
+            std::string local_path,
+            ProgressCallback progress_callback,
+            curl_off_t max_download_size_bytes) :
             _url(std::move(url)),
             _local_path(std::move(local_path)),
-            _progress_callback(std::move(progress_callback))
+            _progress_callback(std::move(progress_callback)),
+            _max_download_size_bytes(max_download_size_bytes)
         {}
 
         [[nodiscard]] std::string get_local_path() const { return _local_path; }
@@ -73,10 +82,16 @@ private:
 
         [[nodiscard]] ProgressCallback get_progress_callback() const { return _progress_callback; }
 
+        [[nodiscard]] curl_off_t get_max_download_size_bytes() const
+        {
+            return _max_download_size_bytes;
+        }
+
     private:
         std::string _url;
         std::string _local_path;
         ProgressCallback _progress_callback{};
+        curl_off_t _max_download_size_bytes{0};
     };
 
     using WorkItem = std::variant<DownloadItem, DownloadTextItem>;

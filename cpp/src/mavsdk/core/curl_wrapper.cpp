@@ -73,6 +73,10 @@ static int download_progress_update(
 
     auto* myp = reinterpret_cast<struct UpProgress*>(p);
 
+    if (myp->max_download_size_bytes > 0 && dlnow > myp->max_download_size_bytes) {
+        return 1;
+    }
+
     if (myp->progress_callback == nullptr) {
         return 0;
     }
@@ -92,7 +96,10 @@ static int download_progress_update(
 }
 
 bool CurlWrapper::download_file_to_path(
-    const std::string& url, const std::string& path, const ProgressCallback& progress_callback)
+    const std::string& url,
+    const std::string& path,
+    const ProgressCallback& progress_callback,
+    curl_off_t max_download_size_bytes)
 {
     auto curl = std::shared_ptr<CURL>(curl_easy_init(), curl_easy_cleanup);
     FILE* fp;
@@ -101,6 +108,7 @@ bool CurlWrapper::download_file_to_path(
         CURLcode res;
         struct UpProgress progress;
         progress.progress_callback = progress_callback;
+        progress.max_download_size_bytes = max_download_size_bytes;
 
         fp = fopen(path.c_str(), "wb");
         if (fp == nullptr) {
@@ -114,6 +122,9 @@ bool CurlWrapper::download_file_to_path(
         curl_easy_setopt(curl.get(), CURLOPT_XFERINFOFUNCTION, download_progress_update);
         curl_easy_setopt(curl.get(), CURLOPT_PROGRESSDATA, &progress);
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
+        if (max_download_size_bytes > 0) {
+            curl_easy_setopt(curl.get(), CURLOPT_MAXFILESIZE_LARGE, max_download_size_bytes);
+        }
         curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, fp);
         curl_easy_setopt(curl.get(), CURLOPT_NOPROGRESS, 0L);

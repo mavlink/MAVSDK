@@ -25,6 +25,10 @@
 
 namespace mavsdk {
 
+#if BUILD_WITHOUT_CURL != 1
+static constexpr curl_off_t max_camera_definition_download_size = 64LL * 1024LL * 1024LL;
+#endif
+
 template class MAVSDK_TEMPL_INST CallbackList<Camera::Mode>;
 template class MAVSDK_TEMPL_INST CallbackList<std::vector<Camera::Setting>>;
 template class MAVSDK_TEMPL_INST CallbackList<std::vector<Camera::SettingOptions>>;
@@ -1594,7 +1598,8 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         maybe_potential_camera->camera_definition_result = Camera::Result::Success;
                         notify_camera_list_with_lock();
                     }
-                });
+                },
+                max_camera_definition_download_size);
 #endif
         } else if (starts_with(url, "mftp://") || starts_with(url, "mavlinkftp://")) {
             LogInfo("Download file: {} using MAVLink FTP...", url);
