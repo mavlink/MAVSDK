@@ -147,7 +147,7 @@ void LogStreamingBackendPx4::process_logging_data(const mavlink_message_t& messa
     }
 
     if (logging_data.first_message_offset != 255 &&
-        logging_data.first_message_offset > sizeof(logging_data.data)) {
+        logging_data.first_message_offset > logging_data.length) {
         LogWarn("Invalid first_message_offset");
         return;
     }
@@ -259,7 +259,7 @@ void LogStreamingBackendPx4::process_logging_data_acked(const mavlink_message_t&
     }
 
     if (logging_data_acked.first_message_offset != 255 &&
-        logging_data_acked.first_message_offset > sizeof(logging_data_acked.data)) {
+        logging_data_acked.first_message_offset > logging_data_acked.length) {
         LogWarn("Invalid first_message_offset");
         return;
     }
