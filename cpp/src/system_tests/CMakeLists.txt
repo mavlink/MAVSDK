@@ -11,6 +11,7 @@ add_executable(system_tests_runner
     camera_zoom_focus.cpp
     component_metadata.cpp
     action_arm_disarm.cpp
+    action_set_mode_non_custom.cpp
     command_in_progress.cpp
     param_set_and_get.cpp
     param_get_all.cpp
