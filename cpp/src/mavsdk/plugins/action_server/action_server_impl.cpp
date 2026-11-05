@@ -326,6 +326,7 @@ void ActionServerImpl::init()
                 command_ack.target_system = mavlink_msg_target_field(message.sysid);
                 command_ack.target_component = message.compid;
                 _server_component_impl->send_command_ack(command_ack, message.sysid);
+                return;
             }
 
             bool allow_mode = false;
