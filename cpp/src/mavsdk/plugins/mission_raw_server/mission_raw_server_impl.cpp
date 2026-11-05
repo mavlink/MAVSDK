@@ -194,7 +194,9 @@ void MissionRawServerImpl::process_mission_count(const mavlink_message_t& messag
             MavlinkMissionTransferServer::Result result,
             uint8_t type,
             std::vector<MavlinkMissionTransferServer::ItemInt> items) {
-            get_mission_items(type) = items;
+            if (result == MavlinkMissionTransferServer::Result::Success) {
+                get_mission_items(type) = items;
+            }
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(items);
             _incoming_mission_callbacks.queue(
@@ -203,7 +205,8 @@ void MissionRawServerImpl::process_mission_count(const mavlink_message_t& messag
                 });
 
             // Reset mission state after receiving because the previous mission is now inactive.
-            if (type == MAV_MISSION_TYPE_MISSION) {
+            if (result == MavlinkMissionTransferServer::Result::Success &&
+                type == MAV_MISSION_TYPE_MISSION) {
                 _mission_completed = false;
                 if (!items.empty()) {
                     set_current_seq(0);
