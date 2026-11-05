@@ -333,7 +333,7 @@ void ActionImpl::arm_force_async(const Action::ResultCallback& callback) const
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_COMPONENT_ARM_DISARM;
-    command.params.maybe_param1 = 0.0f; // arm
+    command.params.maybe_param1 = 1.0f; // arm
     command.params.maybe_param2 = 21196.f; // magic number to force
     command.target_component_id = _system_impl->get_autopilot_id();
 
