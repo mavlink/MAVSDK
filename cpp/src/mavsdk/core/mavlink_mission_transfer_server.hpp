@@ -149,6 +149,7 @@ public:
         void send_cancel_and_finish();
         void process_mission_count();
         void process_mission_item_int(const mavlink_message_t& message);
+        void process_mission_ack(const mavlink_message_t& message);
         void process_timeout();
         void callback_and_reset(Result result);
 
