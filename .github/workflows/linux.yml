@@ -875,7 +875,11 @@ jobs:
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/cpp -j$(nproc) --target install
       - name: configure c
         working-directory: .
-        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/manylinux/c/install -DCMAKE_PREFIX_PATH="/work/build/manylinux/cpp/install;/work/build/manylinux/cpp/third_party/install" -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF -DBUNDLE_STATIC_RUNTIME=ON -Bbuild/manylinux/c -Sc
+        run: |
+          ./dockcross-${{ matrix.arch_name }} /bin/bash -c "
+            export LDFLAGS=\"\${LDFLAGS:-} -Wl,-Map,/work/build/manylinux/c/libcmavsdk.map\"
+            exec cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/manylinux/c/install -DCMAKE_PREFIX_PATH='/work/build/manylinux/cpp/install;/work/build/manylinux/cpp/third_party/install' -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF -DBUNDLE_STATIC_RUNTIME=ON -Bbuild/manylinux/c -Sc
+          "
       - name: build c
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/c -j$(nproc) --target install
@@ -918,6 +922,64 @@ jobs:
           cd /work/py/mavsdk &&
           ${{ matrix.python_exec }} setup.py bdist_wheel ${{ matrix.python_plat_name_arg }} &&
           sudo ${{ matrix.python_exec_auditwheel }} -m auditwheel repair --plat ${{ matrix.auditwheel_plat }} dist/mavsdk-*-linux_*.whl"
+      # These are build records, not a complete SBOM or vulnerability assessment.
+      - name: Collect Linux wheel build records
+        working-directory: .
+        env:
+          CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
+        run: |
+          set -euo pipefail
+          records=build/manylinux/wheel-records
+          prefix=build/manylinux/cpp/third_party/install
+          mkdir -p "$records"
+          shopt -s nullglob
+          wheels=(py/mavsdk/wheelhouse/*.whl)
+          test "${#wheels[@]}" -eq 1
+          python3 tools/linux_wheel_hashes.py "${wheels[0]}" "$records"
+          cp build/manylinux/c/libcmavsdk.map "$records/link.map"
+          printf 'source_commit=%s\narchitecture=%s\ndependency_cache_hit=%s\ndependency_build_configuration=not retained; unknown for restored dependencies\n' \
+            "$GITHUB_SHA" '${{ matrix.artifact_arch }}' "${CACHE_HIT:-false}" > "$records/scope.txt"
+          for component in cpp c; do
+            grep -E '^(SUPERBUILD|BUILD_SHARED_LIBS|BUILD_MAVSDK_SERVER|BUILD_WITHOUT_CURL|BUILD_TESTING|BUNDLE_STATIC_RUNTIME|CMAKE_BUILD_TYPE|CMAKE_C_COMPILER|CMAKE_CXX_COMPILER):' \
+              "build/manylinux/$component/CMakeCache.txt" > "$records/$component-config.txt"
+          done
+          find "$prefix" -type f -path '*/pkgconfig/*.pc' -print0 | sort -z | \
+            tar --null -T - -cf "$records/installed-pkgconfig.tar"
+          find build/manylinux/cpp/install "$prefix" -type f -name '*.a' -print0 | sort -z | \
+            xargs -0 -r sha256sum > "$records/installed-archives.sha256"
+          mkdir "$records/headers"
+          for header in openssl/configuration.h openssl/opensslv.h lzma/version.h; do
+            if test -f "$prefix/include/$header"; then
+              mkdir -p "$records/headers/$(dirname "$header")"
+              cp "$prefix/include/$header" "$records/headers/$header"
+            else
+              printf '%s unavailable\n' "$header" >> "$records/headers-unknown.txt"
+            fi
+          done
+          if test -x "$prefix/bin/curl-config"; then
+            for option in --version --features --protocols --ssl-backends; do
+              "$prefix/bin/curl-config" "$option" > "$records/curl${option}.txt"
+            done
+          else
+            printf 'curl-config unavailable\n' > "$records/curl-unknown.txt"
+          fi
+          ./dockcross-${{ matrix.arch_name }} ${{ matrix.python_exec_auditwheel }} -m auditwheel show \
+            /work/"${wheels[0]}" > "$records/auditwheel.txt"
+          tar -czf mavsdk-wheel-records-${{ matrix.auditwheel_plat }}.tar.gz -C "$records" .
+      - name: upload Linux wheel build records
+        uses: actions/upload-artifact@v7
+        with:
+          name: mavsdk_wheel_records_${{ matrix.arch_name }}
+          path: mavsdk-wheel-records-${{ matrix.auditwheel_plat }}.tar.gz
+          retention-days: 2
+      - name: Publish Linux wheel build records to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: mavsdk-wheel-records-${{ matrix.auditwheel_plat }}.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
       - name: upload mavsdk wheel
         uses: actions/upload-artifact@v7
         with:
