@@ -34,6 +34,11 @@ MavlinkReceiver::ParseResult MavlinkReceiver::parse_message()
             continue;
         }
 
+        // The parser leaves the CRC it calculated in checksum, which for a message it can't
+        // check isn't the one that was received. Forwarded, the frame has to keep the latter.
+        _last_message.checksum =
+            static_cast<uint16_t>(_last_message.ck[0] | (_last_message.ck[1] << 8));
+
         // Move the pointer to the datagram forward by the amount parsed.
         _datagram += (i + 1);
         // And decrease the length, so we don't overshoot in the next round.
@@ -48,11 +53,14 @@ MavlinkReceiver::ParseResult MavlinkReceiver::parse_message()
                 return ParseResult::BadCrc;
             }
             // The signature, on the other hand, doesn't depend on the dialect.
-            return _signing.check_incoming(_last_message) ? ParseResult::UnknownMessage :
-                                                            ParseResult::BadSignature;
+            _signing_result = _signing.check_incoming(_last_message);
+            return _signing_result == MavlinkSigning::Result::Accepted ?
+                       ParseResult::UnknownMessage :
+                       ParseResult::BadSignature;
         }
 
-        if (!_signing.check_incoming(_last_message)) {
+        _signing_result = _signing.check_incoming(_last_message);
+        if (_signing_result != MavlinkSigning::Result::Accepted) {
             return ParseResult::BadSignature;
         }
 

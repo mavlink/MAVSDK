@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <chrono>
 #include <condition_variable>
 #include <map>
 #include <memory>
@@ -27,6 +28,7 @@
 #include "mavsdk.hpp"
 #include "mavlink_include.hpp"
 #include "mavlink_message_handler.hpp"
+#include "log_rate_limiter.hpp"
 #include "mavlink_signing.hpp"
 #include "locked_queue.hpp"
 #include "server_component.hpp"
@@ -276,6 +278,11 @@ private:
     mutable std::mutex _message_set_mutex;
 
     MavlinkSigning _signing;
+    LogRateLimiter _unsignable_warning_limiter{};
+
+    // When we last rejected a message signed with our key, but with a timestamp too far
+    // behind. Such a system only catches up once it gets a message from us.
+    std::atomic<std::chrono::steady_clock::rep> _last_signed_but_behind{0};
 
     HandleFactory<> _connections_handle_factory;
     struct ConnectionEntry {

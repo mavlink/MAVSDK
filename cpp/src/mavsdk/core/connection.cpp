@@ -149,7 +149,15 @@ void Connection::parse_received_bytes(
     while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
         auto& message = _mavlink_receiver->get_last_message();
 
-        if (parse_result == MavlinkReceiver::ParseResult::MessageParsed && on_parsed) {
+        // A system signing with our key, but with a timestamp too far behind, only catches up
+        // once it gets a message from us. Over UDP we can only send it one once we know where
+        // it is, so that has to come from a message we reject.
+        const bool signed_but_behind =
+            parse_result == MavlinkReceiver::ParseResult::BadSignature &&
+            _mavlink_receiver->get_last_signing_result() == MavlinkSigning::Result::OldTimestamp;
+
+        if ((parse_result == MavlinkReceiver::ParseResult::MessageParsed || signed_but_behind) &&
+            on_parsed) {
             on_parsed(message);
         }
 
@@ -166,24 +174,19 @@ void Connection::parse_received_bytes(
     }
 }
 
+MavlinkSigning::Result Connection::last_signing_result() const
+{
+    return _mavlink_receiver ? _mavlink_receiver->get_last_signing_result() :
+                               MavlinkSigning::Result::Accepted;
+}
+
 void Connection::pass_to_libmav_receiver(const mavlink_message_t& message)
 {
-    // The frame exactly as it was received. Not mavlink_msg_to_send_buffer() which trims
-    // the payload, and with it would break the CRC and signature of an untrimmed frame.
+    // The frame exactly as it was received, see mavlink_message_to_wire().
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-    const uint8_t header_len = mavlink_header_to_send_buffer(buffer, &message);
-    if (header_len == 0) {
+    const uint16_t len = mavlink_message_to_wire(buffer, message);
+    if (len == 0) {
         return;
-    }
-    std::size_t len = header_len;
-    std::memcpy(&buffer[len], _MAV_PAYLOAD(&message), message.len);
-    len += message.len;
-    buffer[len++] = message.ck[0];
-    buffer[len++] = message.ck[1];
-    if (message.magic != MAVLINK_STX_MAVLINK1 &&
-        (message.incompat_flags & MAVLINK_IFLAG_SIGNED) != 0) {
-        std::memcpy(&buffer[len], message.signature, MAVLINK_SIGNATURE_BLOCK_LEN);
-        len += MAVLINK_SIGNATURE_BLOCK_LEN;
     }
 
     _libmav_receiver->set_new_datagram(reinterpret_cast<char*>(buffer), static_cast<unsigned>(len));

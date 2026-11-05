@@ -213,3 +213,65 @@ TEST(Signing, MavlinkDirectOnlyGetsAccepted)
 
     receiver.unsubscribe_message(handle);
 }
+
+namespace {
+
+// Autopilot -> router -> ground station, the router forwarding between its two connections.
+struct RoutedSetup {
+    Mavsdk groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk router{Mavsdk::Configuration{ComponentType::CompanionComputer}};
+    Mavsdk autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    void connect(int port)
+    {
+        ASSERT_EQ(
+            groundstation.add_any_connection("udpin://0.0.0.0:" + std::to_string(port)),
+            ConnectionResult::Success);
+        ASSERT_EQ(
+            router.add_any_connection(
+                "udpout://127.0.0.1:" + std::to_string(port), ForwardingOption::ForwardingOn),
+            ConnectionResult::Success);
+        ASSERT_EQ(
+            router.add_any_connection(
+                "udpin://0.0.0.0:" + std::to_string(port + 1), ForwardingOption::ForwardingOn),
+            ConnectionResult::Success);
+        ASSERT_EQ(
+            autopilot.add_any_connection("udpout://127.0.0.1:" + std::to_string(port + 1)),
+            ConnectionResult::Success);
+    }
+};
+
+} // namespace
+
+TEST(Signing, RouterForwardsSigned)
+{
+    RoutedSetup setup;
+    setup.groundstation.enable_signing(make_key(1));
+    setup.router.enable_signing(make_key(1));
+    setup.autopilot.enable_signing(make_key(1));
+    setup.connect(17110);
+
+    EXPECT_EQ(arm_and_disarm(setup.groundstation, setup.autopilot), Action::Result::Success);
+}
+
+TEST(Signing, RouterWithoutSigningForwardsSigned)
+{
+    // The signatures are end to end, the router doesn't need the key.
+    RoutedSetup setup;
+    setup.groundstation.enable_signing(make_key(1));
+    setup.autopilot.enable_signing(make_key(1));
+    setup.connect(17112);
+
+    EXPECT_EQ(arm_and_disarm(setup.groundstation, setup.autopilot), Action::Result::Success);
+}
+
+TEST(Signing, RouterDropsRejected)
+{
+    // The ground station doesn't check signatures, so the router has to drop what it rejects.
+    RoutedSetup setup;
+    setup.router.enable_signing(make_key(1));
+    setup.autopilot.enable_signing(make_key(2));
+    setup.connect(17114);
+
+    EXPECT_FALSE(setup.groundstation.first_autopilot(3.0));
+}

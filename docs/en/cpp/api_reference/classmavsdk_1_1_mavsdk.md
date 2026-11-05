@@ -576,7 +576,10 @@ void mavsdk::Mavsdk::enable_signing(const std::array< uint8_t, SIGNING_KEY_LENGT
 
 Enable MAVLink 2 message signing with the given secret key.
 
-Once enabled, all outgoing MAVLink 2 messages are signed, and incoming messages without a valid signature are dropped, including HEARTBEAT and RADIO_STATUS: a system that doesn't sign with the same key is not discovered.
+Once enabled, all outgoing MAVLink 2 messages are signed, and incoming messages without a valid signature are dropped, including HEARTBEAT and RADIO_STATUS: a system that doesn't sign with the same key is not discovered. Dropped messages are not forwarded either.
+
+
+Enabling it again with the same key keeps the replay protection state, a different key starts over.
 
 
 The key applies to all connections. It is not stored, so it has to be set again on each start. Setting the key on the vehicle (e.g. with SETUP_SIGNING) is up to the application.

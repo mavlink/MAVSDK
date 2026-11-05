@@ -13,13 +13,16 @@ public:
         MessageParsed, // Valid message ready for processing and forwarding
         UnknownMessage, // Not in our dialect, so no CRC check - forward and pass on to libmav
         BadCrc, // Corrupted message - forward raw bytes only, don't process
-        BadSignature, // Signing is on and the message isn't accepted - forward only
+        BadSignature, // Signing is on and the message isn't accepted - drop
         NoneAvailable // No more messages in datagram
     };
 
     explicit MavlinkReceiver(MavlinkSigning& signing);
 
     mavlink_message_t& get_last_message() { return _last_message; }
+
+    // Why the last message was rejected, if it was BadSignature.
+    MavlinkSigning::Result get_last_signing_result() const { return _signing_result; }
 
     mavlink_status_t& get_status() { return _status; }
 
@@ -37,6 +40,7 @@ public:
 
 private:
     MavlinkSigning& _signing;
+    MavlinkSigning::Result _signing_result{MavlinkSigning::Result::Accepted};
 
     mavlink_message_t _last_message{};
     mavlink_status_t _status{};

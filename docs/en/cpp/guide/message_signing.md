@@ -27,14 +27,37 @@ Once enabled, for all connections:
   This includes `HEARTBEAT`, so a system that doesn't sign with the same key is not discovered at all.
   It also includes `RADIO_STATUS` injected by radios that can't sign, such as SiK radios.
 
+- Dropped messages are not forwarded either, so with [message forwarding](connections.md#forwarding-mavlink-between-connections) MAVSDK only passes on correctly signed messages.
+- Dropped messages are logged as a warning with the reason (e.g. bad signature, not signed, timestamp too old), at most once every 5 seconds.
+
 Disabling signing again sends messages unsigned and accepts all incoming messages.
 
 MAVSDK does not store the key, so the application has to enable signing again on each start.
 
+## Timestamps and replay protection
+
+Each signed message carries a timestamp, and MAVSDK only accepts messages from a system whose timestamps keep increasing.
+MAVSDK signs with the current system time, so the computer it runs on needs a correct clock.
+
+A system that MAVSDK hasn't heard from yet is accepted if its timestamp is less than one minute behind MAVSDK's.
+If the vehicle's signing timestamp is further behind, MAVSDK drops its messages at first, and logs that the timestamp is behind.
+It keeps sending heartbeats to the vehicle meanwhile: a vehicle usually moves its timestamp forward to the newest one it receives, after which it is accepted.
+With PX4 this takes about a second.
+
+What MAVSDK has seen is kept in memory only.
+After a restart, or after enabling signing with a different key, a message recorded within the last minute could be replayed once.
+Enabling signing again with the same key keeps what it has seen.
+
 ## Setting up the key on the vehicle
 
 The vehicle has to know the same key. How it gets there is up to the application: it can be sent with a [SETUP_SIGNING](https://mavlink.io/en/messages/common.html#SETUP_SIGNING) message, e.g. using [MavlinkDirect](mavlink_direct.md), over a secure link such as USB, before enabling signing in MAVSDK.
-PX4 stores the key and signs from then on.
+PX4 stores the key and signs from then on, starting at the `initial_timestamp` of `SETUP_SIGNING`, so set that to the current time.
+A `SETUP_SIGNING` with an all-zero key disables signing on PX4 again.
+
+::: info
+PX4 accepts some messages unsigned even when signing: `HEARTBEAT`, `RADIO_STATUS`, `ADSB_VEHICLE` and `COLLISION`.
+MAVSDK does not make these exceptions.
+:::
 
 ::: warning
 Once the vehicle signs, it drops unsigned commands. If the key is lost, it has to be reset on the vehicle directly.

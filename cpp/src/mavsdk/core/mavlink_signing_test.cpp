@@ -1,5 +1,7 @@
 #include "mavlink_signing.hpp"
+#include "mavlink_wire.hpp"
 #include <gtest/gtest.h>
+#include <cstring>
 #include <optional>
 #include <vector>
 
@@ -60,6 +62,29 @@ std::optional<mavlink_message_t> parse(const std::vector<uint8_t>& bytes)
     return std::nullopt;
 }
 
+// Signed by the C library, as another system would, with the given link ID and timestamp.
+mavlink_message_t make_signed_by_other(
+    const MavlinkSigning::Key& key, uint8_t sysid, uint8_t link_id, uint64_t timestamp)
+{
+    mavlink_signing_t other{};
+    std::memcpy(other.secret_key, key.data(), key.size());
+    other.flags = MAVLINK_SIGNING_FLAG_SIGN_OUTGOING;
+    other.link_id = link_id;
+    other.timestamp = timestamp;
+
+    constexpr uint8_t channel = MAVLINK_COMM_NUM_BUFFERS - 1;
+    auto* status = mavlink_get_channel_status(channel);
+    status->signing = &other;
+    mavlink_message_t message{};
+    mavlink_msg_attitude_pack_chan(
+        sysid, 1, channel, &message, 1234, 0.1f, 0.2f, 0.3f, 0.0f, 0.0f, 0.0f);
+    status->signing = nullptr;
+
+    return parse(to_bytes(message)).value();
+}
+
+constexpr uint64_t one_minute = MavlinkSigning::NEW_STREAM_TIMESTAMP_LIMIT;
+
 } // namespace
 
 TEST(MavlinkSigning, DisabledAcceptsEverythingAndSignsNothing)
@@ -68,7 +93,7 @@ TEST(MavlinkSigning, DisabledAcceptsEverythingAndSignsNothing)
     EXPECT_FALSE(signing.is_enabled());
 
     auto message = make_attitude();
-    EXPECT_TRUE(signing.check_incoming(message));
+    EXPECT_EQ(signing.check_incoming(message), MavlinkSigning::Result::Accepted);
 
     sign(signing, message);
     EXPECT_EQ(message.incompat_flags & MAVLINK_IFLAG_SIGNED, 0);
@@ -90,7 +115,7 @@ TEST(MavlinkSigning, SignedMessageRoundTrip)
     ASSERT_TRUE(parsed);
     EXPECT_NE(parsed->incompat_flags & MAVLINK_IFLAG_SIGNED, 0);
 
-    EXPECT_TRUE(receiver.check_incoming(parsed.value()));
+    EXPECT_EQ(receiver.check_incoming(parsed.value()), MavlinkSigning::Result::Accepted);
 }
 
 TEST(MavlinkSigning, TrimmedPayloadRoundTrip)
@@ -108,7 +133,7 @@ TEST(MavlinkSigning, TrimmedPayloadRoundTrip)
 
     const auto parsed = parse(to_bytes(message));
     ASSERT_TRUE(parsed);
-    EXPECT_TRUE(receiver.check_incoming(parsed.value()));
+    EXPECT_EQ(receiver.check_incoming(parsed.value()), MavlinkSigning::Result::Accepted);
 }
 
 TEST(MavlinkSigning, WrongKeyRejected)
@@ -123,7 +148,7 @@ TEST(MavlinkSigning, WrongKeyRejected)
 
     const auto parsed = parse(to_bytes(message));
     ASSERT_TRUE(parsed);
-    EXPECT_FALSE(receiver.check_incoming(parsed.value()));
+    EXPECT_EQ(receiver.check_incoming(parsed.value()), MavlinkSigning::Result::BadSignature);
 }
 
 TEST(MavlinkSigning, TamperedSignatureRejected)
@@ -142,7 +167,7 @@ TEST(MavlinkSigning, TamperedSignatureRejected)
 
     const auto parsed = parse(bytes);
     ASSERT_TRUE(parsed);
-    EXPECT_FALSE(receiver.check_incoming(parsed.value()));
+    EXPECT_EQ(receiver.check_incoming(parsed.value()), MavlinkSigning::Result::BadSignature);
 }
 
 TEST(MavlinkSigning, ReplayRejected)
@@ -162,12 +187,12 @@ TEST(MavlinkSigning, ReplayRejected)
     ASSERT_TRUE(parsed_first);
     ASSERT_TRUE(parsed_second);
 
-    EXPECT_TRUE(receiver.check_incoming(parsed_first.value()));
-    EXPECT_TRUE(receiver.check_incoming(parsed_second.value()));
+    EXPECT_EQ(receiver.check_incoming(parsed_first.value()), MavlinkSigning::Result::Accepted);
+    EXPECT_EQ(receiver.check_incoming(parsed_second.value()), MavlinkSigning::Result::Accepted);
 
     // Same timestamps again.
-    EXPECT_FALSE(receiver.check_incoming(parsed_first.value()));
-    EXPECT_FALSE(receiver.check_incoming(parsed_second.value()));
+    EXPECT_EQ(receiver.check_incoming(parsed_first.value()), MavlinkSigning::Result::Replay);
+    EXPECT_EQ(receiver.check_incoming(parsed_second.value()), MavlinkSigning::Result::Replay);
 }
 
 TEST(MavlinkSigning, UnsignedRejected)
@@ -175,19 +200,19 @@ TEST(MavlinkSigning, UnsignedRejected)
     MavlinkSigning receiver;
     receiver.enable(make_key(1));
 
-    EXPECT_FALSE(receiver.check_incoming(make_attitude()));
-    EXPECT_FALSE(receiver.check_incoming(make_heartbeat()));
+    EXPECT_EQ(receiver.check_incoming(make_attitude()), MavlinkSigning::Result::Unsigned);
+    EXPECT_EQ(receiver.check_incoming(make_heartbeat()), MavlinkSigning::Result::Unsigned);
 }
 
 TEST(MavlinkSigning, DisableAcceptsUnsignedAgain)
 {
     MavlinkSigning receiver;
     receiver.enable(make_key(1));
-    EXPECT_FALSE(receiver.check_incoming(make_attitude()));
+    EXPECT_EQ(receiver.check_incoming(make_attitude()), MavlinkSigning::Result::Unsigned);
 
     receiver.disable();
     EXPECT_FALSE(receiver.is_enabled());
-    EXPECT_TRUE(receiver.check_incoming(make_attitude()));
+    EXPECT_EQ(receiver.check_incoming(make_attitude()), MavlinkSigning::Result::Accepted);
 }
 
 TEST(MavlinkSigning, Mavlink1NotSigned)
@@ -205,4 +230,127 @@ TEST(MavlinkSigning, TimestampAfterSigningEpoch)
 {
     // 1 January 2020 in signing timestamp units, as a lower bound.
     EXPECT_GT(MavlinkSigning::timestamp_now(), 15776640000000ULL);
+}
+
+TEST(MavlinkSigning, MoreStreamsThanTheCLibraryTable)
+{
+    MavlinkSigning receiver;
+    receiver.enable(make_key(1));
+
+    const auto now = MavlinkSigning::timestamp_now();
+    for (unsigned i = 0; i < 4 * MAVLINK_MAX_SIGNING_STREAMS; ++i) {
+        const auto message = make_signed_by_other(
+            make_key(1), static_cast<uint8_t>(1 + i / 4), static_cast<uint8_t>(i % 4), now);
+        EXPECT_EQ(receiver.check_incoming(message), MavlinkSigning::Result::Accepted);
+    }
+}
+
+TEST(MavlinkSigning, FullTableMakesRoomForNewStreams)
+{
+    MavlinkSigning receiver(2);
+    receiver.enable(make_key(1));
+
+    const auto now = MavlinkSigning::timestamp_now();
+    EXPECT_EQ(
+        receiver.check_incoming(make_signed_by_other(make_key(1), 1, 0, now)),
+        MavlinkSigning::Result::Accepted);
+    EXPECT_EQ(
+        receiver.check_incoming(make_signed_by_other(make_key(1), 2, 0, now)),
+        MavlinkSigning::Result::Accepted);
+    EXPECT_EQ(
+        receiver.check_incoming(make_signed_by_other(make_key(1), 3, 0, now)),
+        MavlinkSigning::Result::TooManyStreams);
+
+    // System 2 is two minutes ahead, so system 1, last seen now, can't be replayed anymore
+    // and makes room.
+    EXPECT_EQ(
+        receiver.check_incoming(make_signed_by_other(make_key(1), 2, 0, now + 2 * one_minute)),
+        MavlinkSigning::Result::Accepted);
+    EXPECT_EQ(
+        receiver.check_incoming(make_signed_by_other(make_key(1), 3, 0, now + 2 * one_minute)),
+        MavlinkSigning::Result::Accepted);
+
+    // And a replay of system 1 is rejected as too old for a new stream.
+    EXPECT_EQ(
+        receiver.check_incoming(make_signed_by_other(make_key(1), 1, 0, now + 1)),
+        MavlinkSigning::Result::OldTimestamp);
+}
+
+TEST(MavlinkSigning, NewStreamWithOldTimestampRejected)
+{
+    MavlinkSigning receiver;
+    receiver.enable(make_key(1));
+
+    const auto now = MavlinkSigning::timestamp_now();
+    EXPECT_EQ(
+        receiver.check_incoming(make_signed_by_other(make_key(1), 1, 0, now - 2 * one_minute)),
+        MavlinkSigning::Result::OldTimestamp);
+    EXPECT_EQ(
+        receiver.check_incoming(make_signed_by_other(make_key(1), 1, 0, now - one_minute / 2)),
+        MavlinkSigning::Result::Accepted);
+}
+
+TEST(MavlinkSigning, EnableWithSameKeyKeepsStreams)
+{
+    MavlinkSigning receiver;
+    receiver.enable(make_key(1));
+
+    const auto now = MavlinkSigning::timestamp_now();
+    const auto message = make_signed_by_other(make_key(1), 1, 0, now);
+    EXPECT_EQ(receiver.check_incoming(message), MavlinkSigning::Result::Accepted);
+
+    receiver.enable(make_key(1));
+    EXPECT_EQ(receiver.check_incoming(message), MavlinkSigning::Result::Replay);
+
+    // Another key starts over.
+    receiver.enable(make_key(2));
+    receiver.enable(make_key(1));
+    EXPECT_EQ(receiver.check_incoming(message), MavlinkSigning::Result::Accepted);
+}
+
+TEST(MavlinkSigning, UntrimmedSignedFrameSurvivesForwarding)
+{
+    MavlinkSigning receiver;
+    receiver.enable(make_key(1));
+
+    // Signed by a sender that doesn't trim: zero bytes at the end of the payload.
+    mavlink_signing_t other{};
+    const auto key = make_key(1);
+    std::memcpy(other.secret_key, key.data(), key.size());
+    other.flags = MAVLINK_SIGNING_FLAG_SIGN_OUTGOING;
+    other.timestamp = MavlinkSigning::timestamp_now();
+
+    mavlink_message_t message{};
+    mavlink_msg_attitude_pack(1, 1, &message, 1234, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f);
+    message.len = MAVLINK_MSG_ID_ATTITUDE_LEN;
+    message.incompat_flags |= MAVLINK_IFLAG_SIGNED;
+    uint8_t header[MAVLINK_MAX_HEADER_LEN];
+    const uint8_t header_len = mavlink_header_to_send_buffer(header, &message);
+    uint16_t checksum = crc_calculate(&header[1], header_len - 1);
+    crc_accumulate_buffer(&checksum, _MAV_PAYLOAD(&message), message.len);
+    crc_accumulate(MAVLINK_MSG_ID_ATTITUDE_CRC, &checksum);
+    message.checksum = checksum;
+    message.ck[0] = static_cast<uint8_t>(checksum & 0xFF);
+    message.ck[1] = static_cast<uint8_t>(checksum >> 8);
+    mavlink_sign_packet(
+        &other,
+        message.signature,
+        header,
+        header_len,
+        reinterpret_cast<const uint8_t*>(_MAV_PAYLOAD(&message)),
+        message.len,
+        message.ck);
+
+    std::vector<uint8_t> bytes(MAVLINK_MAX_PACKET_LEN);
+    bytes.resize(mavlink_message_to_wire(bytes.data(), message));
+    const auto parsed = parse(bytes);
+    ASSERT_TRUE(parsed);
+    EXPECT_EQ(parsed->len, MAVLINK_MSG_ID_ATTITUDE_LEN);
+
+    // Forwarded as received.
+    bytes.assign(MAVLINK_MAX_PACKET_LEN, 0);
+    bytes.resize(mavlink_message_to_wire(bytes.data(), parsed.value()));
+    const auto forwarded = parse(bytes);
+    ASSERT_TRUE(forwarded);
+    EXPECT_EQ(receiver.check_incoming(forwarded.value()), MavlinkSigning::Result::Accepted);
 }

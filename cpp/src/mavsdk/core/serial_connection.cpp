@@ -277,7 +277,7 @@ ConnectionResult SerialConnection::stop()
 std::pair<bool, std::string> SerialConnection::send_message(const mavlink_message_t& message)
 {
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+    uint16_t buffer_len = mavlink_message_to_wire(buffer, message);
     return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
 }
 

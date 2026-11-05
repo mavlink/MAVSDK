@@ -3,6 +3,7 @@
 #include "mavsdk.hpp"
 #include "mavlink_receiver.hpp"
 #include "libmav_receiver.hpp"
+#include "mavlink_wire.hpp"
 #include <asio/io_context.hpp>
 #include <atomic>
 #include <functional>
@@ -39,6 +40,9 @@ public:
     virtual std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) = 0;
 
     bool has_system_id(uint32_t system_id);
+
+    // Why the message last parsed on this connection was rejected or accepted.
+    MavlinkSigning::Result last_signing_result() const;
     bool should_forward_messages() const;
     static unsigned forwarding_connections_count();
 
@@ -67,7 +71,8 @@ protected:
         MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection);
 
     // Parses received bytes and hands the messages in them on, to MavsdkImpl and libmav.
-    // on_parsed is called for every valid message before it is handed on.
+    // on_parsed is called for every valid message before it is handed on, and for messages
+    // signed with our key whose timestamp is too far behind, see parse_received_bytes().
     void parse_received_bytes(
         char* bytes,
         size_t length,

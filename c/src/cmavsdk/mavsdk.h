@@ -11,16 +11,16 @@
 extern "C" {
 #endif
 
-typedef struct mavsdk_s *mavsdk_t;
-typedef struct mavsdk_configuration_s *mavsdk_configuration_t;
-typedef struct mavsdk_system_s *mavsdk_system_t;
-typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
-typedef struct mavsdk_connection_handle_s *mavsdk_connection_handle_t;
-typedef struct mavsdk_connection_error_handle_s *mavsdk_connection_error_handle_t;
-typedef struct mavsdk_new_system_handle_s *mavsdk_new_system_handle_t;
-typedef struct mavsdk_first_autopilot_handle_s *mavsdk_first_autopilot_handle_t;
-typedef struct mavsdk_intercept_json_handle_s *mavsdk_intercept_json_handle_t;
-typedef struct mavsdk_raw_bytes_handle_s *mavsdk_raw_bytes_handle_t;
+typedef struct mavsdk_s* mavsdk_t;
+typedef struct mavsdk_configuration_s* mavsdk_configuration_t;
+typedef struct mavsdk_system_s* mavsdk_system_t;
+typedef struct mavsdk_server_component_s* mavsdk_server_component_t;
+typedef struct mavsdk_connection_handle_s* mavsdk_connection_handle_t;
+typedef struct mavsdk_connection_error_handle_s* mavsdk_connection_error_handle_t;
+typedef struct mavsdk_new_system_handle_s* mavsdk_new_system_handle_t;
+typedef struct mavsdk_first_autopilot_handle_s* mavsdk_first_autopilot_handle_t;
+typedef struct mavsdk_intercept_json_handle_s* mavsdk_intercept_json_handle_t;
+typedef struct mavsdk_raw_bytes_handle_s* mavsdk_raw_bytes_handle_t;
 
 typedef enum {
     MAVSDK_COMPONENT_TYPE_AUTOPILOT = 0,
@@ -54,17 +54,17 @@ typedef enum {
 } mavsdk_connection_result_t;
 
 typedef struct {
-    char *error_description;
+    char* error_description;
     mavsdk_connection_handle_t connection_handle;
 } mavsdk_connection_error_t;
 
 typedef struct {
-    char *message_name;
+    char* message_name;
     uint32_t system_id;
     uint32_t component_id;
     uint32_t target_system_id;
     uint32_t target_component_id;
-    char *fields_json;
+    char* fields_json;
 } mavsdk_message_t;
 
 typedef struct {
@@ -73,28 +73,37 @@ typedef struct {
 } mavsdk_connection_result_with_handle_t;
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_connection_error_callback_t)(const mavsdk_connection_error_t error, void *user_data);
-typedef void (*mavsdk_new_system_callback_t)(void *user_data);
+typedef void (*mavsdk_connection_error_callback_t)(
+    const mavsdk_connection_error_t error, void* user_data);
+typedef void (*mavsdk_new_system_callback_t)(void* user_data);
 /* system is NULL if no autopilot was found in time. Otherwise it is owned by the callee and
  * must be released with mavsdk_system_destroy(). */
-typedef void (*mavsdk_first_autopilot_callback_t)(mavsdk_system_t system, void *user_data);
-typedef int  (*mavsdk_intercept_json_callback_t)(const mavsdk_message_t message, void *user_data);
-typedef void (*mavsdk_raw_bytes_callback_t)(const uint8_t *bytes, size_t length, void *user_data);
+typedef void (*mavsdk_first_autopilot_callback_t)(mavsdk_system_t system, void* user_data);
+typedef int (*mavsdk_intercept_json_callback_t)(const mavsdk_message_t message, void* user_data);
+typedef void (*mavsdk_raw_bytes_callback_t)(const uint8_t* bytes, size_t length, void* user_data);
 
 // ===== Configuration =====
-CMAVSDK_EXPORT mavsdk_configuration_t mavsdk_configuration_create_with_component_type(mavsdk_component_type_t type);
-CMAVSDK_EXPORT mavsdk_configuration_t mavsdk_configuration_create_manual(uint32_t system_id, uint8_t component_id, int always_send_heartbeats);
+CMAVSDK_EXPORT mavsdk_configuration_t
+mavsdk_configuration_create_with_component_type(mavsdk_component_type_t type);
+CMAVSDK_EXPORT mavsdk_configuration_t mavsdk_configuration_create_manual(
+    uint32_t system_id, uint8_t component_id, int always_send_heartbeats);
 CMAVSDK_EXPORT void mavsdk_configuration_destroy(mavsdk_configuration_t config);
 CMAVSDK_EXPORT uint32_t mavsdk_configuration_get_system_id(mavsdk_configuration_t config);
-CMAVSDK_EXPORT void mavsdk_configuration_set_system_id(mavsdk_configuration_t config, uint32_t system_id);
+CMAVSDK_EXPORT void
+mavsdk_configuration_set_system_id(mavsdk_configuration_t config, uint32_t system_id);
 CMAVSDK_EXPORT uint8_t mavsdk_configuration_get_component_id(mavsdk_configuration_t config);
-CMAVSDK_EXPORT void mavsdk_configuration_set_component_id(mavsdk_configuration_t config, uint8_t component_id);
+CMAVSDK_EXPORT void
+mavsdk_configuration_set_component_id(mavsdk_configuration_t config, uint8_t component_id);
 CMAVSDK_EXPORT int mavsdk_configuration_get_always_send_heartbeats(mavsdk_configuration_t config);
-CMAVSDK_EXPORT void mavsdk_configuration_set_always_send_heartbeats(mavsdk_configuration_t config, int always_send_heartbeats);
-CMAVSDK_EXPORT mavsdk_component_type_t mavsdk_configuration_get_component_type(mavsdk_configuration_t config);
-CMAVSDK_EXPORT void mavsdk_configuration_set_component_type(mavsdk_configuration_t config, mavsdk_component_type_t component_type);
+CMAVSDK_EXPORT void mavsdk_configuration_set_always_send_heartbeats(
+    mavsdk_configuration_t config, int always_send_heartbeats);
+CMAVSDK_EXPORT mavsdk_component_type_t
+mavsdk_configuration_get_component_type(mavsdk_configuration_t config);
+CMAVSDK_EXPORT void mavsdk_configuration_set_component_type(
+    mavsdk_configuration_t config, mavsdk_component_type_t component_type);
 CMAVSDK_EXPORT uint8_t mavsdk_configuration_get_mav_type(mavsdk_configuration_t config);
-CMAVSDK_EXPORT void mavsdk_configuration_set_mav_type(mavsdk_configuration_t config, uint8_t mav_type);
+CMAVSDK_EXPORT void
+mavsdk_configuration_set_mav_type(mavsdk_configuration_t config, uint8_t mav_type);
 
 // ===== Core =====
 CMAVSDK_EXPORT mavsdk_t mavsdk_create(mavsdk_configuration_t config);
@@ -102,51 +111,28 @@ CMAVSDK_EXPORT void mavsdk_destroy(mavsdk_t mavsdk);
 CMAVSDK_EXPORT const char* mavsdk_version(mavsdk_t mavsdk);
 
 // ===== Connection Management =====
-CMAVSDK_EXPORT mavsdk_connection_result_t mavsdk_add_any_connection(
-    mavsdk_t mavsdk,
-    const char *connection_url
-);
+CMAVSDK_EXPORT mavsdk_connection_result_t
+mavsdk_add_any_connection(mavsdk_t mavsdk, const char* connection_url);
 CMAVSDK_EXPORT mavsdk_connection_result_t mavsdk_add_any_connection_with_forwarding(
-    mavsdk_t mavsdk,
-    const char *connection_url,
-    mavsdk_forwarding_option_t forwarding_option
-);
-CMAVSDK_EXPORT mavsdk_connection_result_with_handle_t mavsdk_add_any_connection_with_handle(
-    mavsdk_t mavsdk,
-    const char *connection_url
-);
-CMAVSDK_EXPORT mavsdk_connection_result_with_handle_t mavsdk_add_any_connection_with_handle_and_forwarding(
-    mavsdk_t mavsdk,
-    const char *connection_url,
-    mavsdk_forwarding_option_t forwarding_option
-);
-CMAVSDK_EXPORT void mavsdk_remove_connection(
-    mavsdk_t mavsdk,
-    mavsdk_connection_handle_t handle
-);
+    mavsdk_t mavsdk, const char* connection_url, mavsdk_forwarding_option_t forwarding_option);
+CMAVSDK_EXPORT mavsdk_connection_result_with_handle_t
+mavsdk_add_any_connection_with_handle(mavsdk_t mavsdk, const char* connection_url);
+CMAVSDK_EXPORT mavsdk_connection_result_with_handle_t
+mavsdk_add_any_connection_with_handle_and_forwarding(
+    mavsdk_t mavsdk, const char* connection_url, mavsdk_forwarding_option_t forwarding_option);
+CMAVSDK_EXPORT void mavsdk_remove_connection(mavsdk_t mavsdk, mavsdk_connection_handle_t handle);
 
 // ===== Connection Error Handling =====
 CMAVSDK_EXPORT mavsdk_connection_error_handle_t mavsdk_subscribe_connection_errors(
-    mavsdk_t mavsdk,
-    mavsdk_connection_error_callback_t callback,
-    void *user_data
-);
-CMAVSDK_EXPORT void mavsdk_unsubscribe_connection_errors(
-    mavsdk_t mavsdk,
-    mavsdk_connection_error_handle_t handle
-);
+    mavsdk_t mavsdk, mavsdk_connection_error_callback_t callback, void* user_data);
+CMAVSDK_EXPORT void
+mavsdk_unsubscribe_connection_errors(mavsdk_t mavsdk, mavsdk_connection_error_handle_t handle);
 
 // ===== System Discovery and Management =====
 CMAVSDK_EXPORT size_t mavsdk_system_count(mavsdk_t mavsdk);
-CMAVSDK_EXPORT mavsdk_system_t* mavsdk_get_systems(
-    mavsdk_t mavsdk,
-    size_t *count
-);
-CMAVSDK_EXPORT void mavsdk_free_systems_array(mavsdk_system_t *systems);
-CMAVSDK_EXPORT mavsdk_system_t mavsdk_first_autopilot(
-    mavsdk_t mavsdk,
-    double timeout_s
-);
+CMAVSDK_EXPORT mavsdk_system_t* mavsdk_get_systems(mavsdk_t mavsdk, size_t* count);
+CMAVSDK_EXPORT void mavsdk_free_systems_array(mavsdk_system_t* systems);
+CMAVSDK_EXPORT mavsdk_system_t mavsdk_first_autopilot(mavsdk_t mavsdk, double timeout_s);
 
 /*
  * Non-blocking version of mavsdk_first_autopilot(). The callback is called exactly once, with
@@ -157,120 +143,67 @@ CMAVSDK_EXPORT mavsdk_system_t mavsdk_first_autopilot(
  * also after the callback has been called.
  */
 CMAVSDK_EXPORT mavsdk_first_autopilot_handle_t mavsdk_first_autopilot_async(
-    mavsdk_t mavsdk,
-    double timeout_s,
-    mavsdk_first_autopilot_callback_t callback,
-    void *user_data
-);
+    mavsdk_t mavsdk, double timeout_s, mavsdk_first_autopilot_callback_t callback, void* user_data);
 
 /*
  * Cancel a wait started with mavsdk_first_autopilot_async() and release its handle. Once this
  * returns, the callback is neither running nor going to run. After the callback has been
  * called, this only releases the handle.
  */
-CMAVSDK_EXPORT void mavsdk_cancel_first_autopilot(
-    mavsdk_t mavsdk,
-    mavsdk_first_autopilot_handle_t handle
-);
+CMAVSDK_EXPORT void
+mavsdk_cancel_first_autopilot(mavsdk_t mavsdk, mavsdk_first_autopilot_handle_t handle);
 
 // ===== System Event Subscriptions =====
 CMAVSDK_EXPORT mavsdk_new_system_handle_t mavsdk_subscribe_on_new_system(
-    mavsdk_t mavsdk,
-    mavsdk_new_system_callback_t callback,
-    void *user_data
-);
-CMAVSDK_EXPORT void mavsdk_unsubscribe_on_new_system(
-    mavsdk_t mavsdk,
-    mavsdk_new_system_handle_t handle
-);
+    mavsdk_t mavsdk, mavsdk_new_system_callback_t callback, void* user_data);
+CMAVSDK_EXPORT void
+mavsdk_unsubscribe_on_new_system(mavsdk_t mavsdk, mavsdk_new_system_handle_t handle);
 
 // ===== Configuration and Timeout =====
-CMAVSDK_EXPORT void mavsdk_set_configuration(
-    mavsdk_t mavsdk,
-    mavsdk_configuration_t configuration
-);
-CMAVSDK_EXPORT void mavsdk_set_timeout_s(
-    mavsdk_t mavsdk,
-    double timeout_s
-);
+CMAVSDK_EXPORT void mavsdk_set_configuration(mavsdk_t mavsdk, mavsdk_configuration_t configuration);
+CMAVSDK_EXPORT void mavsdk_set_timeout_s(mavsdk_t mavsdk, double timeout_s);
 
 // ===== MAVLink Signing =====
 #define MAVSDK_SIGNING_KEY_LENGTH 32
 
 // Signs all outgoing MAVLink 2 messages and drops incoming ones without a valid
-// signature, see Mavsdk::enable_signing(). The key is copied.
-CMAVSDK_EXPORT void mavsdk_enable_signing(
-    mavsdk_t mavsdk,
-    const uint8_t secret_key[MAVSDK_SIGNING_KEY_LENGTH]
-);
-CMAVSDK_EXPORT void mavsdk_disable_signing(
-    mavsdk_t mavsdk
-);
-CMAVSDK_EXPORT bool mavsdk_is_signing_enabled(
-    mavsdk_t mavsdk
-);
+// signature, see Mavsdk::enable_signing(). The key is copied. A NULL key is
+// ignored and leaves signing as it is.
+CMAVSDK_EXPORT void
+mavsdk_enable_signing(mavsdk_t mavsdk, const uint8_t secret_key[MAVSDK_SIGNING_KEY_LENGTH]);
+CMAVSDK_EXPORT void mavsdk_disable_signing(mavsdk_t mavsdk);
+CMAVSDK_EXPORT bool mavsdk_is_signing_enabled(mavsdk_t mavsdk);
 
 // ===== Server Components =====
-CMAVSDK_EXPORT mavsdk_server_component_t mavsdk_server_component(
-    mavsdk_t mavsdk,
-    unsigned int instance
-);
-CMAVSDK_EXPORT void mavsdk_server_component_destroy(
-    mavsdk_server_component_t server_component
-);
+CMAVSDK_EXPORT mavsdk_server_component_t
+mavsdk_server_component(mavsdk_t mavsdk, unsigned int instance);
+CMAVSDK_EXPORT void mavsdk_server_component_destroy(mavsdk_server_component_t server_component);
 CMAVSDK_EXPORT mavsdk_server_component_t mavsdk_server_component_by_type(
-    mavsdk_t mavsdk,
-    mavsdk_component_type_t component_type,
-    unsigned int instance
-);
-CMAVSDK_EXPORT mavsdk_server_component_t mavsdk_server_component_by_id(
-    mavsdk_t mavsdk,
-    uint8_t component_id
-);
+    mavsdk_t mavsdk, mavsdk_component_type_t component_type, unsigned int instance);
+CMAVSDK_EXPORT mavsdk_server_component_t
+mavsdk_server_component_by_id(mavsdk_t mavsdk, uint8_t component_id);
 
 // ===== Message Interception (JSON) =====
 CMAVSDK_EXPORT mavsdk_intercept_json_handle_t mavsdk_subscribe_incoming_messages_json(
-    mavsdk_t mavsdk,
-    mavsdk_intercept_json_callback_t callback,
-    void *user_data
-);
-CMAVSDK_EXPORT void mavsdk_unsubscribe_incoming_messages_json(
-    mavsdk_t mavsdk,
-    mavsdk_intercept_json_handle_t handle
-);
+    mavsdk_t mavsdk, mavsdk_intercept_json_callback_t callback, void* user_data);
+CMAVSDK_EXPORT void
+mavsdk_unsubscribe_incoming_messages_json(mavsdk_t mavsdk, mavsdk_intercept_json_handle_t handle);
 CMAVSDK_EXPORT mavsdk_intercept_json_handle_t mavsdk_subscribe_outgoing_messages_json(
-    mavsdk_t mavsdk,
-    mavsdk_intercept_json_callback_t callback,
-    void *user_data
-);
-CMAVSDK_EXPORT void mavsdk_unsubscribe_outgoing_messages_json(
-    mavsdk_t mavsdk,
-    mavsdk_intercept_json_handle_t handle
-);
+    mavsdk_t mavsdk, mavsdk_intercept_json_callback_t callback, void* user_data);
+CMAVSDK_EXPORT void
+mavsdk_unsubscribe_outgoing_messages_json(mavsdk_t mavsdk, mavsdk_intercept_json_handle_t handle);
 
 // ===== Raw Bytes =====
-CMAVSDK_EXPORT void mavsdk_pass_received_raw_bytes(
-    mavsdk_t mavsdk,
-    const uint8_t *bytes,
-    size_t length
-);
+CMAVSDK_EXPORT void
+mavsdk_pass_received_raw_bytes(mavsdk_t mavsdk, const uint8_t* bytes, size_t length);
 CMAVSDK_EXPORT mavsdk_raw_bytes_handle_t mavsdk_subscribe_raw_bytes_to_be_sent(
-    mavsdk_t mavsdk,
-    mavsdk_raw_bytes_callback_t callback,
-    void *user_data
-);
-CMAVSDK_EXPORT void mavsdk_unsubscribe_raw_bytes_to_be_sent(
-    mavsdk_t mavsdk,
-    mavsdk_raw_bytes_handle_t handle
-);
+    mavsdk_t mavsdk, mavsdk_raw_bytes_callback_t callback, void* user_data);
+CMAVSDK_EXPORT void
+mavsdk_unsubscribe_raw_bytes_to_be_sent(mavsdk_t mavsdk, mavsdk_raw_bytes_handle_t handle);
 
 // ===== Memory Management Helpers =====
-CMAVSDK_EXPORT void mavsdk_free_connection_error(
-    mavsdk_connection_error_t *error
-);
-CMAVSDK_EXPORT void mavsdk_free_mavsdk_message(
-    mavsdk_message_t *message
-);
+CMAVSDK_EXPORT void mavsdk_free_connection_error(mavsdk_connection_error_t* error);
+CMAVSDK_EXPORT void mavsdk_free_mavsdk_message(mavsdk_message_t* message);
 
 #ifdef __cplusplus
 }
