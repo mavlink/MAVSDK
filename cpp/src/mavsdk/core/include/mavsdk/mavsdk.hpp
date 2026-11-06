@@ -733,8 +733,7 @@ public:
      *        To drop a message, return 'false' from the callback.
      */
 #ifdef MAVSDK_ENABLE_MAVLINK_C_API
-    DEPRECATED void
-    intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
+    DEPRECATED void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
 #endif
 
     /**
@@ -782,8 +781,7 @@ public:
      *        To drop a message, return 'false' from the callback.
      */
 #ifdef MAVSDK_ENABLE_MAVLINK_C_API
-    DEPRECATED void
-    intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
+    DEPRECATED void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 #endif
 
     /**
