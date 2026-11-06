@@ -98,6 +98,12 @@ set_target_properties(system_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+# Asio's io_context.hpp triggers a false-positive -Wnull-dereference with GCC,
+# see src/mavsdk/core/CMakeLists.txt.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(system_tests_runner PRIVATE -Wno-null-dereference)
+endif()
+
 if(ENABLE_CPPTRACE)
     find_package(cpptrace REQUIRED)
     target_link_libraries(system_tests_runner
