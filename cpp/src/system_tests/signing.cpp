@@ -5,8 +5,13 @@
 #include "plugins/action_server/action_server.hpp"
 #include "plugins/mavlink_direct/mavlink_direct.hpp"
 #include "plugins/mavlink_direct_server/mavlink_direct_server.hpp"
+#include <asio/io_context.hpp>
+#include <asio/ip/udp.hpp>
+#include <array>
 #include <atomic>
 #include <chrono>
+#include <cstring>
+#include <functional>
 #include <future>
 #include <memory>
 #include <mutex>
@@ -274,4 +279,84 @@ TEST(Signing, RouterDropsRejected)
     setup.connect(17114);
 
     EXPECT_FALSE(setup.groundstation.first_autopilot(3.0));
+}
+
+TEST(Signing, OldTimestampOnlyGetsHeartbeatBack)
+{
+    // A message signed with our key but too old might be a replay with a spoofed source, so
+    // the sender must not become a destination: it only gets a heartbeat back, at most once
+    // a second, so that a vehicle with its clock behind can catch up.
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    const auto key = make_key(1);
+    mavsdk_groundstation.enable_signing(key);
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://127.0.0.1:17116"),
+        ConnectionResult::Success);
+
+    // Signed with the right key, two minutes ago.
+    mavlink_signing_t old_signing{};
+    std::memcpy(old_signing.secret_key, key.data(), key.size());
+    old_signing.flags = MAVLINK_SIGNING_FLAG_SIGN_OUTGOING;
+    // In 10 us since 1 January 2015.
+    const auto now = std::chrono::duration_cast<std::chrono::microseconds>(
+                         std::chrono::system_clock::now().time_since_epoch())
+                             .count() /
+                         10 -
+                     1420070400LL * 100000LL;
+    old_signing.timestamp = static_cast<uint64_t>(now) - 2 * 60 * 100000ULL;
+    constexpr uint8_t channel = MAVLINK_COMM_NUM_BUFFERS - 1;
+    auto* status = mavlink_get_channel_status(channel);
+    status->signing = &old_signing;
+    mavlink_message_t heartbeat{};
+    mavlink_msg_heartbeat_pack_chan(
+        1, 1, channel, &heartbeat, MAV_TYPE_QUADROTOR, MAV_AUTOPILOT_PX4, 0, 0, MAV_STATE_ACTIVE);
+    status->signing = nullptr;
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    const auto len = mavlink_msg_to_send_buffer(buffer, &heartbeat);
+
+    asio::io_context io_context;
+    asio::ip::udp::socket socket(
+        io_context, asio::ip::udp::endpoint(asio::ip::make_address("127.0.0.1"), 0));
+    const asio::ip::udp::endpoint groundstation(asio::ip::make_address("127.0.0.1"), 17116);
+
+    std::array<uint8_t, 2048> receive_buffer{};
+    asio::ip::udp::endpoint sender;
+    unsigned signed_heartbeats = 0;
+    unsigned others = 0;
+    std::function<void()> receive = [&]() {
+        socket.async_receive_from(
+            asio::buffer(receive_buffer), sender, [&](const asio::error_code& ec, std::size_t n) {
+                if (ec) {
+                    return;
+                }
+                mavlink_message_t message{};
+                mavlink_status_t parse_status{};
+                bool parsed = false;
+                for (std::size_t i = 0; i < n && !parsed; ++i) {
+                    parsed = mavlink_parse_char(
+                                 MAVLINK_COMM_NUM_BUFFERS - 2,
+                                 receive_buffer[i],
+                                 &message,
+                                 &parse_status) != 0;
+                }
+                if (parsed && message.msgid == MAVLINK_MSG_ID_HEARTBEAT &&
+                    (message.incompat_flags & MAVLINK_IFLAG_SIGNED) != 0) {
+                    ++signed_heartbeats;
+                } else {
+                    ++others;
+                }
+                receive();
+            });
+    };
+    receive();
+
+    // Several in a row only get one heartbeat back.
+    for (int i = 0; i < 5; ++i) {
+        socket.send_to(asio::buffer(buffer, len), groundstation);
+    }
+    io_context.run_for(std::chrono::milliseconds(3500));
+
+    // As a destination, it would have gotten a heartbeat every second.
+    EXPECT_EQ(signed_heartbeats, 1u);
+    EXPECT_EQ(others, 0u);
 }

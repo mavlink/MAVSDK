@@ -77,6 +77,9 @@ find_package(nlohmann_json REQUIRED)
 
 find_package(fmt REQUIRED)
 
+# For tests that talk UDP directly.
+find_package(asio REQUIRED)
+
 target_link_libraries(system_tests_runner
     PRIVATE
     mavsdk
@@ -85,6 +88,7 @@ target_link_libraries(system_tests_runner
     GTest::gmock
     nlohmann_json::nlohmann_json
     fmt::fmt
+    asio::asio
 )
 
 # Some tests use the deprecated APIs that expose the MAVLink C types.

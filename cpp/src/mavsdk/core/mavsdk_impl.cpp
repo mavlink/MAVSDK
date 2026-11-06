@@ -2048,6 +2048,28 @@ ServerComponentImpl& MavsdkImpl::default_server_component_with_lock()
     return *_default_server_component->_impl;
 }
 
+bool MavsdkImpl::make_signed_heartbeat(mavlink_message_t& message)
+{
+    if (!_signing.is_enabled()) {
+        return false;
+    }
+
+    const bool autopilot = get_own_component_id() == MAV_COMP_ID_AUTOPILOT1;
+    mavlink_msg_heartbeat_pack_chan(
+        get_own_system_id(),
+        get_own_component_id(),
+        MAVLINK_COMM_0, // Only for the sequence number.
+        &message,
+        get_mav_type(),
+        autopilot ? get_mav_autopilot() : static_cast<uint8_t>(MAV_AUTOPILOT_INVALID),
+        0,
+        0,
+        MAV_STATE_ACTIVE);
+
+    _signing.sign_outgoing(message, MAVLINK_MSG_ID_HEARTBEAT_CRC);
+    return (message.incompat_flags & MAVLINK_IFLAG_SIGNED) != 0;
+}
+
 void MavsdkImpl::send_heartbeats()
 {
     std::lock_guard lock(_server_components_mutex);

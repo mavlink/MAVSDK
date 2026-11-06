@@ -42,8 +42,8 @@ public:
 
     explicit MavlinkSigning(std::size_t max_streams = DEFAULT_MAX_STREAMS);
 
-    // Enabling it again with the same key keeps the streams seen so far, a different key
-    // starts over.
+    // Enabling it again with the same key while enabled keeps the streams seen so far.
+    // A different key, or enabling it after disable(), starts over.
     void enable(const Key& secret_key);
     void disable();
 
@@ -85,6 +85,7 @@ private:
     const std::size_t _max_streams;
 
     LogRateLimiter _warning_limiter{};
+    LogRateLimiter _radio_status_limiter{};
 };
 
 } // namespace mavsdk

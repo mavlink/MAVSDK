@@ -1,7 +1,13 @@
 #include "mavlink_signing.hpp"
 #include "mavlink_wire.hpp"
+#include "log_callback.hpp"
 #include <gtest/gtest.h>
+#include <chrono>
 #include <cstring>
+#include <future>
+#include <memory>
+#include <string>
+#include <thread>
 #include <optional>
 #include <vector>
 
@@ -353,4 +359,56 @@ TEST(MavlinkSigning, UntrimmedSignedFrameSurvivesForwarding)
     const auto forwarded = parse(bytes);
     ASSERT_TRUE(forwarded);
     EXPECT_EQ(receiver.check_incoming(forwarded.value()), MavlinkSigning::Result::Accepted);
+}
+
+TEST(MavlinkSigning, LogCallbackCanDisable)
+{
+    // The rejection is logged after the lock is released, so the callback may use it.
+    auto signing = std::make_shared<MavlinkSigning>();
+    signing->enable(make_key(1));
+
+    log::subscribe([signing](log::Level, const std::string& message, const std::string&, int) {
+        if (message.find("Signing:") != std::string::npos) {
+            signing->disable();
+        }
+        return true;
+    });
+
+    auto promise = std::make_shared<std::promise<MavlinkSigning::Result>>();
+    auto future = promise->get_future();
+    std::thread([signing, promise]() {
+        promise->set_value(signing->check_incoming(make_attitude()));
+    }).detach();
+
+    const bool done = future.wait_for(std::chrono::seconds(5)) == std::future_status::ready;
+    log::subscribe(nullptr);
+    ASSERT_TRUE(done) << "deadlock";
+    EXPECT_EQ(future.get(), MavlinkSigning::Result::Unsigned);
+    EXPECT_FALSE(signing->is_enabled());
+}
+
+TEST(MavlinkSigning, UnsignedRadioStatusNotWarned)
+{
+    MavlinkSigning signing;
+    signing.enable(make_key(1));
+
+    std::vector<std::string> warnings;
+    log::subscribe(
+        [&warnings](log::Level level, const std::string& message, const std::string&, int) {
+            if (level >= log::Level::Warn) {
+                warnings.push_back(message);
+            }
+            return true;
+        });
+
+    mavlink_message_t radio_status{};
+    mavlink_msg_radio_status_pack(51, 68, &radio_status, 200, 180, 100, 20, 10, 0, 0);
+    EXPECT_EQ(signing.check_incoming(radio_status), MavlinkSigning::Result::Unsigned);
+    const auto warnings_for_radio_status = warnings.size();
+
+    EXPECT_EQ(signing.check_incoming(make_attitude()), MavlinkSigning::Result::Unsigned);
+    log::subscribe(nullptr);
+
+    EXPECT_EQ(warnings_for_radio_status, 0u);
+    EXPECT_EQ(warnings.size(), 1u);
 }

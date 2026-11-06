@@ -149,16 +149,13 @@ void Connection::parse_received_bytes(
     while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
         auto& message = _mavlink_receiver->get_last_message();
 
-        // A system signing with our key, but with a timestamp too far behind, only catches up
-        // once it gets a message from us. Over UDP we can only send it one once we know where
-        // it is, so that has to come from a message we reject.
-        const bool signed_but_behind =
-            parse_result == MavlinkReceiver::ParseResult::BadSignature &&
-            _mavlink_receiver->get_last_signing_result() == MavlinkSigning::Result::OldTimestamp;
-
-        if ((parse_result == MavlinkReceiver::ParseResult::MessageParsed || signed_but_behind) &&
-            on_parsed) {
+        if (parse_result == MavlinkReceiver::ParseResult::MessageParsed && on_parsed) {
             on_parsed(message);
+        }
+
+        if (parse_result == MavlinkReceiver::ParseResult::BadSignature &&
+            _mavlink_receiver->get_last_signing_result() == MavlinkSigning::Result::OldTimestamp) {
+            on_signed_but_behind();
         }
 
         receive_message(parse_result, message, this);

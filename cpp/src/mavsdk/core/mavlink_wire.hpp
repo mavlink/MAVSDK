@@ -23,7 +23,8 @@ inline uint16_t mavlink_message_to_wire(uint8_t* buffer, const mavlink_message_t
     std::memcpy(&buffer[len], _MAV_PAYLOAD(&message), message.len);
     len += message.len;
     // Not ck: packing only sets checksum (and puts the CRC bytes after the payload).
-    // MavlinkReceiver sets checksum to the received CRC.
+    // For a parsed frame, checksum is the CRC as received: the parser puts the received one
+    // there when it doesn't match the one it calculated, or can't calculate it.
     buffer[len++] = static_cast<uint8_t>(message.checksum & 0xFF);
     buffer[len++] = static_cast<uint8_t>(message.checksum >> 8);
     if (message.magic != MAVLINK_STX_MAVLINK1 &&

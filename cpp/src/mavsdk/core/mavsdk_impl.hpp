@@ -199,6 +199,10 @@ public:
     // CRC extra of a message, from the C dialect or the libmav MessageSet.
     std::optional<uint8_t> crc_extra_safe(uint32_t id) const;
 
+    // A signed heartbeat of our own component, sent as it is, i.e. not through the outgoing
+    // intercept callbacks. False if signing is disabled.
+    bool make_signed_heartbeat(mavlink_message_t& message);
+
     MavlinkSigning& signing() { return _signing; }
     std::optional<int> message_name_to_id_safe(const std::string& name) const;
     std::optional<mav::Message> create_message_safe(const std::string& message_name) const;

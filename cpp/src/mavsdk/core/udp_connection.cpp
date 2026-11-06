@@ -293,6 +293,41 @@ void UdpConnection::add_remote_impl(
     }
 }
 
+void UdpConnection::on_signed_but_behind()
+{
+    // This might be a replay with a spoofed source address, so the sender doesn't become a
+    // remote: it gets one heartbeat straight back, at most once a second per address, and
+    // nothing else. Once it has caught up, its messages are accepted and it's added as usual.
+    const auto now = std::chrono::steady_clock::now();
+    for (auto it = _catch_up_sent.begin(); it != _catch_up_sent.end();) {
+        if (now - it->second >= CATCH_UP_INTERVAL) {
+            it = _catch_up_sent.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    if (_catch_up_sent.count(_sender_endpoint) > 0 ||
+        _catch_up_sent.size() >= CATCH_UP_MAX_ADDRESSES) {
+        return;
+    }
+
+    mavlink_message_t heartbeat;
+    if (!_mavsdk_impl.make_signed_heartbeat(heartbeat)) {
+        return;
+    }
+    _catch_up_sent.emplace(_sender_endpoint, now);
+
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    const uint16_t len = mavlink_message_to_wire(buffer, heartbeat);
+
+    std::lock_guard<std::mutex> lock(_remote_mutex);
+    asio::error_code ec;
+    _socket.send_to(asio::buffer(buffer, len), _sender_endpoint, 0, ec);
+    if (ec) {
+        LogDebug("Could not send heartbeat to catch up: {}", ec.message());
+    }
+}
+
 void UdpConnection::do_receive()
 {
     // Post an async receive. The handler runs on the dedicated io_context thread (_io_thread).

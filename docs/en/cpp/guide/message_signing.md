@@ -29,6 +29,7 @@ Once enabled, for all connections:
 
 - Dropped messages are not forwarded either, so with [message forwarding](connections.md#forwarding-mavlink-between-connections) MAVSDK only passes on correctly signed messages.
 - Dropped messages are logged as a warning with the reason (e.g. bad signature, not signed, timestamp too old), at most once every 5 seconds.
+  Only the unsigned `RADIO_STATUS` of radios is logged at debug level, as it's expected.
 
 Disabling signing again sends messages unsigned and accepts all incoming messages.
 
@@ -41,12 +42,13 @@ MAVSDK signs with the current system time, so the computer it runs on needs a co
 
 A system that MAVSDK hasn't heard from yet is accepted if its timestamp is less than one minute behind MAVSDK's.
 If the vehicle's signing timestamp is further behind, MAVSDK drops its messages at first, and logs that the timestamp is behind.
-It keeps sending heartbeats to the vehicle meanwhile: a vehicle usually moves its timestamp forward to the newest one it receives, after which it is accepted.
+It sends the vehicle heartbeats meanwhile: a vehicle usually moves its timestamp forward to the newest one it receives, after which it is accepted.
+Such a message might also be a replay, so over UDP the sender is not added as a destination until its messages are accepted: it only gets a heartbeat back, at most once a second.
 With PX4 this takes about a second.
 
 What MAVSDK has seen is kept in memory only.
-After a restart, or after enabling signing with a different key, a message recorded within the last minute could be replayed once.
-Enabling signing again with the same key keeps what it has seen.
+After a restart, after `disable_signing()`, or after enabling signing with a different key, a message recorded within the last minute could be replayed once.
+Calling `enable_signing()` again with the same key while signing is enabled keeps what it has seen.
 
 ## Setting up the key on the vehicle
 

@@ -71,12 +71,18 @@ protected:
         MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection);
 
     // Parses received bytes and hands the messages in them on, to MavsdkImpl and libmav.
-    // on_parsed is called for every valid message before it is handed on, and for messages
-    // signed with our key whose timestamp is too far behind, see parse_received_bytes().
+    // on_parsed is called for every valid message before it is handed on.
     void parse_received_bytes(
         char* bytes,
         size_t length,
         const std::function<void(const mavlink_message_t&)>& on_parsed = nullptr);
+
+    // Called for a message signed with our key, but with a timestamp too far behind ours.
+    // That might be a system whose clock is behind, which only catches up once it gets a
+    // message from us, or a replay: there is no telling them apart. MavsdkImpl sends
+    // heartbeats meanwhile, which is enough where there is only one peer. Connections that
+    // only know where to send once they've accepted a message, i.e. UDP, override this.
+    virtual void on_signed_but_behind() {}
 
     bool start_libmav_receiver();
     void stop_libmav_receiver();

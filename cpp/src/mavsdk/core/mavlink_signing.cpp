@@ -40,13 +40,17 @@ MavlinkSigning::Result MavlinkSigning::check_incoming(const mavlink_message_t& m
         return Result::Accepted;
     }
 
-    std::lock_guard<std::mutex> lock(_mutex);
-    // Re-check under the lock, it might have been disabled in the meantime.
-    if (!_enabled) {
-        return Result::Accepted;
+    Result result;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        // Re-check under the lock, it might have been disabled in the meantime.
+        if (!_enabled) {
+            return Result::Accepted;
+        }
+        result = check_incoming_locked(message);
     }
 
-    const auto result = check_incoming_locked(message);
+    // Not under the lock: a log callback might enable or disable signing.
     if (result != Result::Accepted) {
         warn_rejected(message, result);
     }
@@ -114,6 +118,18 @@ MavlinkSigning::Result MavlinkSigning::check_incoming_locked(const mavlink_messa
 
 void MavlinkSigning::warn_rejected(const mavlink_message_t& message, Result result)
 {
+    // Radios that can't sign, such as SiK radios, inject an unsigned RADIO_STATUS for the
+    // whole session. That's expected, see enable_signing(), so not worth a warning.
+    if (result == Result::Unsigned && message.msgid == MAVLINK_MSG_ID_RADIO_STATUS) {
+        if (_radio_status_limiter.should_log()) {
+            LogDebug(
+                "Signing: dropped unsigned RADIO_STATUS from {}/{}",
+                message.sysid,
+                static_cast<int>(message.compid));
+        }
+        return;
+    }
+
     // Every message of a system with the wrong key is rejected, so only warn now and then,
     // but do warn: otherwise it just looks like there is no system.
     unsigned suppressed = 0;

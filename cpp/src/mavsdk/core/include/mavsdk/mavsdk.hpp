@@ -524,8 +524,9 @@ public:
      * RADIO_STATUS: a system that doesn't sign with the same key is not
      * discovered. Dropped messages are not forwarded either.
      *
-     * Enabling it again with the same key keeps the replay protection state,
-     * a different key starts over.
+     * Enabling it again with the same key while it is enabled keeps the replay
+     * protection state. A different key, or enabling it after disable_signing(),
+     * starts over.
      *
      * The key applies to all connections. It is not stored, so it has to be
      * set again on each start. Setting the key on the vehicle (e.g. with
