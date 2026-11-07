@@ -51,6 +51,34 @@ Action::Result arm_and_disarm(Mavsdk& mavsdk_groundstation, Mavsdk& mavsdk_autop
     return action.disarm();
 }
 
+// Not in any dialect the C library knows, so only libmav can parse it.
+// The ID is from the 43000-49999 range, which no mavlink dialect claims.
+const char* custom_xml = R"(<?xml version="1.0"?>
+<mavlink>
+    <version>3</version>
+    <dialect>0</dialect>
+    <messages>
+        <message id="44010" name="CUSTOM_SIGNING_TEST">
+            <description>Test message for signed messages only libmav knows</description>
+            <field type="uint32_t" name="test_id">Test identifier</field>
+        </message>
+    </messages>
+</mavlink>)";
+
+// Sends CUSTOM_SIGNING_TEST from sender and returns how many receiver got.
+int send_custom_message(MavlinkDirectServer& sender, std::atomic<int>& received)
+{
+    const int before = received;
+    MavlinkDirectServer::MavlinkMessage message;
+    message.message_name = "CUSTOM_SIGNING_TEST";
+    message.system_id = 1;
+    message.component_id = 1;
+    message.fields_json = R"({"test_id":42})";
+    EXPECT_EQ(sender.send_message(message), MavlinkDirectServer::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    return received - before;
+}
+
 } // namespace
 
 TEST(Signing, CommandRoundtrip)
@@ -219,6 +247,51 @@ TEST(Signing, MavlinkDirectOnlyGetsAccepted)
     receiver.unsubscribe_message(handle);
 }
 
+TEST(Signing, CustomMessageOnlyGetsAccepted)
+{
+    // The C parser can't check the CRC of a message it doesn't know, but it can check the
+    // signature, which doesn't depend on the dialect.
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_groundstation.enable_signing(make_key(1));
+    mavsdk_autopilot.enable_signing(make_key(1));
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17118"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17118"), ConnectionResult::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+
+    auto receiver = MavlinkDirect{maybe_system.value()};
+    auto sender = MavlinkDirectServer{mavsdk_autopilot.server_component()};
+    ASSERT_EQ(receiver.load_custom_xml(custom_xml), MavlinkDirect::Result::Success);
+    ASSERT_EQ(sender.load_custom_xml(custom_xml), MavlinkDirectServer::Result::Success);
+
+    std::atomic<int> received{0};
+    auto handle = receiver.subscribe_message(
+        "CUSTOM_SIGNING_TEST", [&received](MavlinkDirect::MavlinkMessage message) {
+            EXPECT_NE(message.fields_json.find("\"test_id\":42"), std::string::npos);
+            ++received;
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    EXPECT_EQ(send_custom_message(sender, received), 1);
+
+    // Now the autopilot sends unsigned, which the ground station drops.
+    mavsdk_autopilot.disable_signing();
+    EXPECT_EQ(send_custom_message(sender, received), 0);
+
+    // And signed with the wrong key.
+    mavsdk_autopilot.enable_signing(make_key(2));
+    EXPECT_EQ(send_custom_message(sender, received), 0);
+
+    receiver.unsubscribe_message(handle);
+}
+
 namespace {
 
 // Autopilot -> router -> ground station, the router forwarding between its two connections.
@@ -279,6 +352,39 @@ TEST(Signing, RouterDropsRejected)
     setup.connect(17114);
 
     EXPECT_FALSE(setup.groundstation.first_autopilot(3.0));
+}
+
+TEST(Signing, RouterForwardsSignedCustomMessage)
+{
+    // The router doesn't know the message, but it checks the signature before forwarding.
+    RoutedSetup setup;
+    setup.groundstation.enable_signing(make_key(1));
+    setup.router.enable_signing(make_key(1));
+    setup.autopilot.enable_signing(make_key(1));
+    setup.connect(17120);
+
+    auto maybe_system = setup.groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+
+    auto receiver = MavlinkDirect{maybe_system.value()};
+    auto sender = MavlinkDirectServer{setup.autopilot.server_component()};
+    ASSERT_EQ(receiver.load_custom_xml(custom_xml), MavlinkDirect::Result::Success);
+    ASSERT_EQ(sender.load_custom_xml(custom_xml), MavlinkDirectServer::Result::Success);
+
+    std::atomic<int> received{0};
+    auto handle = receiver.subscribe_message(
+        "CUSTOM_SIGNING_TEST", [&received](MavlinkDirect::MavlinkMessage) { ++received; });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    EXPECT_EQ(send_custom_message(sender, received), 1);
+
+    // The ground station stops checking, so it's the router that has to drop unsigned ones.
+    setup.groundstation.disable_signing();
+    setup.autopilot.disable_signing();
+    EXPECT_EQ(send_custom_message(sender, received), 0);
+
+    receiver.unsubscribe_message(handle);
 }
 
 TEST(Signing, OldTimestampOnlyGetsHeartbeatBack)
