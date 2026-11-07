@@ -23,6 +23,7 @@ public final class CheckedJniTest {
         long serverComponent = NativeMavsdk.serverComponentHandle(mavsdk, 0);
 
         structWithStrings(serverComponent);
+        signing(mavsdk);
 
         NativeMavsdk.destroyServerComponent(serverComponent);
         NativeMavsdk.destroy(mavsdk);
@@ -36,6 +37,18 @@ public final class CheckedJniTest {
             "MAVSDK", "Test camera", "1.0.0", 3.0f, 3.68f, 2.76f, 3280, 2464, 0, 0, "", false, false));
         NativeCameraServer.destroy(cameraServer);
         check(result == CAMERA_SERVER_RESULT_SUCCESS, "setInformation returned " + result);
+    }
+
+    /** A byte array argument. */
+    private static void signing(long mavsdk) {
+        byte[] key = new byte[32];
+        for (int i = 0; i < key.length; ++i) {
+            key[i] = (byte) i;
+        }
+        NativeMavsdk.enableSigning(mavsdk, key);
+        check(NativeMavsdk.isSigningEnabled(mavsdk), "signing not enabled");
+        NativeMavsdk.disableSigning(mavsdk);
+        check(!NativeMavsdk.isSigningEnabled(mavsdk), "signing still enabled");
     }
 
     private static void check(boolean condition, String message) {

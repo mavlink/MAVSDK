@@ -3,8 +3,10 @@
 #include "mavsdk.hpp"
 #include "mavlink_receiver.hpp"
 #include "libmav_receiver.hpp"
+#include "mavlink_wire.hpp"
 #include <asio/io_context.hpp>
 #include <atomic>
+#include <functional>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -38,6 +40,9 @@ public:
     virtual std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) = 0;
 
     bool has_system_id(uint32_t system_id);
+
+    // Why the message last parsed on this connection was rejected or accepted.
+    MavlinkSigning::Result last_signing_result() const;
     bool should_forward_messages() const;
     static unsigned forwarding_connections_count();
 
@@ -65,9 +70,24 @@ protected:
     void receive_message(
         MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection);
 
+    // Parses received bytes and hands the messages in them on, to MavsdkImpl and libmav.
+    // on_parsed is called for every valid message before it is handed on.
+    void parse_received_bytes(
+        char* bytes,
+        size_t length,
+        const std::function<void(const mavlink_message_t&)>& on_parsed = nullptr);
+
+    // Called for a message signed with our key, but with a timestamp too far behind ours.
+    // That might be a system whose clock is behind, which only catches up once it gets a
+    // message from us, or a replay: there is no telling them apart. MavsdkImpl sends
+    // heartbeats meanwhile, which is enough where there is only one peer. Connections that
+    // only know where to send once they've accepted a message, i.e. UDP, override this.
+    virtual void on_signed_but_behind() {}
+
     bool start_libmav_receiver();
     void stop_libmav_receiver();
     void receive_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
+    void pass_to_libmav_receiver(const mavlink_message_t& message);
 
     // The io_context every connection does its async I/O on, owned by MavsdkImpl.
     // Preferable to static_cast-ing socket.get_executor().context() back to an

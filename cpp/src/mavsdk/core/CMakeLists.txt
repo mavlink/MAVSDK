@@ -79,6 +79,7 @@ target_sources(mavsdk
     mavlink_parameter_subscription.cpp
     mavlink_parameter_helper.cpp
     mavlink_receiver.cpp
+    mavlink_signing.cpp
     libmav_receiver.cpp
     libmav_conversions.cpp
     mavlink_request_message.cpp
@@ -282,6 +283,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_signing_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_client_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_server_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp

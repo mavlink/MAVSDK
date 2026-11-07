@@ -84,6 +84,17 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
         NativeMavsdk.firstAutopilot(handle, timeoutSeconds).takeIf { it != 0L }?.let(::adoptSystem)
     }
 
+    actual fun enableSigning(secretKey: ByteArray) = withOpen {
+        require(secretKey.size == SIGNING_KEY_LENGTH) {
+            "Signing key must be $SIGNING_KEY_LENGTH bytes, not ${secretKey.size}"
+        }
+        NativeMavsdk.enableSigning(handle, secretKey)
+    }
+
+    actual fun disableSigning() = withOpen { NativeMavsdk.disableSigning(handle) }
+
+    actual fun isSigningEnabled(): Boolean = withOpen { NativeMavsdk.isSigningEnabled(handle) }
+
     actual fun serverComponent(instance: Int): ServerComponent = withOpen {
         synchronized(cacheLock) {
             serverComponents.getOrPut(instance) {
@@ -188,6 +199,8 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
     internal fun getHandle(): Long = handle
 
     companion object {
+        private const val SIGNING_KEY_LENGTH = 32
+
         init {
             NativeLibraryLoader.loadLibrary()
         }

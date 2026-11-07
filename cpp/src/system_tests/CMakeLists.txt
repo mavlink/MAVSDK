@@ -62,6 +62,7 @@ add_executable(system_tests_runner
     stalled_link.cpp
     tcp_unresolvable_host.cpp
     sysid32.cpp
+    signing.cpp
     system_tests_runner.cpp
 )
 
@@ -76,6 +77,9 @@ find_package(nlohmann_json REQUIRED)
 
 find_package(fmt REQUIRED)
 
+# For tests that talk UDP directly.
+find_package(asio REQUIRED)
+
 target_link_libraries(system_tests_runner
     PRIVATE
     mavsdk
@@ -84,6 +88,7 @@ target_link_libraries(system_tests_runner
     GTest::gmock
     nlohmann_json::nlohmann_json
     fmt::fmt
+    asio::asio
 )
 
 # Some tests use the deprecated APIs that expose the MAVLink C types.
@@ -92,6 +97,12 @@ target_compile_definitions(system_tests_runner PRIVATE MAVSDK_ENABLE_MAVLINK_C_A
 set_target_properties(system_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
+
+# Asio's io_context.hpp triggers a false-positive -Wnull-dereference with GCC,
+# see src/mavsdk/core/CMakeLists.txt.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(system_tests_runner PRIVATE -Wno-null-dereference)
+endif()
 
 if(ENABLE_CPPTRACE)
     find_package(cpptrace REQUIRED)

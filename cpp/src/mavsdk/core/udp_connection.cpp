@@ -172,7 +172,7 @@ std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t
 {
     // Convert message to raw bytes and use common send path
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+    uint16_t buffer_len = mavlink_message_to_wire(buffer, message);
     return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
 }
 
@@ -293,6 +293,41 @@ void UdpConnection::add_remote_impl(
     }
 }
 
+void UdpConnection::on_signed_but_behind()
+{
+    // This might be a replay with a spoofed source address, so the sender doesn't become a
+    // remote: it gets one heartbeat straight back, at most once a second per address, and
+    // nothing else. Once it has caught up, its messages are accepted and it's added as usual.
+    const auto now = std::chrono::steady_clock::now();
+    for (auto it = _catch_up_sent.begin(); it != _catch_up_sent.end();) {
+        if (now - it->second >= CATCH_UP_INTERVAL) {
+            it = _catch_up_sent.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    if (_catch_up_sent.count(_sender_endpoint) > 0 ||
+        _catch_up_sent.size() >= CATCH_UP_MAX_ADDRESSES) {
+        return;
+    }
+
+    mavlink_message_t heartbeat;
+    if (!_mavsdk_impl.make_signed_heartbeat(heartbeat)) {
+        return;
+    }
+    _catch_up_sent.emplace(_sender_endpoint, now);
+
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    const uint16_t len = mavlink_message_to_wire(buffer, heartbeat);
+
+    std::lock_guard<std::mutex> lock(_remote_mutex);
+    asio::error_code ec;
+    _socket.send_to(asio::buffer(buffer, len), _sender_endpoint, 0, ec);
+    if (ec) {
+        LogDebug("Could not send heartbeat to catch up: {}", ec.message());
+    }
+}
+
 void UdpConnection::do_receive()
 {
     // Post an async receive. The handler runs on the dedicated io_context thread (_io_thread).
@@ -327,33 +362,16 @@ void UdpConnection::do_receive()
 
             char* buffer = reinterpret_cast<char*>(_recv_buffer.data());
 
-            _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
-
-            // Parse all mavlink messages in one datagram.
-            auto parse_result = _mavlink_receiver->parse_message();
-            while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
-                if (parse_result == MavlinkReceiver::ParseResult::MessageParsed) {
-                    const uint32_t sysid = _mavlink_receiver->get_last_message().sysid;
-                    if (sysid != 0) {
-                        add_remote_impl(
-                            _sender_endpoint.address().to_string(),
-                            static_cast<int>(_sender_endpoint.port()),
-                            sysid,
-                            RemoteOption::Found);
-                    }
+            // Remember where messages of a system come from, so we can send to it.
+            parse_received_bytes(buffer, recv_len, [this](const mavlink_message_t& message) {
+                if (message.sysid != 0) {
+                    add_remote_impl(
+                        _sender_endpoint.address().to_string(),
+                        static_cast<int>(_sender_endpoint.port()),
+                        message.sysid,
+                        RemoteOption::Found);
                 }
-                receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
-                parse_result = _mavlink_receiver->parse_message();
-            }
-
-            // Also parse with libmav if available
-            if (_libmav_receiver) {
-                _libmav_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
-
-                while (_libmav_receiver->parse_message()) {
-                    receive_libmav_message(_libmav_receiver->get_last_message(), this);
-                }
-            }
+            });
 
             // Re-post for the next datagram.
             do_receive();

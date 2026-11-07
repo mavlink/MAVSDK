@@ -3,7 +3,7 @@
 
 namespace mavsdk {
 
-MavlinkReceiver::MavlinkReceiver()
+MavlinkReceiver::MavlinkReceiver(MavlinkSigning& signing) : _signing(signing)
 {
     if (const char* env_p = std::getenv("MAVSDK_DROP_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -30,30 +30,41 @@ MavlinkReceiver::ParseResult MavlinkReceiver::parse_message()
         uint8_t parse_result = mavlink_frame_char_buffer(
             &_mavlink_message_buffer, &_mavlink_status, _datagram[i], &_last_message, &_status);
 
-        if (parse_result == MAVLINK_FRAMING_OK) {
-            // Successfully parsed message
-            // Move the pointer to the datagram forward by the amount parsed.
-            _datagram += (i + 1);
-            // And decrease the length, so we don't overshoot in the next round.
-            _datagram_len -= (i + 1);
-
-            if (_drop_debugging_on) {
-                debug_drop_rate();
-            }
-
-            // We have parsed one message, let's return, so it can be handled.
-            return ParseResult::MessageParsed;
-
-        } else if (parse_result == MAVLINK_FRAMING_BAD_CRC) {
-            // Message with bad CRC - _last_message is still populated with the parsed data
-            // Move the pointer to the datagram forward by the amount parsed.
-            _datagram += (i + 1);
-            // And decrease the length, so we don't overshoot in the next round.
-            _datagram_len -= (i + 1);
-
-            // Return BadCrc to indicate message should be forwarded but not processed
-            return ParseResult::BadCrc;
+        if (parse_result != MAVLINK_FRAMING_OK && parse_result != MAVLINK_FRAMING_BAD_CRC) {
+            continue;
         }
+
+        // Move the pointer to the datagram forward by the amount parsed.
+        _datagram += (i + 1);
+        // And decrease the length, so we don't overshoot in the next round.
+        _datagram_len -= (i + 1);
+
+        if (parse_result == MAVLINK_FRAMING_BAD_CRC) {
+            // The C parser can only check the CRC of messages it knows. Anything else
+            // might be a valid message of a dialect only libmav knows.
+            if (mavlink_get_msg_entry(_last_message.msgid) != nullptr) {
+                // Message with bad CRC - _last_message is still populated with the parsed data
+                // Return BadCrc to indicate message should be forwarded but not processed
+                return ParseResult::BadCrc;
+            }
+            // The signature, on the other hand, doesn't depend on the dialect.
+            _signing_result = _signing.check_incoming(_last_message);
+            return _signing_result == MavlinkSigning::Result::Accepted ?
+                       ParseResult::UnknownMessage :
+                       ParseResult::BadSignature;
+        }
+
+        _signing_result = _signing.check_incoming(_last_message);
+        if (_signing_result != MavlinkSigning::Result::Accepted) {
+            return ParseResult::BadSignature;
+        }
+
+        if (_drop_debugging_on) {
+            debug_drop_rate();
+        }
+
+        // We have parsed one message, let's return, so it can be handled.
+        return ParseResult::MessageParsed;
     }
 
     // No (more) messages, let's give up.
