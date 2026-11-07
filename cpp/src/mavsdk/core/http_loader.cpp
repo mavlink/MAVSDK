@@ -35,18 +35,23 @@ void HttpLoader::stop()
     }
 }
 
-bool HttpLoader::download_sync(const std::string& url, const std::string& local_path)
+bool HttpLoader::download_sync(
+    const std::string& url, const std::string& local_path, curl_off_t max_download_size_bytes)
 {
-    WorkItem item = DownloadItem{url, local_path, nullptr};
+    WorkItem item = DownloadItem{url, local_path, nullptr, max_download_size_bytes};
     bool success = do_item(item);
     return success;
 }
 
 void HttpLoader::download_async(
-    const std::string& url, const std::string& local_path, ProgressCallback progress_callback)
+    const std::string& url,
+    const std::string& local_path,
+    ProgressCallback progress_callback,
+    curl_off_t max_download_size_bytes)
 {
     _work_queue.push_back(
-        std::make_shared<WorkItem>(DownloadItem{url, local_path, progress_callback}));
+        std::make_shared<WorkItem>(
+            DownloadItem{url, local_path, progress_callback, max_download_size_bytes}));
 }
 
 void HttpLoader::download_text_async(const std::string& url, TextDownloadCallback text_callback)
@@ -85,7 +90,10 @@ bool HttpLoader::do_item(WorkItem& item)
 bool HttpLoader::do_download(const DownloadItem& item)
 {
     bool success = _curl_wrapper->download_file_to_path(
-        item.get_url(), item.get_local_path(), item.get_progress_callback());
+        item.get_url(),
+        item.get_local_path(),
+        item.get_progress_callback(),
+        item.get_max_download_size_bytes());
     return success;
 }
 

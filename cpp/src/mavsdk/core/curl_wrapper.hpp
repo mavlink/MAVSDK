@@ -21,7 +21,8 @@ public:
     virtual bool download_file_to_path(
         const std::string& url,
         const std::string& path,
-        const ProgressCallback& progress_callback) = 0;
+        const ProgressCallback& progress_callback,
+        curl_off_t max_download_size_bytes = 0) = 0;
 };
 
 class MAVSDK_TEST_EXPORT CurlWrapper : public ICurlWrapper {
@@ -33,19 +34,21 @@ public:
     bool download_file_to_path(
         const std::string& url,
         const std::string& path,
-        const ProgressCallback& progress_callback) override;
+        const ProgressCallback& progress_callback,
+        curl_off_t max_download_size_bytes = 0) override;
 };
 
 #ifdef TESTING
 class CurlWrapperMock : public ICurlWrapper {
 public:
     MOCK_METHOD2(download_text, bool(const std::string& url, std::string& content));
-    MOCK_METHOD3(
+    MOCK_METHOD4(
         download_file_to_path,
         bool(
             const std::string& url,
             const std::string& path,
-            const ProgressCallback& progress_callback));
+            const ProgressCallback& progress_callback,
+            curl_off_t max_download_size_bytes));
 };
 #endif // TESTING
 

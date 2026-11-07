@@ -52,10 +52,11 @@ protected:
 
     void expect_all_simulated_downloads_to_succeed(CurlWrapperMock* curl_wrapper)
     {
-        EXPECT_CALL(*curl_wrapper, download_file_to_path(_, _, _))
+        EXPECT_CALL(*curl_wrapper, download_file_to_path(_, _, _, _))
             .WillRepeatedly(Invoke([&](const std::string& /*url*/,
                                        const std::string& path,
-                                       const ProgressCallback& progress_callback) {
+                                       const ProgressCallback& progress_callback,
+                                       curl_off_t /*max_download_size_bytes*/) {
                 for (size_t i = 0; i <= 100; i++) {
                     if (progress_callback != nullptr) {
                         progress_callback(i, HttpStatus::Downloading, CURLcode::CURLE_OK);
@@ -74,10 +75,11 @@ protected:
     void expect_one_simulated_download_to_fail(
         CurlWrapperMock* curl_wrapper, const std::string& url, const std::string& path)
     {
-        EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
+        EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _, _))
             .WillOnce(Invoke([&](const std::string& /*url*/,
                                  const std::string& /*path*/,
-                                 const ProgressCallback& progress_callback) {
+                                 const ProgressCallback& progress_callback,
+                                 curl_off_t /*max_download_size_bytes*/) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(20));
                 progress_callback(0, HttpStatus::Error, CURLcode::CURLE_COULDNT_RESOLVE_HOST);
                 return false;
@@ -87,10 +89,11 @@ protected:
     void expect_one_simulated_download_to_succeed(
         CurlWrapperMock* curl_wrapper, const std::string& url, const std::string& path)
     {
-        EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _))
+        EXPECT_CALL(*curl_wrapper, download_file_to_path(url, path, _, _))
             .WillOnce(Invoke([&](const std::string& /*url*/,
                                  const std::string& got_path,
-                                 const ProgressCallback& progress_callback) {
+                                 const ProgressCallback& progress_callback,
+                                 curl_off_t /*max_download_size_bytes*/) {
                 for (size_t i = 0; i <= 100; i++) {
                     if (progress_callback != nullptr) {
                         progress_callback(i, HttpStatus::Downloading, CURLcode::CURLE_OK);
@@ -106,6 +109,22 @@ protected:
             }));
     }
 };
+
+TEST_F(HttpLoaderFixture, DownloadSync_ForwardsSizeLimit)
+{
+    constexpr curl_off_t max_download_size_bytes = 4096;
+    auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
+    auto* curl_wrapper_raw = curl_wrapper_mock.get();
+    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock));
+
+    EXPECT_CALL(
+        *curl_wrapper_raw,
+        download_file_to_path(_file_url_1, _file_local_path_1, _, max_download_size_bytes))
+        .WillOnce(Return(true));
+
+    EXPECT_TRUE(
+        http_loader->download_sync(_file_url_1, _file_local_path_1, max_download_size_bytes));
+}
 
 TEST_F(HttpLoaderFixture, DownloadAsync_OneBad)
 {

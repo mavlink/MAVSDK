@@ -11,6 +11,7 @@ using ProgressCallback = std::function<void(int progress, HttpStatus status, CUR
 struct UpProgress {
     int progress_in_percentage = 0;
     ProgressCallback progress_callback{nullptr};
+    curl_off_t max_download_size_bytes{0};
 };
 
 } // namespace mavsdk
