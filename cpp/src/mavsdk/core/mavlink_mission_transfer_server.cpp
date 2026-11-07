@@ -219,6 +219,11 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::start()
         [this](const mavlink_message_t& message) { process_mission_item_int(message); },
         this);
 
+    _message_handler.register_one(
+        MAVLINK_MSG_ID_MISSION_ACK,
+        [this](const mavlink_message_t& message) { process_mission_ack(message); },
+        this);
+
     std::lock_guard<std::mutex> lock(_mutex);
 
     _items.clear();
@@ -363,6 +368,20 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::process_mission_item_
         _next_sequence = item_int.seq + 1;
         _retries_done = 0;
         request_item();
+    }
+}
+
+void MavlinkMissionTransferServer::ReceiveIncomingMission::process_mission_ack(
+    const mavlink_message_t& message)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    mavlink_mission_ack_t mission_ack;
+    mavlink_msg_mission_ack_decode(&message, &mission_ack);
+
+    if (mission_ack.type == MAV_MISSION_OPERATION_CANCELLED) {
+        _timeout_handler.remove(_cookie);
+        callback_and_reset(Result::Cancelled);
     }
 }
 
