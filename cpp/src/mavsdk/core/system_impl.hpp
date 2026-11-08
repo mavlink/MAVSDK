@@ -365,6 +365,12 @@ public:
 
     void signal_exit() { _should_exit = true; }
 
+    // Run task on the io thread. Runs inline when already there, or when the io_context has
+    // stopped and nothing else can be running. With wait set, does not return until the task
+    // has run -- which is what makes removal from _plugin_impls a real barrier against the io
+    // thread. Do not wait while holding a lock the io thread needs.
+    void run_on_io_thread(const std::function<void()>& task, bool wait);
+
 private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
@@ -380,12 +386,6 @@ private:
     static ComponentType component_type(uint8_t component_id);
 
     void schedule_ping();
-
-    // Run task on the io thread. Runs inline when already there, or when the io_context has
-    // stopped and nothing else can be running. With wait set, does not return until the task
-    // has run -- which is what makes removal from _plugin_impls a real barrier against the io
-    // thread. Do not wait while holding a lock the io thread needs.
-    void run_on_io_thread(const std::function<void()>& task, bool wait);
 
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);

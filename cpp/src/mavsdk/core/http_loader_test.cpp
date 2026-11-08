@@ -16,6 +16,12 @@
 
 using namespace mavsdk;
 
+// Runs callbacks straight on the HttpLoader work thread.
+static void run_inline(const std::function<void()>& task, bool /*wait*/)
+{
+    task();
+}
+
 class HttpLoaderFixture : public testing::Test {
 protected:
     const std::string _file_url_1 = "http://subdomain.domain.com/some_folder/some_file";
@@ -115,7 +121,7 @@ TEST_F(HttpLoaderFixture, DownloadSync_ForwardsSizeLimit)
     constexpr curl_off_t max_download_size_bytes = 4096;
     auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
     auto* curl_wrapper_raw = curl_wrapper_mock.get();
-    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock));
+    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock), run_inline);
 
     EXPECT_CALL(
         *curl_wrapper_raw,
@@ -130,7 +136,7 @@ TEST_F(HttpLoaderFixture, DownloadAsync_OneBad)
 {
     auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
     auto* curl_wrapper_raw = curl_wrapper_mock.get();
-    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock));
+    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock), run_inline);
 
     expect_one_simulated_download_to_succeed(curl_wrapper_raw, _file_url_1, _file_local_path_1);
     expect_one_simulated_download_to_fail(curl_wrapper_raw, _file_url_2, _file_local_path_2);
@@ -190,7 +196,7 @@ TEST_F(HttpLoaderFixture, DownloadAsync_AllGood)
 {
     auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
     auto* curl_wrapper_raw = curl_wrapper_mock.get();
-    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock));
+    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock), run_inline);
 
     expect_all_simulated_downloads_to_succeed(curl_wrapper_raw);
 
@@ -248,7 +254,7 @@ TEST_F(HttpLoaderFixture, DownloadAsync_QueueFromCallback)
 {
     auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
     auto* curl_wrapper_raw = curl_wrapper_mock.get();
-    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock));
+    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock), run_inline);
 
     expect_all_simulated_downloads_to_succeed(curl_wrapper_raw);
 
@@ -286,4 +292,83 @@ TEST_F(HttpLoaderFixture, DownloadAsync_QueueFromCallback)
     EXPECT_EQ(check_file_exists(_file_local_path_2), true);
 
     clean();
+}
+
+TEST_F(HttpLoaderFixture, DownloadAsync_CallbacksGoThroughExecutor)
+{
+    std::mutex tasks_mutex;
+    std::vector<std::function<void()>> tasks;
+    auto queue_task = [&](const std::function<void()>& task, bool wait) {
+        if (wait) {
+            task();
+            return;
+        }
+        std::lock_guard<std::mutex> lock(tasks_mutex);
+        tasks.push_back(task);
+    };
+    auto run_queued_tasks = [&]() {
+        std::vector<std::function<void()>> to_run;
+        {
+            std::lock_guard<std::mutex> lock(tasks_mutex);
+            to_run.swap(tasks);
+        }
+        for (auto& task : to_run) {
+            task();
+        }
+    };
+
+    auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
+    auto* curl_wrapper_raw = curl_wrapper_mock.get();
+    auto http_loader = std::make_unique<HttpLoader>(std::move(curl_wrapper_mock), queue_task);
+
+    std::promise<void> download_done_promise;
+    auto download_done_future = download_done_promise.get_future();
+
+    EXPECT_CALL(*curl_wrapper_raw, download_file_to_path(_file_url_1, _file_local_path_1, _, _))
+        .WillOnce(Invoke([&](const std::string& /*url*/,
+                             const std::string& /*path*/,
+                             const ProgressCallback& progress_callback,
+                             curl_off_t /*max_download_size_bytes*/) {
+            progress_callback(100, HttpStatus::Finished, CURLcode::CURLE_OK);
+            download_done_promise.set_value();
+            return true;
+        }));
+    EXPECT_CALL(*curl_wrapper_raw, download_text(_file_url_2, _)).WillOnce(Return(true));
+
+    std::atomic<int> finished_counter{0};
+    std::atomic<int> text_counter{0};
+
+    http_loader->download_async(
+        _file_url_1,
+        _file_local_path_1,
+        [&](int /*progress*/, HttpStatus status, CURLcode /*curl_code*/) {
+            if (status == HttpStatus::Finished) {
+                finished_counter++;
+            }
+        });
+
+    ASSERT_EQ(
+        download_done_future.wait_for(std::chrono::milliseconds(1000)), std::future_status::ready);
+
+    // The download has finished, but its callback only runs once the executor runs it.
+    EXPECT_EQ(finished_counter.load(), 0);
+    run_queued_tasks();
+    EXPECT_EQ(finished_counter.load(), 1);
+
+    http_loader->download_text_async(
+        _file_url_2, [&](bool /*success*/, const std::string& /*content*/) { text_counter++; });
+
+    // Wait until the text callback has been handed to the executor.
+    bool text_callback_queued = false;
+    for (int i = 0; i < 100 && !text_callback_queued; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::lock_guard<std::mutex> lock(tasks_mutex);
+        text_callback_queued = !tasks.empty();
+    }
+    ASSERT_TRUE(text_callback_queued);
+
+    // A callback that is still queued when the loader goes away must not run.
+    http_loader.reset();
+    run_queued_tasks();
+    EXPECT_EQ(text_counter.load(), 0);
 }

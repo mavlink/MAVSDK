@@ -1527,7 +1527,10 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
             notify_camera_list_with_lock();
 #else
             if (_http_loader == nullptr) {
-                _http_loader = std::make_unique<HttpLoader>();
+                _http_loader = std::make_unique<HttpLoader>(
+                    [system_impl = _system_impl](const std::function<void()>& task, bool wait) {
+                        system_impl->run_on_io_thread(task, wait);
+                    });
             }
             LogInfo("Downloading camera definition from: {}", url);
 

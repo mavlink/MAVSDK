@@ -10,7 +10,7 @@ individual decisions; this explains the shape they add up to. If you are adding 
 |---|---|---|
 | **io thread** | `MavsdkImpl` ctor (`mavsdk_impl.cpp`) | `asio::io_context::run()`. All socket and serial I/O, MAVLink parsing, message routing, plugin protocol state machines, and every internal timer. |
 | **user-callback thread** | `MavsdkImpl` ctor | Drains `LockedQueue<UserCallback>` and invokes user-facing subscription callbacks. Replaced by a user-supplied executor if `Mavsdk::set_callback_executor()` is used. |
-| **HTTP loader thread** | `HttpLoader` | Component-metadata downloads only. Talks to the rest of the SDK through callbacks. |
+| **HTTP loader thread** | `HttpLoader` | Blocking curl downloads for component metadata and camera definitions. Its callbacks are posted to the io thread, and none runs after the `HttpLoader` is destroyed. |
 | user threads | — | Anything calling the public API. Blocking API calls park here on a `std::future`. |
 
 Everything else — including the FTP burst read, which used to have a thread of its own — runs
