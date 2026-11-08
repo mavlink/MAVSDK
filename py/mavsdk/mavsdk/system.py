@@ -232,7 +232,9 @@ class System:
         :meth:`unsubscribe_timesync_status`.
         """
         c_callback = TimesyncStatusCallback(
-            lambda status, ud: callback(TimesyncStatus._from_c_struct(status), user_data)
+            lambda status, ud: callback(
+                TimesyncStatus._from_c_struct(status), user_data
+            )
         )
 
         subscription_handle = self._lib.mavsdk_system_subscribe_timesync_status(
