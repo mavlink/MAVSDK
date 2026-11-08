@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 #include <mutex>
 #include <array>
 #include <vector>
@@ -38,6 +39,7 @@ public:
 private:
     ConnectionResult setup_port();
     void do_receive();
+    void on_signed_but_behind() override;
 
     enum class RemoteOption {
         Fixed,
@@ -75,6 +77,11 @@ private:
 
     // Timeout for inactive connections in seconds
     static constexpr std::chrono::seconds REMOTE_TIMEOUT{10};
+
+    // Where we sent a heartbeat to, for on_signed_but_behind(). Only used on the io thread.
+    std::map<asio::ip::udp::endpoint, std::chrono::steady_clock::time_point> _catch_up_sent{};
+    static constexpr std::chrono::seconds CATCH_UP_INTERVAL{1};
+    static constexpr std::size_t CATCH_UP_MAX_ADDRESSES{16};
 };
 
 } // namespace mavsdk

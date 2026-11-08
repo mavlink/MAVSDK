@@ -198,6 +198,45 @@ Java_io_mavsdk_jni_NativeMavsdk_destroy(
     }
 }
 
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_NativeMavsdk_enableSigning(
+    JNIEnv* env,
+    jobject,
+    jlong handle,
+    jbyteArray secret_key) {
+
+    if (!requireHandle(env, handle, "MAVSDK")) return;
+    if (!secret_key || env->GetArrayLength(secret_key) != MAVSDK_SIGNING_KEY_LENGTH) {
+        throwException(env, "java/lang/IllegalArgumentException",
+            "Signing key must be 32 bytes");
+        return;
+    }
+    uint8_t key[MAVSDK_SIGNING_KEY_LENGTH];
+    env->GetByteArrayRegion(
+        secret_key, 0, MAVSDK_SIGNING_KEY_LENGTH, reinterpret_cast<jbyte*>(key));
+    mavsdk_enable_signing(reinterpret_cast<mavsdk_t>(handle), key);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_NativeMavsdk_disableSigning(
+    JNIEnv* env,
+    jobject,
+    jlong handle) {
+
+    if (!requireHandle(env, handle, "MAVSDK")) return;
+    mavsdk_disable_signing(reinterpret_cast<mavsdk_t>(handle));
+}
+
+JNIEXPORT jboolean JNICALL
+Java_io_mavsdk_jni_NativeMavsdk_isSigningEnabled(
+    JNIEnv* env,
+    jobject,
+    jlong handle) {
+
+    if (!requireHandle(env, handle, "MAVSDK")) return JNI_FALSE;
+    return mavsdk_is_signing_enabled(reinterpret_cast<mavsdk_t>(handle)) ? JNI_TRUE : JNI_FALSE;
+}
+
 JNIEXPORT jlong JNICALL
 Java_io_mavsdk_jni_NativeMavsdk_subscribeOnNewSystem(
     JNIEnv* env,

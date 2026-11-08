@@ -2,6 +2,7 @@
 
 #include <asio/post.hpp>
 #include <cassert>
+#include <cstring>
 #include <future>
 #include <memory>
 #include <utility>
@@ -74,7 +75,7 @@ Connection::~Connection()
 
 bool Connection::start_mavlink_receiver()
 {
-    _mavlink_receiver = std::make_unique<MavlinkReceiver>();
+    _mavlink_receiver = std::make_unique<MavlinkReceiver>(_mavsdk_impl.signing());
     return true;
 }
 
@@ -136,6 +137,59 @@ void Connection::receive_message(
     }
     // Let MavsdkImpl handle the ParseResult (queue for processing or forward-only)
     _receiver_callback(result, message, connection);
+}
+
+void Connection::parse_received_bytes(
+    char* bytes, size_t length, const std::function<void(const mavlink_message_t&)>& on_parsed)
+{
+    _mavlink_receiver->set_new_datagram(bytes, static_cast<unsigned>(length));
+
+    // Parse all mavlink messages in the bytes. Once exhausted, we'll exit the loop.
+    auto parse_result = _mavlink_receiver->parse_message();
+    while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
+        auto& message = _mavlink_receiver->get_last_message();
+
+        if (parse_result == MavlinkReceiver::ParseResult::MessageParsed && on_parsed) {
+            on_parsed(message);
+        }
+
+        if (parse_result == MavlinkReceiver::ParseResult::BadSignature &&
+            _mavlink_receiver->get_last_signing_result() == MavlinkSigning::Result::OldTimestamp) {
+            on_signed_but_behind();
+        }
+
+        receive_message(parse_result, message, this);
+
+        // The bytes are only parsed (and signatures only checked) once, here. libmav just
+        // gets the frames that made it through.
+        if (_libmav_receiver && (parse_result == MavlinkReceiver::ParseResult::MessageParsed ||
+                                 parse_result == MavlinkReceiver::ParseResult::UnknownMessage)) {
+            pass_to_libmav_receiver(message);
+        }
+
+        parse_result = _mavlink_receiver->parse_message();
+    }
+}
+
+MavlinkSigning::Result Connection::last_signing_result() const
+{
+    return _mavlink_receiver ? _mavlink_receiver->get_last_signing_result() :
+                               MavlinkSigning::Result::Accepted;
+}
+
+void Connection::pass_to_libmav_receiver(const mavlink_message_t& message)
+{
+    // The frame exactly as it was received, see mavlink_message_to_wire().
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    const uint16_t len = mavlink_message_to_wire(buffer, message);
+    if (len == 0) {
+        return;
+    }
+
+    _libmav_receiver->set_new_datagram(reinterpret_cast<char*>(buffer), static_cast<unsigned>(len));
+    while (_libmav_receiver->parse_message()) {
+        receive_libmav_message(_libmav_receiver->get_last_message(), this);
+    }
 }
 
 void Connection::report_send_error(const std::string& message)

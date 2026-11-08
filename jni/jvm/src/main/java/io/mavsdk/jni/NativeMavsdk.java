@@ -19,6 +19,9 @@ public final class NativeMavsdk {
     public static native long[] getSystems(long handle);
     public static native long firstAutopilot(long handle, double timeoutSeconds);
     public static native void destroy(long handle);
+    public static native void enableSigning(long handle, byte[] secretKey);
+    public static native void disableSigning(long handle);
+    public static native boolean isSigningEnabled(long handle);
     public static native long subscribeOnNewSystem(
         long handle, NewSystemCallback callback);
     public static native void unsubscribeOnNewSystem(

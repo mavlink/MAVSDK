@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <asio/dispatch.hpp>
 #include <asio/post.hpp>
 
@@ -734,10 +735,19 @@ void MavsdkImpl::receive_message(
         asio::dispatch(_io_context, [this, msg = message, conn = connection]() mutable {
             process_message(msg, conn);
         });
-    } else if (result == MavlinkReceiver::ParseResult::BadCrc) {
-        // Unknown message: forward only, don't process locally
+    } else if (
+        result == MavlinkReceiver::ParseResult::BadCrc ||
+        result == MavlinkReceiver::ParseResult::UnknownMessage) {
+        // Forward only, don't process locally: we can't check the CRC of a message we don't
+        // know, that's up to the next hop.
         forward_message(message, connection);
+    } else if (
+        result == MavlinkReceiver::ParseResult::BadSignature && connection != nullptr &&
+        connection->last_signing_result() == MavlinkSigning::Result::OldTimestamp) {
+        _last_signed_but_behind = std::chrono::steady_clock::now().time_since_epoch().count();
     }
+    // BadSignature is dropped: forwarding it would let unsigned, forged or replayed
+    // messages through to links whose next hop doesn't check signatures.
 }
 
 void MavsdkImpl::receive_libmav_message(
@@ -752,6 +762,20 @@ void MavsdkImpl::receive_libmav_message(
 // process_messages() and process_libmav_messages() removed:
 // messages are now dispatched directly via asio::post() in receive_message()
 // and receive_libmav_message(), so no drain loop is needed.
+
+namespace {
+
+// Whether everything a signature covers is the same.
+bool same_signed_content(const mavlink_message_t& lhs, const mavlink_message_t& rhs)
+{
+    return lhs.len == rhs.len && lhs.incompat_flags == rhs.incompat_flags &&
+           lhs.compat_flags == rhs.compat_flags && lhs.seq == rhs.seq && lhs.sysid == rhs.sysid &&
+           lhs.compid == rhs.compid && lhs.msgid == rhs.msgid &&
+           lhs.target_sysid == rhs.target_sysid &&
+           std::memcmp(_MAV_PAYLOAD(&lhs), _MAV_PAYLOAD(&rhs), lhs.len) == 0;
+}
+
+} // namespace
 
 void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connection)
 {
@@ -789,7 +813,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                 static_cast<std::streamsize>(timestamp_bytes));
 
             std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
-            const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
+            const uint16_t wire_len = mavlink_message_to_wire(wire.data(), message);
             _tlog_file->stream.write(reinterpret_cast<const char*>(wire.data()), wire_len);
             _tlog_file->stream.flush();
 
@@ -808,16 +832,32 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         // and drops affect both local processing AND forwarded messages.
         {
             bool keep = true;
+            bool changed = false;
             {
                 std::lock_guard<std::mutex> intercept_lock(_intercept_callbacks_mutex);
                 if (_intercept_incoming_messages_callback != nullptr) {
-                    keep = _intercept_incoming_messages_callback(message);
+                    if ((message.incompat_flags & MAVLINK_IFLAG_SIGNED) != 0) {
+                        const auto original = message;
+                        keep = _intercept_incoming_messages_callback(message);
+                        changed = !same_signed_content(original, message);
+                    } else {
+                        keep = _intercept_incoming_messages_callback(message);
+                    }
                 }
             }
 
             if (!keep) {
                 LogDebug("Dropped incoming message: {}", int(message.msgid));
                 return;
+            }
+
+            // A signed message that was changed doesn't match its signature anymore. Sign it
+            // again so it can still be forwarded, if we can.
+            if (changed && _signing.is_enabled()) {
+                if (const auto crc_extra = crc_extra_safe(message.msgid)) {
+                    message.incompat_flags &= ~MAVLINK_IFLAG_SIGNED;
+                    _signing.sign_outgoing(message, crc_extra.value());
+                }
             }
         }
 
@@ -1153,6 +1193,21 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
             if (_message_logging_on) {
                 LogDebug(
                     "Outgoing JSON message {} dropped by interceptio", json_message.message_name);
+            }
+            return;
+        }
+    }
+
+    // Signed last, so that anything tampered with above is signed as it is sent.
+    if (_signing.is_enabled()) {
+        if (const auto crc_extra = crc_extra_safe(message.msgid)) {
+            _signing.sign_outgoing(message, crc_extra.value());
+        } else {
+            // Sent unsigned, it would be dropped by the other side anyway.
+            if (_unsignable_warning_limiter.should_log()) {
+                LogWarn(
+                    "Signing: dropped outgoing message {}, unknown CRC extra",
+                    static_cast<uint32_t>(message.msgid));
             }
             return;
         }
@@ -1960,6 +2015,16 @@ void MavsdkImpl::maybe_send_heartbeats()
     // connected. Connectivity is checked live each tick (and outside
     // _heartbeat_mutex), so connect/disconnect races do not need separate
     // start/stop cookie juggling.
+    // A system signing with our key but with its clock behind won't be discovered until it
+    // has caught up, so it needs our heartbeats, see receive_message().
+    const auto since_signed_but_behind =
+        std::chrono::steady_clock::now() -
+        std::chrono::steady_clock::time_point{
+            std::chrono::steady_clock::duration{_last_signed_but_behind.load()}};
+    if (_last_signed_but_behind.load() != 0 && since_signed_but_behind < std::chrono::seconds(3)) {
+        always_send = true;
+    }
+
     if (!always_send && !is_any_system_connected()) {
         return;
     }
@@ -1981,6 +2046,28 @@ ServerComponentImpl& MavsdkImpl::default_server_component_with_lock()
             server_component_by_id_with_lock(_our_component_id, get_mav_type());
     }
     return *_default_server_component->_impl;
+}
+
+bool MavsdkImpl::make_signed_heartbeat(mavlink_message_t& message)
+{
+    if (!_signing.is_enabled()) {
+        return false;
+    }
+
+    const bool autopilot = get_own_component_id() == MAV_COMP_ID_AUTOPILOT1;
+    mavlink_msg_heartbeat_pack_chan(
+        get_own_system_id(),
+        get_own_component_id(),
+        MAVLINK_COMM_0, // Only for the sequence number.
+        &message,
+        get_mav_type(),
+        autopilot ? get_mav_autopilot() : static_cast<uint8_t>(MAV_AUTOPILOT_INVALID),
+        0,
+        0,
+        MAV_STATE_ACTIVE);
+
+    _signing.sign_outgoing(message, MAVLINK_MSG_ID_HEARTBEAT_CRC);
+    return (message.incompat_flags & MAVLINK_IFLAG_SIGNED) != 0;
 }
 
 void MavsdkImpl::send_heartbeats()
@@ -2218,6 +2305,20 @@ bool MavsdkImpl::load_custom_xml_to_message_set(const std::string& xml_content)
 }
 
 // Thread-safe MessageSet read operations
+std::optional<uint8_t> MavsdkImpl::crc_extra_safe(uint32_t id) const
+{
+    if (const auto* entry = mavlink_get_msg_entry(id)) {
+        return entry->crc_extra;
+    }
+
+    std::lock_guard<std::mutex> lock(_message_set_mutex);
+    auto message_def = _message_set->getMessageDefinition(static_cast<int>(id));
+    if (message_def) {
+        return message_def.get().crcExtra();
+    }
+    return std::nullopt;
+}
+
 std::optional<std::string> MavsdkImpl::message_id_to_name_safe(uint32_t id) const
 {
     std::lock_guard<std::mutex> lock(_message_set_mutex);

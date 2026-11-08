@@ -1,6 +1,7 @@
 #ifndef CMAVSDK_MAVSDK_H
 #define CMAVSDK_MAVSDK_H
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "log.h"
@@ -191,6 +192,23 @@ CMAVSDK_EXPORT void mavsdk_set_configuration(
 CMAVSDK_EXPORT void mavsdk_set_timeout_s(
     mavsdk_t mavsdk,
     double timeout_s
+);
+
+// ===== MAVLink Signing =====
+#define MAVSDK_SIGNING_KEY_LENGTH 32
+
+// Signs all outgoing MAVLink 2 messages and drops incoming ones without a valid
+// signature, see Mavsdk::enable_signing(). The key is copied. A NULL key is
+// ignored and leaves signing as it is.
+CMAVSDK_EXPORT void mavsdk_enable_signing(
+    mavsdk_t mavsdk,
+    const uint8_t secret_key[MAVSDK_SIGNING_KEY_LENGTH]
+);
+CMAVSDK_EXPORT void mavsdk_disable_signing(
+    mavsdk_t mavsdk
+);
+CMAVSDK_EXPORT bool mavsdk_is_signing_enabled(
+    mavsdk_t mavsdk
 );
 
 // ===== Server Components =====
