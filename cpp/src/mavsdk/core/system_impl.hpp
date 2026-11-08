@@ -54,6 +54,10 @@ public:
     void init(uint32_t system_id, uint8_t comp_id);
 
     void enable_timesync();
+    System::TimesyncStatus timesync_status() const;
+    System::TimesyncStatusHandle
+    subscribe_timesync_status(const System::TimesyncStatusCallback& callback);
+    void unsubscribe_timesync_status(System::TimesyncStatusHandle handle);
 
     System::IsConnectedHandle subscribe_is_connected(const System::IsConnectedCallback& callback);
     void unsubscribe_is_connected(System::IsConnectedHandle handle);

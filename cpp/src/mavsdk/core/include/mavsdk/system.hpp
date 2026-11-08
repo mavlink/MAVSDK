@@ -177,8 +177,60 @@ public:
 
     /**
      * @brief Enable time synchronization using the TIMESYNC messages.
+     *
+     * The estimated offset to the autopilot's clock is available with timesync_status().
      */
     void enable_timesync();
+
+    /**
+     * @brief Time synchronization state, see enable_timesync().
+     *
+     * The autopilot's TIMESYNC clock (usually its time since boot) is:
+     * local time (std::chrono::system_clock) + `offset_ns`.
+     *
+     * Incoming message timestamps are not changed, so use the offset to convert
+     * between the two clocks.
+     */
+    struct TimesyncStatus {
+        bool synced{false}; /**< @brief Whether the offset is valid. */
+        int64_t offset_ns{0}; /**< @brief Autopilot time minus local time, in nanoseconds. */
+        int64_t rtt_ns{0}; /**< @brief Round trip time of the last TIMESYNC, in nanoseconds. */
+    };
+
+    /**
+     * @brief Get the current time synchronization state.
+     *
+     * Not synced until enable_timesync() was called and an answer with a round trip time
+     * below 10 ms arrived.
+     *
+     * @return the time synchronization state.
+     */
+    TimesyncStatus timesync_status() const;
+
+    /**
+     * @brief type for time synchronization state callback.
+     */
+    using TimesyncStatusCallback = std::function<void(TimesyncStatus)>;
+
+    /**
+     * @brief handle type to unsubscribe from subscribe_timesync_status.
+     */
+    using TimesyncStatusHandle = Handle<TimesyncStatus>;
+
+    /**
+     * @brief Subscribe to the time synchronization state.
+     *
+     * The callback is called for every TIMESYNC answer and when the system disconnects.
+     *
+     * @param callback Callback which will be called.
+     * @return handle to unsubscribe.
+     */
+    TimesyncStatusHandle subscribe_timesync_status(const TimesyncStatusCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_timesync_status.
+     */
+    void unsubscribe_timesync_status(TimesyncStatusHandle handle);
 
     /**
      * @brief Get autopilot type.

@@ -18,6 +18,18 @@ typedef void* mavsdk_system_t;
 typedef void* mavsdk_is_connected_handle_t;
 typedef void* mavsdk_component_discovered_handle_t;
 typedef void* mavsdk_component_discovered_id_handle_t;
+typedef void* mavsdk_timesync_status_handle_t;
+
+/**
+ * @brief Time synchronization state, see mavsdk_system_enable_timesync().
+ *
+ * Autopilot time = local time (system clock) + offset_ns.
+ */
+typedef struct {
+    bool synced;
+    int64_t offset_ns;
+    int64_t rtt_ns;
+} mavsdk_timesync_status_t;
 
 // ===== Basic System Queries =====
 CMAVSDK_EXPORT void mavsdk_system_destroy(mavsdk_system_t system);
@@ -73,6 +85,18 @@ CMAVSDK_EXPORT void mavsdk_system_unsubscribe_component_discovered_id(
 
 // ===== Other System Functions =====
 CMAVSDK_EXPORT void mavsdk_system_enable_timesync(mavsdk_system_t system);
+CMAVSDK_EXPORT mavsdk_timesync_status_t mavsdk_system_timesync_status(mavsdk_system_t system);
+
+typedef void (*mavsdk_timesync_status_callback_t)(mavsdk_timesync_status_t status, void* user_data);
+CMAVSDK_EXPORT mavsdk_timesync_status_handle_t mavsdk_system_subscribe_timesync_status(
+    mavsdk_system_t system,
+    mavsdk_timesync_status_callback_t callback,
+    void* user_data
+);
+CMAVSDK_EXPORT void mavsdk_system_unsubscribe_timesync_status(
+    mavsdk_system_t system,
+    mavsdk_timesync_status_handle_t handle
+);
 CMAVSDK_EXPORT mavsdk_autopilot_t mavsdk_system_autopilot_type(mavsdk_system_t system);
 CMAVSDK_EXPORT mavsdk_vehicle_t mavsdk_system_vehicle_type(mavsdk_system_t system);
 

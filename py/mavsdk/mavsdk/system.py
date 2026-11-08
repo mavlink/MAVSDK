@@ -2,12 +2,33 @@ import ctypes
 import threading
 import weakref
 
+from dataclasses import dataclass
 from typing import Any, Callable, List
 
 from . import _legacy
 from .autopilot import Autopilot
 from .cmavsdk_loader import _cmavsdk_lib
 from .vehicle import Vehicle
+
+
+@dataclass
+class TimesyncStatus:
+    """Time synchronization state, see :meth:`System.enable_timesync`.
+
+    Autopilot time = local time (``time.time_ns()``) + ``offset_ns``.
+    Incoming message timestamps are not changed.
+    """
+
+    synced: bool = False
+    """Whether the offset is valid."""
+    offset_ns: int = 0
+    """Autopilot time minus local time, in nanoseconds."""
+    rtt_ns: int = 0
+    """Round trip time of the last TIMESYNC, in nanoseconds."""
+
+    @classmethod
+    def _from_c_struct(cls, c_struct) -> "TimesyncStatus":
+        return cls(bool(c_struct.synced), c_struct.offset_ns, c_struct.rtt_ns)
 
 
 class System:
@@ -177,6 +198,9 @@ class System:
         destroy() and this, so it is released once. The C call stays outside the
         lock: it waits for a running callback, and a callback may unsubscribe.
         """
+        self._unsubscribe(handle)
+
+    def _unsubscribe(self, handle: ctypes.c_void_p) -> None:
         with self._destroy_lock:
             if not self._handle:
                 return
@@ -192,6 +216,44 @@ class System:
         """Enable time synchronization using the TIMESYNC messages."""
         self._lib.mavsdk_system_enable_timesync(self._require_handle())
 
+    def timesync_status(self) -> TimesyncStatus:
+        """Get the time synchronization state"""
+        return TimesyncStatus._from_c_struct(
+            self._lib.mavsdk_system_timesync_status(self._require_handle())
+        )
+
+    def subscribe_timesync_status(
+        self, callback: Callable[[TimesyncStatus, Any], None], user_data: Any = None
+    ) -> ctypes.c_void_p:
+        """Subscribe to the time synchronization state
+
+        Called for every TIMESYNC answer and when the system disconnects.
+        Returns the subscription handle to pass to
+        :meth:`unsubscribe_timesync_status`.
+        """
+        c_callback = TimesyncStatusCallback(
+            lambda status, ud: callback(TimesyncStatus._from_c_struct(status), user_data)
+        )
+
+        subscription_handle = self._lib.mavsdk_system_subscribe_timesync_status(
+            self._require_handle(), c_callback, None
+        )
+
+        # Held until unsubscribe, see subscribe_is_connected().
+        self._subscriptions[subscription_handle] = (
+            c_callback,
+            self._lib.mavsdk_system_unsubscribe_timesync_status,
+        )
+
+        return subscription_handle
+
+    def unsubscribe_timesync_status(self, handle: ctypes.c_void_p) -> None:
+        """Unsubscribe from the time synchronization state
+
+        Same rules as :meth:`unsubscribe_is_connected`.
+        """
+        self._unsubscribe(handle)
+
     def autopilot_type(self) -> Autopilot:
         """Get the autopilot type reported by this system"""
         return Autopilot(self._lib.mavsdk_system_autopilot_type(self._require_handle()))
@@ -202,6 +264,19 @@ class System:
 
 
 IsConnectedCallback = ctypes.CFUNCTYPE(None, ctypes.c_bool, ctypes.c_void_p)
+
+
+class TimesyncStatusCStruct(ctypes.Structure):
+    """Internal C structure for TimesyncStatus."""
+
+    _fields_ = [
+        ("synced", ctypes.c_bool),
+        ("offset_ns", ctypes.c_int64),
+        ("rtt_ns", ctypes.c_int64),
+    ]
+
+
+TimesyncStatusCallback = ctypes.CFUNCTYPE(None, TimesyncStatusCStruct, ctypes.c_void_p)
 
 _cmavsdk_lib.mavsdk_system_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_system_destroy.restype = None
@@ -250,6 +325,22 @@ _cmavsdk_lib.mavsdk_system_unsubscribe_is_connected.restype = None
 
 _cmavsdk_lib.mavsdk_system_enable_timesync.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_system_enable_timesync.restype = None
+
+_cmavsdk_lib.mavsdk_system_timesync_status.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_system_timesync_status.restype = TimesyncStatusCStruct
+
+_cmavsdk_lib.mavsdk_system_subscribe_timesync_status.argtypes = [
+    ctypes.c_void_p,
+    TimesyncStatusCallback,
+    ctypes.c_void_p,
+]
+_cmavsdk_lib.mavsdk_system_subscribe_timesync_status.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_system_unsubscribe_timesync_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+_cmavsdk_lib.mavsdk_system_unsubscribe_timesync_status.restype = None
 
 _cmavsdk_lib.mavsdk_system_autopilot_type.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_system_autopilot_type.restype = ctypes.c_int

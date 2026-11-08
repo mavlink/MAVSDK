@@ -92,6 +92,22 @@ void System::enable_timesync()
     _system_impl->enable_timesync();
 }
 
+System::TimesyncStatus System::timesync_status() const
+{
+    return _system_impl->timesync_status();
+}
+
+System::TimesyncStatusHandle
+System::subscribe_timesync_status(const TimesyncStatusCallback& callback)
+{
+    return _system_impl->subscribe_timesync_status(callback);
+}
+
+void System::unsubscribe_timesync_status(TimesyncStatusHandle handle)
+{
+    _system_impl->unsubscribe_timesync_status(handle);
+}
+
 Autopilot System::autopilot_type() const
 {
     return _system_impl->autopilot();

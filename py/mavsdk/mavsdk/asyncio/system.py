@@ -7,6 +7,7 @@ from typing import AsyncGenerator, List
 from mavsdk import _legacy
 from mavsdk.autopilot import Autopilot
 from mavsdk.system import System as _System
+from mavsdk.system import TimesyncStatus
 from mavsdk.vehicle import Vehicle
 
 
@@ -60,6 +61,10 @@ class System:
         """Enable time synchronization using the TIMESYNC messages."""
         self._system.enable_timesync()
 
+    async def timesync_status(self) -> TimesyncStatus:
+        """Get the time synchronization state."""
+        return self._system.timesync_status()
+
     async def autopilot_type(self) -> Autopilot:
         """Get the autopilot type reported by this system."""
         return self._system.autopilot_type()
@@ -109,3 +114,25 @@ class System:
                 yield await queue.get()
         finally:
             self._system.unsubscribe_is_connected(handle)
+
+    async def timesync_status_updates(self) -> AsyncGenerator[TimesyncStatus, None]:
+        """
+        Subscribe to the time synchronization state.
+
+        Yields
+        ------
+        status : TimesyncStatus
+            For every TIMESYNC answer and when the system disconnects.
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(status: TimesyncStatus, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, status)
+
+        handle = self._system.subscribe_timesync_status(callback)
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            self._system.unsubscribe_timesync_status(handle)

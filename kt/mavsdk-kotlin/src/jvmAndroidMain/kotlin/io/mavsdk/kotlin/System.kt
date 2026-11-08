@@ -22,7 +22,8 @@ actual class System internal constructor(private val handle: Long, private val s
     private val lifecycle = ReentrantReadWriteLock()
     private val cacheLock = Any()
     private val plugins = linkedMapOf<KClass<*>, OwnedPlugin>()
-    private val subscriptions = linkedSetOf<Long>()
+    // Subscription handle to the native call that releases it.
+    private val subscriptions = linkedMapOf<Long, (Long, Long) -> Unit>()
     @Volatile private var closed = false
 
     // Inherited from SystemPlugins, so `override` rather than `actual`: only members
@@ -52,8 +53,8 @@ actual class System internal constructor(private val handle: Long, private val s
             closed = true
             synchronized(cacheLock) {
                 val subscriptionActions =
-                    subscriptions.toList().asReversed().map {
-                        { NativeSystem.unsubscribeIsConnected(handle, it) }
+                    subscriptions.toList().asReversed().map { (subscription, unsubscribe) ->
+                        { unsubscribe(handle, subscription) }
                     }
                 val pluginActions = plugins.values.toList().asReversed().map { it.destroy }
                 subscriptions.clear()
@@ -96,14 +97,18 @@ actual class System internal constructor(private val handle: Long, private val s
     actual fun subscribeIsConnected(): Flow<Boolean> = callbackFlow {
         val subscriptionHandle = withOpen {
             NativeSystem.subscribeIsConnected(handle, NativeSystem.BooleanCallback { trySend(it) })
-                .also { synchronized(cacheLock) { subscriptions.add(it) } }
+                .also {
+                    synchronized(cacheLock) {
+                        subscriptions[it] = NativeSystem::unsubscribeIsConnected
+                    }
+                }
         }
         awaitClose {
             // Claimed under the read lock, so close() is either not started yet or has
             // already unsubscribed this one and the claim fails -- see the same block in
             // Mavsdk.subscribeOnNewSystem.
             withOpenOrIgnore {
-                if (synchronized(cacheLock) { subscriptions.remove(subscriptionHandle) }) {
+                if (synchronized(cacheLock) { subscriptions.remove(subscriptionHandle) != null }) {
                     NativeSystem.unsubscribeIsConnected(handle, subscriptionHandle)
                 }
             }
@@ -111,6 +116,35 @@ actual class System internal constructor(private val handle: Long, private val s
     }
 
     actual fun enableTimesync() = withOpen { NativeSystem.enableTimesync(handle) }
+
+    actual fun getTimesyncStatus(): TimesyncStatus = withOpen {
+        val values = NativeSystem.getTimesyncStatus(handle)
+        TimesyncStatus(synced = values[0] != 0L, offsetNs = values[1], rttNs = values[2])
+    }
+
+    actual fun subscribeTimesyncStatus(): Flow<TimesyncStatus> = callbackFlow {
+        val subscriptionHandle = withOpen {
+            NativeSystem.subscribeTimesyncStatus(
+                    handle,
+                    NativeSystem.TimesyncStatusCallback { synced, offsetNs, rttNs ->
+                        trySend(TimesyncStatus(synced, offsetNs, rttNs))
+                    },
+                )
+                .also {
+                    synchronized(cacheLock) {
+                        subscriptions[it] = NativeSystem::unsubscribeTimesyncStatus
+                    }
+                }
+        }
+        awaitClose {
+            // Same claim as in subscribeIsConnected().
+            withOpenOrIgnore {
+                if (synchronized(cacheLock) { subscriptions.remove(subscriptionHandle) != null }) {
+                    NativeSystem.unsubscribeTimesyncStatus(handle, subscriptionHandle)
+                }
+            }
+        }
+    }
 
     override fun getHandle(): Long = handle
 

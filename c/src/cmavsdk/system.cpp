@@ -206,6 +206,62 @@ void mavsdk_system_enable_timesync(mavsdk_system_t system) {
     (*cpp_system_ptr)->enable_timesync();
 }
 
+static mavsdk_timesync_status_t translate_timesync_status(const System::TimesyncStatus& status) {
+    mavsdk_timesync_status_t c_status;
+    c_status.synced = status.synced;
+    c_status.offset_ns = status.offset_ns;
+    c_status.rtt_ns = status.rtt_ns;
+    return c_status;
+}
+
+mavsdk_timesync_status_t mavsdk_system_timesync_status(mavsdk_system_t system) {
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
+    return translate_timesync_status((*cpp_system_ptr)->timesync_status());
+}
+
+struct TimesyncStatusCallbackWrapper {
+    mavsdk_timesync_status_callback_t user_callback;
+    void* user_data;
+};
+
+mavsdk_timesync_status_handle_t mavsdk_system_subscribe_timesync_status(
+    mavsdk_system_t system,
+    mavsdk_timesync_status_callback_t callback,
+    void* user_data)
+{
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
+
+    auto* wrapper = new TimesyncStatusCallbackWrapper{callback, user_data};
+
+    auto cpp_handle = (*cpp_system_ptr)->subscribe_timesync_status(
+        [wrapper](System::TimesyncStatus status) {
+            if (wrapper->user_callback) {
+                wrapper->user_callback(translate_timesync_status(status), wrapper->user_data);
+            }
+        }
+    );
+
+    auto* handle_pair = new std::pair<System::TimesyncStatusHandle, TimesyncStatusCallbackWrapper*>(
+        cpp_handle, wrapper
+    );
+
+    return static_cast<mavsdk_timesync_status_handle_t>(handle_pair);
+}
+
+void mavsdk_system_unsubscribe_timesync_status(
+    mavsdk_system_t system,
+    mavsdk_timesync_status_handle_t handle)
+{
+    auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
+    auto* handle_pair = static_cast<std::pair<System::TimesyncStatusHandle, TimesyncStatusCallbackWrapper*>*>(handle);
+
+    if (handle_pair) {
+        (*cpp_system_ptr)->unsubscribe_timesync_status(handle_pair->first);
+        delete handle_pair->second;
+        delete handle_pair;
+    }
+}
+
 mavsdk_autopilot_t mavsdk_system_autopilot_type(mavsdk_system_t system) {
     auto* cpp_system_ptr = reinterpret_cast<std::shared_ptr<System>*>(system);
     switch ((*cpp_system_ptr)->autopilot_type()) {

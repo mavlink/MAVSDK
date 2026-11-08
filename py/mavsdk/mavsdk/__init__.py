@@ -15,7 +15,7 @@ from .enums import (
     ForwardingOption,
 )
 from .logging import log_subscribe, log_unsubscribe, LogLevel
-from .system import System
+from .system import System, TimesyncStatus
 from .vehicle import Vehicle
 
 try:
@@ -38,6 +38,7 @@ __all__ = [
     "log_unsubscribe",
     "LogLevel",
     "System",
+    "TimesyncStatus",
     "Vehicle",
     "__version__",
 ]

@@ -52,6 +52,7 @@ template<typename... Args> struct CallbackWrapper {
 using BooleanCallbackWrapper = CallbackWrapper<jboolean>;
 using ComponentCallbackWrapper = CallbackWrapper<jint>;
 using ComponentIdCallbackWrapper = CallbackWrapper<jint, jint>;
+using TimesyncStatusCallbackWrapper = CallbackWrapper<jboolean, jlong, jlong>;
 
 extern "C" {
 
@@ -154,6 +155,55 @@ Java_io_mavsdk_jni_NativeSystem_enableTimesync(
     JNIEnv* env, jobject, jlong handle) {
     if (!requireHandle(env, handle, "system")) return;
     mavsdk_system_enable_timesync(reinterpret_cast<mavsdk_system_t>(handle));
+}
+
+// [synced (0 or 1), offset_ns, rtt_ns]
+JNIEXPORT jlongArray JNICALL
+Java_io_mavsdk_jni_NativeSystem_getTimesyncStatus(
+    JNIEnv* env, jobject, jlong handle) {
+    if (!requireHandle(env, handle, "system")) return nullptr;
+    const auto status = mavsdk_system_timesync_status(reinterpret_cast<mavsdk_system_t>(handle));
+    const jlong values[] = {
+        status.synced ? 1 : 0,
+        static_cast<jlong>(status.offset_ns),
+        static_cast<jlong>(status.rtt_ns)};
+    jlongArray result = env->NewLongArray(3);
+    if (result) {
+        env->SetLongArrayRegion(result, 0, 3, values);
+    }
+    return result;
+}
+
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_jni_NativeSystem_subscribeTimesyncStatus(
+    JNIEnv* env, jobject, jlong handle, jobject callback) {
+    if (!requireHandle(env, handle, "system") || !callback) return 0;
+    auto* wrapper = new TimesyncStatusCallbackWrapper(env, callback, "(ZJJ)V");
+    const auto native_handle = mavsdk_system_subscribe_timesync_status(
+        reinterpret_cast<mavsdk_system_t>(handle),
+        [](mavsdk_timesync_status_t status, void* user_data) {
+            static_cast<TimesyncStatusCallbackWrapper*>(user_data)->invoke(
+                static_cast<jboolean>(status.synced),
+                static_cast<jlong>(status.offset_ns),
+                static_cast<jlong>(status.rtt_ns));
+        },
+        wrapper);
+    auto* pair = new std::pair<mavsdk_timesync_status_handle_t, TimesyncStatusCallbackWrapper*>(
+        native_handle, wrapper);
+    return reinterpret_cast<jlong>(pair);
+}
+
+JNIEXPORT void JNICALL
+Java_io_mavsdk_jni_NativeSystem_unsubscribeTimesyncStatus(
+    JNIEnv* env, jobject, jlong handle, jlong subscription_handle) {
+    if (!requireHandle(env, handle, "system") || !subscription_handle) return;
+    auto* pair = reinterpret_cast<
+        std::pair<mavsdk_timesync_status_handle_t, TimesyncStatusCallbackWrapper*>*>(
+        subscription_handle);
+    mavsdk_system_unsubscribe_timesync_status(
+        reinterpret_cast<mavsdk_system_t>(handle), pair->first);
+    delete pair->second;
+    delete pair;
 }
 
 JNIEXPORT jlong JNICALL
