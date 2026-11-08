@@ -62,9 +62,14 @@ void HttpLoader::download_text_async(const std::string& url, TextDownloadCallbac
 void HttpLoader::work_thread()
 {
     while (!_should_exit) {
-        LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-
-        auto work = work_queue_guard.wait_and_pop_front();
+        std::shared_ptr<WorkItem> work;
+        {
+            // Only hold the queue lock while popping. The item's callbacks run user code
+            // that may take its own locks or queue another download, which would deadlock
+            // against push_back() if the queue lock were still held.
+            LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
+            work = work_queue_guard.wait_and_pop_front();
+        }
 
         if (!work) {
             // Queue was stopped or should exit

@@ -243,3 +243,47 @@ TEST_F(HttpLoaderFixture, DownloadAsync_AllGood)
 
     clean();
 }
+
+TEST_F(HttpLoaderFixture, DownloadAsync_QueueFromCallback)
+{
+    auto curl_wrapper_mock = std::make_unique<CurlWrapperMock>();
+    auto* curl_wrapper_raw = curl_wrapper_mock.get();
+    auto http_loader = std::make_shared<HttpLoader>(std::move(curl_wrapper_mock));
+
+    expect_all_simulated_downloads_to_succeed(curl_wrapper_raw);
+
+    std::promise<void> completion_promise;
+    auto completion_future = completion_promise.get_future();
+
+    ProgressCallback second_progress =
+        [&completion_promise](int /*progress*/, HttpStatus status, CURLcode /*curl_code*/) {
+            if (status == HttpStatus::Finished) {
+                completion_promise.set_value();
+            }
+            return 0;
+        };
+
+    // Queueing the next download from a callback must not deadlock: the callback runs on
+    // the work thread, which must not hold the queue lock while it does.
+    ProgressCallback first_progress =
+        [&](int /*progress*/, HttpStatus status, CURLcode /*curl_code*/) {
+            if (status == HttpStatus::Finished) {
+                http_loader->download_async(_file_url_2, _file_local_path_2, second_progress);
+            }
+            return 0;
+        };
+
+    http_loader->download_async(_file_url_1, _file_local_path_1, first_progress);
+
+    if (completion_future.wait_for(std::chrono::milliseconds(1000)) != std::future_status::ready) {
+        // The work thread is stuck and can't be joined, so leak the loader rather than
+        // hang the test run in its destructor.
+        (void)new std::shared_ptr<HttpLoader>(http_loader);
+        FAIL() << "Queueing a download from a callback deadlocked";
+    }
+
+    EXPECT_EQ(check_file_exists(_file_local_path_1), true);
+    EXPECT_EQ(check_file_exists(_file_local_path_2), true);
+
+    clean();
+}
