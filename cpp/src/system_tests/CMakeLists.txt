@@ -12,6 +12,7 @@ add_executable(system_tests_runner
     component_metadata.cpp
     action_arm_disarm.cpp
     action_arm_force.cpp
+    action_set_mode_non_custom.cpp
     command_in_progress.cpp
     param_set_and_get.cpp
     param_get_all.cpp
