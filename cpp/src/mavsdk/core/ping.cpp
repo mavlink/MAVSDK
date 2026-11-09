@@ -70,7 +70,20 @@ void Ping::process_ping(const mavlink_message_t& message)
             return;
         }
 
-        _last_ping_time_us = _system_impl.get_time().elapsed_us() - ping.time_usec;
+        if (ping.target_system != _system_impl.get_own_system_id() ||
+            ping.target_component != _system_impl.get_own_component_id()) {
+            // An answer to someone else's ping, e.g. a ground station on the same link.
+            // Its timestamp is in that sender's time base, not ours.
+            return;
+        }
+
+        const uint64_t now_us = _system_impl.get_time().elapsed_us();
+        if (ping.time_usec > now_us) {
+            return;
+        }
+
+        _last_ping_time_us = now_us - ping.time_usec;
+        _rtt_estimator.add_sample_s(static_cast<double>(_last_ping_time_us) * 1e-6);
     }
 }
 

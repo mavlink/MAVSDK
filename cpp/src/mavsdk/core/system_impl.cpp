@@ -11,6 +11,7 @@
 #include "callback_list.tpp"
 #include "unused.hpp"
 #include "mavsdk_export.h"
+#include <algorithm>
 #include <cassert>
 #include <cstdlib>
 #include <functional>
@@ -268,7 +269,9 @@ void SystemImpl::unregister_timeout_handler_blocking(TimeoutHandler::Cookie cook
 
 double SystemImpl::timeout_s() const
 {
-    return _mavsdk_impl.timeout_s();
+    // The configured timeout is the floor. On a slow link (e.g. LTE or satellite) the
+    // timeout is stretched to what the measured round-trip time needs.
+    return std::max(_mavsdk_impl.timeout_s(), _ping.rtt_timeout_s());
 }
 
 void SystemImpl::enable_timesync()
@@ -712,6 +715,7 @@ void SystemImpl::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
+        _ping.reset();
         _is_connected_callbacks.queue(
             false, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
     }
