@@ -64,6 +64,7 @@ add_executable(system_tests_runner
     tcp_unresolvable_host.cpp
     sysid32.cpp
     signing.cpp
+    timesync.cpp
     system_tests_runner.cpp
 )
 

@@ -276,6 +276,22 @@ void SystemImpl::enable_timesync()
     _timesync.enable();
 }
 
+System::TimesyncStatus SystemImpl::timesync_status() const
+{
+    return _timesync.status();
+}
+
+System::TimesyncStatusHandle
+SystemImpl::subscribe_timesync_status(const System::TimesyncStatusCallback& callback)
+{
+    return _timesync.subscribe_status(callback);
+}
+
+void SystemImpl::unsubscribe_timesync_status(System::TimesyncStatusHandle handle)
+{
+    _timesync.unsubscribe_status(handle);
+}
+
 System::IsConnectedHandle
 SystemImpl::subscribe_is_connected(const System::IsConnectedCallback& callback)
 {

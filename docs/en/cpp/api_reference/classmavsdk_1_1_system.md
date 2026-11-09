@@ -10,6 +10,11 @@ This class represents a system, made up of one or more components (e.g. autopilo
 [System](classmavsdk_1_1_system.md) objects are used to interact with UAVs (including their components) and standalone cameras. They are not created directly by application code, but are returned by the [Mavsdk](classmavsdk_1_1_mavsdk.md) class. 
 
 
+## Data Structures
+
+
+struct [TimesyncStatus](structmavsdk_1_1_system_1_1_timesync_status.md)
+
 ## Public Types
 
 
@@ -21,6 +26,8 @@ std::function< void([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7
 [Handle](classmavsdk_1_1_handle.md)< [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) > [ComponentDiscoveredHandle](#classmavsdk_1_1_system_1adfb374a9eaaa765cf0813cfa6b40df39) | type for component discovery callback handle
 std::function< void([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12), uint8_t)> [ComponentDiscoveredIdCallback](#classmavsdk_1_1_system_1a914c50b413b5bd61d334631096e614ca) | type for component discovery callback with component ID
 [Handle](classmavsdk_1_1_handle.md)< [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12), uint8_t > [ComponentDiscoveredIdHandle](#classmavsdk_1_1_system_1abd573ae09348f33e7cd3a006fc26a708) | type for component discovery callback handle with component ID
+std::function< void([TimesyncStatus](structmavsdk_1_1_system_1_1_timesync_status.md))> [TimesyncStatusCallback](#classmavsdk_1_1_system_1a8c8b7d32f72552c087c677166db3ed3e) | type for time synchronization state callback.
+[Handle](classmavsdk_1_1_handle.md)< [TimesyncStatus](structmavsdk_1_1_system_1_1_timesync_status.md) > [TimesyncStatusHandle](#classmavsdk_1_1_system_1ac6db60b58c15415248d909148fd558b1) | handle type to unsubscribe from subscribe_timesync_status.
 
 ## Public Member Functions
 
@@ -44,6 +51,9 @@ void | [unsubscribe_component_discovered](#classmavsdk_1_1_system_1a5d62d308534b
 [ComponentDiscoveredIdHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1abd573ae09348f33e7cd3a006fc26a708) | [subscribe_component_discovered_id](#classmavsdk_1_1_system_1a1905176f3a6633a8a9fe655f2dcd2d23) (const [ComponentDiscoveredIdCallback](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1a914c50b413b5bd61d334631096e614ca) & callback) | Subscribe to be called when a component is discovered.
 void | [unsubscribe_component_discovered_id](#classmavsdk_1_1_system_1a37bca637341bba8b07e8f95c97d122db) ([ComponentDiscoveredIdHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1abd573ae09348f33e7cd3a006fc26a708) handle) | Unsubscribe from subscribe_component_discovered_id.
 void | [enable_timesync](#classmavsdk_1_1_system_1a7c7177fb0789aefbfb375f4bb12ce824) () | Enable time synchronization using the TIMESYNC messages.
+[TimesyncStatus](structmavsdk_1_1_system_1_1_timesync_status.md) | [timesync_status](#classmavsdk_1_1_system_1ab4e145da12fc6ccd9ea3e2c55eee1192) () const | Get the current time synchronization state.
+[TimesyncStatusHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1ac6db60b58c15415248d909148fd558b1) | [subscribe_timesync_status](#classmavsdk_1_1_system_1ad7b8aff733fbe3327b6cc9e83884570e) (const [TimesyncStatusCallback](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1a8c8b7d32f72552c087c677166db3ed3e) & callback) | Subscribe to the time synchronization state.
+void | [unsubscribe_timesync_status](#classmavsdk_1_1_system_1a25a8cb90ab216014b962a1afb0cbd688) ([TimesyncStatusHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1ac6db60b58c15415248d909148fd558b1) handle) | Unsubscribe from subscribe_timesync_status.
 [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | [autopilot_type](#classmavsdk_1_1_system_1af3ded5464f6025f5d31955e100e15894) () const | Get autopilot type.
 [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [vehicle_type](#classmavsdk_1_1_system_1aababe0d2e6c91aef11a06dcdbccdf69e) () const | Get vehicle type.
 const System & | [operator=](#classmavsdk_1_1_system_1ace4603ebad199e8619876993a2ad5237) (const System &)=delete | Equality operator (object is not copyable).
@@ -135,6 +145,26 @@ using mavsdk::System::ComponentDiscoveredIdHandle =  Handle<ComponentType, uint8
 
 
 type for component discovery callback handle with component ID
+
+
+### typedef TimesyncStatusCallback {#classmavsdk_1_1_system_1a8c8b7d32f72552c087c677166db3ed3e}
+
+```cpp
+using mavsdk::System::TimesyncStatusCallback =  std::function<void(TimesyncStatus)>
+```
+
+
+type for time synchronization state callback.
+
+
+### typedef TimesyncStatusHandle {#classmavsdk_1_1_system_1ac6db60b58c15415248d909148fd558b1}
+
+```cpp
+using mavsdk::System::TimesyncStatusHandle =  Handle<TimesyncStatus>
+```
+
+
+handle type to unsubscribe from subscribe_timesync_status.
 
 
 ## Member Function Documentation
@@ -356,6 +386,52 @@ void mavsdk::System::enable_timesync()
 
 Enable time synchronization using the TIMESYNC messages.
 
+The estimated offset to the autopilot's clock is available with [timesync_status()](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1ab4e145da12fc6ccd9ea3e2c55eee1192).
+
+### timesync_status() {#classmavsdk_1_1_system_1ab4e145da12fc6ccd9ea3e2c55eee1192}
+```cpp
+TimesyncStatus mavsdk::System::timesync_status() const
+```
+
+
+Get the current time synchronization state.
+
+Not synced until [enable_timesync()](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1a7c7177fb0789aefbfb375f4bb12ce824) was called and an answer with a round trip time below 10 ms arrived.
+
+**Returns**
+
+&emsp;[TimesyncStatus](structmavsdk_1_1_system_1_1_timesync_status.md) - the time synchronization state.
+
+### subscribe_timesync_status() {#classmavsdk_1_1_system_1ad7b8aff733fbe3327b6cc9e83884570e}
+```cpp
+TimesyncStatusHandle mavsdk::System::subscribe_timesync_status(const TimesyncStatusCallback &callback)
+```
+
+
+Subscribe to the time synchronization state.
+
+The callback is called for every TIMESYNC answer and when the system disconnects.
+
+**Parameters**
+
+* const [TimesyncStatusCallback](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1a8c8b7d32f72552c087c677166db3ed3e)& **callback** - Callback which will be called.
+
+**Returns**
+
+&emsp;[TimesyncStatusHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1ac6db60b58c15415248d909148fd558b1) - handle to unsubscribe.
+
+### unsubscribe_timesync_status() {#classmavsdk_1_1_system_1a25a8cb90ab216014b962a1afb0cbd688}
+```cpp
+void mavsdk::System::unsubscribe_timesync_status(TimesyncStatusHandle handle)
+```
+
+
+Unsubscribe from subscribe_timesync_status.
+
+
+**Parameters**
+
+* [TimesyncStatusHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1ac6db60b58c15415248d909148fd558b1) **handle** - 
 
 ### autopilot_type() {#classmavsdk_1_1_system_1af3ded5464f6025f5d31955e100e15894}
 ```cpp

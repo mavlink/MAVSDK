@@ -58,6 +58,9 @@ public:
 
     void shift_time_by(std::chrono::nanoseconds offset);
 
+    // Autopilot time minus local system time.
+    std::chrono::nanoseconds offset() const;
+
     AutopilotTimePoint time_in(SystemTimePoint local_system_time_point);
 
 private:

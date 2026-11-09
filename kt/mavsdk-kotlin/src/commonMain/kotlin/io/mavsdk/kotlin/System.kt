@@ -50,6 +50,16 @@ expect class System : SystemPlugins {
     /** Enable time synchronization */
     fun enableTimesync()
 
+    /** Get the time synchronization state, see [enableTimesync]. */
+    fun getTimesyncStatus(): TimesyncStatus
+
+    /**
+     * Subscribe to the time synchronization state
+     *
+     * @return Flow emitting the state for every TIMESYNC answer and when the system disconnects
+     */
+    fun subscribeTimesyncStatus(): Flow<TimesyncStatus>
+
     /** Close all plugins and release the native system handle. */
     internal fun close()
 }

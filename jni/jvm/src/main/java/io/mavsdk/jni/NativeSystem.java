@@ -18,6 +18,11 @@ public final class NativeSystem {
         void invoke(int componentType, int componentId);
     }
 
+    @FunctionalInterface
+    public interface TimesyncStatusCallback {
+        void invoke(boolean synced, long offsetNs, long rttNs);
+    }
+
     public static native boolean hasAutopilot(long handle);
     public static native boolean isStandalone(long handle);
     public static native boolean hasCamera(long handle, int cameraId);
@@ -28,6 +33,12 @@ public final class NativeSystem {
     public static native int getAutopilotType(long handle);
     public static native int getVehicleType(long handle);
     public static native void enableTimesync(long handle);
+    /** Returns [synced (0 or 1), offsetNs, rttNs]. */
+    public static native long[] getTimesyncStatus(long handle);
+    public static native long subscribeTimesyncStatus(
+        long handle, TimesyncStatusCallback callback);
+    public static native void unsubscribeTimesyncStatus(
+        long handle, long subscriptionHandle);
     public static native void destroy(long handle);
     public static native long subscribeIsConnected(
         long handle, BooleanCallback callback);
