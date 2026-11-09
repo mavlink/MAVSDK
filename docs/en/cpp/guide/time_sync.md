@@ -41,6 +41,8 @@ const auto local = std::chrono::system_clock::time_point{
 
 MAVSDK does not change the timestamps of incoming messages: they stay in the autopilot's time.
 
+The [timesync example](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/timesync/) shows the status and converts an autopilot timestamp to local time.
+
 ::: info
 The `TIMESYNC` time of PX4 is its time since boot, so the offset is roughly minus the time at which the autopilot booted.
 :::
