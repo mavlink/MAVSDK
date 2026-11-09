@@ -24,6 +24,12 @@ namespace fs = std::filesystem;
 MavlinkComponentMetadata::MavlinkComponentMetadata(SystemImpl& system_impl) :
     _system_impl(system_impl),
     _notification_callbacks(system_impl.io_context())
+#if BUILD_WITHOUT_CURL != 1
+    ,
+    _http_loader([&system_impl](const std::function<void()>& task, bool wait) {
+        system_impl.run_on_io_thread(task, wait);
+    })
+#endif
 {
     if (const char* env_p = std::getenv("MAVSDK_COMPONENT_METADATA_DEBUGGING")) {
         if (std::string(env_p) == "1") {

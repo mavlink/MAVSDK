@@ -17,10 +17,17 @@ class ICurlWrapper;
 
 using TextDownloadCallback = std::function<void(bool success, const std::string& content)>;
 
+// Runs task on the io thread, and with wait set does not return until it has run. This is
+// the shape of SystemImpl::run_on_io_thread().
+using HttpLoaderExecutor = std::function<void(const std::function<void()>& task, bool wait)>;
+
+// Downloads run on HttpLoader's own thread because curl blocks. The async callbacks are
+// handed to the executor, so they run on the io thread like the rest of the core, and none
+// runs once the HttpLoader has been destroyed.
 class MAVSDK_TEST_EXPORT HttpLoader {
 public:
-    HttpLoader(std::unique_ptr<ICurlWrapper> curl_wrapper);
-    HttpLoader();
+    HttpLoader(std::unique_ptr<ICurlWrapper> curl_wrapper, HttpLoaderExecutor executor);
+    explicit HttpLoader(HttpLoaderExecutor executor);
     ~HttpLoader();
 
     void start();
@@ -102,6 +109,11 @@ private:
     bool do_download_text(const DownloadTextItem& item);
 
     std::unique_ptr<ICurlWrapper> _curl_wrapper;
+    HttpLoaderExecutor _executor;
+
+    // Shared with the callbacks handed to the executor, which may still be queued on the io
+    // thread after we are gone.
+    std::shared_ptr<std::atomic<bool>> _alive{std::make_shared<std::atomic<bool>>(true)};
 
     LockedQueue<WorkItem> _work_queue{};
     std::thread _work_thread{};

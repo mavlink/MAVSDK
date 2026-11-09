@@ -4,20 +4,24 @@
 
 namespace mavsdk {
 
-HttpLoader::HttpLoader(std::unique_ptr<ICurlWrapper> curl_wrapper) :
-    _curl_wrapper(std::move(curl_wrapper))
+HttpLoader::HttpLoader(std::unique_ptr<ICurlWrapper> curl_wrapper, HttpLoaderExecutor executor) :
+    _curl_wrapper(std::move(curl_wrapper)),
+    _executor(std::move(executor))
 {
     start();
 }
 
-HttpLoader::HttpLoader() : _curl_wrapper(std::make_unique<CurlWrapper>(CurlWrapper()))
-{
-    start();
-}
+HttpLoader::HttpLoader(HttpLoaderExecutor executor) :
+    HttpLoader(std::make_unique<CurlWrapper>(CurlWrapper()), std::move(executor))
+{}
 
 HttpLoader::~HttpLoader()
 {
+    // Once the work thread has stopped, nothing new is handed to the executor. Drop what is
+    // still queued, and wait for a callback that may be running right now to return.
     stop();
+    _alive->store(false);
+    _executor([]() {}, true);
 }
 
 void HttpLoader::start()
@@ -49,22 +53,56 @@ void HttpLoader::download_async(
     ProgressCallback progress_callback,
     curl_off_t max_download_size_bytes)
 {
+    ProgressCallback on_io_thread{};
+    if (progress_callback) {
+        on_io_thread = [this, alive = _alive, progress_callback = std::move(progress_callback)](
+                           int progress, HttpStatus status, CURLcode curl_code) {
+            _executor(
+                [alive, progress_callback, progress, status, curl_code]() {
+                    if (alive->load()) {
+                        progress_callback(progress, status, curl_code);
+                    }
+                },
+                false);
+        };
+    }
+
     _work_queue.push_back(
         std::make_shared<WorkItem>(
-            DownloadItem{url, local_path, progress_callback, max_download_size_bytes}));
+            DownloadItem{url, local_path, std::move(on_io_thread), max_download_size_bytes}));
 }
 
 void HttpLoader::download_text_async(const std::string& url, TextDownloadCallback text_callback)
 {
-    _work_queue.push_back(std::make_shared<WorkItem>(DownloadTextItem{url, text_callback}));
+    TextDownloadCallback on_io_thread{};
+    if (text_callback) {
+        on_io_thread = [this, alive = _alive, text_callback = std::move(text_callback)](
+                           bool success, const std::string& content) {
+            _executor(
+                [alive, text_callback, success, content]() {
+                    if (alive->load()) {
+                        text_callback(success, content);
+                    }
+                },
+                false);
+        };
+    }
+
+    _work_queue.push_back(
+        std::make_shared<WorkItem>(DownloadTextItem{url, std::move(on_io_thread)}));
 }
 
 void HttpLoader::work_thread()
 {
     while (!_should_exit) {
-        LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-
-        auto work = work_queue_guard.wait_and_pop_front();
+        std::shared_ptr<WorkItem> work;
+        {
+            // Only hold the queue lock while popping. The download itself blocks, and its
+            // callbacks may queue another download, which would deadlock against
+            // push_back() if the queue lock were still held.
+            LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
+            work = work_queue_guard.wait_and_pop_front();
+        }
 
         if (!work) {
             // Queue was stopped or should exit
