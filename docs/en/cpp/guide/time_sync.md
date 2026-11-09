@@ -41,6 +41,29 @@ const auto local = std::chrono::system_clock::time_point{
 
 MAVSDK does not change the timestamps of incoming messages: they stay in the autopilot's time.
 
+### Timestamped values
+
+These values carry the autopilot's timestamp, in microseconds, and can be converted to local time with the offset:
+
+| Value | Field | From MAVLink |
+| --- | --- | --- |
+| [Telemetry::Quaternion](../api_reference/structmavsdk_1_1_telemetry_1_1_quaternion.md), [Telemetry::EulerAngle](../api_reference/structmavsdk_1_1_telemetry_1_1_euler_angle.md) | `timestamp_us` | `ATTITUDE_QUATERNION`, `ATTITUDE` |
+| [Telemetry::Imu](../api_reference/structmavsdk_1_1_telemetry_1_1_imu.md) | `timestamp_us` | `HIGHRES_IMU`, `SCALED_IMU`, `RAW_IMU` |
+| [Telemetry::ScaledPressure](../api_reference/structmavsdk_1_1_telemetry_1_1_scaled_pressure.md) | `timestamp_us` | `SCALED_PRESSURE` |
+| [Telemetry::Altitude](../api_reference/structmavsdk_1_1_telemetry_1_1_altitude.md) | `timestamp_us` | `ALTITUDE` |
+| [Telemetry::RawGps](../api_reference/structmavsdk_1_1_telemetry_1_1_raw_gps.md) | `timestamp_us` | `GPS_RAW_INT` |
+| [Telemetry::Odometry](../api_reference/structmavsdk_1_1_telemetry_1_1_odometry.md) | `time_usec` | `ODOMETRY` |
+| [Telemetry::GroundTruth](../api_reference/structmavsdk_1_1_telemetry_1_1_ground_truth.md) | `timestamp_us` | `HIL_STATE_QUATERNION` |
+| [Telemetry::HomePosition](../api_reference/structmavsdk_1_1_telemetry_1_1_home_position.md) | `timestamp_us` | `HOME_POSITION` |
+| [Gimbal::Attitude](../api_reference/structmavsdk_1_1_gimbal_1_1_attitude.md) | `timestamp_us` | `GIMBAL_DEVICE_ATTITUDE_STATUS` |
+| [Winch::Status](../api_reference/structmavsdk_1_1_winch_1_1_status.md) | `time_usec` | `WINCH_STATUS` |
+
+Other values, such as position, velocity or battery, have no timestamp.
+The time of reception is the best estimate for those.
+
+MAVLink allows some of these fields to contain either time since boot or UNIX epoch time (see the [MAVLink message definitions](https://mavlink.io/en/messages/common.html)).
+Only time since boot needs to be converted; values larger than about 10<sup>15</sup> µs are already UNIX epoch time.
+
 The [timesync example](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/timesync/) shows the status and converts an autopilot timestamp to local time.
 
 ::: info
