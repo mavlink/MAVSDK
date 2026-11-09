@@ -60,7 +60,8 @@ int main(int argc, char** argv)
 
     auto handle = system.value()->subscribe_timesync_status([](System::TimesyncStatus status) {
         if (!status.synced) {
-            std::cout << "Not synchronized\n";
+            // Answers with a round trip time of 10 ms or more are not used.
+            std::cout << "Not synchronized, round trip time: " << status.rtt_ns / 1e6 << " ms\n";
             return;
         }
         std::cout << std::fixed << std::setprecision(3)
