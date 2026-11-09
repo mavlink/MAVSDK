@@ -37,6 +37,13 @@ class FailureUnit(IntEnum):
     SYSTEM_AVOIDANCE = 103
     SYSTEM_RC_SIGNAL = 104
     SYSTEM_MAVLINK_SIGNAL = 105
+    SYSTEM_ESC = 106
+    SYSTEM_TRAFFIC_AVOIDANCE = 107
+    DATALINK_LTE = 150
+    DATALINK_WIFI = 151
+    DATALINK_TELEM_RADIO = 152
+    BUS_CAN = 200
+    BUS_I2C = 201
 
 
 class FailureType(IntEnum):
@@ -50,6 +57,7 @@ class FailureType(IntEnum):
     SLOW = 5
     DELAYED = 6
     INTERMITTENT = 7
+    DRIFT = 8
 
 
 # ===== Result Enums =====

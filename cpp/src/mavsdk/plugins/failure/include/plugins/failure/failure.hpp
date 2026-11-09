@@ -82,6 +82,13 @@ public:
         SystemAvoidance = 103, /**< @brief Avoidance. */
         SystemRcSignal = 104, /**< @brief RC signal. */
         SystemMavlinkSignal = 105, /**< @brief MAVLink signal. */
+        SystemEsc = 106, /**< @brief ESC telemetry. */
+        SystemTrafficAvoidance = 107, /**< @brief Traffic avoidance system like ADS-B or FLARM. */
+        DatalinkLte = 150, /**< @brief Data link over a cellular (LTE) connection. */
+        DatalinkWifi = 151, /**< @brief Data link over a Wi-Fi connection. */
+        DatalinkTelemRadio = 152, /**< @brief Data link over a telemetry radio, e.g. a SiK radio. */
+        BusCan = 200, /**< @brief CAN bus, instance is the bus number, e.g. 1 for CAN1. */
+        BusI2C = 201, /**< @brief I2C bus, instance is the bus number, e.g. 1 for I2C1. */
     };
 
     /**
@@ -110,6 +117,7 @@ public:
         Slow = 5, /**< @brief Unit is slow, so e.g. reporting at slower than expected rate. */
         Delayed = 6, /**< @brief Data of unit is delayed in time. */
         Intermittent = 7, /**< @brief Unit is sometimes working, sometimes not. */
+        Drift = 8, /**< @brief Unit is publishing plausible values but drifting away from true values. */
     };
 
     /**

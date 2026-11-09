@@ -59,6 +59,20 @@ typedef enum {
     MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_RC_SIGNAL = 104,
     /**  MAVLink signal. */
     MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL = 105,
+    /**  ESC telemetry. */
+    MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_ESC = 106,
+    /**  Traffic avoidance system like ADS-B or FLARM. */
+    MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_TRAFFIC_AVOIDANCE = 107,
+    /**  Data link over a cellular (LTE) connection. */
+    MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_LTE = 150,
+    /**  Data link over a Wi-Fi connection. */
+    MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_WIFI = 151,
+    /**  Data link over a telemetry radio, e.g. a SiK radio. */
+    MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_TELEM_RADIO = 152,
+    /**  CAN bus, instance is the bus number, e.g. 1 for CAN1. */
+    MAVSDK_FAILURE_FAILURE_UNIT_BUS_CAN = 200,
+    /**  I2C bus, instance is the bus number, e.g. 1 for I2C1. */
+    MAVSDK_FAILURE_FAILURE_UNIT_BUS_I2C = 201,
 } mavsdk_failure_failure_unit_t;
 
 /**
@@ -81,6 +95,8 @@ typedef enum {
     MAVSDK_FAILURE_FAILURE_TYPE_DELAYED = 6,
     /**  Unit is sometimes working, sometimes not. */
     MAVSDK_FAILURE_FAILURE_TYPE_INTERMITTENT = 7,
+    /**  Unit is publishing plausible values but drifting away from true values. */
+    MAVSDK_FAILURE_FAILURE_TYPE_DRIFT = 8,
 } mavsdk_failure_failure_type_t;
 
 

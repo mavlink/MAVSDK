@@ -64,7 +64,21 @@ class Failure internal constructor(private val native: FailureNative) {
         /** RC signal */
         SYSTEM_RC_SIGNAL(104),
         /** MAVLink signal */
-        SYSTEM_MAVLINK_SIGNAL(105);
+        SYSTEM_MAVLINK_SIGNAL(105),
+        /** ESC telemetry */
+        SYSTEM_ESC(106),
+        /** Traffic avoidance system like ADS-B or FLARM */
+        SYSTEM_TRAFFIC_AVOIDANCE(107),
+        /** Data link over a cellular (LTE) connection */
+        DATALINK_LTE(150),
+        /** Data link over a Wi-Fi connection */
+        DATALINK_WIFI(151),
+        /** Data link over a telemetry radio, e.g. a SiK radio */
+        DATALINK_TELEM_RADIO(152),
+        /** CAN bus, instance is the bus number, e.g. 1 for CAN1 */
+        BUS_CAN(200),
+        /** I2C bus, instance is the bus number, e.g. 1 for I2C1 */
+        BUS_I2C(201);
 
         companion object {
             fun fromValue(value: Int): FailureUnit =
@@ -89,7 +103,9 @@ class Failure internal constructor(private val native: FailureNative) {
         /** Data of unit is delayed in time */
         DELAYED(6),
         /** Unit is sometimes working, sometimes not */
-        INTERMITTENT(7);
+        INTERMITTENT(7),
+        /** Unit is publishing plausible values but drifting away from true values */
+        DRIFT(8);
 
         companion object {
             fun fromValue(value: Int): FailureType =
