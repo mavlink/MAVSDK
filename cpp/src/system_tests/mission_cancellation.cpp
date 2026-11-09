@@ -2,11 +2,14 @@
 #include "mavsdk.hpp"
 #include "plugins/mission/mission.hpp"
 #include "plugins/mission_raw_server/mission_raw_server.hpp"
-#include <atomic>
+#include <chrono>
+#include <condition_variable>
 #include <future>
 #include <memory>
-#include <thread>
+#include <mutex>
+#include <string>
 #include <gtest/gtest.h>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -23,18 +26,71 @@ static Mission::MissionItem add_waypoint(
 static Mission::MissionPlan create_mission_plan()
 {
     Mission::MissionPlan mission_plan{};
-    // 10000 items so the transfer takes long enough that a mid-flight cancel is reliable
-    // even on a fast loopback link where the user callback queue lags behind.
-    for (unsigned i = 0; i < 10000; ++i) {
+    for (unsigned i = 0; i < 20; ++i) {
         mission_plan.mission_items.push_back(
             add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
     }
     return mission_plan;
 }
 
+// Transfer timeout on the groundstation. The client keeps a stalled transfer alive for
+// several retries of this before giving up, which is how long cancel() has to land.
+static constexpr double stall_timeout_s = 5.0;
+
+// The item at which the transfer is held up mid-flight.
+static constexpr int stall_at_seq = 10;
+
+// Holds a transfer up mid-flight by dropping one message type from stall_at_seq on.
+// Waiting for the stall before cancelling means the transfer can't have finished yet,
+// so cancel() always hits a live transfer. Once released, nothing is dropped any more,
+// so whatever arrives after the cancel still reaches the finished transfer.
+class TransferStall {
+public:
+    explicit TransferStall(std::string message_name) : _message_name(std::move(message_name)) {}
+
+    bool should_keep(const Mavsdk::MavlinkMessage& message)
+    {
+        if (message.message_name != _message_name) {
+            return true;
+        }
+        const auto fields = nlohmann::json::parse(message.fields_json, nullptr, false);
+        if (fields.is_discarded() || !fields.contains("seq") ||
+            fields["seq"].get<int>() < stall_at_seq) {
+            return true;
+        }
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (_released) {
+            return true;
+        }
+        _stalled = true;
+        _cv.notify_all();
+        return false;
+    }
+
+    bool wait_until_stalled()
+    {
+        std::unique_lock<std::mutex> lock(_mutex);
+        return _cv.wait_for(lock, std::chrono::seconds(10), [this]() { return _stalled; });
+    }
+
+    void release()
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _released = true;
+    }
+
+private:
+    const std::string _message_name;
+    std::mutex _mutex;
+    std::condition_variable _cv;
+    bool _stalled{false};
+    bool _released{false};
+};
+
 TEST(Mission, UploadCancellation)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(stall_timeout_s);
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
 
     auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
@@ -50,50 +106,38 @@ TEST(Mission, UploadCancellation)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto mission = std::make_shared<Mission>(system);
-    std::weak_ptr<Mission> mission_weak = mission;
-    auto mission_plan = create_mission_plan();
+    auto mission = Mission{system};
+
+    // The callbacks can outlive the locals of this test if an ASSERT returns early,
+    // so they share the state.
+    auto stall = std::make_shared<TransferStall>("MISSION_REQUEST_INT");
+    auto in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
+        [stall](Mavsdk::MavlinkMessage message) { return stall->should_keep(message); });
 
     auto result_prom = std::make_shared<std::promise<Mission::Result>>();
     std::future<Mission::Result> result_fut = result_prom->get_future();
-    auto cancel_triggered = std::make_shared<std::atomic<bool>>(false);
 
-    // Use the progress variant so we can cancel the moment the first progress
-    // update arrives.  That guarantees cancel() is called while the transfer is
-    // still in flight, regardless of how fast the loopback link is.
     LogInfo("Starting mission upload...");
-    mission->upload_mission_with_progress_async(
-        mission_plan,
-        [result_prom, cancel_triggered, mission_weak](
-            Mission::Result result, Mission::ProgressData /*progress_data*/) {
-            if (result == Mission::Result::Next) {
-                // Cancel exactly once, on the first progress update.
-                if (!cancel_triggered->exchange(true)) {
-                    auto locked_mission = mission_weak.lock();
-                    if (!locked_mission) {
-                        return;
-                    }
-                    LogInfo("Upload is in flight, cancelling...");
-                    locked_mission->cancel_mission_upload();
-                }
-                return;
-            }
-            // Final callback: TransferCancelled expected.
-            result_prom->set_value(result);
-        });
+    mission.upload_mission_async(create_mission_plan(), [result_prom](Mission::Result result) {
+        result_prom->set_value(result);
+    });
 
-    // Allow generous time: the cancel result is delivered via the async
-    // user-callback queue which can be slow on a loaded CI runner.
+    ASSERT_TRUE(stall->wait_until_stalled());
+    LogInfo("Upload is stalled at item {}, cancelling...", stall_at_seq);
+    mission.cancel_mission_upload();
+    stall->release();
+
     ASSERT_EQ(result_fut.wait_for(std::chrono::seconds(30)), std::future_status::ready);
     EXPECT_EQ(result_fut.get(), Mission::Result::TransferCancelled);
     LogInfo("Mission upload cancelled successfully.");
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(in_handle);
 }
 
 TEST(Mission, DownloadCancellation)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(stall_timeout_s);
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
 
     auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
@@ -109,46 +153,36 @@ TEST(Mission, DownloadCancellation)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto mission = std::make_shared<Mission>(system);
-    std::weak_ptr<Mission> mission_weak = mission;
-    auto mission_plan = create_mission_plan();
+    auto mission = Mission{system};
 
-    // Upload synchronously first (separate from the cancellation test).
+    // Upload without interference first, so there is something to download.
     LogInfo("Uploading mission first...");
-    ASSERT_EQ(mission->upload_mission(mission_plan), Mission::Result::Success);
+    ASSERT_EQ(mission.upload_mission(create_mission_plan()), Mission::Result::Success);
     LogInfo("Mission uploaded successfully.");
 
-    // Download and cancel once we know the transfer is in flight.
+    auto stall = std::make_shared<TransferStall>("MISSION_ITEM_INT");
+    auto in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
+        [stall](Mavsdk::MavlinkMessage message) { return stall->should_keep(message); });
+
     auto result_prom = std::make_shared<std::promise<Mission::Result>>();
     std::future<Mission::Result> result_fut = result_prom->get_future();
-    auto cancel_triggered = std::make_shared<std::atomic<bool>>(false);
 
     LogInfo("Starting mission download...");
-    mission->download_mission_with_progress_async(
-        [result_prom, cancel_triggered, mission_weak](
-            Mission::Result result, Mission::ProgressDataOrMission progress_data) {
-            if (result == Mission::Result::Next) {
-                // has_progress == true during the item exchange;
-                // has_mission == true only at successful completion — don't cancel then.
-                if (progress_data.has_progress && !cancel_triggered->exchange(true)) {
-                    auto locked_mission = mission_weak.lock();
-                    if (!locked_mission) {
-                        return;
-                    }
-                    LogInfo("Download is in flight, cancelling...");
-                    locked_mission->cancel_mission_download();
-                }
-                return;
-            }
-            // Final callback: TransferCancelled expected.
+    mission.download_mission_async(
+        [result_prom](Mission::Result result, const Mission::MissionPlan& /*mission_plan*/) {
             result_prom->set_value(result);
         });
+
+    ASSERT_TRUE(stall->wait_until_stalled());
+    LogInfo("Download is stalled at item {}, cancelling...", stall_at_seq);
+    mission.cancel_mission_download();
+    stall->release();
 
     ASSERT_EQ(result_fut.wait_for(std::chrono::seconds(30)), std::future_status::ready);
     EXPECT_EQ(result_fut.get(), Mission::Result::TransferCancelled);
     LogInfo("Mission download cancelled successfully.");
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(in_handle);
 }
 
 Mission::MissionItem add_waypoint(
