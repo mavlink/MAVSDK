@@ -218,8 +218,7 @@ TEST(SystemTest, ModesServerCurrentMode)
     }
 }
 
-// These tests use ActionServer's deprecated flight mode API on purpose: to check that it leaves
-// modes to ModesServer, and as the server side of autopilots without the standard modes protocol.
+// These tests use deprecated APIs for packet interception and ActionServer interoperability.
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -227,6 +226,69 @@ TEST(SystemTest, ModesServerCurrentMode)
 #pragma warning(push)
 #pragma warning(disable : 4996)
 #endif
+// The message interception API is used here to control packet ordering.
+class ModesDownloadTest : public testing::TestWithParam<bool> {};
+
+TEST_P(ModesDownloadTest, MonitorWhileFirstReplyIsOutstanding)
+{
+    const bool omit_sequence = GetParam();
+    const auto port = std::to_string(17180 + omit_sequence);
+    std::atomic<bool> reply_withheld{false};
+    std::atomic<bool> monitor_received{false};
+    Mavsdk groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    ModesServer server{autopilot.server_component()};
+    const std::vector<ModesServer::Mode> modes{
+        {"Hover", 1, false, true, false, false}, {"Position", 2, false, true, false, false}};
+    ASSERT_EQ(server.set_available_modes(modes), ModesServer::Result::Success);
+    ASSERT_EQ(server.set_current_mode("Hover"), ModesServer::Result::Success);
+
+    autopilot.intercept_outgoing_messages_async([&](mavlink_message_t& message) {
+        if (message.msgid != MAVLINK_MSG_ID_AVAILABLE_MODES) {
+            return true;
+        }
+        if (!monitor_received) {
+            reply_withheld = true;
+            return false;
+        }
+        if (omit_sequence) {
+            mavlink_available_modes_t mode;
+            mavlink_msg_available_modes_decode(&message, &mode);
+            mode.seq = 0;
+            mavlink_status_t status{};
+            status.current_tx_seq = message.seq;
+            mavlink_msg_available_modes_encode_status(
+                message.sysid, message.compid, &status, &message, &mode);
+        }
+        return true;
+    });
+    groundstation.intercept_incoming_messages_async([&](mavlink_message_t& message) {
+        if (message.msgid == MAVLINK_MSG_ID_AVAILABLE_MODES_MONITOR) {
+            if (!reply_withheld) {
+                return false;
+            }
+            monitor_received = true;
+        }
+        return true;
+    });
+
+    ASSERT_EQ(
+        groundstation.add_any_connection("udpin://0.0.0.0:" + port), ConnectionResult::Success);
+    ASSERT_EQ(
+        autopilot.add_any_connection("udpout://127.0.0.1:" + port), ConnectionResult::Success);
+    auto system = groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(system);
+    Modes client{system.value()};
+
+    ASSERT_TRUE(wait_until([&]() { return client.available_modes().size() == modes.size(); }, 8s));
+    ASSERT_TRUE(monitor_received);
+    const auto received = client.available_modes();
+    EXPECT_TRUE(find_mode(received, "Hover"));
+    EXPECT_TRUE(find_mode(received, "Position"));
+}
+
+INSTANTIATE_TEST_SUITE_P(SequencedAndUnsequencedReplies, ModesDownloadTest, testing::Bool());
+
 TEST(SystemTest, ModesServerChangesModes)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
