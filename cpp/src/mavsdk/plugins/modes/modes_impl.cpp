@@ -195,6 +195,7 @@ void ModesImpl::start_download()
         _downloading = true;
         _number_modes = 0;
         _maybe_download_seq.reset();
+        _maybe_pending_monitor_seq.reset();
         _received_modes.clear();
     }
     request_next_mode();
@@ -235,13 +236,24 @@ void ModesImpl::handle_available_modes_result(
     unsigned generation, MavlinkCommandSender::Result result, const mavlink_message_t& message)
 {
     {
-        std::lock_guard<std::mutex> lock(_mutex);
+        std::unique_lock<std::mutex> lock(_mutex);
         if (!_downloading || generation != _generation) {
             return;
         }
 
         if (result == MavlinkCommandSender::Result::Busy) {
             // The same request is already in flight, its result will get us going again.
+            return;
+        }
+
+        if (_maybe_pending_monitor_seq) {
+            // The previous request has finished. Discard its reply and start with a clean list.
+            _number_modes = 0;
+            _maybe_download_seq = _maybe_pending_monitor_seq;
+            _maybe_pending_monitor_seq.reset();
+            _received_modes.clear();
+            lock.unlock();
+            request_next_mode();
             return;
         }
 
@@ -271,8 +283,8 @@ void ModesImpl::handle_available_modes_result(
                 available_modes.number_modes);
         } else {
             // The list changed while we downloaded it, start over.
-            const bool seq_changed =
-                _maybe_download_seq && _maybe_download_seq.value() != available_modes.seq;
+            const bool seq_changed = available_modes.seq != 0 && _maybe_download_seq &&
+                                     _maybe_download_seq.value() != available_modes.seq;
             const bool number_changed =
                 _number_modes != 0 && _number_modes != available_modes.number_modes;
             if (seq_changed || number_changed) {
@@ -288,7 +300,10 @@ void ModesImpl::handle_available_modes_result(
                 _received_modes.clear();
             } else {
                 _number_modes = available_modes.number_modes;
-                _maybe_download_seq = available_modes.seq;
+                // Some autopilots send the monitor but omit the sequence in replies.
+                if (available_modes.seq != 0) {
+                    _maybe_download_seq = available_modes.seq;
+                }
 
                 ModeEntry entry{};
                 entry.standard_mode = available_modes.standard_mode;
@@ -321,7 +336,9 @@ void ModesImpl::finish_download()
 {
     _downloading = false;
     _restarts = 0;
-    _maybe_last_seq = _maybe_download_seq;
+    if (_maybe_download_seq) {
+        _maybe_last_seq = _maybe_download_seq;
+    }
     _source = Source::AvailableModes;
 
     _entries.clear();
@@ -370,7 +387,11 @@ void ModesImpl::handle_available_modes_monitor(const mavlink_message_t& message)
         if (_maybe_last_seq && _maybe_last_seq.value() == monitor.seq) {
             return;
         }
-        if (_downloading && _maybe_download_seq && _maybe_download_seq.value() == monitor.seq) {
+        if (_downloading) {
+            // Restart after the in-flight request finishes, otherwise the new request may be Busy.
+            if (_maybe_download_seq != monitor.seq) {
+                _maybe_pending_monitor_seq = monitor.seq;
+            }
             return;
         }
         _maybe_last_seq = monitor.seq;

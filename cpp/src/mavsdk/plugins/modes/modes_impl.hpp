@@ -74,6 +74,7 @@ private:
     unsigned _restarts{0};
     uint8_t _number_modes{0};
     std::optional<uint8_t> _maybe_download_seq{};
+    std::optional<uint8_t> _maybe_pending_monitor_seq{};
     std::map<uint8_t, ModeEntry> _received_modes{};
     std::optional<uint8_t> _maybe_last_seq{};
 
