@@ -1,4 +1,5 @@
 #include "mavsdk.hpp"
+#include "plugins/action/action.hpp"
 #include "mavlink_include.hpp"
 #include <asio/io_context.hpp>
 #include <asio/ip/udp.hpp>
@@ -8,6 +9,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <functional>
+#include <memory>
 #include <future>
 #include <thread>
 #include <gtest/gtest.h>
@@ -16,7 +18,8 @@ using namespace mavsdk;
 
 namespace {
 
-// Answers TIMESYNC requests with a clock that starts at boot, like PX4 does.
+// Answers TIMESYNC requests with a clock that starts at boot, like PX4 does, and acks every
+// command.
 class FakeAutopilot {
 public:
     explicit FakeAutopilot(unsigned short groundstation_port) :
@@ -39,6 +42,11 @@ public:
 
     // 0 means: answer the component that asked.
     std::atomic<uint8_t> reply_target_component{0};
+
+    // Holds back every answer by this long, like a slow link would.
+    std::atomic<int> reply_delay_ms{0};
+
+    std::atomic<int> timesync_replies{0};
 
 private:
     int64_t now_ns() const
@@ -89,8 +97,41 @@ private:
             });
     }
 
+    void send_delayed(const mavlink_message_t& message, std::function<void()> on_sent = {})
+    {
+        auto timer = std::make_shared<asio::steady_timer>(
+            _io_context, std::chrono::milliseconds(reply_delay_ms.load()));
+        timer->async_wait([this, timer, message, on_sent](const asio::error_code& ec) {
+            if (!ec) {
+                send(message);
+                if (on_sent) {
+                    on_sent();
+                }
+            }
+        });
+    }
+
     void handle(const mavlink_message_t& message)
     {
+        if (message.msgid == MAVLINK_MSG_ID_COMMAND_LONG) {
+            mavlink_command_long_t command{};
+            mavlink_msg_command_long_decode(&message, &command);
+            mavlink_message_t ack{};
+            mavlink_msg_command_ack_pack_chan(
+                1,
+                1,
+                channel,
+                &ack,
+                command.command,
+                MAV_RESULT_ACCEPTED,
+                0,
+                0,
+                message.sysid,
+                message.compid);
+            send_delayed(ack);
+            return;
+        }
+
         if (message.msgid != MAVLINK_MSG_ID_TIMESYNC) {
             return;
         }
@@ -110,7 +151,7 @@ private:
             request.ts1,
             message.sysid,
             target != 0 ? target : message.compid);
-        send(reply);
+        send_delayed(reply, [this]() { ++timesync_replies; });
     }
 
     static constexpr uint8_t channel = MAVLINK_COMM_NUM_BUFFERS - 1;
@@ -195,4 +236,29 @@ TEST(Timesync, IgnoresRepliesForOtherComponents)
     EXPECT_GT(updates, 0);
 
     system.value()->unsubscribe_timesync_status(handle);
+}
+
+TEST(Timesync, SlowLinkStretchesTimeout)
+{
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
+    ASSERT_EQ(mavsdk.add_any_connection("udpin://127.0.0.1:17132"), ConnectionResult::Success);
+    FakeAutopilot autopilot{17132};
+    // Longer than a command takes to time out with the default 0.5 s: four attempts.
+    autopilot.reply_delay_ms = 3000;
+
+    auto system = mavsdk.first_autopilot(5.0);
+    ASSERT_TRUE(system);
+
+    // The RTT is measured without enable_timesync(). Requests go out every 5 s.
+    for (int i = 0; i < 150 && autopilot.timesync_replies == 0; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    ASSERT_GT(autopilot.timesync_replies, 0);
+    // Let the answer arrive.
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    EXPECT_FALSE(system.value()->timesync_status().synced);
+
+    Action action{system.value()};
+    EXPECT_EQ(action.arm(), Action::Result::Success);
 }

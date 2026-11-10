@@ -338,8 +338,6 @@ public:
     Time& get_time();
     AutopilotTime& get_autopilot_time() { return _autopilot_time; }
 
-    double get_ping_time_s() const { return _ping.last_ping_time_s(); }
-
     void register_plugin(PluginImplBase* plugin_impl);
     void unregister_plugin(PluginImplBase* plugin_impl);
 
@@ -389,7 +387,7 @@ private:
     static std::string component_name(uint8_t component_id);
     static ComponentType component_type(uint8_t component_id);
 
-    void schedule_ping();
+    void schedule_timesync();
 
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
@@ -447,7 +445,7 @@ private:
     // Libmav message handling using CallbackList for thread safety
     CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{io_context()};
 
-    CallEveryHandler::Cookie _ping_cookie{};
+    CallEveryHandler::Cookie _timesync_cookie{};
     std::atomic<bool> _should_exit{false};
 
     std::atomic<bool> _connected{false};
@@ -456,7 +454,7 @@ private:
 
     std::atomic<bool> _autopilot_version_pending{false};
 
-    static constexpr double _ping_interval_s = 5.0;
+    static constexpr double _timesync_interval_s = 5.0;
 
     struct ParamSenderEntry {
         std::unique_ptr<MavlinkParameterClient> parameter_client;
