@@ -537,8 +537,8 @@ Set timeout of MAVLink transfers.
 
 The default timeout used is generally DEFAULT_SERIAL_BAUDRATE (0.5 seconds) seconds. If MAVSDK is used on the same host this timeout can be reduced, while if MAVSDK has to communicate over links with high latency it might need to be increased to prevent timeouts.
 
-This value is a lower bound: MAVSDK measures the round-trip time to each autopilot using MAVLink PING and increases the timeout for that system automatically if the link is slower than the configured value allows for. ArduPilot does not answer PING, so for ArduPilot the configured value is used as is.
 
+This value is a lower bound: MAVSDK measures the round-trip time to each autopilot using MAVLink PING and increases the timeout for that system automatically if the link is slower than the configured value allows for. ArduPilot does not answer PING, so for ArduPilot the configured value is used as is.
 
 **Parameters**
 
