@@ -58,6 +58,7 @@ add_executable(system_tests_runner
     mavlink_direct_command.cpp
     mavlink_seq.cpp
     mission_cancellation.cpp
+    mission_upload_rtl.cpp
     mission_changed.cpp
     mission_transfer_lossy.cpp
     modes.cpp

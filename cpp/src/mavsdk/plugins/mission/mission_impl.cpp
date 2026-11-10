@@ -652,16 +652,19 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
     }
 
     if (_enable_return_to_launch_after_mission) {
+        // ArduPilot rejects NaN in the unused RTL parameters.
+        const float unused_param =
+            _system_impl->effective_autopilot() == Autopilot::ArduPilot ? 0.0f : NAN;
         MavlinkMissionTransferClient::ItemInt next_item{
             static_cast<uint16_t>(int_items.size()),
             MAV_FRAME_MISSION,
             MAV_CMD_NAV_RETURN_TO_LAUNCH,
             0, // current
             1, // autocontinue
-            NAN, // loiter time in seconds
-            NAN, // empty
-            NAN, // radius around waypoint in meters ?
-            NAN, // loiter at center of waypoint
+            unused_param,
+            unused_param,
+            unused_param,
+            unused_param,
             0,
             0,
             0,
