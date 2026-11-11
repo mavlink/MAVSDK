@@ -27,9 +27,9 @@ public:
         _storage[_index] = value;
     }
 
-    T& operator[](int index) { return _storage[(_index + index + 1) % N]; }
+    T& operator[](int index) { return _storage[(_index + 1 + N - _size + index) % N]; }
 
-    const T& operator[](int index) const { return _storage[(_index + index + 1) % N]; }
+    const T& operator[](int index) const { return _storage[(_index + 1 + N - _size + index) % N]; }
 
     using iterator = RingbufferIterator<T, N>;
     using const_iterator = ConstRingbufferIterator<T, N>;
