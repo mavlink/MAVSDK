@@ -227,9 +227,10 @@ TEST(Timesync, IgnoresRepliesForOtherComponents)
     EXPECT_EQ(updates, 0);
     EXPECT_FALSE(system.value()->timesync_status().synced);
 
-    // Once it answers us, the next request (5 s later) syncs.
+    // Once it answers us, the next request (5 s later) syncs. The callback is delivered after
+    // the status is set, so wait for both.
     autopilot.reply_target_component = 0;
-    for (int i = 0; i < 60 && !system.value()->timesync_status().synced; ++i) {
+    for (int i = 0; i < 60 && (!system.value()->timesync_status().synced || updates == 0); ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     EXPECT_TRUE(system.value()->timesync_status().synced);

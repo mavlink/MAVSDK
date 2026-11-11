@@ -31,7 +31,14 @@ Timesync::~Timesync()
 void Timesync::enable()
 {
     // System::enable_timesync() is public API and idempotent.
-    _is_enabled = true;
+    if (_is_enabled.exchange(true)) {
+        return;
+    }
+
+    // Don't make the first offset wait for the next tick, which can be up to 5 s away.
+    if (_system_impl.is_connected()) {
+        send_request();
+    }
 }
 
 void Timesync::reset_rtt()
@@ -74,11 +81,7 @@ void Timesync::update_status(bool synced, int64_t rtt_ns)
 void Timesync::send_tick()
 {
     if (_system_impl.is_connected()) {
-        int64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                             _system_impl.get_autopilot_time().now().time_since_epoch())
-                             .count();
-        remember_request(now_ns);
-        send_timesync(0, static_cast<uint64_t>(now_ns));
+        send_request();
     } else if (_autopilot_timesync_acquired) {
         _autopilot_timesync_acquired = false;
         update_status(false, status().rtt_ns);
@@ -120,6 +123,15 @@ void Timesync::process_timesync(const mavlink_message_t& message)
         // the timesync packet is roughly equal both ways.
         set_timesync_offset((timesync.tc1 * 2 - (timesync.ts1 + now_ns)) / 2, timesync.ts1);
     }
+}
+
+void Timesync::send_request()
+{
+    int64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                         _system_impl.get_autopilot_time().now().time_since_epoch())
+                         .count();
+    remember_request(now_ns);
+    send_timesync(0, static_cast<uint64_t>(now_ns));
 }
 
 void Timesync::remember_request(int64_t ts1)

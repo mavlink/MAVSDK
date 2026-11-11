@@ -51,6 +51,7 @@ private:
     void set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_local_time_ns);
     void update_status(bool synced, int64_t rtt_ns);
 
+    void send_request();
     void remember_request(int64_t ts1);
     void add_rtt_sample(int64_t ts1);
 
