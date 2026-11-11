@@ -19,23 +19,6 @@ Ping::~Ping()
     _system_impl.unregister_all_mavlink_message_handlers_blocking(this);
 }
 
-void Ping::run_once()
-{
-    _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
-        mavlink_message_t message;
-        mavlink_msg_ping_pack_chan(
-            mavlink_address.system_id,
-            mavlink_address.component_id,
-            channel,
-            &message,
-            _system_impl.get_time().elapsed_us(),
-            _ping_sequence,
-            0,
-            0); // to all
-        return message;
-    });
-}
-
 void Ping::process_ping(const mavlink_message_t& message)
 {
     mavlink_ping_t ping;
@@ -57,20 +40,6 @@ void Ping::process_ping(const mavlink_message_t& message)
                 message.compid);
             return response_message;
         });
-
-    } else {
-        // Answer from ping request.
-        if (ping.seq != _ping_sequence) {
-            // Ignoring unknown ping sequence.
-            return;
-        }
-
-        if (message.compid != MAV_COMP_ID_AUTOPILOT1) {
-            // We're currently only interested in the ping of the autopilot.
-            return;
-        }
-
-        _last_ping_time_us = _system_impl.get_time().elapsed_us() - ping.time_usec;
     }
 }
 

@@ -11,6 +11,7 @@
 #include "callback_list.tpp"
 #include "unused.hpp"
 #include "mavsdk_export.h"
+#include <algorithm>
 #include <cassert>
 #include <cstdlib>
 #include <functional>
@@ -48,14 +49,14 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         }
     }
 
-    schedule_ping();
+    schedule_timesync();
 }
 
 SystemImpl::~SystemImpl()
 {
     _should_exit = true;
-    // Blocking, so the ping tick cannot be running while we tear the rest down.
-    remove_call_every_blocking(_ping_cookie);
+    // Blocking, so the timesync tick cannot be running while we tear the rest down.
+    remove_call_every_blocking(_timesync_cookie);
     // Use blocking version to ensure any in-flight callbacks complete before destruction.
     _mavlink_message_handler.unregister_all_blocking(this);
     // Clear all libmav message callbacks
@@ -268,7 +269,9 @@ void SystemImpl::unregister_timeout_handler_blocking(TimeoutHandler::Cookie cook
 
 double SystemImpl::timeout_s() const
 {
-    return _mavsdk_impl.timeout_s();
+    // The configured timeout is the floor. On a slow link (e.g. LTE or satellite) the
+    // timeout is stretched to what the measured round-trip time needs.
+    return std::max(_mavsdk_impl.timeout_s(), _timesync.rtt_timeout_s());
 }
 
 void SystemImpl::enable_timesync()
@@ -436,19 +439,15 @@ void SystemImpl::heartbeats_timed_out()
     set_disconnected();
 }
 
-void SystemImpl::schedule_ping()
+void SystemImpl::schedule_timesync()
 {
     // The protocol handlers (command sender, parameter clients, mission transfer, FTP) used
     // to be driven from here at 10 ms whether or not they had anything queued. They now run
     // their do_work() when something is enqueued and when an item finishes, so all that is
-    // left on a timer is the ping, which is genuinely periodic.
-    _ping_cookie = add_call_every(
-        [this]() {
-            if (_connected && _autopilot != Autopilot::ArduPilot) {
-                _ping.run_once();
-            }
-        },
-        static_cast<float>(SystemImpl::_ping_interval_s));
+    // left on a timer is the TIMESYNC request, which is genuinely periodic. It measures the
+    // round-trip time whether or not timesync is enabled.
+    _timesync_cookie = add_call_every(
+        [this]() { _timesync.send_tick(); }, static_cast<float>(SystemImpl::_timesync_interval_s));
 }
 
 std::string SystemImpl::component_name(uint8_t component_id)
@@ -712,6 +711,7 @@ void SystemImpl::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
+        _timesync.reset_rtt();
         _is_connected_callbacks.queue(
             false, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
     }

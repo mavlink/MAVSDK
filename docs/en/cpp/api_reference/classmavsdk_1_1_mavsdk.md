@@ -537,6 +537,9 @@ Set timeout of MAVLink transfers.
 
 The default timeout used is generally DEFAULT_SERIAL_BAUDRATE (0.5 seconds) seconds. If MAVSDK is used on the same host this timeout can be reduced, while if MAVSDK has to communicate over links with high latency it might need to be increased to prevent timeouts.
 
+
+This value is a lower bound: MAVSDK measures the round-trip time to each autopilot using MAVLink TIMESYNC and increases the timeout for that system automatically if the link is slower than the configured value allows for. This happens whether or not timesync is enabled.
+
 **Parameters**
 
 * double **timeout_s** - 

@@ -4,6 +4,8 @@
 #include "system_impl.hpp"
 #include "callback_list.tpp"
 
+#include <algorithm>
+
 // Partially based on: https://github.com/mavlink/mavros/blob/master/mavros/src/plugins/sys_time.cpp
 
 namespace mavsdk {
@@ -13,34 +15,35 @@ template class MAVSDK_TEMPL_INST CallbackList<System::TimesyncStatus>;
 Timesync::Timesync(SystemImpl& parent) :
     _system_impl(parent),
     _status_callbacks(parent.io_context())
-{}
+{
+    _system_impl.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_TIMESYNC,
+        [this](const mavlink_message_t& message) { process_timesync(message); },
+        this);
+}
 
 Timesync::~Timesync()
 {
-    // Blocking variants, so that neither the tick nor a message can be dispatched into us
-    // while we are being destroyed.
-    _system_impl.remove_call_every_blocking(_send_cookie);
+    // Blocking, so that no message can be dispatched into us while we are being destroyed.
     _system_impl.unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void Timesync::enable()
 {
-    if (_is_enabled) {
-        // System::enable_timesync() is public API and used to be idempotent, so keep it that
-        // way: registering the tick twice would double the timesync rate and leak a cookie.
+    // System::enable_timesync() is public API and idempotent.
+    if (_is_enabled.exchange(true)) {
         return;
     }
 
-    _is_enabled = true;
-    _system_impl.register_mavlink_message_handler(
-        MAVLINK_MSG_ID_TIMESYNC,
-        [this](const mavlink_message_t& message) { process_timesync(message); },
-        this);
+    // Don't make the first offset wait for the next tick, which can be up to 5 s away.
+    if (_system_impl.is_connected()) {
+        send_request();
+    }
+}
 
-    // This used to be a do_work() that compared elapsed time on every pass of the system
-    // work poll. It is just a fixed interval, so let CallEveryHandler keep the time.
-    _send_cookie = _system_impl.add_call_every(
-        [this]() { send_timesync_tick(); }, static_cast<float>(TIMESYNC_SEND_INTERVAL_S));
+void Timesync::reset_rtt()
+{
+    _rtt_estimator.reset();
 }
 
 System::TimesyncStatus Timesync::status() const
@@ -75,17 +78,10 @@ void Timesync::update_status(bool synced, int64_t rtt_ns)
         status, [this](const auto& func) { _system_impl.call_user_callback(func); });
 }
 
-void Timesync::send_timesync_tick()
+void Timesync::send_tick()
 {
-    if (!_is_enabled) {
-        return;
-    }
-
     if (_system_impl.is_connected()) {
-        uint64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                              _system_impl.get_autopilot_time().now().time_since_epoch())
-                              .count();
-        send_timesync(0, now_ns);
+        send_request();
     } else if (_autopilot_timesync_acquired) {
         _autopilot_timesync_acquired = false;
         update_status(false, status().rtt_ns);
@@ -115,10 +111,54 @@ void Timesync::process_timesync(const mavlink_message_t& message)
         // Send synced time to remote system
         send_timesync(now_ns, timesync.ts1, message.sysid, message.compid);
     } else if (timesync.tc1 > 0) {
+        if (message.compid == MAV_COMP_ID_AUTOPILOT1) {
+            add_rtt_sample(timesync.ts1);
+        }
+
+        if (!_is_enabled) {
+            return;
+        }
+
         // Time offset between this system and the remote system is calculated assuming RTT for
         // the timesync packet is roughly equal both ways.
         set_timesync_offset((timesync.tc1 * 2 - (timesync.ts1 + now_ns)) / 2, timesync.ts1);
     }
+}
+
+void Timesync::send_request()
+{
+    int64_t now_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                         _system_impl.get_autopilot_time().now().time_since_epoch())
+                         .count();
+    remember_request(now_ns);
+    send_timesync(0, static_cast<uint64_t>(now_ns));
+}
+
+void Timesync::remember_request(int64_t ts1)
+{
+    std::lock_guard<std::mutex> lock(_requests_mutex);
+    _requests[_next_request] = Request{ts1, std::chrono::steady_clock::now()};
+    _next_request = (_next_request + 1) % _requests.size();
+}
+
+void Timesync::add_rtt_sample(int64_t ts1)
+{
+    std::chrono::steady_clock::duration rtt{};
+    {
+        std::lock_guard<std::mutex> lock(_requests_mutex);
+        auto it = std::find_if(_requests.begin(), _requests.end(), [ts1](const Request& request) {
+            return request.ts1 != 0 && request.ts1 == ts1;
+        });
+        if (it == _requests.end()) {
+            // Not one of ours, e.g. the answer to another ground station on the same link
+            // that does not set the target, or a duplicate.
+            return;
+        }
+        rtt = std::chrono::steady_clock::now() - it->sent;
+        *it = Request{};
+    }
+
+    _rtt_estimator.add_sample_s(std::chrono::duration<double>(rtt).count());
 }
 
 void Timesync::send_timesync(
