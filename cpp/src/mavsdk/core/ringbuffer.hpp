@@ -90,11 +90,23 @@ public:
         _off -= amount;
         return *this;
     }
+    RingbufferIterator operator+(int amount) const
+    {
+        auto t = *this;
+        t._off += amount;
+        return t;
+    }
+    RingbufferIterator operator-(int amount) const
+    {
+        auto t = *this;
+        t._off -= amount;
+        return t;
+    }
     bool operator<(RingbufferIterator const& sibling) const { return _off < sibling._off; }
     bool operator<=(RingbufferIterator const& sibling) const { return _off <= sibling._off; }
     bool operator>(RingbufferIterator const& sibling) const { return _off > sibling._off; }
     bool operator>=(RingbufferIterator const& sibling) const { return _off >= sibling._off; }
-    T& operator[](int index) const { return _buf[index]; }
+    T& operator[](int index) const { return _buf[_off + index]; }
     T& operator*() const { return _buf[_off]; }
 
 private:
@@ -144,11 +156,23 @@ public:
         _off -= amount;
         return *this;
     }
+    ConstRingbufferIterator operator+(int amount) const
+    {
+        auto t = *this;
+        t._off += amount;
+        return t;
+    }
+    ConstRingbufferIterator operator-(int amount) const
+    {
+        auto t = *this;
+        t._off -= amount;
+        return t;
+    }
     bool operator<(ConstRingbufferIterator const& sibling) const { return _off < sibling._off; }
     bool operator<=(ConstRingbufferIterator const& sibling) const { return _off <= sibling._off; }
     bool operator>(ConstRingbufferIterator const& sibling) const { return _off > sibling._off; }
     bool operator>=(ConstRingbufferIterator const& sibling) const { return _off >= sibling._off; }
-    const T& operator[](int index) const { return _buf[index]; }
+    const T& operator[](int index) const { return _buf[_off + index]; }
     const T& operator*() const { return _buf[_off]; }
 
 private:

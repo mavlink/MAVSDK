@@ -165,3 +165,45 @@ TEST(Ringbuffer, ExactlyFullAndWrapAround)
     buffer.push(60); // drops 20
     expect_contents(buffer, {30, 40, 50, 60});
 }
+
+TEST(Ringbuffer, IteratorIndexRespectsOffset)
+{
+    auto buffer = Ringbuffer<int, 5>{};
+    for (int v : {10, 20, 30, 40, 50}) {
+        buffer.push(v);
+    }
+
+    auto it = buffer.begin();
+    ++it;
+    EXPECT_EQ(it[0], 20);
+    EXPECT_EQ(it[1], 30);
+
+    auto cit = buffer.cbegin();
+    ++cit;
+    EXPECT_EQ(cit[0], 20);
+    EXPECT_EQ(cit[1], 30);
+}
+
+TEST(Ringbuffer, IteratorRandomAccessOffset)
+{
+    auto buffer = Ringbuffer<int, 5>{};
+    for (int v : {10, 20, 30, 40}) {
+        buffer.push(v); // partially filled
+    }
+
+    auto it = buffer.begin();
+    for (int off = 0; off < 4; ++off) {
+        auto shifted = it + off;
+        for (int n = 0; n + off < 4; ++n) {
+            EXPECT_EQ(shifted[n], *(shifted + n)) << "off " << off << " n " << n;
+        }
+        EXPECT_EQ(*shifted, buffer[off]);
+    }
+    EXPECT_TRUE((it + 4) == buffer.end());
+    EXPECT_TRUE((buffer.end() - 4) == it);
+
+    const auto& cbuf = buffer;
+    auto cit = cbuf.begin();
+    EXPECT_EQ((cit + 2)[1], 40);
+    EXPECT_EQ(*(cit + 3), 40);
+}
