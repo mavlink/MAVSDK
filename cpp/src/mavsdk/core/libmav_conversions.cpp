@@ -43,7 +43,7 @@ bool json_to_libmav_message(const std::string& json_string, mav::Message& msg)
             // Handle float/double values (including null -> NaN)
             auto field_opt = msg.type().getField(field_name);
             if (!field_opt) {
-                LogWarn("Field {} not found in message definitio", field_name);
+                LogWarn("Field {} not found in message definition", field_name);
                 continue;
             }
 
@@ -86,7 +86,7 @@ bool json_to_libmav_message(const std::string& json_string, mav::Message& msg)
             // Get field definition to determine correct type
             auto field_opt = msg.type().getField(field_name);
             if (!field_opt) {
-                LogWarn("Field {} not found in message definitio", field_name);
+                LogWarn("Field {} not found in message definition", field_name);
                 continue;
             }
 
