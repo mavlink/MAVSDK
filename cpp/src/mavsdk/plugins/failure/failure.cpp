@@ -86,6 +86,20 @@ MAVSDK_PUBLIC std::string_view to_string(Failure::FailureUnit const& failure_uni
             return "System Rc Signal";
         case Failure::FailureUnit::SystemMavlinkSignal:
             return "System Mavlink Signal";
+        case Failure::FailureUnit::SystemEsc:
+            return "System Esc";
+        case Failure::FailureUnit::SystemTrafficAvoidance:
+            return "System Traffic Avoidance";
+        case Failure::FailureUnit::DatalinkLte:
+            return "Datalink Lte";
+        case Failure::FailureUnit::DatalinkWifi:
+            return "Datalink Wifi";
+        case Failure::FailureUnit::DatalinkTelemRadio:
+            return "Datalink Telem Radio";
+        case Failure::FailureUnit::BusCan:
+            return "Bus Can";
+        case Failure::FailureUnit::BusI2C:
+            return "Bus I2C";
         default:
             return "Unknown";
     }
@@ -115,6 +129,8 @@ MAVSDK_PUBLIC std::string_view to_string(Failure::FailureType const& failure_typ
             return "Delayed";
         case Failure::FailureType::Intermittent:
             return "Intermittent";
+        case Failure::FailureType::Drift:
+            return "Drift";
         default:
             return "Unknown";
     }

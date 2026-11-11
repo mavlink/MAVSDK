@@ -176,7 +176,7 @@ const char descriptor_table_protodef_failure_2ffailure_2eproto[] ABSL_ATTRIBUTE_
     "ESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_E"
     "RROR\020\003\022\026\n\022RESULT_UNSUPPORTED\020\004\022\021\n\rRESULT"
     "_DENIED\020\005\022\023\n\017RESULT_DISABLED\020\006\022\022\n\016RESULT"
-    "_TIMEOUT\020\007*\375\003\n\013FailureUnit\022\034\n\030FAILURE_UN"
+    "_TIMEOUT\020\007*\344\005\n\013FailureUnit\022\034\n\030FAILURE_UN"
     "IT_SENSOR_GYRO\020\000\022\035\n\031FAILURE_UNIT_SENSOR_"
     "ACCEL\020\001\022\033\n\027FAILURE_UNIT_SENSOR_MAG\020\002\022\034\n\030"
     "FAILURE_UNIT_SENSOR_BARO\020\003\022\033\n\027FAILURE_UN"
@@ -189,16 +189,22 @@ const char descriptor_table_protodef_failure_2ffailure_2eproto[] ABSL_ATTRIBUTE_
     "STEM_SERVO\020f\022!\n\035FAILURE_UNIT_SYSTEM_AVOI"
     "DANCE\020g\022!\n\035FAILURE_UNIT_SYSTEM_RC_SIGNAL"
     "\020h\022&\n\"FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL"
-    "\020i*\322\001\n\013FailureType\022\023\n\017FAILURE_TYPE_OK\020\000\022"
-    "\024\n\020FAILURE_TYPE_OFF\020\001\022\026\n\022FAILURE_TYPE_ST"
-    "UCK\020\002\022\030\n\024FAILURE_TYPE_GARBAGE\020\003\022\026\n\022FAILU"
-    "RE_TYPE_WRONG\020\004\022\025\n\021FAILURE_TYPE_SLOW\020\005\022\030"
-    "\n\024FAILURE_TYPE_DELAYED\020\006\022\035\n\031FAILURE_TYPE"
-    "_INTERMITTENT\020\0072g\n\016FailureService\022U\n\006Inj"
-    "ect\022!.mavsdk.rpc.failure.InjectRequest\032\""
-    ".mavsdk.rpc.failure.InjectResponse\"\004\200\265\030\001"
-    "B!\n\021io.mavsdk.failureB\014FailureProtob\006pro"
-    "to3"
+    "\020i\022\033\n\027FAILURE_UNIT_SYSTEM_ESC\020j\022)\n%FAILU"
+    "RE_UNIT_SYSTEM_TRAFFIC_AVOIDANCE\020k\022\036\n\031FA"
+    "ILURE_UNIT_DATALINK_LTE\020\226\001\022\037\n\032FAILURE_UN"
+    "IT_DATALINK_WIFI\020\227\001\022&\n!FAILURE_UNIT_DATA"
+    "LINK_TELEM_RADIO\020\230\001\022\031\n\024FAILURE_UNIT_BUS_"
+    "CAN\020\310\001\022\031\n\024FAILURE_UNIT_BUS_I2C\020\311\001*\352\001\n\013Fa"
+    "ilureType\022\023\n\017FAILURE_TYPE_OK\020\000\022\024\n\020FAILUR"
+    "E_TYPE_OFF\020\001\022\026\n\022FAILURE_TYPE_STUCK\020\002\022\030\n\024"
+    "FAILURE_TYPE_GARBAGE\020\003\022\026\n\022FAILURE_TYPE_W"
+    "RONG\020\004\022\025\n\021FAILURE_TYPE_SLOW\020\005\022\030\n\024FAILURE"
+    "_TYPE_DELAYED\020\006\022\035\n\031FAILURE_TYPE_INTERMIT"
+    "TENT\020\007\022\026\n\022FAILURE_TYPE_DRIFT\020\0102g\n\016Failur"
+    "eService\022U\n\006Inject\022!.mavsdk.rpc.failure."
+    "InjectRequest\032\".mavsdk.rpc.failure.Injec"
+    "tResponse\"\004\200\265\030\001B!\n\021io.mavsdk.failureB\014Fa"
+    "ilureProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_failure_2ffailure_2eproto_deps[1] =
     {
@@ -208,7 +214,7 @@ static ::absl::once_flag descriptor_table_failure_2ffailure_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_failure_2ffailure_2eproto = {
     false,
     false,
-    1443,
+    1698,
     descriptor_table_protodef_failure_2ffailure_2eproto,
     "failure/failure.proto",
     &descriptor_table_failure_2ffailure_2eproto_once,
@@ -255,7 +261,7 @@ const ::google::protobuf::EnumDescriptor* FailureUnit_descriptor() {
   return file_level_enum_descriptors_failure_2ffailure_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t FailureUnit_internal_data_[] = {
-    589824u, 128u, 0u, 0u, 4160749568u, 1u, };
+    589824u, 224u, 0u, 0u, 4160749568u, 7u, 57344u, 2147483648u, 1u, };
 bool FailureUnit_IsValid(int value) {
   return ::_pbi::ValidateEnum(value, FailureUnit_internal_data_);
 }
@@ -264,9 +270,9 @@ const ::google::protobuf::EnumDescriptor* FailureType_descriptor() {
   return file_level_enum_descriptors_failure_2ffailure_2eproto[2];
 }
 PROTOBUF_CONSTINIT const uint32_t FailureType_internal_data_[] = {
-    524288u, 0u, };
+    589824u, 0u, };
 bool FailureType_IsValid(int value) {
-  return 0 <= value && value <= 7;
+  return 0 <= value && value <= 8;
 }
 // ===================================================================
 

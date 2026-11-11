@@ -83,6 +83,20 @@ public:
                 return rpc::failure::FAILURE_UNIT_SYSTEM_RC_SIGNAL;
             case mavsdk::Failure::FailureUnit::SystemMavlinkSignal:
                 return rpc::failure::FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL;
+            case mavsdk::Failure::FailureUnit::SystemEsc:
+                return rpc::failure::FAILURE_UNIT_SYSTEM_ESC;
+            case mavsdk::Failure::FailureUnit::SystemTrafficAvoidance:
+                return rpc::failure::FAILURE_UNIT_SYSTEM_TRAFFIC_AVOIDANCE;
+            case mavsdk::Failure::FailureUnit::DatalinkLte:
+                return rpc::failure::FAILURE_UNIT_DATALINK_LTE;
+            case mavsdk::Failure::FailureUnit::DatalinkWifi:
+                return rpc::failure::FAILURE_UNIT_DATALINK_WIFI;
+            case mavsdk::Failure::FailureUnit::DatalinkTelemRadio:
+                return rpc::failure::FAILURE_UNIT_DATALINK_TELEM_RADIO;
+            case mavsdk::Failure::FailureUnit::BusCan:
+                return rpc::failure::FAILURE_UNIT_BUS_CAN;
+            case mavsdk::Failure::FailureUnit::BusI2C:
+                return rpc::failure::FAILURE_UNIT_BUS_I2C;
         }
     }
 
@@ -122,6 +136,20 @@ public:
                 return mavsdk::Failure::FailureUnit::SystemRcSignal;
             case rpc::failure::FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL:
                 return mavsdk::Failure::FailureUnit::SystemMavlinkSignal;
+            case rpc::failure::FAILURE_UNIT_SYSTEM_ESC:
+                return mavsdk::Failure::FailureUnit::SystemEsc;
+            case rpc::failure::FAILURE_UNIT_SYSTEM_TRAFFIC_AVOIDANCE:
+                return mavsdk::Failure::FailureUnit::SystemTrafficAvoidance;
+            case rpc::failure::FAILURE_UNIT_DATALINK_LTE:
+                return mavsdk::Failure::FailureUnit::DatalinkLte;
+            case rpc::failure::FAILURE_UNIT_DATALINK_WIFI:
+                return mavsdk::Failure::FailureUnit::DatalinkWifi;
+            case rpc::failure::FAILURE_UNIT_DATALINK_TELEM_RADIO:
+                return mavsdk::Failure::FailureUnit::DatalinkTelemRadio;
+            case rpc::failure::FAILURE_UNIT_BUS_CAN:
+                return mavsdk::Failure::FailureUnit::BusCan;
+            case rpc::failure::FAILURE_UNIT_BUS_I2C:
+                return mavsdk::Failure::FailureUnit::BusI2C;
         }
     }
 
@@ -147,6 +175,8 @@ public:
                 return rpc::failure::FAILURE_TYPE_DELAYED;
             case mavsdk::Failure::FailureType::Intermittent:
                 return rpc::failure::FAILURE_TYPE_INTERMITTENT;
+            case mavsdk::Failure::FailureType::Drift:
+                return rpc::failure::FAILURE_TYPE_DRIFT;
         }
     }
 
@@ -172,6 +202,8 @@ public:
                 return mavsdk::Failure::FailureType::Delayed;
             case rpc::failure::FAILURE_TYPE_INTERMITTENT:
                 return mavsdk::Failure::FailureType::Intermittent;
+            case rpc::failure::FAILURE_TYPE_DRIFT:
+                return mavsdk::Failure::FailureType::Drift;
         }
     }
 

@@ -128,6 +128,20 @@ float FailureImpl::failure_unit_to_mavlink_enum(const Failure::FailureUnit& fail
             return FAILURE_UNIT_SYSTEM_RC_SIGNAL;
         case Failure::FailureUnit::SystemMavlinkSignal:
             return FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL;
+        case Failure::FailureUnit::SystemEsc:
+            return FAILURE_UNIT_SYSTEM_ESC;
+        case Failure::FailureUnit::SystemTrafficAvoidance:
+            return FAILURE_UNIT_SYSTEM_TRAFFIC_AVOIDANCE;
+        case Failure::FailureUnit::DatalinkLte:
+            return FAILURE_UNIT_DATALINK_LTE;
+        case Failure::FailureUnit::DatalinkWifi:
+            return FAILURE_UNIT_DATALINK_WIFI;
+        case Failure::FailureUnit::DatalinkTelemRadio:
+            return FAILURE_UNIT_DATALINK_TELEM_RADIO;
+        case Failure::FailureUnit::BusCan:
+            return FAILURE_UNIT_BUS_CAN;
+        case Failure::FailureUnit::BusI2C:
+            return FAILURE_UNIT_BUS_I2C;
         default:
             return -1;
     }
@@ -152,6 +166,8 @@ float FailureImpl::failure_type_to_mavlink_enum(const Failure::FailureType& fail
             return FAILURE_TYPE_DELAYED;
         case Failure::FailureType::Intermittent:
             return FAILURE_TYPE_INTERMITTENT;
+        case Failure::FailureType::Drift:
+            return FAILURE_TYPE_DRIFT;
         default:
             return -1;
     }

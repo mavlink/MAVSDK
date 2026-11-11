@@ -65,6 +65,20 @@ translate_failure_unit_from_c(mavsdk_failure_failure_unit_t c_enum) {
             return mavsdk::Failure::FailureUnit::SystemRcSignal;
         case MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL:
             return mavsdk::Failure::FailureUnit::SystemMavlinkSignal;
+        case MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_ESC:
+            return mavsdk::Failure::FailureUnit::SystemEsc;
+        case MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_TRAFFIC_AVOIDANCE:
+            return mavsdk::Failure::FailureUnit::SystemTrafficAvoidance;
+        case MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_LTE:
+            return mavsdk::Failure::FailureUnit::DatalinkLte;
+        case MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_WIFI:
+            return mavsdk::Failure::FailureUnit::DatalinkWifi;
+        case MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_TELEM_RADIO:
+            return mavsdk::Failure::FailureUnit::DatalinkTelemRadio;
+        case MAVSDK_FAILURE_FAILURE_UNIT_BUS_CAN:
+            return mavsdk::Failure::FailureUnit::BusCan;
+        case MAVSDK_FAILURE_FAILURE_UNIT_BUS_I2C:
+            return mavsdk::Failure::FailureUnit::BusI2C;
     }
     return mavsdk::Failure::FailureUnit::SensorGyro;
 }
@@ -102,6 +116,20 @@ translate_failure_unit_to_c(mavsdk::Failure::FailureUnit cpp_enum) {
             return MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_RC_SIGNAL;
         case mavsdk::Failure::FailureUnit::SystemMavlinkSignal:
             return MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL;
+        case mavsdk::Failure::FailureUnit::SystemEsc:
+            return MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_ESC;
+        case mavsdk::Failure::FailureUnit::SystemTrafficAvoidance:
+            return MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_TRAFFIC_AVOIDANCE;
+        case mavsdk::Failure::FailureUnit::DatalinkLte:
+            return MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_LTE;
+        case mavsdk::Failure::FailureUnit::DatalinkWifi:
+            return MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_WIFI;
+        case mavsdk::Failure::FailureUnit::DatalinkTelemRadio:
+            return MAVSDK_FAILURE_FAILURE_UNIT_DATALINK_TELEM_RADIO;
+        case mavsdk::Failure::FailureUnit::BusCan:
+            return MAVSDK_FAILURE_FAILURE_UNIT_BUS_CAN;
+        case mavsdk::Failure::FailureUnit::BusI2C:
+            return MAVSDK_FAILURE_FAILURE_UNIT_BUS_I2C;
     }
     return MAVSDK_FAILURE_FAILURE_UNIT_SENSOR_GYRO;
 }
@@ -125,6 +153,8 @@ translate_failure_type_from_c(mavsdk_failure_failure_type_t c_enum) {
             return mavsdk::Failure::FailureType::Delayed;
         case MAVSDK_FAILURE_FAILURE_TYPE_INTERMITTENT:
             return mavsdk::Failure::FailureType::Intermittent;
+        case MAVSDK_FAILURE_FAILURE_TYPE_DRIFT:
+            return mavsdk::Failure::FailureType::Drift;
     }
     return mavsdk::Failure::FailureType::Ok;
 }
@@ -148,6 +178,8 @@ translate_failure_type_to_c(mavsdk::Failure::FailureType cpp_enum) {
             return MAVSDK_FAILURE_FAILURE_TYPE_DELAYED;
         case mavsdk::Failure::FailureType::Intermittent:
             return MAVSDK_FAILURE_FAILURE_TYPE_INTERMITTENT;
+        case mavsdk::Failure::FailureType::Drift:
+            return MAVSDK_FAILURE_FAILURE_TYPE_DRIFT;
     }
     return MAVSDK_FAILURE_FAILURE_TYPE_OK;
 }

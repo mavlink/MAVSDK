@@ -131,6 +131,13 @@ enum FailureUnit : int {
   FAILURE_UNIT_SYSTEM_AVOIDANCE = 103,
   FAILURE_UNIT_SYSTEM_RC_SIGNAL = 104,
   FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL = 105,
+  FAILURE_UNIT_SYSTEM_ESC = 106,
+  FAILURE_UNIT_SYSTEM_TRAFFIC_AVOIDANCE = 107,
+  FAILURE_UNIT_DATALINK_LTE = 150,
+  FAILURE_UNIT_DATALINK_WIFI = 151,
+  FAILURE_UNIT_DATALINK_TELEM_RADIO = 152,
+  FAILURE_UNIT_BUS_CAN = 200,
+  FAILURE_UNIT_BUS_I2C = 201,
   FailureUnit_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   FailureUnit_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -140,8 +147,8 @@ enum FailureUnit : int {
 bool FailureUnit_IsValid(int value);
 extern const uint32_t FailureUnit_internal_data_[];
 constexpr FailureUnit FailureUnit_MIN = static_cast<FailureUnit>(0);
-constexpr FailureUnit FailureUnit_MAX = static_cast<FailureUnit>(105);
-constexpr int FailureUnit_ARRAYSIZE = 105 + 1;
+constexpr FailureUnit FailureUnit_MAX = static_cast<FailureUnit>(201);
+constexpr int FailureUnit_ARRAYSIZE = 201 + 1;
 const ::google::protobuf::EnumDescriptor*
 FailureUnit_descriptor();
 template <typename T>
@@ -164,6 +171,7 @@ enum FailureType : int {
   FAILURE_TYPE_SLOW = 5,
   FAILURE_TYPE_DELAYED = 6,
   FAILURE_TYPE_INTERMITTENT = 7,
+  FAILURE_TYPE_DRIFT = 8,
   FailureType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   FailureType_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -173,8 +181,8 @@ enum FailureType : int {
 bool FailureType_IsValid(int value);
 extern const uint32_t FailureType_internal_data_[];
 constexpr FailureType FailureType_MIN = static_cast<FailureType>(0);
-constexpr FailureType FailureType_MAX = static_cast<FailureType>(7);
-constexpr int FailureType_ARRAYSIZE = 7 + 1;
+constexpr FailureType FailureType_MAX = static_cast<FailureType>(8);
+constexpr int FailureType_ARRAYSIZE = 8 + 1;
 const ::google::protobuf::EnumDescriptor*
 FailureType_descriptor();
 template <typename T>
@@ -187,7 +195,7 @@ const std::string& FailureType_Name(T value) {
 template <>
 inline const std::string& FailureType_Name(FailureType value) {
   return ::google::protobuf::internal::NameOfDenseEnum<FailureType_descriptor,
-                                                 0, 7>(
+                                                 0, 8>(
       static_cast<int>(value));
 }
 inline bool FailureType_Parse(absl::string_view name, FailureType* value) {

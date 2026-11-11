@@ -130,6 +130,13 @@ Value | Description
 <span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1aeea9f8a53e93226933ce5b4f25e975bd"></span> `SystemAvoidance` | Avoidance. 
 <span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1a0137c898117b9f8ef51c13af7cadd710"></span> `SystemRcSignal` | RC signal. 
 <span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1a5971385898f49830581d69b301b5254d"></span> `SystemMavlinkSignal` | MAVLink signal. 
+<span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1a6f19973533563d1b1196a95a8702a759"></span> `SystemEsc` | ESC telemetry. 
+<span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1a6d2efd075c6a2d35901cf7b41bc2dc60"></span> `SystemTrafficAvoidance` | Traffic avoidance system like ADS-B or FLARM. 
+<span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1acd9af5491ce6a4038d1e3669763d2fd6"></span> `DatalinkLte` | Data link over a cellular (LTE) connection. 
+<span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1ad81a0043921cb4aac99f7395898a1e39"></span> `DatalinkWifi` | Data link over a Wi-Fi connection. 
+<span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1a9278e7a01e12bc7d9287e2269bacc81b"></span> `DatalinkTelemRadio` | Data link over a telemetry radio, e.g. a SiK radio. 
+<span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1a0c15a078a5fb2adaccec70c3793dea28"></span> `BusCan` | CAN bus, instance is the bus number, e.g. 1 for CAN1. 
+<span id="classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1a1c2ab1217820795de422c703a6806f32"></span> `BusI2C` | I2C bus, instance is the bus number, e.g. 1 for I2C1. 
 
 ### enum FailureType {#classmavsdk_1_1_failure_1ade0813be29826ae35e6692f506e8ab72}
 
@@ -147,6 +154,7 @@ Value | Description
 <span id="classmavsdk_1_1_failure_1ade0813be29826ae35e6692f506e8ab72aefa5397985b8609a5dbeb430a4bcadd3"></span> `Slow` | Unit is slow, so e.g. reporting at slower than expected rate. 
 <span id="classmavsdk_1_1_failure_1ade0813be29826ae35e6692f506e8ab72a6e04a0730cfc0bca398610196b5f8467"></span> `Delayed` | Data of unit is delayed in time. 
 <span id="classmavsdk_1_1_failure_1ade0813be29826ae35e6692f506e8ab72a9379b1b166d62d5c452a1893c079616e"></span> `Intermittent` | Unit is sometimes working, sometimes not. 
+<span id="classmavsdk_1_1_failure_1ade0813be29826ae35e6692f506e8ab72aa54b6a3e35542af4b77806be3207b2fd"></span> `Drift` | Unit is publishing plausible values but drifting away from true values. 
 
 ### enum Result {#classmavsdk_1_1_failure_1a6dcdd665b49a7ddf48c76b41475022f1}
 
