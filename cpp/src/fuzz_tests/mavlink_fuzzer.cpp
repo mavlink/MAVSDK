@@ -589,16 +589,13 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size)
             g_fuzzer.reset();
             return 0;
         }
+        // libFuzzer has no finalize hook, it just calls exit(). Exit handlers run in reverse
+        // order of registration, so registering this after Mavsdk (and with it curl/OpenSSL)
+        // is initialized tears MAVSDK and its threads down before OpenSSL's own atexit cleanup.
+        std::atexit([]() { g_fuzzer.reset(); });
     }
 
     // Process the fuzz input
     g_fuzzer->process_fuzz_input(data, size);
     return 0;
-}
-
-// Cleanup function (called by libfuzzer on exit)
-extern "C" void LLVMFuzzerFinalize()
-{
-    // Clean up the fuzzer instance
-    g_fuzzer.reset();
 }
