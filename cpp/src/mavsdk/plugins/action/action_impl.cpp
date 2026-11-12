@@ -1060,6 +1060,7 @@ Action::Result ActionImpl::set_home(
 
     MavlinkCommandSender::CommandInt command{};
     command.command = MAV_CMD_DO_SET_HOME;
+    command.frame = MAV_FRAME_GLOBAL;
     command.target_component_id = _system_impl->get_autopilot_id();
     command.params.maybe_param1 = use_current_location ? 1.0f : 0.0f;
     if (!use_current_location) {
