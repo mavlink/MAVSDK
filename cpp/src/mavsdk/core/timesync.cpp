@@ -81,7 +81,14 @@ void Timesync::update_status(bool synced, int64_t rtt_ns)
 void Timesync::send_tick()
 {
     if (_system_impl.is_connected()) {
-        send_request();
+        // Until the first sample is accepted, don't wait 5 s for another one when an answer
+        // was lost, too slow or from before an offset was applied.
+        const bool waiting_for_sync = _is_enabled && !_autopilot_timesync_acquired;
+        const bool due = _tick_count == 0;
+        _tick_count = (_tick_count + 1) % TICKS_PER_REQUEST;
+        if (due || waiting_for_sync) {
+            send_request();
+        }
     } else if (_autopilot_timesync_acquired) {
         _autopilot_timesync_acquired = false;
         update_status(false, status().rtt_ns);

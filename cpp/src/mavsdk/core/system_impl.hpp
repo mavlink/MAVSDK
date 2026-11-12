@@ -454,7 +454,7 @@ private:
 
     std::atomic<bool> _autopilot_version_pending{false};
 
-    static constexpr double _timesync_interval_s = 5.0;
+    static constexpr double _timesync_interval_s = 1.0;
 
     struct ParamSenderEntry {
         std::unique_ptr<MavlinkParameterClient> parameter_client;
