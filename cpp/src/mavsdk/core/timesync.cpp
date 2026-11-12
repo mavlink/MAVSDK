@@ -30,15 +30,23 @@ Timesync::~Timesync()
 
 void Timesync::enable()
 {
-    // System::enable_timesync() is public API and idempotent.
-    if (_is_enabled.exchange(true)) {
-        return;
-    }
+    // Queued behind whatever is already posted to the io thread, including the insertion
+    // subscribe_status() posts. Run inline, an answer already waiting there could apply the
+    // first offset before a subscription made just before this call is in place, and that
+    // subscriber would never hear that we synced.
+    _system_impl.run_on_io_thread(
+        [this]() {
+            // System::enable_timesync() is public API and idempotent.
+            if (_is_enabled.exchange(true)) {
+                return;
+            }
 
-    // Don't make the first offset wait for the next tick, which can be up to 5 s away.
-    if (_system_impl.is_connected()) {
-        send_request();
-    }
+            // Don't make the first offset wait for the next tick, which can be up to 5 s away.
+            if (_system_impl.is_connected()) {
+                send_request();
+            }
+        },
+        false);
 }
 
 void Timesync::reset_rtt()
