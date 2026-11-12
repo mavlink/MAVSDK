@@ -27,8 +27,7 @@ public:
     // measured regardless.
     void enable();
 
-    // Called by SystemImpl every second while connected. Sends a request every
-    // TICKS_PER_REQUEST ticks, or every tick while enabled but not synced yet.
+    // Called by SystemImpl at a fixed interval: sends a request while connected.
     void send_tick();
 
     // Timeout derived from the measured round-trip time, 0 until a request was answered.
@@ -72,8 +71,6 @@ private:
 
     static constexpr uint64_t MAX_CONS_HIGH_RTT = 5;
     static constexpr uint64_t MAX_RTT_SAMPLE_MS = 10;
-    static constexpr unsigned TICKS_PER_REQUEST = 5;
-    unsigned _tick_count{0};
     uint64_t _high_rtt_count{};
     bool _autopilot_timesync_acquired{false};
     std::atomic<bool> _is_enabled{false};

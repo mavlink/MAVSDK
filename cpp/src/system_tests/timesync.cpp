@@ -235,8 +235,8 @@ TEST(Timesync, IgnoresRepliesForOtherComponents)
     EXPECT_EQ(updates, 0);
     EXPECT_FALSE(system.value()->timesync_status().synced);
 
-    // Once it answers us, the next request (a second later while not synced) syncs. The
-    // callback is delivered after the status is set, so wait for both.
+    // Once it answers us, the next request (5 s later) syncs. The callback is delivered after
+    // the status is set, so wait for both.
     autopilot.reply_target_component = 0;
     for (int i = 0; i < 60 && (!system.value()->timesync_status().synced || updates == 0); ++i) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -292,7 +292,7 @@ TEST(Timesync, AnswerFromBeforeOffsetIsIgnored)
     });
     system.value()->enable_timesync();
 
-    // The first request goes out right away, more follow while this waits.
+    // The first request goes out right away, the next one 5 s later.
     std::this_thread::sleep_for(std::chrono::milliseconds(6000));
     system.value()->unsubscribe_timesync_status(handle);
 
@@ -305,34 +305,4 @@ TEST(Timesync, AnswerFromBeforeOffsetIsIgnored)
         EXPECT_LT(status.rtt_ns, 10'000'000);
         EXPECT_LT(std::llabs(status.offset_ns - expected_offset_ns), 10'000'000);
     }
-}
-
-TEST(Timesync, SlowAnswerIsRetriedSoon)
-{
-    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
-    ASSERT_EQ(mavsdk.add_any_connection("udpin://127.0.0.1:17134"), ConnectionResult::Success);
-    FakeAutopilot autopilot{17134};
-    // Too slow to be used for the offset.
-    autopilot.reply_delay_ms = 50;
-
-    auto system = mavsdk.first_autopilot(5.0);
-    ASSERT_TRUE(system);
-
-    auto prom = std::promise<void>{};
-    auto fut = prom.get_future();
-    std::atomic<bool> done{false};
-    auto handle = system.value()->subscribe_timesync_status([&](System::TimesyncStatus status) {
-        if (!status.synced) {
-            // Rejected: answer quickly from now on.
-            autopilot.reply_delay_ms = 0;
-        } else if (!done.exchange(true)) {
-            prom.set_value();
-        }
-    });
-    system.value()->enable_timesync();
-
-    // The next request goes out within a second rather than with the next 5 s one.
-    EXPECT_EQ(fut.wait_for(std::chrono::seconds(3)), std::future_status::ready);
-    system.value()->unsubscribe_timesync_status(handle);
-    EXPECT_TRUE(system.value()->timesync_status().synced);
 }
