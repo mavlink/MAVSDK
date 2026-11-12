@@ -10,8 +10,10 @@
 #include <cstdlib>
 #include <functional>
 #include <memory>
+#include <mutex>
 #include <future>
 #include <thread>
+#include <vector>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -47,6 +49,9 @@ public:
     std::atomic<int> reply_delay_ms{0};
 
     std::atomic<int> timesync_replies{0};
+
+    // Sends every TIMESYNC answer twice, like a link that duplicates packets.
+    std::atomic<bool> duplicate_replies{false};
 
 private:
     int64_t now_ns() const
@@ -152,6 +157,9 @@ private:
             message.sysid,
             target != 0 ? target : message.compid);
         send_delayed(reply, [this]() { ++timesync_replies; });
+        if (duplicate_replies) {
+            send_delayed(reply);
+        }
     }
 
     static constexpr uint8_t channel = MAVLINK_COMM_NUM_BUFFERS - 1;
@@ -262,4 +270,39 @@ TEST(Timesync, SlowLinkStretchesTimeout)
 
     Action action{system.value()};
     EXPECT_EQ(action.arm(), Action::Result::Success);
+}
+
+TEST(Timesync, AnswerFromBeforeOffsetIsIgnored)
+{
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
+    ASSERT_EQ(mavsdk.add_any_connection("udpin://127.0.0.1:17133"), ConnectionResult::Success);
+    FakeAutopilot autopilot{17133};
+    // The second copy arrives after the first one applied the offset, with ts1 still on the
+    // clock from before it. Two requests in flight across the first sync look the same.
+    autopilot.duplicate_replies = true;
+
+    auto system = mavsdk.first_autopilot(5.0);
+    ASSERT_TRUE(system);
+
+    std::mutex mutex;
+    std::vector<System::TimesyncStatus> statuses;
+    auto handle = system.value()->subscribe_timesync_status([&](System::TimesyncStatus status) {
+        std::lock_guard<std::mutex> lock(mutex);
+        statuses.push_back(status);
+    });
+    system.value()->enable_timesync();
+
+    // The first request goes out right away, the next one 5 s later.
+    std::this_thread::sleep_for(std::chrono::milliseconds(6000));
+    system.value()->unsubscribe_timesync_status(handle);
+
+    const auto expected_offset_ns = -autopilot.boot_time().count();
+    std::lock_guard<std::mutex> lock(mutex);
+    ASSERT_FALSE(statuses.empty());
+    for (const auto& status : statuses) {
+        EXPECT_TRUE(status.synced);
+        EXPECT_GT(status.rtt_ns, 0);
+        EXPECT_LT(status.rtt_ns, 10'000'000);
+        EXPECT_LT(std::llabs(status.offset_ns - expected_offset_ns), 10'000'000);
+    }
 }
