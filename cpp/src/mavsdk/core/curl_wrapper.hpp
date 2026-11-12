@@ -30,6 +30,13 @@ public:
     // ICurlWrapper
     CurlWrapper() = default;
     virtual ~CurlWrapper() = default;
+
+    // Initializes libcurl (and the TLS library behind it) once per process. Call this on the
+    // thread that creates Mavsdk, before any worker thread uses curl. Otherwise curl initializes
+    // lazily on whichever thread downloads first, which isn't thread-safe, and the TLS library
+    // registers its atexit cleanup late enough to run while that thread is still alive.
+    static void global_init();
+
     bool download_text(const std::string& url, std::string& content) override;
     bool download_file_to_path(
         const std::string& url,

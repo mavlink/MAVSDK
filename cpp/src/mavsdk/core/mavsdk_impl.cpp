@@ -32,6 +32,9 @@
 #include "hostname_to_ip.hpp"
 #include "libmav_receiver.hpp"
 #include "embedded_mavlink_xml.hpp"
+#if BUILD_WITHOUT_CURL != 1
+#include "curl_wrapper.hpp"
+#endif
 #include <mav/BufferParser.h>
 #include <mav/MessageSet.h>
 
@@ -57,6 +60,10 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     call_every_handler(time)
 {
     LogInfo("MAVSDK version: {}", mavsdk_version);
+
+#if BUILD_WITHOUT_CURL != 1
+    CurlWrapper::global_init();
+#endif
 
     if (const char* env_p = std::getenv("MAVSDK_CALLBACK_DEBUGGING")) {
         if (std::string(env_p) == "1") {

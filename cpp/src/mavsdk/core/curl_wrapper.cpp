@@ -2,12 +2,25 @@
 #include "curl_wrapper.hpp"
 #include "unused.hpp"
 #include <iostream>
+#include <mutex>
 #include <cstdio>
 #include <fstream>
 #include <sstream>
 #include <string>
 
 namespace mavsdk {
+
+void CurlWrapper::global_init()
+{
+    // Never paired with curl_global_cleanup(): the application or another library may still be
+    // using curl, and the TLS library cleans up after itself at exit.
+    static std::once_flag once;
+    std::call_once(once, []() {
+        if (curl_global_init(CURL_GLOBAL_DEFAULT) != CURLE_OK) {
+            LogErr("curl_global_init failed");
+        }
+    });
+}
 
 // converts curl output to string
 // taken from
