@@ -2,6 +2,7 @@
 #include <functional>
 #include <future>
 #include <numeric>
+#include "binary_to_str.hpp"
 #include "info_impl.hpp"
 #include "system.hpp"
 #include "callback_list.tpp"
@@ -166,33 +167,6 @@ void InfoImpl::process_flight_information(const mavlink_message_t& message)
 
     _flight_info_subscriptions.queue(
         _flight_info, [this](const auto& func) { _system_impl->call_user_callback(func); });
-}
-
-std::string InfoImpl::swap_and_translate_binary_to_str(uint8_t* binary, unsigned binary_len)
-{
-    std::string str(binary_len * 2 + 1, '0');
-
-    for (unsigned i = 0; i < binary_len; ++i) {
-        // One hex number occupies 2 chars.
-        // The binary is in little endian, therefore we need to swap the bytes for us to read.
-        snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[binary_len - 1 - i]);
-    }
-
-    str.pop_back();
-    return str;
-}
-
-std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_len)
-{
-    std::string str(binary_len * 2 + 1, '0');
-
-    for (unsigned i = 0; i < binary_len; ++i) {
-        // One hex number occupies 2 chars.
-        snprintf(&str[i * 2], str.length() - i * 2, "%02x", binary[i]);
-    }
-
-    str.pop_back();
-    return str;
 }
 
 std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() const
