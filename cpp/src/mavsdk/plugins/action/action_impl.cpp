@@ -286,6 +286,7 @@ void ActionImpl::arm_async(const Action::ResultCallback& callback) const
                     if (callback) {
                         callback(action_result);
                     }
+                    return;
                 }
                 send_arm_command();
             });
