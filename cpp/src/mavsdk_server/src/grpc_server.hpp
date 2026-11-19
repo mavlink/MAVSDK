@@ -10,6 +10,7 @@
 #endif
 
 #include <memory>
+#include <string>
 
 #include "mavsdk.hpp"
 #include "core/core_service_impl.hpp"
@@ -419,9 +420,13 @@ public:
     void wait();
     void stop();
     void set_port(int port);
+    // Host or IP address to listen on, e.g. "127.0.0.1" or "::1". Call
+    // before run(). Defaults to all IPv4 interfaces.
+    void set_bind_address(const std::string& bind_address);
 
 private:
     void setup_port(grpc::ServerBuilder& builder);
+    std::string listen_address(int port) const;
 
     CoreServiceImpl<> _core;
 
@@ -701,6 +706,7 @@ private:
 
     std::unique_ptr<grpc::Server> _server;
 
+    std::string _bind_address{"0.0.0.0"};
     int _port{0};
     int _bound_port{0};
 };

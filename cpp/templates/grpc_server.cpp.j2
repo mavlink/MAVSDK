@@ -15,6 +15,11 @@ void GrpcServer::set_port(const int port)
     _port = port;
 }
 
+void GrpcServer::set_bind_address(const std::string& bind_address)
+{
+    _bind_address = bind_address;
+}
+
 int GrpcServer::run()
 {
     grpc::ServerBuilder builder;
@@ -35,11 +40,15 @@ int GrpcServer::run()
     grpc::EnableDefaultHealthCheckService(true);
     _server = builder.BuildAndStart();
 
-    if (_bound_port != 0) {
+    if (_server != nullptr && _bound_port != 0) {
         LogInfo("Server started");
-        LogInfo("Server set to listen on 0.0.0.0:{}", _bound_port);
+        LogInfo("Server set to listen on {}", listen_address(_bound_port));
     } else {
-        LogErr("Failed to bind server to port {}", _port);
+        // Nothing is listening at this point: a failed bind never falls back
+        // to another address.
+        LogErr("Failed to bind server to {}", listen_address(_port));
+        _server.reset();
+        _bound_port = 0;
     }
 
     return _bound_port;
@@ -72,8 +81,17 @@ void GrpcServer::stop()
 
 void GrpcServer::setup_port(grpc::ServerBuilder& builder)
 {
-    const std::string server_address("0.0.0.0:" + std::to_string(_port));
-    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials(), &_bound_port);
+    builder.AddListeningPort(
+        listen_address(_port), grpc::InsecureServerCredentials(), &_bound_port);
+}
+
+std::string GrpcServer::listen_address(const int port) const
+{
+    // IPv6 literals need brackets to be told apart from the port.
+    const bool is_bare_ipv6 =
+        _bind_address.find(':') != std::string::npos && _bind_address.front() != '[';
+
+    return (is_bare_ipv6 ? "[" + _bind_address + "]" : _bind_address) + ":" + std::to_string(port);
 }
 
 } // namespace mavsdk_server

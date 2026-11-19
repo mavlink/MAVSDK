@@ -10,6 +10,7 @@
 
 static auto constexpr default_connection = "udpin://0.0.0.0:14540";
 static auto constexpr default_mavsdk_server_port = 50051;
+static auto constexpr default_grpc_bind_address = "0.0.0.0";
 static auto constexpr default_sysid = 245;
 static auto constexpr default_compid = 190;
 static auto constexpr default_heartbeat_watchdog_timeout_s = 0.0;
@@ -21,6 +22,7 @@ int main(int argc, char** argv)
 {
     std::string connection_url = default_connection;
     int mavsdk_server_port = default_mavsdk_server_port;
+    std::string grpc_bind_address = default_grpc_bind_address;
     uint32_t mavsdk_sysid = default_sysid;
     int mavsdk_compid = default_compid;
     double heartbeat_watchdog_timeout_s = default_heartbeat_watchdog_timeout_s;
@@ -46,6 +48,14 @@ int main(int argc, char** argv)
             }
 
             mavsdk_server_port = std::stoi(port);
+        } else if (current_arg == "--grpc-bind-address") {
+            if (argc <= i + 1) {
+                usage(argv[0]);
+                return 1;
+            }
+
+            grpc_bind_address = argv[i + 1];
+            i++;
         } else if (current_arg == "--sysid") {
             if (argc <= i + 1) {
                 usage(argv[0]);
@@ -124,6 +134,12 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    if (mavsdk_server_set_grpc_bind_address(mavsdk_server, grpc_bind_address.c_str()) != 0) {
+        usage(argv[0]);
+        mavsdk_server_destroy(mavsdk_server);
+        return 1;
+    }
+
     const int ret = mavsdk_server_run_with_mavlink_ids(
         mavsdk_server,
         connection_url.c_str(),
@@ -161,6 +177,12 @@ void usage(const char* bin_name)
               << "  -p          : set the port on which to run the gRPC server,\n"
               << "                set to 0 to choose a free port automatically\n"
               << "                (default is " << default_mavsdk_server_port << ")\n"
+              << "  --grpc-bind-address :\n"
+              << "                set the address on which to run the gRPC server,\n"
+              << "                e.g. 127.0.0.1 or ::1 to only accept local clients;\n"
+              << "                this is separate from the MAVLink connection URL\n"
+              << "                (default is " << default_grpc_bind_address
+              << ", all IPv4 interfaces)\n"
               << "  --sysid     : set the MAVLink system ID of the MAVSDK server itself,\n"
               << "                (default is " << default_sysid << ", range 1.."
               << std::numeric_limits<uint32_t>::max() << ",\n"

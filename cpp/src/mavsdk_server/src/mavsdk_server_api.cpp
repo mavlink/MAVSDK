@@ -41,6 +41,16 @@ int mavsdk_server_set_heartbeat_watchdog_timeout(
     return mavsdk_server->setHeartbeatWatchdogTimeout(timeout_s) ? 0 : 1;
 }
 
+int mavsdk_server_set_grpc_bind_address(MavsdkServer* mavsdk_server, const char* bind_address)
+{
+    if (bind_address == nullptr || bind_address[0] == '\0') {
+        return 1;
+    }
+
+    mavsdk_server->setGrpcBindAddress(bind_address);
+    return 0;
+}
+
 int mavsdk_server_get_port(MavsdkServer* mavsdk_server)
 {
     return mavsdk_server->getPort();
