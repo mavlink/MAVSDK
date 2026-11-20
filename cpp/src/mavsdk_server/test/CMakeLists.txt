@@ -9,6 +9,7 @@ add_executable(unit_tests_mavsdk_server
     offboard_service_impl_test.cpp
     telemetry_service_impl_test.cpp
     info_service_impl_test.cpp
+    grpc_bind_address_test.cpp
 )
 
 set_target_properties(unit_tests_mavsdk_server PROPERTIES COMPILE_FLAGS ${warnings})

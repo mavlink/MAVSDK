@@ -72,6 +72,23 @@ MAVSDK_PUBLIC int mavsdk_server_set_heartbeat_watchdog_timeout(
     struct MavsdkServer* mavsdk_server, const double timeout_s);
 
 /*
+ * Set the address the gRPC server listens on.
+ *
+ * Use "127.0.0.1" or "::1" to only accept local clients. The default is
+ * "0.0.0.0", all IPv4 interfaces. This is independent of the MAVLink
+ * connection URL.
+ *
+ * Call this before mavsdk_server_run(). If the server can't listen on this
+ * address, mavsdk_server_run() fails rather than falling back to another one.
+ *
+ * @param mavsdk_server Pointer to initialized MavsdkServer
+ * @param bind_address Host name or IP address, IPv6 with or without brackets
+ * @return 0 if successful, 1 if the address is NULL or empty
+ */
+MAVSDK_PUBLIC int
+mavsdk_server_set_grpc_bind_address(struct MavsdkServer* mavsdk_server, const char* bind_address);
+
+/*
  * Get gRPC port.
  *
  * @param mavsdk_server Pointer to initialized MavsdkServer

@@ -24,6 +24,7 @@ public:
     {
         _server = std::make_unique<GrpcServer>(_mavsdk);
         _server->set_port(port);
+        _server->set_bind_address(_grpc_bind_address);
         _grpc_port = _server->run();
         return _grpc_port;
     }
@@ -63,12 +64,15 @@ public:
         return true;
     }
 
+    void setGrpcBindAddress(const std::string& bind_address) { _grpc_bind_address = bind_address; }
+
 private:
     mavsdk::Mavsdk _mavsdk;
     ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
     std::unique_ptr<GrpcServer> _server;
     int _grpc_port;
     double _heartbeat_watchdog_timeout_s{0.0};
+    std::string _grpc_bind_address{"0.0.0.0"};
 };
 
 MavsdkServer::MavsdkServer() : _impl(std::make_unique<Impl>()) {}
@@ -107,4 +111,9 @@ void MavsdkServer::setMavlinkIds(uint32_t system_id, uint8_t component_id)
 bool MavsdkServer::setHeartbeatWatchdogTimeout(double timeout_s)
 {
     return _impl->setHeartbeatWatchdogTimeout(timeout_s);
+}
+
+void MavsdkServer::setGrpcBindAddress(const std::string& bind_address)
+{
+    _impl->setGrpcBindAddress(bind_address);
 }

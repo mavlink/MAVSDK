@@ -20,6 +20,8 @@ public:
     // Call before run(). Returns false if the timeout is invalid, in which
     // case the previous one is kept. 0 disables the watchdog.
     bool setHeartbeatWatchdogTimeout(double timeout_s);
+    // Call before startGrpcServer(). Defaults to all IPv4 interfaces.
+    void setGrpcBindAddress(const std::string& bind_address);
 
 private:
     class Impl;
