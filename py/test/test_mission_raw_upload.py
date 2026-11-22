@@ -26,7 +26,7 @@ UPLOAD_TIMEOUT_S = 10.0
 
 MAV_CMD_NAV_WAYPOINT = 16
 MAV_CMD_NAV_TAKEOFF = 22
-MAV_FRAME_GLOBAL_RELATIVE_ALT_INT = 3
+MAV_FRAME_GLOBAL_RELATIVE_ALT = 3
 MAV_MISSION_TYPE_MISSION = 0
 
 
@@ -34,7 +34,7 @@ def make_mission_item(seq, command, latitude_deg, longitude_deg, altitude_m):
     """Build a MISSION_ITEM_INT the way an autopilot expects to receive it."""
     return MissionItem(
         seq=seq,
-        frame=MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
+        frame=MAV_FRAME_GLOBAL_RELATIVE_ALT,
         command=command,
         current=1 if seq == 0 else 0,
         autocontinue=1,

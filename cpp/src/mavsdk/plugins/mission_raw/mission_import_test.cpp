@@ -414,7 +414,7 @@ TEST(MissionRaw, ImportSamplePlanWithArduPilot)
 
     auto home_item = MissionRaw::MissionItem{
         0,
-        MAV_FRAME_GLOBAL_INT,
+        MAV_FRAME_GLOBAL,
         MAV_CMD_NAV_WAYPOINT,
         0, // current
         1, // autocontinue
@@ -485,7 +485,7 @@ std::vector<MissionRaw::MissionItem> create_mission_planner_reference_items()
 {
     return {
         {0,
-         MAV_FRAME_GLOBAL_INT, // frame
+         MAV_FRAME_GLOBAL, // frame
          MAV_CMD_NAV_TAKEOFF,
          1, // current
          1, // autocontinue
@@ -498,7 +498,7 @@ std::vector<MissionRaw::MissionItem> create_mission_planner_reference_items()
          15.0f, // z
          MAV_MISSION_TYPE_MISSION},
         {1,
-         MAV_FRAME_GLOBAL_INT, // frame
+         MAV_FRAME_GLOBAL, // frame
          MAV_CMD_NAV_WAYPOINT,
          0, // current
          1, // autocontinue
@@ -511,7 +511,7 @@ std::vector<MissionRaw::MissionItem> create_mission_planner_reference_items()
          15.0f, // z
          MAV_MISSION_TYPE_MISSION},
         {2,
-         MAV_FRAME_GLOBAL_INT, // frame
+         MAV_FRAME_GLOBAL, // frame
          MAV_CMD_NAV_WAYPOINT,
          0, // current
          1, // autocontinue
@@ -524,7 +524,7 @@ std::vector<MissionRaw::MissionItem> create_mission_planner_reference_items()
          15.0f, // z
          MAV_MISSION_TYPE_MISSION},
         {3,
-         MAV_FRAME_GLOBAL_INT, // frame
+         MAV_FRAME_GLOBAL, // frame
          MAV_CMD_NAV_RETURN_TO_LAUNCH,
          0, // current
          1, // autocontinue
@@ -589,7 +589,7 @@ TEST(MissionRaw, ImportMissionPlannerWithArduPilotHomePosition)
     const auto& home_item = result_pair.second.mission_items[0];
     EXPECT_EQ(home_item.seq, 0);
     EXPECT_EQ(home_item.command, MAV_CMD_NAV_WAYPOINT);
-    EXPECT_EQ(home_item.frame, MAV_FRAME_GLOBAL_INT);
+    EXPECT_EQ(home_item.frame, MAV_FRAME_GLOBAL);
     EXPECT_EQ(home_item.current, 1); // home should be current
     EXPECT_EQ(home_item.mission_type, MAV_MISSION_TYPE_MISSION);
 
@@ -687,4 +687,52 @@ TEST(MissionRaw, ImportMissionPlannerWithTerrainAltFrame)
     EXPECT_EQ(item.command, MAV_CMD_NAV_WAYPOINT);
     EXPECT_EQ(item.x, 473978101); // Should be scaled by 1e7
     EXPECT_EQ(item.y, 85455380); // Should be scaled by 1e7
+}
+
+TEST(MissionRaw, ImportMissionPlannerMapsIntFrameToPlainFrame)
+{
+    // MAV_FRAME_GLOBAL_TERRAIN_ALT_INT (11) is a deprecated synonym of
+    // MAV_FRAME_GLOBAL_TERRAIN_ALT (10): it is imported as the plain frame.
+    const std::string mission_string =
+        "QGC WPL 110\n0\t1\t11\t16\t0\t0\t0\t0\t47.3978101\t8.5455380\t15\t1\n";
+
+    const auto result_pair = MissionImport::parse_mission_planner(mission_string, Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+    ASSERT_EQ(result_pair.second.mission_items.size(), 1);
+
+    const auto& item = result_pair.second.mission_items[0];
+    EXPECT_EQ(item.frame, MAV_FRAME_GLOBAL_TERRAIN_ALT);
+    EXPECT_EQ(item.x, 473978101); // Should be scaled by 1e7
+    EXPECT_EQ(item.y, 85455380); // Should be scaled by 1e7
+}
+
+TEST(MissionRaw, ImportQgcPlanMapsIntFrameToPlainFrame)
+{
+    // MAV_FRAME_GLOBAL_RELATIVE_ALT_INT (6) is a deprecated synonym of
+    // MAV_FRAME_GLOBAL_RELATIVE_ALT (3): it is imported as the plain frame.
+    const std::string plan = R"({
+        "fileType": "Plan",
+        "version": 1,
+        "geoFence": {"version": 2, "polygons": [], "circles": []},
+        "rallyPoints": {"version": 2, "points": []},
+        "mission": {
+            "version": 2,
+            "items": [{
+                "type": "SimpleItem",
+                "command": 16,
+                "autoContinue": true,
+                "frame": 6,
+                "params": [0, 0, 0, null, 47.3978101, 8.5455380, 15]
+            }]
+        }
+    })";
+
+    const auto result_pair = MissionImport::parse_json(plan, Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+    ASSERT_EQ(result_pair.second.mission_items.size(), 1);
+
+    const auto& item = result_pair.second.mission_items[0];
+    EXPECT_EQ(item.frame, MAV_FRAME_GLOBAL_RELATIVE_ALT);
+    EXPECT_EQ(item.x, 473978101);
+    EXPECT_EQ(item.y, 85455380);
 }

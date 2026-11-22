@@ -65,7 +65,7 @@ TEST(Mission, Changed)
     for (unsigned i = 0; i < NUM_SOME_ITEMS; ++i) {
         MissionRaw::MissionItem new_raw_item_nav{};
         new_raw_item_nav.seq = (i * 2);
-        new_raw_item_nav.frame = 6; // MAV_FRAME_GLOBAL_RELATIVE_ALT_INT
+        new_raw_item_nav.frame = 3; // MAV_FRAME_GLOBAL_RELATIVE_ALT
         new_raw_item_nav.command = 16; // MAV_CMD_NAV_WAYPOINT
         new_raw_item_nav.current = 0;
         new_raw_item_nav.autocontinue = 1;

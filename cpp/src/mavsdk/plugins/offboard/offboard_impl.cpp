@@ -450,13 +450,13 @@ Offboard::Result OffboardImpl::send_position_global()
     MAV_FRAME frame;
     switch (position_global_yaw.altitude_type) {
         case Offboard::PositionGlobalYaw::AltitudeType::Amsl:
-            frame = MAV_FRAME_GLOBAL_INT;
+            frame = MAV_FRAME_GLOBAL;
             break;
         case Offboard::PositionGlobalYaw::AltitudeType::Agl:
-            frame = MAV_FRAME_GLOBAL_TERRAIN_ALT_INT;
+            frame = MAV_FRAME_GLOBAL_TERRAIN_ALT;
             break;
         case Offboard::PositionGlobalYaw::AltitudeType::RelHome:
-            frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+            frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
             break;
         default:
             return Offboard::Result::CommandDenied;
