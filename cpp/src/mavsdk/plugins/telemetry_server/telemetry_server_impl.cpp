@@ -44,7 +44,13 @@ void TelemetryServerImpl::init()
                 _interval_requests.end(),
                 [msgid](const RequestMsgInterval& item) { return item.msg_id == msgid; });
 
-            if (found == _interval_requests.end() && command.params.param2 != -1) {
+            if (command.params.param2 == -1) {
+                // Stop only if the message was requested first
+                if (found != _interval_requests.end()) {
+                    _server_component_impl->remove_call_every(found->cookie);
+                    _interval_requests.erase(found);
+                }
+            } else if (found == _interval_requests.end()) {
                 // If not found interval already, add a new one
                 _interval_requests.push_back({msgid, interval_ms});
                 //_server_component_impl->add_call_every(
@@ -58,16 +64,10 @@ void TelemetryServerImpl::init()
                 //    static_cast<double>(interval_ms) * 1E-3,
                 //    &_interval_requests.back().cookie);
             } else {
-                if (command.params.param2 == -1) {
-                    // Deregister with -1 interval
-                    _server_component_impl->remove_call_every(found->cookie);
-                    _interval_requests.erase(found);
-                } else {
-                    // Update Interval
-                    found->interval = interval_ms;
-                    _server_component_impl->change_call_every(
-                        static_cast<double>(interval_ms) * 1E-3, found->cookie);
-                }
+                // Update interval
+                found->interval = interval_ms;
+                _server_component_impl->change_call_every(
+                    static_cast<double>(interval_ms) * 1E-3, found->cookie);
             }
 
             return _server_component_impl->make_command_ack_message(
