@@ -790,9 +790,12 @@ void MavlinkFtpServer::_work_read(const PayloadHeader& payload)
         LogWarn("Read at {} for {}", payload.offset, int(payload.size));
     }
 
-    _session_info.ifstream.read(reinterpret_cast<char*>(response.data), payload.size);
+    const uint32_t remaining = _session_info.file_size - payload.offset;
+    const uint32_t bytes_to_read = std::min<uint32_t>(payload.size, remaining);
 
-    if (_session_info.ifstream.fail()) {
+    _session_info.ifstream.read(reinterpret_cast<char*>(response.data), bytes_to_read);
+
+    if (_session_info.ifstream.fail() && !_session_info.ifstream.eof()) {
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
@@ -801,10 +804,21 @@ void MavlinkFtpServer::_work_read(const PayloadHeader& payload)
         return;
     }
 
-    const uint32_t bytes_read = _session_info.ifstream.gcount();
+    const auto bytes_read = static_cast<uint32_t>(_session_info.ifstream.gcount());
+
+    if (bytes_read == 0 && bytes_to_read > 0) {
+        response.opcode = Opcode::RSP_NAK;
+        response.size = 1;
+        response.data[0] = ServerResult::ERR_EOF;
+        if (_debugging) {
+            LogDebug("Reached EOF reading");
+        }
+        _send_mavlink_ftp_message(response);
+        return;
+    }
 
     response.offset = payload.offset;
-    response.size = bytes_read;
+    response.size = static_cast<uint8_t>(bytes_read);
     response.opcode = Opcode::RSP_ACK;
 
     _send_mavlink_ftp_message(response);
