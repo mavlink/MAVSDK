@@ -354,3 +354,81 @@ TEST(Param, ChangeExistingAfterLockdown)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+TEST(Param, SelectNonAutopilotComponent)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto autopilot_param_server = ParamServer{mavsdk_autopilot.server_component()};
+    constexpr uint8_t peripheral_component_id = 51;
+    auto peripheral_param_server =
+        ParamServer{mavsdk_autopilot.server_component_by_id(peripheral_component_id)};
+
+    ASSERT_EQ(
+        autopilot_param_server.provide_param_int("SHARED_PARAM", 10), ParamServer::Result::Success);
+    ASSERT_EQ(
+        autopilot_param_server.provide_param_int("AUTO_ONLY", 111), ParamServer::Result::Success);
+    ASSERT_EQ(
+        peripheral_param_server.provide_param_int("SHARED_PARAM", 51),
+        ParamServer::Result::Success);
+    ASSERT_EQ(
+        peripheral_param_server.provide_param_int("COMP51_ONLY", 5151),
+        ParamServer::Result::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto param = Param{system};
+
+    // Out-of-range component IDs must be rejected without corrupting the active selection.
+    EXPECT_EQ(
+        param.select_component(-1, Param::ProtocolVersion::V1), Param::Result::ComponentNotFound);
+    EXPECT_EQ(
+        param.select_component(256, Param::ProtocolVersion::V1), Param::Result::ComponentNotFound);
+
+    ASSERT_EQ(
+        param.select_component(peripheral_component_id, Param::ProtocolVersion::V1),
+        Param::Result::Success);
+
+    // Rejected calls after a valid selection must preserve both component ID and protocol.
+    EXPECT_EQ(
+        param.select_component(300, Param::ProtocolVersion::Ext), Param::Result::ComponentNotFound);
+    EXPECT_EQ(
+        param.select_component(-1, Param::ProtocolVersion::Ext), Param::Result::ComponentNotFound);
+
+    auto peripheral_shared = param.get_param_int("SHARED_PARAM");
+    EXPECT_EQ(peripheral_shared.first, Param::Result::Success);
+    EXPECT_EQ(peripheral_shared.second, 51);
+
+    EXPECT_EQ(param.set_param_int("SHARED_PARAM", 77), Param::Result::Success);
+
+    const auto peripheral_all = param.get_all_params();
+    EXPECT_EQ(peripheral_all.int_params.size(), 2u);
+
+    // Switching back to autopilot must return autopilot parameters unaffected by component 51.
+    ASSERT_EQ(
+        param.select_component(MAV_COMP_ID_AUTOPILOT1, Param::ProtocolVersion::V1),
+        Param::Result::Success);
+
+    auto autopilot_shared = param.get_param_int("SHARED_PARAM");
+    EXPECT_EQ(autopilot_shared.first, Param::Result::Success);
+    EXPECT_EQ(autopilot_shared.second, 10);
+
+    auto autopilot_only = param.get_param_int("AUTO_ONLY");
+    EXPECT_EQ(autopilot_only.first, Param::Result::Success);
+    EXPECT_EQ(autopilot_only.second, 111);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}

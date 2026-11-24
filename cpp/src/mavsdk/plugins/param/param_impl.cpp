@@ -1,4 +1,5 @@
 #include <functional>
+#include <limits>
 #include "param_impl.hpp"
 #include "system.hpp"
 #include "unused.hpp"
@@ -116,9 +117,13 @@ Param::AllParams ParamImpl::get_all_params()
 Param::Result
 ParamImpl::select_component(int32_t component_id, Param::ProtocolVersion protocol_version)
 {
-    _component_id = component_id;
+    if (component_id < 0 || component_id > std::numeric_limits<uint8_t>::max()) {
+        return Param::Result::ComponentNotFound;
+    }
+
+    _component_id = static_cast<uint8_t>(component_id);
     _protocol_version = protocol_version;
-    return Param::Result::Unknown;
+    return Param::Result::Success;
 }
 
 Param::Result

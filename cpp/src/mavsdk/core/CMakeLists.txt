@@ -287,6 +287,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_signing_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_client_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_server_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_client_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/ringbuffer_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/rtt_estimator_test.cpp

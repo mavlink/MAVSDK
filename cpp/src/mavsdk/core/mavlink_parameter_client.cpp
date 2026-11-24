@@ -45,27 +45,31 @@ MavlinkParameterClient::MavlinkParameterClient(
             (_use_extended ? "extended" : "not extended"));
     }
 
-    if (_use_extended) {
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_EXT_VALUE,
-            [this](const mavlink_message_t& message) { process_param_ext_value(message); },
-            this);
+    auto register_handler = [this](uint16_t msg_id, const MavlinkMessageHandler::Callback& cb) {
+        if (_target_component_id == MAV_COMP_ID_ALL) {
+            _message_handler.register_one(msg_id, cb, this);
+        } else {
+            _message_handler.register_one_with_component_id(msg_id, _target_component_id, cb, this);
+        }
+    };
 
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_EXT_ACK,
-            [this](const mavlink_message_t& message) { process_param_ext_ack(message); },
-            this);
+    if (_use_extended) {
+        register_handler(MAVLINK_MSG_ID_PARAM_EXT_VALUE, [this](const mavlink_message_t& message) {
+            process_param_ext_value(message);
+        });
+
+        register_handler(MAVLINK_MSG_ID_PARAM_EXT_ACK, [this](const mavlink_message_t& message) {
+            process_param_ext_ack(message);
+        });
     } else {
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_VALUE,
-            [this](const mavlink_message_t& message) { process_param_value(message); },
-            this);
+        register_handler(MAVLINK_MSG_ID_PARAM_VALUE, [this](const mavlink_message_t& message) {
+            process_param_value(message);
+        });
 
         // PARAM_ERROR is only for standard protocol (not extended)
-        _message_handler.register_one(
-            MAVLINK_MSG_ID_PARAM_ERROR,
-            [this](const mavlink_message_t& message) { process_param_error(message); },
-            this);
+        register_handler(MAVLINK_MSG_ID_PARAM_ERROR, [this](const mavlink_message_t& message) {
+            process_param_error(message);
+        });
     }
 }
 
