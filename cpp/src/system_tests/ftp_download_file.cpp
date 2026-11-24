@@ -3,6 +3,7 @@
 #include <array>
 #include <atomic>
 #include <cstdint>
+#include <cstring>
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <chrono>
@@ -15,6 +16,7 @@
 #include <thread>
 #include "plugins/ftp/ftp.hpp"
 #include "plugins/ftp_server/ftp_server.hpp"
+#include "plugins/mavlink_direct/mavlink_direct.hpp"
 #include "fs_helpers.hpp"
 #include "unused.hpp"
 #include <nlohmann/json.hpp>
@@ -607,4 +609,145 @@ TEST(Ftp, DownloadFileOutsideOfRootSharedPrefix)
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::ProtocolError);
     }
+}
+
+TEST(Ftp, ReadFileAcrossEof)
+{
+    ASSERT_TRUE(reset_directories(temp_dir_provided));
+
+    constexpr uint8_t cmd_terminate_session = 1;
+    constexpr uint8_t cmd_open_file_ro = 4;
+    constexpr uint8_t cmd_read_file = 5;
+    constexpr uint8_t rsp_ack = 128;
+    constexpr uint8_t rsp_nak = 129;
+    constexpr uint8_t err_eof = 6;
+    constexpr uint8_t max_data_length = 239;
+    constexpr size_t payload_length = 12 + max_data_length;
+
+    const fs::path remote_file = "partial_tail.bin";
+    std::vector<uint8_t> content(300);
+    for (size_t i = 0; i < content.size(); ++i) {
+        content[i] = static_cast<uint8_t>(i * 11 + 5);
+    }
+    {
+        std::ofstream out(temp_dir_provided / remote_file, std::ios::binary | std::ios::trunc);
+        out.write(
+            reinterpret_cast<const char*>(content.data()),
+            static_cast<std::streamsize>(content.size()));
+        ASSERT_TRUE(out.good());
+    }
+
+    std::mutex mutex;
+    uint16_t waiting_seq = 0;
+    std::shared_ptr<std::promise<std::array<uint8_t, payload_length>>> waiting_promise;
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
+    ftp_server.set_root_dir(temp_dir_provided.string());
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto mavlink_direct = MavlinkDirect{maybe_system.value()};
+
+    auto sub_handle = mavlink_direct.subscribe_message(
+        "FILE_TRANSFER_PROTOCOL", [&](MavlinkDirect::MavlinkMessage message) {
+            const auto json = nlohmann::json::parse(message.fields_json, nullptr, false);
+            if (json.is_discarded() || !json.contains("payload") ||
+                json["payload"].size() < payload_length) {
+                return;
+            }
+            std::array<uint8_t, payload_length> raw{};
+            for (size_t i = 0; i < payload_length; ++i) {
+                raw[i] = json["payload"][i].get<uint8_t>();
+            }
+            const auto seq = static_cast<uint16_t>(raw[0] | (raw[1] << 8));
+            std::lock_guard<std::mutex> lock(mutex);
+            if (waiting_promise && seq == waiting_seq) {
+                auto prom = std::move(waiting_promise);
+                prom->set_value(raw);
+            }
+        });
+
+    uint16_t next_seq = 10;
+    auto request = [&](uint8_t session,
+                       uint8_t opcode,
+                       uint8_t size,
+                       uint32_t offset,
+                       const std::string& path = {}) {
+        const uint16_t seq = next_seq;
+        next_seq = static_cast<uint16_t>(next_seq + 2);
+
+        std::array<uint8_t, payload_length> raw{};
+        std::memcpy(raw.data(), &seq, sizeof(seq));
+        raw[2] = session;
+        raw[3] = opcode;
+        raw[4] = size;
+        std::memcpy(raw.data() + 8, &offset, sizeof(offset));
+        std::memcpy(raw.data() + 12, path.data(), path.size());
+
+        auto prom = std::make_shared<std::promise<std::array<uint8_t, payload_length>>>();
+        auto fut = prom->get_future();
+        {
+            std::lock_guard<std::mutex> lock(mutex);
+            waiting_seq = static_cast<uint16_t>(seq + 1);
+            waiting_promise = prom;
+        }
+
+        MavlinkDirect::MavlinkMessage msg{};
+        msg.message_name = "FILE_TRANSFER_PROTOCOL";
+        msg.target_system_id = 1;
+        msg.target_component_id = 1;
+        msg.fields_json =
+            nlohmann::json{
+                {"target_network", 0},
+                {"target_system", 1},
+                {"target_component", 1},
+                {"payload", raw},
+            }
+                .dump();
+        EXPECT_EQ(mavlink_direct.send_message(msg), MavlinkDirect::Result::Success);
+        if (fut.wait_for(std::chrono::seconds(2)) != std::future_status::ready) {
+            ADD_FAILURE() << "Timed out waiting for FTP reply";
+            return std::array<uint8_t, payload_length>{};
+        }
+        return fut.get();
+    };
+
+    const std::string path = remote_file.string();
+    const auto open_rsp =
+        request(0, cmd_open_file_ro, static_cast<uint8_t>(path.size() + 1), 0, path);
+    ASSERT_EQ(open_rsp[3], rsp_ack);
+    const uint8_t session = open_rsp[2];
+
+    const auto first = request(session, cmd_read_file, max_data_length, 0);
+    EXPECT_EQ(first[3], rsp_ack);
+    EXPECT_EQ(first[4], max_data_length);
+    EXPECT_EQ(std::memcmp(first.data() + 12, content.data(), max_data_length), 0);
+
+    // Request a full chunk across EOF; server should return the remaining 61 bytes.
+    const size_t expected_tail = content.size() - max_data_length;
+    const auto tail = request(session, cmd_read_file, max_data_length, max_data_length);
+    EXPECT_EQ(tail[3], rsp_ack);
+    EXPECT_EQ(tail[4], expected_tail);
+    EXPECT_EQ(std::memcmp(tail.data() + 12, content.data() + max_data_length, expected_tail), 0);
+
+    const auto eof_rsp =
+        request(session, cmd_read_file, max_data_length, static_cast<uint32_t>(content.size()));
+    EXPECT_EQ(eof_rsp[3], rsp_nak);
+    EXPECT_EQ(eof_rsp[12], err_eof);
+
+    const auto close_rsp = request(session, cmd_terminate_session, 0, 0);
+    EXPECT_EQ(close_rsp[3], rsp_ack);
+
+    mavlink_direct.unsubscribe_message(sub_handle);
 }
