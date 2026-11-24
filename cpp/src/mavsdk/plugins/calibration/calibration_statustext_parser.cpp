@@ -45,7 +45,7 @@ bool CalibrationStatustextParser::is_relevant(const std::string& statustext)
 
 bool CalibrationStatustextParser::check_started(const std::string& statustext)
 {
-    static constexpr char CUSTOM_CAL_QGC_STARTED_MSG[] = "[cal] calibration started: %i %s";
+    static constexpr char CUSTOM_CAL_QGC_STARTED_MSG[] = "[cal] calibration started: %i %63s";
 
     int version_stamp;
     const int ret =
@@ -68,7 +68,9 @@ bool CalibrationStatustextParser::check_started(const std::string& statustext)
 
 bool CalibrationStatustextParser::check_done(const std::string& statustext)
 {
-    const int ret = sscanf(statustext.c_str(), CAL_QGC_DONE_MSG, _tmp_str);
+    static constexpr char CAL_QGC_DONE_SCAN_MSG[] = "[cal] calibration done: %63s";
+
+    const int ret = sscanf(statustext.c_str(), CAL_QGC_DONE_SCAN_MSG, _tmp_str);
 
     if (ret == 1) {
         _status = Status::Done;
@@ -112,7 +114,7 @@ bool CalibrationStatustextParser::check_progress(const std::string& statustext)
     }
 
     static constexpr char SPECIAL_MAG_CAL_QGC_PROGRESS_MSG[] =
-        "[cal] %s side calibration: progress <%u>";
+        "[cal] %63s side calibration: progress <%u>";
 
     ret = sscanf(statustext.c_str(), SPECIAL_MAG_CAL_QGC_PROGRESS_MSG, _tmp_str, &progress_int);
 

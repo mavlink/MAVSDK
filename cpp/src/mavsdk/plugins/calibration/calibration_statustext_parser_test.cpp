@@ -118,3 +118,35 @@ TEST(CalibrationStatustextParser, Instructions)
     EXPECT_EQ(parser.get_status(), CalibrationStatustextParser::Status::Instruction);
     EXPECT_STREQ(parser.get_instruction().c_str(), "down side result: [  0.0089  -0.4756 -10.43 ]");
 }
+
+TEST(CalibrationStatustextParser, LongTokensDoNotOverflow)
+{
+    // Regression test: the %s conversions used to be unbounded and wrote past
+    // the 64-byte _tmp_str buffer for these inputs. The widths are now bounded
+    // to 63 characters, so these long tokens must be parsed without buffer
+    // overruns and with sensible results.
+    const std::string long_token(300, 'A');
+
+    CalibrationStatustextParser parser;
+
+    // "[cal] calibration started: %i %63s": the version stamp is still parsed.
+    EXPECT_TRUE(parser.parse("[cal] calibration started: 2 " + long_token));
+    EXPECT_EQ(parser.get_status(), CalibrationStatustextParser::Status::Started);
+    parser.reset();
+
+    // "[cal] calibration done: %63s": the truncated token still counts as done.
+    EXPECT_TRUE(parser.parse("[cal] calibration done: " + long_token));
+    EXPECT_EQ(parser.get_status(), CalibrationStatustextParser::Status::Done);
+    parser.reset();
+
+    // "[cal] %63s side calibration: progress <%u>": the side name gets
+    // truncated and therefore no longer matches, so the message falls through
+    // to the catch-all instruction handler instead.
+    EXPECT_TRUE(parser.parse("[cal] " + long_token + " side calibration: progress <50>"));
+    EXPECT_EQ(parser.get_status(), CalibrationStatustextParser::Status::Instruction);
+    parser.reset();
+
+    // The parser still works normally afterwards.
+    EXPECT_TRUE(parser.parse("[cal] calibration started: 2 gyro"));
+    EXPECT_EQ(parser.get_status(), CalibrationStatustextParser::Status::Started);
+}
