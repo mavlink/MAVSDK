@@ -1,6 +1,7 @@
 #pragma once
 
 #include "param_value.hpp"
+#include "mavsdk_export.h"
 #include <algorithm>
 #include <atomic>
 #include <cassert>
@@ -27,7 +28,7 @@ namespace mavsdk {
 // io_context. That keeps everything single-threaded without locks, and post() also
 // makes it safe to (un)subscribe from inside a subscription callback (the mutation
 // runs after the current dispatch returns).
-class MavlinkParameterSubscription {
+class MAVSDK_TEST_EXPORT MavlinkParameterSubscription {
 public:
     explicit MavlinkParameterSubscription(asio::io_context& io_context) :
         _io_context(io_context)

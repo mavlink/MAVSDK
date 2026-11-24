@@ -8,6 +8,7 @@
 #include "mavlink_parameter_subscription.hpp"
 #include "mavlink_parameter_cache.hpp"
 #include "mavlink_parameter_helper.hpp"
+#include "mavsdk_export.h"
 #include "timeout_handler.hpp"
 #include <asio/io_context.hpp>
 #include <asio/post.hpp>
@@ -29,7 +30,7 @@ namespace mavsdk {
 class Sender;
 class MavlinkMessageHandler;
 
-class MavlinkParameterClient : public MavlinkParameterSubscription {
+class MAVSDK_TEST_EXPORT MavlinkParameterClient : public MavlinkParameterSubscription {
 public:
     MavlinkParameterClient() = delete;
     explicit MavlinkParameterClient(
@@ -158,8 +159,7 @@ public:
 
     void do_work();
 
-    friend std::ostream& operator<<(std::ostream&, const Result&);
-    friend std::ostream& operator<<(std::ostream&, const Result&);
+    friend MAVSDK_TEST_EXPORT std::ostream& operator<<(std::ostream&, const Result&);
 
 private:
     const double _get_all_timeout_factor = 4.0;
