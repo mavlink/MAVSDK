@@ -154,7 +154,7 @@ bool TelemetryServerImpl::_send_home()
 
     const auto home = _maybe_home.value();
 
-    const float q[4] = {};
+    const float q[4] = {NAN, NAN, NAN, NAN};
 
     return _server_component_impl->queue_message(
         [&](MavlinkAddress mavlink_address, uint8_t channel) {
@@ -166,7 +166,7 @@ bool TelemetryServerImpl::_send_home()
                 &message,
                 static_cast<int32_t>(home.latitude_deg * 1E7),
                 static_cast<int32_t>(home.longitude_deg * 1E7),
-                static_cast<int32_t>(static_cast<double>(home.absolute_altitude_m) * 1E-3),
+                static_cast<int32_t>(static_cast<double>(home.absolute_altitude_m) * 1E3),
                 0, // Local X
                 0, // Local Y
                 0, // Local Z
