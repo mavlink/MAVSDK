@@ -174,7 +174,7 @@ bool TelemetryServerImpl::_send_home()
                 NAN, // approach x
                 NAN, // approach y
                 NAN, // approach z
-                get_boot_time_ms() // TO-DO: System boot
+                get_boot_time_us() // System boot
             );
             return message;
         });
@@ -410,8 +410,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_unix_epoch_time(uint64_t ti
                        channel,
                        &message,
                        time_us,
-                       0 // TODO: add timestamping in general
-                   );
+                       get_boot_time_ms());
                    return message;
                }) ?
                TelemetryServer::Result::Success :
@@ -538,7 +537,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_attitude(
                        mavlink_address.component_id,
                        channel,
                        &message,
-                       static_cast<uint32_t>(attitude.timestamp_us / 1000.F),
+                       static_cast<uint32_t>(attitude.timestamp_us / 1000),
                        attitude.roll_deg * M_PI / 180.F,
                        attitude.pitch_deg * M_PI / 180.F,
                        attitude.yaw_deg * M_PI / 180.F,
