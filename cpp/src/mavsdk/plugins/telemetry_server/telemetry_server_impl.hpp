@@ -100,6 +100,13 @@ private:
             .count();
     }
 
+    uint64_t get_boot_time_us()
+    {
+        return std::chrono::duration_cast<std::chrono::microseconds>(
+                   std::chrono::steady_clock::now() - _start_time)
+            .count();
+    }
+
     uint64_t get_epoch_time()
     {
         return std::chrono::steady_clock::now().time_since_epoch().count();
