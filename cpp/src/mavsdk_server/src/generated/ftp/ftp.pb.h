@@ -181,6 +181,7 @@ enum FtpResult_Result : int {
   FtpResult_Result_RESULT_UNSUPPORTED = 10,
   FtpResult_Result_RESULT_PROTOCOL_ERROR = 11,
   FtpResult_Result_RESULT_NO_SYSTEM = 12,
+  FtpResult_Result_RESULT_DIRECTORY_NOT_EMPTY = 13,
   FtpResult_Result_FtpResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   FtpResult_Result_FtpResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -190,8 +191,8 @@ enum FtpResult_Result : int {
 bool FtpResult_Result_IsValid(int value);
 extern const uint32_t FtpResult_Result_internal_data_[];
 constexpr FtpResult_Result FtpResult_Result_Result_MIN = static_cast<FtpResult_Result>(0);
-constexpr FtpResult_Result FtpResult_Result_Result_MAX = static_cast<FtpResult_Result>(12);
-constexpr int FtpResult_Result_Result_ARRAYSIZE = 12 + 1;
+constexpr FtpResult_Result FtpResult_Result_Result_MAX = static_cast<FtpResult_Result>(13);
+constexpr int FtpResult_Result_Result_ARRAYSIZE = 13 + 1;
 const ::google::protobuf::EnumDescriptor*
 FtpResult_Result_descriptor();
 template <typename T>
@@ -204,7 +205,7 @@ const std::string& FtpResult_Result_Name(T value) {
 template <>
 inline const std::string& FtpResult_Result_Name(FtpResult_Result value) {
   return ::google::protobuf::internal::NameOfDenseEnum<FtpResult_Result_descriptor,
-                                                 0, 12>(
+                                                 0, 13>(
       static_cast<int>(value));
 }
 inline bool FtpResult_Result_Parse(absl::string_view name, FtpResult_Result* value) {
@@ -2017,6 +2018,7 @@ class FtpResult final
   static constexpr Result RESULT_UNSUPPORTED = FtpResult_Result_RESULT_UNSUPPORTED;
   static constexpr Result RESULT_PROTOCOL_ERROR = FtpResult_Result_RESULT_PROTOCOL_ERROR;
   static constexpr Result RESULT_NO_SYSTEM = FtpResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_DIRECTORY_NOT_EMPTY = FtpResult_Result_RESULT_DIRECTORY_NOT_EMPTY;
   static inline bool Result_IsValid(int value) {
     return FtpResult_Result_IsValid(value);
   }

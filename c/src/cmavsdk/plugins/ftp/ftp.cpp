@@ -39,6 +39,8 @@ translate_result(mavsdk::Ftp::Result cpp_result) {
             return MAVSDK_FTP_RESULT_PROTOCOL_ERROR;
         case mavsdk::Ftp::Result::NoSystem:
             return MAVSDK_FTP_RESULT_NO_SYSTEM;
+        case mavsdk::Ftp::Result::DirectoryNotEmpty:
+            return MAVSDK_FTP_RESULT_DIRECTORY_NOT_EMPTY;
     }
 }
 

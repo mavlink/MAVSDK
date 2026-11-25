@@ -38,6 +38,7 @@ class FtpResult(IntEnum):
     UNSUPPORTED = 10
     PROTOCOL_ERROR = 11
     NO_SYSTEM = 12
+    DIRECTORY_NOT_EMPTY = 13
 
 
 class FtpError(MavsdkError):

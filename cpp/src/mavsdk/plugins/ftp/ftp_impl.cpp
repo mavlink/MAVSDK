@@ -296,6 +296,8 @@ Ftp::Result FtpImpl::result_from_mavlink_ftp_result(MavlinkFtpClient::ClientResu
             return Ftp::Result::ProtocolError;
         case MavlinkFtpClient::ClientResult::NoSystem:
             return Ftp::Result::NoSystem;
+        case MavlinkFtpClient::ClientResult::DirectoryNotEmpty:
+            return Ftp::Result::DirectoryNotEmpty;
         default:
             return Ftp::Result::Unknown;
     }

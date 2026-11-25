@@ -42,7 +42,9 @@ class Ftp internal constructor(private val native: FtpNative) {
         /** General protocol error */
         PROTOCOL_ERROR(11),
         /** No system connected */
-        NO_SYSTEM(12);
+        NO_SYSTEM(12),
+        /** Directory is not empty */
+        DIRECTORY_NOT_EMPTY(13);
 
         companion object {
             fun fromValue(value: Int): Result = entries.find { it.value == value } ?: UNKNOWN

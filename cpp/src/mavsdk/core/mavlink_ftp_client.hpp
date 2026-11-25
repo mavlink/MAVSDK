@@ -52,6 +52,7 @@ public:
         Unsupported, /**< @brief Unsupported command. */
         ProtocolError, /**< @brief General protocol error. */
         NoSystem, /**< @brief No system connected. */
+        DirectoryNotEmpty, /**< @brief Directory is not empty. */
     };
 
     friend std::ostream& operator<<(std::ostream& str, ClientResult const& result);
