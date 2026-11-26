@@ -446,7 +446,7 @@ Offboard::Result OffboardImpl::send_position_global()
         std::lock_guard<std::mutex> lock(_mutex);
         return _position_global_yaw;
     }();
-    
+
     const bool use_plain_frames = _system_impl->effective_autopilot() != Autopilot::Px4;
 
     MAV_FRAME frame;
