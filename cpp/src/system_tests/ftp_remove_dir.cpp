@@ -88,8 +88,7 @@ TEST(Ftp, RemoveDirNotEmpty)
     // Now we set the root dir and expect it to work.
     ftp_server.set_root_dir(temp_dir_provided.string());
 
-    // TODO: not sure if this is the correct error for "dir not empty"
-    EXPECT_EQ(ftp.remove_directory(temp_dir.string()), Ftp::Result::ProtocolError);
+    EXPECT_EQ(ftp.remove_directory(temp_dir.string()), Ftp::Result::DirectoryNotEmpty);
 
     EXPECT_TRUE(file_exists(temp_dir_provided / temp_dir));
 

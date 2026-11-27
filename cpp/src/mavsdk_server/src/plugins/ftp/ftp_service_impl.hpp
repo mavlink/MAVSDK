@@ -238,6 +238,8 @@ public:
                 return rpc::ftp::FtpResult_Result_RESULT_PROTOCOL_ERROR;
             case mavsdk::Ftp::Result::NoSystem:
                 return rpc::ftp::FtpResult_Result_RESULT_NO_SYSTEM;
+            case mavsdk::Ftp::Result::DirectoryNotEmpty:
+                return rpc::ftp::FtpResult_Result_RESULT_DIRECTORY_NOT_EMPTY;
         }
     }
 
@@ -273,6 +275,8 @@ public:
                 return mavsdk::Ftp::Result::ProtocolError;
             case rpc::ftp::FtpResult_Result_RESULT_NO_SYSTEM:
                 return mavsdk::Ftp::Result::NoSystem;
+            case rpc::ftp::FtpResult_Result_RESULT_DIRECTORY_NOT_EMPTY:
+                return mavsdk::Ftp::Result::DirectoryNotEmpty;
         }
     }
 

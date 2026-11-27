@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cerrno>
 #include <chrono>
 #include <fstream>
 #include <filesystem>
@@ -1113,8 +1114,13 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
     if (!fs::remove(path, ec)) {
         LogErr("Call fs::remove returned error: {}", ec.message());
         response.opcode = Opcode::RSP_NAK;
-        response.size = 1;
-        response.data[0] = ServerResult::ERR_FAIL;
+        response.size = 2;
+        response.data[0] = ServerResult::ERR_FAIL_ERRNO;
+        if (ec == std::errc::directory_not_empty) {
+            response.data[1] = ENOTEMPTY;
+        } else {
+            response.data[1] = static_cast<uint8_t>(ec.value());
+        }
         _send_mavlink_ftp_message(response);
         return;
     }

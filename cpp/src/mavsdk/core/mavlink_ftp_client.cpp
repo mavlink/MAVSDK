@@ -1401,6 +1401,34 @@ void MavlinkFtpClient::list_dir_finish(ListDirItem& item)
     item.callback(ClientResult::Success, item.entries);
 }
 
+static bool is_directory_not_empty_errno(uint8_t err)
+{
+    if (err == ENOTEMPTY) {
+        return true;
+    }
+#if defined(ENOTEMPTY) && ENOTEMPTY != 39
+    if (err == 39) {
+        return true;
+    }
+#endif
+#if defined(ENOTEMPTY) && ENOTEMPTY != 41
+    if (err == 41) {
+        return true;
+    }
+#endif
+#if defined(ENOTEMPTY) && ENOTEMPTY != 66
+    if (err == 66) {
+        return true;
+    }
+#endif
+#if defined(ENOTEMPTY) && ENOTEMPTY != 145
+    if (err == 145) {
+        return true;
+    }
+#endif
+    return false;
+}
+
 MavlinkFtpClient::ClientResult MavlinkFtpClient::result_from_nak(PayloadHeader* payload)
 {
     ServerResult sr = static_cast<ServerResult>(payload->data[0]);
@@ -1408,6 +1436,9 @@ MavlinkFtpClient::ClientResult MavlinkFtpClient::result_from_nak(PayloadHeader* 
     // PX4 Mavlink FTP returns "File doesn't exist" this way
     if (sr == ServerResult::ERR_FAIL_ERRNO && payload->data[1] == ENOENT) {
         sr = ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST;
+    } else if (
+        sr == ServerResult::ERR_FAIL_ERRNO && is_directory_not_empty_errno(payload->data[1])) {
+        return ClientResult::DirectoryNotEmpty;
     }
 
     return translate(sr);
@@ -1945,6 +1976,8 @@ std::ostream& operator<<(std::ostream& str, MavlinkFtpClient::ClientResult const
             return str << "ProtocolError";
         case MavlinkFtpClient::ClientResult::NoSystem:
             return str << "NoSystem";
+        case MavlinkFtpClient::ClientResult::DirectoryNotEmpty:
+            return str << "DirectoryNotEmpty";
     }
 }
 

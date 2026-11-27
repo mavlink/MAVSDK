@@ -191,6 +191,8 @@ typedef enum {
     MAVSDK_FTP_RESULT_PROTOCOL_ERROR = 11,
     /**  No system connected. */
     MAVSDK_FTP_RESULT_NO_SYSTEM = 12,
+    /**  Directory is not empty. */
+    MAVSDK_FTP_RESULT_DIRECTORY_NOT_EMPTY = 13,
 } mavsdk_ftp_result_t;
 
 

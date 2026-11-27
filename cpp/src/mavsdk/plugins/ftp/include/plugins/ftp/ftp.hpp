@@ -187,6 +187,7 @@ public:
         Unsupported = 10, /**< @brief Unsupported command. */
         ProtocolError = 11, /**< @brief General protocol error. */
         NoSystem = 12, /**< @brief No system connected. */
+        DirectoryNotEmpty = 13, /**< @brief Directory is not empty. */
     };
 
     /**

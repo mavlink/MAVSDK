@@ -193,6 +193,7 @@ Value | Description
 <span id="classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4ab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` | Unsupported command. 
 <span id="classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4aca3da8f495e4e628912a7798655da6c2"></span> `ProtocolError` | General protocol error. 
 <span id="classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system connected. 
+<span id="classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4a7c0bff4c1e77d7a423be79445178c557"></span> `DirectoryNotEmpty` | Directory is not empty. 
 
 ## Member Function Documentation
 

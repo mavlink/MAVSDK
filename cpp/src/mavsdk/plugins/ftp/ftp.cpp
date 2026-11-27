@@ -207,6 +207,8 @@ MAVSDK_PUBLIC std::string_view to_string(Ftp::Result const& result)
             return "Protocol Error";
         case Ftp::Result::NoSystem:
             return "No System";
+        case Ftp::Result::DirectoryNotEmpty:
+            return "Directory Not Empty";
         default:
             return "Unknown";
     }
