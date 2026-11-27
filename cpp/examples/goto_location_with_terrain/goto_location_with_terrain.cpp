@@ -1,7 +1,7 @@
 //
 // Variant of the goto_location example that bypasses Action::goto_location
 // and instead sends DO_REPOSITION as a COMMAND_INT via MavlinkDirect, using
-// MAV_FRAME_GLOBAL_TERRAIN_ALT_INT so the altitude is interpreted as AGL.
+// MAV_FRAME_GLOBAL_TERRAIN_ALT so the altitude is interpreted as AGL.
 //
 
 #include <chrono>
@@ -22,7 +22,7 @@ using std::chrono::seconds;
 using std::this_thread::sleep_for;
 
 static constexpr int cmd_do_reposition = 192;
-static constexpr int frame_global_terrain_alt_int = 11;
+static constexpr int frame_global_terrain_alt = 10;
 static constexpr int reposition_flags_change_mode = 1;
 
 // Send DO_REPOSITION as a COMMAND_INT in the terrain-altitude frame and wait for the ack.
@@ -41,7 +41,7 @@ bool goto_terrain(
     const json fields = {
         {"target_system", target_system_id},
         {"target_component", 1},
-        {"frame", frame_global_terrain_alt_int},
+        {"frame", frame_global_terrain_alt},
         {"command", cmd_do_reposition},
         {"current", 0},
         {"autocontinue", 0},

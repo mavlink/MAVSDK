@@ -46,7 +46,7 @@ TEST(Mission, RawUploadEmpty)
     // Now upload a normal mission to verify the server still works.
     MissionRaw::MissionItem waypoint{};
     waypoint.seq = 0;
-    waypoint.frame = 6;
+    waypoint.frame = 3; // MAV_FRAME_GLOBAL_RELATIVE_ALT
     waypoint.command = 16; // MAV_CMD_NAV_WAYPOINT
     waypoint.current = 1;
     waypoint.autocontinue = 1;

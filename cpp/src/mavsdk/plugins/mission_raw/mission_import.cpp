@@ -52,6 +52,22 @@ std::string json_to_string(const nlohmann::json& j)
                            j.dump(-1, ' ', false, nlohmann::json::error_handler_t::replace);
 }
 
+// MAV_FRAME_*_INT are deprecated MAVLink synonyms of the plain global frames.
+// Imported items are always given the plain frame.
+uint32_t frame_without_int(uint32_t frame)
+{
+    switch (frame) {
+        case MAV_FRAME_GLOBAL_INT:
+            return MAV_FRAME_GLOBAL;
+        case MAV_FRAME_GLOBAL_RELATIVE_ALT_INT:
+            return MAV_FRAME_GLOBAL_RELATIVE_ALT;
+        case MAV_FRAME_GLOBAL_TERRAIN_ALT_INT:
+            return MAV_FRAME_GLOBAL_TERRAIN_ALT;
+        default:
+            return frame;
+    }
+}
+
 } // namespace
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
@@ -185,7 +201,7 @@ MissionImport::import_mission(const nlohmann::json& root, Autopilot autopilot)
                 mission_items.begin(),
                 MissionRaw::MissionItem{
                     0,
-                    MAV_FRAME_GLOBAL_INT,
+                    MAV_FRAME_GLOBAL,
                     MAV_CMD_NAV_WAYPOINT,
                     0, // current
                     1, // autocontinue
@@ -193,8 +209,8 @@ MissionImport::import_mission(const nlohmann::json& root, Autopilot autopilot)
                     0.0f,
                     0.0f,
                     0.0f,
-                    set_int32(json_at(home, 0), MAV_FRAME_GLOBAL_INT),
-                    set_int32(json_at(home, 1), MAV_FRAME_GLOBAL_INT),
+                    set_int32(json_at(home, 0), MAV_FRAME_GLOBAL),
+                    set_int32(json_at(home, 1), MAV_FRAME_GLOBAL),
                     set_float(json_at(home, 2)),
                     MAV_MISSION_TYPE_MISSION});
 #if defined(__GNUC__) && !defined(__clang__)
@@ -331,7 +347,7 @@ MissionImport::import_simple_mission_item(const nlohmann::json& json_item)
     MissionRaw::MissionItem item{};
     item.command = json_get_int(json_at(json_item, "command"));
     item.autocontinue = json_get_bool(json_at(json_item, "autoContinue")) ? 1 : 0;
-    item.frame = json_get_int(json_at(json_item, "frame"));
+    item.frame = frame_without_int(json_get_int(json_at(json_item, "frame")));
     item.mission_type = MAV_MISSION_TYPE_MISSION;
 
     for (unsigned i = 0; i < 7; ++i) {
@@ -569,7 +585,7 @@ MissionImport::parse_mission_planner_items(const std::string& content, Autopilot
             first_item.command == MAV_CMD_NAV_TAKEOFF) {
             MissionRaw::MissionItem home_item{
                 0, // seq - will be updated later
-                MAV_FRAME_GLOBAL_INT,
+                MAV_FRAME_GLOBAL,
                 MAV_CMD_NAV_WAYPOINT,
                 0, // current - will be updated later
                 1, // autocontinue
@@ -652,7 +668,7 @@ MissionImport::parse_mission_planner_line(const std::string& line)
         LogErr("Invalid frame field: {}", fields[2]);
         return std::nullopt;
     }
-    item.frame = static_cast<uint32_t>(frame_val);
+    item.frame = frame_without_int(static_cast<uint32_t>(frame_val));
 
     // Parse command
     unsigned long command_val = std::strtoul(fields[3].c_str(), &endptr, 10);
@@ -702,11 +718,8 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     }
 
     // For lat/lon coordinates, convert from degrees to degrees * 10^7
-    if (item.frame == MAV_FRAME_GLOBAL || item.frame == MAV_FRAME_GLOBAL_INT ||
-        item.frame == MAV_FRAME_GLOBAL_RELATIVE_ALT ||
-        item.frame == MAV_FRAME_GLOBAL_RELATIVE_ALT_INT ||
-        item.frame == MAV_FRAME_GLOBAL_TERRAIN_ALT ||
-        item.frame == MAV_FRAME_GLOBAL_TERRAIN_ALT_INT) {
+    if (item.frame == MAV_FRAME_GLOBAL || item.frame == MAV_FRAME_GLOBAL_RELATIVE_ALT ||
+        item.frame == MAV_FRAME_GLOBAL_TERRAIN_ALT) {
         item.x = static_cast<int32_t>(std::round(x_val * 1e7));
         item.y = static_cast<int32_t>(std::round(y_val * 1e7));
     } else {

@@ -447,16 +447,20 @@ Offboard::Result OffboardImpl::send_position_global()
         return _position_global_yaw;
     }();
 
+    const bool use_plain_frames = _system_impl->effective_autopilot() != Autopilot::Px4;
+
     MAV_FRAME frame;
     switch (position_global_yaw.altitude_type) {
         case Offboard::PositionGlobalYaw::AltitudeType::Amsl:
-            frame = MAV_FRAME_GLOBAL_INT;
+            frame = use_plain_frames ? MAV_FRAME_GLOBAL : MAV_FRAME_GLOBAL_INT;
             break;
         case Offboard::PositionGlobalYaw::AltitudeType::Agl:
-            frame = MAV_FRAME_GLOBAL_TERRAIN_ALT_INT;
+            frame =
+                use_plain_frames ? MAV_FRAME_GLOBAL_TERRAIN_ALT : MAV_FRAME_GLOBAL_TERRAIN_ALT_INT;
             break;
         case Offboard::PositionGlobalYaw::AltitudeType::RelHome:
-            frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+            frame = use_plain_frames ? MAV_FRAME_GLOBAL_RELATIVE_ALT :
+                                       MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
             break;
         default:
             return Offboard::Result::CommandDenied;
