@@ -311,13 +311,41 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
                 _work_queue.erase(it);
                 break;
 
+            case MAV_RESULT_COMMAND_LONG_ONLY:
+            case MAV_RESULT_COMMAND_INT_ONLY:
+            case MAV_RESULT_COMMAND_UNSUPPORTED_MAV_FRAME:
+                if (_command_debugging) {
+                    LogDebug(
+                        "Command unsupported ({}, result {}).",
+                        work->identification.command,
+                        static_cast<int>(command_ack.result));
+                }
+                _system_impl.unregister_timeout_handler(work->timeout_cookie);
+                temp_result = {Result::Unsupported, NAN};
+                _work_queue.erase(it);
+                break;
+
+            case MAV_RESULT_NOT_IN_CONTROL:
+                if (_command_debugging) {
+                    LogDebug("Command denied: not in control ({}).", work->identification.command);
+                }
+                _system_impl.unregister_timeout_handler(work->timeout_cookie);
+                temp_result = {Result::Denied, NAN};
+                _work_queue.erase(it);
+                break;
+
             default:
-                LogWarn("Received unknown ack.");
+                LogWarn(
+                    "Received unknown ack ({}) for command {}.",
+                    static_cast<int>(command_ack.result),
+                    work->identification.command);
+                _system_impl.unregister_timeout_handler(work->timeout_cookie);
+                temp_result = {Result::UnknownError, NAN};
+                _work_queue.erase(it);
                 break;
         }
 
-        if (temp_final_ack_callback != nullptr && temp_result.first != Result::InProgress &&
-            temp_result.first != Result::UnknownError) {
+        if (temp_final_ack_callback != nullptr && temp_result.first != Result::InProgress) {
             temp_final_ack_callback(message);
         }
 

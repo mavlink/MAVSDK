@@ -13,6 +13,7 @@ add_executable(system_tests_runner
     action_arm_disarm.cpp
     action_arm_force.cpp
     action_set_mode_non_custom.cpp
+    command_ack_results.cpp
     command_in_progress.cpp
     param_set_and_get.cpp
     param_get_all.cpp
