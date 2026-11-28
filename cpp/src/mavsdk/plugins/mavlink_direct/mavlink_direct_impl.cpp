@@ -288,6 +288,7 @@ void MavlinkDirectImpl::send_command_async(
             case MavlinkCommandSender::Result::TemporarilyRejected:
             case MavlinkCommandSender::Result::Failed:
             case MavlinkCommandSender::Result::Cancelled:
+            case MavlinkCommandSender::Result::UnknownError:
                 // Any final ack counts as success, the outcome is in the ack itself.
                 if (final_ack->has_value()) {
                     callback(MavlinkDirect::Result::Success, final_ack->value());

@@ -325,3 +325,44 @@ TEST(MavlinkDirectCommand, CommandsForOtherSystemsIgnored)
     setup.server->unsubscribe_command(handle);
     other_server.unsubscribe_command(other_handle);
 }
+
+TEST(MavlinkDirectCommand, TerminalAndUnknownAckResultsDelivered)
+{
+    CommandSetup setup{17047};
+    ASSERT_TRUE(setup.client);
+
+    setup.groundstation.set_timeout_s(0.2);
+
+    auto* server = setup.server.get();
+
+    for (int mav_result : {7, 8, 9, 10, 42}) {
+        auto received_count = std::make_shared<std::atomic<int>>(0);
+        auto reply_once = std::make_shared<std::once_flag>();
+
+        auto handle = server->subscribe_command(
+            cmd_user_1,
+            [server, received_count, reply_once, mav_result](
+                MavlinkDirectServer::MavlinkMessage command) {
+                ++(*received_count);
+                std::call_once(*reply_once, [&]() {
+                    EXPECT_EQ(
+                        server->send_message(make_ack(command, mav_result)),
+                        MavlinkDirectServer::Result::Success);
+                });
+            });
+
+        auto [result, ack] = setup.client->send_command(make_command_long({{"param1", 1}}));
+        EXPECT_EQ(result, MavlinkDirect::Result::Success) << "for mav_result=" << mav_result;
+        EXPECT_EQ(ack.message_name, "COMMAND_ACK") << "for mav_result=" << mav_result;
+        ASSERT_FALSE(ack.fields_json.empty()) << "for mav_result=" << mav_result;
+        EXPECT_EQ(nlohmann::json::parse(ack.fields_json)["result"], mav_result)
+            << "for mav_result=" << mav_result;
+
+        // Wait past retry timeout (0.2 s * (1 + DEFAULT_RETRIES=3) = 0.8 s) so a leaked
+        // work item would retransmit and satisfy the send_command() promise a second time.
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        EXPECT_EQ(received_count->load(), 1) << "for mav_result=" << mav_result;
+
+        server->unsubscribe_command(handle);
+    }
+}
